@@ -11,7 +11,10 @@
 //   4. Convierte la sintaxis propia de Obsidian a Markdown estándar:
 //        - ![[imagen.png]]      -> ![](./imagen.png)  + copia la imagen
 //        - [[Otra nota|texto]]  -> texto  (o enlace si esa nota también se publica)
-//        - ![](https://x.com/…) -> [enlace](https://x.com/…)  (no era una imagen)
+//        - URL de un tweet SOLA en su línea -> tarjeta HTML del tweet, ya
+//          descargado (autor, texto, fecha, imágenes). Ver scripts/tweets.mjs.
+//        - URL de un tweet DENTRO de una frase -> se queda como enlace normal.
+//        - ![](https://otra-web…)  -> [enlace](https://otra-web…)
 //   5. Escribe cada nota en  src/content/notas/<slug>/index.md  junto con sus
 //      imágenes. Esa carpeta se borra y se regenera entera en cada ejecución,
 //      así que borrar `publicar: true` en la bóveda también quita la nota aquí.
@@ -28,6 +31,17 @@ import path from "node:path";
 import os from "node:os";
 import matter from "gray-matter";
 import GithubSlugger from "github-slugger";
+import {
+  descargarTweet,
+  enParalelo,
+  construirTarjeta,
+  crearDescargador,
+} from "./tweets.mjs";
+
+// Una línea que es SOLO la URL de un tweet (opcionalmente envuelta en la
+// sintaxis de imagen de Obsidian `![](...)` o entre `<...>`). Se captura el ID.
+const RE_TWEET_SUELTO =
+  /^(?:!\[[^\]]*\]\(\s*)?<?\s*https?:\/\/(?:mobile\.)?(?:x|twitter)\.com\/[A-Za-z0-9_]+\/status\/(\d+)\S*\s*>?\s*\)?$/;
 
 // --- Config ----------------------------------------------------------------
 
@@ -35,6 +49,9 @@ const BOVEDA = process.env.BOVEDA_PATH
   || path.join(os.homedir(), "Documents", "boveda-osint");
 
 const DESTINO = path.join(process.cwd(), "src", "content", "notas");
+
+// Imágenes de las tarjetas de tweets: van a public/tweets/ (ver tweets.mjs).
+const PUBLICO_TWEETS = path.join(process.cwd(), "public", "tweets");
 
 // Carpetas de la bóveda que nunca se recorren (ruido o material sensible).
 const CARPETAS_IGNORADAS = new Set([
@@ -136,13 +153,46 @@ function extraerDescripcion(cuerpo) {
 
 const EXT_IMAGEN = /\.(png|jpe?g|webp|gif|svg|avif)$/i;
 
+/** Devuelve la lista de IDs de tweets que aparecen SOLOS en su línea. */
+function idsDeTweetsSueltos(cuerpo) {
+  const ids = [];
+  for (const linea of cuerpo.split("\n")) {
+    const m = linea.trim().match(RE_TWEET_SUELTO);
+    if (m) ids.push(m[1]);
+  }
+  return ids;
+}
+
+/**
+ * Sustituye cada línea que es solo la URL de un tweet por su tarjeta HTML.
+ * `tweets` es un Map id -> datos del tweet (o null si no se pudo descargar).
+ */
+async function insertarTarjetasTweet(cuerpo, { tweets, descargar }) {
+  const lineas = cuerpo.split("\n");
+  for (let i = 0; i < lineas.length; i++) {
+    const m = lineas[i].trim().match(RE_TWEET_SUELTO);
+    if (!m) continue;
+    const id = m[1];
+    const tweet = tweets.get(id);
+    if (!tweet) {
+      console.warn(`  ⚠ tweet no disponible: ${id}`);
+      lineas[i] = `> ⚠️ [Publicación de X no disponible](https://x.com/i/status/${id})`;
+      continue;
+    }
+    lineas[i] = await construirTarjeta(tweet, descargar);
+  }
+  return lineas.join("\n");
+}
+
 /**
  * Transforma el cuerpo de la nota de sintaxis Obsidian a Markdown estándar.
  * `copiarImagen(nombre)` devuelve el nombre final del archivo ya copiado a la
  * carpeta de la nota, o null si no se encontró.
  */
-function transformarCuerpo(cuerpo, { slugsPublicados, copiarImagen }) {
-  let salida = cuerpo;
+async function transformarCuerpo(cuerpo, { slugsPublicados, copiarImagen, tweets, descargar }) {
+  // 0. Tweets sueltos -> tarjeta HTML (antes de nada, para que las reglas de
+  //    más abajo no toquen esas líneas).
+  let salida = await insertarTarjetasTweet(cuerpo, { tweets, descargar });
 
   // 1. Imágenes embebidas de Obsidian: ![[archivo.png]]  o  ![[archivo.png|alt]]
   salida = salida.replace(/!\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/g, (_, archivo, alt) => {
@@ -172,12 +222,20 @@ function transformarCuerpo(cuerpo, { slugsPublicados, copiarImagen }) {
   // 4. Regla horizontal justo al empezar el cuerpo (algunas notas antiguas).
   salida = salida.replace(/^\s*---\s*\n/, "");
 
+  // 5. Encabezados "falsos" tipo  **\## Texto**  (negrita + almohadillas
+  //    escapadas). En Obsidian se ven como título; aquí los pasamos a
+  //    encabezado de verdad.
+  salida = salida.replace(
+    /^\*\*\\?(#{1,6})\s*([^*\n]+?)\*\*\s*$/gm,
+    (_, almohadillas, texto) => `${almohadillas} ${texto.trim()}`,
+  );
+
   return salida.trim() + "\n";
 }
 
 // --- Programa principal --------------------------------------------------
 
-function main() {
+async function main() {
   if (!fs.existsSync(BOVEDA)) {
     console.error(`No encuentro la bóveda en: ${BOVEDA}`);
     console.error("Ajusta la ruta con la variable de entorno BOVEDA_PATH.");
@@ -187,9 +245,10 @@ function main() {
   console.log(`Bóveda:  ${BOVEDA}`);
   console.log(`Destino: ${DESTINO}\n`);
 
-  // Regeneramos la carpeta de notas desde cero.
+  // Regeneramos las carpetas generadas desde cero.
   fs.rmSync(DESTINO, { recursive: true, force: true });
   fs.mkdirSync(DESTINO, { recursive: true });
+  fs.rmSync(PUBLICO_TWEETS, { recursive: true, force: true });
 
   const indiceImagenes = indexarImagenes();
   const rutasMd = buscarMarkdown(BOVEDA);
@@ -210,6 +269,16 @@ function main() {
     return;
   }
 
+  // Descargamos de una vez todos los tweets sueltos que aparecen en las notas.
+  const idsTweets = [
+    ...new Set(aPublicar.flatMap((n) => idsDeTweetsSueltos(n.content))),
+  ];
+  let tweets = new Map();
+  if (idsTweets.length) {
+    console.log(`Descargando ${idsTweets.length} tweet(s) de X...`);
+    tweets = await enParalelo(idsTweets, 6, descargarTweet);
+  }
+
   // Segunda pasada: escribir cada nota.
   for (const nota of aPublicar) {
     const carpeta = path.join(DESTINO, nota.slug);
@@ -225,7 +294,12 @@ function main() {
       return base;
     };
 
-    const cuerpo = transformarCuerpo(nota.content, { slugsPublicados, copiarImagen });
+    const cuerpo = await transformarCuerpo(nota.content, {
+      slugsPublicados,
+      copiarImagen,
+      tweets,
+      descargar: crearDescargador(PUBLICO_TWEETS, "/tweets"),
+    });
 
     const frontmatter = {
       title: nota.titulo,
@@ -247,4 +321,7 @@ function main() {
   console.log(`\nListo: ${aPublicar.length} nota(s) importada(s).`);
 }
 
-main();
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

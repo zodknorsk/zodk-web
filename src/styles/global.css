@@ -71,3 +71,55 @@ html #back-to-top {
 html.scrolled #back-to-top {
   @apply opacity-100 pointer-events-auto;
 }
+
+/* --- Tarjetas de tweet ---------------------------------------------------
+   Generadas por scripts/importar-notas.mjs. Son HTML fijo dentro del
+   Markdown; aquí solo les damos aspecto de tarjeta. */
+article .tweet {
+  @apply not-italic font-sans font-normal;
+  @apply my-6 p-4 rounded-xl border;
+  @apply border-black/15 dark:border-white/20;
+  @apply bg-black/[0.02] dark:bg-white/[0.03];
+}
+
+article .tweet-author {
+  @apply flex items-center gap-2 no-underline;
+  @apply mb-2 font-sans;
+}
+
+article .tweet-avatar {
+  @apply size-11 rounded-full m-0;
+}
+
+article .tweet-name {
+  @apply font-semibold text-black dark:text-white;
+}
+
+article .tweet-handle {
+  @apply text-sm opacity-60;
+}
+
+article .tweet-text {
+  @apply font-serif;
+}
+
+article .tweet-media {
+  @apply block mt-3 rounded-lg overflow-hidden;
+}
+
+article .tweet-media img {
+  @apply m-0 w-full;
+}
+
+article .tweet-media-video {
+  @apply relative no-underline;
+}
+
+article .tweet-media-video span {
+  @apply absolute inset-x-0 bottom-0 p-2 text-sm text-white;
+  @apply bg-gradient-to-t from-black/70 to-transparent;
+}
+
+article .tweet-date {
+  @apply block mt-3 text-sm no-underline opacity-60;
+}
