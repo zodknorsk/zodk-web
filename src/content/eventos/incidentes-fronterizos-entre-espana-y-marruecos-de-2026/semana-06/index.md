@@ -3,7 +3,7 @@ title: Semana 6
 date: '2026-09-03'
 description: >-
   ![342](https://theobjective.com/wp-content/uploads/2026/09/informeceutaseptcompressed.pdf)
-updated: '2026-09-06'
+updated: '2026-09-07'
 tags:
   - marruecos
   - osint
@@ -524,10 +524,223 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
 
 
 **NOTICIAS DEL DÍA**
-
 - Devueltos 21 migrantes a Marruecos tras apedrear a una patrulla de militares en Ceuta ([fuente]([https://www.eldebate.com/espana/20260906/detienen-21-inmigrantes-apedrear-militares-guardias-civiles-ceuta_455821.html](https://www.europapress.es/sociedad/noticia-devueltos-21-migrantes-marruecos-apedrear-patrulla-militares-ceuta-20260906160117.html)))
 ## 07 de septiembre
 
+
+<blockquote class="tweet" data-tweet-id="2096635508919034245">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2096635508919034245" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/URGENTE" target="_blank" rel="noopener">#URGENTE</a> | El diputado que representa a toda Ceuta pide que el Congreso declare el Estado de Sitio y que el Gobierno nombre una &quot;autoridad militar&quot; temporal</div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2096635508919034245" target="_blank" rel="noopener">6 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096888485097426997">
+  <a class="tweet-author" href="https://x.com/abc_es/status/2096888485097426997" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2023769418250285060-tiouigrt_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ABC.es</span>
+    <span class="tweet-handle">@abc_es</span>
+  </a>
+  <div class="tweet-text">🔴 Noche de violencia en Ceuta: decenas de inmigrantes apedrean a guardias civiles y bomberos al apagar un incendio<br>
+<br>
+✍️Informa <a href="https://x.com/Borjamendez" target="_blank" rel="noopener">@Borjamendez</a></div>
+  <a class="tweet-date" href="https://x.com/abc_es/status/2096888485097426997" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096744001399669150">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2096744001399669150" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/LoMásLeído" target="_blank" rel="noopener">#LoMásLeído</a> | Sánchez retrasa la visita del Rey a Ceuta hasta después de las elecciones generales de Marruecos el 23-S.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2096744001399669150" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096829916490694754">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2096829916490694754" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/EXCLUSIVA" target="_blank" rel="noopener">#EXCLUSIVA</a> | El general Peláez ordenó excluir toda referencia a Marruecos del informe de la Guardia Civil a la juez por orden del DAO <br>
+<br>
+✍️ Por <a href="https://x.com/BraisCedeira" target="_blank" rel="noopener">@BraisCedeira</a></div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2096829916490694754" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096886194311475229">
+  <a class="tweet-author" href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1804226965102043137-4manq6_1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pablo Haro Urquízar</span>
+    <span class="tweet-handle">@pabloharour</span>
+  </a>
+  <div class="tweet-text">Un inmigrante llegado a Ceuta: «Para que te acepten el asilo tienes que fingir que eres LGTBI o un perseguido religioso»</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener"><img src="/tweets/img-bwhvqx1w9zbs1ltg.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096897764160401579">
+  <a class="tweet-author" href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1962445572389867520-fp5dvej4_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">En boca de todos</span>
+    <span class="tweet-handle">@EnBocaDe_Todos</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> | Algunos inmigrantes increpan a Juan Ruiz, 'influencer' ceutí, mientras habla con nosotros.<br>
+<br>
+🔴 <a href="https://x.com/hashtag/EnBocaDeTodos" target="_blank" rel="noopener">#EnBocaDeTodos</a> en <a href="https://x.com/cuatro" target="_blank" rel="noopener">@cuatro</a> con <a href="https://x.com/Nacho_Abad" target="_blank" rel="noopener">@Nacho_Abad</a><br>
+➡</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener"><img src="/tweets/img-hoeciwxry1k-xjvi.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096860221687656471">
+  <a class="tweet-author" href="https://x.com/europapress/status/2096860221687656471" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">🔴 El ministro Torres ve &quot;imposible&quot; cifrar los migrantes que quedan en Ceuta y dice que son 4.000 los retornados desde el 10 de agosto</div>
+  <a class="tweet-date" href="https://x.com/europapress/status/2096860221687656471" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096911309845504437">
+  <a class="tweet-author" href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/EnDirecto" target="_blank" rel="noopener">#EnDirecto</a> | Sánchez asegura que el Gobierno responderá con contundencia a la crisis migratoria de Ceuta: &quot;Quienes tengan derecho a asilo lo tendrán en España, como exige la ética y el derecho, y quienes no, serán devueltos&quot;</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener"><img src="/tweets/img-ay6tw2lhjrurvbw-.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096914159887593949">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">‼️ Sánchez evita hacer autocrítica y asegura que los reproches por la gestión en Ceuta son cosa de la &quot;internacional ultraderechista&quot; por su buena gestión: &quot;Por algo será&quot;. <br>
+<br>
+🔗</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener"><img src="/tweets/img-uinizti934cggsva.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096929220811219175">
+  <a class="tweet-author" href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1090567697262354435-emwlzazk_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Faro de Ceuta</span>
+    <span class="tweet-handle">@ElFarodeCeuta</span>
+  </a>
+  <div class="tweet-text">◼️La playa del Trampolín cada vez nos deja una estampa más impactante: la de todo un nuevo asentamiento chabolista, lleno de pequeños puestos de comida, ropa o zapatos<br>
+<br>
+📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio<br>
+<br>
+<a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Trampolín" target="_blank" rel="noopener">#Trampolín</a></div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener"><img src="/tweets/img-nk0ic5g_jnzw_f84.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096920517194264693">
+  <a class="tweet-author" href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1728348204662403072-zxrmcvj7_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">David Santos</span>
+    <span class="tweet-handle">@davidsantosvlog</span>
+  </a>
+  <div class="tweet-text">Menudo repaso de esta ceutí al gobierno de inútiles que tenemos en España.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener"><img src="/tweets/img-eklt7frlvlop8rhq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2096991878717567196">
+  <a class="tweet-author" href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1535742491579895816-gtc6z0gj_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ʜᴇʀQʟᴇs</span>
+    <span class="tweet-handle">@herqles_es</span>
+  </a>
+  <div class="tweet-text">🇪🇸🇲🇦 | El testimonio de las operarias de limpieza en Ceuta refleja la insalubridad del campamento irregular: <br>
+<br>
+Denuncian que el olor es insoportable y que las papeleras están llenas de botellas de alcohol y botes de pegamento que consumen los inmigrantes.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener"><img src="/tweets/img-w67ecziessmdno8-.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097027597083328639">
+  <a class="tweet-author" href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">Marlaska dice que ningún informe constata autoría en la crisis de Ceuta: &quot;Manifiesto mi confianza en Marruecos&quot;</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener"><img src="/tweets/img-m1hkkbketfy3b3oy.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097054318981488724">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">💥 Los militares desalojan las ‘toperas’ donde se escondían inmigrantes ilegales tras ver el programa de Iker Jiménez y los devuelven a Marruecos.<br>
+<br>
+🔗</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener"><img src="/tweets/img-vqzzktzjlmtabb8c.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
+
+
+**NOTICIAS DEL DÍA**
+- La Audiencia Nacional acuerda investigar la invasión de Ceuta y alerta de una «indudable gestión favorecedora desde Marruecos» ([fuente](https://www.abc.es/espana/audiencia-nacional-acuerda-investigar-invasion-ceuta-alerta-20260907144350-nt.html)) ([nota informativa](https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Noticias-Judiciales/La-Audiencia-Nacional-acuerda-investigar-la-entrada-masiva-irregular-en-Ceuta-al-ser-un-ataque-grave-contra-la-integridad-territorial-de-Espana-y-afectar-a-la-paz-o-independencia-del-Estado))
+- El Gobierno incluye a Ceuta y Melilla en un mapa como zonas en disputa con Marruecos ([fuente](https://theobjective.com/espana/politica/2026-09-07/gobierno-ceuta-melilla-mapa-marruecos/))
+
 ## 08 de septiembre
+
+
+<blockquote class="tweet" data-tweet-id="2097066288946323868">
+  <a class="tweet-author" href="https://x.com/abc_es/status/2097066288946323868" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2023769418250285060-tiouigrt_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ABC.es</span>
+    <span class="tweet-handle">@abc_es</span>
+  </a>
+  <div class="tweet-text">La portada y la Dos de ABC. Pronto, en<br>
+<a href="https://x.com/Kioskoymas" target="_blank" rel="noopener">@Kioskoymas</a></div>
+  <img class="tweet-media" src="/tweets/media-hrpgo3jaeaaw_31.png" alt="Imagen del tweet" loading="lazy" />
+  <img class="tweet-media" src="/tweets/media-hrpgo3zauaeygkv.png" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/abc_es/status/2097066288946323868" target="_blank" rel="noopener">7 de septiembre de 2026</a>
+</blockquote>
+
 
 ## 09 de septiembre
