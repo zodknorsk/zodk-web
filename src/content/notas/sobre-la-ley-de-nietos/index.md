@@ -1,5 +1,5 @@
 ---
-title: Ley de nietos
+title: Sobre la Ley de nietos
 date: '2026-09-03'
 description: >-
   Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la
@@ -9,6 +9,8 @@ tags:
   - españa
 ---
 ## Qué es la ley de nietos?
+
+![](./pasted-image-20260907210847.png)
 
 Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
 
@@ -22,7 +24,7 @@ Cifras oficiales hablan de más de 876.000 solicitudes recibidas en todo el mund
 
 Sí, en principio, siempre que la nacionalidad ya esté formalizada e inscrita en el censo electoral (CERA) antes de que este se cierre para esa convocatoria concreta. Básicamente hay dos pasos:
 
-1. - **Obtener la nacionalidad** (resolución favorable del expediente).
+1. **Obtener la nacionalidad** (resolución favorable del expediente).
 2. **Inscribirse en el Registro Civil Consular y entrar en el CERA**  — solo esto último da derecho de voto pleno.
 
 El Gobierno reconoce **2,62 millones de solicitudes tramitadas y 557.709 pasaportes entregados**. Pero de esos ya nacionalizados, hasta marzo de 2026 solo **más de 300.000 habían completado la inscripción en el Registro Civil** y por tanto entraban en el CERA — con el resto de las solicitudes en fase de trámite.
