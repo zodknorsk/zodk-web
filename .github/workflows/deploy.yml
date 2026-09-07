@@ -1,0 +1,47 @@
+# Despliegue automático en GitHub Pages.
+#
+# Cada vez que se hace push a la rama main, GitHub:
+#   1. (job "build")  instala dependencias, ejecuta `astro build` y sube el
+#      resultado (la carpeta dist/) como artefacto.
+#   2. (job "deploy") publica ese artefacto en GitHub Pages.
+#
+# withastro/action detecta que usamos npm por el package-lock.json.
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite lanzarlo a mano desde la pestaña Actions
+
+# Permisos que necesita el despliegue de Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si se encadenan varios push, deja terminar el despliegue en curso.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+      - name: Construir el sitio con Astro
+        uses: withastro/action@v3
+        with:
+          node-version: 22
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
