@@ -21,26 +21,36 @@ no se edita a mano).
 El resultado de esa importación **sí** se versiona en este repo, para que la web
 compile en GitHub Actions sin necesidad de la bóveda ni de X.
 
+**Eventos** (colección `eventos`): las notas dentro de `03 - Eventos/<carpeta>/`
+de la bóveda forman un evento jerárquico:
+
+- el `.md` que se llama igual que la carpeta  → página índice  `/eventos/<slug>`
+- `SEMANA N - ...`                            → `/eventos/<slug>/semana-0N`
+- cualquier otra nota de la carpeta           → página de análisis `/eventos/<slug>/<slug-nota>`
+
+El importador traduce los `[[SEMANA 2]]` y los `[[...#30 de julio]]` a enlaces y
+anclas reales, y convierte los embeds de TikTok en una cita estática con enlace.
+
 ## Estructura
 
 ```
 src/
   consts.ts              Configuración del sitio (nombre, email, nº de notas en portada)
   content/
-    config.ts            Esquema de la colección "notas"
-    notas/               Notas generadas por el script (no editar a mano)
+    config.ts            Esquemas de las colecciones "notas" y "eventos"
+    notas/  eventos/     Contenido generado por el script (no editar a mano)
   layouts/PageLayout.astro   Esqueleto HTML común (<head>, header, footer)
-  components/            Piezas reutilizables (Header, Footer, ArrowCard, Link...)
+  components/            Piezas reutilizables (Header, Footer, ArrowCard, EventoNav...)
   pages/
     index.astro          Portada  (/)
-    notas/index.astro    Listado de notas  (/notas)
-    notas/[...slug].astro Página de cada nota  (/notas/<slug>)
+    notas/               Listado y página de cada nota
+    eventos/             Listado de eventos y [...slug] (índice / semana / análisis)
     rss.xml.ts           Feed RSS
     robots.txt.ts        robots.txt
   styles/global.css      Estilos base (Tailwind + unos pocos ajustes)
 scripts/
-  importar-notas.mjs     Puente bóveda de Obsidian -> src/content/notas/
-  tweets.mjs             Descarga tweets y genera sus tarjetas HTML
+  importar-notas.mjs     Puente bóveda de Obsidian -> src/content/{notas,eventos}/
+  tweets.mjs             Descarga tweets (en paralelo) y genera sus tarjetas HTML
 .github/workflows/
   deploy.yml             Build + publicación en GitHub Pages en cada push a main
 public/
@@ -67,7 +77,7 @@ BOVEDA_PATH="/otra/ruta" npm run importar
 1. En Obsidian, añade `publicar: true` al frontmatter de la nota.
 2. `npm run importar`
 3. `npm run dev` y revisa cómo queda. Si el servidor ya estaba abierto,
-   **reinícialo** (Ctrl+C y otra vez `npm run dev`): la importación borra y
-   regenera `src/content/notas/` y el servidor en marcha se atasca con eso.
+   **reinícialo** (Ctrl+C y otra vez `npm run dev`): la importación regenera
+   `src/content/` y limpia la caché `.astro`, y el servidor en marcha se lía.
 4. `git add -A && git commit -m "notas: publica ..."` y `git push`.
 5. GitHub Actions compila y despliega solo.

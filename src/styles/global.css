@@ -123,3 +123,19 @@ article .tweet-media-video span {
 article .tweet-date {
   @apply block mt-3 text-sm no-underline opacity-60;
 }
+
+/* --- Citas de TikTok (el importador convierte el embed en esto) --------- */
+article .tiktok {
+  @apply not-italic font-sans;
+  @apply my-6 p-4 rounded-xl border;
+  @apply border-black/15 dark:border-white/20;
+  @apply bg-black/[0.02] dark:bg-white/[0.03];
+}
+
+article .tiktok p {
+  @apply font-serif m-0;
+}
+
+article .tiktok a {
+  @apply block mt-3 text-sm no-underline opacity-75;
+}

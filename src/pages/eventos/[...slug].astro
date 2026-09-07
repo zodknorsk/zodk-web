@@ -1,0 +1,172 @@
+---
+// Una única plantilla para las tres clases de página de un evento:
+//   kind "index"  -> /eventos/<evento>            (portada del evento)
+//   kind "semana" -> /eventos/<evento>/semana-NN  (cronología de esa semana)
+//   kind "pagina" -> /eventos/<evento>/<slug>     (pieza de acompañamiento)
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import BackToPrev from "@components/BackToPrev.astro";
+import EventoNav from "@components/EventoNav.astro";
+
+export async function getStaticPaths() {
+  const entradas = await getCollection("eventos");
+  return entradas.map((entrada) => ({
+    params: { slug: entrada.slug },
+    props: entrada,
+  }));
+}
+type Props = CollectionEntry<"eventos">;
+
+const entrada = Astro.props;
+const { Content, headings } = await entrada.render();
+
+const hermanas = (await getCollection("eventos")).filter(
+  (e) => e.data.evento === entrada.data.evento,
+);
+const indiceUrl = `/eventos/${entrada.data.evento}`;
+const semanas = hermanas
+  .filter((e) => e.data.kind === "semana")
+  .sort((a, b) => a.data.orden - b.data.orden);
+const paginas = hermanas.filter((e) => e.data.kind === "pagina");
+
+// Navegación anterior/siguiente para las semanas.
+let anterior = null;
+let siguiente = null;
+let dias: { text: string; slug: string }[] = [];
+if (entrada.data.kind === "semana") {
+  const i = semanas.findIndex((e) => e.slug === entrada.slug);
+  const prev = semanas[i - 1];
+  const next = semanas[i + 1];
+  anterior = prev
+    ? { href: `/eventos/${prev.slug}`, label: `Semana ${prev.data.orden}` }
+    : null;
+  siguiente = next
+    ? { href: `/eventos/${next.slug}`, label: `Semana ${next.data.orden}` }
+    : null;
+  // Solo los encabezados de día ("## 30 de julio"), no otros h2 sueltos.
+  dias = headings
+    .filter((h) => h.depth === 2 && /^\d{1,2}\s+de\s+\w+/i.test(h.text))
+    .map((h) => ({ text: h.text, slug: h.slug }));
+}
+
+// "30 de julio" -> "30 jul"
+function diaCorto(texto: string) {
+  const m = texto.match(/^(\d{1,2})\s+de\s+(\w{3})/i);
+  return m ? `${m[1]} ${m[2].toLowerCase()}` : texto;
+}
+---
+
+<PageLayout title={entrada.data.title} description={entrada.data.description ?? ""}>
+  <Container>
+    {
+      entrada.data.kind === "index" && (
+        <div class="space-y-8">
+          <div class="animate space-y-1">
+            <div class="text-2xl font-semibold text-black dark:text-white">
+              {entrada.data.title}
+            </div>
+            <div class="text-sm opacity-60">
+              Iniciado el <FormattedDate date={entrada.data.date} />
+            </div>
+          </div>
+
+          {semanas.length > 0 && (
+            <div class="animate space-y-2">
+              <div class="text-sm font-semibold text-black dark:text-white">
+                Cronología por semanas
+              </div>
+              <ul class="flex flex-col gap-1.5 text-sm">
+                {semanas.map((s) => (
+                  <li>
+                    <a href={`/eventos/${s.slug}`} class="opacity-80 hover:opacity-100">
+                      Semana {s.data.orden}
+                    </a>
+                    {s.data.rango && <span class="opacity-50"> · {s.data.rango}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {paginas.length > 0 && (
+            <div class="animate space-y-2">
+              <div class="text-sm font-semibold text-black dark:text-white">
+                Análisis relacionado
+              </div>
+              <ul class="flex flex-col gap-1.5 text-sm">
+                {paginas.map((p) => (
+                  <li>
+                    <a href={`/eventos/${p.slug}`} class="opacity-80 hover:opacity-100">
+                      {p.data.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <article class="animate">
+            <Content />
+          </article>
+        </div>
+      )
+    }
+
+    {
+      entrada.data.kind === "semana" && (
+        <div class="space-y-6">
+          <div class="animate">
+            <EventoNav indice={indiceUrl} anterior={anterior} siguiente={siguiente} />
+          </div>
+          <div class="animate space-y-1">
+            <div class="text-2xl font-semibold text-black dark:text-white">
+              Semana {entrada.data.orden}
+            </div>
+            {entrada.data.rango && (
+              <div class="text-sm opacity-60">{entrada.data.rango}</div>
+            )}
+          </div>
+          {dias.length > 0 && (
+            <div class="animate space-y-2">
+              <div class="text-xs uppercase tracking-wide opacity-50">Ir a un día</div>
+              <div class="flex flex-wrap gap-1.5">
+                {dias.map((d) => (
+                  <a
+                    href={`#${d.slug}`}
+                    class="text-sm px-2.5 py-1 rounded-md no-underline border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
+                  >
+                    {diaCorto(d.text)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          <article class="animate">
+            <Content />
+          </article>
+          <div class="animate">
+            <EventoNav indice={indiceUrl} anterior={anterior} siguiente={siguiente} />
+          </div>
+        </div>
+      )
+    }
+
+    {
+      entrada.data.kind === "pagina" && (
+        <div class="space-y-6">
+          <div class="animate">
+            <BackToPrev href={indiceUrl}>Volver al evento</BackToPrev>
+          </div>
+          <div class="animate text-2xl font-semibold text-black dark:text-white">
+            {entrada.data.title}
+          </div>
+          <article class="animate">
+            <Content />
+          </article>
+        </div>
+      )
+    }
+  </Container>
+</PageLayout>

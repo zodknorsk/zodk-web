@@ -19,6 +19,11 @@ export const NOTAS: Metadata = {
   DESCRIPTION: "Análisis y notas publicadas desde mi bóveda de trabajo.",
 };
 
+export const EVENTOS: Metadata = {
+  TITLE: "Eventos",
+  DESCRIPTION: "Seguimiento en profundidad de sucesos, semana a semana.",
+};
+
 export const SOCIALS: Socials = [
   {
     NAME: "github",
