@@ -1,0 +1,86 @@
+---
+// Portada del sitio (ruta "/"). Es deliberadamente sencilla: un saludo, una
+// presentación breve, las últimas notas y un pie con contacto. Para ampliarla,
+// añade <section> nuevas dentro del <div class="space-y-16">.
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+
+const notas = (await getCollection("notas"))
+  .filter((nota) => !nota.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <h4 class="animate font-semibold text-black dark:text-white">
+      Hola <span class="text-xl">👋</span>
+    </h4>
+    <div class="space-y-16">
+      <section>
+        <article class="space-y-4">
+          <p class="animate">
+            Esto es <strong>zodk.eu</strong>, mi sitio personal. Aquí publico
+            notas y análisis propios sobre actualidad, historia y OSINT
+            (inteligencia de fuentes abiertas), escritos a partir de mi archivo
+            de trabajo.
+          </p>
+          <p class="animate">
+            El contenido se irá ampliando poco a poco. Puedes ver todo lo
+            publicado en <Link href="/notas">notas</Link>.
+          </p>
+        </article>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Últimas notas
+          </h5>
+          <Link href="/notas">Ver todas</Link>
+        </div>
+        <ul class="flex flex-col gap-4">
+          {
+            notas.map((nota) => (
+              <li>
+                <ArrowCard entry={nota} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="animate space-y-4">
+        <h5 class="font-semibold text-black dark:text-white">Contacto</h5>
+        <article>
+          <p>Si quieres escribirme, aquí me tienes:</p>
+        </article>
+        <ul class="flex flex-wrap gap-2">
+          {
+            SOCIALS.map((SOCIAL) => (
+              <li class="flex gap-x-2 text-nowrap">
+                <Link
+                  href={SOCIAL.HREF}
+                  external
+                  aria-label={`${SITE.NAME} en ${SOCIAL.NAME}`}
+                >
+                  {SOCIAL.NAME}
+                </Link>
+                {"/"}
+              </li>
+            ))
+          }
+          <li class="line-clamp-1">
+            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Escribir a ${SITE.NAME}`}>
+              {SITE.EMAIL}
+            </Link>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </Container>
+</PageLayout>
