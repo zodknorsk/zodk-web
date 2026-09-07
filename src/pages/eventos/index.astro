@@ -1,0 +1,53 @@
+---
+// Listado de eventos. Cada evento tiene un archivo "index" (kind === "index").
+// Ruta: /eventos
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import { EVENTOS } from "@consts";
+
+const todos = await getCollection("eventos");
+
+const eventos = todos
+  .filter((e) => e.data.kind === "index" && !e.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .map((ev) => ({
+    ev,
+    semanas: todos.filter(
+      (x) => x.data.evento === ev.data.evento && x.data.kind === "semana",
+    ).length,
+  }));
+---
+
+<PageLayout title={EVENTOS.TITLE} description={EVENTOS.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <div class="animate space-y-2">
+        <div class="font-semibold text-black dark:text-white">Eventos</div>
+        <p class="text-sm">{EVENTOS.DESCRIPTION}</p>
+      </div>
+      <ul class="flex flex-col gap-4">
+        {
+          eventos.map(({ ev, semanas }) => (
+            <li class="animate">
+              <a
+                href={`/eventos/${ev.data.evento}`}
+                class="group flex flex-col gap-1 py-3 px-4 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
+              >
+                <div class="font-semibold">{ev.data.title}</div>
+                {ev.data.description && (
+                  <div class="text-sm">{ev.data.description}</div>
+                )}
+                <div class="text-xs opacity-60 pt-1">
+                  Desde <FormattedDate date={ev.data.date} /> · {semanas} semana
+                  {semanas === 1 ? "" : "s"}
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</PageLayout>

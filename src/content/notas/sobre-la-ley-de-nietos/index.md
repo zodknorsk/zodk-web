@@ -54,9 +54,10 @@ Según informa [El Español](https://www.elespanol.com/espana/politica/20260630/
 
 Según informa The Objective el 04 de septiembre en [esta noticia](https://theobjective.com/espana/2026-09-04/objetivo-directo-ley-nietos-elecciones-2027/) y en [esta otra](https://theobjective.com/espana/politica/2026-09-04/voto-extranjero-23-escanos-proximas-elecciones-generales/):
 
+
 <blockquote class="tweet" data-tweet-id="2095376965804929249">
   <a class="tweet-author" href="https://x.com/pabloharour/status/2095376965804929249" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2095376965804929249-avatar.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/1804226965102043137-4manq6_1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Pablo Haro Urquízar</span>
     <span class="tweet-handle">@pabloharour</span>
   </a>
@@ -68,27 +69,31 @@ Por ejemplo, el municipio Ventrosa de La Rioja, el censo CERA multiplica por 6,5
   <a class="tweet-date" href="https://x.com/pabloharour/status/2095376965804929249" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
+
 >**162 municipios españoles ya tienen tantos o más electores en el extranjero que residente**s.
 
 La realidad es clara: la poca transparencia, el trasfondo del que venimos, los casos de corrupción, la cantidad de irregularidades en el voto por correo de 2023 sumado a elecciones en verano con todo el país en la playa, una ley hecha 'a medida', suprimir el voto rogado y que los mecanismos de la ley permiten que estos 'nuevos espaañoles' voten donde quieran... con todo esto afirmo que en verano de 2027 se está **cocinando** una ingeniería electoral que dará los votos necesarios al PSOE para ganar las elecciones. 
 
 ---
+
 <blockquote class="tweet" data-tweet-id="2069370079205007816">
   <a class="tweet-author" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2069370079205007816-avatar.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/1506583148955586561-lwy5pq9r_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Capitán Bitcoin</span>
     <span class="tweet-handle">@CapitanBitcoin</span>
   </a>
   <div class="tweet-text">🚨Es que es de locos. De verdad, no doy crédito. Y hay cero reacción popular a esta nueva estafa. <br>
 <br>
 Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (consulados, trámites, etc.) para que voten PSOE desde fuera en provincias pequeñas y decidan el […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener"><img src="/tweets/2069370079205007816-media-1.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-media tweet-media-video" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener"><img src="/tweets/img-nsrg4qxlxcagrebc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
   <a class="tweet-date" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener">23 de junio de 2026</a>
 </blockquote>
 
+
+
 <blockquote class="tweet" data-tweet-id="2094705556757848484">
   <a class="tweet-author" href="https://x.com/GabrielAraujoES/status/2094705556757848484" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2094705556757848484-avatar.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/1552614072226570241-ggcvz_p3_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Gabriel Araújo</span>
     <span class="tweet-handle">@GabrielAraujoES</span>
   </a>
@@ -98,11 +103,12 @@ Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (
 • 220 municipios alcanzan al menos el 75 %.<br>
 • 123 municipios tienen tantos o más electores CERA que habitantes residentes.<br>
 • […]</div>
-  <img class="tweet-media" src="/tweets/2094705556757848484-media-1.jpg" alt="Imagen del tweet" loading="lazy" />
+  <img class="tweet-media" src="/tweets/media-hrhjsufwsaa8fv7.jpg" alt="Imagen del tweet" loading="lazy" />
   <a class="tweet-date" href="https://x.com/GabrielAraujoES/status/2094705556757848484" target="_blank" rel="noopener">1 de septiembre de 2026</a>
 </blockquote>
 
-## NOTICIAS RELACIONADAS
+
+**NOTICIAS RELACIONADAS**
 - Una gran foto de Sánchez preside las asesorías del PSOE para instruir sobre la nacionalidad ([fuente](https://okdiario.com/espana/gran-foto-sanchez-preside-asesorias-del-psoe-instruir-sobre-nacionalidad-18905875?utm_medium=social&utm_source=Twitter#Echobox=1782971560-1))
 - Los consulados admiten que nacionalizan hasta tataranietos gracias a la instrucción de la hermana de Puente ([fuente](https://okdiario.com/espana/consulados-admiten-que-nacionalizan-hasta-tataranietos-gracias-instruccion-hermana-puente-18895791#Echobox=1783057888-1))
 - Una juez abre diligencias contra la hermana de Puente por prevaricación en la 'ley de nietos' ([fuente](https://theobjective.com/espana/tribunales/2026-07-22/juez-diligencias-hermana-puente-prevaricacion-ley-nietos/))

@@ -1,11 +1,12 @@
 ---
-// Portada del sitio (ruta "/"). Es deliberadamente sencilla: un saludo, una
-// presentación breve, las últimas notas y un pie con contacto. Para ampliarla,
-// añade <section> nuevas dentro del <div class="space-y-16">.
+// Portada del sitio (ruta "/"). Sencilla: saludo, presentación breve, últimas
+// notas, últimos eventos y contacto. Para ampliarla, añade <section> nuevas
+// dentro del <div class="space-y-16">.
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
 import ArrowCard from "@components/ArrowCard.astro";
+import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
 import { SITE, HOME, SOCIALS } from "@consts";
 
@@ -13,6 +14,18 @@ const notas = (await getCollection("notas"))
   .filter((nota) => !nota.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
+
+const todosEventos = await getCollection("eventos");
+const eventos = todosEventos
+  .filter((e) => e.data.kind === "index" && !e.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3)
+  .map((ev) => ({
+    ev,
+    semanas: todosEventos.filter(
+      (x) => x.data.evento === ev.data.evento && x.data.kind === "semana",
+    ).length,
+  }));
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
@@ -24,23 +37,22 @@ const notas = (await getCollection("notas"))
       <section>
         <article class="space-y-4">
           <p class="animate">
-            Esto es <strong>zodk.eu</strong>, mi sitio personal. Aquí publico
+            Esto es <strong>zodk.eu</strong>, mi blog personal. Aquí publico
             notas y análisis propios sobre actualidad, historia y OSINT
             (inteligencia de fuentes abiertas), escritos a partir de mi archivo
             de trabajo.
           </p>
           <p class="animate">
-            El contenido se irá ampliando poco a poco. Puedes ver todo lo
-            publicado en <Link href="/notas">notas</Link>.
+            El blog está en una fase muy temprana. El contenido se irá ampliando
+            poco a poco. Puedes ver todo lo publicado en
+            <Link href="/notas">notas</Link> y <Link href="/eventos">eventos</Link>.
           </p>
         </article>
       </section>
 
       <section class="animate space-y-6">
         <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Últimas notas
-          </h5>
+          <h5 class="font-semibold text-black dark:text-white">Últimas notas</h5>
           <Link href="/notas">Ver todas</Link>
         </div>
         <ul class="flex flex-col gap-4">
@@ -53,6 +65,45 @@ const notas = (await getCollection("notas"))
           }
         </ul>
       </section>
+
+      {
+        eventos.length > 0 && (
+          <section class="animate space-y-6">
+            <div class="flex flex-wrap gap-y-2 items-center justify-between">
+              <h5 class="font-semibold text-black dark:text-white">
+                Últimos eventos
+              </h5>
+              <Link href="/eventos">Ver todos</Link>
+            </div>
+            <ul class="flex flex-col gap-4">
+              {eventos.map(({ ev, semanas }) => (
+                <li>
+                  <a
+                    href={`/eventos/${ev.data.evento}`}
+                    class="relative group flex flex-nowrap py-3 px-4 pr-10 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
+                  >
+                    <div class="flex flex-col flex-1 truncate">
+                      <div class="font-semibold">{ev.data.title}</div>
+                      <div class="text-sm">
+                        Desde <FormattedDate date={ev.data.date} /> ·{" "}
+                        {semanas} semana{semanas === 1 ? "" : "s"}
+                      </div>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      class="absolute top-1/2 right-2 -translate-y-1/2 size-5 stroke-2 fill-none stroke-current"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12" class="translate-x-3 group-hover:translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out" />
+                      <polyline points="12 5 19 12 12 19" class="-translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
 
       <section class="animate space-y-4">
         <h5 class="font-semibold text-black dark:text-white">Contacto</h5>
