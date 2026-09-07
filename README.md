@@ -12,8 +12,14 @@ Obsidian y se marcan con `publicar: true` en el frontmatter. El script
 frontmatter en español y la sintaxis de Obsidian (`![[imagen]]`, `[[enlaces]]`)
 a Markdown estándar.
 
+**Tweets:** una URL de X sola en su línea se convierte en una tarjeta con el
+tweet ya descargado (autor, texto, fecha, imágenes) — ver `scripts/tweets.mjs`.
+Una URL de X dentro de una frase se queda como enlace normal. Las imágenes de
+los tweets se guardan en `public/tweets/` (esa carpeta la regenera el script;
+no se edita a mano).
+
 El resultado de esa importación **sí** se versiona en este repo, para que la web
-compile en GitHub Actions sin necesidad de la bóveda.
+compile en GitHub Actions sin necesidad de la bóveda ni de X.
 
 ## Estructura
 
@@ -34,6 +40,7 @@ src/
   styles/global.css      Estilos base (Tailwind + unos pocos ajustes)
 scripts/
   importar-notas.mjs     Puente bóveda de Obsidian -> src/content/notas/
+  tweets.mjs             Descarga tweets y genera sus tarjetas HTML
 .github/workflows/
   deploy.yml             Build + publicación en GitHub Pages en cada push a main
 public/
@@ -59,6 +66,8 @@ BOVEDA_PATH="/otra/ruta" npm run importar
 
 1. En Obsidian, añade `publicar: true` al frontmatter de la nota.
 2. `npm run importar`
-3. `npm run dev` y revisa cómo queda.
+3. `npm run dev` y revisa cómo queda. Si el servidor ya estaba abierto,
+   **reinícialo** (Ctrl+C y otra vez `npm run dev`): la importación borra y
+   regenera `src/content/notas/` y el servidor en marcha se atasca con eso.
 4. `git add -A && git commit -m "notas: publica ..."` y `git push`.
 5. GitHub Actions compila y despliega solo.
