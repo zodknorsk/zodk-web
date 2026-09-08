@@ -1,24 +1,28 @@
 ---
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
+import ThemeToggle from "@components/ThemeToggle.astro";
 import { SITE } from "@consts";
 ---
 
 <header>
   <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between">
+    <div class="flex flex-wrap gap-y-2 justify-between items-center">
       <Link href="/" underline={false}>
         <div class="font-semibold">
           {SITE.NAME}
         </div>
       </Link>
-      <nav class="flex gap-1">
-        <Link href="/">inicio</Link>
-        <span>{`/`}</span>
-        <Link href="/notas">notas</Link>
-        <span>{`/`}</span>
-        <Link href="/eventos">eventos</Link>
-      </nav>
+      <div class="flex items-center gap-2">
+        <nav class="flex gap-1">
+          <Link href="/">inicio</Link>
+          <span>{`/`}</span>
+          <Link href="/notas">notas</Link>
+          <span>{`/`}</span>
+          <Link href="/eventos">eventos</Link>
+        </nav>
+        <ThemeToggle />
+      </div>
     </div>
   </Container>
 </header>
