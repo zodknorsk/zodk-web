@@ -3,7 +3,7 @@ title: Semana 6
 date: '2026-09-03'
 description: >-
   ![342](https://theobjective.com/wp-content/uploads/2026/09/informeceutaseptcompressed.pdf)
-updated: '2026-09-07'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint
@@ -743,4 +743,120 @@ Denuncian que el olor es insoportable y que las papeleras están llenas de botel
 </blockquote>
 
 
+
+<blockquote class="tweet" data-tweet-id="2097192344168665595">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2097192344168665595" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/DIRECTO" target="_blank" rel="noopener">#DIRECTO</a> | Puente duda de la imparcialidad de la jueza que investiga el asalto en Ceuta: &quot;Denota un principio de desconfianza&quot;</div>
+  <img class="tweet-media" src="/tweets/media-hrq5umna0aau1hc.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2097192344168665595" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097181743438565599">
+  <a class="tweet-author" href="https://x.com/adsuara/status/2097181743438565599" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1742065463692054528-_s-zwu7v_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Borja Adsuara Varela ⚖️</span>
+    <span class="tweet-handle">@adsuara</span>
+  </a>
+  <div class="tweet-text">⚠️ El equipo de Marlaska elaboró un dosier secreto de decenas de periodistas 'fichados' por su ideología<br>
+Aparte del evidente ataque a la <a href="https://x.com/hashtag/LibertadDeExpresión" target="_blank" rel="noopener">#LibertadDeExpresión</a>, está prohibido tratar datos personales sobre ideología <br>
+<a href="https://www.elconfidencial.com/espana/2026-09-08/equipo-marlaska-dosier-secreto-periodistas-ideologia_4419190/?utm_source=twitter&amp;utm_medium=social&amp;utm_campaign=BotoneraWeb" target="_blank" rel="noopener">elconfidencial.com/espana/2026-09…</a> <br>
+Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_Requeijo</a> en <a href="https://x.com/elconfidencial" target="_blank" rel="noopener">@elconfidencial</a> 🔒</div>
+  <a class="tweet-date" href="https://x.com/adsuara/status/2097181743438565599" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097218279504785414">
+  <a class="tweet-author" href="https://x.com/Jea60930295/status/2097218279504785414" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1020332176011931649-yu0714le_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Joaquín Echeverría Alonso</span>
+    <span class="tweet-handle">@Jea60930295</span>
+  </a>
+  <div class="tweet-text">El miedo de los profesores de Ceuta: «No hay seguridad ni normalidad. Los niños no van a venir a clase» <a href="https://www.larazon.es/espana/miedo-profesores-ceuta-hay-seguridad-normalidad-ninos-van-venir-clase_202609086a9f6cf73bfe5d1eff475168.html" target="_blank" rel="noopener">larazon.es/espana/miedo-p…</a> vía <a href="https://x.com/larazon_es" target="_blank" rel="noopener">@larazon_es</a></div>
+  <a class="tweet-date" href="https://x.com/Jea60930295/status/2097218279504785414" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2094321445715189830">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🔴 El cinismo de Sánchez tras la invasión en Ceuta.<br>
+<br>
+&quot;Necesitamos migrantes, mano de obra para una economía que está creciendo&quot;.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener"><img src="/tweets/img-ikx_ouewblqjuv3y.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener">31 de agosto de 2026</a>
+</blockquote>
+
+
+![](./pasted-image-20260908214136.png)
+
+
+<blockquote class="tweet" data-tweet-id="2097262720747749671">
+  <a class="tweet-author" href="https://x.com/CdItve/status/2097262720747749671" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1908200749722443776-ig6zabu-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Consejo de Informativos TVE</span>
+    <span class="tweet-handle">@CdItve</span>
+  </a>
+  <div class="tweet-text">Comunicado sobre la entrevista al Presidente del Gobierno en Mañaneros 360</div>
+  <img class="tweet-media" src="/tweets/media-hrr5un0wiaacvtq.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/CdItve/status/2097262720747749671" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097251077661900954">
+  <a class="tweet-author" href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/581839453527941120-ggybnx0t_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Willy Tolerdo</span>
+    <span class="tweet-handle">@WillyTolerdoo</span>
+  </a>
+  <div class="tweet-text">Colegios llenos de mierda en el comienzo del curso escolar en Ceuta</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener"><img src="/tweets/img-adozuafhbl6wzvna.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097289129260159471">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🔴 El Gobierno anuncia más plazas para alojar a los inmigrantes tras la invasión de Ceuta: «Llegaremos hasta las 6.000».<br>
+<br>
+🔗 Siga la actualidad política en directo:</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener"><img src="/tweets/img-ka8aju6sx9eanba9.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097348717972013191">
+  <a class="tweet-author" href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1804226965102043137-4manq6_1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pablo Haro Urquízar</span>
+    <span class="tweet-handle">@pabloharour</span>
+  </a>
+  <div class="tweet-text">Vecinos de Ceuta reciben a Marlaska con mucho cariño</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener"><img src="/tweets/img-lwo6bf8con6mrur1.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+- El CNI calcula que Marruecos tiene más de 600 espías en España ([fuente](https://www.larazon.es/espana/cni-calcula-que-marruecos-tiene-mas-600-espias-espana_202609086a9f41fd3bfe5d1eff4738d5.html?mrfcid=202609086a9d1d80a565e715fcb74ca5))
+- El CNI reconoce que Pegasus 'robó' a Sánchez 5 millones de mensajes, 100.000 correos electrónicos, unas 1.200 fotos y 40 horas de audio grabado ([fuente](https://x.com/gaceta_es/status/2097286325296562372?s=20))
+- El jefe del Ejército de Tierra no pisa Ceuta para evitar una escalada de la crisis con Marruecos ([fuente](https://theobjective.com/espana/politica/2026-09-08/ejercito-tierra-ceuta-marruecos/))
+- Cumbre militar en Zarzuela: el Rey evalúa con Robles y el Jemad la defensa de Ceuta ([fuente](https://theobjective.com/espana/2026-09-08/zarzuela-rey-robles-jemad-defensa-ceuta/))
 ## 09 de septiembre
