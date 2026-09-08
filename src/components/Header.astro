@@ -9,14 +9,16 @@ import { SITE } from "@consts";
   <Container>
     <div class="flex flex-wrap gap-y-2 justify-between items-center">
       <Link href="/" underline={false}>
-        <div class="font-semibold">
-          {SITE.NAME}
-        </div>
+        <img
+          src="/zodk-logo.svg"
+          alt={SITE.NAME}
+          width="52"
+          height="67"
+          style="image-rendering: pixelated"
+        />
       </Link>
       <div class="flex items-center gap-2">
         <nav class="flex gap-1">
-          <Link href="/" underline={false}>inicio</Link>
-          <span>{`/`}</span>
           <Link href="/notas" underline={false}>notas</Link>
           <span>{`/`}</span>
           <Link href="/eventos" underline={false}>eventos</Link>
