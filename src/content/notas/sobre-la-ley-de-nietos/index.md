@@ -4,7 +4,7 @@ date: '2026-09-03'
 description: >-
   Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la
   Ley de Memoria Democrática (LMD) aprobada en España en octubre de 2022.…
-updated: '2026-09-07'
+updated: '2026-09-08'
 tags:
   - españa
 ---
@@ -74,7 +74,27 @@ Por ejemplo, el municipio Ventrosa de La Rioja, el censo CERA multiplica por 6,5
 
 La realidad es clara: la poca transparencia, el trasfondo del que venimos, los casos de corrupción, la cantidad de irregularidades en el voto por correo de 2023 sumado a elecciones en verano con todo el país en la playa, una ley hecha 'a medida', suprimir el voto rogado y que los mecanismos de la ley permiten que estos 'nuevos espaañoles' voten donde quieran... con todo esto afirmo que en verano de 2027 se está **cocinando** una ingeniería electoral que dará los votos necesarios al PSOE para ganar las elecciones. 
 
+*Actualización 08 de septiembre de 2026*
+
+- [El Tribunal Supremo estima la medida cautelar en relación con el acuerdo de la Junta Electoral Central sobre inscripciones en el Censo Electoral de Residentes Ausentes](https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Noticias-Judiciales/El-Tribunal-Supremo-estima-la-medida-cautelar-en-relacion-con-el-acuerdo-de-la-Junta-Electoral-Central-sobre-inscripciones-en-el-Censo-Electoral-de-Residentes-Ausentes)
+
+
+<blockquote class="tweet" data-tweet-id="2097290880512078133">
+  <a class="tweet-author" href="https://x.com/abc_es/status/2097290880512078133" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2023769418250285060-tiouigrt_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ABC.es</span>
+    <span class="tweet-handle">@abc_es</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> El Supremo paraliza el censo de la ley de nietos<br>
+<br>
+✍️Informa Nati Villanueva</div>
+  <a class="tweet-date" href="https://x.com/abc_es/status/2097290880512078133" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
 ---
+
 
 <blockquote class="tweet" data-tweet-id="2069370079205007816">
   <a class="tweet-author" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener">
