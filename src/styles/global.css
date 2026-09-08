@@ -43,6 +43,13 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+/* El plugin @tailwindcss/typography mete comillas automáticas en todos los
+   blockquotes. Las quitamos: si una cita lleva comillas, van en el texto. */
+article blockquote p:first-of-type::before,
+article blockquote p:last-of-type::after {
+  content: none;
+}
+
 @layer utilities {
   article a {
     @apply font-sans text-current underline underline-offset-2;

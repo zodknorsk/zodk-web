@@ -39,7 +39,8 @@ const eventos = defineCollection({
     kind: z.enum(["index", "semana", "pagina"]).default("pagina"),
     evento: z.string(), // slug del evento al que pertenece
     orden: z.number().default(0), // para ordenar las semanas
-    rango: z.string().optional(), // texto del periodo, p. ej. "30 jul – 5 ago"
+    rango: z.string().optional(), // periodo de una semana, p. ej. "30 julio – 5 agosto"
+    periodo: z.string().optional(), // solo "index": periodo del evento escrito a mano en la bóveda
   }),
 });
 

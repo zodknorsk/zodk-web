@@ -11,7 +11,7 @@ tags:
 kind: semana
 evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 6
-rango: 3 sep – 9 sep
+rango: 3 septiembre – 9 septiembre
 ---
 ## 03 de septiembre - El famoso informe del CENIF
 
@@ -182,7 +182,7 @@ El Gobierno reduce de 12 a 8 los policías que vigilan el puesto fronterizo de C
 
 <blockquote class="tweet" data-tweet-id="2095790577358942368">
   <a class="tweet-author" href="https://x.com/Espball/status/2095790577358942368" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2077538679828926464-psaxuv72_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2097120631762661376-dxesdcce_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Spainball</span>
     <span class="tweet-handle">@Espball</span>
   </a>

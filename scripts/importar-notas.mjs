@@ -127,18 +127,11 @@ function parsearFechaActualizado(valor) {
 
 const primero = (v) => (Array.isArray(v) ? v[0] : v);
 
-const MESES = {
-  enero: "ene", febrero: "feb", marzo: "mar", abril: "abr", mayo: "may",
-  junio: "jun", julio: "jul", agosto: "ago", septiembre: "sep",
-  octubre: "oct", noviembre: "nov", diciembre: "dic",
-};
-/** "30 JULIO al 05 AGOSTO" -> "30 jul – 5 ago" */
+/** "30 JULIO al 05 AGOSTO" -> "30 julio – 5 agosto" */
 function formatearRango(texto) {
   return texto
     .toLowerCase()
     .replace(/\b(0)(\d)\b/g, "$2")
-    .replace(/\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\b/g,
-      (m) => MESES[m])
     .replace(/\s+al\s+/, " – ")
     .trim();
 }
@@ -449,6 +442,12 @@ async function main() {
       fm.evento = it.clase.eventoSlug;
       fm.orden = it.clase.orden;
       if (it.clase.rango) fm.rango = it.clase.rango;
+      // "periodo": texto libre en la nota índice de la bóveda con las fechas
+      // reales del evento (no la de creación de la nota). Solo en el "index".
+      if (it.clase.kind === "index") {
+        const periodo = primero(it.data.periodo);
+        if (periodo) fm.periodo = String(periodo).trim();
+      }
       // Título limpio para la pestaña del navegador; el "SEMANA 4 - 20 AGOSTO..."
       // del archivo no se enseña.
       if (it.clase.kind === "semana") fm.title = `Semana ${it.clase.orden}`;
