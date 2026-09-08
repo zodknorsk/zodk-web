@@ -10,7 +10,7 @@ tags:
 kind: semana
 evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 1
-rango: 30 jul – 5 ago
+rango: 30 julio – 5 agosto
 ---
 ## 30 de julio
 
@@ -274,7 +274,7 @@ El gobierno nos miente, no hay una situación de normalidad.</div>
 
 <blockquote class="tweet" data-tweet-id="2083340058686271668">
   <a class="tweet-author" href="https://x.com/Espball/status/2083340058686271668" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2077538679828926464-psaxuv72_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2097120631762661376-dxesdcce_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Spainball</span>
     <span class="tweet-handle">@Espball</span>
   </a>

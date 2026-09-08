@@ -51,9 +51,9 @@ if (entrada.data.kind === "semana") {
     .map((h) => ({ text: h.text, slug: h.slug }));
 }
 
-// "30 de julio" -> "30 jul"
+// "30 de julio (…)" -> "30 julio"
 function diaCorto(texto: string) {
-  const m = texto.match(/^(\d{1,2})\s+de\s+(\w{3})/i);
+  const m = texto.match(/^(\d{1,2})\s+de\s+([a-záéíóúü]+)/i);
   return m ? `${m[1]} ${m[2].toLowerCase()}` : texto;
 }
 ---
@@ -68,7 +68,9 @@ function diaCorto(texto: string) {
               {entrada.data.title}
             </div>
             <div class="text-sm opacity-60">
-              Iniciado el <FormattedDate date={entrada.data.date} />
+              {entrada.data.periodo ?? (
+                <>Iniciado el <FormattedDate date={entrada.data.date} /></>
+              )}
             </div>
           </div>
 

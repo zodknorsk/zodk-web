@@ -12,7 +12,7 @@ tags:
 kind: semana
 evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 3
-rango: 13 ago – 19 ago
+rango: 13 agosto – 19 agosto
 ---
 ## 13 de agosto
 

@@ -13,6 +13,7 @@ tags:
 kind: index
 evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 0
+periodo: Iniciado el 30 de julio de 2026 · en desarrollo
 ---
 > La mañana del pasado 30 de julio de 2026 se produjo el mayor incidente fronterizo entre España y Marruecos de la historia moderna. Aprovechando el pequeño espigón en la playa del Tarajal, en la frontera sur de Ceuta con Marruecos, y ante la pasividad de la policía marroquí, entre 70.000 y 80.000 inmigrantes cruzaron a nado e invadieron de forma masiva la ciudad autónoma de Ceuta durante los días 30 y 31 de julio.
 > 
