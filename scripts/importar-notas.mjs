@@ -34,8 +34,18 @@ import {
 
 // --- Config ----------------------------------------------------------------
 
-const BOVEDA = process.env.BOVEDA_PATH
-  || path.join(os.homedir(), "Documents", "boveda-osint");
+// Ruta de la bóveda: primero BOVEDA_PATH; si no, se prueba "Documents" (macOS,
+// carpeta en inglés) y "Documentos" (Linux Mint en español) y se coge la que
+// exista. Si ninguna existe se deja la primera para que el mensaje de error de
+// main() muestre una ruta concreta.
+const CANDIDATAS_BOVEDA = [
+  process.env.BOVEDA_PATH,
+  path.join(os.homedir(), "Documents", "boveda-osint"),
+  path.join(os.homedir(), "Documentos", "boveda-osint"),
+].filter(Boolean);
+
+const BOVEDA = CANDIDATAS_BOVEDA.find((p) => fs.existsSync(p))
+  || CANDIDATAS_BOVEDA[0];
 
 const RAIZ = process.cwd();
 const DESTINO_NOTAS = path.join(RAIZ, "src", "content", "notas");
