@@ -1,144 +1,104 @@
-# Logo zodk.eu — pixel art
+# Logo zodk.eu — v1.0
 
-## Archivos
+Planeta Tierra en pixel art girando sobre su eje con un dron de observación
+sobrevolándolo. Sin dependencias, sin peticiones externas, sin JavaScript.
 
-| Archivo | Uso |
-|---|---|
-| `zodk-logo.svg` | Versión completa (globo + dron). Header, redes, Open Graph. 260×335 |
-| `zodk-logo.png` | La misma, rasterizada a 416×536 con bordes nítidos |
-| `zodk-favicon.svg` | Versión simplificada 16×16, solo globo. Favicon vectorial |
-| `favicon.ico` | Contiene 16, 32 y 48 px |
-| `favicon-16.png` / `favicon-32.png` | PNG sueltos por si tu build los pide |
-| `apple-touch-icon.png` | 180×180 |
+## Contenido
 
-Fondo transparente en todos. Funcionan igual sobre claro y sobre oscuro.
-
-## Por qué dos artes distintos
-
-El logo completo tiene el globo a 26×26 píxeles para que se distingan Iberia,
-Italia, Gran Bretaña e India. A 16 px eso se convierte en ruido, así que el
-favicon usa un globo simplificado a 16×16 sin dron. Es lo habitual en marcas con
-iconos detallados.
-
-## Integración
-
-Coloca los archivos en `public/` (o `static/`, según tu framework) y añade al
-`<head>`:
-
-```html
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/zodk-favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-```
-
-El navegador elige el SVG si lo soporta y cae al `.ico` si no.
-
-En el header, usa el SVG completo:
-
-```html
-<img src="/zodk-logo.svg" alt="zodk.eu" width="52" height="67"
-     style="image-rendering: pixelated;">
-```
-
-`image-rendering: pixelated` importa: sin ella, algunos navegadores suavizan los
-bordes al escalar y se pierde el aspecto pixel art. Escala siempre por múltiplos
-enteros (52×67, 104×134, 156×201…) para que los píxeles queden cuadrados.
-
-`site.webmanifest` mínimo:
-
-```json
-{
-  "name": "zodk.eu",
-  "icons": [
-    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" },
-    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
-  ]
-}
-```
-
-## Paleta
-
-| Elemento | Iluminado | En sombra |
+| Archivo | Peso | Para qué |
 |---|---|---|
-| Océano | `#3b7dc4` | `#1b3c69` |
-| Tierra | `#5aab5f` | `#2f6b3c` |
-| Hielo | `#eef3f7` | `#b6c7d5` |
-| Dron | `#dde3e8` | `#8b95a0` |
-| Acento de marca (sensor) | `#e91e8c` | — |
+| `zodk-logo-animado.svg` | 89 KB / **7,1 KB gzip** | Home, hero, header |
+| `zodk-logo-estatico.svg` | 19 KB / **1,5 KB gzip** | Cuando no hay sitio para el picado del dron |
+| `favicon.svg` | 16 KB / **1,2 KB gzip** | Favicon vectorial (solo el globo) |
+| `favicon-16.png` `favicon-32.png` `favicon-48.png` | < 4 KB | Fallback para navegadores viejos |
+| `apple-touch-icon.png` | 180×180 | iOS. Fondo opaco: Apple no respeta la transparencia |
+| `og-image.png` | 1200×630 | Open Graph y Twitter Card |
+| `demo-animado.html` | — | Prueba en claro y oscuro, a dos tamaños |
+| `ANIMACION.md` | — | Cómo funciona y qué tocar para cambiarlo |
+| `generar-logo.py` | — | Regenera el SVG animado. Solo librería estándar |
+
+## Dónde va cada cosa
+
+Copia los estáticos a la raíz pública (`public/` en Astro) y los SVG que se
+incrustan a `src/assets/`:
+
+```
+public/
+  favicon.svg
+  favicon-16.png
+  favicon-32.png
+  favicon-48.png
+  apple-touch-icon.png
+  og-image.png
+src/assets/
+  zodk-logo-animado.svg
+  zodk-logo-estatico.svg
+```
+
+## Etiquetas del `<head>`
+
+```html
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<meta property="og:image" content="https://zodk.eu/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+```
+
+## Incrustar el logo
+
+```astro
+---
+import logo from '../assets/zodk-logo-animado.svg?raw';
+---
+<span class="logo" set:html={logo} />
+```
+
+```css
+.logo svg { width: 52px; height: 67px; image-rendering: pixelated; }
+```
+
+Incrustado en línea es lo preferible: los `@keyframes` van dentro del propio
+SVG, así que funciona igual como `<img>`, pero en línea te ahorras una petición
+y puedes redefinir el color del contorno desde fuera.
+
+**Escala por múltiplos enteros** de 26×33,5 — 52×67, 78×100, 104×134 — para que
+los píxeles queden cuadrados. Cualquier otro valor los deja borrosos aunque
+pongas `image-rendering: pixelated`.
+
+## Altura mínima
+
+El dron recorre 105 px de los 335 del `viewBox`. Si en el header solo tienes
+sitio para una franja baja, se saldrá de plano: ahí usa
+`zodk-logo-estatico.svg`, que trae el mismo dibujo con el dron quieto en su
+posición inicial.
+
+## Modo claro y oscuro
+
+El logo lleva dibujado un anillo de píxeles oscuros (`#101d33`) de 5 px
+alrededor del globo y del dron. Es lo bastante oscuro para desaparecer sobre un
+header negro y lo bastante contrastado para recortar la silueta sobre blanco,
+así que el mismo archivo sirve para los dos modos. Si en algún sitio estorba:
+
+```css
+.logo { --zodk-borde: transparent; }
+```
+
+## Accesibilidad
+
+Trae `role="img"` y `aria-label="zodk.eu"`, y respeta
+`prefers-reduced-motion: reduce` deteniendo las dos animaciones. Si lo usas como
+`<img>`, pon `alt=""` cuando al lado ya vaya el texto de la marca, para no
+duplicar el anuncio del lector de pantalla.
 
 ## Regenerar
 
-`build_logo.py` y `build_icons.py` contienen la rejilla como datos, no como
-rectángulos sueltos. Para tocar la geografía se editan los diccionarios
-`GLOBE_ROWS` / `FAVI_ROWS` (una línea por fila, con tramos `(col_inicio,
-col_fin, tipo)`) y se vuelve a ejecutar. El terminador vive en la lista
-`SHADOW`.
-
----
-
-# Prompt para recrearlo desde cero
-
-Si pierdes los archivos, este prompt reproduce el diseño. Adjunta también
-`zodk-logo.svg` si lo conservas: es mucho más fiable que cualquier descripción.
-
+```bash
+python3 generar-logo.py    # escribe zodk-logo-animado.svg en el directorio actual
 ```
-Necesito un logo en estilo pixel art para zodk.eu: un globo terráqueo centrado
-en Europa/África con un dron de observación de ala fija sobrevolándolo.
-Trabaja en SVG con rectángulos alineados a rejilla y shape-rendering="crispEdges".
-Fondo transparente. Nada de degradados ni suavizado.
 
-GLOBO — rejilla de 26×26 celdas, círculo inscrito, 10 px por celda.
-Paleta de dos tonos por material (claro = iluminado, oscuro = en sombra):
-océano #3b7dc4 / #1b3c69, tierra #5aab5f / #2f6b3c, hielo #eef3f7 / #b6c7d5.
-El terminador entre luz y sombra NO es una línea recta: es un borde escalonado
-que sigue la curvatura de la esfera, desplazado a la derecha del centro (empieza
-sobre la columna 14 arriba, se abomba hasta la 19 en el ecuador y vuelve a la 14
-abajo). Casquetes polares pequeños: una fila arriba, fila y media abajo.
-
-GEOGRAFÍA — vista centrada en 20°E. Lo que tiene que leerse:
-- Gran Bretaña como isla separada del continente por mar en todos sus lados.
-- Península ibérica en dos filas, colgando de Francia solo por su esquina
-  superior derecha y estrechándose hacia el sur.
-- Italia como franja vertical de un píxel de ancho y dos de alto, con mar a
-  ambos lados (Tirreno y Adriático).
-- Mar Negro como lago cerrado de dos píxeles, con tierra arriba y abajo.
-- Entrante del Báltico recortando Escandinavia.
-- Asia SIN ningún entrante: bloque macizo que llega hasta el borde del globo.
-  El contraste entre la Europa toda picada de mares y la Asia sólida es
-  intencionado y es el punto clave del diseño.
-- Mediterráneo: una sola fila de agua separando Europa de África.
-- Costa norte de África escalonada, nunca horizontal: el Magreb sobresale una
-  fila por encima, el golfo de Sirte muerde hacia dentro con un píxel de mar, y
-  Egipto queda una fila más abajo. África se conecta a Asia por el istmo, a la
-  derecha.
-- Costa oeste de África retrocediendo en tres escalones (Sáhara Occidental →
-  Guinea → Gabón) para formar el golfo de Guinea.
-- Cuerno de África sobresaliendo al este, bajo el golfo de Adén.
-- Mar Rojo y golfo Pérsico como diagonales de agua de dos píxeles que recortan
-  la península arábiga.
-- India como península que sobresale al sur, con mar Arábigo a un lado y golfo
-  de Bengala al otro, estrechándose a un píxel en la punta.
-- Madagascar como isla de dos píxeles junto a la costa este.
-- África llega bastante al sur, hasta dos filas del hielo antártico.
-
-DRON — rejilla propia de 22×12 celdas a 5 px por celda, es decir la MITAD del
-tamaño de píxel del globo. Esa diferencia de rejilla es deliberada: da detalle al
-objeto pequeño. Vista en planta, morro a la izquierda:
-- Morro bulboso de 6×4 celdas.
-- Sensor frontal de un píxel en magenta #e91e8c (único punto de color de marca).
-- Fuselaje largo y estrecho de dos filas de alto.
-- Alas rectas de gran alargamiento, cuerda de tres celdas, afinadas a dos en las
-  puntas, cruzando el fuselaje perpendicularmente.
-- Cola en V invertida barrida hacia atrás, dos aletas simétricas.
-- Sombreado en dos tonos: mitad superior #dde3e8, mitad inferior #8b95a0.
-Colócalo arriba a la izquierda, sin tocar el globo.
-
-ENTREGABLES
-1. SVG completo (dron + globo).
-2. SVG simplificado de 16×16 SOLO con el globo, sin dron, para el favicon: a ese
-   tamaño el detalle de costas se convierte en ruido.
-3. PNG de ambos, favicon.ico con 16/32/48 y apple-touch-icon de 180×180.
-Genera los SVG desde un script con la rejilla guardada como datos (una lista de
-tramos por fila), no escribiendo los rectángulos a mano.
-```
+Debe imprimir `rects: 1299 | bytes: 88657`. Si no coincide, el script está
+modificado.
