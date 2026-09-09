@@ -44,7 +44,7 @@ flat = sorted(v for row in acc for v in row if v > 0)
 # umbrales por percentiles de las celdas con algo de luz
 def pct(p):
     return flat[min(len(flat) - 1, int(len(flat) * p))]
-T1, T2, T3 = pct(0.73), pct(0.91), pct(0.975)
+T1, T2, T3 = pct(0.82), pct(0.93), pct(0.982)
 print(f"celdas con luz: {len(flat)}  umbrales: {T1:.2f} {T2:.2f} {T3:.2f}",
       file=sys.stderr)
 
