@@ -105,7 +105,7 @@ article .tweet-name {
 }
 
 article .tweet-handle {
-  @apply text-sm opacity-60;
+  @apply font-mono text-sm opacity-60;
 }
 
 article .tweet-text {
@@ -130,7 +130,7 @@ article .tweet-media-video span {
 }
 
 article .tweet-date {
-  @apply block mt-3 text-sm no-underline opacity-60;
+  @apply block mt-3 font-mono text-sm no-underline opacity-60;
 }
 
 /* --- Citas de TikTok (el importador convierte el embed en esto) --------- */

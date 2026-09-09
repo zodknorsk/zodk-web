@@ -9,8 +9,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        serif: ["Lora", ...defaultTheme.fontFamily.serif],
+        sans: ["IBM Plex Sans", ...defaultTheme.fontFamily.sans],
+        serif: ["IBM Plex Serif", ...defaultTheme.fontFamily.serif],
+        mono: ["IBM Plex Mono", ...defaultTheme.fontFamily.mono],
       },
     },
   },
