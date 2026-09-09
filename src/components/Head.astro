@@ -142,12 +142,25 @@ const socialImageURL = new URL(image, Astro.site);
         },
         { rootMargin: "0px 0px -52% 0px", threshold: 0 }
       ).observe(sentinel);
-      // "at-top" = pegado arriba del todo. Solo entonces se ve la nav minima;
-      // en cuanto empiezas a bajar, desaparece hasta que aparece la solida.
-      const atTop = () =>
+      // "at-top" = pegado arriba del todo (para la nav minima). Y ademas, a
+      // medida que se baja, se tacha el titulo: --redact 0..1 segun el scroll
+      // (el CSS reparte ese 0..1 por lineas). Se recalcula en un rAF.
+      const titulo = document.querySelector(".hero-titulo");
+      let raf = 0;
+      const updateHero = () => {
+        raf = 0;
         document.documentElement.classList.toggle("at-top", window.scrollY < 24);
-      atTop();
-      document.addEventListener("scroll", atTop, { passive: true });
+        if (titulo) {
+          const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
+          titulo.style.setProperty("--redact", p.toFixed(3));
+        }
+      };
+      updateHero();
+      document.addEventListener(
+        "scroll",
+        () => { if (!raf) raf = requestAnimationFrame(updateHero); },
+        { passive: true }
+      );
     } else {
       onScroll();
       document.addEventListener("scroll", onScroll);

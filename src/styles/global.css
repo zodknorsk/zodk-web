@@ -215,10 +215,12 @@ html.dark .hero-planet {
 
    Efecto "documento censurado": cada línea (el nombre, y cada término del lema)
    lleva una barra negra (::after) que barre de izquierda a derecha.
-   - Al cargar: el título aparece tachado y se DEStacha (animación hero-redact-in).
-   - Al bajar para entrar al blog: se vuelve a tachar (escalonado) y luego el
-     bloque se desvanece, junto con la nav mínima (clase .at-top en <html>).
-   - Al subir: reaparece y se destacha. */
+   - Al cargar: el título aparece tachado, aguanta ~1,3 s y se DEStacha
+     (animación hero-redact-in, escalonada línea a línea).
+   - Al bajar: el título va pegado a la Tierra (hace scroll con el hero) y se
+     tacha de forma progresiva según --redact (0..1, lo pone updateHero en
+     Head.astro a partir del scroll); cada línea en un tramo distinto. Al final
+     del recorrido se desvanece también. Al subir, se destacha igual. */
 .hero-titulo {
   position: absolute;
   left: 50%;
@@ -228,7 +230,10 @@ html.dark .hero-planet {
   text-align: center;
   z-index: 1;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  /* 0..1, lo mueve el scroll (updateHero en Head.astro): cuánto del título
+     está tachado. Al final del recorrido se desvanece también. */
+  --redact: 0;
+  opacity: clamp(0, calc((1 - var(--redact)) / 0.25), 1);
 }
 
 .hero-titulo::before {
@@ -276,28 +281,40 @@ html.dark .hero-planet {
   position: relative;
 }
 
-/* La barra de censura de cada línea. */
+/* La barra de censura de cada línea. Barra de tóner: negra, cubre de sobra, con
+   un granulado muy leve. Crece de izquierda a derecha.
+   - Al cargar: aparece tachada, aguanta ~1,3 s y se destacha (hero-redact-in).
+   - Después, el tachado lo controla el scroll: cada línea se tacha en un tramo
+     distinto de --redact (0..1), escalonadas. */
 .hero-titulo h1::after,
 .hero-titulo p span::after {
   content: "";
   position: absolute;
-  left: -0.12em;
-  right: -0.12em;
-  top: 0.06em;
-  bottom: 0.06em;
-  background: #0b0b0d;
-  transform: scaleX(0);
+  left: -0.2em;
+  right: -0.2em;
+  top: -0.06em;
+  bottom: -0.02em;
+  background: #050506;
   transform-origin: left center;
-  /* transición = "destachar": espera a que el bloque haya reaparecido */
-  transition: transform 0.26s cubic-bezier(0.6, 0, 0.35, 1) 0.34s;
-  /* al cargar: empieza tachado y se destacha */
-  animation: hero-redact-in 0.55s cubic-bezier(0.6, 0, 0.35, 1) backwards;
+  animation: hero-redact-in 0.5s cubic-bezier(0.5, 0, 0.25, 1) backwards;
 }
 
-.hero-titulo h1::after { animation-delay: 0.35s; }
-.hero-titulo p span:nth-of-type(1)::after { animation-delay: 0.5s; }
-.hero-titulo p span:nth-of-type(2)::after { animation-delay: 0.62s; }
-.hero-titulo p span:nth-of-type(3)::after { animation-delay: 0.74s; }
+.hero-titulo h1::after {
+  transform: scaleX(clamp(0, calc(var(--redact) / 0.5), 1));
+  animation-delay: 1.3s;
+}
+.hero-titulo p span:nth-of-type(1)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.32) / 0.32), 1));
+  animation-delay: 1.46s;
+}
+.hero-titulo p span:nth-of-type(2)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.46) / 0.32), 1));
+  animation-delay: 1.58s;
+}
+.hero-titulo p span:nth-of-type(3)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.6) / 0.32), 1));
+  animation-delay: 1.7s;
+}
 
 @keyframes hero-redact-in {
   from { transform: scaleX(1); }
@@ -320,22 +337,8 @@ html.dark .hero-titulo::before {
   );
 }
 
-/* Al dejar de estar arriba del todo: se tacha (escalonado) y luego se
-   desvanece, con la nav mínima. */
-html.home:not(.at-top) .hero-titulo {
-  opacity: 0;
-  transition: opacity 0.3s ease 0.42s; /* el fundido espera a que tachen */
-}
-html.home:not(.at-top) .hero-titulo h1::after,
-html.home:not(.at-top) .hero-titulo p span::after {
-  transform: scaleX(1);
-  transition-delay: 0s;
-}
-html.home:not(.at-top) .hero-titulo p span:nth-of-type(1)::after { transition-delay: 0.06s; }
-html.home:not(.at-top) .hero-titulo p span:nth-of-type(2)::after { transition-delay: 0.12s; }
-html.home:not(.at-top) .hero-titulo p span:nth-of-type(3)::after { transition-delay: 0.18s; }
-
 @media (prefers-reduced-motion: reduce) {
+  .hero-titulo { opacity: 1; }
   .hero-titulo h1::after,
   .hero-titulo p span::after { display: none; }
 }
@@ -381,7 +384,13 @@ html.dark .hero-dron {
   inset: -14px;
 }
 
+/* Al inspeccionar el dron se congela toda la portada (planeta incluido). */
 .hero-dron:hover { animation-play-state: paused; }
+.hero:has(.hero-dron:hover) .hero-planet,
+.hero:has(.hero-dron:hover) .hero-sparkle,
+.hero:has(.hero-dron:hover) .hero-scroll {
+  animation-play-state: paused;
+}
 
 .dron-dossier {
   position: absolute;
@@ -396,12 +405,12 @@ html.dark .hero-dron {
   position: absolute;
   top: 50%;
   left: 100%;
-  width: 32px;
+  width: 54px;
   height: 1px;
   background: linear-gradient(90deg, #e6c078, rgba(230, 192, 120, 0.15));
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.22s ease;
+  transition: transform 0.24s ease;
 }
 
 .hero-dron:hover .dron-linea { transform: scaleX(1); }
@@ -409,7 +418,7 @@ html.dark .hero-dron {
 .dron-specs {
   position: absolute;
   top: 50%;
-  left: calc(100% + 32px);
+  left: calc(100% + 54px);
   width: 15rem;
   padding: 0.7rem 0.85rem;
   transform: translateY(-50%) translateX(-6px);
@@ -450,6 +459,12 @@ html.dark .hero-dron {
 
 .dron-specs dt { color: #8b93a0; }
 .dron-specs dd { margin: 0; color: #dfe4ea; }
+.dron-flag {
+  margin-left: 0.15em;
+  font-size: 0.85rem;
+  vertical-align: -0.08em;
+  /* en Windows los emoji de bandera no se pintan; ahí queda solo "TR" */
+}
 
 /* Lado izquierdo cuando no cabe a la derecha (clase del JS). */
 .hero-dron.dron-izq .dron-linea {
@@ -461,7 +476,7 @@ html.dark .hero-dron {
 
 .hero-dron.dron-izq .dron-specs {
   left: auto;
-  right: calc(100% + 32px);
+  right: calc(100% + 54px);
   transform: translateY(-50%) translateX(6px);
 }
 
