@@ -13,8 +13,7 @@ La web lo anima moviendo `background-position` a saltos (`steps(28)`, vuelta en
 vectorial animado y calentaba la CPU en Firefox/Zen (ver más abajo).
 
 - Modo claro → `public/zodk-planeta-sprite.png` (Tierra de día, sol, terminador
-  suave, ciudades como puntos oscuros que se encienden al pasar a la sombra) +
-  `zodk-dron.svg`.
+  suave, ciudades como puntos oscuros — de día no se encienden) + `zodk-dron.svg`.
 - Modo oscuro → `public/zodk-planeta-noche.png` (Tierra a oscuras, luces por
   densidad de población + focos de grandes ciudades + luces sueltas de islas) +
   `zodk-dron-noche.svg` (con luces de posición: amarilla en el morro, verde ala
@@ -32,13 +31,15 @@ el sprite**, no como capa CSS. Una sola capa animada.
 | `mapa_tierra.py`, `luces.py` | Salidas de los dos anteriores. Es lo que consume el generador. |
 | `png8.py` | Escritor mínimo de PNG indexado. |
 | `generar-planeta-hero.py` | Todo junto → los 2 sprites + los 2 drones. Parámetros arriba del archivo (`FRAMES`, geometría, sol, `CIUDADES`, `LUCES_SUELTAS`). |
+| `generar-estrellas.py` | Baldosa `public/zodk-estrellas.png` para el campo de estrellas del fondo (la web la repite con `background-repeat` en vez de apilar gradientes en el CSS). |
 
 Flujo de iteración:
 ```
 cd ~/Documents/zodk-web/logo-files
 python3 densidad_luces.py          # solo si tocas umbrales de luces
 python3 generar-planeta-hero.py
-cp zodk-planeta-sprite.png zodk-planeta-noche.png zodk-dron.svg zodk-dron-noche.svg ../public/
+python3 generar-estrellas.py       # solo si tocas las estrellas
+cp zodk-planeta-sprite.png zodk-planeta-noche.png zodk-dron.svg zodk-dron-noche.svg zodk-estrellas.png ../public/
 cd .. && npm run dev
 ```
 Los .geojson se re-descargan con los `curl` documentados en cada script.

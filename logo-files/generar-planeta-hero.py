@@ -233,8 +233,8 @@ def cell_index(sx, sy, lon0, night):
 
 
 def city_cells(lon0, night):
-    """Celdas (sx, sy) -> color de las ciudades. De día: punto oscuro que se
-    enciende al pasar a la sombra. De noche: todas encendidas."""
+    """Celdas (sx, sy) -> color de las ciudades. De día: siempre punto oscuro.
+    De noche: todas encendidas en ámbar."""
     ci_dark  = color_index(CITY_DARK)
     ci_light = color_index(GOLD[2])
     out = {}
@@ -249,10 +249,7 @@ def city_cells(lon0, night):
         pz =  SINT * a + COST * vv
         if pz <= 0.07:
             continue
-        if night:
-            lit = True
-        else:
-            lit = (px * SX + py * SY + pz * SZ) < 0.06
+        lit = bool(night)          # de día las ciudades no se encienden (solo puntos)
         col = ci_light if lit else ci_dark
         cx = int(round(px * RADIUS + CX - 0.5))
         cy = int(round(py * RADIUS + CY - 0.5))
