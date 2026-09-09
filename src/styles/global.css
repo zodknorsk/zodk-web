@@ -209,17 +209,93 @@ html.dark .hero-planet {
   to { background-position-x: 100%; }
 }
 
+/* Título de la portada, sobre el globo. El nombre en Sans, el lema en Mono
+   espaciado. Detrás, un velo radial oscuro (::before) para que se lea sobre el
+   pixel art sin taparlo. Se desvanece al bajar, a la vez que la nav mínima
+   (clase .at-top en <html>); reaparece al subir. La entrada (fundido + subida)
+   la dan las clases .animate de sus dos líneas. */
+.hero-titulo {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 40rem);
+  text-align: center;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hero-titulo::before {
+  content: "";
+  position: absolute;
+  inset: -2.75rem -3.5rem;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 70% 64% at 50% 50%,
+    rgba(3, 4, 8, 0.62) 0%,
+    rgba(3, 4, 8, 0.34) 44%,
+    transparent 80%
+  );
+}
+
+.hero-titulo h1 {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1.55rem, 5.2vw, 3.05rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #e9edf1;
+  text-shadow: 0 1px 14px rgba(3, 4, 8, 0.65);
+}
+
+.hero-titulo h1 span {
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.hero-titulo p {
+  margin: 0.85rem 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: clamp(0.6rem, 1.7vw, 0.86rem);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em; /* compensa el tracking del último carácter */
+  color: #bcc5d0;
+  text-shadow: 0 1px 12px rgba(3, 4, 8, 0.75);
+}
+
+/* Guiño día/noche: de noche el lema toma un ámbar tenue, como las luces de
+   ciudad del globo, y el velo afloja (la Tierra nocturna ya es oscura). */
+html.dark .hero-titulo h1 { color: #f3efe6; }
+html.dark .hero-titulo h1 span { color: #fff7ea; }
+html.dark .hero-titulo p { color: #e3bd7c; }
+html.dark .hero-titulo::before {
+  background: radial-gradient(
+    ellipse 66% 60% at 50% 50%,
+    rgba(3, 4, 8, 0.42) 0%,
+    rgba(3, 4, 8, 0.2) 44%,
+    transparent 76%
+  );
+}
+
+/* Al dejar de estar arriba del todo, el título se va con la nav mínima. */
+html.home:not(.at-top) .hero-titulo {
+  opacity: 0;
+}
+
 .hero-dron {
   position: absolute;
   left: 46%;
-  top: 30%;
+  top: 22%;
   width: clamp(46px, 4.6vw, 74px);
   aspect-ratio: 96 / 56;
   transform: translateX(-50%);
   background: url(/zodk-dron.svg) center / contain no-repeat;
   image-rendering: pixelated;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
   animation: hero-dron 6s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
 }
 
@@ -233,7 +309,15 @@ html.dark .hero-dron {
 
 @media (max-width: 640px) {
   .hero-planet { top: 13%; width: 132vw; }
-  .hero-dron { top: 23%; width: clamp(34px, 10vw, 50px); }
+  .hero-dron { top: 17%; width: clamp(34px, 10vw, 50px); }
+  .hero-titulo { top: 38%; }
+  .hero-titulo h1 { font-size: clamp(1.3rem, 6.5vw, 2rem); }
+  .hero-titulo h1 span { display: block; } /* "Hegoi Márquez" a su propia línea */
+  .hero-titulo p {
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+  }
 }
 
 /* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
