@@ -21,6 +21,7 @@ body {
   @apply flex flex-col;
   @apply bg-zinc-50 dark:bg-zinc-900;
   @apply text-black/50 dark:text-white/75;
+  overflow-x: clip;              /* red de seguridad: nada de scroll horizontal */
 }
 
 header {
@@ -215,8 +216,8 @@ html.dark .hero-dron {
 }
 
 @media (max-width: 640px) {
-  .hero-planet { top: 15%; width: 190vw; }
-  .hero-dron { top: 26%; }
+  .hero-planet { top: 13%; width: 132vw; }
+  .hero-dron { top: 23%; width: clamp(34px, 10vw, 50px); }
 }
 
 .hero-stars {
@@ -343,13 +344,15 @@ html.home:not(.scrolled) header {
   -webkit-backdrop-filter: none;
 }
 
-html.home header a[href="/"] { transition: opacity 0.4s ease; }
-
+/* Sobre el hero el logo va oculto (el planeta hace de logo). Se saca del flujo
+   con display:none y la nav se pega a la derecha, para que quepa sin apuros en
+   móvil. Al hacer scroll vuelve todo a la normalidad. */
 html.home:not(.scrolled) header a[href="/"] {
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  overflow: hidden;
+  display: none;
+}
+
+html.home:not(.scrolled) header > div > div {
+  justify-content: flex-end;
 }
 
 html.home:not(.scrolled) header a,
