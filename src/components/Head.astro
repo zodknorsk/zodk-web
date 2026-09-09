@@ -20,9 +20,11 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// "image" es opcional: si algún día añades una imagen para redes (Open Graph),
-// pásala por props. Mientras no exista, no emitimos las etiquetas og:image.
-const { title, description, image } = Astro.props;
+// "image" es la imagen para redes (Open Graph / Twitter Card). Si una página no
+// pasa la suya, se usa /og-image.png (el globo de la marca, 1200×630). La URL
+// debe ser absoluta para que la lean los crawlers, de ahí el new URL(..., Astro.site).
+const { title, description, image = "/og-image.png" } = Astro.props;
+const socialImageURL = new URL(image, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -52,14 +54,17 @@ const { title, description, image } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-{image && <meta property="og:image" content={new URL(image, Astro.url)} />}
+<meta property="og:image" content={socialImageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-{image && <meta property="twitter:image" content={new URL(image, Astro.url)} />}
+<meta property="twitter:image" content={socialImageURL} />
 
 <ClientRouter  />
 
