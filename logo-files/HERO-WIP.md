@@ -49,12 +49,12 @@ Los .geojson se re-descargan con los `curl` documentados en cada script.
 
 ## Pendiente
 
-1. **Móvil** — el encuadre del planeta está descuadrado. Rehacer el
-   `@media (max-width: 640px)` de `.hero-planet`.
+1. ~~Móvil~~ — hecho (commit 7de9a13); verificado en un teléfono real.
 2. **Caché en producción** — los PNG se llaman siempre igual; al desplegar una
-   versión nueva, los visitantes con la vieja en caché no la ven. Ponerles
-   versión al nombre (`?v=`) o moverlos a `src/assets/` para que Astro les meta
-   hash de contenido.
+   versión nueva, los visitantes con la vieja en caché no la ven. En el primer
+   despliegue da igual (no hay caché previa); antes del **segundo** cambio del
+   planeta, ponerles versión al nombre (`?v=`) o moverlos a `src/assets/` para
+   que Astro les meta hash de contenido.
 3. **Afinar** — nº de luces de noche, tono desierto para el Sáhara, tamaño de
-   las luces sueltas… todo pendiente de ir puliendo con el usuario.
+   las luces sueltas… pendiente de ir puliendo con el usuario.
 4. Al terminar del todo, borrar este archivo.
