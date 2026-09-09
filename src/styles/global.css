@@ -343,29 +343,38 @@ html.dark .hero-titulo::before {
   .hero-titulo p span::after { display: none; }
 }
 
-/* El dron: sobrevuela el título con un barrido diagonal amplio (de arriba del
-   globo hasta cruzarlo), ida y vuelta. */
-.hero-dron {
+/* Naves y satélites que sobrevuelan / orbitan el hero. Cada `.hero-craft` lleva
+   su sprite (vars --sprite / --sprite-noche) y su proporción por estilo inline,
+   desde src/data/aeronaves.ts (index.astro los pinta en bucle). La trayectoria
+   la da el modificador (--sweep / --orbita). Al pasar el ratón la nave se para
+   —y toda la portada— y sale una línea a una ficha con las specs. Solo ratón. */
+.hero-craft {
   position: absolute;
-  left: 44%;
-  top: 26%;
-  width: clamp(46px, 4.6vw, 74px);
-  aspect-ratio: 96 / 56;
-  transform: translateX(-50%);
-  background: url(/zodk-dron.svg) center / contain no-repeat;
+  background: var(--sprite) center / contain no-repeat;
   image-rendering: pixelated;
   pointer-events: auto;
   z-index: 2;
-  animation: hero-dron 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
 
-html.dark .hero-dron {
-  background-image: url(/zodk-dron-noche.svg);
+html.dark .hero-craft { background-image: var(--sprite-noche); }
+
+.hero-craft::after { /* zona de hover ampliada */
+  content: "";
+  position: absolute;
+  inset: -14px;
 }
 
-/* Barrido diagonal amplio: baja desde arriba del globo cruzando el título
-   (~50%) y sigue por debajo; con "alternate" vuelve a subir atravesándolo. */
-@keyframes hero-dron {
+/* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
+   título y vuelve a subir (alternate). */
+.hero-craft--sweep {
+  left: 44%;
+  top: 26%;
+  width: clamp(46px, 4.6vw, 74px);
+  transform: translateX(-50%);
+  animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+
+@keyframes hero-sweep {
   to {
     transform: translate(
       calc(-50% + clamp(30px, 7vw, 100px)),
@@ -374,54 +383,57 @@ html.dark .hero-dron {
   }
 }
 
-/* Ficha del dron: al pasar el ratón, el dron se para donde esté y sale una
-   línea hacia un recuadro con las specs. El JS (initDron) solo decide el lado
-   (izq/der) según el sitio que quede; lo demás es CSS puro sobre :hover. Solo
-   con ratón (en móvil, nada). */
-.hero-dron::after { /* zona de hover ampliada */
-  content: "";
-  position: absolute;
-  inset: -14px;
+/* Trayectoria "orbita" (satélite): pasada recta de lado a lado cerca del limbo,
+   con una leve curva, en bucle y en un solo sentido. Sale y entra por fuera de
+   pantalla, así el salto del bucle no se ve. */
+.hero-craft--orbita {
+  left: 0;
+  top: 12%;
+  width: clamp(50px, 5.6vw, 92px);
+  animation: hero-orbita 19s linear infinite;
 }
 
-/* Al inspeccionar el dron se congela toda la portada (planeta incluido). */
-.hero-dron:hover { animation-play-state: paused; }
-.hero:has(.hero-dron:hover) .hero-planet,
-.hero:has(.hero-dron:hover) .hero-sparkle,
-.hero:has(.hero-dron:hover) .hero-scroll {
+@keyframes hero-orbita {
+  0%   { transform: translate(-18vw, 5vh); }
+  50%  { transform: translate(50vw, -2vh); }
+  100% { transform: translate(118vw, 5vh); }
+}
+
+/* Al inspeccionar cualquier nave se congela toda la portada. */
+.hero-craft:hover { animation-play-state: paused; }
+.hero:has(.hero-craft:hover) .hero-planet,
+.hero:has(.hero-craft:hover) .hero-sparkle,
+.hero:has(.hero-craft:hover) .hero-scroll,
+.hero:has(.hero-craft:hover) .hero-craft {
   animation-play-state: paused;
 }
 
-.dron-dossier {
+/* --- Ficha ------------------------------------------------------------- */
+.craft-dossier {
   position: absolute;
   inset: 0;
   opacity: 0;
+  pointer-events: none; /* oculta NO capta el ratón (si no, saltaba al pasar
+                           por donde estaría el recuadro invisible) */
   transition: opacity 0.15s ease;
 }
 
-.hero-dron:hover .dron-dossier { opacity: 1; }
+.hero-craft:hover .craft-dossier { opacity: 1; pointer-events: auto; }
 
-.dron-linea {
+.craft-linea {
   position: absolute;
-  top: 50%;
-  left: 100%;
-  width: 92px;
-  height: 1px;
   background: rgba(230, 192, 120, 0.7);
-  transform: scaleX(0);
-  transform-origin: left center;
+  transform: scale(0);
   transition: transform 0.24s ease;
+  pointer-events: none;
 }
 
-.hero-dron:hover .dron-linea { transform: scaleX(1); }
+.hero-craft:hover .craft-linea { transform: scale(1); }
 
-.dron-specs {
+.craft-specs {
   position: absolute;
-  top: 50%;
-  left: calc(100% + 92px);
-  width: 15rem;
+  width: 16rem;
   padding: 0.7rem 0.85rem;
-  transform: translateY(-50%) translateX(-6px);
   opacity: 0;
   transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s;
   background: rgba(6, 8, 12, 0.9);
@@ -434,22 +446,26 @@ html.dark .hero-dron {
   text-align: left;
 }
 
-.hero-dron:hover .dron-specs {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
+.hero-craft:hover .craft-specs { opacity: 1; }
 
-.dron-specs-titulo {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid rgba(230, 192, 120, 0.25);
+.craft-specs-titulo {
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #e6c078;
 }
 
-.dron-specs dl {
+.craft-clase {
+  margin: 0.12rem 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(230, 192, 120, 0.22);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b93a0;
+}
+
+.craft-specs dl {
   margin: 0;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -457,40 +473,74 @@ html.dark .hero-dron {
   font-size: 0.68rem;
 }
 
-.dron-specs dt { color: #8b93a0; }
-.dron-specs dd { margin: 0; color: #dfe4ea; }
-.dron-flag {
+.craft-specs dt { color: #8b93a0; }
+.craft-specs dd { margin: 0; color: #dfe4ea; }
+.craft-flag {
   margin-left: 0.15em;
   font-size: 0.85rem;
   vertical-align: -0.08em;
-  /* en Windows los emoji de bandera no se pintan; ahí queda solo "TR" */
+  /* en Windows los emoji de bandera no se pintan */
 }
 
-/* Lado izquierdo cuando no cabe a la derecha (clase del JS). */
-.hero-dron.dron-izq .dron-linea {
+/* --- Colocación de la ficha según la trayectoria --------------------- */
+/* sweep: al lado (derecha; el JS pone .flip-x si no cabe). */
+.hero-craft--sweep .craft-linea {
+  top: 50%;
+  left: 100%;
+  width: 92px;
+  height: 1px;
+  transform-origin: left center;
+}
+.hero-craft--sweep .craft-specs {
+  top: 50%;
+  left: calc(100% + 92px);
+  transform: translateY(-50%) translateX(-6px);
+}
+.hero-craft--sweep:hover .craft-specs { transform: translateY(-50%) translateX(0); }
+.hero-craft--sweep.flip-x .craft-linea {
   left: auto;
   right: 100%;
   transform-origin: right center;
 }
-
-.hero-dron.dron-izq .dron-specs {
+.hero-craft--sweep.flip-x .craft-specs {
   left: auto;
   right: calc(100% + 92px);
   transform: translateY(-50%) translateX(6px);
 }
+.hero-craft--sweep.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
 
-.hero-dron.dron-izq:hover .dron-specs {
-  transform: translateY(-50%) translateX(0);
+/* orbita: debajo (el JS pone .edge-l / .edge-r cerca de los bordes). */
+.hero-craft--orbita .craft-linea {
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 46px;
+  transform-origin: center top;
 }
+.hero-craft--orbita .craft-specs {
+  left: 50%;
+  top: calc(100% + 46px);
+  transform: translateX(-50%) translateY(-6px);
+}
+.hero-craft--orbita:hover .craft-specs { transform: translateX(-50%) translateY(0); }
+.hero-craft--orbita.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(-6px); }
+.hero-craft--orbita.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--orbita.edge-r .craft-specs {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(-6px);
+}
+.hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
 @media (hover: none) {
-  .hero-dron { pointer-events: none; }
-  .dron-dossier { display: none; }
+  .hero-craft { pointer-events: none; }
+  .craft-dossier { display: none; }
 }
 
 @media (max-width: 640px) {
   .hero-planet { top: 13%; width: 132vw; }
-  .hero-dron { top: 22%; width: clamp(34px, 10vw, 50px); }
+  .hero-craft--sweep { top: 22%; width: clamp(34px, 10vw, 50px); }
+  .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
@@ -629,7 +679,8 @@ html.home main { padding-top: 9.5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-planet,
-  .hero-dron,
+  .hero-craft,
   .hero-sparkle,
   .hero-scroll { animation: none; }
+  .hero-craft--orbita { left: 12%; top: 15%; } /* aparcado en sitio visible */
 }
