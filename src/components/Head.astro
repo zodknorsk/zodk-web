@@ -97,6 +97,7 @@ const socialImageURL = new URL(image, Astro.site);
   function init() {
     preloadTheme();
     initHeader();
+    initDron();
     animate();
 
     const backToTop = document.getElementById("back-to-top");
@@ -151,6 +152,18 @@ const socialImageURL = new URL(image, Astro.site);
       onScroll();
       document.addEventListener("scroll", onScroll);
     }
+  }
+
+  // Ficha del dron: al pasar el raton, el dron se para (CSS :hover) y sale la
+  // ficha. Aqui solo se decide, una vez, si sale a la izquierda o a la derecha
+  // segun el sitio que quede; no hay bucle ni seguimiento.
+  function initDron() {
+    const dron = document.querySelector(".hero-dron");
+    if (!dron || !window.matchMedia("(hover: hover)").matches) return;
+    dron.addEventListener("mouseenter", () => {
+      const r = dron.getBoundingClientRect();
+      dron.classList.toggle("dron-izq", r.right + 300 > window.innerWidth);
+    });
   }
 
   function animate() {

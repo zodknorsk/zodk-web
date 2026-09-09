@@ -211,9 +211,14 @@ html.dark .hero-planet {
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
-   (::before) para despegarlo del pixel art. Se desvanece al bajar, a la vez que
-   la nav mínima (clase .at-top en <html>); reaparece al subir. La entrada
-   (fundido + subida) la dan las clases .animate de sus dos líneas. */
+   (::before) para despegarlo del pixel art.
+
+   Efecto "documento censurado": cada línea (el nombre, y cada término del lema)
+   lleva una barra negra (::after) que barre de izquierda a derecha.
+   - Al cargar: el título aparece tachado y se DEStacha (animación hero-redact-in).
+   - Al bajar para entrar al blog: se vuelve a tachar (escalonado) y luego el
+     bloque se desvanece, junto con la nav mínima (clase .at-top en <html>).
+   - Al subir: reaparece y se destacha. */
 .hero-titulo {
   position: absolute;
   left: 50%;
@@ -240,6 +245,7 @@ html.dark .hero-planet {
 }
 
 .hero-titulo h1 {
+  position: relative;
   margin: 0;
   font-family: "IBM Plex Serif", ui-serif, Georgia, serif;
   font-weight: 400;
@@ -266,6 +272,38 @@ html.dark .hero-planet {
   text-shadow: 0 1px 12px rgba(3, 4, 8, 0.85);
 }
 
+.hero-titulo p span {
+  position: relative;
+}
+
+/* La barra de censura de cada línea. */
+.hero-titulo h1::after,
+.hero-titulo p span::after {
+  content: "";
+  position: absolute;
+  left: -0.12em;
+  right: -0.12em;
+  top: 0.06em;
+  bottom: 0.06em;
+  background: #0b0b0d;
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* transición = "destachar": espera a que el bloque haya reaparecido */
+  transition: transform 0.26s cubic-bezier(0.6, 0, 0.35, 1) 0.34s;
+  /* al cargar: empieza tachado y se destacha */
+  animation: hero-redact-in 0.55s cubic-bezier(0.6, 0, 0.35, 1) backwards;
+}
+
+.hero-titulo h1::after { animation-delay: 0.35s; }
+.hero-titulo p span:nth-of-type(1)::after { animation-delay: 0.5s; }
+.hero-titulo p span:nth-of-type(2)::after { animation-delay: 0.62s; }
+.hero-titulo p span:nth-of-type(3)::after { animation-delay: 0.74s; }
+
+@keyframes hero-redact-in {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
 /* Guiño día/noche: de noche el lema toma un ámbar tenue, como las luces de
    ciudad del globo, y el velo aprieta un poco (hay focos de ciudad debajo). */
 html.dark .hero-titulo h1 { color: #f3efe6; }
@@ -282,9 +320,24 @@ html.dark .hero-titulo::before {
   );
 }
 
-/* Al dejar de estar arriba del todo, el título se va con la nav mínima. */
+/* Al dejar de estar arriba del todo: se tacha (escalonado) y luego se
+   desvanece, con la nav mínima. */
 html.home:not(.at-top) .hero-titulo {
   opacity: 0;
+  transition: opacity 0.3s ease 0.42s; /* el fundido espera a que tachen */
+}
+html.home:not(.at-top) .hero-titulo h1::after,
+html.home:not(.at-top) .hero-titulo p span::after {
+  transform: scaleX(1);
+  transition-delay: 0s;
+}
+html.home:not(.at-top) .hero-titulo p span:nth-of-type(1)::after { transition-delay: 0.06s; }
+html.home:not(.at-top) .hero-titulo p span:nth-of-type(2)::after { transition-delay: 0.12s; }
+html.home:not(.at-top) .hero-titulo p span:nth-of-type(3)::after { transition-delay: 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-titulo h1::after,
+  .hero-titulo p span::after { display: none; }
 }
 
 /* El dron: sobrevuela el título con un barrido diagonal amplio (de arriba del
@@ -298,7 +351,7 @@ html.home:not(.at-top) .hero-titulo {
   transform: translateX(-50%);
   background: url(/zodk-dron.svg) center / contain no-repeat;
   image-rendering: pixelated;
-  pointer-events: none;
+  pointer-events: auto;
   z-index: 2;
   animation: hero-dron 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
@@ -316,6 +369,109 @@ html.dark .hero-dron {
       clamp(200px, 40vh, 380px)
     );
   }
+}
+
+/* Ficha del dron: al pasar el ratón, el dron se para donde esté y sale una
+   línea hacia un recuadro con las specs. El JS (initDron) solo decide el lado
+   (izq/der) según el sitio que quede; lo demás es CSS puro sobre :hover. Solo
+   con ratón (en móvil, nada). */
+.hero-dron::after { /* zona de hover ampliada */
+  content: "";
+  position: absolute;
+  inset: -14px;
+}
+
+.hero-dron:hover { animation-play-state: paused; }
+
+.dron-dossier {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.hero-dron:hover .dron-dossier { opacity: 1; }
+
+.dron-linea {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, #e6c078, rgba(230, 192, 120, 0.15));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s ease;
+}
+
+.hero-dron:hover .dron-linea { transform: scaleX(1); }
+
+.dron-specs {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 32px);
+  width: 15rem;
+  padding: 0.7rem 0.85rem;
+  transform: translateY(-50%) translateX(-6px);
+  opacity: 0;
+  transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s;
+  background: rgba(6, 8, 12, 0.9);
+  border: 1px solid rgba(230, 192, 120, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  text-align: left;
+}
+
+.hero-dron:hover .dron-specs {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.dron-specs-titulo {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(230, 192, 120, 0.25);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e6c078;
+}
+
+.dron-specs dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.16rem 0.8rem;
+  font-size: 0.68rem;
+}
+
+.dron-specs dt { color: #8b93a0; }
+.dron-specs dd { margin: 0; color: #dfe4ea; }
+
+/* Lado izquierdo cuando no cabe a la derecha (clase del JS). */
+.hero-dron.dron-izq .dron-linea {
+  left: auto;
+  right: 100%;
+  transform-origin: right center;
+  background: linear-gradient(270deg, #e6c078, rgba(230, 192, 120, 0.15));
+}
+
+.hero-dron.dron-izq .dron-specs {
+  left: auto;
+  right: calc(100% + 32px);
+  transform: translateY(-50%) translateX(6px);
+}
+
+.hero-dron.dron-izq:hover .dron-specs {
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (hover: none) {
+  .hero-dron { pointer-events: none; }
+  .dron-dossier { display: none; }
 }
 
 @media (max-width: 640px) {
