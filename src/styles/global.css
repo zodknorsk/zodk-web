@@ -30,7 +30,9 @@ header {
 }
 
 main {
-  @apply flex-1 py-32;
+  /* pt mayor que pb: el header es fixed y con el logo a 78×100 mide ~140 px,
+     así el contenido no queda pisado por la cabecera. */
+  @apply flex-1 pt-40 pb-32;
 }
 
 footer {
