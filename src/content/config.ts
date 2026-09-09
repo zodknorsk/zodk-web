@@ -17,7 +17,7 @@ const notas = defineCollection({
     date: z.coerce.date(), // fecha de creación (del "creado" de Obsidian)
     updated: z.coerce.date().optional(), // del "actualizado" de Obsidian
     tags: z.array(z.string()).default([]),
-    draft: z.boolean().optional(), // si es true: se genera la página pero no se lista
+    draft: z.boolean().optional(), // si es true: ni se genera página ni se lista
   }),
 });
 

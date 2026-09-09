@@ -9,7 +9,7 @@ type Context = {
 export async function GET(context: Context) {
   const notas = (await getCollection("notas"))
     .filter((nota) => !nota.data.draft)
-    .sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
     title: SITE.NAME,

@@ -8,24 +8,11 @@ import { SITE } from "@consts";
 <header>
   <Container>
     <div class="flex flex-wrap gap-y-2 justify-between items-center">
-      <Link href="/" underline={false}>
-        <img
-          src="/zodk-logo-animado.svg"
-          alt={SITE.NAME}
-          width="78"
-          height="100"
-          style="image-rendering: pixelated"
-          class="block dark:hidden"
-        />
-        <img
-          src="/zodk-logo-nocturno.svg"
-          alt={SITE.NAME}
-          width="78"
-          height="100"
-          style="image-rendering: pixelated"
-          class="hidden dark:block"
-        />
-      </Link>
+      <!-- Logo como imagen de fondo (no <img>): así el navegador solo descarga
+           el SVG del tema activo. El de día pesa 88 KB y el de noche 154 KB; con
+           dos <img> se bajaban los dos en cada página. El swap día/noche lo hace
+           html.dark en global.css (.logo-home). -->
+      <a href="/" aria-label={SITE.NAME} class="logo-home"></a>
       <div class="flex items-center gap-2">
         <nav class="flex gap-1">
           <Link href="/notas" underline={false}>notas</Link>

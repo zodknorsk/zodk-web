@@ -38,6 +38,14 @@ const socialImageURL = new URL(image, Astro.site);
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="generator" content={Astro.generator} />
 
+<!-- Sin JS, .animate nunca recibe la clase .show (la pone init() en el script
+     de abajo): mostrar el contenido igualmente para que no quede invisible. -->
+<noscript>
+  <style>
+    .animate { opacity: 1 !important; transform: none !important; }
+  </style>
+</noscript>
+
 <!-- Font preloads -->
 <link rel="preload" href={plexSans400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSans600} as="font" type="font/woff2" crossorigin/>
@@ -94,9 +102,6 @@ const socialImageURL = new URL(image, Astro.site);
     const backToTop = document.getElementById("back-to-top");
     backToTop?.addEventListener("click", (event) => scrollToTop(event));
 
-    const backToPrev = document.getElementById("back-to-prev");
-    backToPrev?.addEventListener("click", () => window.history.back());
-
     const themeButton = document.getElementById("theme-button");
     themeButton?.addEventListener("click", () => {
       const isDark = document.documentElement.classList.contains("dark");
@@ -104,9 +109,10 @@ const socialImageURL = new URL(image, Astro.site);
       toggleTheme(!isDark);
     });
 
+    // Si el usuario no ha elegido tema a mano, seguir el del sistema en vivo.
     window.matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", event => {
-        if (localStorage.theme === "system" || !localStorage.theme) {
+        if (!localStorage.theme) {
           toggleTheme(event.matches);
         }
       }
