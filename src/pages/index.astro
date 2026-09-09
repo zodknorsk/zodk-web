@@ -28,7 +28,20 @@ const eventos = todosEventos
   }));
 ---
 
-<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} hero>
+  <section slot="hero" class="hero" aria-label="Portada">
+    <div class="hero-stars" aria-hidden="true"></div>
+    <span class="hero-sparkle" aria-hidden="true"></span>
+    <div
+      class="hero-planet"
+      role="img"
+      aria-label="La Tierra en pixel art, hemisferio norte, girando"
+    >
+    </div>
+    <div class="hero-dron" aria-hidden="true"></div>
+    <span class="hero-scroll" aria-hidden="true"></span>
+  </section>
+
   <Container>
     <h4 class="animate font-semibold text-black dark:text-white">
       Hola <span class="text-xl">👋</span>
