@@ -222,82 +222,33 @@ html.dark .hero-dron {
   .hero-dron { top: 23%; width: clamp(34px, 10vw, 50px); }
 }
 
+/* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
+   genera logo-files/generar-estrellas.py) repetida con background-repeat. Antes
+   eran ~50 gradientes radiales apilados en el CSS; la baldosa repetida pinta
+   mucho más barato. En oscuro, una segunda capa desfasada dobla la densidad. */
 .hero-stars {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-repeat: no-repeat;
-  background-image:
-    radial-gradient(1.6px 1.6px at 12% 17%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 27% 9%, #d7dee8, transparent),
-    radial-gradient(2px 2px at 43% 21%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 57% 6%, #ffffff, transparent),
-    radial-gradient(1.6px 1.6px at 71% 14%, #e6ecf5, transparent),
-    radial-gradient(2px 2px at 84% 10%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 91% 24%, #ffffff, transparent),
-    radial-gradient(1.6px 1.6px at 6% 30%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 35% 3%, #ffffff, transparent),
-    radial-gradient(1.6px 1.6px at 64% 27%, #d7dee8, transparent),
-    radial-gradient(1.4px 1.4px at 49% 13%, #ffffff, transparent),
-    radial-gradient(1.8px 1.8px at 78% 4%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 18% 38%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 95% 35%, #ffffff, transparent),
-    radial-gradient(1.6px 1.6px at 4% 8%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 40% 32%, #cfd7e2, transparent),
-    radial-gradient(1.3px 1.3px at 21% 5%, #ffffff, transparent),
-    radial-gradient(1.5px 1.5px at 33% 19%, #e6ecf5, transparent),
-    radial-gradient(1.2px 1.2px at 52% 27%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 67% 8%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 74% 30%, #d7dee8, transparent),
-    radial-gradient(1.6px 1.6px at 88% 33%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 9% 22%, #ffffff, transparent),
-    radial-gradient(1.5px 1.5px at 46% 4%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 30% 36%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 60% 18%, #cfd7e2, transparent),
-    radial-gradient(1.2px 1.2px at 82% 22%, #ffffff, transparent),
-    radial-gradient(1.5px 1.5px at 15% 11%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 99% 14%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 55% 35%, #e6ecf5, transparent);
-  opacity: 0.85;
+  background: url(/zodk-estrellas.png) repeat;
+  background-size: 320px 320px;
+  image-rendering: pixelated;
+  opacity: 0.7;
 }
 
-/* Modo oscuro: campo de estrellas más denso (segunda capa) */
 .hero-stars::after {
   content: "";
   position: absolute;
   inset: 0;
   display: none;
-  background-repeat: no-repeat;
-  background-image:
-    radial-gradient(1.3px 1.3px at 7% 13%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 16% 25%, #d7dee8, transparent),
-    radial-gradient(1.4px 1.4px at 24% 6%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 29% 30%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 38% 15%, #e6ecf5, transparent),
-    radial-gradient(1.2px 1.2px at 45% 26%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 51% 7%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 58% 31%, #cfd7e2, transparent),
-    radial-gradient(1.3px 1.3px at 63% 12%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 69% 24%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 76% 9%, #e6ecf5, transparent),
-    radial-gradient(1.2px 1.2px at 81% 28%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 87% 16%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 93% 6%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 97% 27%, #cfd7e2, transparent),
-    radial-gradient(1.2px 1.2px at 3% 33%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 11% 4%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 20% 36%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 34% 34%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 42% 10%, #d7dee8, transparent),
-    radial-gradient(1.3px 1.3px at 55% 19%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 66% 33%, #ffffff, transparent),
-    radial-gradient(1.4px 1.4px at 72% 17%, #ffffff, transparent),
-    radial-gradient(1.2px 1.2px at 84% 3%, #ffffff, transparent),
-    radial-gradient(1.3px 1.3px at 90% 35%, #e6ecf5, transparent);
+  background: url(/zodk-estrellas.png) repeat;
+  background-size: 320px 320px;
+  background-position: 160px 90px;
+  image-rendering: pixelated;
 }
 
-html.dark .hero-stars { opacity: 1; }
+html.dark .hero-stars { opacity: 0.9; }
 html.dark .hero-stars::after { display: block; }
 
 .hero-sparkle {
