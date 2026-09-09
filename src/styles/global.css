@@ -165,9 +165,11 @@ article .tiktok a {
   isolation: isolate;
 }
 
-/* El planeta es un sprite PNG de 14 fotogramas en horizontal. Se anima moviendo
+/* El planeta es un sprite PNG de 28 fotogramas en horizontal. Se anima moviendo
    background-position a saltos: un recorte de bitmap, barato en cualquier
-   navegador (el SVG vectorial animado calentaba la CPU en Firefox). */
+   navegador (el SVG vectorial animado calentaba la CPU en Firefox). Si cambias
+   FRAMES en generar-planeta-hero.py, ajusta aquí background-size (FRAMES × 100%)
+   y steps(FRAMES). */
 .hero-planet {
   position: absolute;
   left: 50%;
@@ -177,11 +179,11 @@ article .tiktok a {
   transform: translateX(-50%);
   background-image: url(/zodk-planeta-sprite.png);
   background-repeat: no-repeat;
-  background-size: 1400% 100%;
+  background-size: 2800% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
-  animation: hero-spin 52s steps(14, jump-none) infinite;
+  animation: hero-spin 60s steps(28, jump-none) infinite;
 }
 
 html.dark .hero-planet {
@@ -337,22 +339,46 @@ html.dark .hero-stars::after { display: block; }
   50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
 }
 
-/* Cabecera transparente sobre el hero, hasta que se hace scroll */
+/* Cabecera de la portada, tres estados:
+   1. arriba del todo (.at-top, sin .scrolled) -> mínima: "notas / eventos /
+      tema", transparente, sin logo.
+   2. bajando por el planeta (sin .at-top, sin .scrolled) -> escondida arriba.
+   3. en el contenido del blog (.scrolled) -> sólida, con el logo bajando a su
+      sitio; entra deslizándose desde arriba. */
+html.home header {
+  transition: transform 0.3s ease, opacity 0.3s ease,
+    background-color 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+html.home header a[href="/"] {
+  overflow: hidden;
+  max-height: 6.5rem;
+  transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
+}
+
+/* Estados 1 y 2: transparente y sin logo */
 html.home:not(.scrolled) header {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-/* Sobre el hero el logo va oculto (el planeta hace de logo). Se saca del flujo
-   con display:none y la nav se pega a la derecha, para que quepa sin apuros en
-   móvil. Al hacer scroll vuelve todo a la normalidad. */
 html.home:not(.scrolled) header a[href="/"] {
-  display: none;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  pointer-events: none;
 }
 
 html.home:not(.scrolled) header > div > div {
-  justify-content: flex-end;
+  justify-content: flex-end;   /* sin logo, la nav a la derecha (cabe en móvil) */
+}
+
+/* Estado 2: escondida mientras bajas por el hero */
+html.home:not(.at-top):not(.scrolled) header {
+  transform: translateY(-115%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 html.home:not(.scrolled) header a,
@@ -366,8 +392,10 @@ html.home:not(.scrolled) header button:hover {
   color: #ffffff;
 }
 
-/* Con hero, el contenido no necesita los 10rem de aire de <main> */
-html.home main { padding-top: 3.5rem; }
+/* Hueco arriba de <main>: en la portada el contenido empieza tras el hero, pero
+   la cabecera con logo (~140 px) ya está activa al llegar aquí, así que hay que
+   dejar sitio para que no lo tape. */
+html.home main { padding-top: 9.5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-planet,
