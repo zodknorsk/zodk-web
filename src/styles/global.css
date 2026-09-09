@@ -148,3 +148,227 @@ article .tiktok p {
 article .tiktok a {
   @apply block mt-3 text-sm no-underline opacity-75;
 }
+
+/* --- Portada: el hero del planeta ------------------------------------------
+   Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
+   sprite de día (Tierra iluminada, ciudades como puntos) en modo claro y
+   sprite de noche (Tierra a oscuras, ciudades encendidas por densidad) en modo
+   oscuro. Los dos sprites y los drones los genera
+   logo-files/generar-planeta-hero.py. */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #05060a;
+  isolation: isolate;
+}
+
+/* El planeta es un sprite PNG de 14 fotogramas en horizontal. Se anima moviendo
+   background-position a saltos: un recorte de bitmap, barato en cualquier
+   navegador (el SVG vectorial animado calentaba la CPU en Firefox). */
+.hero-planet {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: min(1900px, 122vw);
+  aspect-ratio: 164 / 161;
+  transform: translateX(-50%);
+  background-image: url(/zodk-planeta-sprite.png);
+  background-repeat: no-repeat;
+  background-size: 1400% 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 0;
+  animation: hero-spin 52s steps(14, jump-none) infinite;
+}
+
+html.dark .hero-planet {
+  background-image: url(/zodk-planeta-noche.png);
+}
+
+@keyframes hero-spin {
+  from { background-position-x: 0%; }
+  to { background-position-x: 100%; }
+}
+
+.hero-dron {
+  position: absolute;
+  left: 46%;
+  top: 30%;
+  width: clamp(46px, 4.6vw, 74px);
+  aspect-ratio: 96 / 56;
+  transform: translateX(-50%);
+  background: url(/zodk-dron.svg) center / contain no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 1;
+  animation: hero-dron 6s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+html.dark .hero-dron {
+  background-image: url(/zodk-dron-noche.svg);
+}
+
+@keyframes hero-dron {
+  to { transform: translate(-50%, clamp(30px, 4vw, 52px)); }
+}
+
+@media (max-width: 640px) {
+  .hero-planet { top: 15%; width: 190vw; }
+  .hero-dron { top: 26%; }
+}
+
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 17%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 27% 9%, #d7dee8, transparent),
+    radial-gradient(2px 2px at 43% 21%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 57% 6%, #ffffff, transparent),
+    radial-gradient(1.6px 1.6px at 71% 14%, #e6ecf5, transparent),
+    radial-gradient(2px 2px at 84% 10%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 91% 24%, #ffffff, transparent),
+    radial-gradient(1.6px 1.6px at 6% 30%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 35% 3%, #ffffff, transparent),
+    radial-gradient(1.6px 1.6px at 64% 27%, #d7dee8, transparent),
+    radial-gradient(1.4px 1.4px at 49% 13%, #ffffff, transparent),
+    radial-gradient(1.8px 1.8px at 78% 4%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 18% 38%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 95% 35%, #ffffff, transparent),
+    radial-gradient(1.6px 1.6px at 4% 8%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 40% 32%, #cfd7e2, transparent),
+    radial-gradient(1.3px 1.3px at 21% 5%, #ffffff, transparent),
+    radial-gradient(1.5px 1.5px at 33% 19%, #e6ecf5, transparent),
+    radial-gradient(1.2px 1.2px at 52% 27%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 67% 8%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 74% 30%, #d7dee8, transparent),
+    radial-gradient(1.6px 1.6px at 88% 33%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 9% 22%, #ffffff, transparent),
+    radial-gradient(1.5px 1.5px at 46% 4%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 30% 36%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 60% 18%, #cfd7e2, transparent),
+    radial-gradient(1.2px 1.2px at 82% 22%, #ffffff, transparent),
+    radial-gradient(1.5px 1.5px at 15% 11%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 99% 14%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 55% 35%, #e6ecf5, transparent);
+  opacity: 0.85;
+}
+
+/* Modo oscuro: campo de estrellas más denso (segunda capa) */
+.hero-stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(1.3px 1.3px at 7% 13%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 16% 25%, #d7dee8, transparent),
+    radial-gradient(1.4px 1.4px at 24% 6%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 29% 30%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 38% 15%, #e6ecf5, transparent),
+    radial-gradient(1.2px 1.2px at 45% 26%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 51% 7%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 58% 31%, #cfd7e2, transparent),
+    radial-gradient(1.3px 1.3px at 63% 12%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 69% 24%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 76% 9%, #e6ecf5, transparent),
+    radial-gradient(1.2px 1.2px at 81% 28%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 87% 16%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 93% 6%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 97% 27%, #cfd7e2, transparent),
+    radial-gradient(1.2px 1.2px at 3% 33%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 11% 4%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 20% 36%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 34% 34%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 42% 10%, #d7dee8, transparent),
+    radial-gradient(1.3px 1.3px at 55% 19%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 66% 33%, #ffffff, transparent),
+    radial-gradient(1.4px 1.4px at 72% 17%, #ffffff, transparent),
+    radial-gradient(1.2px 1.2px at 84% 3%, #ffffff, transparent),
+    radial-gradient(1.3px 1.3px at 90% 35%, #e6ecf5, transparent);
+}
+
+html.dark .hero-stars { opacity: 1; }
+html.dark .hero-stars::after { display: block; }
+
+.hero-sparkle {
+  position: absolute;
+  left: 82%;
+  top: 24%;
+  width: 14px;
+  height: 14px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+  background:
+    linear-gradient(#fff, #fff) center / 2px 100% no-repeat,
+    linear-gradient(#fff, #fff) center / 100% 2px no-repeat;
+  animation: hero-twinkle 4s ease-in-out infinite;
+}
+
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.65); }
+  50% { opacity: 0.9; transform: scale(1); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  z-index: 1;
+  border-right: 2px solid #7c8794;
+  border-bottom: 2px solid #7c8794;
+  transform: rotate(45deg);
+  animation: hero-bob 2s ease-in-out infinite;
+}
+
+@keyframes hero-bob {
+  0%, 100% { transform: rotate(45deg) translate(-2px, -2px); opacity: 0.35; }
+  50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
+}
+
+/* Cabecera transparente sobre el hero, hasta que se hace scroll */
+html.home:not(.scrolled) header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html.home header a[href="/"] { transition: opacity 0.4s ease; }
+
+html.home:not(.scrolled) header a[href="/"] {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  overflow: hidden;
+}
+
+html.home:not(.scrolled) header a,
+html.home:not(.scrolled) header button,
+html.home:not(.scrolled) header span {
+  color: #cfd6de;
+}
+
+html.home:not(.scrolled) header a:hover,
+html.home:not(.scrolled) header button:hover {
+  color: #ffffff;
+}
+
+/* Con hero, el contenido no necesita los 10rem de aire de <main> */
+html.home main { padding-top: 3.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-planet,
+  .hero-dron,
+  .hero-sparkle,
+  .hero-scroll { animation: none; }
+}

@@ -7,18 +7,23 @@ import { SITE } from "@consts";
 type Props = {
   title: string;
   description: string;
+  // "hero" activa la portada a pantalla completa: se pinta el slot "hero"
+  // a sangre entre la cabecera y <main>, y <html> lleva la clase "home"
+  // (para que la cabecera sea transparente sobre el planeta hasta el scroll).
+  hero?: boolean;
 };
 
-const { title, description } = Astro.props;
+const { title, description, hero = false } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class={hero ? "home" : undefined}>
   <head>
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
   </head>
   <body>
     <Header />
+    {hero && <slot name="hero" />}
     <main>
       <slot />
     </main>

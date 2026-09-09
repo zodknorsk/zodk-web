@@ -20,3 +20,12 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# planeta del hero: datos de origen y copias intermedias (regenerables, ver
+# logo-files/HERO-WIP.md). Lo que sirve la web vive en public/.
+logo-files/ne_land.json
+logo-files/pp10.json
+logo-files/zodk-planeta-sprite.png
+logo-files/zodk-planeta-noche.png
+logo-files/zodk-dron.svg
+logo-files/zodk-dron-noche.svg
