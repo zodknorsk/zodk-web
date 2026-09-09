@@ -97,7 +97,7 @@ const socialImageURL = new URL(image, Astro.site);
   function init() {
     preloadTheme();
     initHeader();
-    initDron();
+    initCraft();
     animate();
 
     const backToTop = document.getElementById("back-to-top");
@@ -167,15 +167,22 @@ const socialImageURL = new URL(image, Astro.site);
     }
   }
 
-  // Ficha del dron: al pasar el raton, el dron se para (CSS :hover) y sale la
-  // ficha. Aqui solo se decide, una vez, si sale a la izquierda o a la derecha
-  // segun el sitio que quede; no hay bucle ni seguimiento.
-  function initDron() {
-    const dron = document.querySelector(".hero-dron");
-    if (!dron || !window.matchMedia("(hover: hover)").matches) return;
-    dron.addEventListener("mouseenter", () => {
-      const r = dron.getBoundingClientRect();
-      dron.classList.toggle("dron-izq", r.right + 300 > window.innerWidth);
+  // Fichas de las naves: al pasar el raton, la nave se para (CSS :hover) y sale
+  // la ficha. Aqui solo se decide, una vez al entrar, donde cae el recuadro para
+  // que no se salga de pantalla; no hay bucle ni seguimiento.
+  function initCraft() {
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    document.querySelectorAll(".hero-craft").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        const r = el.getBoundingClientRect();
+        if (el.classList.contains("hero-craft--sweep")) {
+          el.classList.toggle("flip-x", r.right + 360 > window.innerWidth);
+        } else {
+          const cx = r.left + r.width / 2;
+          el.classList.toggle("edge-l", cx < 160);
+          el.classList.toggle("edge-r", cx > window.innerWidth - 160);
+        }
+      });
     });
   }
 

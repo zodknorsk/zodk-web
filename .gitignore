@@ -30,3 +30,10 @@ logo-files/zodk-planeta-noche.png
 logo-files/zodk-dron.svg
 logo-files/zodk-dron-noche.svg
 logo-files/zodk-estrellas.png
+
+# aeronaves en boceto (aún no aprobadas, generar-aeronaves.py las re-crea).
+# Se quitan de aquí y se commitean cuando el usuario dé el visto bueno.
+public/zodk-tb3.svg
+public/zodk-tb3-noche.svg
+public/zodk-e2-hawkeye.svg
+public/zodk-e2-hawkeye-noche.svg

@@ -9,6 +9,7 @@ import ArrowCard from "@components/ArrowCard.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
 import { SITE, HOME, SOCIALS } from "@consts";
+import { AERONAVES } from "@data/aeronaves";
 
 const notas = (await getCollection("notas"))
   .filter((nota) => !nota.data.draft)
@@ -47,23 +48,37 @@ const eventos = todosEventos
         <span>Historia</span> · <span>Inteligencia</span> · <span>OSINT</span>
       </p>
     </div>
-    <div class="hero-dron" aria-hidden="true">
-      <div class="dron-dossier">
-        <span class="dron-linea"></span>
-        <div class="dron-specs">
-          <div class="dron-specs-titulo">Bayraktar TB3</div>
-          <dl>
-            <dt>Tipo</dt><dd>UCAV embarcado</dd>
-            <dt>Fabricante</dt><dd>Baykar</dd>
-            <dt>Origen</dt><dd>Turquía <span class="dron-flag">🇹🇷</span></dd>
-            <dt>Primer vuelo</dt><dd>2023</dd>
-            <dt>Envergadura</dt><dd>14,2 m</dd>
-            <dt>MTOW</dt><dd>1.450 kg</dd>
-            <dt>Autonomía</dt><dd>~32 h</dd>
-          </dl>
+    {
+      AERONAVES.map((a) => (
+        <div
+          class:list={["hero-craft", `hero-craft--${a.vuelo}`]}
+          data-craft={a.id}
+          aria-hidden="true"
+          style={`aspect-ratio:${a.ratio};--sprite:url(${a.sprite});--sprite-noche:url(${a.spriteNoche})`}
+        >
+          <div class="craft-dossier">
+            <span class="craft-linea" />
+            <div class="craft-specs">
+              <div class="craft-specs-titulo">{a.nombre}</div>
+              <div class="craft-clase">{a.clase}</div>
+              <dl>
+                {a.specs.map(([k, v]) => (
+                  <Fragment>
+                    <dt>{k}</dt>
+                    <dd>
+                      {v}
+                      {k === "Origen" && a.bandera && (
+                        <span class="craft-flag">{a.bandera}</span>
+                      )}
+                    </dd>
+                  </Fragment>
+                ))}
+              </dl>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ))
+    }
     <span class="hero-scroll" aria-hidden="true"></span>
   </section>
 
