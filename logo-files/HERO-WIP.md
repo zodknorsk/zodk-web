@@ -6,7 +6,7 @@ a noche con el botón de tema**, igual que el logo. Sin texto de marca.
 
 ## Cómo funciona
 
-El planeta es un **sprite PNG** de 14 fotogramas en horizontal (1 px = 1 celda).
+El planeta es un **sprite PNG** de 28 fotogramas en horizontal (1 px = 1 celda).
 La web lo anima moviendo `background-position` a saltos (`steps()`): un recorte
 de bitmap, barato en cualquier navegador. Se probó un SVG vectorial animado y
 calentaba la CPU en Firefox/Zen.

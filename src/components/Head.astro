@@ -88,7 +88,7 @@ const socialImageURL = new URL(image, Astro.site);
 <script is:inline>
   function init() {
     preloadTheme();
-    onScroll();
+    initHeader();
     animate();
 
     const backToTop = document.getElementById("back-to-top");
@@ -112,7 +112,39 @@ const socialImageURL = new URL(image, Astro.site);
       }
     );
 
-    document.addEventListener("scroll", onScroll);
+  }
+
+  // La cabecera "sólida" (con logo) se activa con la clase "scrolled".
+  // En la portada no salta al primer pixel: espera a que el contenido del blog
+  // llegue arriba, usando un centinela invisible en el limite hero/contenido.
+  // En el resto de paginas (sin centinela) se activa al primer scroll.
+  function initHeader() {
+    const sentinel = document.getElementById("hero-sentinel");
+    if (sentinel && "IntersectionObserver" in window) {
+      // "scrolled" = cabecera solida con logo. Se activa al bajar cuando el
+      // limite hero/contenido cruza el 48% del viewport, y se retira al subir en
+      // ese mismo punto (simetrico). El rootMargin define esa linea: mas
+      // negativo -> linea mas arriba -> la cabecera aparece mas tarde.
+      new IntersectionObserver(
+        (entries) => {
+          const e = entries[0];
+          document.documentElement.classList.toggle(
+            "scrolled",
+            e.isIntersecting || e.boundingClientRect.top < 1
+          );
+        },
+        { rootMargin: "0px 0px -52% 0px", threshold: 0 }
+      ).observe(sentinel);
+      // "at-top" = pegado arriba del todo. Solo entonces se ve la nav minima;
+      // en cuanto empiezas a bajar, desaparece hasta que aparece la solida.
+      const atTop = () =>
+        document.documentElement.classList.toggle("at-top", window.scrollY < 24);
+      atTop();
+      document.addEventListener("scroll", atTop, { passive: true });
+    } else {
+      onScroll();
+      document.addEventListener("scroll", onScroll);
+    }
   }
 
   function animate() {

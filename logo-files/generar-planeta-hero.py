@@ -13,7 +13,7 @@ Dos versiones, como el logo día/noche:
     los países según densidad de población (luces.py) y las grandes ciudades
     como focos. La web usa esta con el tema oscuro.
 
-Sale como PNG rasterizado (14 fotogramas en fila, 1 px = 1 celda); la web lo
+Sale como PNG rasterizado (FRAMES fotogramas en fila, 1 px = 1 celda); la web lo
 anima con `background-position` a saltos: un "pegado" de bitmap, barato en
 cualquier navegador. El dron va aparte en `zodk-dron[-noche].svg`.
 
@@ -70,7 +70,7 @@ COLS    = 164          # ancho del fotograma, en px (1 px = 1 celda)
 RADIUS  = 84.0         # radio de la esfera, en celdas
 CDOWN   = 0.92         # fracción del radio que se dibuja hacia abajo
 TILT    = 20.0         # latitud del sub-observador (0 = ecuador de frente)
-FRAMES  = 14           # fotogramas de la rotación
+FRAMES  = 28           # fotogramas de la rotación (giro más fluido, PNG algo mayor)
 MAPRES  = 4            # submuestreo del mapa (4 -> ~1 grado)
 SHADES  = 16           # escalones de brillo del día
 
