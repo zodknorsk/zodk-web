@@ -11,7 +11,8 @@ import BackToPrev from "@components/BackToPrev.astro";
 import EventoNav from "@components/EventoNav.astro";
 
 export async function getStaticPaths() {
-  const entradas = await getCollection("eventos");
+  // Los borradores no generan página (igual que en notas).
+  const entradas = (await getCollection("eventos")).filter((e) => !e.data.draft);
   return entradas.map((entrada) => ({
     params: { slug: entrada.slug },
     props: entrada,
@@ -23,7 +24,7 @@ const entrada = Astro.props;
 const { Content, headings } = await entrada.render();
 
 const hermanas = (await getCollection("eventos")).filter(
-  (e) => e.data.evento === entrada.data.evento,
+  (e) => e.data.evento === entrada.data.evento && !e.data.draft,
 );
 const indiceUrl = `/eventos/${entrada.data.evento}`;
 const semanas = hermanas

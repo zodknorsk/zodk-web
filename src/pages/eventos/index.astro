@@ -15,7 +15,10 @@ const eventos = todos
   .map((ev) => ({
     ev,
     semanas: todos.filter(
-      (x) => x.data.evento === ev.data.evento && x.data.kind === "semana",
+      (x) =>
+        x.data.evento === ev.data.evento &&
+        x.data.kind === "semana" &&
+        !x.data.draft,
     ).length,
   }));
 ---

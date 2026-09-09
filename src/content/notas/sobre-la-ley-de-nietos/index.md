@@ -2,7 +2,7 @@
 title: Sobre la Ley de nietos
 date: '2026-09-03'
 description: >-
-  Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la
+  Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la
   Ley de Memoria Democrática (LMD) aprobada en España en octubre de 2022.…
 updated: '2026-09-08'
 tags:
@@ -12,7 +12,7 @@ tags:
 
 ![](./pasted-image-20260907210847.png)
 
-Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
+Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
 
 La Ley de Memoria Democrática fue una iniciativa del Gobierno de Pedro Sánchez, en coalición con Unidas Podemos, aprobada en la legislatura anterior, entrando en vigor en octubre de 2022, y salió adelante sin un consenso amplio, incluyendo [**varias concesiones a EH Bildu**](https://www.elindependiente.com/espana/2022/06/28/bildu-facilita-al-gobierno-sacar-adelante-la-ley-de-memoria-democratica/), gracias a cuyos votos se aprobó. Es decir: sin el apoyo del PP ni de Vox, y dependiendo de los votos de Bildu para sacarla adelante.
 

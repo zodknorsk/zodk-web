@@ -30,6 +30,20 @@ header {
   @apply backdrop-blur-sm saturate-200;
 }
 
+/* Logo del header. Imagen de fondo (ver Header.astro): solo baja el SVG del
+   tema activo. */
+.logo-home {
+  display: block;
+  width: 78px;
+  height: 100px;
+  background: url(/zodk-logo-animado.svg) center / contain no-repeat;
+  image-rendering: pixelated;
+}
+
+html.dark .logo-home {
+  background-image: url(/zodk-logo-nocturno.svg);
+}
+
 main {
   /* pt mayor que pb: el header es fixed y con el logo a 78×100 mide ~140 px,
      así el contenido no queda pisado por la cabecera. */
