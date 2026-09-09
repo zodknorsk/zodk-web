@@ -405,9 +405,9 @@ html.dark .hero-dron {
   position: absolute;
   top: 50%;
   left: 100%;
-  width: 54px;
+  width: 92px;
   height: 1px;
-  background: linear-gradient(90deg, #e6c078, rgba(230, 192, 120, 0.15));
+  background: rgba(230, 192, 120, 0.7);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 0.24s ease;
@@ -418,7 +418,7 @@ html.dark .hero-dron {
 .dron-specs {
   position: absolute;
   top: 50%;
-  left: calc(100% + 54px);
+  left: calc(100% + 92px);
   width: 15rem;
   padding: 0.7rem 0.85rem;
   transform: translateY(-50%) translateX(-6px);
@@ -471,12 +471,11 @@ html.dark .hero-dron {
   left: auto;
   right: 100%;
   transform-origin: right center;
-  background: linear-gradient(270deg, #e6c078, rgba(230, 192, 120, 0.15));
 }
 
 .hero-dron.dron-izq .dron-specs {
   left: auto;
-  right: calc(100% + 54px);
+  right: calc(100% + 92px);
   transform: translateY(-50%) translateX(6px);
 }
 
