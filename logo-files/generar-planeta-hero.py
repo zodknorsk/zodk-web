@@ -28,6 +28,16 @@ from mapa_tierra import GRID_W, GRID_H, ROWS
 from luces import LW, LH, ROWS as LUZ_ROWS
 from png8 import write_indexed
 
+
+def smooth(e0, e1, x):
+    t = max(0.0, min(1.0, (x - e0) / (e1 - e0)))
+    return t * t * (3.0 - 2.0 * t)
+
+
+def mix(a, b, t):
+    t = max(0.0, min(1.0, t))
+    return tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
 # --------------------------------------------------------------- paletas
 OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
 OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
@@ -38,6 +48,7 @@ SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
 COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
+CLOUD_COL  = (0xf1, 0xf4, 0xf8)     # nubes (día)
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
@@ -218,8 +229,9 @@ for r in range(MH):
         else:
             SEADIST[r][c] = DMAX
 
-# 2 pasadas de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas.
-for _ in range(2):
+# 1 pasada de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas
+# sin llegar a aplanar las regiones.
+for _ in range(1):
     _new = [bytearray(BIOME[r]) for r in range(MH)]
     for r in range(1, MH - 1):
         for c in range(MW):
@@ -261,6 +273,60 @@ _BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
 def _dither(sx, sy):
     return (_BAYER[sy & 3][sx & 3] + 0.5) / 16.0
 
+
+# --------------------------------------------------- capa de nubes (fBm en lat/lon)
+# Campo periódico en longitud. Cobertura en bandas: mucho en el ecuador (ITCZ) y
+# en latitudes medias (frentes), poco en el subtrópico (los desiertos). Las nubes
+# giran solidarias con el planeta. Solo se pintan de día.
+CLOUD_W, CLOUD_H = 360, 180
+random.seed(717)
+
+
+def _octava(w):
+    h = w // 2 + 1
+    g = [[random.random() for _ in range(w)] for _ in range(h)]
+    return g, w, h
+
+
+def _noise(g, gw, gh, u, v):
+    x, y = u * gw, v * (gh - 1)
+    x0, y0 = int(x) % gw, min(gh - 2, int(y))
+    tx, ty = x - int(x), y - y0
+    a = g[y0][x0] * (1 - tx) + g[y0][(x0 + 1) % gw] * tx
+    b = g[y0 + 1][x0] * (1 - tx) + g[y0 + 1][(x0 + 1) % gw] * tx
+    return a * (1 - ty) + b * ty
+
+
+_OCT = [(_octava(w), amp) for w, amp in ((9, 0.50), (20, 0.30), (44, 0.14), (92, 0.06))]
+
+CLOUD = [bytearray(CLOUD_W) for _ in range(CLOUD_H)]
+for _r in range(CLOUD_H):
+    _lat = 90.0 - (_r + 0.5) / CLOUD_H * 180.0
+    _la = abs(_lat)
+    _band = (0.60 * math.exp(-(_la / 13.0) ** 2)          # ITCZ
+             + 0.52 * math.exp(-((_la - 52.0) / 20.0) ** 2)  # frentes
+             + 0.03)
+    _v = (_r + 0.5) / CLOUD_H
+    for _c in range(CLOUD_W):
+        _u = (_c + 0.5) / CLOUD_W
+        _f = 0.0
+        for (g, gw, gh), amp in _OCT:
+            _f += amp * _noise(g, gw, gh, _u, _v)
+        _cov = smooth(0.62, 0.80, _f * 0.7 + _band * 0.5)
+        CLOUD[_r][_c] = int(_cov * 255)
+
+
+def cloud_at(lat, lon):
+    v = (90.0 - lat) / 180.0
+    v = 0.0 if v < 0 else 0.9999 if v > 1 else v
+    u = ((lon + 180.0) / 360.0) % 1.0
+    x, y = u * CLOUD_W, v * (CLOUD_H - 1)
+    x0, y0 = int(x) % CLOUD_W, min(CLOUD_H - 2, int(y))
+    tx, ty = x - int(x), y - y0
+    a = CLOUD[y0][x0] * (1 - tx) + CLOUD[y0][(x0 + 1) % CLOUD_W] * tx
+    b = CLOUD[y0 + 1][x0] * (1 - tx) + CLOUD[y0 + 1][(x0 + 1) % CLOUD_W] * tx
+    return (a * (1 - ty) + b * ty) / 255.0
+
 # ------------------------------------------------- rejilla de densidad de luces
 LUZ = [bytearray(LW) for _ in range(LH)]
 for r, spans in enumerate(LUZ_ROWS):
@@ -278,16 +344,6 @@ def luz_at(lat, lon):
 
 
 # ------------------------------------------------------------------ color
-def smooth(e0, e1, x):
-    t = max(0.0, min(1.0, (x - e0) / (e1 - e0)))
-    return t * t * (3.0 - 2.0 * t)
-
-
-def mix(a, b, t):
-    t = max(0.0, min(1.0, t))
-    return tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3))
-
-
 PAL = [(0, 0, 0, 0)]      # 0 = espacio transparente
 _idx = {}
 
@@ -359,6 +415,8 @@ def cell_index(sx, sy, lon0, night):
             surf = mix(surf, COAST_COL, 0.5)
         surf_n = N_LAND
 
+    cl = cloud_at(lat, lon) * (1.0 - smooth(0.90, 1.0, dc))   # se difumina en el limbo
+
     if night:
         col = mix(SPACE, surf_n, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
         if terrain == 0 and SEADIST[gr][gc] <= 2:
@@ -369,6 +427,8 @@ def cell_index(sx, sy, lon0, night):
                 lv = 0
             if lv:
                 col = GOLD[lv - 1]
+        if cl > 0.4:                        # sombra de nube tenue sobre las luces
+            col = mix(col, (0x10, 0x18, 0x24), min(0.45, (cl - 0.4) * 0.7))
         if dc > 0.94:
             col = mix(col, N_ATMO, 0.35 * smooth(0.94, 1.0, dc))
         return color_index(col)
@@ -384,6 +444,10 @@ def cell_index(sx, sy, lon0, night):
     q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
     q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q
     col = mix(SPACE, surf, q)
+    if cl > 0.03:                          # nubes: blancas, iluminadas por el sol
+        cloud_lit = mix(SPACE, CLOUD_COL, min(1.0, 0.32 + bright * 0.8))
+        a = math.floor(cl * 5 + (dth - 0.5) * 0.85 + 0.5) / 5
+        col = mix(col, cloud_lit, max(0.0, min(0.88, a)))   # nunca del todo opacas
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
         col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4))
