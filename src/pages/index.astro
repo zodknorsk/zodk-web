@@ -11,20 +11,14 @@ import Link from "@components/Link.astro";
 import { SITE, HOME, SOCIALS } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 
-// El hero: las naves de trayectoria propia (fijo / orbita) salen siempre; las
-// de vuelo "sweep" entran en una ROTACION: 2 volando a la vez (sin solaparse) y,
-// cuando una sale de pantalla, el JS mete la siguiente de la lista. Con la web
-// sin JS se ven las 2 primeras dando pasadas en bucle.
-const rotativas = AERONAVES.filter((a) => a.vuelo === "sweep");
-const fijas = AERONAVES.filter((a) => a.vuelo !== "sweep");
-const SLOTS = Math.min(2, rotativas.length);
-const naves = [
-  ...fijas.map((a) => ({ a, slot: null as number | null })),
-  ...Array.from({ length: SLOTS }, (_, i) => ({
-    a: rotativas[i % rotativas.length],
-    slot: i,
-  })),
-];
+// El hero muestra SIEMPRE 2 objetos de AERONAVES a la vez (drones, aviones,
+// satélites: toda la lista entra en la rotación). Cada uno hace su propia
+// trayectoria (sweep / orbita / fijo). Cada cierto rato uno se desvanece y en
+// su hueco aparece —con un fundido, sin recorrido de entrada— el siguiente de
+// la lista que no esté ya en pantalla. Lo lleva initRotacion() en Head.astro;
+// sin JS se ven los 2 primeros fijos. Ver src/data/aeronaves.ts.
+const SLOTS = Math.min(2, AERONAVES.length);
+const slotsIniciales = Array.from({ length: SLOTS }, (_, i) => AERONAVES[i]);
 
 const notas = (await getCollection("notas"))
   .filter((nota) => !nota.data.draft)
@@ -64,7 +58,7 @@ const eventos = todosEventos
       </p>
     </div>
     {
-      naves.map(({ a, slot }) => (
+      slotsIniciales.map((a, slot) => (
         <div
           class:list={["hero-craft", `hero-craft--${a.vuelo}`]}
           data-craft={a.id}
@@ -95,11 +89,11 @@ const eventos = todosEventos
         </div>
       ))
     }
-    {rotativas.length > SLOTS && (
+    {AERONAVES.length > SLOTS && (
       <script
         type="application/json"
-        id="rotativas-data"
-        set:html={JSON.stringify(rotativas)}
+        id="aeronaves-data"
+        set:html={JSON.stringify(AERONAVES)}
       />
     )}
     <span class="hero-scroll" aria-hidden="true"></span>

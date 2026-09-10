@@ -187,43 +187,74 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-  // Rotacion de drones "sweep": hay 2 slots volando; cada vez que uno completa
-  // su pasada (sale de pantalla) se le cambia el sprite y la ficha por los del
-  // siguiente dron de la lista. Con <=2 drones no hace falta (no hay <script>).
+  // Rotacion del hero: 2 slots muestran siempre 2 naves de AERONAVES, cada una
+  // con su trayectoria. Cada 8 s uno de los slots (alternando: cada slot se
+  // releva cada 16 s) se desvanece, se le cambia sprite + trayectoria + ficha
+  // por la siguiente nave de la lista que NO este ya en el otro slot, y se
+  // vuelve a mostrar con un fundido. Sin animacion (reduced-motion) no rota.
   function initRotacion() {
-    const data = document.getElementById("rotativas-data");
+    const data = document.getElementById("aeronaves-data");
     if (!data) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let pool;
-    try { pool = JSON.parse(data.textContent); } catch { return; }
+    try { pool = JSON.parse(data.textContent); } catch (e) { return; }
     if (!Array.isArray(pool) || pool.length < 3) return;
 
-    const slots = document.querySelectorAll(".hero-craft--sweep[data-slot]");
-    slots.forEach((el) => {
-      if (el.dataset.rotInit) return;
-      el.dataset.rotInit = "1";
-      let pos = Number(el.dataset.slot);
-      el.addEventListener("animationiteration", () => {
-        pos = (pos + slots.length) % pool.length;
-        const a = pool[pos];
-        el.dataset.craft = a.id;
-        el.style.aspectRatio = a.ratio;
-        el.style.setProperty("--sprite", "url(" + a.sprite + ")");
-        el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
-        el.classList.remove("flip-x");
-        const specs = el.querySelector(".craft-specs");
-        specs.querySelector(".craft-specs-titulo").textContent = a.nombre;
-        specs.querySelector(".craft-clase").textContent = a.clase;
-        specs.querySelector("dl").innerHTML = a.specs
-          .map(([k, v]) => {
-            const flag =
-              k === "Origen" && a.bandera
-                ? ' <span class="craft-flag">' + a.bandera + "</span>"
-                : "";
-            return "<dt>" + k + "</dt><dd>" + v + flag + "</dd>";
-          })
-          .join("");
-      });
-    });
+    const slots = [...document.querySelectorAll(".hero-craft[data-slot]")];
+    if (slots.length < 2) return;
+    // Fase de entrada: la nave aparece ya dentro de pantalla (no desde fuera), y
+    // el slot 1 va medio periodo por detras para que 2 naves con la misma
+    // trayectoria no se solapen.
+    const PERIODO = { sweep: 8, orbita: 19, fijo: 16 };
+    const FASE0 = { sweep: 2, orbita: 7, fijo: 4 };
+    const faseDelay = (vuelo, s) =>
+      "-" + ((FASE0[vuelo] || 0) + (s === 1 ? (PERIODO[vuelo] || 0) / 2 : 0)) + "s";
+    const idx = slots.map((el) => Number(el.dataset.slot)); // [0, 1]
+
+    function pinta(el, a) {
+      const s = Number(el.dataset.slot);
+      el.classList.remove(
+        "hero-craft--sweep", "hero-craft--orbita", "hero-craft--fijo",
+        "flip-x", "edge-l", "edge-r"
+      );
+      el.classList.add("hero-craft--" + a.vuelo);
+      el.dataset.craft = a.id;
+      el.style.aspectRatio = a.ratio;
+      el.style.setProperty("--sprite", "url(" + a.sprite + ")");
+      el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
+      el.style.animation = "none";
+      void el.offsetWidth; // reinicia la animacion de la trayectoria
+      el.style.animation = "";
+      el.style.animationDelay = faseDelay(a.vuelo, s);
+      const specs = el.querySelector(".craft-specs");
+      specs.querySelector(".craft-specs-titulo").textContent = a.nombre;
+      specs.querySelector(".craft-clase").textContent = a.clase;
+      specs.querySelector("dl").innerHTML = a.specs
+        .map(([k, v]) => {
+          const flag =
+            k === "Origen" && a.bandera
+              ? " <span class=\"craft-flag\">" + a.bandera + "</span>"
+              : "";
+          return "<dt>" + k + "</dt><dd>" + v + flag + "</dd>";
+        })
+        .join("");
+    }
+
+    let turno = 0; // que slot rota la proxima vez
+    if (window.__rotId) clearInterval(window.__rotId);
+    window.__rotId = setInterval(() => {
+      const el = slots[turno];
+      const otro = idx[turno ^ 1];
+      let next = (idx[turno] + 1) % pool.length;
+      if (next === otro) next = (next + 1) % pool.length;
+      idx[turno] = next;
+      el.classList.add("rot-oculta");
+      setTimeout(() => {
+        pinta(el, pool[next]);
+        el.classList.remove("rot-oculta");
+      }, 750);
+      turno ^= 1;
+    }, 8000);
   }
 
   function animate() {

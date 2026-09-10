@@ -4,14 +4,14 @@
 // ficha que sale al pasar el ratón).
 //
 // Para añadir una nave: dibújala en generar-aeronaves.py, copia el SVG a
-// public/, y añade una entrada aquí.
+// public/, y añade una entrada aquí. Se suma sola a la rotación del hero.
 //
-// Cómo salen en el hero según "vuelo":
-//   - "fijo" / "orbita": SIEMPRE en pantalla, cada una con su trayectoria.
-//   - "sweep": entran en una ROTACIÓN. Vuelan 2 a la vez (sin solaparse) dando
-//     pasadas diagonales; cuando una sale de pantalla, el JS mete el siguiente
-//     "sweep" de la lista, y así en bucle. Añade drones con vuelo:"sweep" y se
-//     suman solos a la rotación (ver index.astro + initRotacion en Head.astro).
+// El hero muestra SIEMPRE 2 de esta lista a la vez, cada una con su trayectoria
+// ("vuelo"): "sweep" barrido diagonal, "orbita" pasada de lado a lado, "fijo"
+// quieta con una elipse pequeña. Cada 8 s un hueco se releva: la nave se
+// desvanece y aparece (con fundido, sin recorrido de entrada) la siguiente de
+// la lista que no esté ya en pantalla. Lo lleva initRotacion() en Head.astro;
+// sin JS se ven las 2 primeras de la lista, quietas.
 //
 // Excepción de dibujo: el dron (TB3) y el E-2 son SVG de diseño hechos a mano,
 // no salen del script; viven en public/zodk-{dron,e2-hawkeye}[-noche].svg.

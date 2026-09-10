@@ -354,7 +354,17 @@ html.dark .hero-titulo::before {
   image-rendering: pixelated;
   pointer-events: auto;
   z-index: 2;
+  opacity: 1;
+  transition: opacity 0.7s ease; /* fundido al rotar de nave (initRotacion) */
 }
+
+/* Nave a punto de relevarse: se desvanece; el JS le cambia el sprite/ficha
+   mientras está invisible y la vuelve a mostrar. */
+.hero-craft.rot-oculta { opacity: 0; }
+
+/* Si los 2 slots caen en la misma trayectoria, el segundo va desfasado para
+   que no se pisen. */
+.hero-craft[data-slot="1"] { animation-delay: -4s; }
 
 html.dark .hero-craft { background-image: var(--sprite-noche); }
 
