@@ -29,12 +29,36 @@ from luces import LW, LH, ROWS as LUZ_ROWS
 from png8 import write_indexed
 
 # --------------------------------------------------------------- paletas
-OCEAN = (0x36, 0x7a, 0xc0)
+OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
+OCEAN_SHALLOW = (0x3c, 0x83, 0xbb)  # plataforma continental
+OCEAN_DEEP    = (0x18, 0x46, 0x7e)  # océano profundo
 LAND  = (0x54, 0xa2, 0x59)
 ICE   = (0xe6, 0xec, 0xf2)
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
+COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
+
+# Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
+BIOME_COLS = [
+    (0x46, 0x92, 0x4c),   # 0 templado
+    (0x2c, 0x6b, 0x33),   # 1 selva / tropical húmedo
+    (0xcb, 0xb1, 0x72),   # 2 desierto (arena)
+    (0x93, 0x9f, 0x55),   # 3 estepa / sabana seca
+    (0x2b, 0x55, 0x41),   # 4 boreal / taiga
+    (0x8f, 0x8a, 0x78),   # 5 tundra / roca pelada
+]
+DESIERTOS = [   # (lat0, lat1, lon0, lon1)
+    (12, 32, -17, 52),      # Sáhara + Arabia
+    (24, 40, 44, 66),       # meseta iraní
+    (35, 48, 62, 112),      # Gobi / Taklamakán
+    (18, 30, 66, 78),       # Thar
+    (-30, -18, 11, 25),     # Kalahari / Namib
+    (-32, -19, 122, 146),   # outback australiano
+    (-24, -4, -81, -69),    # costa de Perú / Atacama
+    (26, 40, -116, -101),   # SO de EE. UU. / N de México
+    (-42, -30, -71, -64),   # Patagonia seca
+]
 
 # noche
 N_OCEAN = (0x0b, 0x16, 0x25)
@@ -70,12 +94,14 @@ LUCES_SUELTAS = [
 ]
 
 # ------------------------------------------------------------ geometría
-COLS    = 164          # ancho del fotograma, en px (1 px = 1 celda)
-RADIUS  = 84.0         # radio de la esfera, en celdas
+# COLS x FRAMES es el ancho de la tira PNG; hay GPUs (móvil viejo) que no pasan
+# de 8192 px de textura, así que COLS <= ~290 con FRAMES 28.
+COLS    = 280         # ancho del fotograma, en px (1 px = 1 celda)
+RADIUS  = 143.0       # radio de la esfera, en celdas
 CDOWN   = 0.92         # fracción del radio que se dibuja hacia abajo
 TILT    = 20.0         # latitud del sub-observador (0 = ecuador de frente)
 FRAMES  = 28           # fotogramas de la rotación (giro más fluido, PNG algo mayor)
-MAPRES  = 4            # submuestreo del mapa (4 -> ~1 grado)
+MAPRES  = 2            # submuestreo del mapa (1440x720 -> 2 = 0.5 grado)
 SHADES  = 16           # escalones de brillo del día
 
 SUN_DEG = (-46.0, -12.0)       # (azimut desde arriba, elevación)
@@ -130,6 +156,79 @@ _gr, _gc = _mcell(35.6, -5.5)
 for _c in (_gc - 1, _gc, _gc + 1):
     GRID[_gr][_c] = 0
 
+# ------------------------------ costa, profundidad de mar y bioma (en el GRID)
+from collections import deque
+
+DMAX = 6
+_land = [[GRID[r][c] != 0 for c in range(MW)] for r in range(MH)]
+COAST = [bytearray(MW) for _ in range(MH)]
+SEADIST = [bytearray(MW) for _ in range(MH)]        # 0 = tierra; 1..DMAX = mar
+BIOME = [bytearray(MW) for _ in range(MH)]
+_N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
+_dq = deque()
+
+for r in range(MH):
+    lat = 90.0 - (r + 0.5) / MH * 180.0
+    for c in range(MW):
+        if _land[r][c]:
+            for dr, dcx in _N4:
+                rr, cc = r + dr, (c + dcx) % MW
+                if 0 <= rr < MH and not _land[rr][cc]:
+                    COAST[r][c] = 1
+                    break
+            lon = (c + 0.5) / MW * 360.0 - 180.0
+            h = ((r * 73856093) ^ (c * 19349663) ^ ((r * c) * 83492791)) & 0xFFFF
+            n = (h >> 3) & 7                      # ruido 0..7
+            nf = (h & 63) / 63.0 - 0.5            # ruido fino -0.5..0.5
+            # ¿desierto? con borde difuminado: dentro del margen entra según ruido
+            des = -1e9
+            for a0, a1, o0, o1 in DESIERTOS:
+                m = min(lat - a0, a1 - lat, lon - o0, o1 - lon)  # >0 = dentro
+                des = max(des, m)
+            if des > 3.0 or (des > -3.0 and nf * 12.0 < des):
+                b = 2
+            else:
+                la = abs(lat)
+                if la < 11 + (n - 4) * 0.6:
+                    b = 1
+                elif la < 33 + (n - 4):
+                    b = 3
+                elif la < 51 + (n - 4):
+                    b = 0
+                elif la < 66:
+                    b = 4
+                else:
+                    b = 5
+            BIOME[r][c] = b
+        else:
+            SEADIST[r][c] = DMAX
+
+for r in range(MH):
+    for c in range(MW):
+        if _land[r][c]:
+            for dr, dcx in _N4:
+                rr, cc = r + dr, (c + dcx) % MW
+                if 0 <= rr < MH and not _land[rr][cc] and SEADIST[rr][cc] == DMAX:
+                    SEADIST[rr][cc] = 1
+                    _dq.append((rr, cc))
+while _dq:
+    r, c = _dq.popleft()
+    d = SEADIST[r][c]
+    if d >= DMAX:
+        continue
+    for dr, dcx in _N4:
+        rr, cc = r + dr, (c + dcx) % MW
+        if 0 <= rr < MH and not _land[rr][cc] and SEADIST[rr][cc] == DMAX:
+            SEADIST[rr][cc] = d + 1
+            _dq.append((rr, cc))
+
+# Bayer 4x4 normalizado (0..1) para ditherar los degradados y quitar bandas.
+_BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
+
+
+def _dither(sx, sy):
+    return (_BAYER[sy & 3][sx & 3] + 0.5) / 16.0
+
 # ------------------------------------------------- rejilla de densidad de luces
 LUZ = [bytearray(LW) for _ in range(LH)]
 for r, spans in enumerate(LUZ_ROWS):
@@ -162,15 +261,18 @@ _idx = {}
 
 
 def color_index(rgb):
-    rgb = tuple((c // 3) * 3 for c in rgb)
+    rgb = tuple((c // 4) * 4 for c in rgb)
     i = _idx.get(rgb)
-    if i is None:
-        if len(PAL) >= 256:
-            return min(range(1, len(PAL)),
-                       key=lambda j: sum((PAL[j][k] - rgb[k]) ** 2 for k in range(3)))
-        i = len(PAL)
-        PAL.append(rgb)
-        _idx[rgb] = i
+    if i is not None:
+        return i
+    if len(PAL) >= 256:                     # paleta llena: al color más cercano
+        i = min(range(1, len(PAL)),
+                key=lambda j: sum((PAL[j][k] - rgb[k]) ** 2 for k in range(3)))
+        _idx[rgb] = i                       # y se cachea (si no, es lentísimo)
+        return i
+    i = len(PAL)
+    PAL.append(rgb)
+    _idx[rgb] = i
     return i
 
 
@@ -206,14 +308,32 @@ def cell_index(sx, sy, lon0, night):
     dc = math.sqrt(rr)
     gr, gc = _mcell(lat, lon)
     gr = 0 if gr < 0 else MH - 1 if gr >= MH else gr
-    terrain = GRID[gr][gc % MW]
+    gc %= MW
+    terrain = GRID[gr][gc]
+    dth = _dither(sx, sy)
+
+    # --- color de la superficie, sin sombra ---
+    if terrain == 0:                       # mar: más claro en plataforma, oscuro en abisal
+        sd = SEADIST[gr][gc]
+        t = 0.0 if sd <= 1 else min(1.0, (sd - 1) / 2.5)
+        surf = mix(OCEAN_SHALLOW, OCEAN_DEEP, t)
+        surf_n = N_OCEAN
+    elif terrain == 2:                     # hielo
+        surf = ICE
+        surf_n = N_ICE
+    else:                                  # tierra: bioma + línea de costa
+        surf = BIOME_COLS[BIOME[gr][gc]]
+        if COAST[gr][gc]:
+            surf = mix(surf, COAST_COL, 0.5)
+        surf_n = N_LAND
 
     if night:
-        base = (N_OCEAN, N_LAND, N_ICE)[terrain]
-        col = mix(SPACE, base, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
+        col = mix(SPACE, surf_n, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
+        if terrain == 0 and SEADIST[gr][gc] <= 2:
+            col = mix(col, N_ATMO, 0.06)   # insinúa la costa también de noche
         if terrain != 0 and dc < 0.95:
             lv = luz_at(lat, lon)
-            if lv == 1 and ((gr * 7 + (gc % MW) * 3) % 6):   # nivel 1: dispersas
+            if lv == 1 and ((gr * 7 + gc * 3) % 6):     # nivel 1: dispersas
                 lv = 0
             if lv:
                 col = GOLD[lv - 1]
@@ -228,11 +348,13 @@ def cell_index(sx, sy, lon0, night):
     if terrain == 2:
         limb *= 0.4
     bright *= 1.0 - limb
-    q = round(bright * SHADES) / SHADES
-    col = mix(SPACE, (OCEAN, LAND, ICE)[terrain], q)
+    # dither centrado: redondea, pero mueve el umbral ±0.4 para romper las bandas
+    q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
+    q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q
+    col = mix(SPACE, surf, q)
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
-        col = mix(col, ATMO, 0.3 * (round(halo * 3) / 3))
+        col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4))
     return color_index(col)
 
 

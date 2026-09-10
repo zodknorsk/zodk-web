@@ -189,7 +189,7 @@ article .tiktok a {
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 164 / 161;
+  aspect-ratio: 280 / 274;
   transform: translateX(-50%);
   background-image: url(/zodk-planeta-sprite.png);
   background-repeat: no-repeat;
