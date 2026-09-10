@@ -279,8 +279,8 @@ def _dither(sx, sy):
 # 12 plantillas de tamaños/siluetas distintas + escala por instancia, para que
 # no se repitan. El borde negro de 1 px se re-genera tras escalar (siempre
 # limpio). Se proyectan sobre la esfera como las ciudades y giran con el planeta.
-C_BODY = (0xf7, 0xfa, 0xfd)         # cuerpo casi blanco
-C_BASE = (0xa6, 0xb2, 0xc2)         # sombra / base gris azulada
+C_BODY = (0xfb, 0xfc, 0xfe)         # cuerpo blanco
+C_BASE = (0xb0, 0xbc, 0xcc)         # sombra / base gris azulada
 C_EDGE = (0x10, 0x13, 0x1c)         # borde casi negro (contraste)
 
 CLOUD_ART = [
@@ -659,11 +659,11 @@ def cloud_cells(lon0):
         cx = px * RADIUS + CX - 0.5
         cy = py * RADIUS + CY - 0.5
         xsc = 0.72 + 0.28 * pz               # se aplasta un poco hacia el borde
-        t = 0.42 + 0.58 * bright
-        cix = {
-            "b": color_index(mix(SPACE, C_BODY, min(1.0, t + 0.06))),
+        t = 0.72 + 0.28 * bright             # nube blanca casi siempre; solo se
+        cix = {                              # apaga pegada al terminador
+            "b": color_index(mix(SPACE, C_BODY, min(1.0, t + 0.1))),
             "s": color_index(mix(SPACE, C_BASE, t)),
-            "e": color_index(mix(SPACE, C_EDGE, t * 0.96)),
+            "e": color_index(mix(SPACE, C_EDGE, max(0.7, t))),
         }
         cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size)
         for (ox, oy), k in cells.items():
