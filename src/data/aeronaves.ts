@@ -4,10 +4,17 @@
 // ficha que sale al pasar el ratón).
 //
 // Para añadir una nave: dibújala en generar-aeronaves.py, copia el SVG a
-// public/, y añade una entrada aquí. Todas las de este array salen en el hero.
+// public/, y añade una entrada aquí.
 //
-// Excepción: el dron (Bayraktar TB3) es un SVG de diseño hecho a mano, no sale
-// del script. Vive tal cual en public/zodk-dron[-noche].svg.
+// Cómo salen en el hero según "vuelo":
+//   - "fijo" / "orbita": SIEMPRE en pantalla, cada una con su trayectoria.
+//   - "sweep": entran en una ROTACIÓN. Vuelan 2 a la vez (sin solaparse) dando
+//     pasadas diagonales; cuando una sale de pantalla, el JS mete el siguiente
+//     "sweep" de la lista, y así en bucle. Añade drones con vuelo:"sweep" y se
+//     suman solos a la rotación (ver index.astro + initRotacion en Head.astro).
+//
+// Excepción de dibujo: el dron (TB3) y el E-2 son SVG de diseño hechos a mano,
+// no salen del script; viven en public/zodk-{dron,e2-hawkeye}[-noche].svg.
 
 export type Aeronave = {
   id: string;
@@ -16,7 +23,7 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita" | "patrulla"; // trayectoria (ver global.css)
+  vuelo: "sweep" | "orbita" | "fijo"; // trayectoria (ver global.css)
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
 };
@@ -47,7 +54,7 @@ export const AERONAVES: Aeronave[] = [
     sprite: "/zodk-e2-hawkeye.svg",
     spriteNoche: "/zodk-e2-hawkeye-noche.svg",
     ratio: "116 / 108",
-    vuelo: "patrulla",
+    vuelo: "fijo",
     bandera: "🇺🇸",
     specs: [
       ["Fabricante", "Northrop Grumman"],

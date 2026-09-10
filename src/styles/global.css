@@ -346,7 +346,7 @@ html.dark .hero-titulo::before {
 /* Naves y satélites que sobrevuelan / orbitan el hero. Cada `.hero-craft` lleva
    su sprite (vars --sprite / --sprite-noche) y su proporción por estilo inline,
    desde src/data/aeronaves.ts (index.astro los pinta en bucle). La trayectoria
-   la da el modificador (--sweep / --orbita / --patrulla). Al pasar el ratón la nave se para
+   la da el modificador (--sweep / --orbita / --fijo). Al pasar el ratón la nave se para
    —y toda la portada— y sale una línea a una ficha con las specs. Solo ratón. */
 .hero-craft {
   position: absolute;
@@ -364,24 +364,27 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   inset: -14px;
 }
 
-/* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
-   título y vuelve a subir (alternate). El sprite del TB3 es casi cuadrado
-   (116x108) y con detalle, así que se le da bastante ancho para que se lea. */
+/* Trayectoria "sweep" (drones en rotación): pasada diagonal de una sola
+   dirección, de fuera de pantalla arriba-izquierda a fuera abajo-derecha,
+   cruzando el título. En bucle: al salir vuelve a entrar (y el JS le cambia
+   el sprite por el del siguiente dron de la lista). Hay 2 slots; el segundo
+   va desfasado medio ciclo para que nunca coincidan. Sprite casi cuadrado
+   (116x108) y con detalle -> bastante ancho para que se lea. */
 .hero-craft--sweep {
-  left: 44%;
-  top: 24%;
+  left: 40%;
+  top: -10%;
   width: clamp(72px, 7.2vw, 112px);
-  transform: translateX(-50%);
-  animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  animation: hero-sweep 13s linear infinite;
 }
 
+.hero-craft--sweep[data-slot="1"] { animation-delay: -6.5s; }
+
 @keyframes hero-sweep {
-  to {
-    transform: translate(
-      calc(-50% + clamp(30px, 7vw, 100px)),
-      clamp(200px, 40vh, 380px)
-    );
-  }
+  /* entra desde fuera arriba-izquierda, baja en diagonal cruzando el título y
+     sale por abajo hacia el centro-izquierda (lejos del E-2, que está a la
+     derecha, y del satélite, que va arriba). */
+  from { transform: translate(-72vw, -8vh); }
+  to   { transform: translate(6vw, 116vh); }
 }
 
 /* Trayectoria "orbita" (satélite): pasada recta de lado a lado cerca del limbo,
@@ -400,23 +403,13 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(118vw, 5vh); }
 }
 
-/* Trayectoria "patrulla" (E-2 Hawkeye): órbita de espera amplia. Un bucle
-   elíptico grande que rodea el título —pasa por arriba y baja por debajo— a
-   ritmo pausado pero no lento. Como la órbita de patrulla real de un E-2. */
-.hero-craft--patrulla {
-  left: 6%;
-  top: 14%;
+/* "fijo" (E-2 Hawkeye): sin trayectoria. Se queda quieto en un punto, algo por
+   debajo del título y escorado a la derecha, en vigilancia mientras el dron y
+   el satélite se mueven. */
+.hero-craft--fijo {
+  left: 64%;
+  top: 60%;
   width: clamp(72px, 7.2vw, 112px); /* al menos tan grande como el dron */
-  animation: hero-patrulla 18s linear infinite;
-}
-
-@keyframes hero-patrulla {
-  /* elipse: izq -> arriba -> der -> abajo -> izq */
-  0%   { transform: translate(clamp(-40px, -2vw, -20px),  clamp(110px, 25vh, 260px)); }
-  25%  { transform: translate(clamp(120px, 22vw, 420px),  0); }
-  50%  { transform: translate(clamp(240px, 42vw, 720px),  clamp(110px, 25vh, 260px)); }
-  75%  { transform: translate(clamp(120px, 22vw, 420px),  clamp(240px, 52vh, 520px)); }
-  100% { transform: translate(clamp(-40px, -2vw, -20px),  clamp(110px, 25vh, 260px)); }
 }
 
 /* Al inspeccionar cualquier nave se congela toda la portada. */
@@ -552,28 +545,29 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
-/* patrulla: ficha debajo, igual que órbita (el JS pone .edge-l / .edge-r). */
-.hero-craft--patrulla .craft-linea {
+/* fijo: el E-2 va bajo y a la derecha, así que la ficha sale HACIA ARRIBA
+   (si fuera debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
+.hero-craft--fijo .craft-linea {
   left: 50%;
-  top: 100%;
+  bottom: 100%;
   width: 1px;
-  height: 46px;
-  transform-origin: center top;
+  height: 40px;
+  transform-origin: center bottom;
 }
-.hero-craft--patrulla .craft-specs {
+.hero-craft--fijo .craft-specs {
   left: 50%;
-  top: calc(100% + 46px);
-  transform: translateX(-50%) translateY(-6px);
+  bottom: calc(100% + 40px);
+  transform: translateX(-50%) translateY(6px);
 }
-.hero-craft--patrulla:hover .craft-specs { transform: translateX(-50%) translateY(0); }
-.hero-craft--patrulla.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(-6px); }
-.hero-craft--patrulla.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
-.hero-craft--patrulla.edge-r .craft-specs {
+.hero-craft--fijo:hover .craft-specs { transform: translateX(-50%) translateY(0); }
+.hero-craft--fijo.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
+.hero-craft--fijo.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo.edge-r .craft-specs {
   left: auto;
   right: 0;
-  transform: translateX(0) translateY(-6px);
+  transform: translateX(0) translateY(6px);
 }
-.hero-craft--patrulla.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
 @media (hover: none) {
   .hero-craft { pointer-events: none; }
@@ -584,7 +578,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   .hero-planet { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: clamp(52px, 15vw, 76px); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
-  .hero-craft--patrulla { top: 10%; width: clamp(52px, 15vw, 76px); }
+  .hero-craft--fijo { top: 58%; left: 58%; width: clamp(52px, 15vw, 76px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
@@ -726,5 +720,9 @@ html.home main { padding-top: 9.5rem; }
   .hero-craft,
   .hero-sparkle,
   .hero-scroll { animation: none; }
-  .hero-craft--orbita { left: 12%; top: 15%; } /* aparcado en sitio visible */
+  /* aparcadas en sitio visible (sin animación se quedarían fuera de pantalla) */
+  .hero-craft--orbita { left: 12%; top: 15%; }
+  .hero-craft--sweep { top: 20%; transform: none; }
+  .hero-craft--sweep[data-slot="0"] { left: 22%; }
+  .hero-craft--sweep[data-slot="1"] { left: 60%; top: 34%; }
 }

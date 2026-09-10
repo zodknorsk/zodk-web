@@ -98,6 +98,7 @@ const socialImageURL = new URL(image, Astro.site);
     preloadTheme();
     initHeader();
     initCraft();
+    initRotacion();
     animate();
 
     const backToTop = document.getElementById("back-to-top");
@@ -182,6 +183,45 @@ const socialImageURL = new URL(image, Astro.site);
           el.classList.toggle("edge-l", cx < 160);
           el.classList.toggle("edge-r", cx > window.innerWidth - 160);
         }
+      });
+    });
+  }
+
+  // Rotacion de drones "sweep": hay 2 slots volando; cada vez que uno completa
+  // su pasada (sale de pantalla) se le cambia el sprite y la ficha por los del
+  // siguiente dron de la lista. Con <=2 drones no hace falta (no hay <script>).
+  function initRotacion() {
+    const data = document.getElementById("rotativas-data");
+    if (!data) return;
+    let pool;
+    try { pool = JSON.parse(data.textContent); } catch { return; }
+    if (!Array.isArray(pool) || pool.length < 3) return;
+
+    const slots = document.querySelectorAll(".hero-craft--sweep[data-slot]");
+    slots.forEach((el) => {
+      if (el.dataset.rotInit) return;
+      el.dataset.rotInit = "1";
+      let pos = Number(el.dataset.slot);
+      el.addEventListener("animationiteration", () => {
+        pos = (pos + slots.length) % pool.length;
+        const a = pool[pos];
+        el.dataset.craft = a.id;
+        el.style.aspectRatio = a.ratio;
+        el.style.setProperty("--sprite", "url(" + a.sprite + ")");
+        el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
+        el.classList.remove("flip-x");
+        const specs = el.querySelector(".craft-specs");
+        specs.querySelector(".craft-specs-titulo").textContent = a.nombre;
+        specs.querySelector(".craft-clase").textContent = a.clase;
+        specs.querySelector("dl").innerHTML = a.specs
+          .map(([k, v]) => {
+            const flag =
+              k === "Origen" && a.bandera
+                ? ' <span class="craft-flag">' + a.bandera + "</span>"
+                : "";
+            return "<dt>" + k + "</dt><dd>" + v + flag + "</dd>";
+          })
+          .join("");
       });
     });
   }
