@@ -30,10 +30,10 @@ from png8 import write_indexed
 
 # --------------------------------------------------------------- paletas
 OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
-OCEAN_SHALLOW = (0x3c, 0x83, 0xbb)  # plataforma continental
-OCEAN_DEEP    = (0x18, 0x46, 0x7e)  # océano profundo
+OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
+OCEAN_DEEP    = (0x1d, 0x50, 0x8c)  # océano profundo
 LAND  = (0x54, 0xa2, 0x59)
-ICE   = (0xe6, 0xec, 0xf2)
+ICE   = (0xdb, 0xe3, 0xec)
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
@@ -41,12 +41,12 @@ COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
-    (0x46, 0x92, 0x4c),   # 0 templado
-    (0x2c, 0x6b, 0x33),   # 1 selva / tropical húmedo
-    (0xcb, 0xb1, 0x72),   # 2 desierto (arena)
-    (0x93, 0x9f, 0x55),   # 3 estepa / sabana seca
-    (0x2b, 0x55, 0x41),   # 4 boreal / taiga
-    (0x8f, 0x8a, 0x78),   # 5 tundra / roca pelada
+    (0x53, 0xa4, 0x58),   # 0 templado
+    (0x33, 0x7a, 0x3b),   # 1 selva / tropical húmedo
+    (0xd8, 0xbe, 0x7e),   # 2 desierto (arena)
+    (0xa6, 0xb0, 0x5f),   # 3 estepa / sabana seca
+    (0x33, 0x62, 0x4b),   # 4 boreal / taiga
+    (0x9a, 0x95, 0x82),   # 5 tundra / roca pelada
 ]
 DESIERTOS = [   # (lat0, lat1, lon0, lon1)
     (12, 32, -17, 52),      # Sáhara + Arabia
@@ -107,8 +107,8 @@ SHADES  = 16           # escalones de brillo del día
 SUN_DEG = (-46.0, -12.0)       # (azimut desde arriba, elevación)
 SUN_Z   = 0.56                 # empuje del sol hacia el observador
 TERM_A, TERM_B = -0.34, 0.60   # borde del terminador
-NIGHT   = 0.20                 # brillo mínimo en el lado en sombra (día)
-LIMB_K  = 0.28                 # oscurecimiento del borde
+NIGHT   = 0.22                 # brillo mínimo en el lado en sombra (día)
+LIMB_K  = 0.23                 # oscurecimiento del borde
 
 CX  = COLS / 2.0
 CY  = RADIUS
@@ -157,6 +157,7 @@ for _c in (_gc - 1, _gc, _gc + 1):
     GRID[_gr][_c] = 0
 
 # ------------------------------ costa, profundidad de mar y bioma (en el GRID)
+import random
 from collections import deque
 
 DMAX = 6
@@ -166,6 +167,23 @@ SEADIST = [bytearray(MW) for _ in range(MH)]        # 0 = tierra; 1..DMAX = mar
 BIOME = [bytearray(MW) for _ in range(MH)]
 _N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 _dq = deque()
+
+# Ruido de valor a baja frecuencia (interpolado): transiciones de bioma suaves,
+# sin el "confeti" que daba el ruido por celda.
+random.seed(20260910)
+_NC = 7                                            # celdas por nodo de ruido
+_NW, _NH = MW // _NC + 2, MH // _NC + 2
+_NG = [[random.random() for _ in range(_NW)] for _ in range(_NH)]
+
+
+def _vnoise(r, c):
+    fr, fc = r / _NC, c / _NC
+    r0, c0 = int(fr), int(fc)
+    tr, tc = fr - r0, fc - c0
+    a = _NG[r0][c0] * (1 - tc) + _NG[r0][c0 + 1] * tc
+    b = _NG[r0 + 1][c0] * (1 - tc) + _NG[r0 + 1][c0 + 1] * tc
+    return a * (1 - tr) + b * tr                   # 0..1
+
 
 for r in range(MH):
     lat = 90.0 - (r + 0.5) / MH * 180.0
@@ -177,23 +195,20 @@ for r in range(MH):
                     COAST[r][c] = 1
                     break
             lon = (c + 0.5) / MW * 360.0 - 180.0
-            h = ((r * 73856093) ^ (c * 19349663) ^ ((r * c) * 83492791)) & 0xFFFF
-            n = (h >> 3) & 7                      # ruido 0..7
-            nf = (h & 63) / 63.0 - 0.5            # ruido fino -0.5..0.5
-            # ¿desierto? con borde difuminado: dentro del margen entra según ruido
-            des = -1e9
+            nf = _vnoise(r, c) - 0.5              # -0.5..0.5, suave
+            des = -1e9                            # margen dentro del desierto más cercano
             for a0, a1, o0, o1 in DESIERTOS:
-                m = min(lat - a0, a1 - lat, lon - o0, o1 - lon)  # >0 = dentro
+                m = min(lat - a0, a1 - lat, lon - o0, o1 - lon)
                 des = max(des, m)
-            if des > 3.0 or (des > -3.0 and nf * 12.0 < des):
+            if des > 2.0 or (des > -4.0 and nf * 9.0 < des):
                 b = 2
             else:
-                la = abs(lat)
-                if la < 11 + (n - 4) * 0.6:
+                la = abs(lat) + nf * 4.0          # frontera latitudinal ondulada
+                if la < 12:
                     b = 1
-                elif la < 33 + (n - 4):
+                elif la < 34:
                     b = 3
-                elif la < 51 + (n - 4):
+                elif la < 52:
                     b = 0
                 elif la < 66:
                     b = 4
@@ -202,6 +217,23 @@ for r in range(MH):
             BIOME[r][c] = b
         else:
             SEADIST[r][c] = DMAX
+
+# 2 pasadas de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas.
+for _ in range(2):
+    _new = [bytearray(BIOME[r]) for r in range(MH)]
+    for r in range(1, MH - 1):
+        for c in range(MW):
+            if not _land[r][c]:
+                continue
+            cnt = {}
+            for dr in (-1, 0, 1):
+                for dc in (-1, 0, 1):
+                    cc = (c + dc) % MW
+                    if _land[r + dr][cc]:
+                        v = BIOME[r + dr][cc]
+                        cnt[v] = cnt.get(v, 0) + 1
+            _new[r][c] = max(cnt, key=cnt.get)
+    BIOME = _new
 
 for r in range(MH):
     for c in range(MW):
@@ -346,7 +378,7 @@ def cell_index(sx, sy, lon0, night):
     bright = NIGHT + (1.0 - NIGHT) * smooth(TERM_A, TERM_B, lam)
     limb = LIMB_K * smooth(0.72, 1.0, dc)
     if terrain == 2:
-        limb *= 0.4
+        limb *= 0.7
     bright *= 1.0 - limb
     # dither centrado: redondea, pero mueve el umbral ±0.4 para romper las bandas
     q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
