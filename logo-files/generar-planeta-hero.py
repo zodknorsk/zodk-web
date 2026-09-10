@@ -48,7 +48,6 @@ SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
 COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
-CLOUD_COL  = (0xf1, 0xf4, 0xf8)     # nubes (día)
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
@@ -274,58 +273,102 @@ def _dither(sx, sy):
     return (_BAYER[sy & 3][sx & 3] + 0.5) / 16.0
 
 
-# --------------------------------------------------- capa de nubes (fBm en lat/lon)
-# Campo periódico en longitud. Cobertura en bandas: mucho en el ecuador (ITCZ) y
-# en latitudes medias (frentes), poco en el subtrópico (los desiertos). Las nubes
-# giran solidarias con el planeta. Solo se pintan de día.
-CLOUD_W, CLOUD_H = 360, 180
-random.seed(717)
+# --------------------------------------------------------------------- nubes
+# Nubes pixel-art pequeñas, sueltas, repartidas por el mapa (giran con el
+# planeta). Cada plantilla: '#' cuerpo, '=' base sombreada; se les añade solo
+# un borde de 1 px. Se proyectan sobre la esfera como las ciudades.
+C_BODY = (0xf6, 0xf9, 0xfd)
+C_BASE = (0xd2, 0xe2, 0xf3)
+C_EDGE = (0xb7, 0xcf, 0xe8)
+NC_BODY = (0x2b, 0x3a, 0x52)        # noche: apenas se ven
+NC_BASE = (0x22, 0x2f, 0x45)
+NC_EDGE = (0x1a, 0x25, 0x38)
+
+CLOUD_ART = [
+    """
+.....####......
+...########.##.
+..##############
+..############=.
+...=========....
+""",
+    """
+....###....
+..#######..
+.####.#####
+.#########=
+..#######=.
+...====....
+""",
+    """
+...##....
+..####...
+.######..
+.######==
+..####=..
+""",
+    """
+......###.....
+....########..
+..#####.######
+.#############=
+.###########=.
+..#######=....
+""",
+    """
+..###...
+.#####.#
+.######=
+..####=.
+""",
+    """
+....##......###..
+..######...#####.
+.#####################
+.###################=.
+..###############=....
+""",
+]
 
 
-def _octava(w):
-    h = w // 2 + 1
-    g = [[random.random() for _ in range(w)] for _ in range(h)]
-    return g, w, h
+def _cloud_shape(art):
+    """(dx, dy) -> 'b'ody / 's'hade / 'e'dge, centrado."""
+    rows = [ln for ln in art.strip("\n").split("\n")]
+    w = max(len(r) for r in rows)
+    cells = {}
+    for y, r in enumerate(rows):
+        for x, ch in enumerate(r):
+            if ch == "#":
+                cells[(x, y)] = "b"
+            elif ch == "=":
+                cells[(x, y)] = "s"
+    body = set(cells)
+    cand = set()
+    for (x, y) in body:
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                p = (x + dx, y + dy)
+                if p not in body:
+                    cand.add(p)
+    for p in cand:
+        # borde solo si NO es un hueco cerrado (tiene algún vecino vacío)
+        if any((p[0] + ex, p[1] + ey) not in body and (ex or ey)
+               for ex in (-1, 0, 1) for ey in (-1, 0, 1)):
+            cells[p] = "e"
+    cx, cy = w // 2, len(rows) // 2
+    return {(x - cx, y - cy): k for (x, y), k in cells.items()}
 
 
-def _noise(g, gw, gh, u, v):
-    x, y = u * gw, v * (gh - 1)
-    x0, y0 = int(x) % gw, min(gh - 2, int(y))
-    tx, ty = x - int(x), y - y0
-    a = g[y0][x0] * (1 - tx) + g[y0][(x0 + 1) % gw] * tx
-    b = g[y0 + 1][x0] * (1 - tx) + g[y0 + 1][(x0 + 1) % gw] * tx
-    return a * (1 - ty) + b * ty
+CLOUD_SHAPES = [_cloud_shape(a) for a in CLOUD_ART]
 
-
-_OCT = [(_octava(w), amp) for w, amp in ((9, 0.50), (20, 0.30), (44, 0.14), (92, 0.06))]
-
-CLOUD = [bytearray(CLOUD_W) for _ in range(CLOUD_H)]
-for _r in range(CLOUD_H):
-    _lat = 90.0 - (_r + 0.5) / CLOUD_H * 180.0
-    _la = abs(_lat)
-    _band = (0.60 * math.exp(-(_la / 13.0) ** 2)          # ITCZ
-             + 0.52 * math.exp(-((_la - 52.0) / 20.0) ** 2)  # frentes
-             + 0.03)
-    _v = (_r + 0.5) / CLOUD_H
-    for _c in range(CLOUD_W):
-        _u = (_c + 0.5) / CLOUD_W
-        _f = 0.0
-        for (g, gw, gh), amp in _OCT:
-            _f += amp * _noise(g, gw, gh, _u, _v)
-        _cov = smooth(0.62, 0.80, _f * 0.7 + _band * 0.5)
-        CLOUD[_r][_c] = int(_cov * 255)
-
-
-def cloud_at(lat, lon):
-    v = (90.0 - lat) / 180.0
-    v = 0.0 if v < 0 else 0.9999 if v > 1 else v
-    u = ((lon + 180.0) / 360.0) % 1.0
-    x, y = u * CLOUD_W, v * (CLOUD_H - 1)
-    x0, y0 = int(x) % CLOUD_W, min(CLOUD_H - 2, int(y))
-    tx, ty = x - int(x), y - y0
-    a = CLOUD[y0][x0] * (1 - tx) + CLOUD[y0][(x0 + 1) % CLOUD_W] * tx
-    b = CLOUD[y0 + 1][x0] * (1 - tx) + CLOUD[y0 + 1][(x0 + 1) % CLOUD_W] * tx
-    return (a * (1 - ty) + b * ty) / 255.0
+# Reparto: ~46 nubes con semilla fija, esparcidas, más frecuentes en latitudes
+# bajas/medias y ninguna en los polos. (lat, lon, forma, espejo).
+random.seed(4242)
+NUBES = []
+for _ in range(52):
+    lat = random.triangular(-54, 54, random.choice((-6, 6, 18, -18, 38, -38)))
+    lon = random.uniform(-180, 180)
+    NUBES.append((lat, lon, random.randrange(len(CLOUD_SHAPES)), random.random() < 0.5))
 
 # ------------------------------------------------- rejilla de densidad de luces
 LUZ = [bytearray(LW) for _ in range(LH)]
@@ -415,20 +458,19 @@ def cell_index(sx, sy, lon0, night):
             surf = mix(surf, COAST_COL, 0.5)
         surf_n = N_LAND
 
-    cl = cloud_at(lat, lon) * (1.0 - smooth(0.90, 1.0, dc))   # se difumina en el limbo
-
     if night:
-        col = mix(SPACE, surf_n, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
-        if terrain == 0 and SEADIST[gr][gc] <= 2:
-            col = mix(col, N_ATMO, 0.06)   # insinúa la costa también de noche
+        # MODO OSCURO CONGELADO: este script ya NO regenera el sprite de noche
+        # (decisión del usuario, sept 2026: "no toques nada en el modo oscuro").
+        # public/zodk-planeta-noche.png es el de producción, intocable. Esta
+        # rama se deja como estaba por si algún día se quiere regenerar.
+        base = (N_OCEAN, N_LAND, N_ICE)[terrain]
+        col = mix(SPACE, base, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
         if terrain != 0 and dc < 0.95:
             lv = luz_at(lat, lon)
             if lv == 1 and ((gr * 7 + gc * 3) % 6):     # nivel 1: dispersas
                 lv = 0
             if lv:
                 col = GOLD[lv - 1]
-        if cl > 0.4:                        # sombra de nube tenue sobre las luces
-            col = mix(col, (0x10, 0x18, 0x24), min(0.45, (cl - 0.4) * 0.7))
         if dc > 0.94:
             col = mix(col, N_ATMO, 0.35 * smooth(0.94, 1.0, dc))
         return color_index(col)
@@ -444,10 +486,6 @@ def cell_index(sx, sy, lon0, night):
     q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
     q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q
     col = mix(SPACE, surf, q)
-    if cl > 0.03:                          # nubes: blancas, iluminadas por el sol
-        cloud_lit = mix(SPACE, CLOUD_COL, min(1.0, 0.32 + bright * 0.8))
-        a = math.floor(cl * 5 + (dth - 0.5) * 0.85 + 0.5) / 5
-        col = mix(col, cloud_lit, max(0.0, min(0.88, a)))   # nunca del todo opacas
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
         col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4))
@@ -517,6 +555,41 @@ def city_cells(lon0, night):
     return out
 
 
+def cloud_cells(lon0):
+    """(sx, sy) -> índice de color. Nubes pixel-art sueltas, proyectadas sobre
+    la esfera y sombreadas por el terminador. Solo día."""
+    out = {}
+    for clat, clon, shp, flip in NUBES:
+        rlat = math.radians(clat)
+        rlon = math.radians(clon - lon0)
+        a = math.sin(rlat)
+        clat_c = math.cos(rlat)
+        vv = clat_c * math.cos(rlon)
+        px = clat_c * math.sin(rlon)
+        py = -COST * a + SINT * vv
+        pz = SINT * a + COST * vv
+        if pz <= 0.44:                       # cerca del limbo o cara oculta
+            continue
+        lam = px * SX + py * SY + pz * SZ
+        bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
+        if bright < 0.12:                     # zona de noche del sprite de día
+            continue
+        cx = px * RADIUS + CX - 0.5
+        cy = py * RADIUS + CY - 0.5
+        xsc = 0.55 + 0.45 * pz               # se aplasta al acercarse al borde
+        t = 0.42 + 0.58 * bright
+        cib = color_index(mix(SPACE, C_BODY, min(1.0, t + 0.06)))
+        cis = color_index(mix(SPACE, C_BASE, t))
+        cie = color_index(mix(SPACE, C_EDGE, t * 0.96))
+        cix = {"b": cib, "s": cis, "e": cie}
+        for (dx, dy), k in CLOUD_SHAPES[shp].items():
+            x = int(round(cx + (-dx if flip else dx) * xsc))
+            y = int(round(cy + dy))
+            if 0 <= x < COLS and 0 <= y < VIS and (x, y) not in out:
+                out[(x, y)] = cix[k]
+    return out
+
+
 # ------------------------------------------------------ sprites
 def render(night, path):
     sw, sh = COLS * FRAMES, VIS
@@ -524,21 +597,21 @@ def render(night, path):
     for f in range(FRAMES):
         lon0 = -f * 360.0 / FRAMES
         xoff = f * COLS
-        cities = city_cells(lon0, night)
+        overlay = {} if night else cloud_cells(lon0)
+        overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
         for sy in range(VIS):
             row = rows[sy]
             for sx in range(COLS):
-                row[xoff + sx] = cities.get((sx, sy)) or cell_index(sx, sy, lon0, night)
+                row[xoff + sx] = overlay.get((sx, sy)) or cell_index(sx, sy, lon0, night)
     write_indexed(path, sw, sh, rows, PAL)
     return sw, sh
 
 
+# El sprite de NOCHE ya no se genera aquí: es public/zodk-planeta-noche.png tal
+# cual, el de producción (el usuario pidió no tocar el modo oscuro). Solo día.
 SW, SH = render(False, "zodk-planeta-sprite.png")
-render(True, "zodk-planeta-noche.png")
 assert len(PAL) <= 256, f"paleta de {len(PAL)} colores, no cabe en PNG-8"
 
-# El dron ya no se genera aquí: public/zodk-dron[-noche].svg es un SVG de diseño
-# hecho a mano (Bayraktar TB3, vista cenital en diagonal). Si en el futuro se
-# quiere volver a un dron generado, el histórico está en Git.
+# El dron tampoco se genera aquí (SVG de diseño en public/zodk-dron*.svg).
 
-print(f"sprite: {SW}x{SH} px, {len(PAL)} colores | planeta día + noche")
+print(f"sprite día: {SW}x{SH} px, {len(PAL)} colores")
