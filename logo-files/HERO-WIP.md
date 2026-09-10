@@ -92,4 +92,24 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
    polo, tamaño de las luces sueltas, nº de luces de noche… pendiente de ir
    puliendo con el usuario.
 4. **Aparcado** — aurora boreal en el modo noche.
-5. Al terminar del todo, borrar este archivo.
+5. **Pasada de calidad del pixel art (sprite de DÍA)** — pendiente de empezar
+   la semana del 15-sep-2026, cuando se reinicie el cap semanal, en una **rama
+   nueva** (aparte de `main`, como se hizo con `planeta-hd`). Objetivo: que la
+   Tierra se vea más "smooth" y detallada al estilo del pixel art HD de
+   referencia (Owlboy), sin pretender ese nivel, solo seguir puliendo. Vías,
+   todas por la vía del generador procedural:
+   - **Rampas de paleta**: repartir los 256 colores hacia degradados limpios
+     (profundidad de océano, elevación, terminador) en vez de a muchos tintes
+     de bioma ruidosos. Es lo que más salto de calidad da.
+   - **Dither con criterio**: quitarlo de las zonas grandes (que queden planas
+     y limpias) y dejarlo solo donde aporta textura (limbo, terminador, alta
+     montaña).
+   - **Limpieza de costas y limbo**: paso de post-proceso con AA algorítmico
+     (píxeles de tono intermedio en los bordes) en lugar del borde crudo del
+     rasterizado.
+   - **Halo atmosférico** limpio en el limbo.
+   - **Más fotogramas** para el giro (28 → 60+), gestionando el ancho del PNG.
+   Recordar: solo el sprite de día (el de noche no se toca), vista de horizonte
+   inclinada, nada de nubes de ruido fBm, vigilar el techo de 256 colores y el
+   cache-busting `?v=`.
+6. Al terminar del todo, borrar este archivo.
