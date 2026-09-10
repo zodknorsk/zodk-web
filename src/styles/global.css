@@ -400,20 +400,23 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(118vw, 5vh); }
 }
 
-/* Trayectoria "patrulla" (E-2 Hawkeye): vuelo lento de ida y vuelta arriba a
-   la izquierda, con una comba suave (arco de patrulla). Va despacio para no
-   competir con el dron ni con el satélite. */
+/* Trayectoria "patrulla" (E-2 Hawkeye): órbita de espera amplia. Un bucle
+   elíptico grande que rodea el título —pasa por arriba y baja por debajo— a
+   ritmo pausado pero no lento. Como la órbita de patrulla real de un E-2. */
 .hero-craft--patrulla {
   left: 6%;
-  top: 15%;
-  width: clamp(56px, 5.6vw, 90px);
-  animation: hero-patrulla 24s ease-in-out infinite alternate;
+  top: 14%;
+  width: clamp(72px, 7.2vw, 112px); /* al menos tan grande como el dron */
+  animation: hero-patrulla 18s linear infinite;
 }
 
 @keyframes hero-patrulla {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(clamp(120px, 22vw, 340px), clamp(10px, 3vh, 34px)); }
-  100% { transform: translate(clamp(240px, 44vw, 620px), 0); }
+  /* elipse: izq -> arriba -> der -> abajo -> izq */
+  0%   { transform: translate(clamp(-40px, -2vw, -20px),  clamp(110px, 25vh, 260px)); }
+  25%  { transform: translate(clamp(120px, 22vw, 420px),  0); }
+  50%  { transform: translate(clamp(240px, 42vw, 720px),  clamp(110px, 25vh, 260px)); }
+  75%  { transform: translate(clamp(120px, 22vw, 420px),  clamp(240px, 52vh, 520px)); }
+  100% { transform: translate(clamp(-40px, -2vw, -20px),  clamp(110px, 25vh, 260px)); }
 }
 
 /* Al inspeccionar cualquier nave se congela toda la portada. */
@@ -581,7 +584,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   .hero-planet { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: clamp(52px, 15vw, 76px); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
-  .hero-craft--patrulla { top: 10%; width: clamp(42px, 12vw, 60px); }
+  .hero-craft--patrulla { top: 10%; width: clamp(52px, 15vw, 76px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
