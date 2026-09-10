@@ -274,106 +274,160 @@ def _dither(sx, sy):
 
 
 # --------------------------------------------------------------------- nubes
-# Nubes pixel-art tipo cúmulo (lóbulos redondeados arriba, base plana), con
-# BORDE NEGRO para contraste — como los spritesheets de nubes de videojuego.
-# '#' cuerpo blanco, 'o' sombra (gris), '.' vacío; el borde de 1 px se añade
-# solo, en negro. Se proyectan sobre la esfera como las ciudades y giran con el
-# planeta.
+# Nubes pixel-art tipo cúmulo (lóbulos irregulares arriba, base plana), con
+# BORDE NEGRO para contraste. '#' cuerpo blanco, 'o' sombra gris, '.' vacío.
+# 12 plantillas de tamaños/siluetas distintas + escala por instancia, para que
+# no se repitan. El borde negro de 1 px se re-genera tras escalar (siempre
+# limpio). Se proyectan sobre la esfera como las ciudades y giran con el planeta.
 C_BODY = (0xf7, 0xfa, 0xfd)         # cuerpo casi blanco
 C_BASE = (0xa6, 0xb2, 0xc2)         # sombra / base gris azulada
 C_EDGE = (0x10, 0x13, 0x1c)         # borde casi negro (contraste)
 
 CLOUD_ART = [
+    # --- pequeñas ---
     """
-......####.......
-....##########...
-...####...######.
-..####.....######
-..###.......#####
-..##ooooooo######
-..##oooooooo####.
-...###oooo####...
+.###.
+#####
+#oo##
+.oo#.
 """,
     """
-.....##....###.......###...
-...######..######...######.
-..#######..###############.
-.######.....##############.
-.#####oooooo#############..
-.####ooooooooooooooo######.
-..###ooooooooooooooooo###..
-...####ooooooooooo#####....
+..##..
+.####.
+##.###
+#oo###
+.oo##.
 """,
     """
-....##...##....
-...####.####...
-..#####.#####..
-.######.######.
-.#####ooo#####.
-..###oooooo##..
-...##oooo###...
+.###..
+#####.
+##.###
+#oooo#
+.oo##.
 """,
     """
-.......####.........
-.....########...##..
-....#########.#####.
-...#####...#########
-..#####.....########
-..####.......#######
-..###oooooooo#######
-..###ooooooooo#####.
-...###ooooooo####...
-....####ooo####.....
+...##..
+.######
+##.####
+#oo.###
+.oo##..
+""",
+    # --- medianas ---
+    """
+...###...
+.###.###.
+###...###
+##oooo.##
+.##oooo##
+..##oo##.
 """,
     """
-...##..##...
-..####.####.
-.######.####
-.#####oo####
-..###oooo##.
-...##oo###..
+....###....
+..##.#####.
+.###...####
+###.....###
+##ooooo.###
+.##oooooo##
+..###ooo##.
+""",
+    """
+..##..###...
+.####.#####.
+###..#....##
+##........##
+##oooooo..##
+.##ooooooo##
+...###ooo##.
+""",
+    """
+.....##.....
+...######...
+..###..####.
+.###.....###
+###.......##
+##ooooo...##
+.##oooooo##.
+..##oooo##..
+""",
+    # --- grandes / irregulares ---
+    """
+......###.......##..
+....########..####..
+...####...##########
+..###.......########
+..##.........#######
+..##oooooo...#######
+..##ooooooooo.#####.
+...##ooooooo###....
+""",
+    """
+.......##.........
+....######...###..
+..#####...########
+.####.......#######
+###..........######
+##.............####
+##ooooooo......###.
+.##ooooooooo..###..
+..###oooooo###.....
+""",
+    """
+....##...####......
+..######.######.##.
+.#####...#####.####
+####..........#####
+##.............####
+##ooooooo......###.
+.##ooooooooooo.##..
+..####oooooo###....
+""",
+    """
+...###.......###....
+.########...######..
+#####...##.#....####
+###......#.......###
+##...............###
+##ooooooo........##.
+.##ooooooooooo..##..
+..###oooooooo##....
 """,
 ]
 
+# peso: las plantillas 0-3 son demasiado pequeñas para el borde negro a esta
+# escala; se usan solo las medianas (4-7, más frecuentes) y grandes (8-11).
+CLOUD_W_PICK = [4, 5, 6, 7, 4, 5, 6, 7, 4, 5] + [8, 9, 10, 11]
 
-def _cloud_shape(art):
-    """(dx, dy) -> 'b'ody / 's'hade / 'e'dge, centrado."""
-    rows = [ln for ln in art.strip("\n").split("\n")]
-    w = max(len(r) for r in rows)
-    cells = {}
-    for y, r in enumerate(rows):
+
+def _cloud_body(art):
+    """{(x, y): 'b'|'s'} con origen en (0, 0)."""
+    out = {}
+    for y, r in enumerate(art.strip("\n").split("\n")):
         for x, ch in enumerate(r):
             if ch == "#":
-                cells[(x, y)] = "b"
-            elif ch in "o=":
-                cells[(x, y)] = "s"
-    body = set(cells)
-    cand = set()
-    for (x, y) in body:
-        for dx in (-1, 0, 1):
-            for dy in (-1, 0, 1):
-                p = (x + dx, y + dy)
-                if p not in body:
-                    cand.add(p)
-    for p in cand:
-        # borde solo si NO es un hueco cerrado (tiene algún vecino vacío)
-        if any((p[0] + ex, p[1] + ey) not in body and (ex or ey)
-               for ex in (-1, 0, 1) for ey in (-1, 0, 1)):
-            cells[p] = "e"
-    cx, cy = w // 2, len(rows) // 2
-    return {(x - cx, y - cy): k for (x, y), k in cells.items()}
+                out[(x, y)] = "b"
+            elif ch == "o":
+                out[(x, y)] = "s"
+    return out
 
 
-CLOUD_SHAPES = [_cloud_shape(a) for a in CLOUD_ART]
+CLOUD_BODIES = [_cloud_body(a) for a in CLOUD_ART]
 
-# Reparto: ~46 nubes con semilla fija, esparcidas, más frecuentes en latitudes
-# bajas/medias y ninguna en los polos. (lat, lon, forma, espejo).
+# Reparto: 40 nubes, semilla fija. Longitud ESTRATIFICADA (una por sector con
+# jitter) para que no se amontonen y cada fotograma tenga un número parecido;
+# latitud y todo lo demás al azar. (lat, lon, forma, espejo, escala).
 random.seed(4242)
 NUBES = []
-for _ in range(38):
-    lat = random.triangular(-52, 52, random.choice((-8, 8, 20, -20, 36, -36)))
-    lon = random.uniform(-180, 180)
-    NUBES.append((lat, lon, random.randrange(len(CLOUD_SHAPES)), random.random() < 0.5))
+_N = 40
+for _i in range(_N):
+    lon = -180.0 + (_i + random.uniform(0.15, 0.85)) * (360.0 / _N)
+    lat = random.triangular(-52, 52, random.choice((-8, 8, 20, -20, 36, -36, 0)))
+    NUBES.append((
+        lat, lon,
+        random.choice(CLOUD_W_PICK),
+        random.random() < 0.5,
+        random.uniform(0.8, 1.2),        # escala por instancia
+    ))
+random.shuffle(NUBES)
 
 # ------------------------------------------------- rejilla de densidad de luces
 LUZ = [bytearray(LW) for _ in range(LH)]
@@ -560,11 +614,34 @@ def city_cells(lon0, night):
     return out
 
 
+def _scaled_cloud(body, size):
+    """Escala el cuerpo (nearest) y le regenera el borde negro. -> dict local."""
+    xs = [p[0] for p in body]
+    ys = [p[1] for p in body]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    dw = max(2, round((x1 - x0 + 1) * size))
+    dh = max(2, round((y1 - y0 + 1) * size))
+    dest = {}
+    for oy in range(dh):
+        sy = y0 + int(oy / size + 0.5)
+        for ox in range(dw):
+            k = body.get((x0 + int(ox / size + 0.5), sy))
+            if k:
+                dest[(ox, oy)] = k
+    for (ox, oy) in list(dest):
+        for ex in (-1, 0, 1):
+            for ey in (-1, 0, 1):
+                p = (ox + ex, oy + ey)
+                if p not in dest:
+                    dest.setdefault(p, "e")
+    return dest, dw, dh
+
+
 def cloud_cells(lon0):
-    """(sx, sy) -> índice de color. Nubes pixel-art sueltas, proyectadas sobre
-    la esfera y sombreadas por el terminador. Solo día."""
+    """(sx, sy) -> índice de color. Nubes pixel-art tipo cúmulo, proyectadas
+    sobre la esfera y sombreadas por el terminador. Solo día."""
     out = {}
-    for clat, clon, shp, flip in NUBES:
+    for clat, clon, shp, flip, size in NUBES:
         rlat = math.radians(clat)
         rlon = math.radians(clon - lon0)
         a = math.sin(rlat)
@@ -581,15 +658,18 @@ def cloud_cells(lon0):
             continue
         cx = px * RADIUS + CX - 0.5
         cy = py * RADIUS + CY - 0.5
-        xsc = 0.70 + 0.30 * pz               # se aplasta un poco hacia el borde
+        xsc = 0.72 + 0.28 * pz               # se aplasta un poco hacia el borde
         t = 0.42 + 0.58 * bright
-        cib = color_index(mix(SPACE, C_BODY, min(1.0, t + 0.06)))
-        cis = color_index(mix(SPACE, C_BASE, t))
-        cie = color_index(mix(SPACE, C_EDGE, t * 0.96))
-        cix = {"b": cib, "s": cis, "e": cie}
-        for (dx, dy), k in CLOUD_SHAPES[shp].items():
-            x = int(round(cx + (-dx if flip else dx) * xsc))
-            y = int(round(cy + dy))
+        cix = {
+            "b": color_index(mix(SPACE, C_BODY, min(1.0, t + 0.06))),
+            "s": color_index(mix(SPACE, C_BASE, t)),
+            "e": color_index(mix(SPACE, C_EDGE, t * 0.96)),
+        }
+        cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size)
+        for (ox, oy), k in cells.items():
+            ddx = (ox - dw / 2.0)
+            x = int(round(cx + (-ddx if flip else ddx) * xsc))
+            y = int(round(cy + oy - dh / 2.0))
             if 0 <= x < COLS and 0 <= y < VIS and (x, y) not in out:
                 out[(x, y)] = cix[k]
     return out
