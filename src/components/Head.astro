@@ -33,9 +33,13 @@ const socialImageURL = new URL(image, Astro.site);
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" type="image/svg+xml" href="/zodk-favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- El sufijo -v2 fuerza a los navegadores (sobre todo Safari en iOS, que
+     cachea el favicon por URL de forma muy agresiva y no lo suelta ni
+     borrando datos) a descargar el icono nuevo en vez del de fábrica. Si se
+     vuelve a cambiar el icono, subir el número. -->
+<link rel="icon" href="/favicon-v2.ico" sizes="16x16">
+<link rel="icon" type="image/svg+xml" href="/zodk-favicon-v2.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png">
 <meta name="generator" content={Astro.generator} />
 
 <!-- Sin JS, .animate nunca recibe la clase .show (la pone init() en el script
