@@ -98,7 +98,8 @@ const socialImageURL = new URL(image, Astro.site);
     preloadTheme();
     initHeader();
     initCraft();
-    initRotacion();
+    initObjeto();
+    initHelice();
     animate();
 
     const backToTop = document.getElementById("back-to-top");
@@ -187,35 +188,34 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-  // Rotacion del hero: 2 slots muestran siempre 2 naves de AERONAVES, cada una
-  // con su trayectoria. Cada 8 s uno de los slots (alternando: cada slot se
-  // releva cada 16 s) se desvanece, se le cambia sprite + trayectoria + ficha
-  // por la siguiente nave de la lista que NO este ya en el otro slot, y se
-  // vuelve a mostrar con un fundido. Sin animacion (reduced-motion) no rota.
-  function initRotacion() {
+  // Hero: UN objeto de AERONAVES a la vez, con su trayectoria. initObjeto()
+  // elige el primero con "bolsa barajada" (se recorren todos antes de repetir;
+  // localStorage recuerda el ultimo para no repetir al recargar) y engancha el
+  // boton .hero-cambio: al pulsarlo, el objeto se desvanece, se le cambia
+  // sprite + trayectoria + ficha por el siguiente de la bolsa y vuelve a
+  // aparecer. Con reduced-motion el cambio es instantaneo pero el boton sigue.
+  function initObjeto() {
     const data = document.getElementById("aeronaves-data");
-    if (!data) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = document.querySelector(".hero-craft[data-slot]");
+    const boton = document.querySelector(".hero-cambio");
+    if (!data || !el) return;
     let pool;
     try { pool = JSON.parse(data.textContent); } catch (e) { return; }
-    if (!Array.isArray(pool) || pool.length < 3) return;
+    if (!Array.isArray(pool) || pool.length < 2) {
+      if (boton) boton.hidden = true;
+      return;
+    }
 
-    const slots = [...document.querySelectorAll(".hero-craft[data-slot]")];
-    if (slots.length < 2) return;
-    // Fase de entrada: la nave aparece ya dentro de pantalla (no desde fuera), y
-    // el slot 1 va medio periodo por detras para que 2 naves con la misma
-    // trayectoria no se solapen.
-    const PERIODO = { sweep: 8, orbita: 19, fijo: 16, "fijo-izq": 16 };
-    const FASE0 = { sweep: 2, orbita: 7, fijo: 4, "fijo-izq": 4 };
-    const faseDelay = (vuelo, s) =>
-      "-" + ((FASE0[vuelo] || 0) + (s === 1 ? (PERIODO[vuelo] || 0) / 2 : 0)) + "s";
-    const idx = slots.map((el) => Number(el.dataset.slot)); // [0, 1]
+    const sinMovimiento =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Empieza la trayectoria ya avanzada, para que el objeto no aparezca
+    // clavado en el extremo de su recorrido al cargar.
+    const FASE0 = { sweep: 2, orbita: 6, fijo: 4, "fijo-izq": 4, "fijo-centro": 4 };
 
-    function pinta(el, a) {
-      const s = Number(el.dataset.slot);
+    function pinta(a) {
       el.classList.remove(
         "hero-craft--sweep", "hero-craft--orbita", "hero-craft--fijo",
-        "hero-craft--fijo-izq", "flip-x", "edge-l", "edge-r"
+        "hero-craft--fijo-izq", "hero-craft--fijo-centro", "flip-x", "edge-l", "edge-r"
       );
       el.classList.add("hero-craft--" + a.vuelo);
       el.dataset.craft = a.id;
@@ -226,7 +226,7 @@ const socialImageURL = new URL(image, Astro.site);
       el.style.animation = "none";
       void el.offsetWidth; // reinicia la animacion de la trayectoria
       el.style.animation = "";
-      el.style.animationDelay = faseDelay(a.vuelo, s);
+      el.style.animationDelay = "-" + (FASE0[a.vuelo] || 0) + "s";
       const specs = el.querySelector(".craft-specs");
       specs.querySelector(".craft-specs-titulo").textContent = a.nombre;
       specs.querySelector(".craft-clase").textContent = a.clase;
@@ -241,21 +241,108 @@ const socialImageURL = new URL(image, Astro.site);
         .join("");
     }
 
-    let turno = 0; // que slot rota la proxima vez
-    if (window.__rotId) clearInterval(window.__rotId);
-    window.__rotId = setInterval(() => {
-      const el = slots[turno];
-      const otro = idx[turno ^ 1];
-      let next = (idx[turno] + 1) % pool.length;
-      if (next === otro) next = (next + 1) % pool.length;
-      idx[turno] = next;
-      el.classList.add("rot-oculta");
-      setTimeout(() => {
-        pinta(el, pool[next]);
+    // Bolsa barajada de indices: se saca de la bolsa hasta vaciarla y se vuelve
+    // a barajar; nunca se repite el objeto actual de forma consecutiva.
+    let bolsa = [];
+    function rellenaBolsa() {
+      bolsa = pool.map((_, i) => i);
+      for (let i = bolsa.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = bolsa[i]; bolsa[i] = bolsa[j]; bolsa[j] = t;
+      }
+    }
+    function sacaIndice(evita) {
+      if (!bolsa.length) rellenaBolsa();
+      if (bolsa.length === 1 && bolsa[0] === evita) rellenaBolsa();
+      let k = bolsa.length - 1;
+      while (k >= 0 && bolsa[k] === evita) k--;
+      if (k < 0) k = bolsa.length - 1; // solo quedaba 'evita'
+      return bolsa.splice(k, 1)[0];
+    }
+
+    let ultimo = -1;
+    try { ultimo = Number(localStorage.getItem("hero-objeto")); } catch (e) {}
+    if (!Number.isInteger(ultimo) || ultimo < 0 || ultimo >= pool.length) {
+      ultimo = -1;
+    }
+
+    let actual = sacaIndice(ultimo);
+    pinta(pool[actual]);
+    try { localStorage.setItem("hero-objeto", String(actual)); } catch (e) {}
+    // Revela el objeto: quita el ocultado de html.js y deja que el CSS lo funda
+    // (instantaneo con reduced-motion).
+    if (sinMovimiento) {
+      el.dataset.listo = "";
+    } else {
+      requestAnimationFrame(() => { el.dataset.listo = ""; });
+    }
+
+    let cambiando = false;
+    function cambia() {
+      if (cambiando) return;
+      cambiando = true;
+      const siguiente = sacaIndice(actual);
+      const aplica = () => {
+        actual = siguiente;
+        pinta(pool[actual]);
+        try { localStorage.setItem("hero-objeto", String(actual)); } catch (e) {}
         el.classList.remove("rot-oculta");
-      }, 750);
-      turno ^= 1;
-    }, 8000);
+        cambiando = false;
+      };
+      if (sinMovimiento) {
+        aplica();
+      } else {
+        el.classList.add("rot-oculta");
+        setTimeout(aplica, 750);
+      }
+    }
+
+    if (boton) {
+      boton.hidden = false;
+      boton.addEventListener("click", cambia);
+    }
+  }
+
+  // Helice del boton .hero-cambio: un bucle rAF lleva una velocidad angular que
+  // tiende suavemente a "rapido" al pasar el raton / enfocar y a 0 al salir (se
+  // para con inercia donde quede). El bucle solo corre mientras se mueve y se
+  // apaga solo. Con reduced-motion no gira.
+  function initHelice() {
+    const boton = document.querySelector(".hero-cambio");
+    const giro = boton && boton.querySelector(".btn-helice-giro");
+    const disco = boton && boton.querySelector(".btn-helice-disco");
+    if (!giro) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const MAX = 1300;   // grados/segundo a tope
+    const EASE = 2.7;   // rapidez de aceleracion/frenada
+    let ang = 0, vel = 0, target = 0, raf = 0, prev = 0;
+
+    function tick(now) {
+      if (!boton.isConnected) { raf = 0; return; }
+      const dt = prev ? Math.min((now - prev) / 1000, 0.05) : 0;
+      prev = now;
+      vel += (target - vel) * Math.min(dt * EASE, 1);
+      ang = (ang + vel * dt) % 360;
+      giro.style.transform = "rotate(" + ang.toFixed(1) + "deg)";
+      if (disco) {
+        disco.style.opacity = (Math.min(1, Math.abs(vel) / MAX) * 0.4).toFixed(2);
+      }
+      if (target !== 0 || Math.abs(vel) > 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        vel = 0; raf = 0; prev = 0;
+        if (disco) disco.style.opacity = "0";
+      }
+    }
+    function mueve(t) {
+      target = t;
+      if (!raf) { prev = 0; raf = requestAnimationFrame(tick); }
+    }
+    boton.addEventListener("pointerenter", () => mueve(MAX));
+    boton.addEventListener("pointerleave", () => mueve(0));
+    boton.addEventListener("focus", () => mueve(MAX));
+    boton.addEventListener("blur", () => mueve(0));
   }
 
   function animate() {
@@ -321,6 +408,11 @@ function toggleTheme(dark) {
       toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
     }
   }
+
+  // Marca "hay JS" antes de pintar el body: el CSS usa html.js para que el
+  // objeto del hero nazca oculto y lo funda initObjeto() al elegirlo al azar
+  // (sin JS se ve el primero de la lista, sin fundido).
+  document.documentElement.classList.add("js");
 
   document.addEventListener("DOMContentLoaded", () => init());
   document.addEventListener("astro:after-swap", () => init());

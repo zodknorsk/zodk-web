@@ -345,11 +345,12 @@ html.dark .hero-titulo::before {
   .hero-titulo p span::after { display: none; }
 }
 
-/* Naves y satélites que sobrevuelan / orbitan el hero. Cada `.hero-craft` lleva
-   su sprite (vars --sprite / --sprite-noche) y su proporción por estilo inline,
-   desde src/data/aeronaves.ts (index.astro los pinta en bucle). La trayectoria
-   la da el modificador (--sweep / --orbita / --fijo). Al pasar el ratón la nave se para
-   —y toda la portada— y sale una línea a una ficha con las specs. Solo ratón. */
+/* El objeto (dron / avión / satélite) que sobrevuela el hero. Hay UN `.hero-craft`;
+   initObjeto() (Head.astro) le cambia el sprite (vars --sprite / --sprite-noche),
+   la proporción y la trayectoria al pulsar el botón .hero-cambio. Los datos salen
+   de src/data/aeronaves.ts. La trayectoria la da el modificador (--sweep / --orbita
+   / --fijo). Al pasar el ratón el objeto se para —y toda la portada— y sale una
+   línea a una ficha con las specs. Solo ratón. */
 .hero-craft {
   position: absolute;
   background: var(--sprite) center / contain no-repeat;
@@ -357,16 +358,17 @@ html.dark .hero-titulo::before {
   pointer-events: auto;
   z-index: 2;
   opacity: 1;
-  transition: opacity 0.7s ease; /* fundido al rotar de nave (initRotacion) */
+  transition: opacity 0.7s ease; /* fundido al cambiar de objeto (initObjeto) */
 }
 
-/* Nave a punto de relevarse: se desvanece; el JS le cambia el sprite/ficha
-   mientras está invisible y la vuelve a mostrar. */
+/* Objeto a punto de cambiar: se desvanece; el JS le cambia el sprite/ficha
+   mientras está invisible y lo vuelve a mostrar. */
 .hero-craft.rot-oculta { opacity: 0; }
 
-/* Si los 2 slots caen en la misma trayectoria, el segundo va desfasado para
-   que no se pisen. */
-.hero-craft[data-slot="1"] { animation-delay: -4s; }
+/* Con JS el objeto nace oculto y initObjeto() lo revela (data-listo) al elegir
+   el aleatorio, fundiéndolo con la transición de arriba; así no se ve saltar el
+   objeto por defecto al aleatorio. Sin JS (html sin .js) se ve desde el principio. */
+html.js .hero-craft:not([data-listo]) { opacity: 0; }
 
 html.dark .hero-craft { background-image: var(--sprite-noche); }
 
@@ -397,28 +399,32 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   }
 }
 
-/* Trayectoria "orbita" (satélite): pasada recta de lado a lado cerca del limbo,
-   con una leve curva, en bucle y en un solo sentido. Sale y entra por fuera de
-   pantalla, así el salto del bucle no se ve. */
+/* Trayectoria "orbita" (satélite): pasada de lado a lado cerca del limbo, con
+   una leve curva. Al llegar al limbo opuesto frena y vuelve al inicio (órbita
+   alta), y así en bucle —hasta que el botón trae otro objeto—. El `alternate`
+   hace la ida y la vuelta; el `ease-in-out` frena y gira en cada extremo. Se
+   queda siempre dentro de pantalla. */
 .hero-craft--orbita {
   left: 0;
   top: 12%;
   width: clamp(50px, 5.6vw, 92px);
-  animation: hero-orbita 19s linear infinite;
+  animation: hero-orbita 22s ease-in-out infinite alternate;
 }
 
 @keyframes hero-orbita {
-  0%   { transform: translate(-18vw, 5vh); }
-  50%  { transform: translate(50vw, -2vh); }
-  100% { transform: translate(118vw, 5vh); }
+  0%   { transform: translate(3vw, 6vh); }
+  50%  { transform: translate(48vw, -2vh); }
+  100% { transform: translate(90vw, 7vh); }
 }
 
-/* "fijo" / "fijo-izq": la nave se queda en su punto —debajo del título— pero
-   describe una elipse pequeña y lenta para que no parezca del todo parada.
-   "fijo" = E-2, escorado a la derecha y grande. "fijo-izq" = RQ-4, abajo a la
-   izquierda y más pequeño. */
+/* "fijo" / "fijo-izq" / "fijo-centro": la nave se queda en su punto —debajo del
+   título— pero describe una elipse pequeña y lenta para que no parezca del todo
+   parada. "fijo" = E-2, escorado a la derecha y grande. "fijo-izq" = RQ-4, abajo
+   a la izquierda y más pequeño. "fijo-centro" = MQ-9, centrado bajo el título,
+   mismo tamaño que el RQ-4. */
 .hero-craft--fijo,
-.hero-craft--fijo-izq {
+.hero-craft--fijo-izq,
+.hero-craft--fijo-centro {
   animation: hero-fijo-deriva 16s linear infinite;
 }
 .hero-craft--fijo {
@@ -430,6 +436,13 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   left: 20%;
   top: 60%;
   width: clamp(58px, 5.5vw, 86px);
+}
+.hero-craft--fijo-centro {
+  left: 43%;
+  top: 62%;
+  /* el sprite del MQ-9 trae bastante margen transparente (dron + sombra), así
+     que se le da más ancho de caja que al RQ-4 para que el dron se vea igual. */
+  width: clamp(78px, 7.4vw, 116px);
 }
 
 @keyframes hero-fijo-deriva {
@@ -573,10 +586,11 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
-/* fijo / fijo-izq: van bajos, así que la ficha sale HACIA ARRIBA (si fuera
-   debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
+/* fijo / fijo-izq / fijo-centro: van bajos, así que la ficha sale HACIA ARRIBA
+   (si fuera debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
 .hero-craft--fijo .craft-linea,
-.hero-craft--fijo-izq .craft-linea {
+.hero-craft--fijo-izq .craft-linea,
+.hero-craft--fijo-centro .craft-linea {
   left: 50%;
   bottom: 100%;
   width: 1px;
@@ -584,25 +598,31 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   transform-origin: center bottom;
 }
 .hero-craft--fijo .craft-specs,
-.hero-craft--fijo-izq .craft-specs {
+.hero-craft--fijo-izq .craft-specs,
+.hero-craft--fijo-centro .craft-specs {
   left: 50%;
   bottom: calc(100% + 40px);
   transform: translateX(-50%) translateY(6px);
 }
 .hero-craft--fijo:hover .craft-specs,
-.hero-craft--fijo-izq:hover .craft-specs { transform: translateX(-50%) translateY(0); }
+.hero-craft--fijo-izq:hover .craft-specs,
+.hero-craft--fijo-centro:hover .craft-specs { transform: translateX(-50%) translateY(0); }
 .hero-craft--fijo.edge-l .craft-specs,
-.hero-craft--fijo-izq.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
+.hero-craft--fijo-izq.edge-l .craft-specs,
+.hero-craft--fijo-centro.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
 .hero-craft--fijo.edge-l:hover .craft-specs,
-.hero-craft--fijo-izq.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo-izq.edge-l:hover .craft-specs,
+.hero-craft--fijo-centro.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
 .hero-craft--fijo.edge-r .craft-specs,
-.hero-craft--fijo-izq.edge-r .craft-specs {
+.hero-craft--fijo-izq.edge-r .craft-specs,
+.hero-craft--fijo-centro.edge-r .craft-specs {
   left: auto;
   right: 0;
   transform: translateX(0) translateY(6px);
 }
 .hero-craft--fijo.edge-r:hover .craft-specs,
-.hero-craft--fijo-izq.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo-izq.edge-r:hover .craft-specs,
+.hero-craft--fijo-centro.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
 @media (hover: none) {
   .hero-craft { pointer-events: none; }
@@ -615,6 +635,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
+  .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
@@ -693,6 +714,64 @@ html.dark .hero-stars::after { display: block; }
   50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
 }
 
+/* Botón "otro objeto": en el espacio profundo, arriba a la izquierda sobre el
+   limbo. Trae otro objeto al hero (initObjeto en Head.astro). El interior es un
+   PLACEHOLDER: SVG de Excalidraw del usuario (cuadrado + flecha) con su hélice
+   del E-2 dentro, desde botonSvg en index.astro; el <button> no pone borde ni
+   fondo. Lo revela el JS (nace con [hidden]); sin JS no aparece. */
+.hero-cambio {
+  position: absolute;
+  left: 9%;
+  top: 9%;
+  z-index: 3;
+  width: 150px;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.hero-cambio > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.hero-cambio:focus-visible {
+  outline: 2px solid #eef2f7;
+  outline-offset: 3px;
+}
+
+/* La "diana de click" es una hélice (guiño al E-2). El giro lo lleva un bucle
+   rAF en initHelice() (Head.astro): acelera al pasar el ratón / enfocar y frena
+   con inercia hasta parar al salir. Aquí solo van los colores, el disco de
+   "barrido" (opacidad la pone el JS) y el hundido al pulsar.
+   Dos grupos: .btn-helice se hunde al pulsar (CSS), .btn-helice-giro gira (JS). */
+.hero-cambio .btn-helice,
+.hero-cambio .btn-helice-giro {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.hero-cambio .btn-helice { transition: transform 0.1s ease; }
+.hero-cambio:active .btn-helice { transform: translateY(4px); }
+
+/* La hélice (SVG del usuario, Excalidraw) trae sus colores; el disco de barrido
+   lleva el suyo (opacidad la pone el JS). Al pulsar, las palas #d3d3d3 pasan a
+   rojo (selector por atributo, gana a la presentación del SVG). */
+.hero-cambio .btn-helice-disco { fill: #c9ced6; opacity: 0; }
+.hero-cambio:active .btn-helice-giro [fill="#d3d3d3"] { fill: #fa6969; }
+.hero-cambio:active .btn-helice-giro [stroke="#d3d3d3"] { stroke: #fa6969; }
+
+/* Al pulsar se hunden el cuadrado y la hélice (no la flecha). */
+.hero-cambio .btn-caja { transition: transform 0.1s ease; }
+.hero-cambio:active .btn-caja { transform: translateY(4px); }
+
+@media (max-width: 640px) {
+  .hero-cambio { left: 5%; top: 4%; width: 118px; }
+}
+
 /* Cabecera de la portada, tres estados:
    1. arriba del todo (.at-top, sin .scrolled) -> mínima: "notas / eventos /
       tema", transparente, sin logo.
@@ -756,5 +835,12 @@ html.home main { padding-top: 9.5rem; }
   .hero-craft,
   .hero-sparkle,
   .hero-scroll { animation: none; }
-  .hero-craft--orbita { left: 12%; top: 15%; } /* aparcado en sitio visible */
+  .hero-craft { transition: none; } /* revelado y cambio de objeto instantáneos */
+  .hero-craft--orbita { left: 22%; top: 16%; } /* aparcado en sitio visible, sin tapar el botón */
+  /* botón: sin hundirse; la hélice no gira (initHelice se autodesactiva); las
+     palas sí siguen poniéndose rojas al pulsar */
+  .hero-cambio .btn-helice,
+  .hero-cambio:active .btn-helice,
+  .hero-cambio .btn-caja,
+  .hero-cambio:active .btn-caja { transform: none; }
 }

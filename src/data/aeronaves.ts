@@ -6,12 +6,13 @@
 // Para añadir una nave: dibújala en generar-aeronaves.py, copia el SVG a
 // public/, y añade una entrada aquí. Se suma sola a la rotación del hero.
 //
-// El hero muestra SIEMPRE 2 de esta lista a la vez, cada una con su trayectoria
-// ("vuelo"): "sweep" barrido diagonal, "orbita" pasada de lado a lado, "fijo"
-// quieta con una elipse pequeña. Cada 8 s un hueco se releva: la nave se
-// desvanece y aparece (con fundido, sin recorrido de entrada) la siguiente de
-// la lista que no esté ya en pantalla. Lo lleva initRotacion() en Head.astro;
-// sin JS se ven las 2 primeras de la lista, quietas.
+// El hero muestra UN objeto de esta lista a la vez, con su trayectoria
+// ("vuelo"): "sweep" barrido diagonal, "orbita" pasada de lado a lado que rebota
+// en el limbo y vuelve, "fijo" quieta con una elipse pequeña. No hay relevo
+// automático: el objeto solo cambia al pulsar el botón .hero-cambio (espacio
+// profundo, arriba a la izquierda), que desvanece el actual y trae otro al azar
+// —"bolsa barajada": se recorren todos antes de repetir—. Lo lleva initObjeto()
+// en Head.astro; sin JS se ve el primero de la lista, quieto.
 //
 // Excepción de dibujo: varias no salen del script. El TB3 y el E-2 son SVG de
 // diseño; el MQ-9 y el RQ-4 son PNG tal cual (sin versión de noche propia).
@@ -24,7 +25,7 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq"; // trayectoria (ver global.css)
+  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq" | "fijo-centro"; // trayectoria (ver global.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
@@ -66,6 +67,25 @@ export const AERONAVES: Aeronave[] = [
       ["MTOW", "14.630 kg"],
       ["Techo", "~18.300 m"],
       ["Autonomía", "~32 h"],
+    ],
+  },
+  {
+    id: "mq9",
+    nombre: "MQ-9 Reaper",
+    clase: "UAV MALE armado",
+    sprite: "/zodk-mq9.png",
+    spriteNoche: "/zodk-mq9.png",
+    ratio: "358 / 392",
+    vuelo: "fijo-centro",
+    bandera: "🇺🇸",
+    specs: [
+      ["Fabricante", "General Atomics"],
+      ["Origen", "EE. UU."],
+      ["Primer vuelo", "2001"],
+      ["Envergadura", "20,1 m"],
+      ["MTOW", "4.760 kg"],
+      ["Techo", "~15.000 m"],
+      ["Autonomía", "~27 h"],
     ],
   },
   {
