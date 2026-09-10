@@ -380,7 +380,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 .hero-craft--sweep {
   left: 44%;
   top: 24%;
-  width: clamp(72px, 7.2vw, 112px);
+  width: clamp(100px, 10vw, 157px);   /* ~x1,4 el tamaño anterior */
   transform: translateX(-50%);
   animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
@@ -414,9 +414,9 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
    escorado a la derecha— pero describe una elipse pequeña y lenta para que no
    parezca del todo parado. */
 .hero-craft--fijo {
-  left: 64%;
-  top: 60%;
-  width: clamp(72px, 7.2vw, 112px); /* al menos tan grande como el dron */
+  left: 58%;
+  top: 58%;
+  width: clamp(160px, 16vw, 250px);   /* ~x2,25 el tamaño anterior */
   animation: hero-fijo-deriva 16s linear infinite;
 }
 
@@ -592,9 +592,9 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 
 @media (max-width: 640px) {
   .hero-planet { top: 13%; width: 132vw; }
-  .hero-craft--sweep { top: 20%; width: clamp(52px, 15vw, 76px); }
+  .hero-craft--sweep { top: 20%; width: clamp(72px, 21vw, 106px); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
-  .hero-craft--fijo { top: 58%; left: 58%; width: clamp(52px, 15vw, 76px); }
+  .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
