@@ -346,7 +346,7 @@ html.dark .hero-titulo::before {
 /* Naves y satélites que sobrevuelan / orbitan el hero. Cada `.hero-craft` lleva
    su sprite (vars --sprite / --sprite-noche) y su proporción por estilo inline,
    desde src/data/aeronaves.ts (index.astro los pinta en bucle). La trayectoria
-   la da el modificador (--sweep / --orbita). Al pasar el ratón la nave se para
+   la da el modificador (--sweep / --orbita / --patrulla). Al pasar el ratón la nave se para
    —y toda la portada— y sale una línea a una ficha con las specs. Solo ratón. */
 .hero-craft {
   position: absolute;
@@ -398,6 +398,22 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   0%   { transform: translate(-18vw, 5vh); }
   50%  { transform: translate(50vw, -2vh); }
   100% { transform: translate(118vw, 5vh); }
+}
+
+/* Trayectoria "patrulla" (E-2 Hawkeye): vuelo lento de ida y vuelta arriba a
+   la izquierda, con una comba suave (arco de patrulla). Va despacio para no
+   competir con el dron ni con el satélite. */
+.hero-craft--patrulla {
+  left: 6%;
+  top: 15%;
+  width: clamp(56px, 5.6vw, 90px);
+  animation: hero-patrulla 24s ease-in-out infinite alternate;
+}
+
+@keyframes hero-patrulla {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(clamp(120px, 22vw, 340px), clamp(10px, 3vh, 34px)); }
+  100% { transform: translate(clamp(240px, 44vw, 620px), 0); }
 }
 
 /* Al inspeccionar cualquier nave se congela toda la portada. */
@@ -533,6 +549,29 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
+/* patrulla: ficha debajo, igual que órbita (el JS pone .edge-l / .edge-r). */
+.hero-craft--patrulla .craft-linea {
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 46px;
+  transform-origin: center top;
+}
+.hero-craft--patrulla .craft-specs {
+  left: 50%;
+  top: calc(100% + 46px);
+  transform: translateX(-50%) translateY(-6px);
+}
+.hero-craft--patrulla:hover .craft-specs { transform: translateX(-50%) translateY(0); }
+.hero-craft--patrulla.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(-6px); }
+.hero-craft--patrulla.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--patrulla.edge-r .craft-specs {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(-6px);
+}
+.hero-craft--patrulla.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
+
 @media (hover: none) {
   .hero-craft { pointer-events: none; }
   .craft-dossier { display: none; }
@@ -542,6 +581,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   .hero-planet { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: clamp(52px, 15vw, 76px); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
+  .hero-craft--patrulla { top: 10%; width: clamp(42px, 12vw, 60px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
