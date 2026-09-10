@@ -365,11 +365,12 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 
 /* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
-   título y vuelve a subir (alternate). */
+   título y vuelve a subir (alternate). El sprite del TB3 es casi cuadrado
+   (116x108) y con detalle, así que se le da bastante ancho para que se lea. */
 .hero-craft--sweep {
   left: 44%;
-  top: 26%;
-  width: clamp(46px, 4.6vw, 74px);
+  top: 24%;
+  width: clamp(72px, 7.2vw, 112px);
   transform: translateX(-50%);
   animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
@@ -539,7 +540,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 
 @media (max-width: 640px) {
   .hero-planet { top: 13%; width: 132vw; }
-  .hero-craft--sweep { top: 22%; width: clamp(34px, 10vw, 50px); }
+  .hero-craft--sweep { top: 20%; width: clamp(52px, 15vw, 76px); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }

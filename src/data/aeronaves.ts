@@ -5,6 +5,9 @@
 //
 // Para añadir una nave: dibújala en generar-aeronaves.py, copia el SVG a
 // public/, y añade una entrada aquí. Todas las de este array salen en el hero.
+//
+// Excepción: el dron (Bayraktar TB3) es un SVG de diseño hecho a mano, no sale
+// del script. Vive tal cual en public/zodk-dron[-noche].svg.
 
 export type Aeronave = {
   id: string;
@@ -25,7 +28,7 @@ export const AERONAVES: Aeronave[] = [
     clase: "UCAV embarcado",
     sprite: "/zodk-dron.svg",
     spriteNoche: "/zodk-dron-noche.svg",
-    ratio: "96 / 56",
+    ratio: "116 / 108",
     vuelo: "sweep",
     bandera: "🇹🇷",
     specs: [

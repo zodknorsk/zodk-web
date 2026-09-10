@@ -15,7 +15,11 @@ Dos versiones, como el logo día/noche:
 
 Sale como PNG rasterizado (FRAMES fotogramas en fila, 1 px = 1 celda); la web lo
 anima con `background-position` a saltos: un "pegado" de bitmap, barato en
-cualquier navegador. El dron va aparte en `zodk-dron[-noche].svg`.
+cualquier navegador.
+
+El dron del hero (Bayraktar TB3) ya NO sale de aquí: es un SVG de diseño hecho a
+mano que vive tal cual en `public/zodk-dron[-noche].svg`. Este script solo genera
+los dos PNG del planeta.
 
     python3 generar-planeta-hero.py
 """
@@ -315,63 +319,8 @@ SW, SH = render(False, "zodk-planeta-sprite.png")
 render(True, "zodk-planeta-noche.png")
 assert len(PAL) <= 256, f"paleta de {len(PAL)} colores, no cabe en PNG-8"
 
-# --------------------------------------------------------------- el dron
-DRONE_ROWS = {
-     0: [(9, 10, "L")],  1: [(9, 11, "L")],  2: [(9, 11, "L")],
-     3: [(9, 11, "L"), (19, 21, "L")],
-     4: [(2, 5, "L"), (9, 11, "L"), (18, 19, "L")],
-     5: [(0, 0, "A"), (1, 19, "L")],
-     6: [(0, 19, "D")],
-     7: [(2, 5, "D"), (9, 11, "D"), (18, 19, "D")],
-     8: [(9, 11, "D"), (19, 21, "D")],
-     9: [(9, 11, "D")], 10: [(9, 11, "D")], 11: [(9, 10, "D")],
-}
-DP = 4
-DW, DH = 24 * DP, 14 * DP
+# El dron ya no se genera aquí: public/zodk-dron[-noche].svg es un SVG de diseño
+# hecho a mano (Bayraktar TB3, vista cenital en diagonal). Si en el futuro se
+# quiere volver a un dron generado, el histórico está en Git.
 
-
-NAV_NOSE  = "#ffd23c"     # morro: amarillo
-NAV_RIGHT = "#33dd66"     # ala derecha (arriba): verde
-NAV_LEFT  = "#ff3b30"     # ala izquierda (abajo): rojo
-
-
-def drone_svg(night):
-    body_l = "#5a6472" if night else "#dde3e8"
-    body_d = "#3a424e" if night else "#8b95a0"
-    accent = body_l if night else "#e91e8c"          # el dron de día se queda igual
-    hexmap = {"L": body_l, "D": body_d, "A": accent}
-    cells = {}
-    for r, segs in DRONE_ROWS.items():
-        for a, b, k in segs:
-            for c in range(a, b + 1):
-                cells[(c, r)] = hexmap[k]
-    if night:
-        # Luces de posición (solo de noche). El dron mira a la izquierda: proa a
-        # la izq, ala vertical en el centro. Amarilla en el morro, verde en la
-        # punta de arriba del ala, roja en la de abajo.
-        cells[(0, 5)] = NAV_NOSE
-        cells[(0, 6)] = NAV_NOSE
-        cells[(10, 0)] = NAV_RIGHT
-        cells[(9, 0)] = NAV_RIGHT
-        cells[(10, 11)] = NAV_LEFT
-        cells[(9, 11)] = NAV_LEFT
-    ring = {}
-    for (c, r) in cells:
-        for dc in (-1, 0, 1):
-            for dr in (-1, 0, 1):
-                if (c + dc, r + dr) not in cells:
-                    ring[(c + dc, r + dr)] = "#050a12" if night else "#101d33"
-    rects = "".join(
-        f'<rect x="{(c + 1) * DP}" y="{(r + 1) * DP}" width="{DP}" height="{DP}" fill="{col}"/>'
-        for (c, r), col in list(ring.items()) + list(cells.items()))
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {DW} {DH}" '
-            f'width="{DW}" height="{DH}" shape-rendering="crispEdges" '
-            f'role="img" aria-label="Dron">{rects}</svg>\n')
-
-
-with open("zodk-dron.svg", "w") as fh:
-    fh.write(drone_svg(False))
-with open("zodk-dron-noche.svg", "w") as fh:
-    fh.write(drone_svg(True))
-
-print(f"sprite: {SW}x{SH} px, {len(PAL)} colores | dia + noche + 2 drones")
+print(f"sprite: {SW}x{SH} px, {len(PAL)} colores | planeta día + noche")
