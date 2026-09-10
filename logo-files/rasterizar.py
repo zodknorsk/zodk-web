@@ -15,10 +15,10 @@ import json, math, sys, time
 GRID_W = 1440           # columnas: 0.25 grados
 GRID_H = 720            # filas
 ICE_WATER_LAT = 82.0    # mar por encima de esta latitud -> hielo
-ICE_LAND_LAT  = 74.0    # tierra por encima de esta latitud -> hielo
-# Groenlandia como hielo (su silueta girando anima el polo). Solo de 67N hacia
-# arriba: casi todo el sur y las costas quedan verdes. bbox lat/lon:
-GREENLAND = (67.0, 84.0, -70.0, -15.0)
+ICE_LAND_LAT  = 75.0    # tierra por encima de esta latitud -> hielo
+# Groenlandia como hielo (su silueta girando anima el polo). Solo de 70N hacia
+# arriba: el sur y las costas quedan verdes/tundra, el casquete no come tanto.
+GREENLAND = (70.0, 84.0, -70.0, -15.0)
 
 t0 = time.time()
 data = json.load(open("ne_land.json"))

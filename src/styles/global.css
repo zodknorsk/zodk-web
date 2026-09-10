@@ -183,15 +183,17 @@ article .tiktok a {
    background-position a saltos: un recorte de bitmap, barato en cualquier
    navegador (el SVG vectorial animado calentaba la CPU en Firefox). Si cambias
    FRAMES en generar-planeta-hero.py, ajusta aquí background-size (FRAMES × 100%)
-   y steps(FRAMES). */
+   y steps(FRAMES).
+   El ?v= es cache-busting: el PNG se llama siempre igual, así que al cambiarlo
+   hay que subir el número para que los navegadores bajen la versión nueva. */
 .hero-planet {
   position: absolute;
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 164 / 161;
+  aspect-ratio: 280 / 274;
   transform: translateX(-50%);
-  background-image: url(/zodk-planeta-sprite.png);
+  background-image: url(/zodk-planeta-sprite.png?v=2);
   background-repeat: no-repeat;
   background-size: 2800% 100%;
   image-rendering: pixelated;
