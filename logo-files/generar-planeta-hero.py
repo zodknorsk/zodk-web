@@ -59,7 +59,7 @@ BIOME_COLS = [
     (0xce, 0xb8, 0x82),   # 2 desierto (arena)
     (0xa6, 0xb0, 0x5f),   # 3 estepa / sabana seca
     (0x33, 0x62, 0x4b),   # 4 boreal / taiga
-    (0x9a, 0x95, 0x82),   # 5 tundra / roca pelada
+    (0xbf, 0xc7, 0xca),   # 5 tundra (frío, gris pálido)
 ]
 DESIERTOS = [   # (lat0, lat1, lon0, lon1)
     (12, 32, -17, 52),      # Sáhara + Arabia
@@ -290,15 +290,17 @@ for r in range(ELEV_H):
         hs = (ex * 0.6 - ez * 0.6 + k * 0.75) / nl      # luz desde el NO
         # sin sobre-iluminar (si no, el desierto de media altura se pone neón)
         m = 1.0 if e < 250 else max(0.62, min(1.16, 0.58 + hs * 0.58))
-        HS[r][c] = max(1, min(255, int(m * 128)))
+        HS[r][c] = max(1, min(255, (int(m * 128) // 10) * 10))     # a pasos, menos colores
         if e > 1400:
-            ROCKAMT[r][c] = min(185, int((e - 1400) / 3400.0 * 255))
+            ROCKAMT[r][c] = min(180, (int((e - 1400) / 3400.0 * 255) // 45) * 45)
         around = (_elev(lat + 2, lon) + _elev(lat - 2, lon)
                   + _elev(lat, lon + 2) + _elev(lat, lon - 2)) / 4.0
         relief = e - around
-        if e > sl and relief > 200:
+        sa = 0.0
+        if e > sl and relief > 200:                     # nieve de cumbre
             sa = min(1.0, (e - sl) / 900.0) * min(1.0, (relief - 200) / 500.0)
-            SNOWAMT[r][c] = int(sa * 215)
+        latsnow = smooth(58.0, 75.0, abs(lat)) * 0.85   # el norte/sur, nevado
+        SNOWAMT[r][c] = (int(min(1.0, max(sa, latsnow)) * 215) // 28) * 28
 
 
 def _ecell(lat, lon):
@@ -454,7 +456,7 @@ _idx = {}
 
 
 def color_index(rgb):
-    rgb = tuple((c // 4) * 4 for c in rgb)
+    rgb = tuple((c // 6) * 6 for c in rgb)
     i = _idx.get(rgb)
     if i is not None:
         return i
@@ -467,6 +469,25 @@ def color_index(rgb):
     PAL.append(rgb)
     _idx[rgb] = i
     return i
+
+
+# Pre-siembra: reserva slots para todos los colores de superficie a varios
+# niveles de brillo ANTES de renderizar, para que el relieve/nieve del norte
+# (que se pinta primero, arriba) no llene la paleta y deje sin color a los
+# biomas del ecuador (que se pintan después). Sin esto salían continentes grises.
+def _seed_palette():
+    bases = [OCEAN_SHALLOW, OCEAN_DEEP, ICE, ROCK, SNOW, COAST_COL, *BIOME_COLS]
+    mixes = [mix(b, ROCK, 0.55) for b in BIOME_COLS] + \
+            [mix(b, SNOW, 0.6) for b in (BIOME_COLS[4], BIOME_COLS[5])] + \
+            [mix(ROCK, SNOW, 0.6)]
+    for base in bases + mixes:
+        for s in range(3, 17):
+            color_index(mix(SPACE, base, s / 16.0))
+    for base in (ATMO, C_BODY, C_BASE, *GOLD):
+        color_index(base)
+
+
+_seed_palette()
 
 
 # ------------------------------------------------------------- proyección
