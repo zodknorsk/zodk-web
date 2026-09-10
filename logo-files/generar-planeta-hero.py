@@ -274,59 +274,64 @@ def _dither(sx, sy):
 
 
 # --------------------------------------------------------------------- nubes
-# Nubes pixel-art pequeñas, sueltas, repartidas por el mapa (giran con el
-# planeta). Cada plantilla: '#' cuerpo, '=' base sombreada; se les añade solo
-# un borde de 1 px. Se proyectan sobre la esfera como las ciudades.
-C_BODY = (0xf6, 0xf9, 0xfd)
-C_BASE = (0xd2, 0xe2, 0xf3)
-C_EDGE = (0xb7, 0xcf, 0xe8)
-NC_BODY = (0x2b, 0x3a, 0x52)        # noche: apenas se ven
-NC_BASE = (0x22, 0x2f, 0x45)
-NC_EDGE = (0x1a, 0x25, 0x38)
+# Nubes pixel-art tipo cúmulo (lóbulos redondeados arriba, base plana), con
+# BORDE NEGRO para contraste — como los spritesheets de nubes de videojuego.
+# '#' cuerpo blanco, 'o' sombra (gris), '.' vacío; el borde de 1 px se añade
+# solo, en negro. Se proyectan sobre la esfera como las ciudades y giran con el
+# planeta.
+C_BODY = (0xf7, 0xfa, 0xfd)         # cuerpo casi blanco
+C_BASE = (0xa6, 0xb2, 0xc2)         # sombra / base gris azulada
+C_EDGE = (0x10, 0x13, 0x1c)         # borde casi negro (contraste)
 
 CLOUD_ART = [
     """
-.....####......
-...########.##.
-..##############
-..############=.
-...=========....
+......####.......
+....##########...
+...####...######.
+..####.....######
+..###.......#####
+..##ooooooo######
+..##oooooooo####.
+...###oooo####...
 """,
     """
-....###....
-..#######..
-.####.#####
-.#########=
-..#######=.
-...====....
+.....##....###.......###...
+...######..######...######.
+..#######..###############.
+.######.....##############.
+.#####oooooo#############..
+.####ooooooooooooooo######.
+..###ooooooooooooooooo###..
+...####ooooooooooo#####....
 """,
     """
-...##....
-..####...
-.######..
-.######==
-..####=..
+....##...##....
+...####.####...
+..#####.#####..
+.######.######.
+.#####ooo#####.
+..###oooooo##..
+...##oooo###...
 """,
     """
-......###.....
-....########..
-..#####.######
-.#############=
-.###########=.
-..#######=....
+.......####.........
+.....########...##..
+....#########.#####.
+...#####...#########
+..#####.....########
+..####.......#######
+..###oooooooo#######
+..###ooooooooo#####.
+...###ooooooo####...
+....####ooo####.....
 """,
     """
-..###...
-.#####.#
-.######=
-..####=.
-""",
-    """
-....##......###..
-..######...#####.
-.#####################
-.###################=.
-..###############=....
+...##..##...
+..####.####.
+.######.####
+.#####oo####
+..###oooo##.
+...##oo###..
 """,
 ]
 
@@ -340,7 +345,7 @@ def _cloud_shape(art):
         for x, ch in enumerate(r):
             if ch == "#":
                 cells[(x, y)] = "b"
-            elif ch == "=":
+            elif ch in "o=":
                 cells[(x, y)] = "s"
     body = set(cells)
     cand = set()
@@ -365,8 +370,8 @@ CLOUD_SHAPES = [_cloud_shape(a) for a in CLOUD_ART]
 # bajas/medias y ninguna en los polos. (lat, lon, forma, espejo).
 random.seed(4242)
 NUBES = []
-for _ in range(52):
-    lat = random.triangular(-54, 54, random.choice((-6, 6, 18, -18, 38, -38)))
+for _ in range(38):
+    lat = random.triangular(-52, 52, random.choice((-8, 8, 20, -20, 36, -36)))
     lon = random.uniform(-180, 180)
     NUBES.append((lat, lon, random.randrange(len(CLOUD_SHAPES)), random.random() < 0.5))
 
@@ -568,7 +573,7 @@ def cloud_cells(lon0):
         px = clat_c * math.sin(rlon)
         py = -COST * a + SINT * vv
         pz = SINT * a + COST * vv
-        if pz <= 0.44:                       # cerca del limbo o cara oculta
+        if pz <= 0.50:                       # cerca del limbo o cara oculta
             continue
         lam = px * SX + py * SY + pz * SZ
         bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
@@ -576,7 +581,7 @@ def cloud_cells(lon0):
             continue
         cx = px * RADIUS + CX - 0.5
         cy = py * RADIUS + CY - 0.5
-        xsc = 0.55 + 0.45 * pz               # se aplasta al acercarse al borde
+        xsc = 0.70 + 0.30 * pz               # se aplasta un poco hacia el borde
         t = 0.42 + 0.58 * bright
         cib = color_index(mix(SPACE, C_BODY, min(1.0, t + 0.06)))
         cis = color_index(mix(SPACE, C_BASE, t))
