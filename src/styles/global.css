@@ -364,27 +364,24 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   inset: -14px;
 }
 
-/* Trayectoria "sweep" (drones en rotación): pasada diagonal de una sola
-   dirección, de fuera de pantalla arriba-izquierda a fuera abajo-derecha,
-   cruzando el título. En bucle: al salir vuelve a entrar (y el JS le cambia
-   el sprite por el del siguiente dron de la lista). Hay 2 slots; el segundo
-   va desfasado medio ciclo para que nunca coincidan. Sprite casi cuadrado
-   (116x108) y con detalle -> bastante ancho para que se lea. */
+/* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
+   título y vuelve a subir (alternate). El sprite del TB3 es casi cuadrado
+   (116x108) y con detalle, así que se le da bastante ancho para que se lea. */
 .hero-craft--sweep {
-  left: 40%;
-  top: -10%;
+  left: 44%;
+  top: 24%;
   width: clamp(72px, 7.2vw, 112px);
-  animation: hero-sweep 13s linear infinite;
+  transform: translateX(-50%);
+  animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
 
-.hero-craft--sweep[data-slot="1"] { animation-delay: -6.5s; }
-
 @keyframes hero-sweep {
-  /* entra desde fuera arriba-izquierda, baja en diagonal cruzando el título y
-     sale por abajo hacia el centro-izquierda (lejos del E-2, que está a la
-     derecha, y del satélite, que va arriba). */
-  from { transform: translate(-72vw, -8vh); }
-  to   { transform: translate(6vw, 116vh); }
+  to {
+    transform: translate(
+      calc(-50% + clamp(30px, 7vw, 100px)),
+      clamp(200px, 40vh, 380px)
+    );
+  }
 }
 
 /* Trayectoria "orbita" (satélite): pasada recta de lado a lado cerca del limbo,
@@ -403,13 +400,22 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(118vw, 5vh); }
 }
 
-/* "fijo" (E-2 Hawkeye): sin trayectoria. Se queda quieto en un punto, algo por
-   debajo del título y escorado a la derecha, en vigilancia mientras el dron y
-   el satélite se mueven. */
+/* "fijo" (E-2 Hawkeye): se queda en su sitio —algo por debajo del título y
+   escorado a la derecha— pero describe una elipse pequeña y lenta para que no
+   parezca del todo parado. */
 .hero-craft--fijo {
   left: 64%;
   top: 60%;
   width: clamp(72px, 7.2vw, 112px); /* al menos tan grande como el dron */
+  animation: hero-fijo-deriva 16s linear infinite;
+}
+
+@keyframes hero-fijo-deriva {
+  0%   { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
+  25%  { transform: translate(0, calc(-1 * clamp(10px, 1.4vh, 22px))); }
+  50%  { transform: translate(clamp(16px, 2vw, 34px), 0); }
+  75%  { transform: translate(0, clamp(10px, 1.4vh, 22px)); }
+  100% { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
 }
 
 /* Al inspeccionar cualquier nave se congela toda la portada. */
@@ -720,9 +726,5 @@ html.home main { padding-top: 9.5rem; }
   .hero-craft,
   .hero-sparkle,
   .hero-scroll { animation: none; }
-  /* aparcadas en sitio visible (sin animación se quedarían fuera de pantalla) */
-  .hero-craft--orbita { left: 12%; top: 15%; }
-  .hero-craft--sweep { top: 20%; transform: none; }
-  .hero-craft--sweep[data-slot="0"] { left: 22%; }
-  .hero-craft--sweep[data-slot="1"] { left: 60%; top: 34%; }
+  .hero-craft--orbita { left: 12%; top: 15%; } /* aparcado en sitio visible */
 }
