@@ -205,8 +205,8 @@ const socialImageURL = new URL(image, Astro.site);
     // Fase de entrada: la nave aparece ya dentro de pantalla (no desde fuera), y
     // el slot 1 va medio periodo por detras para que 2 naves con la misma
     // trayectoria no se solapen.
-    const PERIODO = { sweep: 8, orbita: 19, fijo: 16 };
-    const FASE0 = { sweep: 2, orbita: 7, fijo: 4 };
+    const PERIODO = { sweep: 8, orbita: 19, fijo: 16, "fijo-izq": 16 };
+    const FASE0 = { sweep: 2, orbita: 7, fijo: 4, "fijo-izq": 4 };
     const faseDelay = (vuelo, s) =>
       "-" + ((FASE0[vuelo] || 0) + (s === 1 ? (PERIODO[vuelo] || 0) / 2 : 0)) + "s";
     const idx = slots.map((el) => Number(el.dataset.slot)); // [0, 1]
@@ -215,13 +215,14 @@ const socialImageURL = new URL(image, Astro.site);
       const s = Number(el.dataset.slot);
       el.classList.remove(
         "hero-craft--sweep", "hero-craft--orbita", "hero-craft--fijo",
-        "flip-x", "edge-l", "edge-r"
+        "hero-craft--fijo-izq", "flip-x", "edge-l", "edge-r"
       );
       el.classList.add("hero-craft--" + a.vuelo);
       el.dataset.craft = a.id;
       el.style.aspectRatio = a.ratio;
       el.style.setProperty("--sprite", "url(" + a.sprite + ")");
       el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
+      el.style.setProperty("--escala", String(a.escala || 1));
       el.style.animation = "none";
       void el.offsetWidth; // reinicia la animacion de la trayectoria
       el.style.animation = "";

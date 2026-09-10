@@ -13,8 +13,9 @@
 // la lista que no esté ya en pantalla. Lo lleva initRotacion() en Head.astro;
 // sin JS se ven las 2 primeras de la lista, quietas.
 //
-// Excepción de dibujo: el dron (TB3) y el E-2 son SVG de diseño hechos a mano,
-// no salen del script; viven en public/zodk-{dron,e2-hawkeye}[-noche].svg.
+// Excepción de dibujo: varias no salen del script. El TB3 y el E-2 son SVG de
+// diseño; el MQ-9 y el RQ-4 son PNG tal cual (sin versión de noche propia).
+// Todas en public/zodk-<id>[-noche].{svg,png}.
 
 export type Aeronave = {
   id: string;
@@ -23,7 +24,8 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita" | "fijo"; // trayectoria (ver global.css)
+  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq"; // trayectoria (ver global.css)
+  escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
 };
@@ -44,6 +46,25 @@ export const AERONAVES: Aeronave[] = [
       ["Primer vuelo", "2023"],
       ["Envergadura", "14,2 m"],
       ["MTOW", "1.450 kg"],
+      ["Autonomía", "~32 h"],
+    ],
+  },
+  {
+    id: "rq4",
+    nombre: "RQ-4 Global Hawk",
+    clase: "HALE de reconocimiento",
+    sprite: "/zodk-rq4.png",
+    spriteNoche: "/zodk-rq4.png",
+    ratio: "346 / 479",
+    vuelo: "fijo-izq",
+    bandera: "🇺🇸",
+    specs: [
+      ["Fabricante", "Northrop Grumman"],
+      ["Origen", "EE. UU."],
+      ["Primer vuelo", "1998"],
+      ["Envergadura", "39,9 m"],
+      ["MTOW", "14.630 kg"],
+      ["Techo", "~18.300 m"],
       ["Autonomía", "~32 h"],
     ],
   },
