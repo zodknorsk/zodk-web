@@ -26,6 +26,7 @@ los dos PNG del planeta.
 import math
 from mapa_tierra import GRID_W, GRID_H, ROWS
 from luces import LW, LH, ROWS as LUZ_ROWS
+from elev import elev as _elev, W as ELEV_W, H as ELEV_H
 from png8 import write_indexed
 
 
@@ -48,12 +49,14 @@ SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
 COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
+ROCK       = (0x8b, 0x84, 0x78)     # roca de media/alta montaña
+SNOW       = (0xec, 0xf0, 0xf4)     # nieve de cumbre
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
     (0x53, 0xa4, 0x58),   # 0 templado
     (0x33, 0x7a, 0x3b),   # 1 selva / tropical húmedo
-    (0xd8, 0xbe, 0x7e),   # 2 desierto (arena)
+    (0xce, 0xb8, 0x82),   # 2 desierto (arena)
     (0xa6, 0xb0, 0x5f),   # 3 estepa / sabana seca
     (0x33, 0x62, 0x4b),   # 4 boreal / taiga
     (0x9a, 0x95, 0x82),   # 5 tundra / roca pelada
@@ -265,6 +268,44 @@ while _dq:
             SEADIST[rr][cc] = d + 1
             _dq.append((rr, cc))
 
+# ------------------------------------- relieve: hillshade + roca + nieve de cumbre
+# Precalculado por celda del DEM (0.5°), independiente del fotograma:
+#   HS       -> multiplicador de brillo (128 = x1.0), laderas al sol claras
+#   ROCKAMT  -> cuánta roca gris se mezcla en media/alta montaña (0-200)
+#   SNOWAMT  -> cuánta nieve, solo si es alto Y sobresale del entorno (cumbre)
+HS = [bytearray(ELEV_W) for _ in range(ELEV_H)]
+ROCKAMT = [bytearray(ELEV_W) for _ in range(ELEV_H)]
+SNOWAMT = [bytearray(ELEV_W) for _ in range(ELEV_H)]
+_dd = 180.0 / ELEV_H
+for r in range(ELEV_H):
+    lat = 90.0 - (r + 0.5) / ELEV_H * 180.0
+    sl = 5400.0 - abs(lat) * 66.0            # línea de nieve (baja hacia los polos)
+    for c in range(ELEV_W):
+        lon = (c + 0.5) / ELEV_W * 360.0 - 180.0
+        e = _elev(lat, lon)
+        ex = _elev(lat, lon + _dd) - _elev(lat, lon - _dd)
+        ez = _elev(lat + _dd, lon) - _elev(lat - _dd, lon)
+        k = 900.0
+        nl = math.sqrt(ex * ex + ez * ez + k * k) or 1.0
+        hs = (ex * 0.6 - ez * 0.6 + k * 0.75) / nl      # luz desde el NO
+        # sin sobre-iluminar (si no, el desierto de media altura se pone neón)
+        m = 1.0 if e < 250 else max(0.62, min(1.16, 0.58 + hs * 0.58))
+        HS[r][c] = max(1, min(255, int(m * 128)))
+        if e > 1400:
+            ROCKAMT[r][c] = min(185, int((e - 1400) / 3400.0 * 255))
+        around = (_elev(lat + 2, lon) + _elev(lat - 2, lon)
+                  + _elev(lat, lon + 2) + _elev(lat, lon - 2)) / 4.0
+        relief = e - around
+        if e > sl and relief > 200:
+            sa = min(1.0, (e - sl) / 900.0) * min(1.0, (relief - 200) / 500.0)
+            SNOWAMT[r][c] = int(sa * 215)
+
+
+def _ecell(lat, lon):
+    r = int((90.0 - lat) / 180.0 * ELEV_H)
+    r = 0 if r < 0 else ELEV_H - 1 if r >= ELEV_H else r
+    return r, int((lon + 180.0) / 360.0 * ELEV_W) % ELEV_W
+
 # Bayer 4x4 normalizado (0..1) para ditherar los degradados y quitar bandas.
 _BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
 
@@ -465,6 +506,7 @@ def cell_index(sx, sy, lon0, night):
     dth = _dither(sx, sy)
 
     # --- color de la superficie, sin sombra ---
+    _mtn_hs = 1.0                          # multiplicador de hillshade (solo tierra)
     if terrain == 0:                       # mar: más claro en plataforma, oscuro en abisal
         sd = SEADIST[gr][gc]
         t = 0.0 if sd <= 1 else min(1.0, (sd - 1) / 2.5)
@@ -473,11 +515,18 @@ def cell_index(sx, sy, lon0, night):
     elif terrain == 2:                     # hielo
         surf = ICE
         surf_n = N_ICE
-    else:                                  # tierra: bioma + línea de costa
+    else:                                  # tierra: bioma + costa + relieve
         surf = BIOME_COLS[BIOME[gr][gc]]
         if COAST[gr][gc]:
             surf = mix(surf, COAST_COL, 0.5)
         surf_n = N_LAND
+        er, ec = _ecell(lat, lon)
+        _ra, _sa = ROCKAMT[er][ec], SNOWAMT[er][ec]
+        if _ra:
+            surf = mix(surf, ROCK, _ra / 255.0)
+        if _sa:
+            surf = mix(surf, SNOW, _sa / 255.0)
+        _mtn_hs = HS[er][ec] / 128.0
 
     if night:
         # MODO OSCURO CONGELADO: este script ya NO regenera el sprite de noche
@@ -503,6 +552,7 @@ def cell_index(sx, sy, lon0, night):
     if terrain == 2:
         limb *= 0.7
     bright *= 1.0 - limb
+    bright *= _mtn_hs                      # hillshade: laderas al sol claras, en sombra oscuras
     # dither centrado: redondea, pero mueve el umbral ±0.4 para romper las bandas
     q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
     q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q

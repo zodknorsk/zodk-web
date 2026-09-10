@@ -25,6 +25,7 @@ pnpm-debug.log*
 # logo-files/HERO-WIP.md). Lo que sirve la web vive en public/.
 logo-files/ne_land.json
 logo-files/pp10.json
+logo-files/etopo.tiff
 logo-files/zodk-planeta-sprite.png
 logo-files/zodk-planeta-noche.png
 logo-files/zodk-dron.svg
