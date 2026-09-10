@@ -284,35 +284,6 @@ C_BASE = (0xb0, 0xbc, 0xcc)         # sombra / base gris azulada
 C_EDGE = (0x10, 0x13, 0x1c)         # borde casi negro (contraste)
 
 CLOUD_ART = [
-    # --- pequeñas ---
-    """
-.###.
-#####
-#oo##
-.oo#.
-""",
-    """
-..##..
-.####.
-##.###
-#oo###
-.oo##.
-""",
-    """
-.###..
-#####.
-##.###
-#oooo#
-.oo##.
-""",
-    """
-...##..
-.######
-##.####
-#oo.###
-.oo##..
-""",
-    # --- medianas ---
     """
 ...###...
 .###.###.
@@ -349,53 +320,44 @@ CLOUD_ART = [
 .##oooooo##.
 ..##oooo##..
 """,
-    # --- grandes / irregulares ---
     """
-......###.......##..
-....########..####..
-...####...##########
-..###.......########
-..##.........#######
-..##oooooo...#######
-..##ooooooooo.#####.
-...##ooooooo###....
+..###....
+.#####.##
+##...####
+##ooo.###
+.##oooo##
+..##oo##.
 """,
     """
-.......##.........
-....######...###..
-..#####...########
-.####.......#######
-###..........######
-##.............####
-##ooooooo......###.
-.##ooooooooo..###..
-..###oooooo###.....
+...##..###..
+..####.####.
+.###......##
+##.........#
+##oooooo..##
+.##oooooo##.
+..##ooo###..
 """,
     """
-....##...####......
-..######.######.##.
-.#####...#####.####
-####..........#####
-##.............####
-##ooooooo......###.
-.##ooooooooooo.##..
-..####oooooo###....
+....##...
+..######.
+.###..###
+##......#
+##ooo..##
+.##oooo##
+..##oo##.
 """,
     """
-...###.......###....
-.########...######..
-#####...##.#....####
-###......#.......###
-##...............###
-##ooooooo........##.
-.##ooooooooooo..##..
-..###oooooooo##....
+..###...##..
+.#####.####.
+##...#....##
+##.........#
+##ooooo...##
+.##oooooo##.
+..###oo###..
 """,
 ]
 
-# peso: las plantillas 0-3 son demasiado pequeñas para el borde negro a esta
-# escala; se usan solo las medianas (4-7, más frecuentes) y grandes (8-11).
-CLOUD_W_PICK = [4, 5, 6, 7, 4, 5, 6, 7, 4, 5] + [8, 9, 10, 11]
+CLOUD_W_PICK = list(range(len(CLOUD_ART)))
 
 
 def _cloud_body(art):
@@ -425,7 +387,7 @@ for _i in range(_N):
         lat, lon,
         random.choice(CLOUD_W_PICK),
         random.random() < 0.5,
-        random.uniform(0.8, 1.2),        # escala por instancia
+        random.uniform(0.62, 0.92),      # escala por instancia (nubes pequeñas)
     ))
 random.shuffle(NUBES)
 
