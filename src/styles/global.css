@@ -382,7 +382,8 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 .hero-craft--sweep {
   left: 44%;
   top: 24%;
-  width: clamp(100px, 10vw, 157px);   /* ~x1,4 el tamaño anterior */
+  /* ~x1,4 el tamaño anterior; --escala (de aeronaves.ts) ajusta cada nave */
+  width: calc(clamp(100px, 10vw, 157px) * var(--escala, 1));
   transform: translateX(-50%);
   animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
@@ -412,14 +413,23 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(118vw, 5vh); }
 }
 
-/* "fijo" (E-2 Hawkeye): se queda en su sitio —algo por debajo del título y
-   escorado a la derecha— pero describe una elipse pequeña y lenta para que no
-   parezca del todo parado. */
+/* "fijo" / "fijo-izq": la nave se queda en su punto —debajo del título— pero
+   describe una elipse pequeña y lenta para que no parezca del todo parada.
+   "fijo" = E-2, escorado a la derecha y grande. "fijo-izq" = RQ-4, abajo a la
+   izquierda y más pequeño. */
+.hero-craft--fijo,
+.hero-craft--fijo-izq {
+  animation: hero-fijo-deriva 16s linear infinite;
+}
 .hero-craft--fijo {
   left: 58%;
   top: 58%;
   width: clamp(160px, 16vw, 250px);   /* ~x2,25 el tamaño anterior */
-  animation: hero-fijo-deriva 16s linear infinite;
+}
+.hero-craft--fijo-izq {
+  left: 20%;
+  top: 60%;
+  width: clamp(58px, 5.5vw, 86px);
 }
 
 @keyframes hero-fijo-deriva {
@@ -563,29 +573,36 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
-/* fijo: el E-2 va bajo y a la derecha, así que la ficha sale HACIA ARRIBA
-   (si fuera debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
-.hero-craft--fijo .craft-linea {
+/* fijo / fijo-izq: van bajos, así que la ficha sale HACIA ARRIBA (si fuera
+   debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
+.hero-craft--fijo .craft-linea,
+.hero-craft--fijo-izq .craft-linea {
   left: 50%;
   bottom: 100%;
   width: 1px;
   height: 40px;
   transform-origin: center bottom;
 }
-.hero-craft--fijo .craft-specs {
+.hero-craft--fijo .craft-specs,
+.hero-craft--fijo-izq .craft-specs {
   left: 50%;
   bottom: calc(100% + 40px);
   transform: translateX(-50%) translateY(6px);
 }
-.hero-craft--fijo:hover .craft-specs { transform: translateX(-50%) translateY(0); }
-.hero-craft--fijo.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
-.hero-craft--fijo.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
-.hero-craft--fijo.edge-r .craft-specs {
+.hero-craft--fijo:hover .craft-specs,
+.hero-craft--fijo-izq:hover .craft-specs { transform: translateX(-50%) translateY(0); }
+.hero-craft--fijo.edge-l .craft-specs,
+.hero-craft--fijo-izq.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
+.hero-craft--fijo.edge-l:hover .craft-specs,
+.hero-craft--fijo-izq.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo.edge-r .craft-specs,
+.hero-craft--fijo-izq.edge-r .craft-specs {
   left: auto;
   right: 0;
   transform: translateX(0) translateY(6px);
 }
-.hero-craft--fijo.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft--fijo.edge-r:hover .craft-specs,
+.hero-craft--fijo-izq.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
 
 @media (hover: none) {
   .hero-craft { pointer-events: none; }
@@ -594,9 +611,10 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 
 @media (max-width: 640px) {
   .hero-planet { top: 13%; width: 132vw; }
-  .hero-craft--sweep { top: 20%; width: clamp(72px, 21vw, 106px); }
+  .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1)); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }
+  .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-titulo { top: 46%; }
   .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
   .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
