@@ -11,6 +11,21 @@ import Link from "@components/Link.astro";
 import { SITE, HOME, SOCIALS } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 
+// El hero: las naves de trayectoria propia (fijo / orbita) salen siempre; las
+// de vuelo "sweep" entran en una ROTACION: 2 volando a la vez (sin solaparse) y,
+// cuando una sale de pantalla, el JS mete la siguiente de la lista. Con la web
+// sin JS se ven las 2 primeras dando pasadas en bucle.
+const rotativas = AERONAVES.filter((a) => a.vuelo === "sweep");
+const fijas = AERONAVES.filter((a) => a.vuelo !== "sweep");
+const SLOTS = Math.min(2, rotativas.length);
+const naves = [
+  ...fijas.map((a) => ({ a, slot: null as number | null })),
+  ...Array.from({ length: SLOTS }, (_, i) => ({
+    a: rotativas[i % rotativas.length],
+    slot: i,
+  })),
+];
+
 const notas = (await getCollection("notas"))
   .filter((nota) => !nota.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -49,10 +64,11 @@ const eventos = todosEventos
       </p>
     </div>
     {
-      AERONAVES.map((a) => (
+      naves.map(({ a, slot }) => (
         <div
           class:list={["hero-craft", `hero-craft--${a.vuelo}`]}
           data-craft={a.id}
+          data-slot={slot}
           aria-hidden="true"
           style={`aspect-ratio:${a.ratio};--sprite:url(${a.sprite});--sprite-noche:url(${a.spriteNoche})`}
         >
@@ -79,6 +95,13 @@ const eventos = todosEventos
         </div>
       ))
     }
+    {rotativas.length > SLOTS && (
+      <script
+        type="application/json"
+        id="rotativas-data"
+        set:html={JSON.stringify(rotativas)}
+      />
+    )}
     <span class="hero-scroll" aria-hidden="true"></span>
   </section>
 
