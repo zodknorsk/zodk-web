@@ -16,7 +16,7 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita"; // trayectoria (ver global.css)
+  vuelo: "sweep" | "orbita" | "patrulla"; // trayectoria (ver global.css)
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
 };
@@ -38,6 +38,25 @@ export const AERONAVES: Aeronave[] = [
       ["Envergadura", "14,2 m"],
       ["MTOW", "1.450 kg"],
       ["Autonomía", "~32 h"],
+    ],
+  },
+  {
+    id: "e2-hawkeye",
+    nombre: "E-2 Hawkeye",
+    clase: "AEW&C embarcado",
+    sprite: "/zodk-e2-hawkeye.svg",
+    spriteNoche: "/zodk-e2-hawkeye-noche.svg",
+    ratio: "116 / 108",
+    vuelo: "patrulla",
+    bandera: "🇺🇸",
+    specs: [
+      ["Fabricante", "Northrop Grumman"],
+      ["Origen", "EE. UU."],
+      ["Primer vuelo", "2007 (E-2D)"],
+      ["Envergadura", "24,6 m"],
+      ["Radar", "AN/APY-9"],
+      ["Tripulación", "5"],
+      ["Autonomía", "~6 h"],
     ],
   },
   {
