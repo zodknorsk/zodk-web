@@ -350,16 +350,25 @@ html.dark .hero-titulo::before {
    la proporción y la trayectoria al pulsar el botón .hero-cambio. Los datos salen
    de src/data/aeronaves.ts. La trayectoria la da el modificador (--sweep / --orbita
    / --fijo). Al pasar el ratón el objeto se para —y toda la portada— y sale una
-   línea a una ficha con las specs. Solo ratón. */
+   línea a una ficha con las specs. Solo ratón.
+
+   Renderizado: por defecto "auto" (suavizado), correcto para las fotos (.png).
+   El único sprite que sigue siendo pixel art de verdad (el Sentinel-2, .svg)
+   lleva el modificador `--pixelado` (lo añade index.astro/Head.astro mirando
+   la extensión del sprite) para mantener el borde nítido a bloques. Sin esta
+   distinción, animar una foto con "pixelated" genera parpadeo/costuras al
+   hacer zoom, porque el navegador tiene que re-muestrear con vecino-más-cercano
+   en cada fotograma de un desplazamiento que no cae en un píxel entero. */
 .hero-craft {
   position: absolute;
   background: var(--sprite) center / contain no-repeat;
-  image-rendering: pixelated;
   pointer-events: auto;
   z-index: 2;
   opacity: 1;
   transition: opacity 0.7s ease; /* fundido al cambiar de objeto (initObjeto) */
 }
+
+.hero-craft--pixelado { image-rendering: pixelated; }
 
 /* Objeto a punto de cambiar: se desvanece; el JS le cambia el sprite/ficha
    mientras está invisible y lo vuelve a mostrar. */
@@ -430,7 +439,7 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 .hero-craft--fijo {
   left: 58%;
   top: 58%;
-  width: clamp(160px, 16vw, 250px);   /* ~x2,25 el tamaño anterior */
+  width: clamp(105px, 10.5vw, 165px);   /* foto del E-2, más chica que la nave anterior */
 }
 .hero-craft--fijo-izq {
   left: 20%;

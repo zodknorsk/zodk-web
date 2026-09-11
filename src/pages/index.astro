@@ -69,7 +69,11 @@ const eventos = todosEventos
       </p>
     </div>
     <div
-      class:list={["hero-craft", `hero-craft--${objetoInicial.vuelo}`]}
+      class:list={[
+        "hero-craft",
+        `hero-craft--${objetoInicial.vuelo}`,
+        objetoInicial.sprite.endsWith(".svg") && "hero-craft--pixelado",
+      ]}
       data-craft={objetoInicial.id}
       data-slot="0"
       aria-hidden="true"

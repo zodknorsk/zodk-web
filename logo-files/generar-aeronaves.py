@@ -66,9 +66,9 @@ CRAFT["tb3"] = dict(dp=4, label="Bayraktar TB3", art="""
              (27, 10.5, 2.2, "b")],
    nav=dict(nose=(2, 10), right=(16, 1), left=(16, 19)))
 
-# El E-2 Hawkeye ya no se genera aquí: como el dron (TB3), es un SVG de diseño
-# hecho a mano que vive tal cual en public/zodk-e2-hawkeye[-noche].svg. El
-# original está en logo-files/zodk-e2-hawkeye-fuente.svg.
+# El E-2 Hawkeye ya no se genera aquí: es una foto (fondo quitado, con sombra)
+# que vive tal cual en public/zodk-e2-hawkeye.png, sin versión de noche propia
+# (como el MQ-9 y el RQ-4).
 
 # Satélite de reconocimiento óptico (genérico "Keyhole") — cuerpo central con
 # paneles y estrelleros, dos alas solares grandes (celdas en rejilla) sobre
