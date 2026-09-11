@@ -25,7 +25,7 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq" | "fijo-centro"; // trayectoria (ver global.css)
+  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq" | "fijo-centro" | "fijo-arriba"; // trayectoria (ver global.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
@@ -114,7 +114,7 @@ export const AERONAVES: Aeronave[] = [
     sprite: "/zodk-u2.png",
     spriteNoche: "/zodk-u2.png",
     ratio: "808 / 362",
-    vuelo: "sweep",
+    vuelo: "fijo-arriba",
     bandera: "🇺🇸",
     specs: [
       ["Fabricante", "Lockheed (Skunk Works)"],
