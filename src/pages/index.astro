@@ -215,12 +215,7 @@ const eventos = todosEventos
                   aria-label={tech.NAME}
                   class="flex items-center gap-1.5 rounded-lg border border-black/15 dark:border-white/20 px-2.5 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
                 >
-                  <span
-                    class={`flex items-center justify-center size-5 shrink-0 rounded text-[9px] font-bold ${tech.TEXTO_OSCURO ? "text-black/80" : "text-white"}`}
-                    style={`background:${tech.COLOR}`}
-                  >
-                    {tech.MARCA}
-                  </span>
+                  <span class="flex items-center justify-center shrink-0" set:html={tech.ICONO} />
                   {tech.NAME}
                 </a>
               </li>
