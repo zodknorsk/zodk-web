@@ -15,8 +15,8 @@
 // en Head.astro; sin JS se ve el primero de la lista, quieto.
 //
 // Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
-// TB3, el MQ-9, el RQ-4, el E-2 y el U-2 son fotos PNG tal cual (sin versión
-// de noche propia). Todas en public/zodk-<id>[-noche].{svg,png}.
+// TB3, el MQ-9, el RQ-4, el E-2, el U-2 y el Shahed-136 son fotos PNG tal
+// cual (sin versión de noche propia). Todas en public/zodk-<id>[-noche].{svg,png}.
 
 export type Aeronave = {
   id: string;
@@ -124,6 +124,24 @@ export const AERONAVES: Aeronave[] = [
       ["Techo", "~21.300 m"],
       ["Tripulación", "1"],
       ["Autonomía", "~12 h"],
+    ],
+  },
+  {
+    id: "shahed136",
+    nombre: "Shahed-136 / Geran-2",
+    clase: "Munición merodeadora (kamikaze)",
+    sprite: "/zodk-shahed136.png",
+    spriteNoche: "/zodk-shahed136.png",
+    ratio: "788 / 440",
+    vuelo: "sweep",
+    bandera: "🇮🇷",
+    specs: [
+      ["Fabricante", "HESA (Irán) · Geran-2, Alabuga (Rusia)"],
+      ["Origen", "Irán, producción rusa bajo licencia"],
+      ["Primer uso en combate", "2022 (guerra de Ucrania)"],
+      ["Envergadura", "2,5 m"],
+      ["Alcance", "hasta ~2.500 km"],
+      ["Carga", "~40-50 kg de explosivo"],
     ],
   },
   {
