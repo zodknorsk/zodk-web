@@ -8,7 +8,7 @@ import PageLayout from "@layouts/PageLayout.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { SITE, HOME, SOCIALS, STACK } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 
 // El hero muestra UN objeto de AERONAVES a la vez (dron, avión o satélite),
@@ -199,6 +199,25 @@ const eventos = todosEventos
           </section>
         )
       }
+
+      <section class="animate space-y-4">
+        <h5 class="font-semibold text-black dark:text-white">Hecha con</h5>
+        <ul class="flex flex-wrap gap-3">
+          {
+            STACK.map((tech) => (
+              <li class="flex items-center gap-2 rounded-lg border border-black/15 dark:border-white/20 px-3 py-2">
+                <span
+                  class="flex items-center justify-center size-6 shrink-0 rounded text-[10px] font-bold text-white"
+                  style={`background:${tech.COLOR}`}
+                >
+                  {tech.MARCA}
+                </span>
+                {tech.NAME}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
       <section class="animate space-y-4">
         <h5 class="font-semibold text-black dark:text-white">Contacto</h5>

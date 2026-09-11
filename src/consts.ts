@@ -30,3 +30,10 @@ export const SOCIALS: Socials = [
     HREF: "https://github.com/zodknorsk",
   },
 ];
+
+// Sección "Hecha con" de la portada: con qué está construida la web.
+export const STACK = [
+  { NAME: "Astro", MARCA: "A", COLOR: "#17191e" },
+  { NAME: "TypeScript", MARCA: "TS", COLOR: "#3178c6" },
+  { NAME: "Tailwind CSS", MARCA: "tw", COLOR: "#0ea5e9" },
+] as const;
