@@ -8,7 +8,7 @@ import PageLayout from "@layouts/PageLayout.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
-import { SITE, HOME, SOCIALS, STACK } from "@consts";
+import { SITE, HOME, STACK, CONTACTO } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 
 // El hero muestra UN objeto de AERONAVES a la vez (dron, avión o satélite),
@@ -224,28 +224,75 @@ const eventos = todosEventos
         <article>
           <p>Si quieres escribirme, aquí me tienes:</p>
         </article>
-        <ul class="flex flex-wrap gap-2">
-          {
-            SOCIALS.map((SOCIAL) => (
-              <li class="flex gap-x-2 text-nowrap">
-                <Link
-                  href={SOCIAL.HREF}
-                  external
-                  aria-label={`${SITE.NAME} en ${SOCIAL.NAME}`}
-                >
-                  {SOCIAL.NAME}
-                </Link>
-                {"/"}
-              </li>
-            ))
-          }
-          <li class="line-clamp-1">
-            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Escribir a ${SITE.NAME}`}>
-              {SITE.EMAIL}
-            </Link>
-          </li>
-        </ul>
       </section>
     </div>
   </Container>
+
+  <!-- Barra de redes a sangre (ancho completo, fuera del Container): X,
+       correo e Instagram. Vive fuera de <Container> a propósito -- es hija
+       directa de <main>, que no tiene max-width, así que ocupa todo el ancho
+       sin trucos de vw/márgenes negativos. El margin-bottom negativo
+       cancela el pb-32 de <main> para que quede pegada al footer. -->
+  <section class="social-bar animate" aria-label="Redes sociales">
+    <ul>
+      {
+        CONTACTO.map((c) => (
+          <li>
+            <a href={c.HREF} target={c.EXTERNO ? "_blank" : undefined} rel={c.EXTERNO ? "noopener noreferrer" : undefined} aria-label={c.LABEL}>
+              <span class="social-icon" set:html={c.ICONO} />
+              <span>{c.TEXTO}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </PageLayout>
+
+<style>
+  .social-bar {
+    width: 100%;
+    margin-bottom: -8rem; /* cancela el pb-32 (8rem) de <main> */
+    padding: 2.5rem 1.25rem;
+    background: linear-gradient(135deg, #05060a 0%, #101a30 55%, #05060a 100%);
+  }
+  .social-bar ul {
+    max-width: 56rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem 0;
+  }
+  .social-bar li { display: flex; align-items: center; }
+  .social-bar li:not(:last-child)::after {
+    content: "";
+    width: 1px;
+    height: 1.6rem;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 0 clamp(1rem, 4vw, 2.5rem);
+  }
+  .social-bar a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #f3efe6;
+    font-family: "IBM Plex Serif", ui-serif, Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(0.82rem, 2vw, 1rem);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .social-bar a:hover { color: #e6c078; }
+  /* :global() -- el SVG se inyecta con set:html (ver consts.ts) y por tanto
+     no lleva el atributo de scope de Astro; sin :global() esta regla no lo
+     alcanzaría. El tamaño real ya va en el propio SVG; esto es red de
+     seguridad + flex-shrink. */
+  .social-bar :global(svg) { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+  @media (max-width: 640px) {
+    .social-bar ul { flex-direction: column; gap: 1.1rem; }
+    .social-bar li:not(:last-child)::after { display: none; }
+  }
+</style>
