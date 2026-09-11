@@ -31,11 +31,38 @@ export const SOCIALS: Socials = [
   },
 ];
 
-// Sección "Hecha con" de la portada: con qué está construida la web.
+// Sección "Hecha con" de la portada: con qué está construida la web. Cada
+// insignia enlaza a la web oficial de la tecnología. El texto del glifo va
+// oscuro solo en JavaScript (fondo amarillo muy claro; blanco no se leería).
 export const STACK = [
-  { NAME: "Astro", MARCA: "A", COLOR: "#17191e" },
-  { NAME: "TypeScript", MARCA: "TS", COLOR: "#3178c6" },
-  { NAME: "Tailwind CSS", MARCA: "tw", COLOR: "#0ea5e9" },
+  {
+    NAME: "Astro",
+    MARCA: "A",
+    COLOR: "#17191e",
+    TEXTO_OSCURO: false,
+    HREF: "https://astro.build",
+  },
+  {
+    NAME: "JavaScript",
+    MARCA: "JS",
+    COLOR: "#f7df1e",
+    TEXTO_OSCURO: true,
+    HREF: "https://developer.mozilla.org/docs/Web/JavaScript",
+  },
+  {
+    NAME: "TypeScript",
+    MARCA: "TS",
+    COLOR: "#3178c6",
+    TEXTO_OSCURO: false,
+    HREF: "https://www.typescriptlang.org",
+  },
+  {
+    NAME: "Tailwind CSS",
+    MARCA: "tw",
+    TEXTO_OSCURO: false,
+    COLOR: "#06b6d4",
+    HREF: "https://tailwindcss.com",
+  },
 ] as const;
 
 // Barra de contacto a sangre al final de la portada (ver index.astro). Los

@@ -201,18 +201,28 @@ const eventos = todosEventos
       }
 
       <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">Hecha con</h5>
-        <ul class="flex flex-wrap gap-3">
+        <h5 class="font-semibold text-black dark:text-white">
+          Este blog ha sido hecho con:
+        </h5>
+        <ul class="flex flex-wrap gap-2 text-sm">
           {
             STACK.map((tech) => (
-              <li class="flex items-center gap-2 rounded-lg border border-black/15 dark:border-white/20 px-3 py-2">
-                <span
-                  class="flex items-center justify-center size-6 shrink-0 rounded text-[10px] font-bold text-white"
-                  style={`background:${tech.COLOR}`}
+              <li>
+                <a
+                  href={tech.HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={tech.NAME}
+                  class="flex items-center gap-1.5 rounded-lg border border-black/15 dark:border-white/20 px-2.5 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
                 >
-                  {tech.MARCA}
-                </span>
-                {tech.NAME}
+                  <span
+                    class={`flex items-center justify-center size-5 shrink-0 rounded text-[9px] font-bold ${tech.TEXTO_OSCURO ? "text-black/80" : "text-white"}`}
+                    style={`background:${tech.COLOR}`}
+                  >
+                    {tech.MARCA}
+                  </span>
+                  {tech.NAME}
+                </a>
               </li>
             ))
           }
