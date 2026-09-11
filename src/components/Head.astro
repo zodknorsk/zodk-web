@@ -221,9 +221,14 @@ const socialImageURL = new URL(image, Astro.site);
     function pinta(a) {
       el.classList.remove(
         "hero-craft--sweep", "hero-craft--orbita", "hero-craft--fijo",
-        "hero-craft--fijo-izq", "hero-craft--fijo-centro", "flip-x", "edge-l", "edge-r"
+        "hero-craft--fijo-izq", "hero-craft--fijo-centro", "hero-craft--pixelado",
+        "flip-x", "edge-l", "edge-r"
       );
       el.classList.add("hero-craft--" + a.vuelo);
+      // Solo el pixel art de verdad (.svg) quiere vecino-más-cercano; las
+      // fotos (.png) se ven mejor —y sin parpadeo al moverse— con el
+      // suavizado normal del navegador (ver comentario en global.css).
+      if (a.sprite.endsWith(".svg")) el.classList.add("hero-craft--pixelado");
       el.dataset.craft = a.id;
       el.style.aspectRatio = a.ratio;
       el.style.setProperty("--sprite", "url(" + a.sprite + ")");

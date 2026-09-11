@@ -17,8 +17,8 @@ Sale como PNG rasterizado (FRAMES fotogramas en fila, 1 px = 1 celda); la web lo
 anima con `background-position` a saltos: un "pegado" de bitmap, barato en
 cualquier navegador.
 
-El dron del hero (Bayraktar TB3) ya NO sale de aquí: es un SVG de diseño hecho a
-mano que vive tal cual en `public/zodk-dron[-noche].svg`. Este script solo genera
+El dron del hero (Bayraktar TB3) ya NO sale de aquí: es una foto tal cual en
+`public/zodk-dron.png` (sin versión de noche propia). Este script solo genera
 los dos PNG del planeta.
 
     python3 generar-planeta-hero.py
@@ -730,6 +730,6 @@ def render(night, path):
 SW, SH = render(False, "zodk-planeta-sprite.png")
 assert len(PAL) <= 256, f"paleta de {len(PAL)} colores, no cabe en PNG-8"
 
-# El dron tampoco se genera aquí (SVG de diseño en public/zodk-dron*.svg).
+# El dron tampoco se genera aquí (foto en public/zodk-dron.png).
 
 print(f"sprite día: {SW}x{SH} px, {len(PAL)} colores")

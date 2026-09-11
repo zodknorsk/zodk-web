@@ -14,9 +14,9 @@
 // —"bolsa barajada": se recorren todos antes de repetir—. Lo lleva initObjeto()
 // en Head.astro; sin JS se ve el primero de la lista, quieto.
 //
-// Excepción de dibujo: varias no salen del script. El TB3 y el E-2 son SVG de
-// diseño; el MQ-9 y el RQ-4 son PNG tal cual (sin versión de noche propia).
-// Todas en public/zodk-<id>[-noche].{svg,png}.
+// Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
+// TB3, el MQ-9, el RQ-4, el E-2 y el U-2 son fotos PNG tal cual (sin versión
+// de noche propia). Todas en public/zodk-<id>[-noche].{svg,png}.
 
 export type Aeronave = {
   id: string;
@@ -36,9 +36,9 @@ export const AERONAVES: Aeronave[] = [
     id: "dron",
     nombre: "Bayraktar TB3",
     clase: "UCAV embarcado",
-    sprite: "/zodk-dron.svg",
-    spriteNoche: "/zodk-dron-noche.svg",
-    ratio: "116 / 108",
+    sprite: "/zodk-dron.png",
+    spriteNoche: "/zodk-dron.png",
+    ratio: "430 / 450",
     vuelo: "sweep",
     bandera: "🇹🇷",
     specs: [
@@ -56,7 +56,7 @@ export const AERONAVES: Aeronave[] = [
     clase: "HALE de reconocimiento",
     sprite: "/zodk-rq4.png",
     spriteNoche: "/zodk-rq4.png",
-    ratio: "346 / 479",
+    ratio: "234 / 328",
     vuelo: "fijo-izq",
     bandera: "🇺🇸",
     specs: [
@@ -75,7 +75,7 @@ export const AERONAVES: Aeronave[] = [
     clase: "UAV MALE armado",
     sprite: "/zodk-mq9.png",
     spriteNoche: "/zodk-mq9.png",
-    ratio: "358 / 392",
+    ratio: "244 / 265",
     vuelo: "fijo-centro",
     bandera: "🇺🇸",
     specs: [
@@ -92,9 +92,9 @@ export const AERONAVES: Aeronave[] = [
     id: "e2-hawkeye",
     nombre: "E-2 Hawkeye",
     clase: "AEW&C embarcado",
-    sprite: "/zodk-e2-hawkeye.svg",
-    spriteNoche: "/zodk-e2-hawkeye-noche.svg",
-    ratio: "116 / 108",
+    sprite: "/zodk-e2-hawkeye.png",
+    spriteNoche: "/zodk-e2-hawkeye.png",
+    ratio: "426 / 416",
     vuelo: "fijo",
     bandera: "🇺🇸",
     specs: [
@@ -105,6 +105,25 @@ export const AERONAVES: Aeronave[] = [
       ["Radar", "AN/APY-9"],
       ["Tripulación", "5"],
       ["Autonomía", "~6 h"],
+    ],
+  },
+  {
+    id: "u2",
+    nombre: "Lockheed U-2S Dragon Lady",
+    clase: "Reconocimiento estratégico a gran altitud",
+    sprite: "/zodk-u2.png",
+    spriteNoche: "/zodk-u2.png",
+    ratio: "808 / 362",
+    vuelo: "sweep",
+    bandera: "🇺🇸",
+    specs: [
+      ["Fabricante", "Lockheed (Skunk Works)"],
+      ["Origen", "EE. UU."],
+      ["Primer vuelo", "1955 (1994 el U-2S)"],
+      ["Envergadura", "31,4 m"],
+      ["Techo", "~21.300 m"],
+      ["Tripulación", "1"],
+      ["Autonomía", "~12 h"],
     ],
   },
   {
