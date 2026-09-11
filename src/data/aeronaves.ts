@@ -15,8 +15,9 @@
 // en Head.astro; sin JS se ve el primero de la lista, quieto.
 //
 // Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
-// TB3, el MQ-9, el RQ-4, el E-2, el U-2 y el Shahed-136 son fotos PNG tal
-// cual (sin versión de noche propia). Todas en public/zodk-<id>[-noche].{svg,png}.
+// TB3, el MQ-9, el RQ-4, el E-2, el U-2, el SR-71 y el Shahed-136 son fotos
+// PNG tal cual (sin versión de noche propia). Todas en
+// public/zodk-<id>[-noche].{svg,png}.
 
 export type Aeronave = {
   id: string;
@@ -25,7 +26,14 @@ export type Aeronave = {
   sprite: string; // /zodk-<id>.svg  (modo claro)
   spriteNoche: string; // /zodk-<id>-noche.svg
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
-  vuelo: "sweep" | "orbita" | "fijo" | "fijo-izq" | "fijo-centro" | "fijo-arriba"; // trayectoria (ver global.css)
+  vuelo:
+    | "sweep"
+    | "orbita"
+    | "fijo"
+    | "fijo-izq"
+    | "fijo-centro"
+    | "fijo-arriba"
+    | "fijo-arriba-der"; // trayectoria (ver global.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
   specs: [string, string][]; // [etiqueta, valor]
@@ -113,7 +121,7 @@ export const AERONAVES: Aeronave[] = [
     clase: "Reconocimiento estratégico a gran altitud",
     sprite: "/zodk-u2.png",
     spriteNoche: "/zodk-u2.png",
-    ratio: "808 / 362",
+    ratio: "813 / 394",
     vuelo: "fijo-arriba",
     bandera: "🇺🇸",
     specs: [
@@ -124,6 +132,25 @@ export const AERONAVES: Aeronave[] = [
       ["Techo", "~21.300 m"],
       ["Tripulación", "1"],
       ["Autonomía", "~12 h"],
+    ],
+  },
+  {
+    id: "sr71",
+    nombre: "Lockheed SR-71 Blackbird",
+    clase: "Reconocimiento estratégico supersónico",
+    sprite: "/zodk-sr71.png",
+    spriteNoche: "/zodk-sr71.png",
+    ratio: "857 / 466",
+    vuelo: "fijo-arriba-der",
+    bandera: "🇺🇸",
+    specs: [
+      ["Fabricante", "Lockheed (Skunk Works)"],
+      ["Origen", "EE. UU."],
+      ["Primer vuelo", "1964"],
+      ["Envergadura", "16,9 m"],
+      ["Velocidad", "Mach 3,3"],
+      ["Techo", "~25.900 m"],
+      ["Tripulación", "2"],
     ],
   },
   {

@@ -426,16 +426,19 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(90vw, 7vh); }
 }
 
-/* "fijo" / "fijo-izq" / "fijo-centro" / "fijo-arriba": la nave se queda en su
-   punto —normalmente debajo del título— pero describe una elipse pequeña y
-   lenta para que no parezca del todo parada. "fijo" = E-2, escorado a la
-   derecha y grande. "fijo-izq" = RQ-4, abajo a la izquierda y más pequeño.
-   "fijo-centro" = MQ-9, centrado bajo el título, mismo tamaño que el RQ-4.
-   "fijo-arriba" = U-2, por ENCIMA del título, sobre la palabra "blog". */
+/* "fijo" / "fijo-izq" / "fijo-centro" / "fijo-arriba" / "fijo-arriba-der": la
+   nave se queda en su punto —normalmente debajo del título— pero describe una
+   elipse pequeña y lenta para que no parezca del todo parada. "fijo" = E-2,
+   escorado a la derecha y grande. "fijo-izq" = RQ-4, abajo a la izquierda y
+   más pequeño. "fijo-centro" = MQ-9, centrado bajo el título, mismo tamaño
+   que el RQ-4. "fijo-arriba" = U-2, por ENCIMA del título, sobre la palabra
+   "blog". "fijo-arriba-der" = SR-71, igual pero más a la derecha, sobre
+   "márquez". */
 .hero-craft--fijo,
 .hero-craft--fijo-izq,
 .hero-craft--fijo-centro,
-.hero-craft--fijo-arriba {
+.hero-craft--fijo-arriba,
+.hero-craft--fijo-arriba-der {
   animation: hero-fijo-deriva 16s linear infinite;
 }
 .hero-craft--fijo {
@@ -460,6 +463,13 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   top: 26%;
   /* foto en horizontal (808x362, mucho más ancha que alta), así que necesita
      más ancho de caja que las demás "fijo" para leerse a tamaño parecido. */
+  width: clamp(140px, 13vw, 210px);
+}
+.hero-craft--fijo-arriba-der {
+  /* misma altura y ancho que fijo-arriba, pero centrada sobre "márquez" en
+     vez de sobre "blog" (medido en el título renderizado, no a ojo). */
+  left: 60%;
+  top: 26%;
   width: clamp(140px, 13vw, 210px);
 }
 
