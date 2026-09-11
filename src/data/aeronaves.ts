@@ -137,12 +137,12 @@ export const AERONAVES: Aeronave[] = [
     escala: 0.5,
     bandera: "🇮🇷",
     specs: [
-      ["Fabricante", "HESA (Irán) · Geran-2, Alabuga (Rusia)"],
-      ["Origen", "Irán, producción rusa bajo licencia"],
-      ["Primer uso en combate", "2022 (guerra de Ucrania)"],
+      ["Fabricante", "HESA (Irán)"],
+      ["Origen", "Irán / Rusia"],
+      ["Primer uso", "2022 (Ucrania)"],
       ["Envergadura", "2,5 m"],
-      ["Alcance", "hasta ~2.500 km"],
-      ["Carga", "~40-50 kg de explosivo"],
+      ["Alcance", "~2.500 km"],
+      ["Carga", "40-50 kg"],
     ],
   },
   {
