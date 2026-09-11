@@ -134,6 +134,7 @@ export const AERONAVES: Aeronave[] = [
     spriteNoche: "/zodk-shahed136.png",
     ratio: "788 / 440",
     vuelo: "sweep",
+    escala: 0.5,
     bandera: "🇮🇷",
     specs: [
       ["Fabricante", "HESA (Irán) · Geran-2, Alabuga (Rusia)"],
