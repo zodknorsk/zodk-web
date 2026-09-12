@@ -36,7 +36,7 @@ const years = Object.keys(notasPorAno).sort((a, b) => parseInt(b) - parseInt(a))
               <ul class="flex flex-col gap-4">
                 {notasPorAno[year].map((nota) => (
                   <li>
-                    <ArrowCard entry={nota} />
+                    <ArrowCard entry={nota} tituloAzul />
                   </li>
                 ))}
               </ul>

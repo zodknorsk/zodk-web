@@ -154,7 +154,7 @@ const eventos = todosEventos
           {
             notas.map((nota) => (
               <li>
-                <ArrowCard entry={nota} />
+                <ArrowCard entry={nota} tituloAzul />
               </li>
             ))
           }
@@ -178,7 +178,7 @@ const eventos = todosEventos
                     class="relative group flex flex-nowrap py-3 px-4 pr-10 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
                   >
                     <div class="flex flex-col flex-1 truncate">
-                      <div class="font-semibold">{ev.data.title}</div>
+                      <div class="font-semibold group-hover:text-[#2576eb] dark:group-hover:text-[#649fff]">{ev.data.title}</div>
                       <div class="text-sm">
                         {semanas === 0 && ev.data.periodo ? (
                           ev.data.periodo

@@ -38,7 +38,7 @@ const eventos = todos
                 href={`/eventos/${ev.data.evento}`}
                 class="group flex flex-col gap-1 py-3 px-4 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
               >
-                <div class="font-semibold">{ev.data.title}</div>
+                <div class="font-semibold group-hover:text-[#2576eb] dark:group-hover:text-[#649fff]">{ev.data.title}</div>
                 {ev.data.description && (
                   <div class="text-sm">{ev.data.description}</div>
                 )}
