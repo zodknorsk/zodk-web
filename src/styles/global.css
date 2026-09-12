@@ -556,93 +556,36 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   /* en Windows los emoji de bandera no se pintan */
 }
 
-/* --- Colocación de la ficha según la trayectoria --------------------- */
-/* sweep: al lado (derecha; el JS pone .flip-x si no cabe). */
-.hero-craft--sweep .craft-linea {
+/* --- Colocación de la ficha: igual para todas las trayectorias --------- */
+/* Siempre al lado (derecha; el JS pone .flip-x si no cabe), línea de 92px.
+   Antes cada trayectoria tenía su propia regla (al lado / abajo / arriba) y a
+   "fijo-arriba"/"fijo-arriba-der" (U-2, SR-71) directamente no les tocaba
+   ninguna, así que la ficha les salía pegada a la nave sin línea y se podía
+   salir de la pantalla por arriba. */
+.craft-linea {
   top: 50%;
   left: 100%;
   width: 92px;
   height: 1px;
   transform-origin: left center;
 }
-.hero-craft--sweep .craft-specs {
+.craft-specs {
   top: 50%;
   left: calc(100% + 92px);
   transform: translateY(-50%) translateX(-6px);
 }
-.hero-craft--sweep:hover .craft-specs { transform: translateY(-50%) translateX(0); }
-.hero-craft--sweep.flip-x .craft-linea {
+.hero-craft:hover .craft-specs { transform: translateY(-50%) translateX(0); }
+.hero-craft.flip-x .craft-linea {
   left: auto;
   right: 100%;
   transform-origin: right center;
 }
-.hero-craft--sweep.flip-x .craft-specs {
+.hero-craft.flip-x .craft-specs {
   left: auto;
   right: calc(100% + 92px);
   transform: translateY(-50%) translateX(6px);
 }
-.hero-craft--sweep.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
-
-/* orbita: debajo (el JS pone .edge-l / .edge-r cerca de los bordes). */
-.hero-craft--orbita .craft-linea {
-  left: 50%;
-  top: 100%;
-  width: 1px;
-  height: 46px;
-  transform-origin: center top;
-}
-.hero-craft--orbita .craft-specs {
-  left: 50%;
-  top: calc(100% + 46px);
-  transform: translateX(-50%) translateY(-6px);
-}
-.hero-craft--orbita:hover .craft-specs { transform: translateX(-50%) translateY(0); }
-.hero-craft--orbita.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(-6px); }
-.hero-craft--orbita.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
-.hero-craft--orbita.edge-r .craft-specs {
-  left: auto;
-  right: 0;
-  transform: translateX(0) translateY(-6px);
-}
-.hero-craft--orbita.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
-
-/* fijo / fijo-izq / fijo-centro: van bajos, así que la ficha sale HACIA ARRIBA
-   (si fuera debajo se saldría de pantalla). El JS pone .edge-l / .edge-r. */
-.hero-craft--fijo .craft-linea,
-.hero-craft--fijo-izq .craft-linea,
-.hero-craft--fijo-centro .craft-linea {
-  left: 50%;
-  bottom: 100%;
-  width: 1px;
-  height: 40px;
-  transform-origin: center bottom;
-}
-.hero-craft--fijo .craft-specs,
-.hero-craft--fijo-izq .craft-specs,
-.hero-craft--fijo-centro .craft-specs {
-  left: 50%;
-  bottom: calc(100% + 40px);
-  transform: translateX(-50%) translateY(6px);
-}
-.hero-craft--fijo:hover .craft-specs,
-.hero-craft--fijo-izq:hover .craft-specs,
-.hero-craft--fijo-centro:hover .craft-specs { transform: translateX(-50%) translateY(0); }
-.hero-craft--fijo.edge-l .craft-specs,
-.hero-craft--fijo-izq.edge-l .craft-specs,
-.hero-craft--fijo-centro.edge-l .craft-specs { left: 0; transform: translateX(0) translateY(6px); }
-.hero-craft--fijo.edge-l:hover .craft-specs,
-.hero-craft--fijo-izq.edge-l:hover .craft-specs,
-.hero-craft--fijo-centro.edge-l:hover .craft-specs { transform: translateX(0) translateY(0); }
-.hero-craft--fijo.edge-r .craft-specs,
-.hero-craft--fijo-izq.edge-r .craft-specs,
-.hero-craft--fijo-centro.edge-r .craft-specs {
-  left: auto;
-  right: 0;
-  transform: translateX(0) translateY(6px);
-}
-.hero-craft--fijo.edge-r:hover .craft-specs,
-.hero-craft--fijo-izq.edge-r:hover .craft-specs,
-.hero-craft--fijo-centro.edge-r:hover .craft-specs { transform: translateX(0) translateY(0); }
+.hero-craft.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
 
 @media (hover: none) {
   .hero-craft { pointer-events: none; }
