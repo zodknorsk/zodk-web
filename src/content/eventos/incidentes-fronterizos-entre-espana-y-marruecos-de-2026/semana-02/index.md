@@ -4,7 +4,7 @@ date: '2026-08-29'
 description: >-
   Meloni rechaza el ultimátum de Sánchez y mantendrá la suspensión de Schengen
   con España: «Italia no acepta imposiciones»
-updated: '2026-09-01'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint

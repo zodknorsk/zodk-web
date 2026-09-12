@@ -4,7 +4,7 @@ date: '2026-08-29'
 description: >-
   Amenaza a los médicos de Ceuta: «Tomaremos medidas contra los que hablen con
   medios»
-updated: '2026-09-02'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint

@@ -4,7 +4,7 @@ date: '2026-08-29'
 description: >-
   Moncloa descartó un estado de excepción que sacaría a todos los asaltantes en
   días
-updated: '2026-09-03'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint

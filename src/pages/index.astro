@@ -180,8 +180,18 @@ const eventos = todosEventos
                     <div class="flex flex-col flex-1 truncate">
                       <div class="font-semibold">{ev.data.title}</div>
                       <div class="text-sm">
-                        Desde <FormattedDate date={ev.data.date} /> ·{" "}
-                        {semanas} semana{semanas === 1 ? "" : "s"}
+                        {semanas === 0 && ev.data.periodo ? (
+                          ev.data.periodo
+                        ) : (
+                          <>
+                            Desde <FormattedDate date={ev.data.date} />
+                            {semanas > 0 && (
+                              <>
+                                {" "}· {semanas} semana{semanas === 1 ? "" : "s"}
+                              </>
+                            )}
+                          </>
+                        )}
                       </div>
                     </div>
                     <svg
