@@ -233,13 +233,6 @@ const eventos = todosEventos
           }
         </ul>
       </section>
-
-      <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">Contacto</h5>
-        <article>
-          <p>Si quieres escribirme, aquí me tienes:</p>
-        </article>
-      </section>
     </div>
   </Container>
 
@@ -266,10 +259,11 @@ const eventos = todosEventos
 
 <style>
   .social-bar {
+    @apply bg-zinc-50 dark:bg-zinc-900 border-t border-black/10 dark:border-white/10;
     width: 100%;
+    margin-top: 2rem;
     margin-bottom: -8rem; /* cancela el pb-32 (8rem) de <main> */
     padding: 2.5rem 1.25rem;
-    background: linear-gradient(135deg, #05060a 0%, #101a30 55%, #05060a 100%);
   }
   .social-bar ul {
     max-width: 56rem;
@@ -282,17 +276,17 @@ const eventos = todosEventos
   }
   .social-bar li { display: flex; align-items: center; }
   .social-bar li:not(:last-child)::after {
+    @apply bg-black/15 dark:bg-white/15;
     content: "";
     width: 1px;
     height: 1.6rem;
-    background: rgba(255, 255, 255, 0.15);
     margin: 0 clamp(1rem, 4vw, 2.5rem);
   }
   .social-bar a {
+    @apply text-black/70 dark:text-white/80;
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    color: #f3efe6;
     font-family: "IBM Plex Serif", ui-serif, Georgia, serif;
     font-weight: 600;
     font-size: clamp(0.82rem, 2vw, 1rem);
