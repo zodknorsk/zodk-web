@@ -60,6 +60,15 @@ export const STACK = [
     HREF: "https://tailwindcss.com",
     ICONO: `<svg width="20" height="20" viewBox="0 0 24 24" fill="#38bdf8" aria-hidden="true"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg>`,
   },
+  {
+    // Crédito aparte del stack técnico en sí: quien ayuda a construir la web.
+    // El icono es "Clawd", la mascota pixel-art de Claude Code, reconstruida a
+    // partir de un fotograma de clawd-laptop.mov (Claude.app/.../install-hub) —
+    // cuadrícula de 12x8 medida a mano sobre el original.
+    NAME: "Claude",
+    HREF: "https://claude.ai",
+    ICONO: `<svg width="20" height="20" viewBox="0 0 12 8" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="8" height="1" fill="#D97757"/><rect x="2" y="1" width="1" height="1" fill="#D97757"/><rect x="3" y="1" width="1" height="1" fill="#000"/><rect x="4" y="1" width="4" height="1" fill="#D97757"/><rect x="8" y="1" width="1" height="1" fill="#000"/><rect x="9" y="1" width="1" height="1" fill="#D97757"/><rect x="0" y="2" width="12" height="2" fill="#D97757"/><rect x="2" y="4" width="8" height="2" fill="#D97757"/><rect x="2" y="6" width="1" height="2" fill="#D97757"/><rect x="4" y="6" width="1" height="2" fill="#D97757"/><rect x="7" y="6" width="1" height="2" fill="#D97757"/><rect x="9" y="6" width="1" height="2" fill="#D97757"/></svg>`,
+  },
 ] as const;
 
 // Barra de contacto a sangre al final de la portada (ver index.astro). Los
