@@ -24,6 +24,12 @@ body {
   overflow-x: clip;              /* red de seguridad: nada de scroll horizontal */
 }
 
+/* Cuerpo del logomark de Astro (badge "hecho con"): en color fijo, no
+   currentColor, porque el texto del badge va muy tenue (opacity 50%) y se
+   veía demasiado claro; así queda más oscuro y legible en modo claro. */
+.astro-body { fill: #27272a; }
+html.dark .astro-body { fill: #f4f4f5; }
+
 header {
   @apply fixed top-0 left-0 right-0 z-50 py-5;
   @apply bg-zinc-50/75 dark:bg-zinc-900/25;
