@@ -180,13 +180,7 @@ const socialImageURL = new URL(image, Astro.site);
     document.querySelectorAll(".hero-craft").forEach((el) => {
       el.addEventListener("mouseenter", () => {
         const r = el.getBoundingClientRect();
-        if (el.classList.contains("hero-craft--sweep")) {
-          el.classList.toggle("flip-x", r.right + 360 > window.innerWidth);
-        } else {
-          const cx = r.left + r.width / 2;
-          el.classList.toggle("edge-l", cx < 160);
-          el.classList.toggle("edge-r", cx > window.innerWidth - 160);
-        }
+        el.classList.toggle("flip-x", r.right + 360 > window.innerWidth);
       });
     });
   }
@@ -214,14 +208,15 @@ const socialImageURL = new URL(image, Astro.site);
     // Empieza la trayectoria ya avanzada, para que el objeto no aparezca
     // clavado en el extremo de su recorrido al cargar.
     const FASE0 = {
-      sweep: 2, orbita: 6, fijo: 4, "fijo-izq": 4, "fijo-centro": 4, "fijo-arriba": 4,
+      sweep: 2, orbita: 6, fijo: 4, "fijo-izq": 4, "fijo-centro": 4,
+      "fijo-arriba": 4, "fijo-arriba-der": 4,
     };
 
     function pinta(a) {
       el.classList.remove(
         "hero-craft--sweep", "hero-craft--orbita", "hero-craft--fijo",
         "hero-craft--fijo-izq", "hero-craft--fijo-centro", "hero-craft--fijo-arriba",
-        "hero-craft--pixelado", "flip-x", "edge-l", "edge-r"
+        "hero-craft--fijo-arriba-der", "hero-craft--pixelado", "flip-x"
       );
       el.classList.add("hero-craft--" + a.vuelo);
       // Solo el pixel art de verdad (.svg) quiere vecino-más-cercano; las
