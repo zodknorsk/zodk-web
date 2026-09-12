@@ -43,8 +43,18 @@ const eventos = todos
                   <div class="text-sm">{ev.data.description}</div>
                 )}
                 <div class="text-xs opacity-60 pt-1">
-                  Desde <FormattedDate date={ev.data.date} /> · {semanas} semana
-                  {semanas === 1 ? "" : "s"}
+                  {semanas === 0 && ev.data.periodo ? (
+                    ev.data.periodo
+                  ) : (
+                    <>
+                      Desde <FormattedDate date={ev.data.date} />
+                      {semanas > 0 && (
+                        <>
+                          {" "}· {semanas} semana{semanas === 1 ? "" : "s"}
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
               </a>
             </li>

@@ -4,7 +4,7 @@ date: '2026-08-29'
 description: >-
   Vox exige en el Congreso que Marruecos pague los costes de sanidad y seguridad
   de los inmigrantes en Ceuta
-updated: '2026-09-02'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint

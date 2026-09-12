@@ -5,7 +5,7 @@ description: >-
   La mañana del pasado 30 de julio de 2026 se produjo el mayor incidente
   fronterizo entre España y Marruecos de la historia moderna. Aprovechando el
   pequeño…
-updated: '2026-09-03'
+updated: '2026-09-08'
 tags:
   - marruecos
   - osint
