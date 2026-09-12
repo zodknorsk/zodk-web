@@ -88,14 +88,6 @@ article blockquote p:last-of-type::after {
   @apply opacity-100 translate-y-0;
 }
 
-html #back-to-top {
-  @apply opacity-0 pointer-events-none;
-}
-
-html.scrolled #back-to-top {
-  @apply opacity-100 pointer-events-auto;
-}
-
 /* --- Tarjetas de tweet ---------------------------------------------------
    Generadas por scripts/importar-notas.mjs. Son HTML fijo dentro del
    Markdown; aquí solo les damos aspecto de tarjeta. */

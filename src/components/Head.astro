@@ -108,9 +108,6 @@ const socialImageURL = new URL(image, Astro.site);
     initHelice();
     animate();
 
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", (event) => scrollToTop(event));
-
     const themeButton = document.getElementById("theme-button");
     themeButton?.addEventListener("click", () => {
       const isDark = document.documentElement.classList.contains("dark");
@@ -374,14 +371,6 @@ const socialImageURL = new URL(image, Astro.site);
     } else {
       document.documentElement.classList.remove("scrolled");
     }
-  }
-
-  function scrollToTop(event) {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
   }
 
 function toggleTheme(dark) {
