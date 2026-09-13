@@ -207,8 +207,13 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      pasamos de ellas"). `city_cells()` sigue ahí para la noche congelada.
    - `python3 generar-planeta-hero.py --frame N salida.png` genera un solo
      fotograma (~9 s) para probar sin rehacer los 60.
-   Pendiente de este bloque: halo turquesa de costa en franjas nítidas (hoy es
-   degradado), quizá que las manchas verdes dentro del desierto sean copas
+   - **Mar en franjas planas**: turquesa de costa → turquesa medio
+     (`OCEAN_MID`) → plataforma → abisal, con los bordes ondulados por ruido
+     (`SEA_BANDS`, `SEA_WOBBLE`), mismo ancho que el degradado de antes. Sin
+     la mezcla tierra/mar en celdas de costa (`COAST_AA = False`): costa en
+     escalón de píxel limpio. Gustó ("muy bien").
+   Pendiente de este bloque: quizá cambiar el punteado Bayer del terminador
+   por franjas onduladas (se le preguntó, no opinó), quizá que las manchas verdes dentro del desierto sean copas
    sueltas (sabana) en vez de selva cerrada, luego regenerar los 60
    fotogramas, `cp` a `public/`, subir `?v=` y verificar el giro en Zen.
 7. Al terminar del todo, borrar este archivo.

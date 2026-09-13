@@ -47,6 +47,10 @@ OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
 OCEAN_COAST   = (0x5b, 0xd0, 0xe6)  # turquesa vivo junto a la costa (el "punch" alegre)
 OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
 OCEAN_DEEP    = (0x1d, 0x50, 0x8c)  # océano profundo
+OCEAN_MID     = (0x4f, 0xb0, 0xd6)  # franja intermedia entre el turquesa y la plataforma
+SEA_BANDS     = (2.4, 4.4)          # distancia a costa (celdas) donde acaba cada franja
+SEA_WOBBLE    = 2.2                 # cuánto se ondulan los bordes de franja (celdas)
+COAST_AA      = False               # mezcla tierra/mar en las celdas de costa (borde borroso)
 LAND  = (0x54, 0xa2, 0x59)
 ICE   = (0xdb, 0xe3, 0xec)
 SPACE = (0x05, 0x06, 0x0a)
@@ -182,7 +186,7 @@ for _c in (_gc - 1, _gc, _gc + 1):
 import random
 from collections import deque
 
-DMAX = 6
+DMAX = 8
 _land = [[GRID[r][c] != 0 for c in range(MW)] for r in range(MH)]
 COAST = [bytearray(MW) for _ in range(MH)]
 COAST2 = [bytearray(MW) for _ in range(MH)]         # 2ª celda de tierra adentro (línea más gruesa)
@@ -902,14 +906,18 @@ def _surface_at(lat, lon):
     gc %= MW
     terrain = GRID[gr][gc]
     tex_k = 0
-    if terrain == 0:                       # mar: turquesa en costa -> plataforma -> abisal
-        sd = SEADIST[gr][gc]
-        if sd <= 1:
-            surf = OCEAN_COAST
-        elif sd <= 3:
-            surf = mix(OCEAN_COAST, OCEAN_SHALLOW, (sd - 1) / 2.0)
+    if terrain == 0:                       # mar en FRANJAS planas: turquesa de costa ->
+        sd = SEADIST[gr][gc]               # turquesa medio -> plataforma -> abisal. Los
+        if sd <= 1:                        # bordes se ondulan con el ruido de manchas para
+            surf = OCEAN_COAST             # no calcar el contorno de la costa.
         else:
-            surf = mix(OCEAN_SHALLOW, OCEAN_DEEP, min(1.0, (sd - 3) / 3.0))
+            d = sd + (_mix_noise(gr, gc) - 0.5) * SEA_WOBBLE
+            if d <= SEA_BANDS[0]:
+                surf = OCEAN_MID
+            elif d <= SEA_BANDS[1]:
+                surf = OCEAN_SHALLOW
+            else:
+                surf = OCEAN_DEEP
     elif terrain == 2:                     # hielo
         surf = ICE
     else:                                  # tierra: bioma + copas + relieve (la línea de costa
@@ -1028,7 +1036,8 @@ def cell_index(sx, sy, lon0, night):
     dth = _dither(sx, sy)
 
     terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
-    surf, tex_k = _coast_aa(sx, sy, lon0, terrain, surf, tex_k, gr, gc)
+    if COAST_AA:
+        surf, tex_k = _coast_aa(sx, sy, lon0, terrain, surf, tex_k, gr, gc)
     # Línea de costa: aparte del AA de arriba (que suaviza la transición
     # tierra/mar y diluiría la línea si se mezclara antes). Sub-muestreada
     # (ver _coast_line_mix) para no perderse islas más pequeñas que un píxel.
