@@ -12,12 +12,11 @@ La web lo anima moviendo `background-position` a saltos (`steps(28)`, vuelta en
 60 s): un recorte de bitmap, barato en cualquier navegador. Se probó un SVG
 vectorial animado y calentaba la CPU en Firefox/Zen (ver más abajo).
 
+(HISTÓRICO: desde sept 2026 el día y la noche son el MISMO `<canvas>`, ver
+punto 7 y "Modo noche v2". Lo de esta sección describe los sprites viejos.)
 - Modo claro → `public/zodk-planeta-sprite.png` (Tierra de día, sol, terminador
   suave, ciudades como puntos oscuros — de día no se encienden) + `zodk-dron.svg`.
-- Modo oscuro → `public/zodk-planeta-noche.png` (Tierra a oscuras, luces por
-  densidad de población + focos de grandes ciudades + luces sueltas de islas) +
-  `zodk-dron-noche.svg` (con luces de posición: amarilla en el morro, verde ala
-  derecha/arriba, roja ala izquierda/abajo). Solo se descarga en modo oscuro.
+- Modo oscuro → `public/zodk-planeta-noche.png` (retirado) + `zodk-dron-noche.svg`.
 
 El sombreado (terminador, oscurecimiento del borde, atmósfera) va **horneado en
 el sprite**, no como capa CSS. Una sola capa animada.
@@ -27,10 +26,10 @@ el sprite**, no como capa CSS. Una sola capa animada.
 | Archivo | Qué |
 |---|---|
 | `rasterizar.py` | `ne_50m_land.geojson` (gitignored) → `mapa_tierra.py`. Costas + hielo (Groenlandia >67N, casquete >82N) + estrecho de Gibraltar. Solo re-ejecutar si cambian resolución/umbrales. |
-| `densidad_luces.py` | `ne_10m_populated_places` (gitignored, `pp10.json`) → `luces.py`. Campo de densidad 0-3 para las luces de noche. Umbrales por percentil: `T1/T2/T3 = pct(0.82/0.93/0.982)`. Subirlos = menos luces. |
-| `mapa_tierra.py`, `luces.py` | Salidas de los dos anteriores. Es lo que consume el generador. |
+| `cities15000.txt` | GeoNames (gitignored, curl en el generador): las luces de noche. Sustituye a `densidad_luces.py`/`luces.py` (retirados). |
+| `mapa_tierra.py` | Salida de `rasterizar.py`. Es lo que consume el generador. |
 | `png8.py` | Escritor mínimo de PNG indexado. |
-| `generar-planeta-hero.py` | Todo junto → los 2 sprites + los 2 drones. Parámetros arriba del archivo (`FRAMES`, geometría, sol, `CIUDADES`, `LUCES_SUELTAS`). |
+| `generar-planeta-hero.py` | Todo junto → datos del canvas de día y de noche en `public/planeta/`. Parámetros arriba del archivo (geometría, sol, luna, paleta de noche) y en cada sección (`LUZ_*`, nubes, banderas…). |
 | `generar-estrellas.py` | Baldosa `public/zodk-estrellas.png` para el campo de estrellas del fondo (la web la repite con `background-repeat` en vez de apilar gradientes en el CSS). |
 
 Flujo de iteración (desde sept 2026 el planeta de DÍA es un canvas, ver punto 7):
@@ -125,8 +124,28 @@ Hecho y aprobado:
    escalones y turquesa. Costa, hielo y nieve de noche: se dejan como salen
    (se leen bien).
 
-Siguiente: pasar la noche al canvas (las luces allí: decidir si se estampan
-por fotograma o se hornean), naves, título.
+4. **La noche, en el canvas** (`planeta.js`, `PLANETA_V` 8, `?v=8`). Mismo
+   canvas de día y de noche según el tema; al cambiarlo en caliente se repinta
+   entero sin cortar el giro. Lo de la noche se descarga solo si hace falta:
+   `planeta-lut-noche.png` (misma lista de materiales, colores a la luz de la
+   luna) y `planeta-luces.png` (34.091 luces, 2 px por luz: lat/lon en 16 bits
+   + fuerza en 1/16; ~160 KB). Por píxel se precalculan también los escalones
+   de luz de la luna (`pKNn`/`pKIn`) y el borde nocturno (`postN`: halo, brillo
+   de atmósfera, borde suavizado). Las luces se ESTAMPAN en cada fotograma como
+   en `light_cells()` (hornearlas en el mapa las haría titilar al girar, como
+   pasaba con las costas). Respaldo sin JS: `planeta-quieto-noche.png`.
+   Retirados: el sprite viejo `public/zodk-planeta-noche.png` y su animación
+   CSS, `luces.py` y `densidad_luces.py`.
+   Rendimiento (Chrome sin ventana en el Mac, 280 filas visibles): día 0,35 ms
+   por dibujo, noche ~1,7 ms (casi todo, sumar huellas de ~15.000 luces). Ya
+   optimizado: descartes sin trigonometría (por detrás del disco, por debajo de
+   la ventana) y giro con cos/sen precalculados. Probado y DESCARTADO por el
+   aspecto: quitar el halo a los pueblos de <100.000 (Europa perdía el velo).
+   Otra vía no probada: fundir localidades a <0,1° (solo −23 % de luces).
+   Pendiente: que el usuario lo compruebe en Zen (temperatura).
+   De noche, de momento, como antes: sin chapas, sin coordenada MGRS, sin X.
+
+Siguiente: chapas/MGRS/X de noche (preguntar), naves, título.
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 
