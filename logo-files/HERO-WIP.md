@@ -164,7 +164,21 @@ Hecho y aprobado:
    oscuras (como en la realidad) y el Sentinel-2 no lleva (satélite; tiene su
    SVG de noche de antes).
 
-Siguiente: título (el lema es el mismo; "toques" de noche), hemisferio sur.
+7. **Título de noche — opción D (la propuso el usuario, frente a A/B/C que
+   se le enseñaron: verde fijo con lema blanco / verde / ámbar)**. De noche el
+   título se ve como de día, en blanco (se quitó el lema ámbar de la noche
+   vieja). Al FIJAR una coordenada (clic en el planeta, `.hero-mgrs.fijada`)
+   pasan a verde de visión nocturna (`--nvg` #8dff9e + resplandor): marco,
+   coordenada resaltada (marcador verde, texto oscuro), lema y botón
+   play/pausa; la X del planeta también (`X_CELLS_N` en `planeta.js`). Con
+   `:has()` en el CSS. La mira del cursor sigue blanca (no la pidió).
+8. **Más estrellas de noche** (pedido del usuario, "bastante más" y luego
+   "unas cuantas más"): baldosa propia `public/zodk-estrellas-noche.png`
+   (480 px, 95 estrellas, casi todas tenues; `generar-estrellas.py`) en
+   `.hero-stars::after`, encima de la de siempre.
+
+Siguiente: hemisferio sur (pendiente de hablarlo), revisión general en Zen
+(temperatura) y móvil, y decidir el merge.
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 
