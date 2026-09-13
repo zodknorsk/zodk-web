@@ -205,6 +205,36 @@ html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png
   image-rendering: pixelated;
 }
 
+/* Sol (día) y luna (noche), arriba a la izquierda y en el mismo sitio en los
+   dos modos (decisión del usuario: simétricos). Detrás del planeta (va antes
+   en el DOM, mismo z-index). Pixel art de logo-files/generar-astros.py a 1 px
+   de arte = 1 px de imagen, escalado x3 (x2 en móvil) como el planeta. La
+   luna es una tira de 30 fases; index.astro elige la de hoy (sin JS, llena). */
+.hero-astro {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-astro > span {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.astro-sol { background-image: url(/zodk-sol.png); background-size: 100% 100%; }
+.astro-luna {
+  background-image: url(/zodk-luna-fases.png);
+  background-size: 3000% 100%;
+  background-position: 51.72% 0;   /* fase 15 de 30: llena */
+  opacity: 0;
+}
+html.dark .astro-sol { opacity: 0; }
+html.dark .astro-luna { opacity: 1; }
+
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
    (::before) para despegarlo del pixel art.
@@ -805,6 +835,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
+  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }

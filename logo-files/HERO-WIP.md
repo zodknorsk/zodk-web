@@ -177,6 +177,20 @@ Hecho y aprobado:
    (480 px, 95 estrellas, casi todas tenues; `generar-estrellas.py`) en
    `.hero-stars::after`, encima de la de siempre.
 
+9. **Hélice "otro objeto" bajo el marco** (decisión del usuario: "sin
+   recuadro"): sola, bajo la esquina inferior izquierda del marco del título,
+   en espejo con play/pausa y coordenada; mismo SVG de Excalidraw con el
+   viewBox recortado a la hélice (`heliceSvg`), cuadrado y flecha ocultos. De
+   noche, con coordenada fijada, en verde.
+10. **Sol y luna** arriba a la izquierda, en el MISMO sitio de día y de noche
+   ("es importante que sean simétricos"; elegidos D2 + N3 de unas maquetas con
+   sol/luna asomando por la esquina, con rayos, lejanos…). Pixel art de
+   `generar-astros.py`: sol pequeño con halo fino en 3 escalones; luna con la
+   **fase real del día** (tira de 30 fases, `faseLuna()` en index.astro; la
+   parte en sombra con luz cenicienta). Al usuario le da igual que la fase no
+   cuadre con la luz del planeta (luna llena siempre): no preocuparse de eso.
+   Detrás del planeta. Pendiente: transición al cambiar de tema.
+
 **Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
 (decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.
 

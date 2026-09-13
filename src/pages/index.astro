@@ -85,6 +85,12 @@ const eventos = todosEventos
   <section slot="hero" class="hero" aria-label="Portada">
     <div class="hero-stars" aria-hidden="true"></div>
     <span class="hero-sparkle" aria-hidden="true"></span>
+    <!-- Sol (día) y luna (noche) en el mismo sitio; el planeta pasa por delante.
+         La luna lleva la fase del día (faseLuna() más abajo). -->
+    <div class="hero-astro" aria-hidden="true">
+      <span class="astro-sol"></span>
+      <span class="astro-luna"></span>
+    </div>
     <div
       class="hero-planet"
       role="img"
@@ -432,7 +438,21 @@ const eventos = todosEventos
     return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
   }
 
+  // Fase de la luna de hoy: public/zodk-luna-fases.png trae FASES fases en fila
+  // (0 = luna nueva, FASES/2 = llena; logo-files/generar-astros.py). Edad de la
+  // luna desde una luna nueva conocida (6-ene-2000, 18:14 UTC) y mes sinódico
+  // medio: basta para el día.
+  const FASES = 30, MES_SINODICO = 29.530588853, LUNA_NUEVA = Date.UTC(2000, 0, 6, 18, 14);
+  function faseLuna() {
+    const el = document.querySelector<HTMLElement>(".astro-luna");
+    if (!el) return;
+    const edad = ((((Date.now() - LUNA_NUEVA) / 86400000) % MES_SINODICO) + MES_SINODICO) % MES_SINODICO;
+    const i = Math.round((edad / MES_SINODICO) * FASES) % FASES;
+    el.style.backgroundPosition = `${(i / (FASES - 1)) * 100}% 0`;
+  }
+
   document.addEventListener("astro:page-load", async () => {
+    faseLuna();
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest<HTMLElement>(".hero");
