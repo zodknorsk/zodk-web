@@ -16,7 +16,7 @@
 
 // Subir al regenerar public/planeta/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const PLANETA_V = 1;
+export const PLANETA_V = 2;
 
 const cargas = new Map();              // base -> Promise de datos preparados (una vez por página)
 
@@ -178,19 +178,26 @@ async function preparar(base) {
 }
 
 // Monta el planeta en `canvas` y lo pone a girar. Devuelve { desmontar, draw,
-// setVuelta, P }. Se para solo: fuera de pantalla, en modo oscuro (ahí se ve el
+// setVuelta, P }. `banderas`: códigos iso de las chapas a pintar (null = todas);
+// `alMoverBanderas(lista, W, H)` recibe tras cada dibujo dónde queda cada chapa
+// visible ({ iso, x, y } en píxeles del canvas, esquina de su contorno), para
+// colocar encima lo que reacciona al ratón. Se para solo: fuera de pantalla, en modo oscuro (ahí se ve el
 // sprite de noche de siempre), con la pestaña oculta y mientras `pausado()`
 // devuelva true (en la portada: ratón sobre una nave). Con
 // prefers-reduced-motion se pinta quieto.
 /**
  * @param {HTMLCanvasElement} canvas
- * @param {{ base?: string, vuelta?: number, pausado?: () => boolean, alPintar?: () => void }} [opciones]
+ * @param {{ base?: string, vuelta?: number, pausado?: () => boolean, alPintar?: () => void,
+ *   banderas?: string[] | null,
+ *   alMoverBanderas?: ((lista: { iso: string, x: number, y: number }[], W: number, H: number) => void) | null }} [opciones]
  */
 export async function montarPlaneta(canvas, {
   base = "/planeta/",
   vuelta = 90,                         // segundos por vuelta (elegido por el usuario)
   pausado = () => false,
   alPintar = () => {},                 // tras el primer dibujo completo
+  banderas = null,
+  alMoverBanderas = null,
 } = {}) {
   const P = await cargarPlaneta(base);
   const { D, W, H, R, MW, KN, lv, lut, iceMat, rowStart, post } = P;
@@ -202,6 +209,7 @@ export async function montarPlaneta(canvas, {
   const buf = new Uint32Array(img.data.buffer);
   const stamped = new Uint8Array(W * H);
   const SP = D.SPACE, AT = D.ATMO;
+  const FLAGS = banderas ? D.banderas.filter((f) => banderas.includes(f.iso)) : D.banderas;
 
   function proyecta(lat, lon, lon0) {
     const rlat = lat / DEG, rlon = (lon - lon0) / DEG;
@@ -239,9 +247,9 @@ export async function montarPlaneta(canvas, {
 
   // Chapas de bandera (países del blog): sombra de 1 px sobre el planeta, y la
   // chapa encima de las nubes. Solo en la cara iluminada y lejos del borde.
-  function banderas(lon0) {
+  function chapasVisibles(lon0) {
     const vis = [];
-    for (const f of D.banderas) {
+    for (const f of FLAGS) {
       const [px, py, pz, bright] = proyecta(f.lat, f.lon, lon0);
       if (pz <= D.BAND_PZ || bright < 0.12) continue;
       vis.push([f, Math.round(px * R + D.CX - 0.5 - f.ax), Math.round(py * R + D.CY - 0.5 - f.ay),
@@ -291,11 +299,12 @@ export async function montarPlaneta(canvas, {
       buf[p] = (255 << 24) | (Math.round(b) << 16) | (Math.round(g) << 8) | Math.round(r);
     }
     const lon0 = -rot * 360 / MW;
-    const vis = banderas(lon0);
+    const vis = chapasVisibles(lon0);
     sombras(vis);
     nubes(lon0);
     chapas(vis);
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
+    if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
   }
 
   // ---- bucle

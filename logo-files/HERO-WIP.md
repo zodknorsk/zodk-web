@@ -121,8 +121,11 @@ preguntárselo, no darlo por hecho):
 - Misma geografía: costas a 0,125°, banquisa con forma (el casquete circular
   sigue en el sprite de noche viejo), relieve.
 - Estilo pixel art "de ilustración" (rampas con cambio de tono, racimos).
-- ¿Chapas de bandera también de noche? (hoy solo de día; el hover con
-  artículos se está haciendo sobre el canvas de día).
+- ¿Chapas de bandera también de noche? (hoy solo de día, con su ficha de
+  artículos al pasar el ratón).
+- **Hemisferio sur**: pensar aquí cómo llegar a los países del sur (no se ven
+  en el hero; ver punto 7, "Problema para el futuro"). Lo pidió él para
+  cuando se retome la noche.
 
 **Cómo encajaría técnicamente (propuesta, no hecha).** El canvas ya separa
 "material de cada celda" (`planeta-mapa.png`) de "color por material y luz"
@@ -356,7 +359,29 @@ retiraría como se retiró el de día.
      la chapa"**. Siempre visibles en la cara iluminada (`BAND_PZ`, misma luz
      que las nubes). En `BANDERAS` / `BAND_PAL` del generador y en el JSON del
      canvas. Aparcado para más adelante: que se "planten" al pasar por el
-     centro y una ficha al pasar el ratón con enlace a los artículos.
+     centro.
+   - **Ficha de artículos al pasar el ratón por una chapa — HECHO (13-sep,
+     "Zen perfecto")**: misma ficha que las naves (`.craft-dossier` /
+     `.craft-linea` / `.craft-specs`). Relación país → artículos por las
+     ETIQUETAS que ya llevan (`src/data/paises.ts`: iso, nombre, etiquetas);
+     solo se pinta la chapa de un país con algún artículo (`banderas` en
+     `montarPlaneta`). Capa `.hero-banderas` (misma geometría que el planeta,
+     z-index 2) con un `<div>` por chapa que coloca el script de `index.astro`
+     con lo que avisa `alMoverBanderas`. "Puente" invisible sobre la línea para
+     llegar a la ficha sin que se cierre (tiene enlaces). Congela el hero como
+     las naves; accesible con teclado (`:focus-within`); sin fichas en móvil ni
+     de noche. Pendientes menores: si la chapa está muy abajo, la ficha se sale
+     por abajo (abrirla hacia arriba); el evento de incidentes España-Marruecos
+     solo lleva la etiqueta `marruecos` (el usuario decide si añade `españa`).
+   - **Problema para el futuro (lo señaló el usuario): hemisferio sur.** El
+     hero enseña sobre todo el hemisferio norte (Polo Norte arriba, inclinación
+     de 20° y el planeta más grande que la pantalla: se ve de ~20°N hacia
+     arriba). Un país del sur (Australia, Argentina…) nunca pasaría por la zona
+     visible y su chapa/ficha no se podría usar. Pidió pensarlo **cuando se
+     retome el modo noche**. Ideas a valorar entonces: chapas del sur "ancladas"
+     en el borde inferior visible cuando su país pasa por debajo; un índice de
+     países aparte (lista con banderas) que abra la misma ficha; que el planeta
+     cabecee hacia el sur un momento al elegir un país; o encuadre distinto.
    - **Integrado en la portada (13-sep-2026, rama, sin merge)**: el código
      vive en `src/scripts/planeta.js` (lo usan la portada y el prototipo, que
      ahora solo es un banco de pruebas con botones de velocidad). `index.astro`

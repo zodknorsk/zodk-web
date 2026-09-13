@@ -10,6 +10,7 @@ import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
 import { SITE, HOME, STACK, CONTACTO } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
+import { PAISES } from "@data/paises";
 
 // El hero muestra UN objeto de AERONAVES a la vez (dron, avión o satélite),
 // elegido al azar en el navegador con "bolsa barajada" (se recorren todos antes
@@ -37,6 +38,25 @@ const notas = (await getCollection("notas"))
   .slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
 
 const todosEventos = await getCollection("eventos");
+
+// Chapas de bandera del planeta: un país sale si algún artículo lleva una de
+// sus etiquetas (src/data/paises.ts). Al pasar el ratón por la chapa se
+// despliega una ficha, como la de las naves, con esos artículos. Las notas
+// cuentan una a una; los eventos, por su página índice.
+const articulos = [
+  ...(await getCollection("notas"))
+    .filter((n) => !n.data.draft)
+    .map((n) => ({ titulo: n.data.title, url: `/notas/${n.slug}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
+  ...todosEventos
+    .filter((e) => e.data.kind === "index" && !e.data.draft)
+    .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
+];
+const banderasBlog = PAISES.map((p) => ({
+  ...p,
+  articulos: articulos
+    .filter((a) => a.tags.some((t) => p.etiquetas.includes(t.toLowerCase())))
+    .sort((a, b) => b.fecha.valueOf() - a.fecha.valueOf()),
+})).filter((p) => p.articulos.length > 0);
 const eventos = todosEventos
   .filter((e) => e.data.kind === "index" && !e.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -62,6 +82,30 @@ const eventos = todosEventos
       aria-label="La Tierra en pixel art, hemisferio norte, girando"
     >
       <canvas class="hero-planet-canvas" aria-hidden="true"></canvas>
+    </div>
+    <div class="hero-banderas">
+      {banderasBlog.map((p) => (
+        <div class="hero-bandera" data-iso={p.iso} tabindex="0" hidden aria-label={`${p.nombre}: artículos relacionados`}>
+          <div class="craft-dossier">
+            <span class="craft-linea" />
+            <span class="bandera-puente" />
+            <div class="craft-specs">
+              <div class="craft-specs-titulo">{p.nombre}</div>
+              <div class="craft-clase">
+                {p.articulos.length === 1 ? "1 artículo" : `${p.articulos.length} artículos`}
+              </div>
+              <ul class="bandera-articulos">
+                {p.articulos.map((a) => (
+                  <li>
+                    <a href={a.url}>{a.titulo}</a>
+                    <span>{a.tipo} · <FormattedDate date={a.fecha} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
     <div class="hero-titulo">
       <h1>el blog de <span>hegoi márquez</span></h1>
@@ -271,9 +315,41 @@ const eventos = todosEventos
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest(".hero");
+
+    // Chapas: cada una lleva encima un <div> que reacciona al ratón (y al
+    // teclado) y despliega la ficha de artículos; el planeta avisa en cada
+    // dibujo de dónde queda cada chapa visible y aquí se coloca su <div>.
+    const chapas = new Map(
+      [...document.querySelectorAll<HTMLElement>(".hero-bandera")].map((el) => [el.dataset.iso ?? "", el]),
+    );
+    for (const el of chapas.values()) {
+      const lado = () => {
+        const r = el.getBoundingClientRect();
+        el.classList.toggle("flip-x", r.right + 380 > window.innerWidth);   // la ficha no cabe a la derecha
+      };
+      el.addEventListener("mouseenter", lado);
+      el.addEventListener("focus", lado);
+    }
+    const alMoverBanderas = (lista: { iso: string; x: number; y: number }[], W: number, H: number) => {
+      const vistas = new Set<string>();
+      for (const { iso, x, y } of lista) {
+        const el = chapas.get(iso);
+        if (!el) continue;
+        vistas.add(iso);
+        el.style.left = `${(x / W) * 100}%`;
+        el.style.top = `${(y / H) * 100}%`;
+        el.hidden = false;
+      }
+      for (const [iso, el] of chapas) {
+        if (!vistas.has(iso) && !el.matches(":hover, :focus-within")) el.hidden = true;
+      }
+    };
+
     const p = await montarPlaneta(cv, {
-      pausado: () => !!hero?.querySelector(".hero-craft:hover"),
+      pausado: () => !!hero?.querySelector(".hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within"),
       alPintar: () => cv.parentElement?.classList.add("planeta-listo"),
+      banderas: [...chapas.keys()],
+      alMoverBanderas,
     });
     if (!cv.isConnected) return p.desmontar();   // se salió de la portada mientras cargaba
     planeta?.desmontar();

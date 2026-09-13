@@ -1350,21 +1350,23 @@ def cloud_cells(lon0):
 # Bandera de 11x7 px con contorno oscuro de 1 px, esquinas recortadas y una
 # sombra de 1 px abajo a la derecha; centrada en el punto del país, gira con el
 # planeta, solo en la cara iluminada y lejos del borde, con la luz de las nubes.
-# Añadir un país = una entrada en BANDERAS (filas de 11 letras de BAND_PAL).
+# Añadir un país = una entrada en BANDERAS (filas de 11 letras de BAND_PAL) y
+# otra en src/data/paises.ts (su nombre y las etiquetas de artículo que le
+# corresponden). En la web solo se pintan las de países con algún artículo.
 BAND_PAL = {
     "R": (0xc8, 0x1e, 0x2d), "Y": (0xf4, 0xc4, 0x30), "E": (0x8e, 0x16, 0x20),   # España
     "r": (0xc1, 0x27, 0x2d), "g": (0x1f, 0x7a, 0x3c),                           # Marruecos
     "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
     "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
 }
-BANDERAS = [   # (nombre, lat, lon del punto del país, filas)
-    ("España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
+BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
+    ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
                             "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"]),
-    ("Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
+    ("MA", "Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
                                "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"]),
-    ("Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
+    ("IR", "Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
                           "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
-    ("EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
+    ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
                               "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
 ]
 BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
@@ -1386,7 +1388,7 @@ def _chapa(rows):
     return cells, sombra, (fw / 2.0, fh / 2.0)
 
 
-CHAPAS = [(n, la, lo) + _chapa(rows) for n, la, lo, rows in BANDERAS]
+CHAPAS = [(iso, la, lo) + _chapa(rows) for iso, _n, la, lo, rows in BANDERAS]
 
 
 def flag_cells(lon0):
@@ -1522,10 +1524,10 @@ def export_canvas(outdir):
         "SPACE": SPACE, "ATMO": ATMO, "C_BODY": C_BODY, "C_BASE": C_BASE, "C_EDGE": C_EDGE,
         "nubes": nubes,
         "BAND_PZ": BAND_PZ,
-        "banderas": [{"nombre": n, "lat": la, "lon": lo, "ax": ax, "ay": ay,
+        "banderas": [{"iso": iso, "lat": la, "lon": lo, "ax": ax, "ay": ay,
                       "cells": [[x, y, *col] for (x, y), col in cells.items()],
                       "sombra": [[x, y] for (x, y) in sh]}
-                     for n, la, lo, cells, sh, (ax, ay) in CHAPAS],
+                     for iso, la, lo, cells, sh, (ax, ay) in CHAPAS],
     }
     with open(os.path.join(outdir, "planeta-datos.json"), "w") as fh:
         json.dump(datos, fh, separators=(",", ":"))
