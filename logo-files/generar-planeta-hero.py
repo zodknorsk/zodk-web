@@ -1366,7 +1366,7 @@ def _chapa(rows):
 CHAPAS = [(iso, la, lo) + _chapa(rows) for iso, _n, la, lo, rows in BANDERAS]
 
 
-def flag_cells(lon0):
+def flag_cells(lon0, night=False):
     """(sx, sy) -> rgba de las chapas, y el conjunto de píxeles en su sombra."""
     out, sombra = {}, set()
     for _n, clat, clon, cells, sh, (ax, ay) in CHAPAS:
@@ -1378,10 +1378,10 @@ def flag_cells(lon0):
         pz = SINT * a + COST * vv
         if pz <= BAND_PZ:
             continue
-        lam = px * SX + py * SY + pz * SZ
+        lam = px * MX + py * MY + pz * MZ if night else px * SX + py * SY + pz * SZ
         bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
         if bright < 0.12:
-            continue                                   # lado de noche
+            continue                                   # lado en sombra
         t = 0.72 + 0.28 * bright                       # misma luz que las nubes
         ox = round(px * RADIUS + CX - 0.5 - ax)
         oy = round(py * RADIUS + CY - 0.5 - ay)
@@ -1532,9 +1532,8 @@ def render(night, path, frames=None):
         xoff, yoff = gx * COLS, gy * VIS
         overlay = cloud_cells(lon0, night)
         sombra = set()
-        if not night:                               # chapas por encima de las nubes
-            fl, sombra = flag_cells(lon0)
-            overlay.update(fl)
+        fl, sombra = flag_cells(lon0, night)         # chapas por encima de las nubes
+        overlay.update(fl)
         luces = light_cells(lon0) if night else {}
         for sy in range(VIS):
             row = rows[yoff + sy]
@@ -1542,11 +1541,11 @@ def render(night, path, frames=None):
                 c = overlay.get((sx, sy))
                 if c is None:
                     c = cell_index(sx, sy, lon0, night)
-                    if (sx, sy) in sombra and c[3]:
-                        c = (c[0] // 2, c[1] // 2, c[2] // 2 + 6, 255)
                     lv = luces.get((sx, sy))
                     if lv and c[3]:
                         c = light_mix(c, lv)
+                    if (sx, sy) in sombra and c[3]:
+                        c = (c[0] // 2, c[1] // 2, c[2] // 2 + 6, 255)
                 o = (xoff + sx) * 4
                 row[o] = c[0]; row[o + 1] = c[1]; row[o + 2] = c[2]; row[o + 3] = c[3]
     write_rgba(path, sw, sh, rows)

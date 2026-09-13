@@ -143,9 +143,27 @@ Hecho y aprobado:
    aspecto: quitar el halo a los pueblos de <100.000 (Europa perdía el velo).
    Otra vía no probada: fundir localidades a <0,1° (solo −23 % de luces).
    Pendiente: que el usuario lo compruebe en Zen (temperatura).
-   De noche, de momento, como antes: sin chapas, sin coordenada MGRS, sin X.
+5. **Chapas, coordenada MGRS y X también de noche** (pedido del usuario). Las
+   chapas conservan sus colores (son marcadores) con la luz de la luna; se
+   pintan por encima de las luces de ciudades. `geo()` ya no devuelve null de
+   noche. En el generador, `flag_cells(lon0, night)`.
+6. **Naves de noche** (opción B, aprobada). `generar-naves-noche.py` saca
+   `public/zodk-<id>-noche.png` de las fotos del usuario (los originales NO se
+   tocan): mismo tratamiento de luna que el planeta pero más claro (probadas
+   tres intensidades sobre el planeta de noche; las oscuras camuflaban las
+   naves grises contra el mar). El alfa no se toca (sombra y bordes igual; la
+   sombra solo se enfría un poco de color). Zonas con luz propia (`EMISIVO`:
+   postquemadores del SR-71) sin oscurecer. **Luces de posición** como puntos
+   CSS encima de la nave (`.craft-luz`, tamaño fijo en pantalla: dentro de la
+   foto reducida saldrían de <1 px), posiciones en `aeronaves.ts` (`luces`, en
+   % de la imagen; morro a la izquierda → ala derecha = arriba = verde,
+   izquierda = abajo = roja, blanca en cola, destellos blancos dobles en las
+   puntas y baliza roja intermitente; solo opacidad, lo mueve la GPU; con
+   reduced-motion, fijas). Decisión propia, avisada: el Shahed-136 va a
+   oscuras (como en la realidad) y el Sentinel-2 no lleva (satélite; tiene su
+   SVG de noche de antes).
 
-Siguiente: chapas/MGRS/X de noche (preguntar), naves, título.
+Siguiente: título (el lema es el mismo; "toques" de noche), hemisferio sur.
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 

@@ -238,7 +238,7 @@ async function preparar(base) {
 // visible ({ iso, x, y } en píxeles del canvas, esquina de su contorno), para
 // colocar encima lo que reacciona al ratón. `alDibujar()` se llama tras cada
 // dibujo (con el planeta parado, no), y `geo(x, y)` da la latitud/longitud del
-// punto de pantalla (x, y) en ese momento, o null fuera del disco o de noche.
+// punto de pantalla (x, y) en ese momento, o null fuera del disco.
 // Con el tema oscuro pinta la noche (luz de luna y luces de ciudades). Se para
 // solo: fuera de pantalla, con la pestaña oculta y mientras `pausado()`
 // devuelva true (en la portada: ratón sobre una nave). Con
@@ -376,10 +376,10 @@ export async function montarPlaneta(canvas, {
 
   // Chapas de bandera (países del blog): sombra de 1 px sobre el planeta, y la
   // chapa encima de las nubes. Solo en la cara iluminada y lejos del borde.
-  function chapasVisibles(lon0) {
+  function chapasVisibles(lon0, luna) {
     const vis = [];
     for (const f of FLAGS) {
-      const [px, py, pz, bright] = proyecta(f.lat, f.lon, lon0);
+      const [px, py, pz, bright] = proyecta(f.lat, f.lon, lon0, luna);
       if (pz <= D.BAND_PZ || bright < 0.12) continue;
       vis.push([f, Math.round(px * R + D.CX - 0.5 - f.ax), Math.round(py * R + D.CY - 0.5 - f.ay),
                 0.72 + 0.28 * bright]);
@@ -422,10 +422,10 @@ export async function montarPlaneta(canvas, {
     }
   }
   let marca = null, marcaPos = null;                 // { lat, lon } y dónde quedó en el canvas
-  function pintaMarca(lon0) {
+  function pintaMarca(lon0, luna) {
     marcaPos = null;
     if (!marca) return;
-    const [px, py, pz, bright] = proyecta(marca.lat, marca.lon, lon0);
+    const [px, py, pz, bright] = proyecta(marca.lat, marca.lon, lon0, luna);
     if (pz <= 0.06 || bright < 0.12) return;
     const cx = px * R + D.CX, cy = py * R + D.CY;
     const ox = Math.round(cx - 0.5 - (XN >> 1)), oy = Math.round(cy - 0.5 - (XN >> 1));
@@ -473,18 +473,12 @@ export async function montarPlaneta(canvas, {
       }
     }
     const lon0 = -rot * 360 / MW;
-    let vis = [];
-    if (luna) {                                        // de noche, de momento sin chapas ni marca
-      luces(lon0, y0, y1);
-      nubes(lon0, true);
-      marcaPos = null;
-    } else {
-      vis = chapasVisibles(lon0);
-      sombras(vis);
-      nubes(lon0, false);
-      chapas(vis);
-      pintaMarca(lon0);
-    }
+    if (luna) luces(lon0, y0, y1);                     // de noche, bajo las chapas y las nubes
+    const vis = chapasVisibles(lon0, luna);
+    sombras(vis);
+    nubes(lon0, luna);
+    chapas(vis);
+    pintaMarca(lon0, luna);
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
     if (alDibujar) alDibujar();
@@ -580,10 +574,8 @@ export async function montarPlaneta(canvas, {
   arrancar();
 
   // Punto de pantalla -> latitud/longitud (la inversa de la proyección del
-  // precálculo, más el giro actual). De noche, de momento, no se da (sin
-  // coordenada ni marca, como con el planeta viejo).
+  // precálculo, más el giro actual), de día y de noche.
   function geo(x, y) {
-    if (html.classList.contains("dark")) return null;
     const bb = canvas.getBoundingClientRect();
     const px = ((x - bb.left) * W / bb.width - D.CX) / R;
     const py = ((y - bb.top) * H / bb.height - D.CY) / R;
@@ -608,7 +600,7 @@ export async function montarPlaneta(canvas, {
       marca = p;
       if (!p) marcaPos = null;
       sucio = true;
-      if (!raf && !html.classList.contains("dark")) pintar(true);   // sin bucle (reduce-motion…)
+      if (!raf) pintar(true);                         // sin bucle (reduce-motion…)
     },
     // Dónde se ve la marca ahora, en coordenadas de pantalla (null si no se ve).
     posMarca() {
