@@ -53,7 +53,9 @@ SEA_BANDS     = (2.4, 4.4)          # distancia a costa (celdas de 0,25°) donde
 SEA_WOBBLE    = 2.2                 # cuánto se ondulan los bordes de franja (celdas de 0,25°)
 COAST_AA      = False               # mezcla tierra/mar en las celdas de costa (borde borroso)
 LAND  = (0x54, 0xa2, 0x59)
-ICE   = (0xdb, 0xe3, 0xec)
+ICE   = (0xdb, 0xe3, 0xec)          # hielo continental (Groenlandia, islas árticas)
+PACK_OLD   = (0xe6, 0xee, 0xf5)     # banquisa: placa de hielo viejo (más blanca)
+PACK_YOUNG = (0xbd, 0xd0, 0xe2)     # banquisa: hielo joven, más fino y azulado
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
@@ -136,6 +138,7 @@ TERM_A, TERM_B = -0.34, 0.60   # borde del terminador
 NIGHT   = 0.22                 # brillo mínimo en el lado en sombra (día)
 LIMB_K  = 0.23                 # oscurecimiento del borde
 LIMB_AA = 1.3                  # semiancho (en px) del suavizado del borde del disco
+ICE_DITHER = 0.35              # fuerza del punteado de sombra sobre hielo (1 = el de siempre)
 
 CX  = COLS / 2.0
 CY  = RADIUS
@@ -720,6 +723,101 @@ for dlat, dlon, ang, hl in _dunes:
             elif -DUNE_SH * taper < q < 0.0:
                 DUNE[r][c] = 1 if q > -DUNE_SH * taper * 0.6 else 2
 
+# ----------------------------------------------------------- banquisa
+# El hielo marino ya no es "todo el mar por encima de 82°N" (un círculo
+# perfecto con línea de costa alrededor): se dibuja aquí con forma.
+#  - Borde por longitud (PACK_EDGE), aproximando la extensión de principios de
+#    verano: llena la cuenca ártica hasta las costas de Siberia, Alaska y el
+#    archipiélago canadiense, baja por la costa este de Groenlandia con la
+#    corriente y se retira al norte en el lado atlántico (Barents, Svalbard).
+#  - Borde roto en témpanos: la proporción de hielo sube de 0 a 1 en una franja
+#    y se umbraliza contra un ruido de manchas (mismo truco que MIXBIO).
+#  - Dentro: placas grandes de hielo viejo y manchas de hielo joven.
+#  - Es terreno 3: sin línea de costa ni franjas turquesa. La tierra que toca
+#    (Groenlandia, islas) conserva SU línea de costa, así que se distingue.
+#   PACK: 0 nada, 1 hielo joven, 2 hielo viejo
+PACK_EDGE = [   # (longitud, latitud del borde)
+    (-180, 72.0), (-160, 71.5), (-140, 71.0), (-120, 71.0), (-95, 69.5),
+    (-75, 72.5), (-60, 74.5), (-40, 71.0), (-22, 69.5), (-10, 76.0),
+    (0, 79.0), (15, 80.3), (30, 79.5), (45, 78.5), (60, 77.5),
+    (75, 75.5), (100, 76.5), (130, 75.0), (150, 73.0), (180, 72.0),
+]
+PACK_FRINGE = (1.9, 0.6)           # grados al sur / al norte del borde donde se rompe en témpanos
+
+
+def _edge_lat(lon):
+    for (l0, a0), (l1, a1) in zip(PACK_EDGE, PACK_EDGE[1:]):
+        if l0 <= lon <= l1:
+            t = (lon - l0) / (l1 - l0)
+            return a0 + (a1 - a0) * t
+    return PACK_EDGE[-1][1]
+
+
+def _vnoise_factory(ncells, seed):
+    """Ruido de valor 0..1 con nodos cada `ncells` celdas, que da la vuelta en
+    longitud (sin costura en la línea de cambio de fecha)."""
+    rnd = random.Random(seed)
+    wn = max(1, MW // ncells)
+    g = [[rnd.random() for _ in range(wn)] for _ in range(MH // ncells + 2)]
+
+    def f(r, c):
+        fr, fc = r / ncells, c / ncells
+        r0, c0 = int(fr), int(fc)
+        tr, tc = fr - r0, fc - c0
+        tr, tc = tr * tr * (3 - 2 * tr), tc * tc * (3 - 2 * tc)
+        c0 %= wn
+        c1 = (c0 + 1) % wn
+        a = g[r0][c0] * (1 - tc) + g[r0][c1] * tc
+        b = g[r0 + 1][c0] * (1 - tc) + g[r0 + 1][c1] * tc
+        return a * (1 - tr) + b * tr
+    return f
+
+
+# Ruido de la banquisa en coordenadas POLARES (x, y en grados desde el polo):
+# en latitud/longitud los nodos del ruido se juntan hacia el polo y las placas
+# salían como rayos de una estrella. Así el ruido es igual de redondo en todo
+# el casquete. Retícula sin tabla: valor pseudoaleatorio por hash de (ix, iy).
+def _hash01(ix, iy, seed):
+    n = (ix * 374761393 + iy * 668265263 + seed * 2246822519) & 0xFFFFFFFF
+    n = ((n ^ (n >> 13)) * 1274126177) & 0xFFFFFFFF
+    return (n ^ (n >> 16)) / 4294967295.0
+
+
+def _pnoise(x, y, size, seed):
+    fx, fy = x / size, y / size
+    ix, iy = math.floor(fx), math.floor(fy)
+    tx, ty = fx - ix, fy - iy
+    tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+    a = _hash01(ix, iy, seed) * (1 - tx) + _hash01(ix + 1, iy, seed) * tx
+    b = _hash01(ix, iy + 1, seed) * (1 - tx) + _hash01(ix + 1, iy + 1, seed) * tx
+    return a * (1 - ty) + b * ty
+
+
+PACK = [bytearray(MW) for _ in range(MH)]
+for r in range(MH):
+    lat = 90.0 - (r + 0.5) * _md
+    if lat < 62.0:
+        break
+    for c in range(MW):
+        if GRID[r][c] != 0:
+            continue
+        lon = (c + 0.5) * _md - 180.0
+        rho, th = 90.0 - lat, math.radians(lon)
+        px_, py_ = rho * math.cos(th), rho * math.sin(th)
+        edge = _edge_lat(lon) + (_pnoise(px_, py_, 3.0, 501) - 0.5) * 3.0
+        p = smooth(edge - PACK_FRINGE[0], edge + PACK_FRINGE[1], lat)
+        if p <= 0.0:
+            continue
+        floe = smooth(0.25, 0.75, 0.6 * _pnoise(px_, py_, 0.32 / SCALE * 1.5, 502)
+                      + 0.4 * _pnoise(px_, py_, 0.8 / SCALE * 1.5, 503))
+        if floe > p:
+            continue                                   # agua entre témpanos
+        # Hielo joven (azulado) sobre todo cerca del borde; dentro, placas
+        # grandes de hielo viejo con alguna mancha de joven. (Se probaron
+        # grietas de agua: cerca del polo quedaban en puntos sueltos, fuera.)
+        young = _pnoise(px_, py_, 1.8 / SCALE * 1.5, 504) < 0.30 + 0.45 * (1.0 - p)
+        PACK[r][c] = 1 if young else 2
+
 # Nieve y roca van "ganando" copas ENTERAS según sube su cantidad (cada copa
 # tiene su umbral al azar, CROWN_U), y los huecos entre copas al final (nieve)
 # o al principio (roca: asoma entre los árboles). Transiciones a racimos, en
@@ -928,7 +1026,10 @@ def _surface_at(lat, lon):
     gc %= MW
     terrain = GRID[gr][gc]
     tex_k = 0
-    if terrain == 0:                       # mar en FRANJAS planas: turquesa de costa ->
+    if terrain == 0 and PACK[gr][gc]:      # banquisa: terreno 3 (ni costa ni franjas)
+        terrain = 3
+        surf = (PACK_YOUNG, PACK_OLD)[PACK[gr][gc] - 1]
+    elif terrain == 0:                     # mar en FRANJAS planas: turquesa de costa ->
         sd = SEADIST[gr][gc]               # turquesa medio -> plataforma -> abisal. Los
         if sd <= KC:                       # bordes se ondulan con el ruido de manchas para
             surf = OCEAN_COAST             # no calcar el contorno de la costa.
@@ -1015,7 +1116,7 @@ _OUTLINE_OFF = (-0.33, 0.0, 0.33)
 
 
 def _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf):
-    if terrain == 0:
+    if terrain in (0, 3):                  # mar y banquisa: sin línea de costa
         return surf
     level = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
     if level < 3:
@@ -1070,7 +1171,7 @@ def cell_index(sx, sy, lon0, night):
         # (decisión del usuario, sept 2026: "no toques nada en el modo oscuro").
         # public/zodk-planeta-noche.png es el de producción, intocable. Esta
         # rama se deja como estaba por si algún día se quiere regenerar.
-        base = (N_OCEAN, N_LAND, N_ICE)[terrain]
+        base = (N_OCEAN, N_LAND, N_ICE, N_ICE)[terrain]
         col = mix(SPACE, base, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
         if terrain != 0 and dc < 0.95:
             lv = luz_at(lat, lon)
@@ -1088,7 +1189,8 @@ def cell_index(sx, sy, lon0, night):
     bright = NIGHT + (1.0 - NIGHT) * term_t
     limb_t = smooth(0.72, 1.0, dc)
     limb = LIMB_K * limb_t
-    if terrain == 2:
+    helado = terrain in (2, 3)             # hielo continental o banquisa
+    if helado:
         limb *= 0.7
     bright *= 1.0 - limb
     # La luz global (terminador + limbo) se pasa a escalones de rampa y se le
@@ -1096,7 +1198,11 @@ def cell_index(sx, sy, lon0, night):
     # colores de paleta, no degradado. El Bayer solo rompe las bandas del
     # terminador y del limbo; copas y montañas quedan nítidas, sin punteado.
     term_edge = 1.0 - abs(term_t * 2.0 - 1.0)
-    dither_w = max(term_edge, limb_t)
+    # En el hielo, punteado suave: con el de siempre, sobre blanco la cuadrícula
+    # Bayer se veía como estática; sin ninguno, el paso entre dos escalones de
+    # sombra quedaba como una línea recta larga cruzando Groenlandia. Con un
+    # tercio de fuerza solo se dentan esos bordes.
+    dither_w = max(term_edge, limb_t) * (ICE_DITHER if helado else 1.0)
     kf = math.log(max(bright, 1e-3)) / _LNSTEP + tex_k
     k = math.floor(kf + 0.5 + (dth - 0.5) * 0.8 * dither_w)
     col = ramp(surf, k, 0.45 if terrain == 0 else 1.0)
@@ -1306,7 +1412,7 @@ def export_canvas(outdir):
             if m is None:
                 m = mats[key] = len(mats)
             o = c * 4
-            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain == 2 else 0
+            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain in (2, 3) else 0
             row[o + 3] = 255
     write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
     lut = []
@@ -1331,7 +1437,7 @@ def export_canvas(outdir):
         "COLS": COLS, "VIS": VIS, "RADIUS": RADIUS, "CX": CX, "CY": CY,
         "SINT": SINT, "COST": COST, "SX": SX, "SY": SY, "SZ": SZ,
         "TERM_A": TERM_A, "TERM_B": TERM_B, "NIGHT": NIGHT, "LIMB_K": LIMB_K,
-        "LIMB_AA": LIMB_AA, "LNSTEP": _LNSTEP, "MW": MW, "MH": MH,
+        "LIMB_AA": LIMB_AA, "ICE_DITHER": ICE_DITHER, "LNSTEP": _LNSTEP, "MW": MW, "MH": MH,
         "LUT_KMIN": LUT_KMIN, "LUT_KN": LUT_KN, "MATERIALES": len(lut), "prio": prio,
         "SPACE": SPACE, "ATMO": ATMO, "C_BODY": C_BODY, "C_BASE": C_BASE, "C_EDGE": C_EDGE,
         "nubes": nubes,
