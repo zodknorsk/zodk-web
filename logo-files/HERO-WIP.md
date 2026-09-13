@@ -33,15 +33,17 @@ el sprite**, no como capa CSS. Una sola capa animada.
 | `generar-planeta-hero.py` | Todo junto → los 2 sprites + los 2 drones. Parámetros arriba del archivo (`FRAMES`, geometría, sol, `CIUDADES`, `LUCES_SUELTAS`). |
 | `generar-estrellas.py` | Baldosa `public/zodk-estrellas.png` para el campo de estrellas del fondo (la web la repite con `background-repeat` en vez de apilar gradientes en el CSS). |
 
-Flujo de iteración:
+Flujo de iteración (desde sept 2026 el planeta de DÍA es un canvas, ver punto 7):
 ```
 cd ~/Documents/zodk-web/logo-files
-python3 densidad_luces.py          # solo si tocas umbrales de luces
-python3 generar-planeta-hero.py
-python3 generar-estrellas.py       # solo si tocas las estrellas
-cp zodk-planeta-sprite.png zodk-planeta-noche.png zodk-dron.svg zodk-dron-noche.svg zodk-estrellas.png ../public/
-cd .. && npm run dev
+python3 generar-planeta-hero.py            # -> public/planeta/ (datos del canvas + planeta-quieto.png)
+python3 generar-planeta-hero.py --frame 17 prueba.png   # un fotograma suelto para comparar
+# tras regenerar: subir PLANETA_V en src/scripts/planeta.js y el ?v= de
+# planeta-quieto.png en global.css
+cd .. && npm run dev                       # o el banco de pruebas: python3 -m http.server 4400
+                                           #   -> http://127.0.0.1:4400/logo-files/prototipo-canvas/
 ```
+El planeta de NOCHE (`public/zodk-planeta-noche.png`) no se regenera: congelado.
 Los .geojson se re-descargan con los `curl` documentados en cada script.
 
 ## Integración en la web
@@ -79,6 +81,57 @@ giro. El fundido se veía a trompicones (aun con los `@keyframes` sincronizados
 generados) y al usuario no le convenció el conjunto. Se volvió atrás al sprite
 con sombreado horneado. Si se retoma la fluidez: subir `FRAMES` y ya, o
 plantear otra cosa, pero el fundido de dos capas queda aparcado.
+
+## Modo noche — para cuando se retome
+
+El usuario quiere trabajar el modo noche **más adelante** (lo dijo el
+13-sep-2026, al comprobar que el de ahora se ve bien). Todo lo que hay que
+saber para arrancar sin re-preguntar:
+
+**Estado actual (congelado).** `public/zodk-planeta-noche.png`: tira antigua de
+28 fotogramas de 164x161 px (4592x161), PNG indexado. CSS en `global.css`:
+`html.dark .hero-planet` con `aspect-ratio: 280 / 274`, `background-size:
+2800% 100%` y `hero-spin 60s steps(28)` — las mismas reglas que en `main`; el
+canvas de día se oculta en oscuro y `planeta.js` deja de dibujar. El generador
+ya NO regenera la noche (la rama `night` de `cell_index()` y `city_cells()`
+siguen en el código tal cual, por si acaso).
+
+**Por qué está congelado.** En sept 2026, tras unos cambios, el usuario dijo
+"el modo oscuro es un desastre, no toques nada, vuelve a como antes, todos los
+cambios hazlos en el modo día". Desde entonces no se toca. Cuando se retome,
+es él quien lo abre: no cambiar nada de la noche por iniciativa propia.
+
+**Lo que ya se sabe que quiere de noche** (decisiones suyas de sept 2026):
+- Luces repartidas **por densidad de población** (como el logo pequeño), no
+  solo las grandes ciudades: `densidad_luces.py` → `luces.py` (campo 0-3,
+  umbrales por percentil `T1/T2/T3`). Más focos de las grandes ciudades
+  (`CIUDADES`, ≥10 M = bloque) y luces sueltas en islas (`LUCES_SUELTAS`:
+  Honolulu, Reikiavik, San Juan). Las luces se adelgazaron una vez (había
+  demasiadas).
+- Naves con **luces de posición solo de noche** (amarilla en el morro, verde
+  ala derecha, roja ala izquierda); de día, como están.
+- Guiño de noche en el título: el lema en ámbar. Más estrellas solo en oscuro
+  (`.hero-stars::after`).
+- **Aparcado**: aurora boreal en el polo.
+
+**Lo que el día ha enseñado y seguramente querrá también de noche** (hay que
+preguntárselo, no darlo por hecho):
+- Canvas con giro continuo en vez de sprite a saltos (lo pidió al ver los
+  saltos del de día). Mismos píxeles finos (600 px) y 90 s por vuelta.
+- Misma geografía: costas a 0,125°, banquisa con forma (el casquete circular
+  sigue en el sprite de noche viejo), relieve.
+- Estilo pixel art "de ilustración" (rampas con cambio de tono, racimos).
+- ¿Chapas de bandera también de noche? (hoy solo de día; el hover con
+  artículos se está haciendo sobre el canvas de día).
+
+**Cómo encajaría técnicamente (propuesta, no hecha).** El canvas ya separa
+"material de cada celda" (`planeta-mapa.png`) de "color por material y luz"
+(`planeta-lut.png`). La noche podría ser: otra LUT de noche del mismo mapa
+(tierra/mar/hielo en azules oscuros con sus rampas) + una capa de luces por
+celda (de `luces.py`, en otro PNG o en bits libres del mapa) que se pinta
+encima en ámbar (`GOLD`). Al cambiar de tema, `planeta.js` cambiaría de LUT sin
+descargar otro planeta ni cortar el giro. El sprite de noche viejo se
+retiraría como se retiró el de día.
 
 ## Pendiente
 
@@ -304,8 +357,18 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      que las nubes). En `BANDERAS` / `BAND_PAL` del generador y en el JSON del
      canvas. Aparcado para más adelante: que se "planten" al pasar por el
      centro y una ficha al pasar el ratón con enlace a los artículos.
-   - Falta después: integrar el canvas en el hero (`index.astro`,
-     `global.css`, `Head.astro`: pausar fuera de pantalla, `prefers-reduced-
-     motion` → planeta quieto, sprite o imagen fija de respaldo sin JS) y decidir
-     si el sprite de 60 fotogramas se retira.
+   - **Integrado en la portada (13-sep-2026, rama, sin merge)**: el código
+     vive en `src/scripts/planeta.js` (lo usan la portada y el prototipo, que
+     ahora solo es un banco de pruebas con botones de velocidad). `index.astro`
+     lleva `<canvas class="hero-planet-canvas">` dentro de `.hero-planet` y lo
+     monta en `astro:page-load` / desmonta en `astro:before-swap` (la web usa
+     ClientRouter). Se para fuera de pantalla (IntersectionObserver), en modo
+     oscuro (el canvas se oculta y se ve el sprite de noche de siempre), con la
+     pestaña oculta y con el ratón sobre una nave (como el resto del hero). Con
+     `prefers-reduced-motion`, quieto. Sin JS / mientras carga: fondo
+     `planeta-quieto.png` (fotograma de giro 0, el mismo con el que arranca el
+     canvas); se quita con `.planeta-listo` tras el primer dibujo. Sprite de día
+     de 3,6 MB retirado de `public/`. Datos totales ~930 KB.
+     Pendiente: verlo en Zen/Chrome de verdad (la extensión de Chrome se
+     desconectó al integrarlo), móvil, y luego merge a `main`.
 8. Al terminar del todo, borrar este archivo.

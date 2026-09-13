@@ -21,9 +21,10 @@ El dron del hero (Bayraktar TB3) ya NO sale de aquí: es una foto tal cual en
 `public/zodk-dron.png` (sin versión de noche propia). Este script solo genera
 los dos PNG del planeta.
 
-    python3 generar-planeta-hero.py
-    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma
-    python3 generar-planeta-hero.py --canvas carpeta/        # datos para el <canvas>
+    python3 generar-planeta-hero.py                          # lo de la web -> public/planeta/
+    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba
+    python3 generar-planeta-hero.py --canvas carpeta/        # datos del <canvas> a otra carpeta
+    python3 generar-planeta-hero.py --sprite                 # el sprite antiguo (ya no se usa)
 """
 import colorsys
 import math
@@ -1542,6 +1543,18 @@ elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":
     _out = sys.argv[3] if len(sys.argv) > 3 else f"prueba-f{_f}.png"
     SW, SH = render(False, _out, [_f])
     print(f"fotograma {_f}: {SW}x{SH} px -> {_out}")
-else:
+elif len(sys.argv) >= 2 and sys.argv[1] == "--sprite":
+    # El sprite antiguo de FRAMES fotogramas (ya no lo usa la web). OJO: a
+    # COLS = 600 la rejilla de GRID_COLS = 15 sale de 9000 px de ancho, más de lo
+    # que aguanta una textura de GPU: bajar GRID_COLS si hiciera falta.
     SW, SH = render(False, "zodk-planeta-sprite.png")
     print(f"sprite día: {SW}x{SH} px, color real (sin paleta)")
+else:
+    # Lo que usa la web: datos del canvas + imagen fija de respaldo (el
+    # fotograma de giro 0, el mismo con el que arranca el canvas; se ve sin JS
+    # y mientras carga). Después, subir PLANETA_V en src/scripts/planeta.js.
+    import os
+    _dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "planeta")
+    _n = export_canvas(_dst)
+    render(False, os.path.join(_dst, "planeta-quieto.png"), [0])
+    print(f"web: {_n} materiales + planeta-quieto.png -> public/planeta/ (sube PLANETA_V)")
