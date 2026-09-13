@@ -6,23 +6,13 @@ grande), Polo Norte arriba, con inclinación ligera; se dibuja el casquete
 visible y por debajo cae en sombra y se funde con el negro del hero. La máscara
 tierra/mar/hielo sale de Natural Earth (mapa_tierra.py). Gira sobre el eje polar.
 
-Dos versiones, como el logo día/noche:
-  - zodk-planeta-sprite.png : Tierra de día, sol y terminador, ciudades como
-    puntos oscuros que se encienden al pasar a la sombra.
-  - zodk-planeta-noche.png  : Tierra de noche entera, con luces repartidas por
-    los países según densidad de población (luces.py) y las grandes ciudades
-    como focos. La web usa esta con el tema oscuro.
-
-Sale como PNG rasterizado (FRAMES fotogramas en fila, 1 px = 1 celda); la web lo
-anima con `background-position` a saltos: un "pegado" de bitmap, barato en
-cualquier navegador.
-
-El dron del hero (Bayraktar TB3) ya NO sale de aquí: es una foto tal cual en
-`public/zodk-dron.png` (sin versión de noche propia). Este script solo genera
-los dos PNG del planeta.
+Día y noche, como el logo: la misma superficie, iluminada por el sol o por
+la luna (paleta nocturna, ver noche()), y de noche con las luces de las
+ciudades (light_cells()). La web lo pinta en un <canvas> que gira de forma
+continua (src/scripts/planeta.js); aquí se exportan sus datos a public/planeta/.
 
     python3 generar-planeta-hero.py                          # lo de la web -> public/planeta/
-    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba
+    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba (--noche, --ambos)
     python3 generar-planeta-hero.py --canvas carpeta/        # datos del <canvas> a otra carpeta
     python3 generar-planeta-hero.py --sprite                 # el sprite antiguo (ya no se usa)
 """
@@ -30,7 +20,6 @@ import colorsys
 import math
 import sys
 from mapa_tierra import GRID_W, GRID_H, ROWS
-from luces import LW, LH, ROWS as LUZ_ROWS
 from elev import elev as _elev, W as ELEV_W, H as ELEV_H
 from png8 import write_rgba
 
@@ -59,7 +48,6 @@ PACK_OLD   = (0xe6, 0xee, 0xf5)     # banquisa: placa de hielo viejo (más blanc
 PACK_YOUNG = (0xbd, 0xd0, 0xe2)     # banquisa: hielo joven, más fino y azulado
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
-CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
 COAST_COL  = (0x0e, 0x18, 0x13)     # línea de costa, casi negra (opción 3: sin fronteras políticas)
 ROCK       = (0x8b, 0x84, 0x78)     # roca de media/alta montaña
 SNOW       = (0xec, 0xf0, 0xf4)     # nieve de cumbre
@@ -107,7 +95,6 @@ AIRGLOW    = (0x62, 0xb4, 0xff)
 AIRGLOW_PX = (1.5, 3.0)             # opción B (fina, azul) frente a sin brillo, ancha y turquesa
 AIRGLOW_A  = (0.55, 0.25)
 N_ATMO  = (0x3a, 0x5c, 0x8c)
-GOLD = ((0xc9, 0x99, 0x3c), (0xf2, 0xc4, 0x52), (0xff, 0xd8, 0x6c))  # dim / medio / metro
 
 
 def noche(col):
@@ -115,32 +102,6 @@ def noche(col):
     y = 0.299 * r + 0.587 * g + 0.114 * b
     return tuple((y + (x - y) * NOCHE_SAT) * t * NOCHE_V * 255.0
                  for x, t in zip((r, g, b), MOON_TINT))
-
-# Principales ciudades: (lat, lon, pop_max). Natural Earth (ne_110m), pop >= 5 M.
-MEGA = 10_000_000                   # a partir de aqui el punto es de 2x2 celdas
-CIUDADES = [
-    (35.69, 139.75, 35676000), (40.72, -74.00, 19040000), (19.44, -99.13, 19028000),
-    (19.07, 72.88, 18978000), (-23.56, -46.63, 18845000), (31.22, 121.43, 14987000),
-    (22.57, 88.37, 14787000), (23.73, 90.41, 12797394), (-34.61, -58.43, 12795000),
-    (34.05, -118.23, 12500000), (30.05, 31.25, 11893000), (-22.91, -43.21, 11748000),
-    (34.69, 135.50, 11294000), (39.90, 116.39, 11106000), (14.61, 120.98, 11100000),
-    (55.75, 37.61, 10452000), (41.02, 28.97, 10061000), (48.86, 2.35, 9904000),
-    (37.57, 127.00, 9796000), (6.45, 3.39, 9466000), (-6.17, 106.83, 9125000),
-    (41.85, -87.64, 8990000), (51.50, -0.12, 8567000), (-12.05, -77.05, 8012000),
-    (35.67, 51.42, 7873000), (-4.33, 15.31, 7843000), (4.60, -74.09, 7772000),
-    (22.31, 114.18, 7206000), (25.04, 121.57, 6900273), (12.97, 77.56, 6787000),
-    (13.75, 100.51, 6704000), (-33.44, -70.65, 5720000), (25.79, -80.23, 5585000),
-    (40.40, -3.69, 5567000), (43.66, -79.39, 5213000), (1.29, 103.85, 5183700),
-    (-8.84, 13.23, 5172900), (33.34, 44.39, 5054000),
-]
-
-# Luces sueltas que solo se encienden de noche (islas, sitios aislados que
-# quedan bonitos como un punto solo en medio del océano).
-LUCES_SUELTAS = [
-    (21.31, -157.86),   # Honolulu
-    (64.13, -21.90),    # Reikiavik
-    (18.47, -66.11),    # San Juan (Puerto Rico)
-]
 
 # ------------------------------------------------------------ geometría
 # El sprite ya no es una tira en una sola fila: con más resolución por
@@ -1048,22 +1009,6 @@ for _i in range(_N):
     ))
 random.shuffle(NUBES)
 
-# ------------------------------------------------- rejilla de densidad de luces
-LUZ = [bytearray(LW) for _ in range(LH)]
-for r, spans in enumerate(LUZ_ROWS):
-    row = LUZ[r]
-    for a, b, lv in spans:
-        for c in range(a, b + 1):
-            row[c] = lv
-
-
-def luz_at(lat, lon):
-    lr = int((90.0 - lat) / 180.0 * LH)
-    lr = 0 if lr < 0 else LH - 1 if lr >= LH else lr
-    lc = int((lon + 180.0) / 360.0 * LW) % LW
-    return LUZ[lr][lc]
-
-
 # ------------------------------------------------------------------ color
 # PNG en color real (sin paleta): antes esto era un PNG-8 indexado a 256
 # colores y había que "sembrar" con cuidado qué tonos se reservaban para no
@@ -1104,15 +1049,6 @@ def _project_xy(x, y):
 
 def _project(sx, sy):
     return _project_xy(sx + 0.5, sy + 0.5)
-
-
-def terrain_at(sx, sy, lon0):
-    p = _project(sx, sy)
-    if p is None:
-        return None
-    gr, gc = _mcell(p[4], p[5] + lon0)
-    gr = 0 if gr < 0 else MH - 1 if gr >= MH else gr
-    return GRID[gr][gc % MW]
 
 
 def _surface_at(lat, lon):
@@ -1310,69 +1246,6 @@ def cell_index(sx, sy, lon0, night):
     return rgba(col)
 
 
-def city_cells(lon0, night):
-    """Celdas (sx, sy) -> color de las ciudades. De día: siempre punto oscuro.
-    De noche: todas encendidas en ámbar."""
-    ci_dark  = rgba(CITY_DARK)
-    ci_light = rgba(GOLD[2])
-    out = {}
-    for clat, clon, pop in CIUDADES:
-        rlat = math.radians(clat)
-        rlon = math.radians(clon - lon0)
-        a  = math.sin(rlat)
-        cl = math.cos(rlat)
-        vv = cl * math.cos(rlon)
-        px = cl * math.sin(rlon)
-        py = -COST * a + SINT * vv
-        pz =  SINT * a + COST * vv
-        if pz <= 0.07:
-            continue
-        lit = bool(night)          # de día las ciudades no se encienden (solo puntos)
-        col = ci_light if lit else ci_dark
-        cx = int(round(px * RADIUS + CX - 0.5))
-        cy = int(round(py * RADIUS + CY - 0.5))
-
-        if terrain_at(cx, cy, lon0) == 0:      # cae en el mar -> a tierra cercana
-            best = None
-            for r in (1, 2):
-                for dx in range(-r, r + 1):
-                    for dy in range(-r, r + 1):
-                        if terrain_at(cx + dx, cy + dy, lon0) in (1, 2):
-                            d2 = dx * dx + dy * dy
-                            if best is None or d2 < best[0]:
-                                best = (d2, dx, dy)
-                if best:
-                    break
-            if best:
-                cx, cy = cx + best[1], cy + best[2]
-
-        dc = math.sqrt(px * px + py * py)
-        big = (pop >= MEGA or lit) and dc < 0.72      # encoge al acercarse al limbo
-        block = ((0, 0), (1, 0), (0, 1), (1, 1)) if big else ((0, 0),)
-        for dx, dy in block:
-            x, y = cx + dx, cy + dy
-            if 0 <= x < COLS and 0 <= y < VIS:
-                out[(x, y)] = col
-
-    if night:                                        # luces sueltas (islas)
-        for clat, clon in LUCES_SUELTAS:
-            rlat = math.radians(clat)
-            rlon = math.radians(clon - lon0)
-            a  = math.sin(rlat)
-            cl = math.cos(rlat)
-            vv = cl * math.cos(rlon)
-            px = cl * math.sin(rlon)
-            py = -COST * a + SINT * vv
-            pz =  SINT * a + COST * vv
-            if pz <= 0.10:
-                continue
-            x = int(round(px * RADIUS + CX - 0.5))
-            y = int(round(py * RADIUS + CY - 0.5))
-            if 0 <= x < COLS and 0 <= y < VIS:
-                out[(x, y)] = ci_light
-    return out
-
-
 def _scaled_cloud(body, size, flip=False):
     """Escala el cuerpo (nearest; ya relleno, ver _cloud_fill), en espejo si
     toca, y lo sombrea como el resto del pixel art: borde exterior oscuro, luz
@@ -1567,11 +1440,17 @@ def _cargar_luces():
             if pop < LUZ_POP_MIN:
                 continue
             a = (pop / 1e5) ** LUZ_EXP * LUZ_PAIS.get(f[8], 1.0)
-            out.append((round(float(f[4]), 2), round(float(f[5]), 2), round(a, 2)))
-    return out
+            # Ya cuantizado como va en planeta-luces.png (lat/lon en 16 bits,
+            # intensidad en 1/16): el render de Python y el canvas, idénticos.
+            qa = round((float(f[4]) + 90.0) / 180.0 * 65535)
+            qo = round((float(f[5]) + 180.0) / 360.0 * 65535) % 65536
+            qi = min(255, round(a * 16))
+            out.append((qa * 180.0 / 65535 - 90.0, qo * 360.0 / 65535 - 180.0, qi / 16.0, qa, qo, qi))
+    out.sort(key=lambda t: t[4])
+    return [t[:3] for t in out], [t[3:] for t in out]
 
 
-LUCES = _cargar_luces()
+LUCES, _LUCES_Q = _cargar_luces()
 _HUELLA = [(0, 0, 1.0)] + [(dx, dy, LUZ_N4) for dx, dy in _N4] + \
           [(dx, dy, LUZ_DIAG) for dx in (-1, 1) for dy in (-1, 1)]
 _HUELLA_R2 = [(2 * dx, 2 * dy, LUZ_R2) for dx, dy in _N4]
@@ -1691,6 +1570,7 @@ def render(night, path, frames=None):
 #   planeta-datos.json : constantes de geometría/luz + nubes ya escaladas
 LUT_KMIN = -12
 LUT_KN = 1 - LUT_KMIN * LIGHT_SUB
+LUZ_PNG_W = 256                     # luces por fila en planeta-luces.png
 _COAST_MIXK = (0.0, 0.20, 0.48, 0.84)
 
 
@@ -1719,19 +1599,32 @@ def export_canvas(outdir):
             row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain in (2, 3) else 0
             row[o + 3] = 255
     write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
-    lut = []
+    lut, lut_n = [], []
     prio = []
     for (rr, gg, bb, tk, terrain, lvl), _m in sorted(mats.items(), key=lambda kv: kv[1]):
         # Prioridad al reducir el mapa para las zonas donde un píxel abarca
         # varias celdas (mipmaps en el navegador): la línea de costa gana, luego
         # la tierra, luego el mar -> costas e islas pequeñas no desaparecen.
         prio.append(2 * lvl + (1 if terrain != 0 else 0))
-        row = bytearray(LUT_KN * 4)
-        for j in range(LUT_KN):
-            col = rgba(ramp((rr, gg, bb), LUT_KMIN + j / LIGHT_SUB + tk, 0.45 if terrain == 0 else 1.0))
-            row[j * 4:j * 4 + 4] = bytes(col)
-        lut.append(row)
+        hm = 0.45 if terrain == 0 else 1.0
+        for surf, dst in (((rr, gg, bb), lut), (noche((rr, gg, bb)), lut_n)):
+            row = bytearray(LUT_KN * 4)
+            for j in range(LUT_KN):
+                row[j * 4:j * 4 + 4] = bytes(rgba(ramp(surf, LUT_KMIN + j / LIGHT_SUB + tk, hm)))
+            dst.append(row)
     write_rgba(os.path.join(outdir, "planeta-lut.png"), LUT_KN, len(lut), lut)
+    write_rgba(os.path.join(outdir, "planeta-lut-noche.png"), LUT_KN, len(lut_n), lut_n)
+    # Luces: 2 píxeles por luz, en filas de LUZ_PNG_W luces (ordenadas por
+    # longitud). 1º = latitud (R alto, G bajo) + intensidad*16 (B); 2º =
+    # longitud (R alto, G bajo). Alfa siempre 255 (si no, el navegador
+    # premultiplica y pierde el color).
+    nl = len(_LUCES_Q)
+    lh = (nl + LUZ_PNG_W - 1) // LUZ_PNG_W
+    filas = [bytearray(LUZ_PNG_W * 2 * 4) for _ in range(lh)]
+    for i, (qa, qo, qi) in enumerate(_LUCES_Q):
+        f, o = filas[i // LUZ_PNG_W], (i % LUZ_PNG_W) * 8
+        f[o:o + 8] = bytes((qa >> 8, qa & 255, qi, 255, qo >> 8, qo & 255, 0, 255))
+    write_rgba(os.path.join(outdir, "planeta-luces.png"), LUZ_PNG_W * 2, lh, filas)
     nubes = []
     for clat, clon, shp, flip, size in NUBES:
         cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size, flip)   # espejo ya aplicado
@@ -1745,6 +1638,15 @@ def export_canvas(outdir):
         "LUT_KMIN": LUT_KMIN, "LUT_KN": LUT_KN, "LIGHT_SUB": LIGHT_SUB, "MATERIALES": len(lut), "prio": prio,
         "SPACE": SPACE, "ATMO": ATMO, "C_NUBE": [C_NUBE[k] for k in CLOUD_KINDS],
         "nubes": nubes,
+        # noche
+        "MX": MX, "MY": MY, "MZ": MZ, "N_NIGHT": N_NIGHT, "N_ATMO": N_ATMO,
+        "AIRGLOW": AIRGLOW, "AIRGLOW_PX": AIRGLOW_PX, "AIRGLOW_A": AIRGLOW_A,
+        "C_NUBE_NOCHE": [C_NUBE[k] if k == "e" else [round(v) for v in noche(C_NUBE[k])]
+                         for k in CLOUD_KINDS],
+        "LUCES_N": nl, "LUZ_PNG_W": LUZ_PNG_W,
+        "HUELLA": _HUELLA, "HUELLA_R2": _HUELLA + _HUELLA_R2, "HUELLA_GRANDE": _HUELLA_GRANDE,
+        "LUZ_R2_MIN": LUZ_R2_MIN, "LUZ_CORE2": LUZ_CORE2, "LUZ_UMBRAL": LUZ_UMBRAL,
+        "LUZ_RAMPA": LUZ_RAMPA, "LUZ_SUMA_MAX": LUZ_SUMA_MAX,
         "BAND_PZ": BAND_PZ,
         "banderas": [{"iso": iso, "lat": la, "lon": lo, "ax": ax, "ay": ay,
                       "cells": [[x, y, *col] for (x, y), col in cells.items()],
@@ -1756,9 +1658,6 @@ def export_canvas(outdir):
     return len(lut)
 
 
-# El sprite de NOCHE ya no se genera aquí: es public/zodk-planeta-noche.png tal
-# cual, el de producción (el usuario pidió no tocar el modo oscuro). Solo día.
-# El dron tampoco se genera aquí (foto en public/zodk-dron.png).
 if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
     _n = export_canvas(sys.argv[2])
     print(f"canvas: {_n} materiales -> {sys.argv[2]}")
@@ -1782,11 +1681,13 @@ elif len(sys.argv) >= 2 and sys.argv[1] == "--sprite":
     SW, SH = render(False, "zodk-planeta-sprite.png")
     print(f"sprite día: {SW}x{SH} px, color real (sin paleta)")
 else:
-    # Lo que usa la web: datos del canvas + imagen fija de respaldo (el
-    # fotograma de giro 0, el mismo con el que arranca el canvas; se ve sin JS
-    # y mientras carga). Después, subir PLANETA_V en src/scripts/planeta.js.
+    # Lo que usa la web: datos del canvas + imágenes fijas de respaldo, de día
+    # y de noche (el fotograma de giro 0, el mismo con el que arranca el
+    # canvas; se ven sin JS y mientras carga). Después, subir PLANETA_V en
+    # src/scripts/planeta.js y el ?v= de las dos imágenes en global.css.
     import os
     _dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "planeta")
     _n = export_canvas(_dst)
     render(False, os.path.join(_dst, "planeta-quieto.png"), [0])
-    print(f"web: {_n} materiales + planeta-quieto.png -> public/planeta/ (sube PLANETA_V)")
+    render(True, os.path.join(_dst, "planeta-quieto-noche.png"), [0])
+    print(f"web: {_n} materiales + imágenes fijas -> public/planeta/ (sube PLANETA_V)")

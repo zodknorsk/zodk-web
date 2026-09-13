@@ -400,9 +400,8 @@ const eventos = todosEventos
     };
   }
 
-  // Botón de play/pausa junto a la coordenada: para y reanuda el giro (el del
-  // canvas de día y la animación del planeta de noche). Al cargar, siempre
-  // gira.
+  // Botón de play/pausa junto a la coordenada: para y reanuda el giro del
+  // planeta (de día y de noche). Al cargar, siempre gira.
   function montarGiro(hero: HTMLElement, p: Planeta) {
     const b = hero.querySelector<HTMLButtonElement>(".hero-giro");
     if (!b) return () => {};

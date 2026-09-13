@@ -164,10 +164,8 @@ article .tiktok a {
 
 /* --- Portada: el hero del planeta ------------------------------------------
    Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
-   sprite de día (Tierra iluminada, ciudades como puntos) en modo claro y
-   sprite de noche (Tierra a oscuras, ciudades encendidas por densidad) en modo
-   oscuro. Los dos sprites y los drones los genera
-   logo-files/generar-planeta-hero.py. */
+   al sol en modo claro, a la luz de la luna y con las ciudades encendidas en
+   modo oscuro (mismo canvas, ver abajo). */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -177,14 +175,14 @@ article .tiktok a {
   isolation: isolate;
 }
 
-/* Planeta de DÍA: un <canvas> que gira de forma continua (src/scripts/planeta.js,
-   datos en public/planeta/ generados por logo-files/generar-planeta-hero.py).
-   Sustituye al sprite de 60 fotogramas, que iba a saltos de 2 s.
+/* El planeta: un <canvas> que gira de forma continua (src/scripts/planeta.js,
+   datos en public/planeta/ generados por logo-files/generar-planeta-hero.py),
+   de día o de noche según el tema.
    El fondo del div es una imagen fija (el fotograma de giro 0, el mismo con el
-   que arranca el canvas): se ve sin JS y mientras carga; en cuanto el canvas
-   pinta la primera vez, planeta.js marca .planeta-listo y el fondo se quita.
-   El ?v= es cache-busting: los archivos se llaman siempre igual (subir también
-   PLANETA_V en planeta.js al regenerar). */
+   que arranca el canvas), de día o de noche: se ve sin JS y mientras carga; en
+   cuanto el canvas pinta la primera vez, planeta.js marca .planeta-listo y el
+   fondo se quita. El ?v= es cache-busting: los archivos se llaman siempre
+   igual (subir también PLANETA_V en planeta.js al regenerar). */
 .hero-planet {
   position: absolute;
   left: 50%;
@@ -192,34 +190,19 @@ article .tiktok a {
   width: min(1900px, 122vw);
   aspect-ratio: 600 / 585;
   transform: translateX(-50%);
-  background: url(/planeta/planeta-quieto.png?v=7) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/planeta-quieto.png?v=8) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
 }
-html:not(.dark) .hero-planet.planeta-listo { background-image: none; }
+html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png?v=8); }
+.hero-planet.planeta-listo { background-image: none; }
 .hero-planet-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
-}
-
-/* Modo oscuro: el planeta de noche NO se toca (decisión del usuario). Sigue
-   siendo la tira antigua de 28 fotogramas de 280x274 con su animación de
-   siempre; el canvas de día se oculta (y planeta.js deja de dibujar). */
-html.dark .hero-planet {
-  background-image: url(/zodk-planeta-noche.png);
-  aspect-ratio: 280 / 274;
-  background-size: 2800% 100%;
-  animation: hero-spin 60s steps(28, jump-none) infinite;
-}
-html.dark .hero-planet-canvas { display: none; }
-
-@keyframes hero-spin {
-  from { background-position-x: 0%; }
-  to   { background-position-x: 100%; }
 }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
@@ -417,8 +400,6 @@ html.dark .hero-planet-canvas { display: none; }
 .hero-giro .icono-play { display: none; }
 .hero.giro-parado .hero-giro .icono-play { display: block; }
 .hero.giro-parado .hero-giro .icono-pausa { display: none; }
-/* De noche el planeta es el sprite viejo con animación CSS: se para igual. */
-.hero.giro-parado .hero-planet { animation-play-state: paused; }
 
 /* Mira: sustituye al cursor mientras está sobre el planeta. */
 .hero.apuntando { cursor: none; }
