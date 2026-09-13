@@ -223,21 +223,53 @@ function idsDeTweets(cuerpo) {
   return [...ids];
 }
 
-function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa }) {
+function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, tarjetasCache }) {
   const lineas = separarTweetsDeLineas(cuerpo).split("\n");
   for (let i = 0; i < lineas.length; i++) {
     const m = lineas[i].trim().match(RE_TWEET_SUELTO);
     if (!m) continue;
     const tweet = tweets.get(m[1]);
+    let html;
+    if (tweet) {
+      html = construirTarjeta(tweet, mediaMapa);
+    } else if (tarjetasCache.has(m[1])) {
+      // X no ha respondido por este tweet (borrado, cuenta suspendida, fallo
+      // puntual...) pero ya lo teníamos horneado de una ejecución anterior:
+      // se reutiliza esa tarjeta en vez de romper algo que ya funcionaba.
+      console.log(`  ↺ tweet ${m[1]}: X no responde, reuso la tarjeta ya guardada`);
+      html = tarjetasCache.get(m[1]);
+    } else {
+      html = `> ⚠️ [Publicación de X no disponible](https://x.com/i/status/${m[1]})`;
+    }
     // Envolvemos la tarjeta (HTML) en líneas en blanco: así el bloque HTML
     // queda siempre bien delimitado aunque en la bóveda no hubiera separación
     // entre el tweet y lo que venga después (si no, Markdown "se traga" el
     // texto siguiente y lo muestra en crudo).
-    lineas[i] = tweet
-      ? `\n${construirTarjeta(tweet, mediaMapa)}\n`
-      : `\n> ⚠️ [Publicación de X no disponible](https://x.com/i/status/${m[1]})\n`;
+    lineas[i] = `\n${html}\n`;
   }
   return lineas.join("\n");
+}
+
+/**
+ * Antes de borrar src/content/{notas,eventos} para regenerarlo, recoge las
+ * tarjetas de tweet (<blockquote class="tweet" data-tweet-id="...">) que ya
+ * estaban horneadas ahí, indexadas por ID. Sirven de respaldo si en esta
+ * ejecución X no responde por ese tweet.
+ */
+function recogerTarjetasExistentes() {
+  const cache = new Map();
+  const RE_BLOCKQUOTE = /<blockquote class="tweet" data-tweet-id="(\d+)">[\s\S]*?<\/blockquote>/g;
+  for (const dir of [DESTINO_NOTAS, DESTINO_EVENTOS]) {
+    if (!fs.existsSync(dir)) continue;
+    for (const archivo of buscarMarkdown(dir)) {
+      const texto = fs.readFileSync(archivo, "utf8");
+      let m;
+      while ((m = RE_BLOCKQUOTE.exec(texto))) {
+        if (!cache.has(m[1])) cache.set(m[1], m[0]);
+      }
+    }
+  }
+  return cache;
 }
 
 /** <blockquote class="tiktok-embed" cite="URL"> … </blockquote> -> cita estática. */
@@ -267,7 +299,7 @@ function convertirTikTok(cuerpo) {
  * o null. `copiarImagen(nombre)` copia la imagen y devuelve su nombre final.
  */
 function transformarCuerpo(cuerpo, ctx) {
-  const { resolver, copiarImagen, tweets, mediaMapa, esEventoSemana } = ctx;
+  const { resolver, copiarImagen, tweets, mediaMapa, tarjetasCache, esEventoSemana } = ctx;
 
   let s = cuerpo;
 
@@ -286,7 +318,7 @@ function transformarCuerpo(cuerpo, ctx) {
   }
 
   s = convertirTikTok(s);
-  s = insertarTarjetasTweet(s, { tweets, mediaMapa });
+  s = insertarTarjetasTweet(s, { tweets, mediaMapa, tarjetasCache });
 
   // Imágenes embebidas de Obsidian: ![[archivo.png]] / ![[archivo.png|123]]
   s = s.replace(/!\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/g, (_, archivo, alt) => {
@@ -348,6 +380,11 @@ async function main() {
     process.exit(1);
   }
   console.log(`Bóveda: ${BOVEDA}\n`);
+
+  // Antes de tirar el contenido generado, guardamos las tarjetas de tweet que
+  // ya había: si en esta pasada X no responde por alguna, se reutiliza en vez
+  // de romper una tarjeta que ya funcionaba.
+  const tarjetasCache = recogerTarjetasExistentes();
 
   // El contenido generado se regenera entero. public/tweets/ NO se borra: sirve
   // de caché de imágenes entre ejecuciones (bórrala a mano si quieres limpiarla).
@@ -433,7 +470,7 @@ async function main() {
     };
 
     const cuerpo = transformarCuerpo(it.content, {
-      resolver, copiarImagen, tweets, mediaMapa,
+      resolver, copiarImagen, tweets, mediaMapa, tarjetasCache,
       esEventoSemana: it.clase.kind === "semana",
     });
 
