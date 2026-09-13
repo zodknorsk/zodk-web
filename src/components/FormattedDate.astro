@@ -12,6 +12,8 @@ const { date } = Astro.props;
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC", // la fecha es solo "día" (sin hora): fijamos UTC para
+      // que no dependa de la zona horaria de la máquina donde se compila
     })
   }
 </time>
