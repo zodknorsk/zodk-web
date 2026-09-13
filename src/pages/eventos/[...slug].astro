@@ -52,10 +52,27 @@ if (entrada.data.kind === "semana") {
     .map((h) => ({ text: h.text, slug: h.slug }));
 }
 
-// "30 de julio (…)" -> "30 julio"
+// "30 de julio (…)" -> "30-JUL"
+const MESES_CORTOS: Record<string, string> = {
+  enero: "ENE",
+  febrero: "FEB",
+  marzo: "MAR",
+  abril: "ABR",
+  mayo: "MAY",
+  junio: "JUN",
+  julio: "JUL",
+  agosto: "AGO",
+  septiembre: "SEP",
+  octubre: "OCT",
+  noviembre: "NOV",
+  diciembre: "DIC",
+};
+
 function diaCorto(texto: string) {
   const m = texto.match(/^(\d{1,2})\s+de\s+([a-záéíóúü]+)/i);
-  return m ? `${m[1]} ${m[2].toLowerCase()}` : texto;
+  if (!m) return texto;
+  const mes = MESES_CORTOS[m[2].toLowerCase()] ?? m[2].toUpperCase();
+  return `${m[1]}-${mes}`;
 }
 ---
 
@@ -138,7 +155,7 @@ function diaCorto(texto: string) {
                 {dias.map((d) => (
                   <a
                     href={`#${d.slug}`}
-                    class="text-sm px-2.5 py-1 rounded-md no-underline border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
+                    class="text-sm px-2.5 py-1 rounded-md no-underline border border-black/15 dark:border-white/20 hover:border-[#2576eb] dark:hover:border-[#649fff] hover:bg-[#2576eb]/10 dark:hover:bg-[#649fff]/10 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
                   >
                     {diaCorto(d.text)}
                   </a>
