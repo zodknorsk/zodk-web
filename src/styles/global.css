@@ -164,10 +164,8 @@ article .tiktok a {
 
 /* --- Portada: el hero del planeta ------------------------------------------
    Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
-   sprite de día (Tierra iluminada, ciudades como puntos) en modo claro y
-   sprite de noche (Tierra a oscuras, ciudades encendidas por densidad) en modo
-   oscuro. Los dos sprites y los drones los genera
-   logo-files/generar-planeta-hero.py. */
+   al sol en modo claro, a la luz de la luna y con las ciudades encendidas en
+   modo oscuro (mismo canvas, ver abajo). */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -177,14 +175,14 @@ article .tiktok a {
   isolation: isolate;
 }
 
-/* Planeta de DÍA: un <canvas> que gira de forma continua (src/scripts/planeta.js,
-   datos en public/planeta/ generados por logo-files/generar-planeta-hero.py).
-   Sustituye al sprite de 60 fotogramas, que iba a saltos de 2 s.
+/* El planeta: un <canvas> que gira de forma continua (src/scripts/planeta.js,
+   datos en public/planeta/ generados por logo-files/generar-planeta-hero.py),
+   de día o de noche según el tema.
    El fondo del div es una imagen fija (el fotograma de giro 0, el mismo con el
-   que arranca el canvas): se ve sin JS y mientras carga; en cuanto el canvas
-   pinta la primera vez, planeta.js marca .planeta-listo y el fondo se quita.
-   El ?v= es cache-busting: los archivos se llaman siempre igual (subir también
-   PLANETA_V en planeta.js al regenerar). */
+   que arranca el canvas), de día o de noche: se ve sin JS y mientras carga; en
+   cuanto el canvas pinta la primera vez, planeta.js marca .planeta-listo y el
+   fondo se quita. El ?v= es cache-busting: los archivos se llaman siempre
+   igual (subir también PLANETA_V en planeta.js al regenerar). */
 .hero-planet {
   position: absolute;
   left: 50%;
@@ -192,12 +190,13 @@ article .tiktok a {
   width: min(1900px, 122vw);
   aspect-ratio: 600 / 585;
   transform: translateX(-50%);
-  background: url(/planeta/planeta-quieto.png?v=7) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/planeta-quieto.png?v=8) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
 }
-html:not(.dark) .hero-planet.planeta-listo { background-image: none; }
+html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png?v=8); }
+.hero-planet.planeta-listo { background-image: none; }
 .hero-planet-canvas {
   position: absolute;
   inset: 0;
@@ -206,21 +205,47 @@ html:not(.dark) .hero-planet.planeta-listo { background-image: none; }
   image-rendering: pixelated;
 }
 
-/* Modo oscuro: el planeta de noche NO se toca (decisión del usuario). Sigue
-   siendo la tira antigua de 28 fotogramas de 280x274 con su animación de
-   siempre; el canvas de día se oculta (y planeta.js deja de dibujar). */
-html.dark .hero-planet {
-  background-image: url(/zodk-planeta-noche.png);
-  aspect-ratio: 280 / 274;
-  background-size: 2800% 100%;
-  animation: hero-spin 60s steps(28, jump-none) infinite;
+/* Sol (día) y luna (noche), arriba a la izquierda y en el mismo sitio en los
+   dos modos (decisión del usuario: simétricos). Detrás del planeta (va antes
+   en el DOM, mismo z-index). Pixel art de logo-files/generar-astros.py a 1 px
+   de arte = 1 px de imagen, escalado x3 (x2 en móvil) como el planeta. La
+   luna es una tira de 30 fases; index.astro elige la de hoy (sin JS, llena). */
+.hero-astro {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  z-index: 0;
+  pointer-events: none;
 }
-html.dark .hero-planet-canvas { display: none; }
-
-@keyframes hero-spin {
-  from { background-position-x: 0%; }
-  to   { background-position-x: 100%; }
+.hero-astro > span {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
 }
+.astro-sol { background-image: url(/zodk-sol.png); background-size: 100% 100%; }
+.astro-luna {
+  background-image: url(/zodk-luna-fases.png);
+  background-size: 3000% 100%;
+  background-position: 51.72% 0;   /* fase 15 de 30: llena */
+  opacity: 0;
+}
+html.dark .astro-sol { opacity: 0; }
+html.dark .astro-luna { opacity: 1; }
+/* Al cambiar de tema (no al cargar): el astro que se va baja y se esconde tras
+   el borde de la Tierra, y el otro sale de detrás y sube a su sitio (opción 1
+   de las transiciones; al usuario "le encanta"). Las clases .a-noche / .a-dia
+   las pone index.astro al detectar el cambio. Son animaciones y no
+   transiciones porque el botón de tema anula las transiciones al cambiar. */
+.hero-astro { --astro-caida: translate(36px, 270px); }   /* hasta detrás del limbo */
+@keyframes astro-baja { from { transform: none; opacity: 1; } to { transform: var(--astro-caida); opacity: 1; } }
+@keyframes astro-sube { from { transform: var(--astro-caida); opacity: 1; } to { transform: none; opacity: 1; } }
+.hero-astro.a-noche .astro-sol,
+.hero-astro.a-dia .astro-luna { animation: astro-baja 1.5s cubic-bezier(0.5, 0, 0.9, 0.6) both; }
+.hero-astro.a-noche .astro-luna,
+.hero-astro.a-dia .astro-sol { animation: astro-sube 1.6s cubic-bezier(0.1, 0.4, 0.5, 1) 0.9s both; }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
@@ -417,8 +442,6 @@ html.dark .hero-planet-canvas { display: none; }
 .hero-giro .icono-play { display: none; }
 .hero.giro-parado .hero-giro .icono-play { display: block; }
 .hero.giro-parado .hero-giro .icono-pausa { display: none; }
-/* De noche el planeta es el sprite viejo con animación CSS: se para igual. */
-.hero.giro-parado .hero-planet { animation-play-state: paused; }
 
 /* Mira: sustituye al cursor mientras está sobre el planeta. */
 .hero.apuntando { cursor: none; }
@@ -437,12 +460,30 @@ html.dark .hero-planet-canvas { display: none; }
   filter: drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a);
 }
 
-/* Guiño día/noche: de noche el lema toma un ámbar tenue, como las luces de
-   ciudad del globo, y el velo aprieta un poco (hay focos de ciudad debajo). */
-html.dark .hero-titulo h1 { color: #f3efe6; }
-html.dark .hero-titulo p {
-  color: #e6c078;
-  text-shadow: 0 1px 3px rgba(3, 4, 8, 0.95), 0 0 14px rgba(3, 4, 8, 0.8);
+/* Noche (opción D del usuario): el título se ve como de día, en blanco. Al
+   fijar una coordenada (clic en el planeta: .hero-mgrs.fijada), el marco, la
+   coordenada resaltada y el lema pasan a verde de visión nocturna, como un
+   visor que se engancha al blanco; la X del planeta también va en verde (la
+   pinta planeta.js). El velo aprieta un poco (hay focos de ciudad debajo). */
+html.dark .hero-titulo {
+  --nvg: #8dff9e;
+  --nvg-brillo: rgba(70, 255, 120, 0.55);
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-marco {
+  --c: var(--nvg);
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9)) drop-shadow(0 0 4px var(--nvg-brillo));
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) p {
+  color: var(--nvg);
+  text-shadow: 1px 0 0 rgba(3, 4, 8, 0.85), -1px 0 0 rgba(3, 4, 8, 0.85), 0 1px 0 rgba(3, 4, 8, 0.85), 0 -1px 0 rgba(3, 4, 8, 0.85), 0 0 8px var(--nvg-brillo);
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-giro:not(:hover, :focus-visible) { color: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [fill="#d3d3d3"] { fill: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: var(--nvg); }
+html.dark .hero-mgrs.fijada {
+  color: #06140a;
+  background: var(--nvg);
+  box-shadow: 0 0 0 3px var(--nvg), 0 0 0 4px rgba(3, 4, 8, 0.9), 0 0 10px 3px var(--nvg-brillo);
 }
 html.dark .hero-titulo::before {
   background: radial-gradient(
@@ -494,6 +535,22 @@ html.dark .hero-titulo::before {
 html.js .hero-craft:not([data-listo]) { opacity: 0; }
 
 html.dark .hero-craft { background-image: var(--sprite-noche); }
+
+/* Luces de posición, solo de noche (posiciones en aeronaves.ts, en % de la
+   imagen). Tamaño fijo en pantalla: dentro de la foto, reducida, quedarían de
+   menos de 1 px. Solo verde en el ala derecha (arriba) y roja en la izquierda
+   (abajo), fijas. */
+.craft-luz {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  pointer-events: none;
+  display: none;
+}
+html.dark .craft-luz:not([hidden]) { display: block; }
+.craft-luz--der { background: #6dff96; box-shadow: 0 0 3px 1px rgba(51, 221, 102, 0.8); }
+.craft-luz--izq { background: #ff6a5e; box-shadow: 0 0 3px 1px rgba(255, 59, 48, 0.8); }
 
 .hero-craft::after { /* zona de hover ampliada */
   content: "";
@@ -727,7 +784,6 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
    botón de cambio (misma altura que las naves y, al ir antes en el HTML, una
    nave que pasara por delante tapaba la ficha). */
 .hero-banderas:has(.hero-bandera:hover, .hero-bandera:focus-within) { z-index: 4; }
-html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta viejo) */
 .hero-bandera {
   position: absolute;
   width: calc(13 / 600 * 100%);   /* chapa de 11x7 + contorno, en píxeles del canvas */
@@ -791,7 +847,10 @@ html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
-  .hero-titulo { top: 46%; }
+  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
+  .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
+  /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
+  .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
   .hero-titulo h1 { font-size: clamp(0.95rem, 5.2vw, 1.75rem); white-space: nowrap; } /* "el blog de hegoi márquez" en una sola línea */
   .hero-titulo p {
     font-size: 0.5rem;
@@ -803,7 +862,7 @@ html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta
 /* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
    genera logo-files/generar-estrellas.py) repetida con background-repeat. Antes
    eran ~50 gradientes radiales apilados en el CSS; la baldosa repetida pinta
-   mucho más barato. En oscuro, una segunda capa desfasada dobla la densidad. */
+   mucho más barato. En oscuro, encima, una baldosa propia con muchas más. */
 .hero-stars {
   position: absolute;
   inset: 0;
@@ -815,14 +874,15 @@ html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta
   opacity: 0.7;
 }
 
+/* De noche, encima, una baldosa propia con bastantes más estrellas (95 por
+   baldosa de 480 px, casi todas tenues; generar-estrellas.py). */
 .hero-stars::after {
   content: "";
   position: absolute;
   inset: 0;
   display: none;
-  background: url(/zodk-estrellas.png) repeat;
-  background-size: 320px 320px;
-  background-position: 160px 90px;
+  background: url(/zodk-estrellas-noche.png) repeat;
+  background-size: 480px 480px;
   image-rendering: pixelated;
 }
 
@@ -868,23 +928,27 @@ html.dark .hero-stars::after { display: block; }
   50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
 }
 
-/* Botón "otro objeto": en el espacio profundo, arriba a la izquierda sobre el
-   limbo. Trae otro objeto al hero (initObjeto en Head.astro). El interior es un
-   PLACEHOLDER: SVG de Excalidraw del usuario (cuadrado + flecha) con su hélice
-   del E-2 dentro, desde botonSvg en index.astro; el <button> no pone borde ni
-   fondo. Lo revela el JS (nace con [hidden]); sin JS no aparece. */
+/* Botón "otro objeto": la hélice del E-2 del usuario (Excalidraw, heliceSvg en
+   index.astro), sola y sin recuadro, bajo la esquina inferior izquierda del
+   marco del título, en espejo con play/pausa y la coordenada. Trae otro objeto
+   al hero (initObjeto en Head.astro). Lo revela el JS (nace con [hidden]); sin
+   JS no aparece. Va dentro del título, así que se desvanece con él al bajar. */
 .hero-cambio {
   position: absolute;
-  left: 9%;
-  top: 9%;
+  left: -4px;
+  top: calc(100% + 5px);
   z-index: 3;
-  width: 150px;
+  width: 34px;
   padding: 0;
   border: 0;
   background: none;
   line-height: 0;
   cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
 }
+.hero-cambio .btn-caja,
+.hero-cambio .btn-flecha { display: none; }
 
 .hero-cambio > svg {
   display: block;
@@ -923,7 +987,7 @@ html.dark .hero-stars::after { display: block; }
 .hero-cambio:active .btn-caja { transform: translateY(4px); }
 
 @media (max-width: 640px) {
-  .hero-cambio { left: 5%; top: 4%; width: 118px; }
+  .hero-cambio { width: 30px; }
 }
 
 /* Cabecera de la portada, tres estados:
@@ -990,6 +1054,7 @@ html.home main { padding-top: 9.5rem; }
   .hero-sparkle,
   .hero-scroll { animation: none; }
   .hero-craft { transition: none; } /* revelado y cambio de objeto instantáneos */
+  .hero-astro > span { animation: none !important; }   /* sol y luna cambian sin moverse */
   .hero-craft--orbita { left: 22%; top: 16%; } /* aparcado en sitio visible, sin tapar el botón */
   /* botón: sin hundirse; la hélice no gira (initHelice se autodesactiva); las
      palas sí siguen poniéndose rojas al pulsar */
