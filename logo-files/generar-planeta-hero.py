@@ -21,13 +21,18 @@ El dron del hero (Bayraktar TB3) ya NO sale de aquí: es una foto tal cual en
 `public/zodk-dron.png` (sin versión de noche propia). Este script solo genera
 los dos PNG del planeta.
 
-    python3 generar-planeta-hero.py
+    python3 generar-planeta-hero.py                          # lo de la web -> public/planeta/
+    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba
+    python3 generar-planeta-hero.py --canvas carpeta/        # datos del <canvas> a otra carpeta
+    python3 generar-planeta-hero.py --sprite                 # el sprite antiguo (ya no se usa)
 """
+import colorsys
 import math
+import sys
 from mapa_tierra import GRID_W, GRID_H, ROWS
 from luces import LW, LH, ROWS as LUZ_ROWS
 from elev import elev as _elev, W as ELEV_W, H as ELEV_H
-from png8 import write_indexed
+from png8 import write_rgba
 
 
 def smooth(e0, e1, x):
@@ -41,28 +46,37 @@ def mix(a, b, t):
 
 # --------------------------------------------------------------- paletas
 OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
+OCEAN_COAST   = (0x5b, 0xd0, 0xe6)  # turquesa vivo junto a la costa (el "punch" alegre)
 OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
 OCEAN_DEEP    = (0x1d, 0x50, 0x8c)  # océano profundo
+OCEAN_MID     = (0x4f, 0xb0, 0xd6)  # franja intermedia entre el turquesa y la plataforma
+SEA_BANDS     = (2.4, 4.4)          # distancia a costa (celdas de 0,25°) donde acaba cada franja
+SEA_WOBBLE    = 2.2                 # cuánto se ondulan los bordes de franja (celdas de 0,25°)
+COAST_AA      = False               # mezcla tierra/mar en las celdas de costa (borde borroso)
 LAND  = (0x54, 0xa2, 0x59)
-ICE   = (0xdb, 0xe3, 0xec)
+ICE   = (0xdb, 0xe3, 0xec)          # hielo continental (Groenlandia, islas árticas)
+PACK_OLD   = (0xe6, 0xee, 0xf5)     # banquisa: placa de hielo viejo (más blanca)
+PACK_YOUNG = (0xbd, 0xd0, 0xe2)     # banquisa: hielo joven, más fino y azulado
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
-COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
+COAST_COL  = (0x0e, 0x18, 0x13)     # línea de costa, casi negra (opción 3: sin fronteras políticas)
 ROCK       = (0x8b, 0x84, 0x78)     # roca de media/alta montaña
 SNOW       = (0xec, 0xf0, 0xf4)     # nieve de cumbre
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
-    (0x53, 0xa4, 0x58),   # 0 templado
-    (0x33, 0x7a, 0x3b),   # 1 selva / tropical húmedo
+    (0x64, 0xb8, 0x62),   # 0 templado (claro y alegre, algo menos saturado que antes)
+    (0x3d, 0x93, 0x46),   # 1 selva / tropical húmedo
     (0xce, 0xb8, 0x82),   # 2 desierto (arena)
-    (0xa6, 0xb0, 0x5f),   # 3 estepa / sabana seca
-    (0x33, 0x62, 0x4b),   # 4 boreal / taiga
+    (0xb8, 0xc9, 0x5f),   # 3 estepa / sabana seca
+    (0x3c, 0x74, 0x58),   # 4 boreal / taiga
     (0xbf, 0xc7, 0xca),   # 5 tundra (frío, gris pálido)
 ]
 DESIERTOS = [   # (lat0, lat1, lon0, lon1)
     (12, 32, -17, 52),      # Sáhara + Arabia
+    (15.5, 26.5, 51, 60.5), # Omán, Emiratos y este de Yemen (sin esto, estepa verde)
+    (-1.5, 12.5, 40.5, 52), # Cuerno de África: Somalia, Yibuti, Ogadén (salía selva)
     (24, 40, 44, 66),       # meseta iraní
     (35, 48, 62, 112),      # Gobi / Taklamakán
     (18, 30, 66, 78),       # Thar
@@ -71,6 +85,11 @@ DESIERTOS = [   # (lat0, lat1, lon0, lon1)
     (-24, -4, -81, -69),    # costa de Perú / Atacama
     (26, 40, -116, -101),   # SO de EE. UU. / N de México
     (-42, -30, -71, -64),   # Patagonia seca
+]
+# Sabanas dentro de la franja ecuatorial (que por latitud sale selva): pasan a
+# estepa/sabana seca (bioma 3), con el mismo borde difuminado que los desiertos.
+SABANAS = [     # (lat0, lat1, lon0, lon1)
+    (-12, 5, 29.5, 42),     # África oriental: Kenia, Tanzania, Uganda (el Congo sigue selva)
 ]
 
 # noche
@@ -107,21 +126,27 @@ LUCES_SUELTAS = [
 ]
 
 # ------------------------------------------------------------ geometría
-# COLS x FRAMES es el ancho de la tira PNG; hay GPUs (móvil viejo) que no pasan
-# de 8192 px de textura, así que COLS <= ~290 con FRAMES 28.
-COLS    = 280         # ancho del fotograma, en px (1 px = 1 celda)
-RADIUS  = 143.0       # radio de la esfera, en celdas
-CDOWN   = 0.92         # fracción del radio que se dibuja hacia abajo
-TILT    = 20.0         # latitud del sub-observador (0 = ecuador de frente)
-FRAMES  = 28           # fotogramas de la rotación (giro más fluido, PNG algo mayor)
-MAPRES  = 2            # submuestreo del mapa (1440x720 -> 2 = 0.5 grado)
-SHADES  = 16           # escalones de brillo del día
+# El sprite ya no es una tira en una sola fila: con más resolución por
+# fotograma Y más fotogramas, una fila se iría de largo más allá de lo que
+# aguanta una textura de GPU (~8192 px). Se reparte en una REJILLA de
+# GRID_COLS x GRID_ROWS fotogramas; el CSS anima background-position con un
+# @keyframes explícito (uno por fotograma), no con steps() sobre un solo eje.
+COLS      = 600        # ancho del planeta, en px — 280 -> 400 -> 600 (canvas, píxeles más finos)
+RADIUS    = 292.5      # radio de la esfera, en px — 143 -> 195 -> 292.5
+CDOWN     = 1.0         # fracción del radio que se dibuja hacia abajo (antes 0,92: en
+                        # móvil el disco entero cabe en pantalla y se veía el corte)
+TILT      = 20.0        # latitud del sub-observador (0 = ecuador de frente)
+FRAMES    = 60          # fotogramas de la rotación — antes 28, giro más fluido
+GRID_COLS = 15          # fotogramas por fila de la rejilla del sprite
+MAPRES    = 1           # submuestreo del mapa (1440x720 -> 1 = resolución nativa, 0,25°)
+SHADES    = 16          # escalones de brillo del día
 
 SUN_DEG = (-46.0, -12.0)       # (azimut desde arriba, elevación)
 SUN_Z   = 0.56                 # empuje del sol hacia el observador
 TERM_A, TERM_B = -0.34, 0.60   # borde del terminador
 NIGHT   = 0.22                 # brillo mínimo en el lado en sombra (día)
 LIMB_K  = 0.23                 # oscurecimiento del borde
+LIMB_AA = 1.3                  # semiancho (en px) del suavizado del borde del disco
 
 CX  = COLS / 2.0
 CY  = RADIUS
@@ -163,6 +188,15 @@ def _mcell(lat, lon):
     return (int((90.0 - lat) / 180.0 * MH), int((lon + 180.0) / 360.0 * MW))
 
 
+# Escalas para que el resto de parámetros no dependa de la resolución:
+#   KC    = celdas del mapa por cada celda de 0,25° (1 a 0,25°, 2 a 0,125°)
+#   SCALE = píxeles del planeta respecto al de 400 px (1,5 con COLS = 600)
+# Lo que debe medir lo mismo EN PÍXELES (copas, dunas, manchas de mezcla) se
+# divide entre SCALE en grados; lo que debe medir lo mismo RESPECTO AL PLANETA
+# (franjas del mar, franja de mezcla, claros) se mantiene en grados (x KC celdas).
+KC = MW // 1440
+SCALE = COLS / 400.0
+
 # Estrecho de Gibraltar: el submuestreo une Iberia y Marruecos; se abre a mano
 # una celda de mar (~1 grado, un pixel de canal).
 _gr, _gc = _mcell(35.6, -5.5)
@@ -173,9 +207,11 @@ for _c in (_gc - 1, _gc, _gc + 1):
 import random
 from collections import deque
 
-DMAX = 6
+DMAX = 8 * KC
 _land = [[GRID[r][c] != 0 for c in range(MW)] for r in range(MH)]
 COAST = [bytearray(MW) for _ in range(MH)]
+COAST2 = [bytearray(MW) for _ in range(MH)]         # 2ª celda de tierra adentro (línea más gruesa)
+COAST3 = [bytearray(MW) for _ in range(MH)]         # 3ª celda: ensancha más y evita huecos por sub-muestreo
 SEADIST = [bytearray(MW) for _ in range(MH)]        # 0 = tierra; 1..DMAX = mar
 BIOME = [bytearray(MW) for _ in range(MH)]
 _N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
@@ -184,7 +220,7 @@ _dq = deque()
 # Ruido de valor a baja frecuencia (interpolado): transiciones de bioma suaves,
 # sin el "confeti" que daba el ruido por celda.
 random.seed(20260910)
-_NC = 7                                            # celdas por nodo de ruido
+_NC = 7 * KC                                       # celdas por nodo de ruido
 _NW, _NH = MW // _NC + 2, MH // _NC + 2
 _NG = [[random.random() for _ in range(_NW)] for _ in range(_NH)]
 
@@ -213,8 +249,11 @@ for r in range(MH):
             for a0, a1, o0, o1 in DESIERTOS:
                 m = min(lat - a0, a1 - lat, lon - o0, o1 - lon)
                 des = max(des, m)
+            sab = max(min(lat - a0, a1 - lat, lon - o0, o1 - lon) for a0, a1, o0, o1 in SABANAS)
             if des > 2.0 or (des > -4.0 and nf * 9.0 < des):
                 b = 2
+            elif sab > 2.0 or (sab > -4.0 and nf * 9.0 < sab):
+                b = 3
             else:
                 la = abs(lat) + nf * 4.0          # frontera latitudinal ondulada
                 if la < 12:
@@ -230,6 +269,40 @@ for r in range(MH):
             BIOME[r][c] = b
         else:
             SEADIST[r][c] = DMAX
+
+# Anillos de la línea de costa por distancia tierra adentro (en celdas):
+# COAST = anillo oscuro, COAST2/COAST3 = los dos que lo suavizan hacia dentro.
+# A 0,25° (KC=1) eran 1+1+1 celdas; a 0,125° el oscuro va de 2 celdas para que
+# siga midiendo ~1 px de pantalla y el muestreo (sobre todo el vertical, que no
+# tiene mipmaps) no se lo salte. Tres anillos también evitan huecos cuando la
+# proyección comprime el mapa lejos del centro del disco.
+_T3, _T2, _T1 = KC, KC + 1, KC + 2
+_LD = [bytearray(MW) for _ in range(MH)]
+_dq2 = deque()
+for r in range(MH):
+    for c in range(MW):
+        if COAST[r][c]:
+            _LD[r][c] = 1
+            _dq2.append((r, c))
+while _dq2:
+    r, c = _dq2.popleft()
+    d = _LD[r][c]
+    if d >= _T1:
+        continue
+    for dr, dcx in _N4:
+        rr, cc = r + dr, (c + dcx) % MW
+        if 0 <= rr < MH and _land[rr][cc] and not _LD[rr][cc]:
+            _LD[rr][cc] = d + 1
+            _dq2.append((rr, cc))
+for r in range(MH):
+    lr, c1, c2, c3 = _LD[r], COAST[r], COAST2[r], COAST3[r]
+    for c in range(MW):
+        d = lr[c]
+        if d:
+            c1[c] = 1 if d <= _T3 else 0
+            c2[c] = 1 if _T3 < d <= _T2 else 0
+            c3[c] = 1 if _T2 < d <= _T1 else 0
+del _LD
 
 # 1 pasada de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas
 # sin llegar a aplanar las regiones.
@@ -290,7 +363,7 @@ for r in range(ELEV_H):
         hs = (ex * 0.6 - ez * 0.6 + k * 0.75) / nl      # luz desde el NO
         # sin sobre-iluminar (si no, el desierto de media altura se pone neón)
         m = 1.0 if e < 250 else max(0.62, min(1.16, 0.58 + hs * 0.58))
-        HS[r][c] = max(1, min(255, (int(m * 128) // 10) * 10))     # a pasos, menos colores
+        HS[r][c] = max(1, min(255, (int(m * 128) // 10) * 10))     # a pasos, menos bandas
         if e > 1400:
             ROCKAMT[r][c] = min(180, (int((e - 1400) / 3400.0 * 255) // 45) * 45)
         around = (_elev(lat + 2, lon) + _elev(lat - 2, lon)
@@ -308,13 +381,473 @@ def _ecell(lat, lon):
     r = 0 if r < 0 else ELEV_H - 1 if r >= ELEV_H else r
     return r, int((lon + 180.0) / 360.0 * ELEV_W) % ELEV_W
 
-# Bayer 4x4 normalizado (0..1) para ditherar los degradados y quitar bandas.
-_BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
+
+# ------------------------------------------------ rampas con cambio de tono
+# Pixel art "de ilustración": sombrear no es mezclar hacia negro. Cada escalón
+# de la rampa oscurece Y gira el tono hacia azul-violeta (sombras frías, más
+# saturadas); cada escalón hacia la luz lo gira hacia amarillo (luces cálidas,
+# menos saturadas). Así el verde oscuro tira a verde azulado y el claro a lima.
+STEP        = 0.84                 # cada escalón multiplica el brillo por esto
+LIGHT_SUB   = 3                    # la luz global (terminador, limbo) va en tercios de escalón:
+                                   # con escalones enteros las franjas se notaban demasiado
+_LNSTEP     = -math.log(STEP)
+HUE_SHADOW  = 250.0 / 360.0        # hacia dónde gira la sombra (azul-violeta)
+HUE_LIGHT   = 55.0 / 360.0         # hacia dónde gira la luz (amarillo)
+HUE_STEP    = 6.0 / 360.0          # giro de tono por escalón
+HUE_MAX     = 26.0 / 360.0         # giro máximo total
+SAT_SHADOW  = 0.03                 # saturación que gana cada escalón de sombra
+SAT_SH_MAX  = 0.10                 # tope de saturación ganada (si no, el mar de noche chilla)
+SAT_LIGHT   = 0.06                 # saturación que pierde cada escalón de luz
+_RAMP = {}
 
 
-def _dither(sx, sy):
-    return (_BAYER[sy & 3][sx & 3] + 0.5) / 16.0
+def _hue_toward(h, target, amt):
+    d = (target - h + 0.5) % 1.0 - 0.5          # camino más corto, -0.5..0.5
+    if abs(d) <= amt:
+        return target
+    return (h + math.copysign(amt, d)) % 1.0
 
+
+def _hue_shadow(h, amt):
+    # Verdes, amarillos verdosos y azules giran "hacia delante" (verde -> verde
+    # azulado -> azul); solo los cálidos de verdad (arena, roca, rojos) giran
+    # hacia atrás pasando por el rojo. Por el camino corto, la estepa (72°)
+    # acababa granate en el lado de sombra.
+    if 60.0 / 360.0 <= h <= HUE_SHADOW:
+        return min(h + amt, HUE_SHADOW)
+    # (a mitad de velocidad: a giro completo el desierto en sombra quedaba óxido)
+    back = (h - HUE_SHADOW) % 1.0
+    return (h - min(amt * 0.5, back)) % 1.0
+
+
+def ramp(col, k, hue_mul=1.0):
+    """Color `col` desplazado `k` escalones (k<0 sombra, k>0 luz). `hue_mul`
+    escala el giro de tono (el mar gira menos: si no, de noche se va a añil)."""
+    key = (int(col[0]), int(col[1]), int(col[2]), k, hue_mul)
+    hit = _RAMP.get(key)
+    if hit:
+        return hit
+    h, s, v = colorsys.rgb_to_hsv(key[0] / 255.0, key[1] / 255.0, key[2] / 255.0)
+    if k < 0:
+        if s < 0.12:
+            h = 225.0 / 360.0                    # grises: sombra fría, no rosada
+        h = _hue_shadow(h, min(HUE_MAX, -k * HUE_STEP) * hue_mul)
+        s = min(1.0, s + min(SAT_SH_MAX, -k * SAT_SHADOW) * hue_mul)
+        v *= STEP ** -k
+    elif k > 0:
+        h = _hue_toward(h, HUE_LIGHT, min(HUE_MAX, k * HUE_STEP) * hue_mul)
+        s = max(0.0, s - k * SAT_LIGHT)
+        v = min(1.0, v / STEP ** k)
+    r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    out = (r * 255.0, g * 255.0, b * 255.0)
+    _RAMP[key] = out
+    return out
+
+
+# ------------------------------------------------ relieve a 0,25° y en bandas
+# El DEM viene a 0,5°; se interpola bilineal a la resolución del mapa para que
+# las crestas no salgan en bloques de 2x2, y el sombreado se reduce a escalones
+# ENTEROS de la rampa (bandas nítidas, sin punteado) en vez del multiplicador
+# continuo de antes, que con la costa tan marcada se veía blando.
+MTN_CONTRAST = 1.5                 # >1: más escalones entre ladera al sol y en sombra
+
+
+def _elev_bi(lat, lon):
+    fr = (90.0 - lat) / 180.0 * ELEV_H - 0.5
+    fc = (lon + 180.0) / 360.0 * ELEV_W - 0.5
+    r0, c0 = math.floor(fr), math.floor(fc)
+    tr, tc = fr - r0, fc - c0
+    r0 = 0 if r0 < 0 else ELEV_H - 1 if r0 >= ELEV_H else r0
+    r1 = r0 + 1 if r0 + 1 < ELEV_H else r0
+    c0 %= ELEV_W
+    c1 = (c0 + 1) % ELEV_W
+    lat0 = 90.0 - (r0 + 0.5) * 180.0 / ELEV_H
+    lat1 = 90.0 - (r1 + 0.5) * 180.0 / ELEV_H
+    lon0 = (c0 + 0.5) * 360.0 / ELEV_W - 180.0
+    lon1 = (c1 + 0.5) * 360.0 / ELEV_W - 180.0
+    a = _elev(lat0, lon0) * (1 - tc) + _elev(lat0, lon1) * tc
+    b = _elev(lat1, lon0) * (1 - tc) + _elev(lat1, lon1) * tc
+    return a * (1 - tr) + b * tr
+
+
+MTNK = [bytearray(MW) for _ in range(MH)]           # escalón de relieve + 8
+_md = 180.0 / MH
+for r in range(MH):
+    lat = 90.0 - (r + 0.5) * _md
+    for c in range(MW):
+        if not _land[r][c]:
+            MTNK[r][c] = 8
+            continue
+        lon = (c + 0.5) * _md - 180.0
+        e = _elev_bi(lat, lon)
+        if e < 250:
+            MTNK[r][c] = 8
+            continue
+        ex = (_elev_bi(lat, lon + _md) - _elev_bi(lat, lon - _md)) * (0.5 / _md)   # desnivel por grado
+        ez = (_elev_bi(lat + _md, lon) - _elev_bi(lat - _md, lon)) * (0.5 / _md)
+        kk = 900.0
+        nl = math.sqrt(ex * ex + ez * ez + kk * kk) or 1.0
+        hs = (ex * 0.6 - ez * 0.6 + kk * 0.75) / nl       # luz desde el NO
+        m = max(0.62, min(1.16, 0.58 + hs * 0.58))
+        MTNK[r][c] = 8 + max(-4, min(2, round(math.log(m) / _LNSTEP * MTN_CONTRAST)))
+
+
+# ------------------------------------------------------- copas de árbol
+# La textura "de ilustración": en vez de ruido, racimos con forma. Copas
+# redondas repartidas sobre la ESFERA (rejilla con jitter, espaciado constante
+# en grados de arco, no de longitud: no se aplastan hacia el norte), pintadas
+# de norte a sur para que las de abajo se monten sobre las de arriba como en
+# un bosque dibujado. Cada celda guarda qué parte de copa le toca:
+#   0 hueco entre copas, 1 borde en sombra (abajo-dcha), 2 cuerpo, 3 luz (arriba-izda)
+# Viven en el mapa (0,25°), así que giran con el planeta como la costa.
+CROWN_SP   = 1.0 / SCALE           # separación media entre copas, en grados de arco (~4-5 px)
+CROWN_R    = (0.55, 0.78)          # radio relativo a CROWN_SP (min, max)
+_LX, _LY   = -0.70, 0.71           # hacia la luz, en (este, norte): el NO
+CROWN = [bytearray(MW) for _ in range(MH)]
+CROWN_U = [bytearray(MW) for _ in range(MH)]        # azar de la copa (densidad por bioma)
+
+# Franja de mezcla entre biomas: en vez de pasar de un bioma a otro con un
+# difuminado estrecho de color, una franja ancha (unos ±MEZCLA_R celdas) donde
+# los dos se mezclan A MANCHAS: toques verdes que se van aclarando hacia el
+# desierto y toques áridos que se meten en la selva, más o menos según la
+# proporción de cada bioma alrededor. Las manchas salen de umbralizar un ruido
+# de 1-2° contra esa proporción (mismo ruido a los dos lados de la frontera:
+# sin costura). MIXBIO = bioma que le toca a cada celda; las copas toman el de
+# su centro (copa entera, no partida). Colores planos por bioma: las manchas
+# ya hacen de transición, no hace falta difuminar.
+MEZCLA_R = 9 * KC                      # radio de la ventana, en celdas (~2,25°)
+MIXBIO = [bytearray(BIOME[r]) for r in range(MH)]
+# Sabana: en la franja de mezcla entre desierto y verde (templado/selva), SAV =
+# proporción de desierto alrededor (0-255), en todas sus celdas (varía suave:
+# una copa que pisa varias celdas no se parte). Cuanto más desierto, copas más
+# sueltas, y el suelo verde entre ellas pasa a hierba seca (SAV_GROUND), en vez
+# de selva cerrada. Al alejarse del desierto la proporción baja sola hasta 0:
+# sin costura con la selva de dentro.
+SAV = [bytearray(MW) for _ in range(MH)]
+SAV_THIN   = 0.62                      # cuánto aclara las copas la sabana plena
+SAV_GROUND = (0xc9, 0xb1, 0x62)        # hierba seca entre los árboles
+random.seed(4711)
+_MN = [(n, [[random.random() for _ in range(MW // n)] for _ in range(MH // n + 2)])
+       for n in (round(6 * KC / SCALE), round(3 * KC / SCALE))]
+
+
+def _mix_noise(r, c):
+    tot = 0.0
+    for (n, g), w in zip(_MN, (0.65, 0.35)):
+        fr, fc = r / n, c / n
+        r0, c0 = int(fr), int(fc)
+        tr, tc = fr - r0, fc - c0
+        tr, tc = tr * tr * (3 - 2 * tr), tc * tc * (3 - 2 * tc)
+        wn = len(g[0])
+        c1 = (c0 + 1) % wn
+        a = g[r0][c0 % wn] * (1 - tc) + g[r0][c1] * tc
+        b = g[r0 + 1][c0 % wn] * (1 - tc) + g[r0 + 1][c1] * tc
+        tot += (a * (1 - tr) + b * tr) * w
+    return tot
+
+
+# Tablas de suma acumulada (una por bioma + una de tierra), con la longitud
+# ampliada MEZCLA_R celdas por cada lado para que la ventana dé la vuelta en la
+# línea de cambio de fecha. Filas como array('i'): 7 tablas de ~1M enteros.
+from array import array
+from itertools import accumulate
+from operator import add
+
+_PADW = MW + 2 * MEZCLA_R
+
+
+def _sat(match):
+    prev = array("i", bytes(4 * (_PADW + 1)))
+    rows = [prev]
+    for r in range(MH):
+        lab = BIOME[r]
+        ln = _land[r]
+        ind = [0] + [1 if ln[c % MW] and match(lab[c % MW]) else 0
+                     for c in range(-MEZCLA_R, MW + MEZCLA_R)]
+        prev = array("i", map(add, prev, accumulate(ind)))
+        rows.append(prev)
+    return rows
+
+
+_SAT_B = [_sat(lambda v, k=k: v == k) for k in range(6)]
+_SAT_L = _sat(lambda v: True)
+
+
+def _win(S, i0, i1, j0, j1):
+    return S[i1][j1] - S[i0][j1] - S[i1][j0] + S[i0][j0]
+
+
+for r in range(MH):
+    i0, i1 = max(0, r - MEZCLA_R), min(MH, r + MEZCLA_R + 1)
+    for c in range(MW):
+        if not _land[r][c]:
+            continue
+        j0, j1 = c, c + 2 * MEZCLA_R + 1               # (columnas ya desplazadas por el relleno)
+        own = BIOME[r][c]
+        tot = _win(_SAT_L, i0, i1, j0, j1)
+        if _win(_SAT_B[own], i0, i1, j0, j1) == tot:
+            continue                                     # ventana de un solo bioma: nada que mezclar
+        cnt = [_win(S, i0, i1, j0, j1) for S in _SAT_B]
+        ka = max(range(6), key=cnt.__getitem__)
+        kb = max((k for k in range(6) if k != ka), key=cnt.__getitem__)
+        lo, hi = min(ka, kb), max(ka, kb)
+        fh = cnt[hi] / float(cnt[ka] + cnt[kb])
+        MIXBIO[r][c] = hi if smooth(0.25, 0.75, _mix_noise(r, c)) < fh else lo
+        if hi == 2 and lo in (0, 1):                   # verde + desierto: sabana
+            SAV[r][c] = round(255 * cnt[2] / float(cnt[ka] + cnt[kb]))
+del _SAT_B, _SAT_L
+CROWN_BIO = [bytearray(MW) for _ in range(MH)]
+
+random.seed(20260913)
+_crowns = []
+_nb = int(180.0 / CROWN_SP)
+for _i in range(_nb):
+    _lat0 = -90.0 + _i * CROWN_SP
+    _nlon = max(1, round(360.0 * math.cos(math.radians(_lat0 + CROWN_SP / 2)) / CROWN_SP))
+    for _j in range(_nlon):
+        clat = _lat0 + random.uniform(0.1, 0.9) * CROWN_SP
+        clon = -180.0 + (_j + random.uniform(0.1, 0.9)) * 360.0 / _nlon
+        gr_, gc_ = _mcell(clat, clon)
+        gr_ = 0 if gr_ < 0 else MH - 1 if gr_ >= MH else gr_
+        if GRID[gr_][gc_ % MW] == 0:
+            continue
+        cb = MIXBIO[gr_][gc_ % MW]
+        _crowns.append((clat, clon, CROWN_SP * random.uniform(*CROWN_R),
+                        random.randrange(256), cb))
+_crowns.sort(key=lambda t: -t[0])                    # norte primero, sur encima
+for clat, clon, rad, u, cb in _crowns:
+    cosl = max(0.05, math.cos(math.radians(clat)))
+    r0 = int((90.0 - (clat + rad)) / _md)
+    r1 = int((90.0 - (clat - rad)) / _md)
+    c0 = int((clon - rad / cosl + 180.0) / _md)
+    c1 = int((clon + rad / cosl + 180.0) / _md)
+    for r in range(max(0, r0), min(MH - 1, r1) + 1):
+        dy = (90.0 - (r + 0.5) * _md - clat) / rad
+        for cc in range(c0, c1 + 1):
+            c = cc % MW
+            if not _land[r][c]:
+                continue
+            dx = ((cc + 0.5) * _md - 180.0 - clon) * cosl / rad
+            d2 = dx * dx + dy * dy
+            if d2 > 1.0:
+                continue
+            lit = dx * _LX + dy * _LY
+            if lit > 0.28 and d2 < 0.62:
+                code = 3
+            elif lit < -0.30 and d2 > 0.30:
+                code = 1
+            else:
+                code = 2
+            CROWN[r][c] = code
+            CROWN_U[r][c] = u
+            CROWN_BIO[r][c] = cb
+
+# Por bioma: densidad de copas (0-1) y escalón de rampa de (hueco, borde, cuerpo, luz).
+#            templado       selva          desierto      estepa         boreal         tundra
+CROWN_DENS = (0.92,          1.0,           0.0,          0.30,          0.88,          0.0)
+CROWN_K    = ((-2, -1, 0, 1), (-2, -1, 0, 1), (0, 0, 0, 0), (0, -2, -1, 0), (-2, -1, 0, 1), (0, 0, 0, 0))
+# Manchas a gran escala (unos 2-6°): dentro de un mismo bioma alterna bosque
+# cerrado con claros (pradera, cultivos) donde las copas se aclaran, los huecos
+# dejan de ser sombra y el suelo tira a verde amarillento. Sin esto, zonas
+# enormes como EE. UU. o Europa salían como una alfombra uniforme de copas.
+#            templado  selva  desierto  estepa  boreal  tundra
+PATCH_VAR = (0.80,     0.25,  0.0,      0.5,    0.40,   0.0)   # cuánto aclaran los claros
+MEADOW    = (0x9d, 0xbf, 0x6c)         # suelo de los claros del templado
+random.seed(777)
+_PN = [(n, [[random.random() for _ in range(MW // n)] for _ in range(MH // n + 2)])
+       for n in (24 * KC, 9 * KC)]
+
+
+def _patch_noise(r, c):
+    tot = 0.0
+    for (n, g), w in zip(_PN, (0.68, 0.32)):
+        fr, fc = r / n, c / n
+        r0, c0 = int(fr), int(fc)
+        tr, tc = fr - r0, fc - c0
+        tr, tc = tr * tr * (3 - 2 * tr), tc * tc * (3 - 2 * tc)
+        wn = len(g[0])
+        c1 = (c0 + 1) % wn                         # da la vuelta en la línea de cambio de fecha
+        a = g[r0][c0 % wn] * (1 - tc) + g[r0][c1] * tc
+        b = g[r0 + 1][c0 % wn] * (1 - tc) + g[r0 + 1][c1] * tc
+        tot += (a * (1 - tr) + b * tr) * w
+    return tot
+
+
+PATCH = [bytearray(MW) for _ in range(MH)]         # 255 = bosque cerrado, 0 = claro
+for r in range(MH):
+    for c in range(MW):
+        if _land[r][c]:
+            PATCH[r][c] = round(smooth(0.30, 0.68, _patch_noise(r, c)) * 255)
+
+
+# ----------------------------------------------------------------- dunas
+# Misma idea que las copas pero para el desierto: dunas en media luna
+# (barjanes) repartidas sobre la esfera, con la cresta perpendicular a la luz:
+# cara al sol (NO) clara, cara de sotavento (SE) en sombra, cuernos curvados
+# hacia la sombra. Se pintan de norte a sur (las de abajo tapan a las de
+# arriba). Solo en celdas de bioma desierto y en llano (en montaña manda el
+# relieve). Las manchas grandes de PATCH separan "mares de dunas" (erg, arena
+# cálida y dunas densas) de llanuras de grava (reg, más gris, dunas sueltas),
+# para que el Sáhara no sea una alfombra uniforme.
+#   DUNE: 0 nada, 1 sombra fuerte (sotavento), 2 sombra suave, 3 cresta al sol
+DUNE_SP   = 1.65 / SCALE           # separación media entre dunas, en grados de arco
+DUNE_LEN  = (0.80 / SCALE, 1.30 / SCALE)   # semilongitud de la cresta, en grados
+DUNE_BEND = 0.55 / SCALE           # curvatura de la media luna (grados en los cuernos)
+DUNE_LIT  = 0.30 / SCALE           # ancho de la cara al sol, en grados
+DUNE_SH   = 0.42 / SCALE           # ancho de la cara en sombra, en grados
+DUNE_K    = (0, -2, -1, 1)         # escalón de rampa por código
+ERG = (0xdc, 0xb6, 0x76)           # arena de mar de dunas (más cálida)
+REG = (0xc2, 0xb0, 0x8e)           # llanura de grava (más gris)
+DUNE = [bytearray(MW) for _ in range(MH)]
+
+random.seed(20260914)
+_dunes = []
+_nb = int(180.0 / DUNE_SP)
+for _i in range(_nb):
+    _lat0 = -90.0 + _i * DUNE_SP
+    _nlon = max(1, round(360.0 * math.cos(math.radians(_lat0 + DUNE_SP / 2)) / DUNE_SP))
+    for _j in range(_nlon):
+        dlat = _lat0 + random.uniform(0.1, 0.9) * DUNE_SP
+        dlon = -180.0 + (_j + random.uniform(0.1, 0.9)) * 360.0 / _nlon
+        gr_, gc_ = _mcell(dlat, dlon)
+        gr_ = 0 if gr_ < 0 else MH - 1 if gr_ >= MH else gr_
+        gc_ %= MW
+        if not _land[gr_][gc_] or BIOME[gr_][gc_] != 2:
+            continue
+        if random.random() > 0.15 + 0.85 * PATCH[gr_][gc_] / 255.0:
+            continue                                 # reg: pocas dunas sueltas
+        ang = math.atan2(-_LX, _LY) + math.radians(random.uniform(-22, 22))
+        _dunes.append((dlat, dlon, ang, random.uniform(*DUNE_LEN)))
+_dunes.sort(key=lambda t: -t[0])
+_reach = DUNE_LEN[1] + DUNE_SH + DUNE_BEND
+for dlat, dlon, ang, hl in _dunes:
+    ax, ay = math.cos(ang), math.sin(ang)            # eje de la cresta (este, norte)
+    nx, ny = -ay, ax                                 # normal
+    if nx * _LX + ny * _LY < 0:
+        nx, ny = -nx, -ny                            # normal apuntando hacia la luz
+    cosl = max(0.05, math.cos(math.radians(dlat)))
+    r0 = int((90.0 - (dlat + _reach)) / _md)
+    r1 = int((90.0 - (dlat - _reach)) / _md)
+    c0 = int((dlon - _reach / cosl + 180.0) / _md)
+    c1 = int((dlon + _reach / cosl + 180.0) / _md)
+    for r in range(max(0, r0), min(MH - 1, r1) + 1):
+        dy = 90.0 - (r + 0.5) * _md - dlat
+        for cc in range(c0, c1 + 1):
+            c = cc % MW
+            if not _land[r][c] or BIOME[r][c] != 2:
+                continue
+            dx = ((cc + 0.5) * _md - 180.0 - dlon) * cosl
+            t = (dx * ax + dy * ay) / hl                 # -1..1 a lo largo de la cresta
+            if t <= -1.0 or t >= 1.0:
+                continue
+            q = dx * nx + dy * ny + DUNE_BEND * t * t    # >0 lado al sol, <0 sotavento
+            taper = 1.0 - t * t
+            if 0.0 <= q < DUNE_LIT * (0.4 + 0.6 * taper):
+                DUNE[r][c] = 3
+            elif -DUNE_SH * taper < q < 0.0:
+                DUNE[r][c] = 1 if q > -DUNE_SH * taper * 0.6 else 2
+
+# ----------------------------------------------------------- banquisa
+# El hielo marino ya no es "todo el mar por encima de 82°N" (un círculo
+# perfecto con línea de costa alrededor): se dibuja aquí con forma.
+#  - Borde por longitud (PACK_EDGE), aproximando la extensión de principios de
+#    verano: llena la cuenca ártica hasta las costas de Siberia, Alaska y el
+#    archipiélago canadiense, baja por la costa este de Groenlandia con la
+#    corriente y se retira al norte en el lado atlántico (Barents, Svalbard).
+#  - Borde roto en témpanos: la proporción de hielo sube de 0 a 1 en una franja
+#    y se umbraliza contra un ruido de manchas (mismo truco que MIXBIO).
+#  - Dentro: placas grandes de hielo viejo y manchas de hielo joven.
+#  - Es terreno 3: sin línea de costa ni franjas turquesa. La tierra que toca
+#    (Groenlandia, islas) conserva SU línea de costa, así que se distingue.
+#   PACK: 0 nada, 1 hielo joven, 2 hielo viejo
+PACK_EDGE = [   # (longitud, latitud del borde)
+    (-180, 72.0), (-160, 71.5), (-140, 71.0), (-120, 71.0), (-95, 69.5),
+    (-75, 72.5), (-60, 74.5), (-40, 71.0), (-22, 69.5), (-10, 76.0),
+    (0, 79.0), (15, 80.3), (30, 79.5), (45, 78.5), (60, 77.5),
+    (75, 75.5), (100, 76.5), (130, 75.0), (150, 73.0), (180, 72.0),
+]
+PACK_FRINGE = (1.9, 0.6)           # grados al sur / al norte del borde donde se rompe en témpanos
+
+
+def _edge_lat(lon):
+    for (l0, a0), (l1, a1) in zip(PACK_EDGE, PACK_EDGE[1:]):
+        if l0 <= lon <= l1:
+            t = (lon - l0) / (l1 - l0)
+            return a0 + (a1 - a0) * t
+    return PACK_EDGE[-1][1]
+
+
+def _vnoise_factory(ncells, seed):
+    """Ruido de valor 0..1 con nodos cada `ncells` celdas, que da la vuelta en
+    longitud (sin costura en la línea de cambio de fecha)."""
+    rnd = random.Random(seed)
+    wn = max(1, MW // ncells)
+    g = [[rnd.random() for _ in range(wn)] for _ in range(MH // ncells + 2)]
+
+    def f(r, c):
+        fr, fc = r / ncells, c / ncells
+        r0, c0 = int(fr), int(fc)
+        tr, tc = fr - r0, fc - c0
+        tr, tc = tr * tr * (3 - 2 * tr), tc * tc * (3 - 2 * tc)
+        c0 %= wn
+        c1 = (c0 + 1) % wn
+        a = g[r0][c0] * (1 - tc) + g[r0][c1] * tc
+        b = g[r0 + 1][c0] * (1 - tc) + g[r0 + 1][c1] * tc
+        return a * (1 - tr) + b * tr
+    return f
+
+
+# Ruido de la banquisa en coordenadas POLARES (x, y en grados desde el polo):
+# en latitud/longitud los nodos del ruido se juntan hacia el polo y las placas
+# salían como rayos de una estrella. Así el ruido es igual de redondo en todo
+# el casquete. Retícula sin tabla: valor pseudoaleatorio por hash de (ix, iy).
+def _hash01(ix, iy, seed):
+    n = (ix * 374761393 + iy * 668265263 + seed * 2246822519) & 0xFFFFFFFF
+    n = ((n ^ (n >> 13)) * 1274126177) & 0xFFFFFFFF
+    return (n ^ (n >> 16)) / 4294967295.0
+
+
+def _pnoise(x, y, size, seed):
+    fx, fy = x / size, y / size
+    ix, iy = math.floor(fx), math.floor(fy)
+    tx, ty = fx - ix, fy - iy
+    tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+    a = _hash01(ix, iy, seed) * (1 - tx) + _hash01(ix + 1, iy, seed) * tx
+    b = _hash01(ix, iy + 1, seed) * (1 - tx) + _hash01(ix + 1, iy + 1, seed) * tx
+    return a * (1 - ty) + b * ty
+
+
+PACK = [bytearray(MW) for _ in range(MH)]
+for r in range(MH):
+    lat = 90.0 - (r + 0.5) * _md
+    if lat < 62.0:
+        break
+    for c in range(MW):
+        if GRID[r][c] != 0:
+            continue
+        lon = (c + 0.5) * _md - 180.0
+        rho, th = 90.0 - lat, math.radians(lon)
+        px_, py_ = rho * math.cos(th), rho * math.sin(th)
+        edge = _edge_lat(lon) + (_pnoise(px_, py_, 3.0, 501) - 0.5) * 3.0
+        p = smooth(edge - PACK_FRINGE[0], edge + PACK_FRINGE[1], lat)
+        if p <= 0.0:
+            continue
+        floe = smooth(0.25, 0.75, 0.6 * _pnoise(px_, py_, 0.32 / SCALE * 1.5, 502)
+                      + 0.4 * _pnoise(px_, py_, 0.8 / SCALE * 1.5, 503))
+        if floe > p:
+            continue                                   # agua entre témpanos
+        # Hielo joven (azulado) sobre todo cerca del borde; dentro, placas
+        # grandes de hielo viejo con alguna mancha de joven. (Se probaron
+        # grietas de agua: cerca del polo quedaban en puntos sueltos, fuera.)
+        young = _pnoise(px_, py_, 1.8 / SCALE * 1.5, 504) < 0.30 + 0.45 * (1.0 - p)
+        PACK[r][c] = 1 if young else 2
+
+# Nieve y roca van "ganando" copas ENTERAS según sube su cantidad (cada copa
+# tiene su umbral al azar, CROWN_U), y los huecos entre copas al final (nieve)
+# o al principio (roca: asoma entre los árboles). Transiciones a racimos, en
+# vez de mezcla de color o de puntitos sueltos de 1 px.
+SNOW_GAP = 0.80                    # cantidad de nieve a partir de la cual cubre los huecos
+ROCK_GAP = 0.15                    # cantidad de roca a partir de la cual asoma en los huecos
 
 # --------------------------------------------------------------------- nubes
 # Nubes pixel-art tipo cúmulo (lóbulos irregulares arriba, base plana), con
@@ -323,8 +856,24 @@ def _dither(sx, sy):
 # no se repitan. El borde negro de 1 px se re-genera tras escalar (siempre
 # limpio). Se proyectan sobre la esfera como las ciudades y giran con el planeta.
 C_BODY = (0xfb, 0xfc, 0xfe)         # cuerpo blanco
-C_BASE = (0xb0, 0xbc, 0xcc)         # sombra / base gris azulada
 C_EDGE = (0x10, 0x13, 0x1c)         # borde casi negro (contraste)
+# Rampa de la nube, como las del resto del planeta (luces hacia amarillo,
+# sombras hacia azul-violeta): canto al sol, cuerpo, canto en sombra, base y
+# borde exterior.
+CLOUD_KINDS = "hbmse"
+C_NUBE = {
+    "h": (0xff, 0xfd, 0xf2),
+    "b": C_BODY,
+    "m": (0xd6, 0xdc, 0xec),
+    "s": (0xa4, 0xab, 0xcc),
+    "e": C_EDGE,
+}
+CLOUD_SIZE = (1.0, 1.3)             # escala por instancia (antes 0,62-0,92: casi no se veían)
+
+
+def _cloud_t(k, t):
+    """Cuánto se ve cada tono con la luz t (junto al terminador se apaga)."""
+    return min(1.0, t + 0.1) if k in "hb" else max(0.7, t) if k == "e" else t
 
 CLOUD_ART = [
     """
@@ -415,7 +964,42 @@ def _cloud_body(art):
     return out
 
 
-CLOUD_BODIES = [_cloud_body(a) for a in CLOUD_ART]
+def _cloud_fill(body):
+    """Las plantillas son un contorno: rellena su interior de cuerpo ('b').
+    Sin rellenar, la nube salía como un anillo blanco con un agujero oscuro
+    (parecía un donut). Algunos contornos están abiertos por la muesca entre
+    dos lóbulos: un hueco de 1 celda entre dos celdas de nube (en horizontal o
+    en vertical) hace de tapón para decidir qué es interior, y él mismo se
+    queda vacío (sale como una muesca oscura de 1 px entre lóbulos)."""
+    xs = [p[0] for p in body]
+    ys = [p[1] for p in body]
+    X0, X1, Y0, Y1 = min(xs) - 2, max(xs) + 2, min(ys) - 2, max(ys) + 2
+    muro = set(body)
+    for y in range(Y0, Y1 + 1):
+        for x in range(X0, X1 + 1):
+            if (x, y) not in body and (((x - 1, y) in body and (x + 1, y) in body)
+                                       or ((x, y - 1) in body and (x, y + 1) in body)):
+                muro.add((x, y))
+    fuera, pila = set(), [(X0, Y0)]
+    while pila:
+        p = pila.pop()
+        if p in fuera or p in muro or not (X0 <= p[0] <= X1 and Y0 <= p[1] <= Y1):
+            continue
+        fuera.add(p)
+        x, y = p
+        pila += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    out = dict(body)
+    for y in range(Y0, Y1 + 1):
+        for x in range(X0, X1 + 1):
+            if (x, y) in out or (x, y) in fuera:
+                continue
+            if (x, y) in muro and any(v in fuera for v in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1))):
+                continue                        # tapón que da al exterior: muesca
+            out[(x, y)] = "b"
+    return out
+
+
+CLOUD_BODIES = [_cloud_fill(_cloud_body(a)) for a in CLOUD_ART]
 
 # Reparto: 40 nubes, semilla fija. Longitud ESTRATIFICADA (una por sector con
 # jitter) para que no se amontonen y cada fotograma tenga un número parecido;
@@ -430,7 +1014,7 @@ for _i in range(_N):
         lat, lon,
         random.choice(CLOUD_W_PICK),
         random.random() < 0.5,
-        random.uniform(0.62, 0.92),      # escala por instancia (nubes pequeñas)
+        random.uniform(*CLOUD_SIZE),     # escala por instancia
     ))
 random.shuffle(NUBES)
 
@@ -451,57 +1035,45 @@ def luz_at(lat, lon):
 
 
 # ------------------------------------------------------------------ color
-PAL = [(0, 0, 0, 0)]      # 0 = espacio transparente
-_idx = {}
+# PNG en color real (sin paleta): antes esto era un PNG-8 indexado a 256
+# colores y había que "sembrar" con cuidado qué tonos se reservaban para no
+# quedarse sin hueco (banding/tonos sucios al llenarse). Con las mejoras de
+# calidad (degradado de mar, atardecer, brillo) el catálogo de colores creció
+# mucho más allá de 256, así que se deja de indexar: cada píxel lleva su RGBA
+# exacto. Pesa algo más el PNG pero el pixel art sale limpio siempre.
+TRANSPARENT = (0, 0, 0, 0)
 
 
-def color_index(rgb):
-    rgb = tuple((c // 6) * 6 for c in rgb)
-    i = _idx.get(rgb)
-    if i is not None:
-        return i
-    if len(PAL) >= 256:                     # paleta llena: al color más cercano
-        i = min(range(1, len(PAL)),
-                key=lambda j: sum((PAL[j][k] - rgb[k]) ** 2 for k in range(3)))
-        _idx[rgb] = i                       # y se cachea (si no, es lentísimo)
-        return i
-    i = len(PAL)
-    PAL.append(rgb)
-    _idx[rgb] = i
-    return i
-
-
-# Pre-siembra: reserva slots para todos los colores de superficie a varios
-# niveles de brillo ANTES de renderizar, para que el relieve/nieve del norte
-# (que se pinta primero, arriba) no llene la paleta y deje sin color a los
-# biomas del ecuador (que se pintan después). Sin esto salían continentes grises.
-def _seed_palette():
-    bases = [OCEAN_SHALLOW, OCEAN_DEEP, ICE, ROCK, SNOW, COAST_COL, *BIOME_COLS]
-    mixes = [mix(b, ROCK, 0.55) for b in BIOME_COLS] + \
-            [mix(b, SNOW, 0.6) for b in (BIOME_COLS[4], BIOME_COLS[5])] + \
-            [mix(ROCK, SNOW, 0.6)]
-    for base in bases + mixes:
-        for s in range(3, 17):
-            color_index(mix(SPACE, base, s / 16.0))
-    for base in (ATMO, C_BODY, C_BASE, *GOLD):
-        color_index(base)
-
-
-_seed_palette()
+def rgba(rgb):
+    return (max(0, min(255, round(rgb[0]))),
+            max(0, min(255, round(rgb[1]))),
+            max(0, min(255, round(rgb[2]))),
+            255)
 
 
 # ------------------------------------------------------------- proyección
-def _project(sx, sy):
-    px = (sx + 0.5 - CX) / RADIUS
-    py = (sy + 0.5 - CY) / RADIUS
+# El límite se ensancha un poco (LIMB_AA px) más allá del radio real para poder
+# suavizar el borde del disco en vez de cortarlo en seco al píxel.
+_R_IN  = 1.0 - LIMB_AA / RADIUS
+_R_OUT = 1.0 + LIMB_AA / RADIUS
+_RR_MAX = _R_OUT * _R_OUT
+
+
+def _project_xy(x, y):
+    px = (x - CX) / RADIUS
+    py = (y - CY) / RADIUS
     rr = px * px + py * py
-    if rr > 1.0:
+    if rr > _RR_MAX:
         return None
-    pz  = math.sqrt(1.0 - rr)
+    pz  = math.sqrt(max(0.0, 1.0 - min(rr, 1.0)))
     lat = math.degrees(math.asin(max(-1.0, min(1.0, -py * COST + pz * SINT))))
     v   = py * SINT + pz * COST
     lon = math.degrees(math.atan2(px, v))
     return px, py, pz, rr, lat, lon
+
+
+def _project(sx, sy):
+    return _project_xy(sx + 0.5, sy + 0.5)
 
 
 def terrain_at(sx, sy, lon0):
@@ -513,48 +1085,165 @@ def terrain_at(sx, sy, lon0):
     return GRID[gr][gc % MW]
 
 
-def cell_index(sx, sy, lon0, night):
-    p = _project(sx, sy)
-    if p is None:
-        return 0
-    px, py, pz, rr, lat, lon = p
-    lon += lon0
-    dc = math.sqrt(rr)
+def _surface_at(lat, lon):
+    """(terrain, surf, tex_k, gr, gc) de un punto geográfico, sin sombra.
+    tex_k = escalones de rampa que pone la textura (copas, relieve)."""
     gr, gc = _mcell(lat, lon)
     gr = 0 if gr < 0 else MH - 1 if gr >= MH else gr
     gc %= MW
     terrain = GRID[gr][gc]
-    dth = _dither(sx, sy)
-
-    # --- color de la superficie, sin sombra ---
-    _mtn_hs = 1.0                          # multiplicador de hillshade (solo tierra)
-    if terrain == 0:                       # mar: más claro en plataforma, oscuro en abisal
-        sd = SEADIST[gr][gc]
-        t = 0.0 if sd <= 1 else min(1.0, (sd - 1) / 2.5)
-        surf = mix(OCEAN_SHALLOW, OCEAN_DEEP, t)
-        surf_n = N_OCEAN
+    tex_k = 0
+    if terrain == 0 and PACK[gr][gc]:      # banquisa: terreno 3 (ni costa ni franjas)
+        terrain = 3
+        surf = (PACK_YOUNG, PACK_OLD)[PACK[gr][gc] - 1]
+    elif terrain == 0:                     # mar en FRANJAS planas: turquesa de costa ->
+        sd = SEADIST[gr][gc]               # turquesa medio -> plataforma -> abisal. Los
+        if sd <= KC:                       # bordes se ondulan con el ruido de manchas para
+            surf = OCEAN_COAST             # no calcar el contorno de la costa.
+        else:
+            d = sd + (_mix_noise(gr, gc) - 0.5) * SEA_WOBBLE * KC
+            if d <= SEA_BANDS[0] * KC:
+                surf = OCEAN_MID
+            elif d <= SEA_BANDS[1] * KC:
+                surf = OCEAN_SHALLOW
+            else:
+                surf = OCEAN_DEEP
     elif terrain == 2:                     # hielo
         surf = ICE
-        surf_n = N_ICE
-    else:                                  # tierra: bioma + costa + relieve
-        surf = BIOME_COLS[BIOME[gr][gc]]
-        if COAST[gr][gc]:
-            surf = mix(surf, COAST_COL, 0.5)
-        surf_n = N_LAND
+    else:                                  # tierra: bioma + copas + relieve (la línea de costa
+        bg = MIXBIO[gr][gc]                # se pinta aparte, en cell_index: si se mete aquí,
+        pv = 1.0 - PATCH[gr][gc] / 255.0   # el AA de costa la diluye promediándola con el mar)
+        code = CROWN[gr][gc]
+        u = (CROWN_U[gr][gc] + 0.5) / 256.0
+        b = CROWN_BIO[gr][gc] if code else bg
+        sav = smooth(0.0, 0.5, SAV[gr][gc] / 255.0)
+        thin = 1.0 - SAV_THIN * sav
+        dens = CROWN_DENS[b] * (1.0 - PATCH_VAR[b] * pv) * thin   # claros y sabana: menos copas
+        suelo = True
+        if code and u >= dens:
+            b, tex_k = bg, 0               # copa descartada (bioma poco denso o claro): suelo liso
+        elif code == 0:                    # hueco: sombra en bosque cerrado, suelo en claros
+            b = bg
+            dens = CROWN_DENS[b] * (1.0 - PATCH_VAR[b] * pv) * thin
+            tex_k = round(CROWN_K[b][0] * smooth(0.45, 0.85, dens))
+        else:
+            tex_k = CROWN_K[b][code]
+            suelo = False
+        surf = BIOME_COLS[b]               # plano: la franja de mezcla hace de transición
+        claro = PATCH_VAR[b] * pv
+        if b == 0 and claro:
+            surf = mix(surf, MEADOW, claro * 0.75)
+        if sav and suelo and b in (0, 1) and \
+                smooth(0.25, 0.75, _mix_noise(MH - 1 - gr, (gc + MW // 2) % MW)) < sav:
+            surf = SAV_GROUND              # hierba seca entre los árboles, a manchas (sin mezclar)
+        mk = MTNK[gr][gc] - 8
+        if b == 2:                         # desierto: erg/reg por manchas + dunas en llano
+            surf = mix(surf, mix(REG, ERG, PATCH[gr][gc] / 255.0), 0.6)
+            if mk == 0:
+                tex_k = DUNE_K[DUNE[gr][gc]]
         er, ec = _ecell(lat, lon)
-        _ra, _sa = ROCKAMT[er][ec], SNOWAMT[er][ec]
-        if _ra:
-            surf = mix(surf, ROCK, _ra / 255.0)
-        if _sa:
-            surf = mix(surf, SNOW, _sa / 255.0)
-        _mtn_hs = HS[er][ec] / 128.0
+        _ra, _sa = ROCKAMT[er][ec] / 180.0, SNOWAMT[er][ec] / 215.0
+        if _sa and (_sa > SNOW_GAP if code == 0 else _sa > 0.05 + u * 0.55):
+            surf = SNOW                    # copa nevada: conserva su sombreado de copa
+            tex_k = (min(0, tex_k) if code else 0) + mk
+        elif _ra and (_ra > ROCK_GAP if code == 0 else _ra > 0.35 + u * 0.6):
+            surf, tex_k = ROCK, mk
+        else:
+            tex_k += mk
+    return terrain, surf, tex_k, gr, gc
+
+
+# Costa/limbo "en crudo": el mapa está a 0.5°/celda y el disco se mira con un
+# radio de unas 143 celdas, así que un píxel de pantalla no siempre cae limpio
+# dentro de una sola celda de mapa. Se sub-muestrea SOLO el anillo costero (los
+# píxeles cuya celda ya venía marcada COAST/SEADIST==1) para mezclar tierra/mar
+# en proporción en vez de dejar el escalón crudo del rasterizado.
+_COAST_OFF = (-0.28, 0.28)
+
+
+def _coast_aa(sx, sy, lon0, terrain, surf, tex_k, gr, gc):
+    need = (terrain == 1 and COAST[gr][gc]) or (terrain == 0 and SEADIST[gr][gc] == 1)
+    if not need:
+        return surf, tex_k
+    rs = gs = bs = ks = 0.0
+    n = 0
+    for oy in _COAST_OFF:
+        for ox in _COAST_OFF:
+            sp = _project_xy(sx + 0.5 + ox, sy + 0.5 + oy)
+            if sp is None:
+                continue
+            _, _, _, _, slat, slon = sp
+            _, ssurf, sk, _, _ = _surface_at(slat, slon + lon0)
+            rs += ssurf[0]; gs += ssurf[1]; bs += ssurf[2]; ks += sk; n += 1
+    if n == 0:
+        return surf, tex_k
+    return (rs / n, gs / n, bs / n), ks / n
+
+
+# Línea de costa robusta a islas pequeñas: si solo se mira la celda del píxel
+# central, una isla más pequeña que un píxel de pantalla puede "perderse" el
+# anillo entero (el único punto de muestreo cae en su interior, o directamente
+# en el mar) y queda sin línea — es justo el patrón "huecos sueltos y random"
+# que se veía en el archipiélago filipino. Se comprueban 8 sub-muestras más
+# dentro del píxel y se usa la más fuerte que aparezca.
+_OUTLINE_OFF = (-0.33, 0.0, 0.33)
+
+
+def _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf):
+    if terrain in (0, 3):                  # mar y banquisa: sin línea de costa
+        return surf
+    level = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
+    if level < 3:
+        for oy in _OUTLINE_OFF:
+            for ox in _OUTLINE_OFF:
+                if ox == 0.0 and oy == 0.0:
+                    continue
+                sp = _project_xy(sx + 0.5 + ox, sy + 0.5 + oy)
+                if sp is None:
+                    continue
+                _, _, _, _, slat, slon = sp
+                sgr, sgc = _mcell(slat, slon + lon0)
+                sgr = 0 if sgr < 0 else MH - 1 if sgr >= MH else sgr
+                sgc %= MW
+                if GRID[sgr][sgc] == 0:
+                    continue                    # cae en mar: no aporta anillo de tierra
+                slvl = 3 if COAST[sgr][sgc] else 2 if COAST2[sgr][sgc] else 1 if COAST3[sgr][sgc] else 0
+                if slvl > level:
+                    level = slvl
+                    if level == 3:
+                        break
+            if level == 3:
+                break
+    if level == 3:
+        return mix(surf, COAST_COL, 0.84)
+    if level == 2:
+        return mix(surf, COAST_COL, 0.48)
+    if level == 1:
+        return mix(surf, COAST_COL, 0.20)
+    return surf
+
+
+def cell_index(sx, sy, lon0, night):
+    p = _project(sx, sy)
+    if p is None:
+        return TRANSPARENT
+    px, py, pz, rr, lat, lon = p
+    lon += lon0
+    dc = math.sqrt(rr)
+    terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
+    if COAST_AA:
+        surf, tex_k = _coast_aa(sx, sy, lon0, terrain, surf, tex_k, gr, gc)
+    # Línea de costa: aparte del AA de arriba (que suaviza la transición
+    # tierra/mar y diluiría la línea si se mezclara antes). Sub-muestreada
+    # (ver _coast_line_mix) para no perderse islas más pequeñas que un píxel.
+    surf = _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf)
 
     if night:
         # MODO OSCURO CONGELADO: este script ya NO regenera el sprite de noche
         # (decisión del usuario, sept 2026: "no toques nada en el modo oscuro").
         # public/zodk-planeta-noche.png es el de producción, intocable. Esta
         # rama se deja como estaba por si algún día se quiere regenerar.
-        base = (N_OCEAN, N_LAND, N_ICE)[terrain]
+        base = (N_OCEAN, N_LAND, N_ICE, N_ICE)[terrain]
         col = mix(SPACE, base, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
         if terrain != 0 and dc < 0.95:
             lv = luz_at(lat, lon)
@@ -564,31 +1253,44 @@ def cell_index(sx, sy, lon0, night):
                 col = GOLD[lv - 1]
         if dc > 0.94:
             col = mix(col, N_ATMO, 0.35 * smooth(0.94, 1.0, dc))
-        return color_index(col)
+        return rgba(col)
 
     # --- día
     lam = px * SX + py * SY + pz * SZ
-    bright = NIGHT + (1.0 - NIGHT) * smooth(TERM_A, TERM_B, lam)
-    limb = LIMB_K * smooth(0.72, 1.0, dc)
-    if terrain == 2:
+    term_t = smooth(TERM_A, TERM_B, lam)
+    bright = NIGHT + (1.0 - NIGHT) * term_t
+    limb_t = smooth(0.72, 1.0, dc)
+    limb = LIMB_K * limb_t
+    helado = terrain in (2, 3)             # hielo continental o banquisa
+    if helado:
         limb *= 0.7
     bright *= 1.0 - limb
-    bright *= _mtn_hs                      # hillshade: laderas al sol claras, en sombra oscuras
-    # dither centrado: redondea, pero mueve el umbral ±0.4 para romper las bandas
-    q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
-    q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q
-    col = mix(SPACE, surf, q)
+    # La luz global (terminador + limbo) se pasa a escalones de rampa y se le
+    # suman los de la textura (copas, relieve). Se redondea a escalón ENTERO:
+    # colores de paleta, no degradado. El terminador y el limbo quedan en
+    # escalones lisos que siguen la curva de la luz: sin punteado Bayer (se veía
+    # como una mosquitera) ni bordes ondulados por ruido (probados en sept 2026
+    # y rechazados por el usuario).
+    kg = math.floor(math.log(max(bright, 1e-3)) / _LNSTEP * LIGHT_SUB + 0.5) / LIGHT_SUB
+    col = ramp(surf, kg + tex_k, 0.45 if terrain == 0 else 1.0)
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
-        col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4))
-    return color_index(col)
+        col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5) / 4))
+    # AA del limbo: el disco ya no corta en seco al radio exacto, se apaga hacia
+    # el color del fondo (SPACE, que es justo el fondo real de la portada) en
+    # una banda de ±LIMB_AA px alrededor del borde real.
+    if dc > _R_IN:
+        coverage = 1.0 - smooth(_R_IN, _R_OUT, dc)
+        if coverage < 1.0:
+            col = mix(SPACE, col, coverage)
+    return rgba(col)
 
 
 def city_cells(lon0, night):
     """Celdas (sx, sy) -> color de las ciudades. De día: siempre punto oscuro.
     De noche: todas encendidas en ámbar."""
-    ci_dark  = color_index(CITY_DARK)
-    ci_light = color_index(GOLD[2])
+    ci_dark  = rgba(CITY_DARK)
+    ci_light = rgba(GOLD[2])
     out = {}
     for clat, clon, pop in CIUDADES:
         rlat = math.radians(clat)
@@ -647,8 +1349,11 @@ def city_cells(lon0, night):
     return out
 
 
-def _scaled_cloud(body, size):
-    """Escala el cuerpo (nearest) y le regenera el borde negro. -> dict local."""
+def _scaled_cloud(body, size, flip=False):
+    """Escala el cuerpo (nearest; ya relleno, ver _cloud_fill), en espejo si
+    toca, y lo sombrea como el resto del pixel art: borde exterior oscuro, luz
+    en el canto de arriba/izquierda y sombra en el de abajo/derecha.
+    -> ({(x, y): tipo}, dw, dh), con tipo en CLOUD_KINDS."""
     xs = [p[0] for p in body]
     ys = [p[1] for p in body]
     x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
@@ -660,14 +1365,24 @@ def _scaled_cloud(body, size):
         for ox in range(dw):
             k = body.get((x0 + int(ox / size + 0.5), sy))
             if k:
-                dest[(ox, oy)] = k
-    for (ox, oy) in list(dest):
+                dest[(dw - 1 - ox if flip else ox, oy)] = k
+    out = {}
+    for (x, y), k in dest.items():
+        if k == "s":
+            out[(x, y)] = "s"
+        elif (x, y - 1) not in dest or (x - 1, y) not in dest:
+            out[(x, y)] = "h"                    # canto al sol
+        elif (x, y + 1) not in dest or (x + 1, y) not in dest:
+            out[(x, y)] = "m"                    # canto en sombra
+        else:
+            out[(x, y)] = "b"
+    for (x, y) in list(dest):
         for ex in (-1, 0, 1):
             for ey in (-1, 0, 1):
-                p = (ox + ex, oy + ey)
-                if p not in dest:
-                    dest.setdefault(p, "e")
-    return dest, dw, dh
+                p = (x + ex, y + ey)
+                if p not in dest and p not in out:
+                    out[p] = "e"
+    return out, dw, dh
 
 
 def cloud_cells(lon0):
@@ -693,43 +1408,232 @@ def cloud_cells(lon0):
         cy = py * RADIUS + CY - 0.5
         xsc = 0.72 + 0.28 * pz               # se aplasta un poco hacia el borde
         t = 0.72 + 0.28 * bright             # nube blanca casi siempre; solo se
-        cix = {                              # apaga pegada al terminador
-            "b": color_index(mix(SPACE, C_BODY, min(1.0, t + 0.1))),
-            "s": color_index(mix(SPACE, C_BASE, t)),
-            "e": color_index(mix(SPACE, C_EDGE, max(0.7, t))),
-        }
-        cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size)
+        cix = {k: rgba(mix(SPACE, c, _cloud_t(k, t)))   # apaga pegada al terminador
+               for k, c in C_NUBE.items()}
+        cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size, flip)
         for (ox, oy), k in cells.items():
             ddx = (ox - dw / 2.0)
-            x = int(round(cx + (-ddx if flip else ddx) * xsc))
+            x = int(round(cx + ddx * xsc))
             y = int(round(cy + oy - dh / 2.0))
             if 0 <= x < COLS and 0 <= y < VIS and (x, y) not in out:
                 out[(x, y)] = cix[k]
     return out
 
 
+# ------------------------------------------------------------ banderas
+# Chapas pixel art (elegidas frente al banderín en mástil) sobre los países que
+# salen en el blog (opción C: de momento España, Marruecos, Irán y EE. UU.).
+# Bandera de 11x7 px con contorno oscuro de 1 px, esquinas recortadas y una
+# sombra de 1 px abajo a la derecha; centrada en el punto del país, gira con el
+# planeta, solo en la cara iluminada y lejos del borde, con la luz de las nubes.
+# Añadir un país = una entrada en BANDERAS (filas de 11 letras de BAND_PAL) y
+# otra en src/data/paises.ts (su nombre y las etiquetas de artículo que le
+# corresponden). En la web solo se pintan las de países con algún artículo.
+BAND_PAL = {
+    "R": (0xc8, 0x1e, 0x2d), "Y": (0xf4, 0xc4, 0x30), "E": (0x8e, 0x16, 0x20),   # España
+    "r": (0xc1, 0x27, 0x2d), "g": (0x1f, 0x7a, 0x3c),                           # Marruecos
+    "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
+    "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
+}
+BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
+    ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
+                            "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"]),
+    ("MA", "Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
+                               "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"]),
+    ("IR", "Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
+                          "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
+    ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
+                              "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
+]
+BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
+BAND_EDGE = (0x10, 0x13, 0x1c)
+
+
+def _chapa(rows):
+    """-> (celdas {(x, y): rgb} con origen en la esquina de la tela, sombra
+    [(x, y)], ancla (centro de la tela))."""
+    fw, fh = len(rows[0]), len(rows)
+    cells = {}
+    for y in range(-1, fh + 1):
+        for x in range(-1, fw + 1):
+            if x in (-1, fw) and y in (-1, fh):
+                continue                             # esquinas recortadas
+            inside = 0 <= x < fw and 0 <= y < fh
+            cells[(x, y)] = BAND_PAL[rows[y][x]] if inside else BAND_EDGE
+    sombra = [(x + 1, y + 1) for (x, y) in cells if (x + 1, y + 1) not in cells]
+    return cells, sombra, (fw / 2.0, fh / 2.0)
+
+
+CHAPAS = [(iso, la, lo) + _chapa(rows) for iso, _n, la, lo, rows in BANDERAS]
+
+
+def flag_cells(lon0):
+    """(sx, sy) -> rgba de las chapas, y el conjunto de píxeles en su sombra."""
+    out, sombra = {}, set()
+    for _n, clat, clon, cells, sh, (ax, ay) in CHAPAS:
+        rlat, rlon = math.radians(clat), math.radians(clon - lon0)
+        a, cl = math.sin(rlat), math.cos(rlat)
+        vv = cl * math.cos(rlon)
+        px = cl * math.sin(rlon)
+        py = -COST * a + SINT * vv
+        pz = SINT * a + COST * vv
+        if pz <= BAND_PZ:
+            continue
+        lam = px * SX + py * SY + pz * SZ
+        bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
+        if bright < 0.12:
+            continue                                   # lado de noche
+        t = 0.72 + 0.28 * bright                       # misma luz que las nubes
+        ox = round(px * RADIUS + CX - 0.5 - ax)
+        oy = round(py * RADIUS + CY - 0.5 - ay)
+        for (x, y) in sh:
+            sombra.add((ox + x, oy + y))
+        for (x, y), col in cells.items():
+            out[(ox + x, oy + y)] = rgba(mix(SPACE, col, t))
+    return out, sombra
+
+
 # ------------------------------------------------------ sprites
-def render(night, path):
-    sw, sh = COLS * FRAMES, VIS
-    rows = [bytearray(sw) for _ in range(sh)]
-    for f in range(FRAMES):
+GRID_ROWS = (FRAMES + GRID_COLS - 1) // GRID_COLS
+
+
+def render(night, path, frames=None):
+    """Sprite en rejilla. Con `frames=[f]` sale solo ese fotograma, suelto
+    (para probar cambios sin rehacer los 60)."""
+    todos = frames is None
+    frames = range(FRAMES) if todos else frames
+    sw, sh = (COLS * GRID_COLS, VIS * GRID_ROWS) if todos else (COLS, VIS)
+    rows = [bytearray(sw * 4) for _ in range(sh)]
+    for f in frames:
         lon0 = -f * 360.0 / FRAMES
-        xoff = f * COLS
+        gx, gy = (f % GRID_COLS, f // GRID_COLS) if todos else (0, 0)
+        xoff, yoff = gx * COLS, gy * VIS
         overlay = {} if night else cloud_cells(lon0)
-        overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
+        sombra = set()
+        if not night:                               # chapas por encima de las nubes
+            fl, sombra = flag_cells(lon0)
+            overlay.update(fl)
+        if night:                                   # de día, sin puntos de ciudad (de momento)
+            overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
         for sy in range(VIS):
-            row = rows[sy]
+            row = rows[yoff + sy]
             for sx in range(COLS):
-                row[xoff + sx] = overlay.get((sx, sy)) or cell_index(sx, sy, lon0, night)
-    write_indexed(path, sw, sh, rows, PAL)
+                c = overlay.get((sx, sy))
+                if c is None:
+                    c = cell_index(sx, sy, lon0, night)
+                    if (sx, sy) in sombra and c[3]:
+                        c = (c[0] // 2, c[1] // 2, c[2] // 2 + 6, 255)
+                o = (xoff + sx) * 4
+                row[o] = c[0]; row[o + 1] = c[1]; row[o + 2] = c[2]; row[o + 3] = c[3]
+    write_rgba(path, sw, sh, rows)
     return sw, sh
+
+
+# ------------------------------------------------- exportar para el <canvas>
+# En vez de 60 fotogramas pregenerados, el navegador proyecta el mapa y lo gira
+# celda a celda (movimiento continuo). Como el sol y el terminador están quietos
+# respecto al observador, el sombreado por píxel se calcula una vez al cargar;
+# en cada paso solo hay que buscar "material de la celda -> color para este
+# escalón de luz". El giro es CONTINUO (el mapa se desplaza una fracción de
+# celda en cada fotograma de pantalla): así cada borde avanza su píxel a ritmo
+# constante según su latitud. A saltos de una celda entera, todos los bordes se
+# reajustaban a la vez con un patrón irregular (1,1,0,1…) y se veía a tirones.
+# Aquí se exporta:
+#   planeta-mapa.png : MW x MH, material de cada celda (R + G*256), B=1 si hielo
+#   planeta-lut.png  : LUT_KN x nº de materiales, color de cada material para
+#                      cada escalón de luz global LUT_KMIN..0, en pasos de
+#                      1/LIGHT_SUB (rampas incluidas)
+#   planeta-datos.json : constantes de geometría/luz + nubes ya escaladas
+LUT_KMIN = -12
+LUT_KN = 1 - LUT_KMIN * LIGHT_SUB
+_COAST_MIXK = (0.0, 0.20, 0.48, 0.84)
+
+
+def export_canvas(outdir):
+    import json
+    import os
+    os.makedirs(outdir, exist_ok=True)
+    mats = {}
+    mapa = [bytearray(MW * 4) for _ in range(MH)]
+    for r in range(MH):
+        lat = 90.0 - (r + 0.5) * _md
+        row = mapa[r]
+        for c in range(MW):
+            lon = (c + 0.5) * _md - 180.0
+            terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
+            lvl = 0
+            if terrain != 0:                       # línea de costa, por celda
+                lvl = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
+                if lvl:
+                    surf = mix(surf, COAST_COL, _COAST_MIXK[lvl])
+            key = (round(surf[0]), round(surf[1]), round(surf[2]), int(tex_k), terrain, lvl)
+            m = mats.get(key)
+            if m is None:
+                m = mats[key] = len(mats)
+            o = c * 4
+            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain in (2, 3) else 0
+            row[o + 3] = 255
+    write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
+    lut = []
+    prio = []
+    for (rr, gg, bb, tk, terrain, lvl), _m in sorted(mats.items(), key=lambda kv: kv[1]):
+        # Prioridad al reducir el mapa para las zonas donde un píxel abarca
+        # varias celdas (mipmaps en el navegador): la línea de costa gana, luego
+        # la tierra, luego el mar -> costas e islas pequeñas no desaparecen.
+        prio.append(2 * lvl + (1 if terrain != 0 else 0))
+        row = bytearray(LUT_KN * 4)
+        for j in range(LUT_KN):
+            col = rgba(ramp((rr, gg, bb), LUT_KMIN + j / LIGHT_SUB + tk, 0.45 if terrain == 0 else 1.0))
+            row[j * 4:j * 4 + 4] = bytes(col)
+        lut.append(row)
+    write_rgba(os.path.join(outdir, "planeta-lut.png"), LUT_KN, len(lut), lut)
+    nubes = []
+    for clat, clon, shp, flip, size in NUBES:
+        cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size, flip)   # espejo ya aplicado
+        nubes.append({"lat": clat, "lon": clon, "dw": dw, "dh": dh,
+                      "cells": [[ox, oy, CLOUD_KINDS.index(k)] for (ox, oy), k in cells.items()]})
+    datos = {
+        "COLS": COLS, "VIS": VIS, "RADIUS": RADIUS, "CX": CX, "CY": CY,
+        "SINT": SINT, "COST": COST, "SX": SX, "SY": SY, "SZ": SZ,
+        "TERM_A": TERM_A, "TERM_B": TERM_B, "NIGHT": NIGHT, "LIMB_K": LIMB_K,
+        "LIMB_AA": LIMB_AA, "LNSTEP": _LNSTEP, "MW": MW, "MH": MH,
+        "LUT_KMIN": LUT_KMIN, "LUT_KN": LUT_KN, "LIGHT_SUB": LIGHT_SUB, "MATERIALES": len(lut), "prio": prio,
+        "SPACE": SPACE, "ATMO": ATMO, "C_NUBE": [C_NUBE[k] for k in CLOUD_KINDS],
+        "nubes": nubes,
+        "BAND_PZ": BAND_PZ,
+        "banderas": [{"iso": iso, "lat": la, "lon": lo, "ax": ax, "ay": ay,
+                      "cells": [[x, y, *col] for (x, y), col in cells.items()],
+                      "sombra": [[x, y] for (x, y) in sh]}
+                     for iso, la, lo, cells, sh, (ax, ay) in CHAPAS],
+    }
+    with open(os.path.join(outdir, "planeta-datos.json"), "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+    return len(lut)
 
 
 # El sprite de NOCHE ya no se genera aquí: es public/zodk-planeta-noche.png tal
 # cual, el de producción (el usuario pidió no tocar el modo oscuro). Solo día.
-SW, SH = render(False, "zodk-planeta-sprite.png")
-assert len(PAL) <= 256, f"paleta de {len(PAL)} colores, no cabe en PNG-8"
-
 # El dron tampoco se genera aquí (foto en public/zodk-dron.png).
-
-print(f"sprite día: {SW}x{SH} px, {len(PAL)} colores")
+if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
+    _n = export_canvas(sys.argv[2])
+    print(f"canvas: {_n} materiales -> {sys.argv[2]}")
+elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":
+    _f = int(sys.argv[2])
+    _out = sys.argv[3] if len(sys.argv) > 3 else f"prueba-f{_f}.png"
+    SW, SH = render(False, _out, [_f])
+    print(f"fotograma {_f}: {SW}x{SH} px -> {_out}")
+elif len(sys.argv) >= 2 and sys.argv[1] == "--sprite":
+    # El sprite antiguo de FRAMES fotogramas (ya no lo usa la web). OJO: a
+    # COLS = 600 la rejilla de GRID_COLS = 15 sale de 9000 px de ancho, más de lo
+    # que aguanta una textura de GPU: bajar GRID_COLS si hiciera falta.
+    SW, SH = render(False, "zodk-planeta-sprite.png")
+    print(f"sprite día: {SW}x{SH} px, color real (sin paleta)")
+else:
+    # Lo que usa la web: datos del canvas + imagen fija de respaldo (el
+    # fotograma de giro 0, el mismo con el que arranca el canvas; se ve sin JS
+    # y mientras carga). Después, subir PLANETA_V en src/scripts/planeta.js.
+    import os
+    _dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "planeta")
+    _n = export_canvas(_dst)
+    render(False, os.path.join(_dst, "planeta-quieto.png"), [0])
+    print(f"web: {_n} materiales + planeta-quieto.png -> public/planeta/ (sube PLANETA_V)")

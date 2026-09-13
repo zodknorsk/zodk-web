@@ -177,36 +177,49 @@ article .tiktok a {
   isolation: isolate;
 }
 
-/* El planeta es un sprite PNG de 28 fotogramas en horizontal. Se anima moviendo
-   background-position a saltos: un recorte de bitmap, barato en cualquier
-   navegador (el SVG vectorial animado calentaba la CPU en Firefox). Si cambias
-   FRAMES en generar-planeta-hero.py, ajusta aquí background-size (FRAMES × 100%)
-   y steps(FRAMES).
-   El ?v= es cache-busting: el PNG se llama siempre igual, así que al cambiarlo
-   hay que subir el número para que los navegadores bajen la versión nueva. */
+/* Planeta de DÍA: un <canvas> que gira de forma continua (src/scripts/planeta.js,
+   datos en public/planeta/ generados por logo-files/generar-planeta-hero.py).
+   Sustituye al sprite de 60 fotogramas, que iba a saltos de 2 s.
+   El fondo del div es una imagen fija (el fotograma de giro 0, el mismo con el
+   que arranca el canvas): se ve sin JS y mientras carga; en cuanto el canvas
+   pinta la primera vez, planeta.js marca .planeta-listo y el fondo se quita.
+   El ?v= es cache-busting: los archivos se llaman siempre igual (subir también
+   PLANETA_V en planeta.js al regenerar). */
 .hero-planet {
   position: absolute;
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 280 / 274;
+  aspect-ratio: 600 / 585;
   transform: translateX(-50%);
-  background-image: url(/zodk-planeta-sprite.png?v=2);
-  background-repeat: no-repeat;
-  background-size: 2800% 100%;
+  background: url(/planeta/planeta-quieto.png?v=7) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
-  animation: hero-spin 60s steps(28, jump-none) infinite;
+}
+html:not(.dark) .hero-planet.planeta-listo { background-image: none; }
+.hero-planet-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
 }
 
+/* Modo oscuro: el planeta de noche NO se toca (decisión del usuario). Sigue
+   siendo la tira antigua de 28 fotogramas de 280x274 con su animación de
+   siempre; el canvas de día se oculta (y planeta.js deja de dibujar). */
 html.dark .hero-planet {
   background-image: url(/zodk-planeta-noche.png);
+  aspect-ratio: 280 / 274;
+  background-size: 2800% 100%;
+  animation: hero-spin 60s steps(28, jump-none) infinite;
 }
+html.dark .hero-planet-canvas { display: none; }
 
 @keyframes hero-spin {
   from { background-position-x: 0%; }
-  to { background-position-x: 100%; }
+  to   { background-position-x: 100%; }
 }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
@@ -226,7 +239,9 @@ html.dark .hero-planet {
   left: 50%;
   top: 45%;
   transform: translate(-50%, -50%);
-  width: min(90vw, 40rem);
+  width: max-content;               /* el marco (.hero-marco) se ciñe al texto */
+  max-width: 90vw;
+  padding: 0.75rem 1.5rem 0.85rem;
   text-align: center;
   z-index: 1;
   pointer-events: none;
@@ -254,11 +269,13 @@ html.dark .hero-planet {
   margin: 0;
   font-family: "IBM Plex Serif", ui-serif, Georgia, serif;
   font-weight: 400;
-  font-size: clamp(1.45rem, 4.2vw, 2.45rem);
+  font-size: clamp(1.55rem, 4.5vw, 2.65rem);
   line-height: 1.15;
   text-wrap: balance;
   color: #eef1f4;
-  text-shadow: 0 1px 16px rgba(3, 4, 8, 0.8), 0 0 4px rgba(3, 4, 8, 0.5);
+  /* contorno negro nítido de 1 px (como las chapas y nubes del planeta) +
+     sombra suave: despega el nombre del pixel art sin engordarlo */
+  text-shadow: 1px 0px 0 #05060a, -1px 0px 0 #05060a, 0px 1px 0 #05060a, 0px -1px 0 #05060a, 1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a, 0 2px 16px rgba(3, 4, 8, 0.6);
 }
 
 .hero-titulo h1 span {
@@ -273,8 +290,9 @@ html.dark .hero-planet {
   text-transform: uppercase;
   letter-spacing: 0.3em;
   text-indent: 0.3em; /* compensa el tracking del último carácter */
-  color: #bcc5d0;
-  text-shadow: 0 1px 12px rgba(3, 4, 8, 0.85);
+  font-weight: 600;
+  color: #dfe4ea;
+  text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.85), -1px 0px 0 rgba(3, 4, 8, 0.85), 0px 1px 0 rgba(3, 4, 8, 0.85), 0px -1px 0 rgba(3, 4, 8, 0.85), 1px 1px 0 rgba(3, 4, 8, 0.85), -1px -1px 0 rgba(3, 4, 8, 0.85), 1px -1px 0 rgba(3, 4, 8, 0.85), -1px 1px 0 rgba(3, 4, 8, 0.85);
 }
 
 .hero-titulo p span {
@@ -319,6 +337,104 @@ html.dark .hero-planet {
 @keyframes hero-redact-in {
   from { transform: scaleX(1); }
   to { transform: scaleX(0); }
+}
+
+/* Marco de visor alrededor de todo el título: cuatro esquinas blancas. Debajo
+   de la esquina inferior derecha, la coordenada MGRS del punto del planeta
+   bajo el cursor (la actualiza el script de index.astro). */
+.hero-marco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --c: rgba(255, 255, 255, 0.85);
+  --l: 28px;
+  --g: 1.5px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+/* Ancho fijo, el de la coordenada más larga (18 caracteres, zona de 2 cifras):
+   el botón queda anclado a la izquierda y no se mueve aunque la lectura
+   cambie de largo (zona de 1 cifra, UPS en los polos). */
+.hero-lectura {
+  position: absolute;
+  right: 0;
+  bottom: -22px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  width: calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em));
+}
+.hero-mgrs {
+  padding-left: 0.14em;   /* compensa el letter-spacing que queda al final */
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.9), -1px 0px 0 rgba(3, 4, 8, 0.9), 0px 1px 0 rgba(3, 4, 8, 0.9), 0px -1px 0 rgba(3, 4, 8, 0.9), 1px 1px 0 rgba(3, 4, 8, 0.9), -1px -1px 0 rgba(3, 4, 8, 0.9), 1px -1px 0 rgba(3, 4, 8, 0.9), -1px 1px 0 rgba(3, 4, 8, 0.9);
+  white-space: nowrap;
+}
+
+/* Coordenada fijada (hay una X en el planeta): resaltada como con marcador,
+   fondo blanco con contorno oscuro de 1 px y texto oscuro. El margen va con
+   box-shadow para que no empuje nada. */
+.hero-mgrs.fijada {
+  color: #10131c;
+  text-shadow: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(3, 4, 8, 0.9);
+}
+
+/* En pantallas táctiles no hay cursor que apuntar: sin coordenada (se quedaba
+   en guiones), solo el botón, bajo la esquina del marco. */
+@media (hover: none), (pointer: coarse) {
+  .hero-lectura { width: auto; }
+  .hero-mgrs { display: none; }
+}
+
+/* Botón de play/pausa del giro, en pixel art (SVG con bordes nítidos). */
+.hero-giro {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(1px 0 0 #05060a) drop-shadow(-1px 0 0 #05060a) drop-shadow(0 1px 0 #05060a) drop-shadow(0 -1px 0 #05060a);
+}
+.hero-giro svg { height: 12px; width: auto; fill: currentColor; shape-rendering: crispEdges; }
+.hero-giro:hover, .hero-giro:focus-visible { color: #e6c078; outline: none; }
+.hero-giro .icono-play { display: none; }
+.hero.giro-parado .hero-giro .icono-play { display: block; }
+.hero.giro-parado .hero-giro .icono-pausa { display: none; }
+/* De noche el planeta es el sprite viejo con animación CSS: se para igual. */
+.hero.giro-parado .hero-planet { animation-play-state: paused; }
+
+/* Mira: sustituye al cursor mientras está sobre el planeta. */
+.hero.apuntando { cursor: none; }
+.hero-mira {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  margin: -16.5px 0 0 -16.5px;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    linear-gradient(#fff, #fff) center top / 2px 11px no-repeat,
+    linear-gradient(#fff, #fff) center bottom / 2px 11px no-repeat,
+    linear-gradient(#fff, #fff) left center / 11px 2px no-repeat,
+    linear-gradient(#fff, #fff) right center / 11px 2px no-repeat;
+  filter: drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a);
 }
 
 /* Guiño día/noche: de noche el lema toma un ámbar tenue, como las luces de
@@ -479,12 +595,10 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
 }
 
-/* Al inspeccionar cualquier nave se congela toda la portada. */
+/* Al inspeccionar cualquier nave o chapa de bandera se congela toda la
+   portada (el planeta de día, que es un canvas, lo para planeta.js). */
 .hero-craft:hover { animation-play-state: paused; }
-.hero:has(.hero-craft:hover) .hero-planet,
-.hero:has(.hero-craft:hover) .hero-sparkle,
-.hero:has(.hero-craft:hover) .hero-scroll,
-.hero:has(.hero-craft:hover) .hero-craft {
+.hero:has(.hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within) :is(.hero-planet, .hero-sparkle, .hero-scroll, .hero-craft) {
   animation-play-state: paused;
 }
 
@@ -593,13 +707,85 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
 
+/* --- Chapas de bandera del planeta ------------------------------------ */
+/* Capa con la misma geometría que .hero-planet; dentro, un <div> encima de
+   cada chapa visible (lo coloca el script de index.astro con lo que avisa
+   planeta.js). Al pasar el ratón (o con el foco) despliega la misma ficha que
+   las naves, con los artículos del país. El "puente" es una franja invisible
+   sobre la línea para poder llegar a la ficha sin que se cierre. */
+.hero-banderas {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: min(1900px, 122vw);
+  aspect-ratio: 600 / 585;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+/* Con una ficha de país abierta, la capa sube por encima de naves, mira y
+   botón de cambio (misma altura que las naves y, al ir antes en el HTML, una
+   nave que pasara por delante tapaba la ficha). */
+.hero-banderas:has(.hero-bandera:hover, .hero-bandera:focus-within) { z-index: 4; }
+html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta viejo) */
+.hero-bandera {
+  position: absolute;
+  width: calc(13 / 600 * 100%);   /* chapa de 11x7 + contorno, en píxeles del canvas */
+  height: calc(9 / 585 * 100%);
+  pointer-events: auto;
+  outline: none;
+}
+.hero-bandera:is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+.hero-bandera:is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+.hero-bandera:is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+.bandera-puente {
+  position: absolute;
+  top: calc(50% - 16px);
+  left: 100%;
+  width: 92px;
+  height: 32px;
+}
+.hero-bandera.flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+.hero-bandera.flip-x .bandera-puente { left: auto; right: 100%; }
+.hero-bandera.flip-x .craft-specs {
+  left: auto;
+  right: calc(100% + 92px);
+  transform: translateY(-50%) translateX(6px);
+}
+.hero-bandera.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+.bandera-articulos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.bandera-articulos a {
+  display: block;
+  color: #dfe4ea;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.bandera-articulos a:hover,
+.bandera-articulos a:focus-visible { color: #e6c078; }
+.bandera-articulos span {
+  display: block;
+  margin-top: 0.1rem;
+  color: #8b93a0;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 @media (hover: none) {
-  .hero-craft { pointer-events: none; }
+  .hero-craft, .hero-bandera { pointer-events: none; }
   .craft-dossier { display: none; }
 }
 
 @media (max-width: 640px) {
-  .hero-planet { top: 13%; width: 132vw; }
+  .hero-planet, .hero-banderas { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1)); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }

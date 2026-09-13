@@ -12,7 +12,7 @@ elev.py, que ya esta generado.
 """
 import struct, array, zlib, base64
 
-OUT_W, OUT_H = 720, 360        # 0.5 grados; suficiente para un globo de ~280 px
+OUT_W, OUT_H = 1440, 720       # 0.25 grados (la resolución del propio etopo.tiff); antes 0.5
 
 
 def read_tiff_f32(path):
@@ -69,7 +69,7 @@ def main():
             out[r * OUT_W + c] = int(max(-11000, min(9000, round(v))))
     blob = base64.b64encode(zlib.compress(out.tobytes(), 9)).decode()
     with open("elev.py", "w") as fh:
-        fh.write('"""Elevacion (m) 0.5 grados, generada de etopo.tiff por elevacion.py.\n')
+        fh.write(f'"""Elevacion (m) {360 / OUT_W:g} grados, generada de etopo.tiff por elevacion.py.\n')
         fh.write('No editar a mano."""\n')
         fh.write("import array, zlib, base64\n")
         fh.write(f"W, H = {OUT_W}, {OUT_H}\n")
