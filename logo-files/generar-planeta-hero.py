@@ -100,6 +100,12 @@ SABANAS = [     # (lat0, lat1, lon0, lon1)
 MOON_TINT = (0.40, 0.60, 1.0)       # color de la luz de luna
 NOCHE_SAT = 0.80                    # saturación que conserva cada color
 NOCHE_V   = 0.72                    # brillo de la cara a la luna respecto al día
+# Brillo de atmósfera en el borde del disco (la línea que se ve en las fotos
+# nocturnas desde la ISS): franjas de AIRGLOW_PX px desde el borde hacia
+# dentro, con su mezcla. Todo alrededor, no depende de la luna.
+AIRGLOW    = (0x62, 0xb4, 0xff)
+AIRGLOW_PX = (1.5, 3.0)             # opción B (fina, azul) frente a sin brillo, ancha y turquesa
+AIRGLOW_A  = (0.55, 0.25)
 N_ATMO  = (0x3a, 0x5c, 0x8c)
 GOLD = ((0xc9, 0x99, 0x3c), (0xf2, 0xc4, 0x52), (0xff, 0xd8, 0x6c))  # dim / medio / metro
 
@@ -1288,6 +1294,12 @@ def cell_index(sx, sy, lon0, night):
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
         col = mix(col, atmo, 0.3 * (math.floor(halo * 4 + 0.5) / 4))
+    if night and AIRGLOW_PX:
+        dpx = (1.0 - dc) * RADIUS          # px desde el borde hacia dentro
+        for w, a in zip(AIRGLOW_PX, AIRGLOW_A):
+            if dpx < w:
+                col = mix(col, AIRGLOW, a)
+                break
     # AA del limbo: el disco ya no corta en seco al radio exacto, se apaga hacia
     # el color del fondo (SPACE, que es justo el fondo real de la portada) en
     # una banda de ±LIMB_AA px alrededor del borde real.
