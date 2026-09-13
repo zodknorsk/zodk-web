@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: planeta en canvas</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a; overflow: hidden;
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  .hero-planet { position: absolute; left: 50%; top: 12%; width: min(1900px, 122vw);
+    aspect-ratio: 400 / 374; transform: translateX(-50%); image-rendering: pixelated; }
+  #sprite { background-image: url(../../public/zodk-planeta-sprite.png?v=12); background-repeat: no-repeat;
+    background-size: 1500% 400%;
+    animation: spin-x 30s steps(15, jump-none) infinite, spin-y 120s steps(4, jump-none) infinite; }
+  @keyframes spin-x { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+  @keyframes spin-y { from { background-position-y: 0%; } to { background-position-y: 100%; } }
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 1.6; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="cv" class="hero-planet" width="400" height="374"></canvas>
+<div id="sprite" class="hero-planet" hidden></div>
+<div id="panel">
+  <button id="modo">Ver el sprite de ahora (a saltos)</button><br>
+  vuelta: <button data-v="90">90 s</button> <button data-v="120">120 s (actual)</button>
+  <button data-v="180">180 s</button> <button data-v="240">240 s</button> <span id="vel"></span><br>
+  <span id="info">cargando…</span>
+</div>
+<script type="module">
+const $ = (id) => document.getElementById(id);
+
+async function bitmap(url) {
+  const blob = await fetch(url).then((r) => r.blob());
+  // Sin gestión de color: los PNG llevan índices de material, no colores.
+  return createImageBitmap(blob, { colorSpaceConversion: "none", premultiplyAlpha: "none" });
+}
+function pixels(bm) {
+  const c = document.createElement("canvas");
+  c.width = bm.width; c.height = bm.height;
+  const x = c.getContext("2d", { willReadFrequently: true });
+  x.drawImage(bm, 0, 0);
+  return x.getImageData(0, 0, bm.width, bm.height).data;
+}
+
+const D = await fetch("planeta-datos.json").then((r) => r.json());
+const [mapBm, lutBm] = await Promise.all([bitmap("planeta-mapa.png"), bitmap("planeta-lut.png")]);
+const MW = D.MW, MH = D.MH, KN = D.LUT_KN, KMIN = D.LUT_KMIN;
+
+// Mapa: material por celda; y qué materiales son hielo (el limbo los oscurece menos).
+const mp = pixels(mapBm);
+const mat = new Uint16Array(MW * MH);
+const iceMat = new Uint8Array(D.MATERIALES);
+for (let i = 0; i < MW * MH; i++) {
+  const m = mp[i * 4] | (mp[i * 4 + 1] << 8);
+  mat[i] = m;
+  if (mp[i * 4 + 2]) iceMat[m] = 1;
+}
+// ---- mipmaps en longitud: versiones del mapa con texels de 2, 4… 32 celdas.
+// Donde un píxel de pantalla abarca varias celdas (cerca del polo, y ~2 celdas
+// en latitudes medias), leer UNA celda hace que costas finas e islas se
+// enciendan y apaguen al girar. Cada píxel lee del nivel cuyo texel mide lo
+// que él, y al juntar celdas gana la de más prioridad (costa > tierra > mar).
+const PRIO = Uint8Array.from(D.prio);
+const LMAX = 5;                        // 1440 / 32 = 45: niveles exactos hasta 5
+const lvOff = [0], lvW = [MW];
+let lvTotal = MW * MH;
+for (let L = 1; L <= LMAX; L++) { lvOff.push(lvTotal); lvW.push(MW >> L); lvTotal += (MW >> L) * MH; }
+const lv = new Uint16Array(lvTotal);
+lv.set(mat, 0);
+for (let L = 1; L <= LMAX; L++) {
+  const w = lvW[L], pw = lvW[L - 1], o = lvOff[L], po = lvOff[L - 1];
+  for (let r = 0; r < MH; r++) {
+    for (let c = 0; c < w; c++) {
+      const a = lv[po + r * pw + 2 * c], b = lv[po + r * pw + 2 * c + 1];
+      lv[o + r * w + c] = PRIO[b] > PRIO[a] ? b : a;
+    }
+  }
+}
+window.__mip = true;                   // para comparar desde la consola
+
+// LUT: color (ya en formato Uint32 del ImageData) por material y escalón de luz.
+const lp = pixels(lutBm);
+const lut = new Uint32Array(D.MATERIALES * KN);
+for (let i = 0; i < lut.length; i++) {
+  lut[i] = (255 << 24) | (lp[i * 4 + 2] << 16) | (lp[i * 4 + 1] << 8) | lp[i * 4];
+}
+
+// ---- precálculo por píxel (el sol y el terminador no se mueven con el giro)
+const W = D.COLS, H = D.VIS, R = D.RADIUS;
+const smooth = (e0, e1, x) => { let t = (x - e0) / (e1 - e0); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); };
+const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+const RIN = 1 - D.LIMB_AA / R, ROUT = 1 + D.LIMB_AA / R, RRMAX = ROUT * ROUT;
+const DEG = 180 / Math.PI;
+
+function lonAt(sx, sy) {               // longitud (grados) del centro de un píxel, o null
+  const px = (sx + 0.5 - D.CX) / R, py = (sy + 0.5 - D.CY) / R;
+  const rr = px * px + py * py;
+  if (rr > 1) return null;
+  const pz = Math.sqrt(1 - rr);
+  return Math.atan2(px, py * D.SINT + pz * D.COST) * DEG;
+}
+const wrapd = (d) => ((d + 540) % 360) - 180;
+const idx = [], rowOf = [], colOf = [], kN = [], kI = [], fxOf = [];
+const post = [];                       // [n, haloA, cobertura] solo en el anillo del borde
+for (let sy = 0; sy < H; sy++) {
+  for (let sx = 0; sx < W; sx++) {
+    const px = (sx + 0.5 - D.CX) / R, py = (sy + 0.5 - D.CY) / R;
+    const rr = px * px + py * py;
+    if (rr > RRMAX) continue;
+    const pz = Math.sqrt(Math.max(0, 1 - Math.min(rr, 1)));
+    const lat = Math.asin(Math.max(-1, Math.min(1, -py * D.COST + pz * D.SINT))) * DEG;
+    const lon = Math.atan2(px, py * D.SINT + pz * D.COST) * DEG;
+    let row = Math.floor((90 - lat) / 180 * MH);
+    row = row < 0 ? 0 : row >= MH ? MH - 1 : row;
+    const dc = Math.sqrt(rr), dth = (BAYER[sy & 3][sx & 3] + 0.5) / 16;
+    const lam = px * D.SX + py * D.SY + pz * D.SZ;
+    const termT = smooth(D.TERM_A, D.TERM_B, lam);
+    const limbT = smooth(0.72, 1, dc);
+    const ditherW = Math.max(1 - Math.abs(termT * 2 - 1), limbT);
+    const kFor = (limbMul) => {
+      const bright = (D.NIGHT + (1 - D.NIGHT) * termT) * (1 - D.LIMB_K * limbT * limbMul);
+      const k = Math.floor(Math.log(Math.max(bright, 1e-3)) / D.LNSTEP + 0.5 + (dth - 0.5) * 0.8 * ditherW);
+      return Math.max(0, Math.min(KN - 1, k - KMIN));
+    };
+    const n = idx.length;
+    idx.push(sy * W + sx);
+    rowOf.push(row * MW);
+    colOf.push(Math.round((lon + 180) / 360 * MW * 256));   // columna del mapa en 1/256 de celda
+    // Huella del píxel en celdas de longitud (lo que cambia la longitud al pasar
+    // al píxel vecino, en horizontal o en vertical) -> nivel de mipmap.
+    const lx = lonAt(sx + 1, sy) ?? lonAt(sx - 1, sy), ly = lonAt(sx, sy + 1) ?? lonAt(sx, sy - 1);
+    const fx = Math.max(lx === null ? 0 : Math.abs(wrapd(lx - lon)), ly === null ? 0 : Math.abs(wrapd(ly - lon))) / 360 * MW;
+    fxOf.push(fx);
+    kN.push(kFor(1)); kI.push(kFor(0.7));
+    let haloA = 0, cov = 1;
+    if (dc > 0.93 && lam > 0) {
+      const halo = smooth(0.93, 1, dc) * smooth(0, 0.45, lam);
+      haloA = 0.3 * (Math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4);
+    }
+    if (dc > RIN) cov = 1 - smooth(RIN, ROUT, dc);
+    if (haloA > 0 || cov < 1) post.push(n, haloA, cov);
+  }
+}
+const N = idx.length;
+const pIdx = Int32Array.from(idx), pRow = Int32Array.from(rowOf), pCol = Int32Array.from(colOf);
+const pKN = Uint8Array.from(kN), pKI = Uint8Array.from(kI);
+// MIP_TOL: cuánto más pequeño que la huella del píxel se admite el texel antes
+// de pasar al nivel siguiente (0 = texel siempre >= huella).
+const pL = new Uint8Array(N), pBase = new Int32Array(N), pWrap = new Int32Array(N);
+function setTol(tol) {
+  for (let n = 0; n < N; n++) {
+    const L = Math.max(0, Math.min(LMAX, Math.ceil(Math.log2(Math.max(fxOf[n], 1e-6)) - tol)));
+    pL[n] = L; pBase[n] = lvOff[L] + (rowOf[n] / MW) * lvW[L]; pWrap[n] = lvW[L];
+  }
+}
+setTol(0);
+window.__setTol = setTol;
+
+// ---- nubes (plantillas ya escaladas en Python), estampadas encima en cada paso
+const mixc = (a, b, t) => [0, 1, 2].map((i) => Math.round(a[i] + (b[i] - a[i]) * Math.max(0, Math.min(1, t))));
+const pack = (c) => (255 << 24) | (c[2] << 16) | (c[1] << 8) | c[0];
+const stamped = new Uint8Array(W * H);
+function clouds(buf, rot) {
+  const lon0 = -rot * 360 / MW;
+  const touched = [];
+  for (const nb of D.nubes) {
+    const rlat = nb.lat / DEG, rlon = (nb.lon - lon0) / DEG;
+    const a = Math.sin(rlat), cl = Math.cos(rlat), vv = cl * Math.cos(rlon);
+    const px = cl * Math.sin(rlon), py = -D.COST * a + D.SINT * vv, pz = D.SINT * a + D.COST * vv;
+    if (pz <= 0.5) continue;
+    const lam = px * D.SX + py * D.SY + pz * D.SZ;
+    const bright = smooth(D.TERM_A + 0.06, D.TERM_B + 0.2, lam);
+    if (bright < 0.12) continue;
+    const cx = px * R + D.CX - 0.5, cy = py * R + D.CY - 0.5;
+    const xsc = 0.72 + 0.28 * pz, t = 0.72 + 0.28 * bright;
+    const cols = [pack(mixc(D.SPACE, D.C_BODY, Math.min(1, t + 0.1))),
+                  pack(mixc(D.SPACE, D.C_BASE, t)),
+                  pack(mixc(D.SPACE, D.C_EDGE, Math.max(0.7, t)))];
+    for (const [ox, oy, k] of nb.cells) {
+      const ddx = ox - nb.dw / 2;
+      const x = Math.round(cx + (nb.flip ? -ddx : ddx) * xsc);
+      const y = Math.round(cy + oy - nb.dh / 2);
+      if (x < 0 || x >= W || y < 0 || y >= H) continue;
+      const p = y * W + x;
+      if (stamped[p]) continue;
+      stamped[p] = 1; touched.push(p);
+      buf[p] = cols[k];
+    }
+  }
+  for (const p of touched) stamped[p] = 0;
+}
+
+// ---- dibujo
+const cv = $("cv"), ctx = cv.getContext("2d");
+const img = ctx.createImageData(W, H);
+const buf = new Uint32Array(img.data.buffer);
+const SP = D.SPACE, AT = D.ATMO;
+function draw(rot) {                   // rot: giro en celdas, con decimales (continuo)
+  const rf = Math.round(rot * 256);    // coma fija: 1/256 de celda, todo en enteros
+  if (window.__mip) {
+    for (let n = 0; n < N; n++) {
+      let c = (pCol[n] - rf) >> (8 + pL[n]);   // >> redondea hacia abajo también en negativos
+      if (c < 0) c += pWrap[n];
+      const m = lv[pBase[n] + c];
+      buf[pIdx[n]] = lut[m * KN + (iceMat[m] ? pKI[n] : pKN[n])];
+    }
+  } else {
+    for (let n = 0; n < N; n++) {
+      let c = (pCol[n] - rf) >> 8;
+      if (c < 0) c += MW;
+      const m = mat[pRow[n] + c];
+      buf[pIdx[n]] = lut[m * KN + (iceMat[m] ? pKI[n] : pKN[n])];
+    }
+  }
+  for (let i = 0; i < post.length; i += 3) {
+    const p = pIdx[post[i]], a = post[i + 1], cov = post[i + 2];
+    const v = buf[p];
+    let r = v & 255, g = (v >> 8) & 255, b = (v >> 16) & 255;
+    if (a > 0) { r += (AT[0] - r) * a; g += (AT[1] - g) * a; b += (AT[2] - b) * a; }
+    if (cov < 1) { r = SP[0] + (r - SP[0]) * cov; g = SP[1] + (g - SP[1]) * cov; b = SP[2] + (b - SP[2]) * cov; }
+    buf[p] = (255 << 24) | (Math.round(b) << 16) | (Math.round(g) << 8) | Math.round(r);
+  }
+  clouds(buf, rot);
+  ctx.putImageData(img, 0, 0);
+}
+
+// Giro CONTINUO: en cada fotograma de pantalla el mapa avanza la fracción de
+// celda que toque, y cada borde salta su píxel justo cuando le toca, a ritmo
+// constante según su latitud. (A saltos de una celda entera cada 100 ms,
+// todos los bordes se reajustaban a la vez con patrón 1,1,0,1… -> tirones.)
+// Vuelta en 120 s, como el sprite. Tope de ~60 dibujos/s (en pantallas de
+// 120 Hz se dibuja uno de cada dos fotogramas).
+let VUELTA = 120;
+let t0 = null, lastSlot = -1, ms = 0, pasos = 0;
+let rotBase = 0, tBase = null;         // al cambiar de velocidad, el giro sigue desde donde iba
+window.__draw = draw;                  // para depurar desde la consola
+window.__matAt = (rot) => {            // material de cada píxel del disco para un giro dado
+  const rf = Math.round(rot * 256), out = new Uint16Array(N);
+  for (let n = 0; n < N; n++) {
+    if (window.__mip) { let c = (pCol[n] - rf) >> (8 + pL[n]); if (c < 0) c += pWrap[n]; out[n] = lv[pBase[n] + c]; }
+    else { let c = (pCol[n] - rf) >> 8; if (c < 0) c += MW; out[n] = mat[pRow[n] + c]; }
+  }
+  return out;
+};
+window.__dbg = { PRIO, pIdx, pL, N };
+function loop(now) {
+  if (t0 === null) t0 = now;
+  // Franjas fijas de 1/60 s (con 4 ms de margen): a 120 Hz se dibuja justo un
+  // fotograma de cada dos, sin que la variación del reloj retrase alguno.
+  const slot = Math.floor((now - t0 + 4) / (1000 / 60));
+  if (slot !== lastSlot && !cv.hidden) {
+    lastSlot = slot;
+    if (tBase === null) tBase = now;
+    const rot = (rotBase + (now - tBase) / 1000 * MW / VUELTA) % MW;
+    window.__rotNow = rot; window.__tNow = now;
+    const a = performance.now();
+    draw(rot);
+    ms += performance.now() - a; pasos++;
+    if (pasos % 60 === 0) {
+      $("info").textContent = `canvas continuo · ${N} píxeles · ${(ms / pasos).toFixed(2)} ms por dibujo · ~60 dibujos/s`;
+    }
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+for (const b of document.querySelectorAll("button[data-v]")) {
+  b.onclick = () => {
+    if (window.__rotNow !== undefined) { rotBase = window.__rotNow; tBase = window.__tNow; }
+    VUELTA = +b.dataset.v;
+    $("vel").textContent = `→ ${VUELTA} s por vuelta`;
+  };
+}
+$("vel").textContent = `→ ${VUELTA} s por vuelta`;
+
+$("modo").onclick = () => {
+  const sprite = $("sprite").hidden;
+  $("sprite").hidden = !sprite; cv.hidden = sprite;
+  $("modo").textContent = sprite ? "Ver el canvas (continuo)" : "Ver el sprite de ahora (a saltos)";
+};
+</script>
+</body>
+</html>

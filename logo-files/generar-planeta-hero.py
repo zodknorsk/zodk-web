@@ -23,6 +23,7 @@ los dos PNG del planeta.
 
     python3 generar-planeta-hero.py
     python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma
+    python3 generar-planeta-hero.py --canvas carpeta/        # datos para el <canvas>
 """
 import colorsys
 import math
@@ -1243,10 +1244,89 @@ def render(night, path, frames=None):
     return sw, sh
 
 
+# ------------------------------------------------- exportar para el <canvas>
+# En vez de 60 fotogramas pregenerados, el navegador proyecta el mapa y lo gira
+# celda a celda (movimiento continuo). Como el sol y el terminador están quietos
+# respecto al observador, el sombreado por píxel se calcula una vez al cargar;
+# en cada paso solo hay que buscar "material de la celda -> color para este
+# escalón de luz". El giro es CONTINUO (el mapa se desplaza una fracción de
+# celda en cada fotograma de pantalla): así cada borde avanza su píxel a ritmo
+# constante según su latitud. A saltos de una celda entera, todos los bordes se
+# reajustaban a la vez con un patrón irregular (1,1,0,1…) y se veía a tirones.
+# Aquí se exporta:
+#   planeta-mapa.png : MW x MH, material de cada celda (R + G*256), B=1 si hielo
+#   planeta-lut.png  : LUT_KN x nº de materiales, color de cada material para
+#                      cada escalón de luz global LUT_KMIN..0 (rampas incluidas)
+#   planeta-datos.json : constantes de geometría/luz + nubes ya escaladas
+LUT_KMIN = -12
+LUT_KN = 1 - LUT_KMIN
+_COAST_MIXK = (0.0, 0.20, 0.48, 0.84)
+
+
+def export_canvas(outdir):
+    import json
+    import os
+    os.makedirs(outdir, exist_ok=True)
+    mats = {}
+    mapa = [bytearray(MW * 4) for _ in range(MH)]
+    for r in range(MH):
+        lat = 90.0 - (r + 0.5) * _md
+        row = mapa[r]
+        for c in range(MW):
+            lon = (c + 0.5) * _md - 180.0
+            terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
+            lvl = 0
+            if terrain != 0:                       # línea de costa, por celda
+                lvl = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
+                if lvl:
+                    surf = mix(surf, COAST_COL, _COAST_MIXK[lvl])
+            key = (round(surf[0]), round(surf[1]), round(surf[2]), int(tex_k), terrain, lvl)
+            m = mats.get(key)
+            if m is None:
+                m = mats[key] = len(mats)
+            o = c * 4
+            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain == 2 else 0
+            row[o + 3] = 255
+    write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
+    lut = []
+    prio = []
+    for (rr, gg, bb, tk, terrain, lvl), _m in sorted(mats.items(), key=lambda kv: kv[1]):
+        # Prioridad al reducir el mapa para las zonas donde un píxel abarca
+        # varias celdas (mipmaps en el navegador): la línea de costa gana, luego
+        # la tierra, luego el mar -> costas e islas pequeñas no desaparecen.
+        prio.append(2 * lvl + (1 if terrain != 0 else 0))
+        row = bytearray(LUT_KN * 4)
+        for j in range(LUT_KN):
+            col = rgba(ramp((rr, gg, bb), LUT_KMIN + j + tk, 0.45 if terrain == 0 else 1.0))
+            row[j * 4:j * 4 + 4] = bytes(col)
+        lut.append(row)
+    write_rgba(os.path.join(outdir, "planeta-lut.png"), LUT_KN, len(lut), lut)
+    nubes = []
+    for clat, clon, shp, flip, size in NUBES:
+        cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size)
+        nubes.append({"lat": clat, "lon": clon, "flip": flip, "dw": dw, "dh": dh,
+                      "cells": [[ox, oy, "bse".index(k)] for (ox, oy), k in cells.items()]})
+    datos = {
+        "COLS": COLS, "VIS": VIS, "RADIUS": RADIUS, "CX": CX, "CY": CY,
+        "SINT": SINT, "COST": COST, "SX": SX, "SY": SY, "SZ": SZ,
+        "TERM_A": TERM_A, "TERM_B": TERM_B, "NIGHT": NIGHT, "LIMB_K": LIMB_K,
+        "LIMB_AA": LIMB_AA, "LNSTEP": _LNSTEP, "MW": MW, "MH": MH,
+        "LUT_KMIN": LUT_KMIN, "LUT_KN": LUT_KN, "MATERIALES": len(lut), "prio": prio,
+        "SPACE": SPACE, "ATMO": ATMO, "C_BODY": C_BODY, "C_BASE": C_BASE, "C_EDGE": C_EDGE,
+        "nubes": nubes,
+    }
+    with open(os.path.join(outdir, "planeta-datos.json"), "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+    return len(lut)
+
+
 # El sprite de NOCHE ya no se genera aquí: es public/zodk-planeta-noche.png tal
 # cual, el de producción (el usuario pidió no tocar el modo oscuro). Solo día.
 # El dron tampoco se genera aquí (foto en public/zodk-dron.png).
-if len(sys.argv) >= 3 and sys.argv[1] == "--frame":
+if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
+    _n = export_canvas(sys.argv[2])
+    print(f"canvas: {_n} materiales -> {sys.argv[2]}")
+elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":
     _f = int(sys.argv[2])
     _out = sys.argv[3] if len(sys.argv) > 3 else f"prueba-f{_f}.png"
     SW, SH = render(False, _out, [_f])
