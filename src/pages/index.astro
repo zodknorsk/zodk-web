@@ -134,7 +134,7 @@ const eventos = todosEventos
       aria-hidden="true"
       style={`aspect-ratio:${objetoInicial.ratio};--sprite:url(${objetoInicial.sprite});--sprite-noche:url(${objetoInicial.spriteNoche});--escala:${objetoInicial.escala ?? 1}`}
     >
-      {(["der", "izq", "cola", "baliza"] as const).map((k) => {
+      {(["der", "izq"] as const).map((k) => {
         const p = objetoInicial.luces?.[k];
         return <span class={`craft-luz craft-luz--${k}`} hidden={!p} style={p ? `left:${p[0]}%;top:${p[1]}%` : undefined} />;
       })}
