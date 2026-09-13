@@ -43,7 +43,9 @@ en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
 Decisiones que hay que respetar:
 - Vista de horizonte inclinada, hemisferio norte; solo costas (sin fronteras),
   con la línea de costa oscura; giro calmado.
-- **Modo noche congelado**: no tocar nada de la noche hasta que él lo reabra.
+- **Modo noche**: se está rehaciendo desde cero en la rama `planeta-noche`
+  (mismo pipeline que el día; ver `HERO-WIP.md`, "Modo noche v2"). Lo
+  nocturno anterior es trabajo viejo, no decisiones cerradas.
 - Luz del terminador y del limbo en escalones lisos de 1/3 (`LIGHT_SUB`).
 - Rechazado, no reintentar salvo que lo pida: punteado Bayer, bordes de luz
   ondulados por ruido, franja de atardecer, brillo especular en el mar, nubes

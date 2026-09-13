@@ -82,7 +82,31 @@ generados) y al usuario no le convenció el conjunto. Se volvió atrás al sprit
 con sombreado horneado. Si se retoma la fluidez: subir `FRAMES` y ya, o
 plantear otra cosa, pero el fundido de dos capas queda aparcado.
 
-## Modo noche — para cuando se retome
+## Modo noche v2 — EN CURSO (rama `planeta-noche`, desde el 13-sep-2026)
+
+El usuario reabrió la noche: se rehace **desde cero con el mismo pipeline que
+el día** (generador Python → canvas, giro continuo, misma geografía y
+texturas), cuidando lo propio de la noche (luces de ciudades, naves nocturnas
+con luces de posición, toques de luz en el título; el lema es el mismo). Todo
+lo nocturno anterior (sprite viejo, `densidad_luces.py`, la sección de abajo)
+es **trabajo viejo**: referencia de intenciones, no decisiones cerradas.
+Se commitea poco a poco en la rama; push/merge cuando esté todo.
+
+Hecho y aprobado:
+1. **Luz de luna** (`noche()`, `MOON_*`, `N_NIGHT` en el generador): cada color
+   de día pasa a su versión nocturna (desatura poco, tiñe de luz fría y
+   oscurece) y encima va la misma rampa de luz con la luna en vez del sol.
+   Elegidas con renders: paleta **P3 "índigo contrastado"** (frente a una gris
+   "cemento" y otra índigo suave) y **luna llena casi de frente, algo arriba a
+   la izquierda** (C). Luna por la derecha descartada: copas/dunas/relieve
+   llevan la luz horneada desde el NO y la textura contradecía a la esfera.
+   Probar: `python3 generar-planeta-hero.py --frame 0 prueba.png --noche`
+   (o `--ambos` para día y noche de una vez).
+
+Siguiente: luces de ciudades (capa emisiva, pensada a 600 px), después costa /
+hielo / atmósfera de noche, naves, título, y pasar la noche al canvas.
+
+## Modo noche — notas VIEJAS (antes del rediseño del día)
 
 El usuario quiere trabajar el modo noche **más adelante** (lo dijo el
 13-sep-2026, al comprobar que el de ahora se ve bien). Todo lo que hay que

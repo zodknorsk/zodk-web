@@ -92,12 +92,23 @@ SABANAS = [     # (lat0, lat1, lon0, lon1)
     (-12, 5, 29.5, 42),     # África oriental: Kenia, Tanzania, Uganda (el Congo sigue selva)
 ]
 
-# noche
-N_OCEAN = (0x0b, 0x16, 0x25)
-N_LAND  = (0x17, 0x23, 0x2d)
-N_ICE   = (0x2a, 0x37, 0x47)
+# noche: la misma superficie que de día, vista a la luz de la luna. Cada color
+# de día se pasa a su versión nocturna (menos saturado, frío y oscuro) y encima
+# se aplica la misma rampa de luz, con la luna en vez del sol.
+# Paleta "índigo contrastado" (P3, elegida frente a una gris y otra índigo más
+# suave): mar azul profundo, tierra verde azulada, desierto plateado.
+MOON_TINT = (0.40, 0.60, 1.0)       # color de la luz de luna
+NOCHE_SAT = 0.80                    # saturación que conserva cada color
+NOCHE_V   = 0.72                    # brillo de la cara a la luna respecto al día
 N_ATMO  = (0x3a, 0x5c, 0x8c)
 GOLD = ((0xc9, 0x99, 0x3c), (0xf2, 0xc4, 0x52), (0xff, 0xd8, 0x6c))  # dim / medio / metro
+
+
+def noche(col):
+    r, g, b = col[0] / 255.0, col[1] / 255.0, col[2] / 255.0
+    y = 0.299 * r + 0.587 * g + 0.114 * b
+    return tuple((y + (x - y) * NOCHE_SAT) * t * NOCHE_V * 255.0
+                 for x, t in zip((r, g, b), MOON_TINT))
 
 # Principales ciudades: (lat, lon, pop_max). Natural Earth (ne_110m), pop >= 5 M.
 MEGA = 10_000_000                   # a partir de aqui el punto es de 2x2 celdas
@@ -152,12 +163,25 @@ CX  = COLS / 2.0
 CY  = RADIUS
 VIS = int(RADIUS + RADIUS * CDOWN)
 
-_az, _el = math.radians(SUN_DEG[0]), math.radians(SUN_DEG[1])
-SX = math.sin(_az) * math.cos(_el)
-SY = -math.cos(_az) * math.cos(_el)
-SZ = math.sin(_el) + SUN_Z
-_n = math.sqrt(SX * SX + SY * SY + SZ * SZ)
-SX, SY, SZ = SX / _n, SY / _n, SZ / _n
+# Luna llena casi de frente, algo arriba a la izquierda (opción C). Del mismo
+# lado que el sol a propósito: copas, dunas y relieve llevan la luz horneada
+# desde el NO, y con la luna por la derecha la textura contradecía a la esfera.
+MOON_DEG = (-25.0, 15.0)
+MOON_Z   = 0.9
+N_NIGHT  = 0.06                # brillo mínimo en la cara sin luna
+
+
+def _luz(deg, push):
+    az, el = math.radians(deg[0]), math.radians(deg[1])
+    x = math.sin(az) * math.cos(el)
+    y = -math.cos(az) * math.cos(el)
+    z = math.sin(el) + push
+    n = math.sqrt(x * x + y * y + z * z)
+    return x / n, y / n, z / n
+
+
+SX, SY, SZ = _luz(SUN_DEG, SUN_Z)
+MX, MY, MZ = _luz(MOON_DEG, MOON_Z)
 
 T = math.radians(TILT)
 SINT, COST = math.sin(T), math.cos(T)
@@ -1238,27 +1262,15 @@ def cell_index(sx, sy, lon0, night):
     # (ver _coast_line_mix) para no perderse islas más pequeñas que un píxel.
     surf = _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf)
 
-    if night:
-        # MODO OSCURO CONGELADO: este script ya NO regenera el sprite de noche
-        # (decisión del usuario, sept 2026: "no toques nada en el modo oscuro").
-        # public/zodk-planeta-noche.png es el de producción, intocable. Esta
-        # rama se deja como estaba por si algún día se quiere regenerar.
-        base = (N_OCEAN, N_LAND, N_ICE, N_ICE)[terrain]
-        col = mix(SPACE, base, 1.0 - 0.55 * smooth(0.80, 1.0, dc))
-        if terrain != 0 and dc < 0.95:
-            lv = luz_at(lat, lon)
-            if lv == 1 and ((gr * 7 + gc * 3) % 6):     # nivel 1: dispersas
-                lv = 0
-            if lv:
-                col = GOLD[lv - 1]
-        if dc > 0.94:
-            col = mix(col, N_ATMO, 0.35 * smooth(0.94, 1.0, dc))
-        return rgba(col)
-
-    # --- día
-    lam = px * SX + py * SY + pz * SZ
+    if night:                              # luz de luna: misma rampa, otra luz y otra paleta
+        surf = noche(surf)
+        lam = px * MX + py * MY + pz * MZ
+        floor, atmo = N_NIGHT, N_ATMO
+    else:
+        lam = px * SX + py * SY + pz * SZ
+        floor, atmo = NIGHT, ATMO
     term_t = smooth(TERM_A, TERM_B, lam)
-    bright = NIGHT + (1.0 - NIGHT) * term_t
+    bright = floor + (1.0 - floor) * term_t
     limb_t = smooth(0.72, 1.0, dc)
     limb = LIMB_K * limb_t
     helado = terrain in (2, 3)             # hielo continental o banquisa
@@ -1275,7 +1287,7 @@ def cell_index(sx, sy, lon0, night):
     col = ramp(surf, kg + tex_k, 0.45 if terrain == 0 else 1.0)
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
-        col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5) / 4))
+        col = mix(col, atmo, 0.3 * (math.floor(halo * 4 + 0.5) / 4))
     # AA del limbo: el disco ya no corta en seco al radio exacto, se apaga hacia
     # el color del fondo (SPACE, que es justo el fondo real de la portada) en
     # una banda de ±LIMB_AA px alrededor del borde real.
@@ -1385,9 +1397,11 @@ def _scaled_cloud(body, size, flip=False):
     return out, dw, dh
 
 
-def cloud_cells(lon0):
+def cloud_cells(lon0, night=False):
     """(sx, sy) -> índice de color. Nubes pixel-art tipo cúmulo, proyectadas
-    sobre la esfera y sombreadas por el terminador. Solo día."""
+    sobre la esfera y sombreadas por el terminador (de noche, el de la luna)."""
+    LX_, LY_, LZ_ = (MX, MY, MZ) if night else (SX, SY, SZ)
+    tonos = {k: (c if k == "e" else noche(c)) if night else c for k, c in C_NUBE.items()}
     out = {}
     for clat, clon, shp, flip, size in NUBES:
         rlat = math.radians(clat)
@@ -1400,7 +1414,7 @@ def cloud_cells(lon0):
         pz = SINT * a + COST * vv
         if pz <= 0.50:                       # cerca del limbo o cara oculta
             continue
-        lam = px * SX + py * SY + pz * SZ
+        lam = px * LX_ + py * LY_ + pz * LZ_
         bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
         if bright < 0.12:                     # zona de noche del sprite de día
             continue
@@ -1409,7 +1423,7 @@ def cloud_cells(lon0):
         xsc = 0.72 + 0.28 * pz               # se aplasta un poco hacia el borde
         t = 0.72 + 0.28 * bright             # nube blanca casi siempre; solo se
         cix = {k: rgba(mix(SPACE, c, _cloud_t(k, t)))   # apaga pegada al terminador
-               for k, c in C_NUBE.items()}
+               for k, c in tonos.items()}
         cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size, flip)
         for (ox, oy), k in cells.items():
             ddx = (ox - dw / 2.0)
@@ -1508,13 +1522,11 @@ def render(night, path, frames=None):
         lon0 = -f * 360.0 / FRAMES
         gx, gy = (f % GRID_COLS, f // GRID_COLS) if todos else (0, 0)
         xoff, yoff = gx * COLS, gy * VIS
-        overlay = {} if night else cloud_cells(lon0)
+        overlay = cloud_cells(lon0, night)
         sombra = set()
         if not night:                               # chapas por encima de las nubes
             fl, sombra = flag_cells(lon0)
             overlay.update(fl)
-        if night:                                   # de día, sin puntos de ciudad (de momento)
-            overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
         for sy in range(VIS):
             row = rows[yoff + sy]
             for sx in range(COLS):
@@ -1618,10 +1630,18 @@ if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
     _n = export_canvas(sys.argv[2])
     print(f"canvas: {_n} materiales -> {sys.argv[2]}")
 elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":
+    # --frame N [salida.png] [--noche | --ambos]   (--ambos: día y noche, salida-dia/-noche.png)
     _f = int(sys.argv[2])
-    _out = sys.argv[3] if len(sys.argv) > 3 else f"prueba-f{_f}.png"
-    SW, SH = render(False, _out, [_f])
-    print(f"fotograma {_f}: {SW}x{SH} px -> {_out}")
+    _args = [a for a in sys.argv[3:] if not a.startswith("--")]
+    _out = _args[0] if _args else f"prueba-f{_f}.png"
+    if "--ambos" in sys.argv:
+        _b = _out[:-4] if _out.endswith(".png") else _out
+        for _nt, _suf in ((False, "dia"), (True, "noche")):
+            SW, SH = render(_nt, f"{_b}-{_suf}.png", [_f])
+            print(f"fotograma {_f} ({_suf}): {SW}x{SH} px -> {_b}-{_suf}.png")
+    else:
+        SW, SH = render("--noche" in sys.argv, _out, [_f])
+        print(f"fotograma {_f}: {SW}x{SH} px -> {_out}")
 elif len(sys.argv) >= 2 and sys.argv[1] == "--sprite":
     # El sprite antiguo de FRAMES fotogramas (ya no lo usa la web). OJO: a
     # COLS = 600 la rejilla de GRID_COLS = 15 sale de 9000 px de ancho, más de lo
