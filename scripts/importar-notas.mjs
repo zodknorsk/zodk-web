@@ -112,10 +112,14 @@ function generarAncla(texto) {
 }
 
 function aFechaISO(valor) {
+  // Getters en UTC (no locales): "creado" es un día de calendario, no un
+  // instante, y las fechas sin hora las parsea JS como medianoche UTC. Con
+  // getters locales, importar desde una máquina en un huso horario detrás de
+  // UTC (p. ej. América) desplazaría la fecha un día hacia atrás.
   const fmt = (d) => {
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${d.getFullYear()}-${mm}-${dd}`;
+    const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+    const dd = String(d.getUTCDate()).padStart(2, "0");
+    return `${d.getUTCFullYear()}-${mm}-${dd}`;
   };
   if (valor instanceof Date && !isNaN(valor)) return fmt(valor);
   if (typeof valor === "string") {
@@ -132,7 +136,9 @@ function parsearFechaActualizado(valor) {
   const m = valor.match(/^(\d{2})-(\d{2})-(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
   if (!m) return undefined;
   const [, dd, mm, yyyy, hh = "0", min = "0"] = m;
-  return new Date(+yyyy, +mm - 1, +dd, +hh, +min);
+  // Anclada en UTC (no en la zona local): aFechaISO() lee este valor con
+  // getters UTC, así que hay que construirlo igual para que coincidan.
+  return new Date(Date.UTC(+yyyy, +mm - 1, +dd, +hh, +min));
 }
 
 const primero = (v) => (Array.isArray(v) ? v[0] : v);
