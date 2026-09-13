@@ -36,16 +36,19 @@ en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
 
 - Regenerar: `cd logo-files && python3 generar-planeta-hero.py`; después subir
   `PLANETA_V` en `planeta.js` y el `?v=` de `planeta-quieto.png` en
-  `src/styles/global.css` (van por 7). Un fotograma suelto para comparar:
+  `src/styles/global.css` (van por 8). Un fotograma suelto para comparar:
   `python3 generar-planeta-hero.py --frame N salida.png` (lon. central = −6·N°).
 - Ver la web: `npm run dev`; en el móvil (misma wifi): `npm run dev:network`.
 
 Decisiones que hay que respetar:
 - Vista de horizonte inclinada, hemisferio norte; solo costas (sin fronteras),
   con la línea de costa oscura; giro calmado.
-- **Modo noche**: se está rehaciendo desde cero en la rama `planeta-noche`
-  (mismo pipeline que el día; ver `HERO-WIP.md`, "Modo noche v2"). Lo
-  nocturno anterior es trabajo viejo, no decisiones cerradas.
+- **Modo noche** (hecho y publicado el 13-sep-2026, ver `HERO-WIP.md`, "Modo
+  noche v2"): el mismo canvas a la luz de la luna, luces de ciudades
+  (GeoNames), aurora boreal, naves con luces verde/roja, título que se pone en
+  verde de visión nocturna al fijar coordenada, sol y luna (fase real) arriba
+  a la izquierda y transición al cambiar de tema (el astro se pone tras la
+  Tierra y el planeta se funde).
 - Luz del terminador y del limbo en escalones lisos de 1/3 (`LIGHT_SUB`).
 - Rechazado, no reintentar salvo que lo pida: punteado Bayer, bordes de luz
   ondulados por ruido, franja de atardecer, brillo especular en el mar, nubes
@@ -61,8 +64,8 @@ Decisiones que hay que respetar:
 
 Pendiente (sin orden, lo decide él):
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
-- Modo noche: en la rama `planeta-noche` (casi terminado; falta que el usuario
-  mire la temperatura en Zen y el móvil, y el merge).
+- Probar la noche en su móvil real (consumo: si se calienta, 30 fps en táctil
+  o sin los pueblos más pequeños).
 - Hemisferio sur (cómo llegar a sus países en el hero): aparcado para más
   adelante, de día y de noche.
 - Ficha de bandera que se sale por abajo si la chapa está muy baja.
