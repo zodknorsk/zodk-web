@@ -202,6 +202,24 @@ Hecho y aprobado:
    seco.
 
 
+12. **Aurora boreal, segundo intento** (el primero, de la noche vieja, "salió
+   una mierda"; este le gustó: "muy bien"). En `planeta.js` (`aurora()`,
+   constantes `AUR_*`), solo de noche. Cortinas de rayos 3D alrededor del
+   polo norte geomagnético (80,7N 72,7W; óvalo de 21° ± pliegues), de 0,016 a
+   0,05 radios de altura, que giran con la Tierra; se ve un punto si está en
+   la cara de delante o fuera del disco. Sobre el horizonte del fondo se ven
+   de canto (lo más vistoso): van a una franja extra de `AUR_MT` filas encima
+   del canvas (`.hero-aurora`, la crea planeta.js). Rayos de alturas y
+   brillos propios (borde dentado, estrías), verde translúcido en 5 niveles,
+   violeta arriba. DOS arcos + resplandor difuso (se probaron dos arcos más en
+   el lado de medianoche: "me gustaba más con menos aros"). Intensidad subida
+   dos veces a petición suya (`A` ×2,05). Se enciende en ola de izquierda a
+   derecha al anochecer y al cargar de noche (`AUR_BARRIDO` 2,8 s, frente más
+   brillante); se funde con el planeta al cambiar de tema. Coste: la noche
+   pasa de ~1,7 a ~2,0 ms por dibujo. Lección: los píxeles de cielo fuera
+   del disco no los repinta el planeta; se vacía un anillo alrededor en cada
+   fotograma (`borraCielo`), si no se quedaban pegados en mancha verde.
+
 **Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
 (decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.
 

@@ -374,6 +374,169 @@ export async function montarPlaneta(canvas, {
     }
   }
 
+  // Aurora boreal (noche): cortinas de rayos alrededor del polo norte
+  // geomagnético (el óvalo auroral), de AUR_H0 a AUR_H1 radios terrestres de
+  // altura. Cada rayo es una columna de puntos 3D que gira con la Tierra y se
+  // proyecta como el resto; un punto se ve si está en la cara de delante o si
+  // cae fuera del disco (por encima del horizonte). Los que quedan por encima
+  // del borde de arriba del canvas van a una franja aparte (auroraCv, AUR_MT
+  // filas encima del planeta). Brillo por píxel sumado y reducido a pocos
+  // niveles (verde abajo, violeta arriba), como las luces de las ciudades.
+  // Los pliegues ondulan y los haces van y vienen despacio. Al anochecer (y al
+  // cargar de noche) se enciende como una ola de izquierda a derecha, con el
+  // frente más brillante (como el "surge" de una subtormenta).
+  const AUR_POLO = [80.7, -72.7];                      // polo norte geomagnético (lat, lon)
+  const AUR_R = 21, AUR_WOB = 2.2;                     // radio del óvalo y ondulación, en grados
+  // arcos paralelos: desvío (grados), brillo y si solo están en el lado de medianoche
+  const AUR_ARCOS = [[0, 1, 0], [1.3, 0.6, 0]];     // (se probaron 2 más en medianoche: al usuario le gustaba más con menos)
+  const AUR_BARRIDO = 2.8;                             // segundos que tarda en encenderse de lado a lado
+  const AUR_N = 1000, AUR_K = 11, AUR_H0 = 0.016, AUR_H1 = 0.05;
+  const AUR_MT = 24;                                   // filas de canvas por encima del planeta
+  // niveles: [intensidad mínima, color, opacidad]; translúcida, el verde de la
+  // línea de 557 nm de oxígeno, más pálido solo donde se amontona mucho
+  const AUR_NIV = [
+    [0.10, [30, 150, 105], 0.13], [0.22, [40, 190, 120], 0.22], [0.40, [60, 225, 140], 0.33],
+    [0.70, [100, 245, 165], 0.46], [1.15, [170, 255, 205], 0.6],
+  ];
+  const AUR_VIOLETA = [140, 90, 240];
+  const AUR_DIFUSO = [[-1.8, 0], [1.4, 0]];            // resplandor sobre el suelo, a los lados del arco (grados)
+  const rnd = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const TABLA = Float32Array.from({ length: 256 }, (_, i) => rnd(i));
+  const ruido = (x) => {                               // ruido de valor 1D, periódico en 256
+    const i = Math.floor(x), f = x - i, t = f * f * (3 - 2 * f);
+    return TABLA[i & 255] * (1 - t) + TABLA[(i + 1) & 255] * t;
+  };
+  // por rayo: brillo propio (estrías) y altura propia (borde de arriba dentado)
+  const aurEstria = Float32Array.from({ length: AUR_N * AUR_ARCOS.length }, (_, i) => 0.3 + 0.7 * rnd(i + 1000) ** 2);
+  const aurTope = Uint8Array.from({ length: AUR_N * AUR_ARCOS.length }, (_, i) => Math.round(AUR_K * (0.35 + 0.65 * rnd(i * 7 + 3) ** 0.8)));
+  const aurPerfil = Float32Array.from({ length: AUR_K }, (_, k) => (k < 2 ? 0.55 - k * 0.05 : Math.exp(-(k - 1) / 4.5) * 0.5));
+  const aurAlto = Float32Array.from({ length: AUR_K }, (_, k) => 1 + AUR_H0 + (AUR_H1 - AUR_H0) * k / (AUR_K - 1));
+  let auroraCv = null, auroraCtx = null, auroraImg = null, auroraBuf = null;
+  let aurInicio = null;                                // cuándo empieza a encenderse (ms)
+  let aurAcc = null, aurVio = null, aurToc = null, aurMarca = null;
+  // Cielo alrededor del disco hasta donde llega la aurora: el dibujo del
+  // planeta no repinta esos píxeles, así que se vacían en cada fotograma (si
+  // no, lo que pinta la aurora, o lo que deja un fundido, se quedaría pegado).
+  const aurAnillo = (() => {
+    const out = [], rMax = (1 + AUR_H1 + 0.01) * R, rMin = R + D.LIMB_AA;
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const d = Math.hypot(x + 0.5 - D.CX, y + 0.5 - D.CY);
+        if (d > rMin && d <= rMax) out.push(y * W + x);
+      }
+    }
+    return Int32Array.from(out);
+  })();
+  function borraCielo() { for (let n = 0; n < aurAnillo.length; n++) buf[aurAnillo[n]] = 0; }
+  function aurora(lon0, y0, y1, t) {
+    const WT = W * (H + AUR_MT);                       // acumuladores: franja de arriba + canvas
+    if (!aurAcc) {
+      aurAcc = new Float32Array(WT); aurVio = new Float32Array(WT);
+      aurToc = new Int32Array(WT); aurMarca = new Uint8Array(WT);
+    }
+    const S = D.SINT, C = D.COST, c0 = Math.cos(lon0 / DEG), s0 = Math.sin(lon0 / DEG);
+    const fp = AUR_POLO[0] / DEG, lp = AUR_POLO[1] / DEG, sfp = Math.sin(fp), cfp = Math.cos(fp);
+    let nt = 0;
+    const suma = (X, Y, v, vio) => {
+      if (X < 0 || X >= W || Y < -AUR_MT || Y >= y1 || (Y >= 0 && Y < y0)) return;
+      const p = (Y + AUR_MT) * W + X;
+      if (aurMarca[p] === 0) { aurMarca[p] = 1; aurToc[nt++] = p; }
+      aurAcc[p] += v;
+      if (vio) aurVio[p] += v;
+    };
+    // punto del óvalo a th grados del polo, en el azimut al -> (bx, by, bz) en pantalla
+    const punto = (al, th) => {
+      const sth = Math.sin(th), cth = Math.cos(th);
+      const sl = sfp * cth + cfp * sth * Math.cos(al), cl = Math.sqrt(1 - sl * sl);
+      const lon = lp + Math.atan2(Math.sin(al) * sth * cfp, cth - sfp * sl);
+      const cr = Math.cos(lon) * c0 + Math.sin(lon) * s0, sr = Math.sin(lon) * c0 - Math.cos(lon) * s0;
+      const vv = cl * cr;
+      return [cl * sr, -C * sl + S * vv, S * sl + C * vv];
+    };
+    if (aurInicio === null) aurInicio = performance.now() + 300;
+    const el = reduce.matches ? 1e9 : (performance.now() - aurInicio) / 1000;
+    const frente = el < AUR_BARRIDO * 1.3 ? el / AUR_BARRIDO * 1.25 : null;   // posición del frente (0 = izquierda)
+    for (let i = 0; i < AUR_N; i++) {
+      const u = i / AUR_N, al = u * 2 * Math.PI;
+      // pliegues: el radio del óvalo ondula a lo largo y con el tiempo
+      const th0 = AUR_R + AUR_WOB * (ruido(u * 9 + t * 0.05) * 2 - 1) + 0.9 * (ruido(u * 31 - t * 0.09) * 2 - 1);
+      // haces: el brillo va y viene a lo largo del óvalo
+      let A = 2.05 * Math.max(0, ruido(u * 23 + t * 0.12) * 1.2 - 0.15) * (0.6 + 0.4 * ruido(u * 5 + 40 + t * 0.03));
+      if (A < 0.05) continue;
+      const base = punto(al, th0 / DEG);
+      const med = base[2] <= 0.05 ? 0 : base[2] >= 0.6 ? 1 : (base[2] - 0.05) / 0.55;   // cuánto mira hacia nosotros
+      if (frente !== null) {                           // encendido en ola de izquierda a derecha
+        const d = frente - (base[0] + 1) / 2;
+        if (d <= 0) continue;
+        A *= (d < 0.25 ? d / 0.25 : 1) * (d < 0.06 ? 1.8 : d < 0.13 ? 1.35 : 1);
+      }
+      for (let a = 0; a < AUR_ARCOS.length; a++) {
+        const [dth, fa, soloMed] = AUR_ARCOS[a];
+        const fm = soloMed ? med : 1;
+        if (fm < 0.05) continue;
+        const Ai = A * fa * fm * aurEstria[a * AUR_N + i] * (0.7 + 0.3 * ruido(u * 90 + a * 17 - t * 0.4));
+        // cada arco con su propia ondulación, para que no vayan paralelos
+        const [bx, by, bz] = a ? punto(al, (th0 + dth + 0.8 * (ruido(u * 14 + a * 50 + t * 0.07) * 2 - 1)) / DEG) : base;
+        const tope = aurTope[a * AUR_N + i];
+        if (bz <= 0) {                                 // por detrás: si ni la punta asoma, fuera
+          const rt = aurAlto[tope - 1], xt = bx * rt, yt = by * rt;
+          if (xt * xt + yt * yt < 1) continue;
+        }
+        const paso = soloMed ? 2 : 1;                  // los de medianoche se ven desde arriba: menos puntos
+        for (let k = 0; k < tope; k += paso) {
+          const r = aurAlto[k], x = bx * r, y = by * r;
+          if (bz <= 0 && x * x + y * y < 1) continue;   // tapado por la Tierra
+          const fin = k >= tope - 3 ? (tope - k) / 4 : 1;   // cada rayo se apaga en su punta
+          suma(Math.round(x * R + D.CX - 0.5), Math.round(y * R + D.CY - 0.5), Ai * aurPerfil[k] * fin * paso, k > tope * 0.62 && tope > AUR_K * 0.7);
+        }
+      }
+      if (i % 3 === 0) {                               // resplandor difuso sobre el suelo, entre los arcos
+        for (const [d, soloMed] of AUR_DIFUSO) {
+          const fm = soloMed ? med : 1;
+          if (fm < 0.05) continue;
+          const [bx, by, bz] = punto(al, (th0 + d) / DEG);
+          if (bz <= 0) continue;
+          suma(Math.round(bx * R + D.CX - 0.5), Math.round(by * R + D.CY - 0.5), A * fm * 0.13 * (1 - Math.abs(d) / 4.5), false);
+        }
+      }
+    }
+    if (!auroraBuf) {
+      auroraCv = document.createElement("canvas");
+      auroraCv.width = W; auroraCv.height = AUR_MT;
+      auroraCv.className = "hero-aurora";
+      auroraCv.setAttribute("aria-hidden", "true");
+      auroraCv.style.cssText = `position:absolute;left:0;width:100%;top:${-AUR_MT / H * 100}%;height:${AUR_MT / H * 100}%;image-rendering:pixelated;pointer-events:none`;
+      canvas.parentElement?.appendChild(auroraCv);
+      auroraCtx = auroraCv.getContext("2d");
+      auroraImg = auroraCtx.createImageData(W, AUR_MT);
+      auroraBuf = new Uint32Array(auroraImg.data.buffer);
+    }
+    auroraBuf.fill(0);
+    const LIM = AUR_MT * W;
+    for (let n = 0; n < nt; n++) {
+      const p = aurToc[n], v = aurAcc[p], vi = aurVio[p] / (v || 1);
+      aurAcc[p] = 0; aurVio[p] = 0; aurMarca[p] = 0;
+      let l = -1;
+      while (l + 1 < AUR_NIV.length && v >= AUR_NIV[l + 1][0]) l++;
+      if (l < 0) continue;
+      let c = AUR_NIV[l][1];
+      const a = AUR_NIV[l][2];
+      if (vi > 0.45) c = [c[0] + (AUR_VIOLETA[0] - c[0]) * 0.65, c[1] + (AUR_VIOLETA[1] - c[1]) * 0.65, c[2] + (AUR_VIOLETA[2] - c[2]) * 0.65];
+      if (p < LIM) {                                   // por encima del planeta: sobre el cielo
+        auroraBuf[p] = (Math.round(a * 255) << 24) | (Math.round(c[2]) << 16) | (Math.round(c[1]) << 8) | Math.round(c[0]);
+      } else {
+        const q = p - LIM, bg = buf[q];
+        if ((bg >>> 24) === 0) {                       // fuera del disco en el canvas: sobre el cielo
+          buf[q] = (Math.round(a * 255) << 24) | (Math.round(c[2]) << 16) | (Math.round(c[1]) << 8) | Math.round(c[0]);
+          continue;
+        }
+        const r0 = bg & 255, g0 = (bg >> 8) & 255, b0 = (bg >> 16) & 255;
+        buf[q] = (255 << 24) | (Math.round(b0 + (c[2] - b0) * a) << 16) | (Math.round(g0 + (c[1] - g0) * a) << 8) | Math.round(r0 + (c[0] - r0) * a);
+      }
+    }
+    auroraCtx.putImageData(auroraImg, 0, 0);
+  }
+
   // Chapas de bandera (países del blog): sombra de 1 px sobre el planeta, y la
   // chapa encima de las nubes. Solo en la cara iluminada y lejos del borde.
   function chapasVisibles(lon0, luna) {
@@ -484,6 +647,7 @@ export async function montarPlaneta(canvas, {
     const vis = chapasVisibles(lon0, luna);
     sombras(vis);
     nubes(lon0, luna);
+    if (luna) { aurora(lon0, y0, y1, performance.now() / 1000); if (auroraCv) auroraCv.style.visibility = ""; }
     chapas(vis);
     pintaMarca(lon0, luna);
     return vis;
@@ -499,6 +663,7 @@ export async function montarPlaneta(canvas, {
   function draw(rot, y0 = 0, y1 = H) {
     const luna = esNoche();
     if (luna && !noche) return false;
+    borraCielo();
     let k = 1;
     if (fundido) {
       k = (performance.now() - fundido.t0) / FUNDIDO_MS;
@@ -509,6 +674,7 @@ export async function montarPlaneta(canvas, {
       if (!viejo) viejo = new Uint32Array(W * H);
       pinta(rot, y0, y1, fundido.desdeLuna);
       viejo.set(buf.subarray(y0 * W, y1 * W), y0 * W);
+      borraCielo();
       vis = pinta(rot, y0, y1, luna);
       const e = k * k * (3 - 2 * k), q = Math.round(e * 256), iq = 256 - q;
       for (let p = y0 * W, fin = y1 * W; p < fin; p++) {
@@ -521,6 +687,11 @@ export async function montarPlaneta(canvas, {
       }
     } else {
       vis = pinta(rot, y0, y1, luna);
+    }
+    if (auroraCv) {                                    // la franja de la aurora: solo de noche, y se funde con el planeta
+      const e = k < 1 ? k * k * (3 - 2 * k) : 1;
+      auroraCv.style.opacity = String(k < 1 ? (luna ? e : 1 - e) : 1);
+      if (!luna && k >= 1) auroraCv.style.visibility = "hidden";
     }
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
@@ -613,6 +784,7 @@ export async function montarPlaneta(canvas, {
       // de las dos luces (si la noche aún no ha llegado, el cambio es seco)
       fundido = listo && !reduce.matches && noche ? { t0: performance.now(), desdeLuna: !temaNoche } : null;
       fundidoPendiente = listo && temaNoche && !noche;   // arranca al llegar los datos de noche
+      if (temaNoche) aurInicio = performance.now() + 900;   // la aurora se enciende cuando ya es de noche
     }
     arrancar();
   });
@@ -658,6 +830,7 @@ export async function montarPlaneta(canvas, {
       return { x: bb.left + marcaPos.cx * bb.width / W, y: bb.top + marcaPos.cy * bb.height / H };
     },
     desmontar() {
+      auroraCv?.remove();
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       io.disconnect();
