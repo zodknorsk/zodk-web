@@ -42,7 +42,6 @@ python3 generar-planeta-hero.py --frame 17 prueba.png   # un fotograma suelto pa
 cd .. && npm run dev                       # o el banco de pruebas: python3 -m http.server 4400
                                            #   -> http://127.0.0.1:4400/logo-files/prototipo-canvas/
 ```
-El planeta de NOCHE (`public/zodk-planeta-noche.png`) no se regenera: congelado.
 Los .geojson se re-descargan con los `curl` documentados en cada script.
 
 ## Integración en la web
@@ -81,7 +80,7 @@ generados) y al usuario no le convenció el conjunto. Se volvió atrás al sprit
 con sombreado horneado. Si se retoma la fluidez: subir `FRAMES` y ya, o
 plantear otra cosa, pero el fundido de dos capas queda aparcado.
 
-## Modo noche v2 — EN CURSO (rama `planeta-noche`, desde el 13-sep-2026)
+## Modo noche v2 — TERMINADO (rama `planeta-noche`, fusionada en `main` el 13-sep-2026)
 
 El usuario reabrió la noche: se rehace **desde cero con el mismo pipeline que
 el día** (generador Python → canvas, giro continuo, misma geografía y
@@ -227,62 +226,10 @@ Hecho y aprobado:
 **Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
 (decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.
 
-Siguiente: revisión general en Zen (temperatura de noche) y móvil, y decidir
-el merge.
-
-## Modo noche — notas VIEJAS (antes del rediseño del día)
-
-El usuario quiere trabajar el modo noche **más adelante** (lo dijo el
-13-sep-2026, al comprobar que el de ahora se ve bien). Todo lo que hay que
-saber para arrancar sin re-preguntar:
-
-**Estado actual (congelado).** `public/zodk-planeta-noche.png`: tira antigua de
-28 fotogramas de 164x161 px (4592x161), PNG indexado. CSS en `global.css`:
-`html.dark .hero-planet` con `aspect-ratio: 280 / 274`, `background-size:
-2800% 100%` y `hero-spin 60s steps(28)` — las mismas reglas que en `main`; el
-canvas de día se oculta en oscuro y `planeta.js` deja de dibujar. El generador
-ya NO regenera la noche (la rama `night` de `cell_index()` y `city_cells()`
-siguen en el código tal cual, por si acaso).
-
-**Por qué está congelado.** En sept 2026, tras unos cambios, el usuario dijo
-"el modo oscuro es un desastre, no toques nada, vuelve a como antes, todos los
-cambios hazlos en el modo día". Desde entonces no se toca. Cuando se retome,
-es él quien lo abre: no cambiar nada de la noche por iniciativa propia.
-
-**Lo que ya se sabe que quiere de noche** (decisiones suyas de sept 2026):
-- Luces repartidas **por densidad de población** (como el logo pequeño), no
-  solo las grandes ciudades: `densidad_luces.py` → `luces.py` (campo 0-3,
-  umbrales por percentil `T1/T2/T3`). Más focos de las grandes ciudades
-  (`CIUDADES`, ≥10 M = bloque) y luces sueltas en islas (`LUCES_SUELTAS`:
-  Honolulu, Reikiavik, San Juan). Las luces se adelgazaron una vez (había
-  demasiadas).
-- Naves con **luces de posición solo de noche** (amarilla en el morro, verde
-  ala derecha, roja ala izquierda); de día, como están.
-- Guiño de noche en el título: el lema en ámbar. Más estrellas solo en oscuro
-  (`.hero-stars::after`).
-- **Aparcado**: aurora boreal en el polo.
-
-**Lo que el día ha enseñado y seguramente querrá también de noche** (hay que
-preguntárselo, no darlo por hecho):
-- Canvas con giro continuo en vez de sprite a saltos (lo pidió al ver los
-  saltos del de día). Mismos píxeles finos (600 px) y 90 s por vuelta.
-- Misma geografía: costas a 0,125°, banquisa con forma (el casquete circular
-  sigue en el sprite de noche viejo), relieve.
-- Estilo pixel art "de ilustración" (rampas con cambio de tono, racimos).
-- ¿Chapas de bandera también de noche? (hoy solo de día, con su ficha de
-  artículos al pasar el ratón).
-- **Hemisferio sur**: pensar aquí cómo llegar a los países del sur (no se ven
-  en el hero; ver punto 7, "Problema para el futuro"). Lo pidió él para
-  cuando se retome la noche.
-
-**Cómo encajaría técnicamente (propuesta, no hecha).** El canvas ya separa
-"material de cada celda" (`planeta-mapa.png`) de "color por material y luz"
-(`planeta-lut.png`). La noche podría ser: otra LUT de noche del mismo mapa
-(tierra/mar/hielo en azules oscuros con sus rampas) + una capa de luces por
-celda (de `luces.py`, en otro PNG o en bits libres del mapa) que se pinta
-encima en ámbar (`GOLD`). Al cambiar de tema, `planeta.js` cambiaría de LUT sin
-descargar otro planeta ni cortar el giro. El sprite de noche viejo se
-retiraría como se retiró el de día.
+Cierre: temperatura de noche en Zen, bien (lo comprobó el usuario). El móvil
+lo prueba en directo tras publicar; si la noche se calienta allí, arreglos
+listos: redibujar la noche a 30 fps en táctil o no pintar los pueblos más
+pequeños.
 
 ## Pendiente
 
