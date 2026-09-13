@@ -192,7 +192,7 @@ article .tiktok a {
   width: min(1900px, 122vw);
   aspect-ratio: 600 / 561;
   transform: translateX(-50%);
-  background: url(/planeta/planeta-quieto.png?v=1) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/planeta-quieto.png?v=2) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
@@ -492,12 +492,10 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   100% { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
 }
 
-/* Al inspeccionar cualquier nave se congela toda la portada. */
+/* Al inspeccionar cualquier nave o chapa de bandera se congela toda la
+   portada (el planeta de día, que es un canvas, lo para planeta.js). */
 .hero-craft:hover { animation-play-state: paused; }
-.hero:has(.hero-craft:hover) .hero-planet,
-.hero:has(.hero-craft:hover) .hero-sparkle,
-.hero:has(.hero-craft:hover) .hero-scroll,
-.hero:has(.hero-craft:hover) .hero-craft {
+.hero:has(.hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within) :is(.hero-planet, .hero-sparkle, .hero-scroll, .hero-craft) {
   animation-play-state: paused;
 }
 
@@ -606,13 +604,81 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 }
 .hero-craft.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
 
+/* --- Chapas de bandera del planeta ------------------------------------ */
+/* Capa con la misma geometría que .hero-planet; dentro, un <div> encima de
+   cada chapa visible (lo coloca el script de index.astro con lo que avisa
+   planeta.js). Al pasar el ratón (o con el foco) despliega la misma ficha que
+   las naves, con los artículos del país. El "puente" es una franja invisible
+   sobre la línea para poder llegar a la ficha sin que se cierre. */
+.hero-banderas {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: min(1900px, 122vw);
+  aspect-ratio: 600 / 561;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta viejo) */
+.hero-bandera {
+  position: absolute;
+  width: calc(13 / 600 * 100%);   /* chapa de 11x7 + contorno, en píxeles del canvas */
+  height: calc(9 / 561 * 100%);
+  pointer-events: auto;
+  outline: none;
+}
+.hero-bandera:is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+.hero-bandera:is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+.hero-bandera:is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+.bandera-puente {
+  position: absolute;
+  top: calc(50% - 16px);
+  left: 100%;
+  width: 92px;
+  height: 32px;
+}
+.hero-bandera.flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+.hero-bandera.flip-x .bandera-puente { left: auto; right: 100%; }
+.hero-bandera.flip-x .craft-specs {
+  left: auto;
+  right: calc(100% + 92px);
+  transform: translateY(-50%) translateX(6px);
+}
+.hero-bandera.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+.bandera-articulos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.bandera-articulos a {
+  display: block;
+  color: #dfe4ea;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.bandera-articulos a:hover,
+.bandera-articulos a:focus-visible { color: #e6c078; }
+.bandera-articulos span {
+  display: block;
+  margin-top: 0.1rem;
+  color: #8b93a0;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 @media (hover: none) {
-  .hero-craft { pointer-events: none; }
+  .hero-craft, .hero-bandera { pointer-events: none; }
   .craft-dossier { display: none; }
 }
 
 @media (max-width: 640px) {
-  .hero-planet { top: 13%; width: 132vw; }
+  .hero-planet, .hero-banderas { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1)); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }
