@@ -803,7 +803,9 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
-  .hero-titulo { top: 46%; }
+  .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
+  /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
+  .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
   .hero-titulo h1 { font-size: clamp(0.95rem, 5.2vw, 1.75rem); white-space: nowrap; } /* "el blog de hegoi márquez" en una sola línea */
   .hero-titulo p {
     font-size: 0.5rem;
@@ -815,7 +817,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 /* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
    genera logo-files/generar-estrellas.py) repetida con background-repeat. Antes
    eran ~50 gradientes radiales apilados en el CSS; la baldosa repetida pinta
-   mucho más barato. En oscuro, una segunda capa desfasada dobla la densidad. */
+   mucho más barato. En oscuro, encima, una baldosa propia con muchas más. */
 .hero-stars {
   position: absolute;
   inset: 0;
