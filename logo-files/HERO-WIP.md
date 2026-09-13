@@ -103,8 +103,22 @@ Hecho y aprobado:
    Probar: `python3 generar-planeta-hero.py --frame 0 prueba.png --noche`
    (o `--ambos` para día y noche de una vez).
 
-Siguiente: luces de ciudades (capa emisiva, pensada a 600 px), después costa /
-hielo / atmósfera de noche, naves, título, y pasar la noche al canvas.
+2. **Luces de ciudades** (`light_cells()`, `LUZ_*` en el generador; "bastante
+   realista"). Datos: GeoNames `cities15000.txt` (gitignored, curl en el
+   generador), ~34.000 ciudades; Natural Earth (`pp10.json`) dejaba EE. UU.
+   casi a oscuras (617 localidades para 27 veces Alemania). Cada ciudad deja
+   una huella en píxeles de pantalla: intensidad (pob/100.000)^0,4 → pueblo
+   1 px tenue, ciudad con halo, ≥3 M núcleo 2×2 casi blanco. Los núcleos que
+   caen en el mismo píxel se suman (áreas metropolitanas); la suma de halos
+   solo da un velo tenue (nivel 1). 6 niveles de ámbar, emisivos (no dependen
+   de la luna); nubes por encima. `LUZ_PAIS`: África subsahariana ×0,5, Corea
+   del Norte ×0,08 (a oscuras), EE. UU. ×2,2 y Canadá ×1,5 (el usuario lo veía
+   flojo). Descartado por el camino: huellas 3×3 en todo pueblo (confeti),
+   dejar que la suma de halos suba a niveles altos (Benelux/Inglaterra
+   quemados en mancha plana naranja).
+
+Siguiente: costa / hielo / atmósfera de noche, naves, título, y pasar la noche
+al canvas (las luces allí: decidir si se estampan por fotograma o se hornean).
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 
