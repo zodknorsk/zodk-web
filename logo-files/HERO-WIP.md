@@ -253,11 +253,25 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
         `now - last >= 15` se colaba algún fotograma de más. Medido: 240/240
         dibujos exactos cada 16,7 ms. ~1,9 ms por dibujo; temperatura en Zen
         bien (lo comprobó el usuario).
-   - **Velocidad: 180 s por vuelta, elegida por el usuario** (probó 90/120/
-     180/240 con botones; 180 queda por defecto en el prototipo). Explicado: más lento = más nítido (menos
+   - **Velocidad: 90 s por vuelta** (elegida por el usuario al ver los píxeles
+     finos de 600 px; con los de 400 px había elegido 180). Ha dicho que quizá
+     más adelante pida 120 s: es solo cambiar `VUELTA`. Explicado: más lento = más nítido (menos
      titileo por segundo) pero no más fluido (el salto sigue siendo de 4,6 px
      de pantalla, solo más espaciado).
-   - **Siguiente idea que le gustó: más resolución (píxeles más pequeños)**.
+   - **Más resolución — HECHO (le encantó: "te está quedando de puta madre")**:
+     `COLS` 600 / `RADIUS` 292,5, costas a 0,125° (`rasterizar.py` 2880x1440),
+     relieve a 0,25° (`elevacion.py` 1440x720 desde el mismo `etopo.tiff`).
+     Parámetros escalados con `KC` (celdas por celda de 0,25°) y `SCALE`
+     (px respecto al de 400): copas/dunas/manchas de mezcla miden lo mismo en
+     píxeles (más finas respecto al planeta); franjas del mar, franja de mezcla
+     y claros miden lo mismo en grados. Línea de costa: anillo oscuro de 2
+     celdas (sigue ≥1 px). Datos del canvas: ~770 KB. Solo se dibujan las filas
+     del canvas que caen en la ventana (1,2 ms/fotograma frente a 3,4).
+     Titileo de costa medido: 0,2 % polo, 0,33 % latitudes medias.
+     Temperatura en Zen: bien. OJO: el sprite completo de 60 fotogramas a
+     600 px saldría de 9000 px de ancho (más que una textura de GPU): si hiciera
+     falta un sprite, bajar `GRID_COLS`.
+     Contexto de la decisión: 
      Es lo que buscaba en parte con la referencia de Owlboy: allí un píxel son
      ~3,7 px de pantalla, aquí 4,6. A 1,5× (canvas de 600 px) quedaría ~3,1 y
      el movimiento sería más fino. Implica: mapa a 0,125° (re-rasterizar
