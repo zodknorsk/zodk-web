@@ -436,6 +436,8 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p {
   text-shadow: 1px 0 0 rgba(3, 4, 8, 0.85), -1px 0 0 rgba(3, 4, 8, 0.85), 0 1px 0 rgba(3, 4, 8, 0.85), 0 -1px 0 rgba(3, 4, 8, 0.85), 0 0 8px var(--nvg-brillo);
 }
 html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-giro:not(:hover, :focus-visible) { color: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [fill="#d3d3d3"] { fill: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: var(--nvg); }
 html.dark .hero-mgrs.fijada {
   color: #06140a;
   background: var(--nvg);
@@ -883,23 +885,27 @@ html.dark .hero-stars::after { display: block; }
   50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
 }
 
-/* Botón "otro objeto": en el espacio profundo, arriba a la izquierda sobre el
-   limbo. Trae otro objeto al hero (initObjeto en Head.astro). El interior es un
-   PLACEHOLDER: SVG de Excalidraw del usuario (cuadrado + flecha) con su hélice
-   del E-2 dentro, desde botonSvg en index.astro; el <button> no pone borde ni
-   fondo. Lo revela el JS (nace con [hidden]); sin JS no aparece. */
+/* Botón "otro objeto": la hélice del E-2 del usuario (Excalidraw, heliceSvg en
+   index.astro), sola y sin recuadro, bajo la esquina inferior izquierda del
+   marco del título, en espejo con play/pausa y la coordenada. Trae otro objeto
+   al hero (initObjeto en Head.astro). Lo revela el JS (nace con [hidden]); sin
+   JS no aparece. Va dentro del título, así que se desvanece con él al bajar. */
 .hero-cambio {
   position: absolute;
-  left: 9%;
-  top: 9%;
+  left: -4px;
+  top: calc(100% + 5px);
   z-index: 3;
-  width: 150px;
+  width: 34px;
   padding: 0;
   border: 0;
   background: none;
   line-height: 0;
   cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
 }
+.hero-cambio .btn-caja,
+.hero-cambio .btn-flecha { display: none; }
 
 .hero-cambio > svg {
   display: block;
@@ -938,7 +944,7 @@ html.dark .hero-stars::after { display: block; }
 .hero-cambio:active .btn-caja { transform: translateY(4px); }
 
 @media (max-width: 640px) {
-  .hero-cambio { left: 5%; top: 4%; width: 118px; }
+  .hero-cambio { width: 30px; }
 }
 
 /* Cabecera de la portada, tres estados:
