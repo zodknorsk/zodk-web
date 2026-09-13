@@ -96,3 +96,13 @@ Tras el inicio de la crisis migratoria, Pese a que el Gobierno español evitó e
 - [07 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-06#07-de-septiembre)
 - [08 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-06#08-de-septiembre)
 - [09 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-06#09-de-septiembre)
+
+## Semana 7 (10 - 16 sep)
+
+- [10 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#10-de-septiembre)
+- [11 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#11-de-septiembre)
+- [12 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#12-de-septiembre)
+- [13 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#13-de-septiembre)
+- [14 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#14-de-septiembre)
+- [15 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#15-de-septiembre)
+- [16 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#16-de-septiembre)
