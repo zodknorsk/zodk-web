@@ -61,6 +61,7 @@ const eventos = todosEventos
       role="img"
       aria-label="La Tierra en pixel art, hemisferio norte, girando"
     >
+      <canvas class="hero-planet-canvas" aria-hidden="true"></canvas>
     </div>
     <div class="hero-titulo">
       <h1>el blog de <span>hegoi márquez</span></h1>
@@ -256,6 +257,34 @@ const eventos = todosEventos
     </ul>
   </section>
 </PageLayout>
+
+<script>
+  // Planeta del hero en <canvas> (src/scripts/planeta.js). La web cambia de
+  // página sin recargar (ClientRouter), así que se monta en cada llegada a la
+  // portada y se desmonta al salir. Se congela, como el resto del hero, con el
+  // ratón sobre una nave.
+  import { montarPlaneta } from "../scripts/planeta.js";
+
+  let planeta: { desmontar(): void } | null = null;
+
+  document.addEventListener("astro:page-load", async () => {
+    const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
+    if (!cv) return;
+    const hero = cv.closest(".hero");
+    const p = await montarPlaneta(cv, {
+      pausado: () => !!hero?.querySelector(".hero-craft:hover"),
+      alPintar: () => cv.parentElement?.classList.add("planeta-listo"),
+    });
+    if (!cv.isConnected) return p.desmontar();   // se salió de la portada mientras cargaba
+    planeta?.desmontar();
+    planeta = p;
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    planeta?.desmontar();
+    planeta = null;
+  });
+</script>
 
 <style>
   .social-bar {
