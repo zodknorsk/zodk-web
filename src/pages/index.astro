@@ -10,6 +10,7 @@ import FormattedDate from "@components/FormattedDate.astro";
 import Link from "@components/Link.astro";
 import { SITE, HOME, STACK, CONTACTO } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
+import { PAISES } from "@data/paises";
 
 // El hero muestra UN objeto de AERONAVES a la vez (dron, avión o satélite),
 // elegido al azar en el navegador con "bolsa barajada" (se recorren todos antes
@@ -37,6 +38,25 @@ const notas = (await getCollection("notas"))
   .slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
 
 const todosEventos = await getCollection("eventos");
+
+// Chapas de bandera del planeta: un país sale si algún artículo lleva una de
+// sus etiquetas (src/data/paises.ts). Al pasar el ratón por la chapa se
+// despliega una ficha, como la de las naves, con esos artículos. Las notas
+// cuentan una a una; los eventos, por su página índice.
+const articulos = [
+  ...(await getCollection("notas"))
+    .filter((n) => !n.data.draft)
+    .map((n) => ({ titulo: n.data.title, url: `/notas/${n.slug}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
+  ...todosEventos
+    .filter((e) => e.data.kind === "index" && !e.data.draft)
+    .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
+];
+const banderasBlog = PAISES.map((p) => ({
+  ...p,
+  articulos: articulos
+    .filter((a) => a.tags.some((t) => p.etiquetas.includes(t.toLowerCase())))
+    .sort((a, b) => b.fecha.valueOf() - a.fecha.valueOf()),
+})).filter((p) => p.articulos.length > 0);
 const eventos = todosEventos
   .filter((e) => e.data.kind === "index" && !e.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -61,13 +81,48 @@ const eventos = todosEventos
       role="img"
       aria-label="La Tierra en pixel art, hemisferio norte, girando"
     >
+      <canvas class="hero-planet-canvas" aria-hidden="true"></canvas>
+    </div>
+    <div class="hero-banderas">
+      {banderasBlog.map((p) => (
+        <div class="hero-bandera" data-iso={p.iso} tabindex="0" hidden aria-label={`${p.nombre}: artículos relacionados`}>
+          <div class="craft-dossier">
+            <span class="craft-linea" />
+            <span class="bandera-puente" />
+            <div class="craft-specs">
+              <div class="craft-specs-titulo">{p.nombre}</div>
+              <div class="craft-clase">
+                {p.articulos.length === 1 ? "1 artículo" : `${p.articulos.length} artículos`}
+              </div>
+              <ul class="bandera-articulos">
+                {p.articulos.map((a) => (
+                  <li>
+                    <a href={a.url}>{a.titulo}</a>
+                    <span>{a.tipo} · <FormattedDate date={a.fecha} /></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
     <div class="hero-titulo">
       <h1>el blog de <span>hegoi márquez</span></h1>
       <p>
         <span>Historia</span> · <span>Inteligencia</span> · <span>OSINT</span>
       </p>
+      <div class="hero-marco">
+        <div class="hero-lectura">
+          <button class="hero-giro" type="button" aria-label="Parar el giro del planeta" aria-pressed="false">
+            <svg class="icono-pausa" viewBox="0 0 7 9" aria-hidden="true"><rect x="1" y="1" width="2" height="7" /><rect x="4" y="1" width="2" height="7" /></svg>
+            <svg class="icono-play" viewBox="0 0 6 9" aria-hidden="true"><rect x="1" y="1" width="1" height="7" /><rect x="2" y="2" width="1" height="5" /><rect x="3" y="3" width="1" height="3" /><rect x="4" y="4" width="1" height="1" /></svg>
+          </button>
+          <span class="hero-mgrs" aria-live="off">-- --- ----- -----</span>
+        </div>
+      </div>
     </div>
+    <div class="hero-mira" aria-hidden="true" hidden></div>
     <div
       class:list={[
         "hero-craft",
@@ -256,6 +311,171 @@ const eventos = todosEventos
     </ul>
   </section>
 </PageLayout>
+
+<script>
+  // Planeta del hero en <canvas> (src/scripts/planeta.js). La web cambia de
+  // página sin recargar (ClientRouter), así que se monta en cada llegada a la
+  // portada y se desmonta al salir. Se congela, como el resto del hero, con el
+  // ratón sobre una nave.
+  import { montarPlaneta } from "../scripts/planeta.js";
+  import { mgrs } from "../scripts/mgrs.js";
+
+  let planeta: { desmontar(): void } | null = null;
+  let quitaMira: (() => void) | null = null;
+
+  // Mira y coordenada MGRS: con ratón, sobre el planeta el cursor pasa a ser
+  // una mira y bajo el marco del título sale la coordenada del punto que
+  // apunta (cambia también con el ratón quieto, porque el planeta gira).
+  // Fuera del planeta: guiones. Sobre una nave o una chapa, la mira se oculta
+  // y la coordenada se queda congelada, como el resto del hero.
+  // Clic en el planeta: se clava una X (gira con él) y la coordenada se queda
+  // fija en ese punto, resaltada. Clic en otro sitio del planeta: la X se
+  // mueve. Clic sobre la X o Esc: se quita y la lectura vuelve a seguir al
+  // ratón.
+  const VACIO = "-- --- ----- -----";
+  type Geo = { lat: number; lon: number };
+  type Planeta = {
+    geo(x: number, y: number): Geo | null;
+    setMarca(p: Geo | null): void;
+    posMarca(): { x: number; y: number } | null;
+    setParado(b: boolean): void;
+  };
+  function montarMira(hero: HTMLElement, p: Planeta) {
+    const lect = hero.querySelector<HTMLElement>(".hero-mgrs");
+    const mira = hero.querySelector<HTMLElement>(".hero-mira");
+    if (!lect || !mira || !matchMedia("(hover: hover) and (pointer: fine)").matches) return () => {};
+    let ptr: { x: number; y: number; ocupado: boolean } | null = null;
+    let fijo: string | null = null;              // coordenada de la X, si hay
+    const escribe = (txt: string) => {
+      if (lect.textContent !== txt) lect.textContent = txt;
+      lect.classList.toggle("fijada", fijo !== null);
+    };
+    const actualiza = () => {
+      if (ptr?.ocupado) {                          // ficha abierta: todo quieto
+        mira.hidden = true;
+        hero.classList.remove("apuntando");
+        return;
+      }
+      const g = ptr ? p.geo(ptr.x, ptr.y) : null;
+      escribe(fijo ?? (g ? mgrs(g.lat, g.lon) : VACIO));
+      mira.hidden = !g;
+      hero.classList.toggle("apuntando", !!g);
+      if (g && ptr) {
+        const r = hero.getBoundingClientRect();
+        mira.style.left = `${ptr.x - r.left}px`;
+        mira.style.top = `${ptr.y - r.top}px`;
+      }
+    };
+    const mueve = (e: PointerEvent) => {
+      const t = e.target as Element | null;
+      ptr = { x: e.clientX, y: e.clientY, ocupado: !!t?.closest(".hero-craft, .hero-bandera, .hero-cambio, a, button") };
+      actualiza();
+    };
+    const sale = () => { ptr = null; actualiza(); };
+    const quita = () => { fijo = null; p.setMarca(null); actualiza(); };
+    const clic = (e: MouseEvent) => {
+      if ((e.target as Element | null)?.closest(".hero-craft, .hero-bandera, a, button")) return;
+      const g = p.geo(e.clientX, e.clientY);
+      if (!g) return;
+      const x = p.posMarca();
+      if (fijo && x && Math.hypot(x.x - e.clientX, x.y - e.clientY) < 16) return quita();   // clic sobre la X
+      fijo = mgrs(g.lat, g.lon);
+      p.setMarca(g);
+      actualiza();
+    };
+    const tecla = (e: KeyboardEvent) => { if (e.key === "Escape" && fijo) quita(); };
+    hero.addEventListener("pointermove", mueve);
+    hero.addEventListener("pointerleave", sale);
+    hero.addEventListener("click", clic);
+    document.addEventListener("keydown", tecla);
+    window.addEventListener("scroll", actualiza, { passive: true });
+    (hero as HTMLElement & { __actualizaMira?: () => void }).__actualizaMira = actualiza;
+    return () => {
+      hero.removeEventListener("pointermove", mueve);
+      hero.removeEventListener("pointerleave", sale);
+      hero.removeEventListener("click", clic);
+      document.removeEventListener("keydown", tecla);
+      window.removeEventListener("scroll", actualiza);
+      hero.classList.remove("apuntando");
+    };
+  }
+
+  // Botón de play/pausa junto a la coordenada: para y reanuda el giro (el del
+  // canvas de día y la animación del planeta de noche). Al cargar, siempre
+  // gira.
+  function montarGiro(hero: HTMLElement, p: Planeta) {
+    const b = hero.querySelector<HTMLButtonElement>(".hero-giro");
+    if (!b) return () => {};
+    const pon = (parado: boolean) => {
+      p.setParado(parado);
+      hero.classList.toggle("giro-parado", parado);
+      b.setAttribute("aria-pressed", String(parado));
+      b.setAttribute("aria-label", parado ? "Reanudar el giro del planeta" : "Parar el giro del planeta");
+    };
+    const clic = () => pon(!hero.classList.contains("giro-parado"));
+    pon(false);
+    b.addEventListener("click", clic);
+    return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
+  }
+
+  document.addEventListener("astro:page-load", async () => {
+    const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
+    if (!cv) return;
+    const hero = cv.closest<HTMLElement>(".hero");
+
+    // Chapas: cada una lleva encima un <div> que reacciona al ratón (y al
+    // teclado) y despliega la ficha de artículos; el planeta avisa en cada
+    // dibujo de dónde queda cada chapa visible y aquí se coloca su <div>.
+    const chapas = new Map(
+      [...document.querySelectorAll<HTMLElement>(".hero-bandera")].map((el) => [el.dataset.iso ?? "", el]),
+    );
+    for (const el of chapas.values()) {
+      const lado = () => {
+        const r = el.getBoundingClientRect();
+        el.classList.toggle("flip-x", r.right + 380 > window.innerWidth);   // la ficha no cabe a la derecha
+      };
+      el.addEventListener("mouseenter", lado);
+      el.addEventListener("focus", lado);
+    }
+    const alMoverBanderas = (lista: { iso: string; x: number; y: number }[], W: number, H: number) => {
+      const vistas = new Set<string>();
+      for (const { iso, x, y } of lista) {
+        const el = chapas.get(iso);
+        if (!el) continue;
+        vistas.add(iso);
+        el.style.left = `${(x / W) * 100}%`;
+        el.style.top = `${(y / H) * 100}%`;
+        el.hidden = false;
+      }
+      for (const [iso, el] of chapas) {
+        if (!vistas.has(iso) && !el.matches(":hover, :focus-within")) el.hidden = true;
+      }
+    };
+
+    const p = await montarPlaneta(cv, {
+      pausado: () => !!hero?.querySelector(".hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within"),
+      alPintar: () => cv.parentElement?.classList.add("planeta-listo"),
+      banderas: [...chapas.keys()],
+      alMoverBanderas,
+      alDibujar: () => (hero as (HTMLElement & { __actualizaMira?: () => void }) | null)?.__actualizaMira?.(),
+    });
+    if (!cv.isConnected) return p.desmontar();   // se salió de la portada mientras cargaba
+    planeta?.desmontar();
+    quitaMira?.();
+    planeta = p;
+    if (hero) {
+      const q1 = montarMira(hero, p), q2 = montarGiro(hero, p);
+      quitaMira = () => { q1(); q2(); };
+    }
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    planeta?.desmontar();
+    quitaMira?.();
+    planeta = null;
+    quitaMira = null;
+  });
+</script>
 
 <style>
   .social-bar {

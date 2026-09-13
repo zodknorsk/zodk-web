@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: planeta en canvas</title>
+<!--
+  Banco de pruebas del planeta del hero: el mismo módulo (src/scripts/planeta.js)
+  y los mismos datos (public/planeta/) que la portada, sin el resto de la web.
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-canvas/
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a; overflow: hidden;
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  .hero-planet { position: absolute; left: 50%; top: 12%; width: min(1900px, 122vw);
+    aspect-ratio: 600 / 585; transform: translateX(-50%); image-rendering: pixelated; }
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 1.6; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="cv" class="hero-planet"></canvas>
+<div id="panel">
+  vuelta: <button data-v="90">90 s (elegida)</button> <button data-v="120">120 s</button>
+  <button data-v="180">180 s</button> <button data-v="240">240 s</button> <span id="vel"></span>
+</div>
+<script type="module">
+import { montarPlaneta } from "../../src/scripts/planeta.js";
+
+const p = await montarPlaneta(document.getElementById("cv"), { base: "../../public/planeta/" });
+window.__planeta = p;                  // para depurar desde la consola (p.draw(rot), p.P…)
+const vel = document.getElementById("vel");
+for (const b of document.querySelectorAll("button[data-v]")) {
+  b.onclick = () => { p.setVuelta(+b.dataset.v); vel.textContent = `→ ${b.dataset.v} s por vuelta`; };
+}
+vel.textContent = "→ 90 s por vuelta";
+</script>
+</body>
+</html>
