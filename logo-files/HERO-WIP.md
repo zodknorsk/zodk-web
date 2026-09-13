@@ -278,6 +278,22 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      Natural Earth, relieve de `etopo.tiff` más fino), recalibrar en grados
      copas/dunas/franjas para que sigan midiendo lo mismo en píxeles, textura
      ~2880×1440 y 2,25× más píxeles que dibujar (vigilar temperatura en Zen).
+   - **Polo norte: banquisa con forma (le gustó "cómo ha quedado")**. Antes,
+     `rasterizar.py` convertía en hielo todo el mar >82°N: círculo perfecto con
+     línea de costa. Ahora `ICE_WATER_LAT` está desactivado y el generador
+     dibuja la banquisa (`PACK`, terreno 3): borde por longitud (`PACK_EDGE`,
+     extensión de principios de verano: cuenca ártica hasta las costas, este de
+     Groenlandia hasta ~70°N, Barents/Svalbard ~79-80°N), roto en témpanos en
+     una franja (`PACK_FRINGE`), placas grandes de hielo viejo/joven
+     (`PACK_OLD`/`PACK_YOUNG`). Sin línea de costa ni franjas turquesa: la
+     tierra que toca (Groenlandia, islas) conserva la suya y se distingue
+     (pedido del usuario: "que se diferencie ligeramente la isla del hielo").
+     Lecciones: el ruido de la banquisa va en coordenadas POLARES (`_pnoise`),
+     en lat/lon salían rayas en estrella desde el polo; punteado de sombra
+     sobre hielo a `ICE_DITHER` = 0,35 (a 1 parecía estática, a 0 dejaba una
+     línea recta cruzando Groenlandia); en el canvas, en mipmaps de nivel ≥3
+     la costa ya no gana (si no, islotes árticos salpicaban el polo de negro);
+     grietas de agua probadas y quitadas (quedaban como puntos sueltos).
    - Falta después: integrar el canvas en el hero (`index.astro`,
      `global.css`, `Head.astro`: pausar fuera de pantalla, `prefers-reduced-
      motion` → planeta quieto, sprite o imagen fija de respaldo sin JS) y decidir

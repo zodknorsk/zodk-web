@@ -71,12 +71,17 @@ let lvTotal = MW * MH;
 for (let L = 1; L <= LMAX; L++) { lvOff.push(lvTotal); lvW.push(MW >> L); lvTotal += (MW >> L) * MH; }
 const lv = new Uint16Array(lvTotal);
 lv.set(mat, 0);
+// En los niveles gruesos (texel de 8+ celdas, cerca del polo) la línea de costa
+// ya no gana: si no, cualquier islote del Ártico pintaba el píxel entero de
+// oscuro y el polo salía salpicado. Ahí solo tierra/hielo > mar.
+const PRIO_LO = PRIO.map((p) => Math.min(p, 1));
 for (let L = 1; L <= LMAX; L++) {
   const w = lvW[L], pw = lvW[L - 1], o = lvOff[L], po = lvOff[L - 1];
+  const P = L >= 3 ? PRIO_LO : PRIO;
   for (let r = 0; r < MH; r++) {
     for (let c = 0; c < w; c++) {
       const a = lv[po + r * pw + 2 * c], b = lv[po + r * pw + 2 * c + 1];
-      lv[o + r * w + c] = PRIO[b] > PRIO[a] ? b : a;
+      lv[o + r * w + c] = P[b] > P[a] ? b : a;
     }
   }
 }
@@ -122,9 +127,9 @@ for (let sy = 0; sy < H; sy++) {
     const termT = smooth(D.TERM_A, D.TERM_B, lam);
     const limbT = smooth(0.72, 1, dc);
     const ditherW = Math.max(1 - Math.abs(termT * 2 - 1), limbT);
-    const kFor = (limbMul) => {
+    const kFor = (limbMul, dw) => {
       const bright = (D.NIGHT + (1 - D.NIGHT) * termT) * (1 - D.LIMB_K * limbT * limbMul);
-      const k = Math.floor(Math.log(Math.max(bright, 1e-3)) / D.LNSTEP + 0.5 + (dth - 0.5) * 0.8 * ditherW);
+      const k = Math.floor(Math.log(Math.max(bright, 1e-3)) / D.LNSTEP + 0.5 + (dth - 0.5) * 0.8 * dw);
       return Math.max(0, Math.min(KN - 1, k - KMIN));
     };
     const n = idx.length;
@@ -136,7 +141,8 @@ for (let sy = 0; sy < H; sy++) {
     const lx = lonAt(sx + 1, sy) ?? lonAt(sx - 1, sy), ly = lonAt(sx, sy + 1) ?? lonAt(sx, sy - 1);
     const fx = Math.max(lx === null ? 0 : Math.abs(wrapd(lx - lon)), ly === null ? 0 : Math.abs(wrapd(ly - lon))) / 360 * MW;
     fxOf.push(fx);
-    kN.push(kFor(1)); kI.push(kFor(0.7));
+    // hielo (continental o banquisa): el limbo le oscurece menos y punteado suave
+    kN.push(kFor(1, ditherW)); kI.push(kFor(0.7, ditherW * D.ICE_DITHER));
     let haloA = 0, cov = 1;
     if (dc > 0.93 && lam > 0) {
       const halo = smooth(0.93, 1, dc) * smooth(0, 0.45, lam);

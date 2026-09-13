@@ -14,7 +14,8 @@ import json, math, sys, time
 
 GRID_W = 2880           # columnas: 0.125 grados (antes 1440 = 0.25; subido para el canvas a 600 px)
 GRID_H = 1440           # filas
-ICE_WATER_LAT = 82.0    # mar por encima de esta latitud -> hielo
+ICE_WATER_LAT = 91.0    # (desactivado) el mar ya no se vuelve hielo aquí: la banquisa la
+                        # dibuja generar-planeta-hero.py con forma real (antes, >82N = círculo perfecto)
 ICE_LAND_LAT  = 75.0    # tierra por encima de esta latitud -> hielo
 # Groenlandia como hielo (su silueta girando anima el polo). Solo de 70N hacia
 # arriba: el sur y las costas quedan verdes/tundra, el casquete no come tanto.
