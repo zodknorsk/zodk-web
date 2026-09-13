@@ -16,7 +16,7 @@
 
 // Subir al regenerar public/planeta/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const PLANETA_V = 6;
+export const PLANETA_V = 7;
 
 const cargas = new Map();              // base -> Promise de datos preparados (una vez por página)
 
