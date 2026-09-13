@@ -86,6 +86,11 @@ DESIERTOS = [   # (lat0, lat1, lon0, lon1)
     (26, 40, -116, -101),   # SO de EE. UU. / N de México
     (-42, -30, -71, -64),   # Patagonia seca
 ]
+# Sabanas dentro de la franja ecuatorial (que por latitud sale selva): pasan a
+# estepa/sabana seca (bioma 3), con el mismo borde difuminado que los desiertos.
+SABANAS = [     # (lat0, lat1, lon0, lon1)
+    (-12, 5, 29.5, 42),     # África oriental: Kenia, Tanzania, Uganda (el Congo sigue selva)
+]
 
 # noche
 N_OCEAN = (0x0b, 0x16, 0x25)
@@ -244,8 +249,11 @@ for r in range(MH):
             for a0, a1, o0, o1 in DESIERTOS:
                 m = min(lat - a0, a1 - lat, lon - o0, o1 - lon)
                 des = max(des, m)
+            sab = max(min(lat - a0, a1 - lat, lon - o0, o1 - lon) for a0, a1, o0, o1 in SABANAS)
             if des > 2.0 or (des > -4.0 and nf * 9.0 < des):
                 b = 2
+            elif sab > 2.0 or (sab > -4.0 and nf * 9.0 < sab):
+                b = 3
             else:
                 la = abs(lat) + nf * 4.0          # frontera latitudinal ondulada
                 if la < 12:

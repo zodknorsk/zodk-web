@@ -416,7 +416,9 @@ retiraría como se retiró el de día.
      8. Sabana (`SAV`): en la franja de mezcla desierto/verde, copas más
         sueltas y suelo de hierba seca a manchas (no mezclando colores).
      9. Desiertos nuevos en `DESIERTOS`: Omán/Emiratos/este de Yemen y Cuerno
-        de África (salían estepa verde y selva).
+        de África (salían estepa verde y selva). Y `SABANAS` (cajas que pasan
+        a estepa/sabana seca dentro de la franja ecuatorial, que por latitud
+        sale selva): de momento África oriental (Kenia, Tanzania, Uganda).
      10. Con una ficha de país abierta, `.hero-banderas` sube a z-index 4 (una
         nave que pasaba por delante la tapaba).
    - **Problema para el futuro (lo señaló el usuario): hemisferio sur.** El
