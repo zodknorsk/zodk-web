@@ -2,9 +2,9 @@
 title: Sobre la Ley de nietos
 date: '2026-09-03'
 description: >-
-  Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la
-  Ley de Memoria Democrática (LMD) aprobada en España en octubre de 2022.…
-updated: '2026-09-08'
+  Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la Ley de
+  Memoria Democrática (LMD) aprobada en España en octubre de 2022. Permite a…
+updated: '2026-09-13'
 tags:
   - españa
 ---
@@ -12,7 +12,7 @@ tags:
 
 ![](./pasted-image-20260907210847.png)
 
-Vamos con lo básico, la 'Ley de Nietos' es una una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
+Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
 
 La Ley de Memoria Democrática fue una iniciativa del Gobierno de Pedro Sánchez, en coalición con Unidas Podemos, aprobada en la legislatura anterior, entrando en vigor en octubre de 2022, y salió adelante sin un consenso amplio, incluyendo [**varias concesiones a EH Bildu**](https://www.elindependiente.com/espana/2022/06/28/bildu-facilita-al-gobierno-sacar-adelante-la-ley-de-memoria-democratica/), gracias a cuyos votos se aprobó. Es decir: sin el apoyo del PP ni de Vox, y dependiendo de los votos de Bildu para sacarla adelante.
 
@@ -70,10 +70,11 @@ Por ejemplo, el municipio Ventrosa de La Rioja, el censo CERA multiplica por 6,5
 </blockquote>
 
 
->**162 municipios españoles ya tienen tantos o más electores en el extranjero que residente**s.
+>**162 municipios españoles ya tienen tantos o más electores en el extranjero que residentes**.
 
-La realidad es clara: la poca transparencia, el trasfondo del que venimos, los casos de corrupción, la cantidad de irregularidades en el voto por correo de 2023 sumado a elecciones en verano con todo el país en la playa, una ley hecha 'a medida', suprimir el voto rogado y que los mecanismos de la ley permiten que estos 'nuevos espaañoles' voten donde quieran... con todo esto afirmo que en verano de 2027 se está **cocinando** una ingeniería electoral que dará los votos necesarios al PSOE para ganar las elecciones. 
+La realidad es clara: la poca transparencia, el trasfondo del que venimos, los casos de corrupción, la cantidad de irregularidades en el voto por correo de 2023 sumado a elecciones en verano con todo el país en la playa, una ley hecha 'a medida', suprimir el voto rogado y que los mecanismos de la ley permiten que estos 'nuevos españoles' voten donde quieran... con todo esto afirmo que en verano de 2027 se está **cocinando** una ingeniería electoral que dará los votos necesarios al PSOE para ganar las elecciones. 
 
+---
 *Actualización 08 de septiembre de 2026*
 
 - [El Tribunal Supremo estima la medida cautelar en relación con el acuerdo de la Junta Electoral Central sobre inscripciones en el Censo Electoral de Residentes Ausentes](https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Noticias-Judiciales/El-Tribunal-Supremo-estima-la-medida-cautelar-en-relacion-con-el-acuerdo-de-la-Junta-Electoral-Central-sobre-inscripciones-en-el-Censo-Electoral-de-Residentes-Ausentes)
@@ -92,8 +93,128 @@ La realidad es clara: la poca transparencia, el trasfondo del que venimos, los c
 </blockquote>
 
 
+## Reacciones post-paralización de la ley de nietos
+
+
+<blockquote class="tweet" data-tweet-id="2097356256272892203">
+  <a class="tweet-author" href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074088316748615680-07xromh__bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">PSOE</span>
+    <span class="tweet-handle">@PSOE</span>
+  </a>
+  <div class="tweet-text">El Gobierno de España no comparte la posición del Tribunal Supremo sobre la Ley de Nietos, porque supone suspender el derecho de voto de miles de españoles.<br>
+<br>
+Es urgente dar prioridad a esta cuestión y encontrar una solución antes de los procesos electorales de 2027.<br>
+<br>
+Estamos […]</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener"><img src="/tweets/img-fndrimtki7kxomyc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097589797321683049">
+  <a class="tweet-author" href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1635669343831818242-tbdyh1k6_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">patxilopez</span>
+    <span class="tweet-handle">@patxilopez</span>
+  </a>
+  <div class="tweet-text">La Ley de Nietos no es solo un trámite legal, es justicia histórica y un abrazo de nuestro país a quienes tuvieron que marcharse.<br>
+<br>
+¿Por qué el PP celebra la sentencia del TS que les niega el derecho a voto?<br>
+<br>
+Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener"><img src="/tweets/img-whaeuqbq7tj_fkij.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097639149889319023">
+  <a class="tweet-author" href="https://x.com/eldiarioes/status/2097639149889319023" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1677814602992701441-jstj6omo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">elDiario.es</span>
+    <span class="tweet-handle">@eldiarioes</span>
+  </a>
+  <div class="tweet-text">Más Madrid pedirá al Defensor del Pueblo llevar al Constitucional la decisión del Supremo sobre la 'ley de nietos'</div>
+  <a class="tweet-date" href="https://x.com/eldiarioes/status/2097639149889319023" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2098125703350825360">
+  <a class="tweet-author" href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074030128145850371-8ggw6wwg_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Félix Bolaños</span>
+    <span class="tweet-handle">@felixbolanosg</span>
+  </a>
+  <div class="tweet-text">Hoy vamos a hablar de la Ley de Nietos.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener"><img src="/tweets/img-ca6n07gdclvlhrod.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener">10 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097953769266827302">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2097953769266827302" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">👉 El Gobierno busca magistrados afines en el Supremo para tratar de llevar al Pleno la suspensión de la Ley de Nietos.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2097953769266827302" target="_blank" rel="noopener">10 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2098788385603174686">
+  <a class="tweet-author" href="https://x.com/PSOE/status/2098788385603174686" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074088316748615680-07xromh__bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">PSOE</span>
+    <span class="tweet-handle">@PSOE</span>
+  </a>
+  <div class="tweet-text">Queremos españoles con los mismos derechos. No españoles de primera y de segunda.<br>
+<br>
+🗳️ Vivas donde vivas, tienes derecho a votar. Pero el PP y Vox quieren impedir que miles de españoles puedan ejercerlo.</div>
+  <img class="tweet-media" src="/tweets/media-hsbhjnww4aw7xln.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/PSOE/status/2098788385603174686" target="_blank" rel="noopener">12 de septiembre de 2026</a>
+</blockquote>
+
+
 
 ---
+*Actualización 10 de septiembre de 2026* 
+
+
+<blockquote class="tweet" data-tweet-id="2098032814515990601">
+  <a class="tweet-author" href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2013261416153722880-tqll1glg_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL PAÍS</span>
+    <span class="tweet-handle">@el_pais</span>
+  </a>
+  <div class="tweet-text">🔴 ÚLTIMA HORA | El Supremo ve en la ‘ley de nietos’ un “peligro fundado, real y serio” de afectar a la “objetividad” de las elecciones</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener"><img src="/tweets/tweet_video_thumb-g7wwf6gwsaakw_q.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener">10 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2098016793860145418">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2098016793860145418" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 Perelló al Gobierno: &quot;No es admisible que la descalificación pública se convierta en un medio de presión a los jueces&quot; <br>
+<br>
+✍️ Por <a href="https://x.com/Maria_peral" target="_blank" rel="noopener">@Maria_peral</a></div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2098016793860145418" target="_blank" rel="noopener">10 de septiembre de 2026</a>
+</blockquote>
+
+
+
+## Multimedia y noticias relacionadas
+
 
 
 <blockquote class="tweet" data-tweet-id="2069370079205007816">
@@ -128,7 +249,11 @@ Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (
 </blockquote>
 
 
+
 **NOTICIAS RELACIONADAS**
+---
+
+
 - Una gran foto de Sánchez preside las asesorías del PSOE para instruir sobre la nacionalidad ([fuente](https://okdiario.com/espana/gran-foto-sanchez-preside-asesorias-del-psoe-instruir-sobre-nacionalidad-18905875?utm_medium=social&utm_source=Twitter#Echobox=1782971560-1))
 - Los consulados admiten que nacionalizan hasta tataranietos gracias a la instrucción de la hermana de Puente ([fuente](https://okdiario.com/espana/consulados-admiten-que-nacionalizan-hasta-tataranietos-gracias-instruccion-hermana-puente-18895791#Echobox=1783057888-1))
 - Una juez abre diligencias contra la hermana de Puente por prevaricación en la 'ley de nietos' ([fuente](https://theobjective.com/espana/tribunales/2026-07-22/juez-diligencias-hermana-puente-prevaricacion-ley-nietos/))
@@ -143,3 +268,7 @@ Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (
 - Una asociación de memoria histórica presenta una batería de iniciativas contra la 'ley de nietos' ([fuente](https://theobjective.com/espana/politica/2026-08-17/asociacion-memoria-historica-presenta-bateria-iniciativas-ley-de-nietos/))
 - El PP pide explicaciones al Gobierno tras aumentar un 30% el censo de Madrid  ([fuente](https://okdiario.com/espana/pp-pide-explicaciones-gobierno-aumentar-30-censo-madrid-ley-nietos-20152535#Echobox=1787312736-1))
 - El PSOE vigiló en los consulados que no quedase ningún descendiente sin nacionalizar ([fuente](https://okdiario.com/espana/psoe-vigilo-consulados-que-no-quedase-ningun-descendiente-sin-nacionalizar-18948428#Echobox=1787811175-1))
+- El Supremo decidirá de urgencia antes de las elecciones si 2,3 millones de 'nietos' pueden votar ([fuente](https://www.elmundo.es/espana/2026/09/08/6aa04d76fdddfff9658b45ba.html))
+- Los nacionalizados por la 'ley de nietos' podrán usar la sanidad pública sin residir en España ([fuente](https://theobjective.com/espana/2026-09-10/ley-nietos-sanidad-publica-turismo-sanitario/))
+- El Congreso devuelve la nacionalidad a los saharauis entre reproches al PSOE por su "sumisión" a Marruecos ([fuente](https://www.elespanol.com/espana/politica/20260910/congreso-devuelve-nacionalidad-saharauis-reproches-psoe-sumision-marruecos/1003744378830_0.html))
+- Sofía Puente intenta anular la querella por la Ley de Nietos por ser un caso ya juzgado ([fuente](https://www.libertaddigital.com/espana/2026-09-11/sofia-puente-intenta-anular-la-querella-por-la-ley-de-nietos-admitiendo-que-su-instruccion-pudo-ser-desacertada-7458577/))
