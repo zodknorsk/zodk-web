@@ -267,14 +267,14 @@ const socialImageURL = new URL(image, Astro.site);
     }
 
     let ultimo = -1;
-    try { ultimo = Number(localStorage.getItem("hero-objeto")); } catch (e) {}
+    try { ultimo = Number(localStorage.getItem("hero-objeto")); } catch { /* localStorage no disponible */ }
     if (!Number.isInteger(ultimo) || ultimo < 0 || ultimo >= pool.length) {
       ultimo = -1;
     }
 
     let actual = sacaIndice(ultimo);
     pinta(pool[actual]);
-    try { localStorage.setItem("hero-objeto", String(actual)); } catch (e) {}
+    try { localStorage.setItem("hero-objeto", String(actual)); } catch { /* localStorage no disponible */ }
     // Revela el objeto: quita el ocultado de html.js y deja que el CSS lo funda
     // (instantaneo con reduced-motion).
     if (sinMovimiento) {
@@ -291,7 +291,7 @@ const socialImageURL = new URL(image, Astro.site);
       const aplica = () => {
         actual = siguiente;
         pinta(pool[actual]);
-        try { localStorage.setItem("hero-objeto", String(actual)); } catch (e) {}
+        try { localStorage.setItem("hero-objeto", String(actual)); } catch { /* localStorage no disponible */ }
         el.classList.remove("rot-oculta");
         cambiando = false;
       };

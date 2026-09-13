@@ -438,7 +438,7 @@ const eventos = todosEventos
       el.addEventListener("focus", lado);
     }
     const alMoverBanderas = (lista: { iso: string; x: number; y: number }[], W: number, H: number) => {
-      const vistas = new Set<string>();
+      const vistas = new Set() as Set<string>;
       for (const { iso, x, y } of lista) {
         const el = chapas.get(iso);
         if (!el) continue;
