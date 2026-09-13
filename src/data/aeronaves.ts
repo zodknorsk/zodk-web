@@ -16,8 +16,15 @@
 //
 // Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
 // TB3, el MQ-9, el RQ-4, el E-2, el U-2, el SR-71 y el Shahed-136 son fotos
-// PNG tal cual (sin versión de noche propia). Todas en
-// public/zodk-<id>[-noche].{svg,png}.
+// PNG tal cual; su versión de noche (-noche.png, a la luz de la luna) la saca
+// logo-files/generar-naves-noche.py. Todas en public/zodk-<id>[-noche].{svg,png}.
+//
+// Luces de posición (solo de noche): puntos fijos encima de la nave, en % de
+// su imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala
+// DERECHA es la de arriba (verde) y la IZQUIERDA la de abajo (roja). Solo esas
+// dos (el usuario quitó la blanca de cola, los destellos y la baliza). Sin
+// `luces`, la nave va a oscuras (el Shahed-136, como en la realidad; el
+// satélite no lleva).
 
 export type Aeronave = {
   id: string;
@@ -36,6 +43,10 @@ export type Aeronave = {
     | "fijo-arriba-der"; // trayectoria (ver global.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
+  luces?: {
+    der: [number, number];
+    izq: [number, number];
+  };
   specs: [string, string][]; // [etiqueta, valor]
 };
 
@@ -45,10 +56,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "Bayraktar TB3",
     clase: "UCAV embarcado",
     sprite: "/zodk-dron.png",
-    spriteNoche: "/zodk-dron.png",
+    spriteNoche: "/zodk-dron-noche.png",
     ratio: "430 / 450",
     vuelo: "sweep",
     bandera: "🇹🇷",
+    luces: { der: [52, 2], izq: [52, 97] },
     specs: [
       ["Fabricante", "Baykar"],
       ["Origen", "Turquía"],
@@ -63,10 +75,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "RQ-4 Global Hawk",
     clase: "HALE de reconocimiento",
     sprite: "/zodk-rq4.png",
-    spriteNoche: "/zodk-rq4.png",
+    spriteNoche: "/zodk-rq4-noche.png",
     ratio: "234 / 328",
     vuelo: "fijo-izq",
     bandera: "🇺🇸",
+    luces: { der: [64, 2], izq: [66, 93] },
     specs: [
       ["Fabricante", "Northrop Grumman"],
       ["Origen", "EE. UU."],
@@ -82,10 +95,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "MQ-9 Reaper",
     clase: "UAV MALE armado",
     sprite: "/zodk-mq9.png",
-    spriteNoche: "/zodk-mq9.png",
+    spriteNoche: "/zodk-mq9-noche.png",
     ratio: "244 / 265",
     vuelo: "fijo-centro",
     bandera: "🇺🇸",
+    luces: { der: [54, 2], izq: [53, 89] },
     specs: [
       ["Fabricante", "General Atomics"],
       ["Origen", "EE. UU."],
@@ -101,10 +115,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "E-2 Hawkeye",
     clase: "AEW&C embarcado",
     sprite: "/zodk-e2-hawkeye.png",
-    spriteNoche: "/zodk-e2-hawkeye.png",
+    spriteNoche: "/zodk-e2-hawkeye-noche.png",
     ratio: "426 / 416",
     vuelo: "fijo",
     bandera: "🇺🇸",
+    luces: { der: [57, 3], izq: [56, 92] },
     specs: [
       ["Fabricante", "Northrop Grumman"],
       ["Origen", "EE. UU."],
@@ -120,10 +135,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "Lockheed U-2S Dragon Lady",
     clase: "Reconocimiento estratégico a gran altitud",
     sprite: "/zodk-u2.png",
-    spriteNoche: "/zodk-u2.png",
+    spriteNoche: "/zodk-u2-noche.png",
     ratio: "813 / 394",
     vuelo: "fijo-arriba",
     bandera: "🇺🇸",
+    luces: { der: [57, 17], izq: [65, 86] },
     specs: [
       ["Fabricante", "Lockheed (Skunk Works)"],
       ["Origen", "EE. UU."],
@@ -139,10 +155,11 @@ export const AERONAVES: Aeronave[] = [
     nombre: "Lockheed SR-71 Blackbird",
     clase: "Reconocimiento estratégico supersónico",
     sprite: "/zodk-sr71.png",
-    spriteNoche: "/zodk-sr71.png",
+    spriteNoche: "/zodk-sr71-noche.png",
     ratio: "857 / 466",
     vuelo: "fijo-arriba-der",
     bandera: "🇺🇸",
+    luces: { der: [84, 7], izq: [84, 92] },
     specs: [
       ["Fabricante", "Lockheed (Skunk Works)"],
       ["Origen", "EE. UU."],
@@ -158,7 +175,7 @@ export const AERONAVES: Aeronave[] = [
     nombre: "Shahed-136 / Geran-2",
     clase: "Munición merodeadora (kamikaze)",
     sprite: "/zodk-shahed136.png",
-    spriteNoche: "/zodk-shahed136.png",
+    spriteNoche: "/zodk-shahed136-noche.png",
     ratio: "788 / 440",
     vuelo: "sweep",
     escala: 0.5,

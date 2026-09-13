@@ -12,12 +12,11 @@ La web lo anima moviendo `background-position` a saltos (`steps(28)`, vuelta en
 60 s): un recorte de bitmap, barato en cualquier navegador. Se probó un SVG
 vectorial animado y calentaba la CPU en Firefox/Zen (ver más abajo).
 
+(HISTÓRICO: desde sept 2026 el día y la noche son el MISMO `<canvas>`, ver
+punto 7 y "Modo noche v2". Lo de esta sección describe los sprites viejos.)
 - Modo claro → `public/zodk-planeta-sprite.png` (Tierra de día, sol, terminador
   suave, ciudades como puntos oscuros — de día no se encienden) + `zodk-dron.svg`.
-- Modo oscuro → `public/zodk-planeta-noche.png` (Tierra a oscuras, luces por
-  densidad de población + focos de grandes ciudades + luces sueltas de islas) +
-  `zodk-dron-noche.svg` (con luces de posición: amarilla en el morro, verde ala
-  derecha/arriba, roja ala izquierda/abajo). Solo se descarga en modo oscuro.
+- Modo oscuro → `public/zodk-planeta-noche.png` (retirado) + `zodk-dron-noche.svg`.
 
 El sombreado (terminador, oscurecimiento del borde, atmósfera) va **horneado en
 el sprite**, no como capa CSS. Una sola capa animada.
@@ -27,10 +26,10 @@ el sprite**, no como capa CSS. Una sola capa animada.
 | Archivo | Qué |
 |---|---|
 | `rasterizar.py` | `ne_50m_land.geojson` (gitignored) → `mapa_tierra.py`. Costas + hielo (Groenlandia >67N, casquete >82N) + estrecho de Gibraltar. Solo re-ejecutar si cambian resolución/umbrales. |
-| `densidad_luces.py` | `ne_10m_populated_places` (gitignored, `pp10.json`) → `luces.py`. Campo de densidad 0-3 para las luces de noche. Umbrales por percentil: `T1/T2/T3 = pct(0.82/0.93/0.982)`. Subirlos = menos luces. |
-| `mapa_tierra.py`, `luces.py` | Salidas de los dos anteriores. Es lo que consume el generador. |
+| `cities15000.txt` | GeoNames (gitignored, curl en el generador): las luces de noche. Sustituye a `densidad_luces.py`/`luces.py` (retirados). |
+| `mapa_tierra.py` | Salida de `rasterizar.py`. Es lo que consume el generador. |
 | `png8.py` | Escritor mínimo de PNG indexado. |
-| `generar-planeta-hero.py` | Todo junto → los 2 sprites + los 2 drones. Parámetros arriba del archivo (`FRAMES`, geometría, sol, `CIUDADES`, `LUCES_SUELTAS`). |
+| `generar-planeta-hero.py` | Todo junto → datos del canvas de día y de noche en `public/planeta/`. Parámetros arriba del archivo (geometría, sol, luna, paleta de noche) y en cada sección (`LUZ_*`, nubes, banderas…). |
 | `generar-estrellas.py` | Baldosa `public/zodk-estrellas.png` para el campo de estrellas del fondo (la web la repite con `background-repeat` en vez de apilar gradientes en el CSS). |
 
 Flujo de iteración (desde sept 2026 el planeta de DÍA es un canvas, ver punto 7):
@@ -43,7 +42,6 @@ python3 generar-planeta-hero.py --frame 17 prueba.png   # un fotograma suelto pa
 cd .. && npm run dev                       # o el banco de pruebas: python3 -m http.server 4400
                                            #   -> http://127.0.0.1:4400/logo-files/prototipo-canvas/
 ```
-El planeta de NOCHE (`public/zodk-planeta-noche.png`) no se regenera: congelado.
 Los .geojson se re-descargan con los `curl` documentados en cada script.
 
 ## Integración en la web
@@ -82,59 +80,156 @@ generados) y al usuario no le convenció el conjunto. Se volvió atrás al sprit
 con sombreado horneado. Si se retoma la fluidez: subir `FRAMES` y ya, o
 plantear otra cosa, pero el fundido de dos capas queda aparcado.
 
-## Modo noche — para cuando se retome
+## Modo noche v2 — TERMINADO (rama `planeta-noche`, fusionada en `main` el 13-sep-2026)
 
-El usuario quiere trabajar el modo noche **más adelante** (lo dijo el
-13-sep-2026, al comprobar que el de ahora se ve bien). Todo lo que hay que
-saber para arrancar sin re-preguntar:
+El usuario reabrió la noche: se rehace **desde cero con el mismo pipeline que
+el día** (generador Python → canvas, giro continuo, misma geografía y
+texturas), cuidando lo propio de la noche (luces de ciudades, naves nocturnas
+con luces de posición, toques de luz en el título; el lema es el mismo). Todo
+lo nocturno anterior (sprite viejo, `densidad_luces.py`, la sección de abajo)
+es **trabajo viejo**: referencia de intenciones, no decisiones cerradas.
+Se commitea poco a poco en la rama; push/merge cuando esté todo.
 
-**Estado actual (congelado).** `public/zodk-planeta-noche.png`: tira antigua de
-28 fotogramas de 164x161 px (4592x161), PNG indexado. CSS en `global.css`:
-`html.dark .hero-planet` con `aspect-ratio: 280 / 274`, `background-size:
-2800% 100%` y `hero-spin 60s steps(28)` — las mismas reglas que en `main`; el
-canvas de día se oculta en oscuro y `planeta.js` deja de dibujar. El generador
-ya NO regenera la noche (la rama `night` de `cell_index()` y `city_cells()`
-siguen en el código tal cual, por si acaso).
+Hecho y aprobado:
+1. **Luz de luna** (`noche()`, `MOON_*`, `N_NIGHT` en el generador): cada color
+   de día pasa a su versión nocturna (desatura poco, tiñe de luz fría y
+   oscurece) y encima va la misma rampa de luz con la luna en vez del sol.
+   Elegidas con renders: paleta **P3 "índigo contrastado"** (frente a una gris
+   "cemento" y otra índigo suave) y **luna llena casi de frente, algo arriba a
+   la izquierda** (C). Luna por la derecha descartada: copas/dunas/relieve
+   llevan la luz horneada desde el NO y la textura contradecía a la esfera.
+   Probar: `python3 generar-planeta-hero.py --frame 0 prueba.png --noche`
+   (o `--ambos` para día y noche de una vez).
 
-**Por qué está congelado.** En sept 2026, tras unos cambios, el usuario dijo
-"el modo oscuro es un desastre, no toques nada, vuelve a como antes, todos los
-cambios hazlos en el modo día". Desde entonces no se toca. Cuando se retome,
-es él quien lo abre: no cambiar nada de la noche por iniciativa propia.
+2. **Luces de ciudades** (`light_cells()`, `LUZ_*` en el generador; "bastante
+   realista"). Datos: GeoNames `cities15000.txt` (gitignored, curl en el
+   generador), ~34.000 ciudades; Natural Earth (`pp10.json`) dejaba EE. UU.
+   casi a oscuras (617 localidades para 27 veces Alemania). Cada ciudad deja
+   una huella en píxeles de pantalla: intensidad (pob/100.000)^0,4 → pueblo
+   1 px tenue, ciudad con halo, ≥3 M núcleo 2×2 casi blanco. Los núcleos que
+   caen en el mismo píxel se suman (áreas metropolitanas); la suma de halos
+   solo da un velo tenue (nivel 1). 6 niveles de ámbar, emisivos (no dependen
+   de la luna); nubes por encima. `LUZ_PAIS`: África subsahariana ×0,5, Corea
+   del Norte ×0,08 (a oscuras), EE. UU. ×2,2 y Canadá ×1,5 (el usuario lo veía
+   flojo). Descartado por el camino: huellas 3×3 en todo pueblo (confeti),
+   dejar que la suma de halos suba a niveles altos (Benelux/Inglaterra
+   quemados en mancha plana naranja).
 
-**Lo que ya se sabe que quiere de noche** (decisiones suyas de sept 2026):
-- Luces repartidas **por densidad de población** (como el logo pequeño), no
-  solo las grandes ciudades: `densidad_luces.py` → `luces.py` (campo 0-3,
-  umbrales por percentil `T1/T2/T3`). Más focos de las grandes ciudades
-  (`CIUDADES`, ≥10 M = bloque) y luces sueltas en islas (`LUCES_SUELTAS`:
-  Honolulu, Reikiavik, San Juan). Las luces se adelgazaron una vez (había
-  demasiadas).
-- Naves con **luces de posición solo de noche** (amarilla en el morro, verde
-  ala derecha, roja ala izquierda); de día, como están.
-- Guiño de noche en el título: el lema en ámbar. Más estrellas solo en oscuro
-  (`.hero-stars::after`).
-- **Aparcado**: aurora boreal en el polo.
+3. **Brillo de atmósfera en el borde** (`AIRGLOW*`): sin él, de noche el
+   horizonte se fundía con el cielo negro. Elegida la opción B: línea azul fina
+   (1,5 px al 55 % + 1,5 px más al 25 %), todo alrededor, por DENTRO del disco
+   (el canvas empieza justo en el borde de arriba; un resplandor fuera con
+   filtro CSS se recalcularía cada fotograma en Zen). Descartadas: ancha de 3
+   escalones y turquesa. Costa, hielo y nieve de noche: se dejan como salen
+   (se leen bien).
 
-**Lo que el día ha enseñado y seguramente querrá también de noche** (hay que
-preguntárselo, no darlo por hecho):
-- Canvas con giro continuo en vez de sprite a saltos (lo pidió al ver los
-  saltos del de día). Mismos píxeles finos (600 px) y 90 s por vuelta.
-- Misma geografía: costas a 0,125°, banquisa con forma (el casquete circular
-  sigue en el sprite de noche viejo), relieve.
-- Estilo pixel art "de ilustración" (rampas con cambio de tono, racimos).
-- ¿Chapas de bandera también de noche? (hoy solo de día, con su ficha de
-  artículos al pasar el ratón).
-- **Hemisferio sur**: pensar aquí cómo llegar a los países del sur (no se ven
-  en el hero; ver punto 7, "Problema para el futuro"). Lo pidió él para
-  cuando se retome la noche.
+4. **La noche, en el canvas** (`planeta.js`, `PLANETA_V` 8, `?v=8`). Mismo
+   canvas de día y de noche según el tema; al cambiarlo en caliente se repinta
+   entero sin cortar el giro. Lo de la noche se descarga solo si hace falta:
+   `planeta-lut-noche.png` (misma lista de materiales, colores a la luz de la
+   luna) y `planeta-luces.png` (34.091 luces, 2 px por luz: lat/lon en 16 bits
+   + fuerza en 1/16; ~160 KB). Por píxel se precalculan también los escalones
+   de luz de la luna (`pKNn`/`pKIn`) y el borde nocturno (`postN`: halo, brillo
+   de atmósfera, borde suavizado). Las luces se ESTAMPAN en cada fotograma como
+   en `light_cells()` (hornearlas en el mapa las haría titilar al girar, como
+   pasaba con las costas). Respaldo sin JS: `planeta-quieto-noche.png`.
+   Retirados: el sprite viejo `public/zodk-planeta-noche.png` y su animación
+   CSS, `luces.py` y `densidad_luces.py`.
+   Rendimiento (Chrome sin ventana en el Mac, 280 filas visibles): día 0,35 ms
+   por dibujo, noche ~1,7 ms (casi todo, sumar huellas de ~15.000 luces). Ya
+   optimizado: descartes sin trigonometría (por detrás del disco, por debajo de
+   la ventana) y giro con cos/sen precalculados. Probado y DESCARTADO por el
+   aspecto: quitar el halo a los pueblos de <100.000 (Europa perdía el velo).
+   Otra vía no probada: fundir localidades a <0,1° (solo −23 % de luces).
+   Pendiente: que el usuario lo compruebe en Zen (temperatura).
+5. **Chapas, coordenada MGRS y X también de noche** (pedido del usuario). Las
+   chapas conservan sus colores (son marcadores) con la luz de la luna; se
+   pintan por encima de las luces de ciudades. `geo()` ya no devuelve null de
+   noche. En el generador, `flag_cells(lon0, night)`.
+6. **Naves de noche** (opción B, aprobada). `generar-naves-noche.py` saca
+   `public/zodk-<id>-noche.png` de las fotos del usuario (los originales NO se
+   tocan): mismo tratamiento de luna que el planeta pero más claro (probadas
+   tres intensidades sobre el planeta de noche; las oscuras camuflaban las
+   naves grises contra el mar). El alfa no se toca (sombra y bordes igual; la
+   sombra solo se enfría un poco de color). Zonas con luz propia (`EMISIVO`:
+   postquemadores del SR-71) sin oscurecer. **Luces de posición** como puntos
+   CSS encima de la nave (`.craft-luz`, tamaño fijo en pantalla: dentro de la
+   foto reducida saldrían de <1 px), posiciones en `aeronaves.ts` (`luces`, en
+   % de la imagen; morro a la izquierda → ala derecha = arriba = verde,
+   izquierda = abajo = roja), fijas. Se probaron también blanca de cola,
+   destellos blancos en las puntas y baliza roja intermitente: el usuario las
+   QUITÓ ("quita las luces adicionales que no sean verde y rojo"), no
+   reponerlas. Decisión propia, avisada: el Shahed-136 va a
+   oscuras (como en la realidad) y el Sentinel-2 no lleva (satélite; tiene su
+   SVG de noche de antes).
 
-**Cómo encajaría técnicamente (propuesta, no hecha).** El canvas ya separa
-"material de cada celda" (`planeta-mapa.png`) de "color por material y luz"
-(`planeta-lut.png`). La noche podría ser: otra LUT de noche del mismo mapa
-(tierra/mar/hielo en azules oscuros con sus rampas) + una capa de luces por
-celda (de `luces.py`, en otro PNG o en bits libres del mapa) que se pinta
-encima en ámbar (`GOLD`). Al cambiar de tema, `planeta.js` cambiaría de LUT sin
-descargar otro planeta ni cortar el giro. El sprite de noche viejo se
-retiraría como se retiró el de día.
+7. **Título de noche — opción D (la propuso el usuario, frente a A/B/C que
+   se le enseñaron: verde fijo con lema blanco / verde / ámbar)**. De noche el
+   título se ve como de día, en blanco (se quitó el lema ámbar de la noche
+   vieja). Al FIJAR una coordenada (clic en el planeta, `.hero-mgrs.fijada`)
+   pasan a verde de visión nocturna (`--nvg` #8dff9e + resplandor): marco,
+   coordenada resaltada (marcador verde, texto oscuro), lema y botón
+   play/pausa; la X del planeta también (`X_CELLS_N` en `planeta.js`). Con
+   `:has()` en el CSS. La mira del cursor sigue blanca (no la pidió).
+8. **Más estrellas de noche** (pedido del usuario, "bastante más" y luego
+   "unas cuantas más"): baldosa propia `public/zodk-estrellas-noche.png`
+   (480 px, 95 estrellas, casi todas tenues; `generar-estrellas.py`) en
+   `.hero-stars::after`, encima de la de siempre.
+
+9. **Hélice "otro objeto" bajo el marco** (decisión del usuario: "sin
+   recuadro"): sola, bajo la esquina inferior izquierda del marco del título,
+   en espejo con play/pausa y coordenada; mismo SVG de Excalidraw con el
+   viewBox recortado a la hélice (`heliceSvg`), cuadrado y flecha ocultos. De
+   noche, con coordenada fijada, en verde.
+10. **Sol y luna** arriba a la izquierda, en el MISMO sitio de día y de noche
+   ("es importante que sean simétricos"; elegidos D2 + N3 de unas maquetas con
+   sol/luna asomando por la esquina, con rayos, lejanos…). Pixel art de
+   `generar-astros.py`: sol pequeño con halo fino en 3 escalones; luna con la
+   **fase real del día** (tira de 30 fases, `faseLuna()` en index.astro; la
+   parte en sombra con luz cenicienta). Al usuario le da igual que la fase no
+   cuadre con la luz del planeta (luna llena siempre): no preocuparse de eso.
+   Detrás del planeta.
+11. **Transición al cambiar de tema** (se le enseñaron en GIF: puesta tras la
+   Tierra, eclipse, moneda y fundido del planeta; eligió la puesta "me
+   encanta" + fundido). El astro que se va BAJA y se esconde tras el limbo y
+   el otro sale de detrás (`.a-noche`/`.a-dia` en `.hero-astro`, animaciones
+   CSS: el botón de tema anula las transiciones). A la vez, el planeta se
+   FUNDE de una luz a la otra (`FUNDIDO_MS` en `planeta.js`: pinta los dos
+   temas y los mezcla, solo durante el fundido; si la noche aún no se había
+   descargado, el fundido arranca al llegar). A petición suya, más despacio:
+   sol 1,5 s, luna sale a 0,9 s en 1,6 s, fundido 1,5 s. Con reduced-motion,
+   seco.
+
+
+12. **Aurora boreal, segundo intento** (el primero, de la noche vieja, "salió
+   una mierda"; este le gustó: "muy bien"). En `planeta.js` (`aurora()`,
+   constantes `AUR_*`), solo de noche. Cortinas de rayos 3D alrededor del
+   polo norte geomagnético (80,7N 72,7W; óvalo de 21° ± pliegues), de 0,016 a
+   0,05 radios de altura, que giran con la Tierra; se ve un punto si está en
+   la cara de delante o fuera del disco. Sobre el horizonte del fondo se ven
+   de canto (lo más vistoso): van a una franja extra de `AUR_MT` filas encima
+   del canvas (`.hero-aurora`, la crea planeta.js). Rayos de alturas y
+   brillos propios (borde dentado, estrías), verde translúcido en 5 niveles,
+   violeta arriba. DOS arcos + resplandor difuso (se probaron dos arcos más en
+   el lado de medianoche: "me gustaba más con menos aros"). Intensidad subida
+   dos veces a petición suya (`A` ×2,05). Al anochecer y al cargar de noche se
+   enciende recorriendo el óvalo "como una serpiente que se muerde la cola"
+   (idea suya): arranca en el punto más a la izquierda de la cara de delante,
+   sigue por delante hacia la derecha, vuelve por el fondo y cierra donde
+   empezó (`AUR_BARRIDO` 3,6 s, cabeza más brillante). Antes se probó un
+   barrido de pantalla de izquierda a derecha. Se funde con el planeta al
+   cambiar de tema. Coste: la noche
+   pasa de ~1,7 a ~2,0 ms por dibujo. Lección: los píxeles de cielo fuera
+   del disco no los repinta el planeta; se vacía un anillo alrededor en cada
+   fotograma (`borraCielo`), si no se quedaban pegados en mancha verde.
+
+**Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
+(decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.
+
+Cierre: temperatura de noche en Zen, bien (lo comprobó el usuario). El móvil
+lo prueba en directo tras publicar; si la noche se calienta allí, arreglos
+listos: redibujar la noche a 30 fps en táctil o no pintar los pueblos más
+pequeños.
 
 ## Pendiente
 
