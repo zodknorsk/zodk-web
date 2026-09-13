@@ -117,8 +117,16 @@ Hecho y aprobado:
    dejar que la suma de halos suba a niveles altos (Benelux/Inglaterra
    quemados en mancha plana naranja).
 
-Siguiente: costa / hielo / atmósfera de noche, naves, título, y pasar la noche
-al canvas (las luces allí: decidir si se estampan por fotograma o se hornean).
+3. **Brillo de atmósfera en el borde** (`AIRGLOW*`): sin él, de noche el
+   horizonte se fundía con el cielo negro. Elegida la opción B: línea azul fina
+   (1,5 px al 55 % + 1,5 px más al 25 %), todo alrededor, por DENTRO del disco
+   (el canvas empieza justo en el borde de arriba; un resplandor fuera con
+   filtro CSS se recalcularía cada fotograma en Zen). Descartadas: ancha de 3
+   escalones y turquesa. Costa, hielo y nieve de noche: se dejan como salen
+   (se leen bien).
+
+Siguiente: pasar la noche al canvas (las luces allí: decidir si se estampan
+por fotograma o se hornean), naves, título.
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 
