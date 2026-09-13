@@ -213,9 +213,13 @@ Hecho y aprobado:
    brillos propios (borde dentado, estrías), verde translúcido en 5 niveles,
    violeta arriba. DOS arcos + resplandor difuso (se probaron dos arcos más en
    el lado de medianoche: "me gustaba más con menos aros"). Intensidad subida
-   dos veces a petición suya (`A` ×2,05). Se enciende en ola de izquierda a
-   derecha al anochecer y al cargar de noche (`AUR_BARRIDO` 2,8 s, frente más
-   brillante); se funde con el planeta al cambiar de tema. Coste: la noche
+   dos veces a petición suya (`A` ×2,05). Al anochecer y al cargar de noche se
+   enciende recorriendo el óvalo "como una serpiente que se muerde la cola"
+   (idea suya): arranca en el punto más a la izquierda de la cara de delante,
+   sigue por delante hacia la derecha, vuelve por el fondo y cierra donde
+   empezó (`AUR_BARRIDO` 3,6 s, cabeza más brillante). Antes se probó un
+   barrido de pantalla de izquierda a derecha. Se funde con el planeta al
+   cambiar de tema. Coste: la noche
    pasa de ~1,7 a ~2,0 ms por dibujo. Lección: los píxeles de cielo fuera
    del disco no los repinta el planeta; se vacía un anillo alrededor en cada
    fotograma (`borraCielo`), si no se quedaban pegados en mancha verde.

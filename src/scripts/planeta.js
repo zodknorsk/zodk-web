@@ -383,13 +383,14 @@ export async function montarPlaneta(canvas, {
   // filas encima del planeta). Brillo por píxel sumado y reducido a pocos
   // niveles (verde abajo, violeta arriba), como las luces de las ciudades.
   // Los pliegues ondulan y los haces van y vienen despacio. Al anochecer (y al
-  // cargar de noche) se enciende como una ola de izquierda a derecha, con el
-  // frente más brillante (como el "surge" de una subtormenta).
+  // cargar de noche) se enciende recorriendo el óvalo como una serpiente que se
+  // muerde la cola, con la cabeza más brillante (como el "surge" de una
+  // subtormenta; idea del usuario).
   const AUR_POLO = [80.7, -72.7];                      // polo norte geomagnético (lat, lon)
   const AUR_R = 21, AUR_WOB = 2.2;                     // radio del óvalo y ondulación, en grados
   // arcos paralelos: desvío (grados), brillo y si solo están en el lado de medianoche
   const AUR_ARCOS = [[0, 1, 0], [1.3, 0.6, 0]];     // (se probaron 2 más en medianoche: al usuario le gustaba más con menos)
-  const AUR_BARRIDO = 2.8;                             // segundos que tarda en encenderse de lado a lado
+  const AUR_BARRIDO = 3.6;                             // segundos que tarda la "serpiente" en cerrar el óvalo
   const AUR_N = 1000, AUR_K = 11, AUR_H0 = 0.016, AUR_H1 = 0.05;
   const AUR_MT = 24;                                   // filas de canvas por encima del planeta
   // niveles: [intensidad mínima, color, opacidad]; translúcida, el verde de la
@@ -413,6 +414,7 @@ export async function montarPlaneta(canvas, {
   const aurAlto = Float32Array.from({ length: AUR_K }, (_, k) => 1 + AUR_H0 + (AUR_H1 - AUR_H0) * k / (AUR_K - 1));
   let auroraCv = null, auroraCtx = null, auroraImg = null, auroraBuf = null;
   let aurInicio = null;                                // cuándo empieza a encenderse (ms)
+  let aurCola = null, aurSentido = 1;                  // dónde arranca el encendido en el óvalo (0..1) y hacia dónde
   let aurAcc = null, aurVio = null, aurToc = null, aurMarca = null;
   // Cielo alrededor del disco hasta donde llega la aurora: el dibujo del
   // planeta no repinta esos píxeles, así que se vacían en cada fotograma (si
@@ -455,7 +457,24 @@ export async function montarPlaneta(canvas, {
     };
     if (aurInicio === null) aurInicio = performance.now() + 300;
     const el = reduce.matches ? 1e9 : (performance.now() - aurInicio) / 1000;
-    const frente = el < AUR_BARRIDO * 1.3 ? el / AUR_BARRIDO * 1.25 : null;   // posición del frente (0 = izquierda)
+    // Encendido como una serpiente que se muerde la cola: arranca en el punto
+    // del óvalo más a la izquierda de la cara de delante, avanza por delante
+    // hacia la derecha, vuelve por el fondo y cierra donde empezó.
+    const frente = el < AUR_BARRIDO * 1.3 ? el / AUR_BARRIDO * 1.1 : null;
+    if (frente !== null && aurCola === null) {
+      let mejor = 2, uMejor = 0;
+      for (let i = 0; i < AUR_N; i += 4) {
+        const b = punto((i / AUR_N) * 2 * Math.PI, AUR_R / DEG);
+        if (b[2] > 0.15 && b[0] < mejor) { mejor = b[0]; uMejor = i / AUR_N; }
+      }
+      // sentido: el que sigue por la parte de delante (más abajo en pantalla),
+      // para acabar cerrando por el fondo, con las cortinas sobre el horizonte
+      const ya = punto((uMejor + 0.02) * 2 * Math.PI, AUR_R / DEG)[1];
+      const yb = punto((uMejor - 0.02) * 2 * Math.PI, AUR_R / DEG)[1];
+      aurCola = uMejor;
+      aurSentido = ya > yb ? 1 : -1;
+    }
+    if (frente === null) aurCola = null;
     for (let i = 0; i < AUR_N; i++) {
       const u = i / AUR_N, al = u * 2 * Math.PI;
       // pliegues: el radio del óvalo ondula a lo largo y con el tiempo
@@ -465,8 +484,8 @@ export async function montarPlaneta(canvas, {
       if (A < 0.05) continue;
       const base = punto(al, th0 / DEG);
       const med = base[2] <= 0.05 ? 0 : base[2] >= 0.6 ? 1 : (base[2] - 0.05) / 0.55;   // cuánto mira hacia nosotros
-      if (frente !== null) {                           // encendido en ola de izquierda a derecha
-        const d = frente - (base[0] + 1) / 2;
+      if (frente !== null) {                           // encendido: la cabeza de la serpiente, más brillante
+        const d = frente - ((((u - aurCola) * aurSentido) % 1) + 1) % 1;
         if (d <= 0) continue;
         A *= (d < 0.25 ? d / 0.25 : 1) * (d < 0.06 ? 1.8 : d < 0.13 ? 1.35 : 1);
       }
