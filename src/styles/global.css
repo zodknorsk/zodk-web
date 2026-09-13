@@ -234,6 +234,18 @@ html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png
 }
 html.dark .astro-sol { opacity: 0; }
 html.dark .astro-luna { opacity: 1; }
+/* Al cambiar de tema (no al cargar): el astro que se va baja y se esconde tras
+   el borde de la Tierra, y el otro sale de detrás y sube a su sitio (opción 1
+   de las transiciones; al usuario "le encanta"). Las clases .a-noche / .a-dia
+   las pone index.astro al detectar el cambio. Son animaciones y no
+   transiciones porque el botón de tema anula las transiciones al cambiar. */
+.hero-astro { --astro-caida: translate(36px, 270px); }   /* hasta detrás del limbo */
+@keyframes astro-baja { from { transform: none; opacity: 1; } to { transform: var(--astro-caida); opacity: 1; } }
+@keyframes astro-sube { from { transform: var(--astro-caida); opacity: 1; } to { transform: none; opacity: 1; } }
+.hero-astro.a-noche .astro-sol,
+.hero-astro.a-dia .astro-luna { animation: astro-baja 1.5s cubic-bezier(0.5, 0, 0.9, 0.6) both; }
+.hero-astro.a-noche .astro-luna,
+.hero-astro.a-dia .astro-sol { animation: astro-sube 1.6s cubic-bezier(0.1, 0.4, 0.5, 1) 0.9s both; }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
@@ -835,7 +847,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
-  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
   .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
@@ -1042,6 +1054,7 @@ html.home main { padding-top: 9.5rem; }
   .hero-sparkle,
   .hero-scroll { animation: none; }
   .hero-craft { transition: none; } /* revelado y cambio de objeto instantáneos */
+  .hero-astro > span { animation: none !important; }   /* sol y luna cambian sin moverse */
   .hero-craft--orbita { left: 22%; top: 16%; } /* aparcado en sitio visible, sin tapar el botón */
   /* botón: sin hundirse; la hélice no gira (initHelice se autodesactiva); las
      palas sí siguen poniéndose rojas al pulsar */

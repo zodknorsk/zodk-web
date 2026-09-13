@@ -189,7 +189,18 @@ Hecho y aprobado:
    **fase real del día** (tira de 30 fases, `faseLuna()` en index.astro; la
    parte en sombra con luz cenicienta). Al usuario le da igual que la fase no
    cuadre con la luz del planeta (luna llena siempre): no preocuparse de eso.
-   Detrás del planeta. Pendiente: transición al cambiar de tema.
+   Detrás del planeta.
+11. **Transición al cambiar de tema** (se le enseñaron en GIF: puesta tras la
+   Tierra, eclipse, moneda y fundido del planeta; eligió la puesta "me
+   encanta" + fundido). El astro que se va BAJA y se esconde tras el limbo y
+   el otro sale de detrás (`.a-noche`/`.a-dia` en `.hero-astro`, animaciones
+   CSS: el botón de tema anula las transiciones). A la vez, el planeta se
+   FUNDE de una luz a la otra (`FUNDIDO_MS` en `planeta.js`: pinta los dos
+   temas y los mezcla, solo durante el fundido; si la noche aún no se había
+   descargado, el fundido arranca al llegar). A petición suya, más despacio:
+   sol 1,5 s, luna sale a 0,9 s en 1,6 s, fundido 1,5 s. Con reduced-motion,
+   seco.
+
 
 **Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
 (decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.

@@ -445,9 +445,9 @@ export async function montarPlaneta(canvas, {
 
   // rot: giro en celdas del mapa, con decimales; y0..y1: filas a pintar. De
   // noche, mientras no hayan llegado sus datos, no pinta (devuelve false).
-  function draw(rot, y0 = 0, y1 = H) {
-    const luna = esNoche();
-    if (luna && !noche) return false;
+  // Pinta en `buf` las filas y0..y1 con la luz del día o de la luna, con todo
+  // lo de encima (luces, chapas, nubes, marca). Devuelve las chapas visibles.
+  function pinta(rot, y0, y1, luna) {
     const LUT = luna ? noche.lut : lut, KNp = luna ? pKNn : pKN, KIp = luna ? pKIn : pKI;
     const rf = Math.round(rot * 256);                 // coma fija: 1/256 de celda
     const n0 = rowStart[y0], n1 = rowStart[y1];
@@ -486,6 +486,42 @@ export async function montarPlaneta(canvas, {
     nubes(lon0, luna);
     chapas(vis);
     pintaMarca(lon0, luna);
+    return vis;
+  }
+
+  // Fundido al cambiar de tema: durante FUNDIDO_MS se pinta el planeta con la
+  // luz vieja y con la nueva y se mezclan (el doble de trabajo, solo ese rato),
+  // así se funde sin cortar el giro ni dejar imagen doble. Va a la par que el
+  // sol que se pone tras la Tierra (index.astro / global.css).
+  const FUNDIDO_MS = 1500;
+  let fundido = null, viejo = null;                    // { t0, desdeLuna } y copia de la luz vieja
+  let fundidoPendiente = false;
+  function draw(rot, y0 = 0, y1 = H) {
+    const luna = esNoche();
+    if (luna && !noche) return false;
+    let k = 1;
+    if (fundido) {
+      k = (performance.now() - fundido.t0) / FUNDIDO_MS;
+      if (k >= 1 || (fundido.desdeLuna && !noche)) { fundido = null; k = 1; }
+    }
+    let vis;
+    if (k < 1) {
+      if (!viejo) viejo = new Uint32Array(W * H);
+      pinta(rot, y0, y1, fundido.desdeLuna);
+      viejo.set(buf.subarray(y0 * W, y1 * W), y0 * W);
+      vis = pinta(rot, y0, y1, luna);
+      const e = k * k * (3 - 2 * k), q = Math.round(e * 256), iq = 256 - q;
+      for (let p = y0 * W, fin = y1 * W; p < fin; p++) {
+        const a = viejo[p], b = buf[p];
+        if (a === b) continue;
+        buf[p] = (Math.max(a >>> 24, b >>> 24) << 24)
+          | ((((a >> 16) & 255) * iq + ((b >> 16) & 255) * q) >> 8) << 16
+          | ((((a >> 8) & 255) * iq + ((b >> 8) & 255) * q) >> 8) << 8
+          | (((a & 255) * iq + (b & 255) * q) >> 8);
+      }
+    } else {
+      vis = pinta(rot, y0, y1, luna);
+    }
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
     if (alDibujar) alDibujar();
@@ -514,6 +550,8 @@ export async function montarPlaneta(canvas, {
       noche = n;
       completo = false;
       sucio = true;
+      if (fundidoPendiente && esNoche() && !reduce.matches) fundido = { t0: performance.now(), desdeLuna: false };
+      fundidoPendiente = false;
       if (reduce.matches || !raf) pintar(true);
     });
   }
@@ -544,7 +582,7 @@ export async function montarPlaneta(canvas, {
     const slot = Math.floor((now - t0 + 4) / (1000 / 60));
     if (slot === lastSlot) return;
     lastSlot = slot;
-    if (quieto && completo && !sucio) return;           // parado y sin cambios: nada que pintar
+    if (quieto && completo && !sucio && !fundido) return;   // parado y sin cambios: nada que pintar
     sucio = false;
     if (pintar(!completo)) completo = true;             // al (re)arrancar, una vez entero
   }
@@ -571,6 +609,10 @@ export async function montarPlaneta(canvas, {
       temaNoche = esNoche();
       completo = false;
       sucio = true;
+      // fundido solo si ya había planeta pintado, hay bucle y están los datos
+      // de las dos luces (si la noche aún no ha llegado, el cambio es seco)
+      fundido = listo && !reduce.matches && noche ? { t0: performance.now(), desdeLuna: !temaNoche } : null;
+      fundidoPendiente = listo && temaNoche && !noche;   // arranca al llegar los datos de noche
     }
     arrancar();
   });
