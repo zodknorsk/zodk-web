@@ -181,7 +181,9 @@ async function preparar(base) {
 // setVuelta, P }. `banderas`: códigos iso de las chapas a pintar (null = todas);
 // `alMoverBanderas(lista, W, H)` recibe tras cada dibujo dónde queda cada chapa
 // visible ({ iso, x, y } en píxeles del canvas, esquina de su contorno), para
-// colocar encima lo que reacciona al ratón. Se para solo: fuera de pantalla, en modo oscuro (ahí se ve el
+// colocar encima lo que reacciona al ratón. `alDibujar()` se llama tras cada
+// dibujo (con el planeta parado, no), y `geo(x, y)` da la latitud/longitud del
+// punto de pantalla (x, y) en ese momento, o null fuera del disco o de noche. Se para solo: fuera de pantalla, en modo oscuro (ahí se ve el
 // sprite de noche de siempre), con la pestaña oculta y mientras `pausado()`
 // devuelva true (en la portada: ratón sobre una nave). Con
 // prefers-reduced-motion se pinta quieto.
@@ -189,7 +191,8 @@ async function preparar(base) {
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, vuelta?: number, pausado?: () => boolean, alPintar?: () => void,
  *   banderas?: string[] | null,
- *   alMoverBanderas?: ((lista: { iso: string, x: number, y: number }[], W: number, H: number) => void) | null }} [opciones]
+ *   alMoverBanderas?: ((lista: { iso: string, x: number, y: number }[], W: number, H: number) => void) | null,
+ *   alDibujar?: (() => void) | null }} [opciones]
  */
 export async function montarPlaneta(canvas, {
   base = "/planeta/",
@@ -198,6 +201,7 @@ export async function montarPlaneta(canvas, {
   alPintar = () => {},                 // tras el primer dibujo completo
   banderas = null,
   alMoverBanderas = null,
+  alDibujar = null,
 } = {}) {
   const P = await cargarPlaneta(base);
   const { D, W, H, R, MW, KN, lv, lut, iceMat, rowStart, post } = P;
@@ -305,6 +309,7 @@ export async function montarPlaneta(canvas, {
     chapas(vis);
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
+    if (alDibujar) alDibujar();
   }
 
   // ---- bucle
@@ -366,9 +371,26 @@ export async function montarPlaneta(canvas, {
   reduce.addEventListener("change", arrancar);
   arrancar();
 
+  // Punto de pantalla -> latitud/longitud (la inversa de la proyección del
+  // precálculo, más el giro actual). De noche el planeta es el sprite viejo,
+  // con otra geometría: ahí no se da.
+  function geo(x, y) {
+    if (html.classList.contains("dark")) return null;
+    const bb = canvas.getBoundingClientRect();
+    const px = ((x - bb.left) * W / bb.width - D.CX) / R;
+    const py = ((y - bb.top) * H / bb.height - D.CY) / R;
+    const rr = px * px + py * py;
+    if (rr > 1) return null;
+    const pz = Math.sqrt(1 - rr);
+    const lat = Math.asin(Math.max(-1, Math.min(1, -py * D.COST + pz * D.SINT))) * DEG;
+    const lon = Math.atan2(px, py * D.SINT + pz * D.COST) * DEG - rot * 360 / MW;
+    return { lat, lon: ((lon % 360) + 540) % 360 - 180 };
+  }
+
   return {
     P,
     draw,
+    geo,
     setVuelta(s) { vuelta = s; },
     desmontar() {
       if (raf) cancelAnimationFrame(raf);
