@@ -788,12 +788,11 @@ html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta
   .hero-planet, .hero-banderas { top: 13%; width: 132vw; }
   .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1)); }
   .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
-  .hero-craft--fijo { top: 56%; left: 50%; width: clamp(116px, 34vw, 168px); }
+  .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
   .hero-titulo { top: 46%; }
-  .hero-titulo h1 { font-size: clamp(1.2rem, 5.8vw, 1.75rem); }
-  .hero-titulo h1 span { display: block; } /* "hegoi márquez" a su línea */
+  .hero-titulo h1 { font-size: clamp(0.95rem, 5.2vw, 1.75rem); white-space: nowrap; } /* "el blog de hegoi márquez" en una sola línea */
   .hero-titulo p {
     font-size: 0.5rem;
     letter-spacing: 0.12em;
