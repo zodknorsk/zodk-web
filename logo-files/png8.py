@@ -28,3 +28,19 @@ def write_indexed(path, width, height, rows, palette):
     out += _chunk(b"IDAT", idat) + _chunk(b"IEND", b"")
     with open(path, "wb") as fh:
         fh.write(out)
+
+
+def write_rgba(path, width, height, rows):
+    """rows: iterable de `height` secuencias de width*4 bytes (R,G,B,A por
+    píxel). Sin paleta: para degradados que no caben en 256 colores."""
+    sig = b"\x89PNG\r\n\x1a\n"
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)  # tipo 6 = RGBA
+    raw = bytearray()
+    for row in rows:
+        raw.append(0)                      # filtro: ninguno
+        raw.extend(row)
+    idat = zlib.compress(bytes(raw), 9)
+    out = (sig + _chunk(b"IHDR", ihdr) + _chunk(b"IDAT", idat) +
+           _chunk(b"IEND", b""))
+    with open(path, "wb") as fh:
+        fh.write(out)

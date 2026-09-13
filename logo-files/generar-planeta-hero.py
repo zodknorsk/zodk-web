@@ -27,7 +27,7 @@ import math
 from mapa_tierra import GRID_W, GRID_H, ROWS
 from luces import LW, LH, ROWS as LUZ_ROWS
 from elev import elev as _elev, W as ELEV_W, H as ELEV_H
-from png8 import write_indexed
+from png8 import write_rgba
 
 
 def smooth(e0, e1, x):
@@ -41,6 +41,7 @@ def mix(a, b, t):
 
 # --------------------------------------------------------------- paletas
 OCEAN = (0x36, 0x7a, 0xc0)          # (retro) azul medio de referencia
+OCEAN_COAST   = (0x5b, 0xd0, 0xe6)  # turquesa vivo junto a la costa (el "punch" alegre)
 OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
 OCEAN_DEEP    = (0x1d, 0x50, 0x8c)  # océano profundo
 LAND  = (0x54, 0xa2, 0x59)
@@ -48,17 +49,17 @@ ICE   = (0xdb, 0xe3, 0xec)
 SPACE = (0x05, 0x06, 0x0a)
 ATMO  = (0xbc, 0xdc, 0xff)
 CITY_DARK  = (0x0d, 0x17, 0x24)     # marca de ciudad en el lado de día
-COAST_COL  = (0x24, 0x40, 0x33)     # línea de costa (verde muy oscuro)
+COAST_COL  = (0x0e, 0x18, 0x13)     # línea de costa, casi negra (opción 3: sin fronteras políticas)
 ROCK       = (0x8b, 0x84, 0x78)     # roca de media/alta montaña
 SNOW       = (0xec, 0xf0, 0xf4)     # nieve de cumbre
 
 # Biomas de tierra (aprox. por latitud + cajas de desierto + un poco de ruido).
 BIOME_COLS = [
-    (0x53, 0xa4, 0x58),   # 0 templado
-    (0x33, 0x7a, 0x3b),   # 1 selva / tropical húmedo
+    (0x62, 0xc1, 0x62),   # 0 templado (más claro y alegre)
+    (0x3d, 0x93, 0x46),   # 1 selva / tropical húmedo
     (0xce, 0xb8, 0x82),   # 2 desierto (arena)
-    (0xa6, 0xb0, 0x5f),   # 3 estepa / sabana seca
-    (0x33, 0x62, 0x4b),   # 4 boreal / taiga
+    (0xb8, 0xc9, 0x5f),   # 3 estepa / sabana seca
+    (0x3c, 0x74, 0x58),   # 4 boreal / taiga
     (0xbf, 0xc7, 0xca),   # 5 tundra (frío, gris pálido)
 ]
 DESIERTOS = [   # (lat0, lat1, lon0, lon1)
@@ -107,21 +108,26 @@ LUCES_SUELTAS = [
 ]
 
 # ------------------------------------------------------------ geometría
-# COLS x FRAMES es el ancho de la tira PNG; hay GPUs (móvil viejo) que no pasan
-# de 8192 px de textura, así que COLS <= ~290 con FRAMES 28.
-COLS    = 280         # ancho del fotograma, en px (1 px = 1 celda)
-RADIUS  = 143.0       # radio de la esfera, en celdas
-CDOWN   = 0.92         # fracción del radio que se dibuja hacia abajo
-TILT    = 20.0         # latitud del sub-observador (0 = ecuador de frente)
-FRAMES  = 28           # fotogramas de la rotación (giro más fluido, PNG algo mayor)
-MAPRES  = 2            # submuestreo del mapa (1440x720 -> 2 = 0.5 grado)
-SHADES  = 16           # escalones de brillo del día
+# El sprite ya no es una tira en una sola fila: con más resolución por
+# fotograma Y más fotogramas, una fila se iría de largo más allá de lo que
+# aguanta una textura de GPU (~8192 px). Se reparte en una REJILLA de
+# GRID_COLS x GRID_ROWS fotogramas; el CSS anima background-position con un
+# @keyframes explícito (uno por fotograma), no con steps() sobre un solo eje.
+COLS      = 400        # ancho del fotograma, en px (1 px = 1 celda) — antes 280
+RADIUS    = 195.0      # radio de la esfera, en celdas — antes 143
+CDOWN     = 0.92        # fracción del radio que se dibuja hacia abajo
+TILT      = 20.0        # latitud del sub-observador (0 = ecuador de frente)
+FRAMES    = 60          # fotogramas de la rotación — antes 28, giro más fluido
+GRID_COLS = 15          # fotogramas por fila de la rejilla del sprite
+MAPRES    = 1           # submuestreo del mapa (1440x720 -> 1 = resolución nativa, 0,25°)
+SHADES    = 16          # escalones de brillo del día
 
 SUN_DEG = (-46.0, -12.0)       # (azimut desde arriba, elevación)
 SUN_Z   = 0.56                 # empuje del sol hacia el observador
 TERM_A, TERM_B = -0.34, 0.60   # borde del terminador
 NIGHT   = 0.22                 # brillo mínimo en el lado en sombra (día)
 LIMB_K  = 0.23                 # oscurecimiento del borde
+LIMB_AA = 1.3                  # semiancho (en px) del suavizado del borde del disco
 
 CX  = COLS / 2.0
 CY  = RADIUS
@@ -176,6 +182,8 @@ from collections import deque
 DMAX = 6
 _land = [[GRID[r][c] != 0 for c in range(MW)] for r in range(MH)]
 COAST = [bytearray(MW) for _ in range(MH)]
+COAST2 = [bytearray(MW) for _ in range(MH)]         # 2ª celda de tierra adentro (línea más gruesa)
+COAST3 = [bytearray(MW) for _ in range(MH)]         # 3ª celda: ensancha más y evita huecos por sub-muestreo
 SEADIST = [bytearray(MW) for _ in range(MH)]        # 0 = tierra; 1..DMAX = mar
 BIOME = [bytearray(MW) for _ in range(MH)]
 _N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
@@ -231,6 +239,28 @@ for r in range(MH):
         else:
             SEADIST[r][c] = DMAX
 
+# Segundo y tercer anillo (celdas más adentro) para engrosar la línea de costa
+# Y, sobre todo, para que no se salte por sub-muestreo: con un anillo de 1 sola
+# celda, en las zonas donde la proyección comprime más (lejos del centro del
+# disco) un píxel puede caer justo entre medias y "perderse" el anillo entero,
+# dejando huecos sueltos en la línea. Ensanchar a 3 celdas lo hace más robusto.
+for r in range(MH):
+    for c in range(MW):
+        if _land[r][c] and not COAST[r][c]:
+            for dr, dcx in _N4:
+                rr, cc = r + dr, (c + dcx) % MW
+                if 0 <= rr < MH and _land[rr][cc] and COAST[rr][cc]:
+                    COAST2[r][c] = 1
+                    break
+for r in range(MH):
+    for c in range(MW):
+        if _land[r][c] and not COAST[r][c] and not COAST2[r][c]:
+            for dr, dcx in _N4:
+                rr, cc = r + dr, (c + dcx) % MW
+                if 0 <= rr < MH and _land[rr][cc] and COAST2[rr][cc]:
+                    COAST3[r][c] = 1
+                    break
+
 # 1 pasada de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas
 # sin llegar a aplanar las regiones.
 for _ in range(1):
@@ -248,6 +278,28 @@ for _ in range(1):
                         cnt[v] = cnt.get(v, 0) + 1
             _new[r][c] = max(cnt, key=cnt.get)
     BIOME = _new
+
+# Difumina la frontera entre biomas: en vez de que el color salte en seco de
+# la celda de un bioma a la de al lado, se promedia con las vecinas (dos
+# pasadas de caja 3x3, aproxima un desenfoque más ancho sin un kernel grande).
+# Solo entre tierra: el mar no entra en la media, si no la costa se apagaría.
+BIOME_RGB = [[BIOME_COLS[BIOME[r][c]] if _land[r][c] else (0.0, 0.0, 0.0)
+              for c in range(MW)] for r in range(MH)]
+for _ in range(2):
+    _newc = [row[:] for row in BIOME_RGB]
+    for r in range(1, MH - 1):
+        for c in range(MW):
+            if not _land[r][c]:
+                continue
+            sr = sg = sb = n = 0.0
+            for dr in (-1, 0, 1):
+                for dc in (-1, 0, 1):
+                    cc = (c + dc) % MW
+                    if _land[r + dr][cc]:
+                        rc, gc_, bc = BIOME_RGB[r + dr][cc]
+                        sr += rc; sg += gc_; sb += bc; n += 1
+            _newc[r][c] = (sr / n, sg / n, sb / n)
+    BIOME_RGB = _newc
 
 for r in range(MH):
     for c in range(MW):
@@ -290,7 +342,7 @@ for r in range(ELEV_H):
         hs = (ex * 0.6 - ez * 0.6 + k * 0.75) / nl      # luz desde el NO
         # sin sobre-iluminar (si no, el desierto de media altura se pone neón)
         m = 1.0 if e < 250 else max(0.62, min(1.16, 0.58 + hs * 0.58))
-        HS[r][c] = max(1, min(255, (int(m * 128) // 10) * 10))     # a pasos, menos colores
+        HS[r][c] = max(1, min(255, (int(m * 128) // 10) * 10))     # a pasos, menos bandas
         if e > 1400:
             ROCKAMT[r][c] = min(180, (int((e - 1400) / 3400.0 * 255) // 45) * 45)
         around = (_elev(lat + 2, lon) + _elev(lat - 2, lon)
@@ -451,57 +503,45 @@ def luz_at(lat, lon):
 
 
 # ------------------------------------------------------------------ color
-PAL = [(0, 0, 0, 0)]      # 0 = espacio transparente
-_idx = {}
+# PNG en color real (sin paleta): antes esto era un PNG-8 indexado a 256
+# colores y había que "sembrar" con cuidado qué tonos se reservaban para no
+# quedarse sin hueco (banding/tonos sucios al llenarse). Con las mejoras de
+# calidad (degradado de mar, atardecer, brillo) el catálogo de colores creció
+# mucho más allá de 256, así que se deja de indexar: cada píxel lleva su RGBA
+# exacto. Pesa algo más el PNG pero el pixel art sale limpio siempre.
+TRANSPARENT = (0, 0, 0, 0)
 
 
-def color_index(rgb):
-    rgb = tuple((c // 6) * 6 for c in rgb)
-    i = _idx.get(rgb)
-    if i is not None:
-        return i
-    if len(PAL) >= 256:                     # paleta llena: al color más cercano
-        i = min(range(1, len(PAL)),
-                key=lambda j: sum((PAL[j][k] - rgb[k]) ** 2 for k in range(3)))
-        _idx[rgb] = i                       # y se cachea (si no, es lentísimo)
-        return i
-    i = len(PAL)
-    PAL.append(rgb)
-    _idx[rgb] = i
-    return i
-
-
-# Pre-siembra: reserva slots para todos los colores de superficie a varios
-# niveles de brillo ANTES de renderizar, para que el relieve/nieve del norte
-# (que se pinta primero, arriba) no llene la paleta y deje sin color a los
-# biomas del ecuador (que se pintan después). Sin esto salían continentes grises.
-def _seed_palette():
-    bases = [OCEAN_SHALLOW, OCEAN_DEEP, ICE, ROCK, SNOW, COAST_COL, *BIOME_COLS]
-    mixes = [mix(b, ROCK, 0.55) for b in BIOME_COLS] + \
-            [mix(b, SNOW, 0.6) for b in (BIOME_COLS[4], BIOME_COLS[5])] + \
-            [mix(ROCK, SNOW, 0.6)]
-    for base in bases + mixes:
-        for s in range(3, 17):
-            color_index(mix(SPACE, base, s / 16.0))
-    for base in (ATMO, C_BODY, C_BASE, *GOLD):
-        color_index(base)
-
-
-_seed_palette()
+def rgba(rgb):
+    return (max(0, min(255, round(rgb[0]))),
+            max(0, min(255, round(rgb[1]))),
+            max(0, min(255, round(rgb[2]))),
+            255)
 
 
 # ------------------------------------------------------------- proyección
-def _project(sx, sy):
-    px = (sx + 0.5 - CX) / RADIUS
-    py = (sy + 0.5 - CY) / RADIUS
+# El límite se ensancha un poco (LIMB_AA px) más allá del radio real para poder
+# suavizar el borde del disco en vez de cortarlo en seco al píxel.
+_R_IN  = 1.0 - LIMB_AA / RADIUS
+_R_OUT = 1.0 + LIMB_AA / RADIUS
+_RR_MAX = _R_OUT * _R_OUT
+
+
+def _project_xy(x, y):
+    px = (x - CX) / RADIUS
+    py = (y - CY) / RADIUS
     rr = px * px + py * py
-    if rr > 1.0:
+    if rr > _RR_MAX:
         return None
-    pz  = math.sqrt(1.0 - rr)
+    pz  = math.sqrt(max(0.0, 1.0 - min(rr, 1.0)))
     lat = math.degrees(math.asin(max(-1.0, min(1.0, -py * COST + pz * SINT))))
     v   = py * SINT + pz * COST
     lon = math.degrees(math.atan2(px, v))
     return px, py, pz, rr, lat, lon
+
+
+def _project(sx, sy):
+    return _project_xy(sx + 0.5, sy + 0.5)
 
 
 def terrain_at(sx, sy, lon0):
@@ -513,41 +553,120 @@ def terrain_at(sx, sy, lon0):
     return GRID[gr][gc % MW]
 
 
-def cell_index(sx, sy, lon0, night):
-    p = _project(sx, sy)
-    if p is None:
-        return 0
-    px, py, pz, rr, lat, lon = p
-    lon += lon0
-    dc = math.sqrt(rr)
+def _surface_at(lat, lon):
+    """(terrain, surf, mtn_hs, gr, gc) de un punto geográfico, sin sombra."""
     gr, gc = _mcell(lat, lon)
     gr = 0 if gr < 0 else MH - 1 if gr >= MH else gr
     gc %= MW
     terrain = GRID[gr][gc]
-    dth = _dither(sx, sy)
-
-    # --- color de la superficie, sin sombra ---
-    _mtn_hs = 1.0                          # multiplicador de hillshade (solo tierra)
-    if terrain == 0:                       # mar: más claro en plataforma, oscuro en abisal
+    mtn_hs = 1.0                           # multiplicador de hillshade (solo tierra)
+    if terrain == 0:                       # mar: turquesa en costa -> plataforma -> abisal
         sd = SEADIST[gr][gc]
-        t = 0.0 if sd <= 1 else min(1.0, (sd - 1) / 2.5)
-        surf = mix(OCEAN_SHALLOW, OCEAN_DEEP, t)
-        surf_n = N_OCEAN
+        if sd <= 1:
+            surf = OCEAN_COAST
+        elif sd <= 3:
+            surf = mix(OCEAN_COAST, OCEAN_SHALLOW, (sd - 1) / 2.0)
+        else:
+            surf = mix(OCEAN_SHALLOW, OCEAN_DEEP, min(1.0, (sd - 3) / 3.0))
     elif terrain == 2:                     # hielo
         surf = ICE
-        surf_n = N_ICE
-    else:                                  # tierra: bioma + costa + relieve
-        surf = BIOME_COLS[BIOME[gr][gc]]
-        if COAST[gr][gc]:
-            surf = mix(surf, COAST_COL, 0.5)
-        surf_n = N_LAND
-        er, ec = _ecell(lat, lon)
+    else:                                  # tierra: bioma + relieve (la línea de costa se
+        surf = BIOME_RGB[gr][gc]           # pinta aparte, en cell_index: si se mete aquí,
+        er, ec = _ecell(lat, lon)          # el AA de costa la diluye promediándola con el mar
         _ra, _sa = ROCKAMT[er][ec], SNOWAMT[er][ec]
         if _ra:
             surf = mix(surf, ROCK, _ra / 255.0)
         if _sa:
             surf = mix(surf, SNOW, _sa / 255.0)
-        _mtn_hs = HS[er][ec] / 128.0
+        mtn_hs = HS[er][ec] / 128.0
+    return terrain, surf, mtn_hs, gr, gc
+
+
+# Costa/limbo "en crudo": el mapa está a 0.5°/celda y el disco se mira con un
+# radio de unas 143 celdas, así que un píxel de pantalla no siempre cae limpio
+# dentro de una sola celda de mapa. Se sub-muestrea SOLO el anillo costero (los
+# píxeles cuya celda ya venía marcada COAST/SEADIST==1) para mezclar tierra/mar
+# en proporción en vez de dejar el escalón crudo del rasterizado.
+_COAST_OFF = (-0.28, 0.28)
+
+
+def _coast_aa(sx, sy, lon0, terrain, surf, mtn_hs, gr, gc):
+    need = (terrain == 1 and COAST[gr][gc]) or (terrain == 0 and SEADIST[gr][gc] == 1)
+    if not need:
+        return surf, mtn_hs
+    rs = gs = bs = hs = 0.0
+    n = 0
+    for oy in _COAST_OFF:
+        for ox in _COAST_OFF:
+            sp = _project_xy(sx + 0.5 + ox, sy + 0.5 + oy)
+            if sp is None:
+                continue
+            _, _, _, _, slat, slon = sp
+            _, ssurf, smtn, _, _ = _surface_at(slat, slon + lon0)
+            rs += ssurf[0]; gs += ssurf[1]; bs += ssurf[2]; hs += smtn; n += 1
+    if n == 0:
+        return surf, mtn_hs
+    return (rs / n, gs / n, bs / n), hs / n
+
+
+# Línea de costa robusta a islas pequeñas: si solo se mira la celda del píxel
+# central, una isla más pequeña que un píxel de pantalla puede "perderse" el
+# anillo entero (el único punto de muestreo cae en su interior, o directamente
+# en el mar) y queda sin línea — es justo el patrón "huecos sueltos y random"
+# que se veía en el archipiélago filipino. Se comprueban 8 sub-muestras más
+# dentro del píxel y se usa la más fuerte que aparezca.
+_OUTLINE_OFF = (-0.33, 0.0, 0.33)
+
+
+def _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf):
+    if terrain == 0:
+        return surf
+    level = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
+    if level < 3:
+        for oy in _OUTLINE_OFF:
+            for ox in _OUTLINE_OFF:
+                if ox == 0.0 and oy == 0.0:
+                    continue
+                sp = _project_xy(sx + 0.5 + ox, sy + 0.5 + oy)
+                if sp is None:
+                    continue
+                _, _, _, _, slat, slon = sp
+                sgr, sgc = _mcell(slat, slon + lon0)
+                sgr = 0 if sgr < 0 else MH - 1 if sgr >= MH else sgr
+                sgc %= MW
+                if GRID[sgr][sgc] == 0:
+                    continue                    # cae en mar: no aporta anillo de tierra
+                slvl = 3 if COAST[sgr][sgc] else 2 if COAST2[sgr][sgc] else 1 if COAST3[sgr][sgc] else 0
+                if slvl > level:
+                    level = slvl
+                    if level == 3:
+                        break
+            if level == 3:
+                break
+    if level == 3:
+        return mix(surf, COAST_COL, 0.84)
+    if level == 2:
+        return mix(surf, COAST_COL, 0.48)
+    if level == 1:
+        return mix(surf, COAST_COL, 0.20)
+    return surf
+
+
+def cell_index(sx, sy, lon0, night):
+    p = _project(sx, sy)
+    if p is None:
+        return TRANSPARENT
+    px, py, pz, rr, lat, lon = p
+    lon += lon0
+    dc = math.sqrt(rr)
+    dth = _dither(sx, sy)
+
+    terrain, surf, _mtn_hs, gr, gc = _surface_at(lat, lon)
+    surf, _mtn_hs = _coast_aa(sx, sy, lon0, terrain, surf, _mtn_hs, gr, gc)
+    # Línea de costa: aparte del AA de arriba (que suaviza la transición
+    # tierra/mar y diluiría la línea si se mezclara antes). Sub-muestreada
+    # (ver _coast_line_mix) para no perderse islas más pequeñas que un píxel.
+    surf = _coast_line_mix(sx, sy, lon0, terrain, gr, gc, surf)
 
     if night:
         # MODO OSCURO CONGELADO: este script ya NO regenera el sprite de noche
@@ -564,31 +683,45 @@ def cell_index(sx, sy, lon0, night):
                 col = GOLD[lv - 1]
         if dc > 0.94:
             col = mix(col, N_ATMO, 0.35 * smooth(0.94, 1.0, dc))
-        return color_index(col)
+        return rgba(col)
 
     # --- día
     lam = px * SX + py * SY + pz * SZ
-    bright = NIGHT + (1.0 - NIGHT) * smooth(TERM_A, TERM_B, lam)
-    limb = LIMB_K * smooth(0.72, 1.0, dc)
+    term_t = smooth(TERM_A, TERM_B, lam)
+    bright = NIGHT + (1.0 - NIGHT) * term_t
+    limb_t = smooth(0.72, 1.0, dc)
+    limb = LIMB_K * limb_t
     if terrain == 2:
         limb *= 0.7
     bright *= 1.0 - limb
     bright *= _mtn_hs                      # hillshade: laderas al sol claras, en sombra oscuras
-    # dither centrado: redondea, pero mueve el umbral ±0.4 para romper las bandas
-    q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8)) / SHADES
+    # Dither con criterio: el Bayer solo rompe banding donde de verdad hay un
+    # gradiente marcado (terminador, limbo, relieve). En zonas grandes y llanas
+    # (interior de océano/desierto/llanura a plena luz) se apaga y queda plano.
+    term_edge = 1.0 - abs(term_t * 2.0 - 1.0)
+    mtn_edge = min(1.0, abs(_mtn_hs - 1.0) * 2.2)
+    dither_w = max(term_edge, limb_t, mtn_edge)
+    q = (math.floor(bright * SHADES + 0.5 + (dth - 0.5) * 0.8 * dither_w)) / SHADES
     q = 0.0 if q < 0.0 else 1.0 if q > 1.0 else q
     col = mix(SPACE, surf, q)
     if dc > 0.93 and lam > 0.0:
         halo = smooth(0.93, 1.0, dc) * smooth(0.0, 0.45, lam)
         col = mix(col, ATMO, 0.3 * (math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4))
-    return color_index(col)
+    # AA del limbo: el disco ya no corta en seco al radio exacto, se apaga hacia
+    # el color del fondo (SPACE, que es justo el fondo real de la portada) en
+    # una banda de ±LIMB_AA px alrededor del borde real.
+    if dc > _R_IN:
+        coverage = 1.0 - smooth(_R_IN, _R_OUT, dc)
+        if coverage < 1.0:
+            col = mix(SPACE, col, coverage)
+    return rgba(col)
 
 
 def city_cells(lon0, night):
     """Celdas (sx, sy) -> color de las ciudades. De día: siempre punto oscuro.
     De noche: todas encendidas en ámbar."""
-    ci_dark  = color_index(CITY_DARK)
-    ci_light = color_index(GOLD[2])
+    ci_dark  = rgba(CITY_DARK)
+    ci_light = rgba(GOLD[2])
     out = {}
     for clat, clon, pop in CIUDADES:
         rlat = math.radians(clat)
@@ -694,9 +827,9 @@ def cloud_cells(lon0):
         xsc = 0.72 + 0.28 * pz               # se aplasta un poco hacia el borde
         t = 0.72 + 0.28 * bright             # nube blanca casi siempre; solo se
         cix = {                              # apaga pegada al terminador
-            "b": color_index(mix(SPACE, C_BODY, min(1.0, t + 0.1))),
-            "s": color_index(mix(SPACE, C_BASE, t)),
-            "e": color_index(mix(SPACE, C_EDGE, max(0.7, t))),
+            "b": rgba(mix(SPACE, C_BODY, min(1.0, t + 0.1))),
+            "s": rgba(mix(SPACE, C_BASE, t)),
+            "e": rgba(mix(SPACE, C_EDGE, max(0.7, t))),
         }
         cells, dw, dh = _scaled_cloud(CLOUD_BODIES[shp], size)
         for (ox, oy), k in cells.items():
@@ -709,27 +842,32 @@ def cloud_cells(lon0):
 
 
 # ------------------------------------------------------ sprites
+GRID_ROWS = (FRAMES + GRID_COLS - 1) // GRID_COLS
+
+
 def render(night, path):
-    sw, sh = COLS * FRAMES, VIS
-    rows = [bytearray(sw) for _ in range(sh)]
+    sw, sh = COLS * GRID_COLS, VIS * GRID_ROWS
+    rows = [bytearray(sw * 4) for _ in range(sh)]
     for f in range(FRAMES):
         lon0 = -f * 360.0 / FRAMES
-        xoff = f * COLS
+        gx, gy = f % GRID_COLS, f // GRID_COLS
+        xoff, yoff = gx * COLS, gy * VIS
         overlay = {} if night else cloud_cells(lon0)
         overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
         for sy in range(VIS):
-            row = rows[sy]
+            row = rows[yoff + sy]
             for sx in range(COLS):
-                row[xoff + sx] = overlay.get((sx, sy)) or cell_index(sx, sy, lon0, night)
-    write_indexed(path, sw, sh, rows, PAL)
+                c = overlay.get((sx, sy)) or cell_index(sx, sy, lon0, night)
+                o = (xoff + sx) * 4
+                row[o] = c[0]; row[o + 1] = c[1]; row[o + 2] = c[2]; row[o + 3] = c[3]
+    write_rgba(path, sw, sh, rows)
     return sw, sh
 
 
 # El sprite de NOCHE ya no se genera aquí: es public/zodk-planeta-noche.png tal
 # cual, el de producción (el usuario pidió no tocar el modo oscuro). Solo día.
 SW, SH = render(False, "zodk-planeta-sprite.png")
-assert len(PAL) <= 256, f"paleta de {len(PAL)} colores, no cabe en PNG-8"
 
 # El dron tampoco se genera aquí (foto en public/zodk-dron.png).
 
-print(f"sprite día: {SW}x{SH} px, {len(PAL)} colores")
+print(f"sprite día: {SW}x{SH} px, color real (sin paleta)")

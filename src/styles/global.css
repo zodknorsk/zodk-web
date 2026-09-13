@@ -177,11 +177,25 @@ article .tiktok a {
   isolation: isolate;
 }
 
-/* El planeta es un sprite PNG de 28 fotogramas en horizontal. Se anima moviendo
-   background-position a saltos: un recorte de bitmap, barato en cualquier
-   navegador (el SVG vectorial animado calentaba la CPU en Firefox). Si cambias
-   FRAMES en generar-planeta-hero.py, ajusta aquí background-size (FRAMES × 100%)
-   y steps(FRAMES).
+/* El planeta es un sprite PNG en REJILLA de GRID_COLS x GRID_ROWS fotogramas
+   (generar-planeta-hero.py): con más resolución y más fotogramas una sola fila
+   se iba de largo más allá de lo que aguanta una textura de GPU (~8192 px), así
+   que se reparte en varias filas.
+   Se anima con DOS animaciones steps() nativas independientes en vez de un
+   @keyframes con una parada manual por fotograma (esa versión daba tirones en
+   Firefox/Zen: con tantas paradas casi pegadas, el navegador interpolaba entre
+   alguna de ellas en vez de saltar en seco). Cada eje usa el mismo steps() de
+   toda la vida, que sí es preciso:
+     - X recorre las GRID_COLS columnas de una fila en CICLO_X = DURACION /
+       GRID_ROWS segundos (steps(GRID_COLS, jump-none)) y se repite sola.
+     - Y recorre las GRID_ROWS filas en toda la DURACION (steps(GRID_ROWS,
+       jump-none)).
+   Como CICLO_X divide exacto a DURACION, las dos quedan siempre sincronizadas:
+   cuando X completa una vuelta (pasa de la última columna a la primera), Y
+   avanza una fila justo en ese instante — el resultado visita los fotogramas
+   en orden 0,1,2...FRAMES-1 con el mismo hueco de tiempo cada uno.
+   Si cambias COLS/RADIUS/FRAMES/GRID_COLS hay que recalcular aspect-ratio,
+   background-size y los steps()/duraciones de abajo.
    El ?v= es cache-busting: el PNG se llama siempre igual, así que al cambiarlo
    hay que subir el número para que los navegadores bajen la versión nueva. */
 .hero-planet {
@@ -189,24 +203,32 @@ article .tiktok a {
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 280 / 274;
+  aspect-ratio: 400 / 374;
   transform: translateX(-50%);
-  background-image: url(/zodk-planeta-sprite.png?v=2);
+  background-image: url(/zodk-planeta-sprite.png?v=11);
   background-repeat: no-repeat;
-  background-size: 2800% 100%;
+  background-size: 1500% 400%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
-  animation: hero-spin 60s steps(28, jump-none) infinite;
+  /* DURACION = 120s, GRID_COLS = 15, GRID_ROWS = 4 -> CICLO_X = 120/4 = 30s. */
+  animation:
+    hero-spin-x 30s steps(15, jump-none) infinite,
+    hero-spin-y 120s steps(4, jump-none) infinite;
 }
 
 html.dark .hero-planet {
   background-image: url(/zodk-planeta-noche.png);
 }
 
-@keyframes hero-spin {
+@keyframes hero-spin-x {
   from { background-position-x: 0%; }
-  to { background-position-x: 100%; }
+  to   { background-position-x: 100%; }
+}
+
+@keyframes hero-spin-y {
+  from { background-position-y: 0%; }
+  to   { background-position-y: 100%; }
 }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
