@@ -3,7 +3,7 @@ title: Semana 6
 date: '2026-09-03'
 description: >-
   ![342](https://theobjective.com/wp-content/uploads/2026/09/informeceutaseptcompressed.pdf)
-updated: '2026-09-08'
+updated: '2026-09-12'
 tags:
   - marruecos
   - osint
@@ -130,7 +130,7 @@ rango: 3 septiembre – 9 septiembre
 
 - Las ONG que protegen a los invasores de Ceuta se alojan en un edificio público cedido por el ministerio de Elma Saiz ([fuente](https://okdiario.com/espana/ong-que-protegen-invasores-ceuta-alojan-edificio-publico-cedido-ministerio-elma-saiz-20211151#Echobox=1788415699-2))
 - Los ministros Torres y Saiz huyen por una puerta trasera del acto institucional en Ceuta al grito de «¡Traidores dimisión!». ([fuente](https://okdiario.com/espana/ministros-torres-saiz-huyen-puerta-trasera-del-acto-institucional-ceuta-grito-traidores-dimision-20217293))
-- Jupol acusa al director de la Policía de «tener relación directa con  servicios secretos marroquíes» ([fuente](https://www.eldebate.com/espana/20260902/jupol-acusa-director-policia-tener-relacion-directa-servicios-secretos-marroquies_454734.html))
+- Jupol acusa al director de la Policía de «tener relación directa con servicios secretos marroquíes» ([fuente](https://www.eldebate.com/espana/20260902/jupol-acusa-director-policia-tener-relacion-directa-servicios-secretos-marroquies_454734.html))
 - Ceuta: mentira tras mentira ([fuente](https://www.abc.es/opinion/editorial-ceuta-mentira-tras-mentira-20260902193302-nt.html))
 ## 04 de septiembre
 
@@ -524,7 +524,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
 
 
 **NOTICIAS DEL DÍA**
-- Devueltos 21 migrantes a Marruecos tras apedrear a una patrulla de militares en Ceuta ([fuente]([https://www.eldebate.com/espana/20260906/detienen-21-inmigrantes-apedrear-militares-guardias-civiles-ceuta_455821.html](https://www.europapress.es/sociedad/noticia-devueltos-21-migrantes-marruecos-apedrear-patrulla-militares-ceuta-20260906160117.html)))
+- Devueltos 21 migrantes a Marruecos tras apedrear a una patrulla de militares en Ceuta ([fuente](https://www.europapress.es/sociedad/noticia-devueltos-21-migrantes-marruecos-apedrear-patrulla-militares-ceuta-20260906160117.html))
 ## 07 de septiembre
 
 
@@ -860,3 +860,231 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
 - El jefe del Ejército de Tierra no pisa Ceuta para evitar una escalada de la crisis con Marruecos ([fuente](https://theobjective.com/espana/politica/2026-09-08/ejercito-tierra-ceuta-marruecos/))
 - Cumbre militar en Zarzuela: el Rey evalúa con Robles y el Jemad la defensa de Ceuta ([fuente](https://theobjective.com/espana/2026-09-08/zarzuela-rey-robles-jemad-defensa-ceuta/))
 ## 09 de septiembre
+
+**SESIÓN DE CONTROL AL GOBIERNO 09/09/2026** 
+
+[enlace](https://www.youtube.com/live/726L9U3PDMQ?si=fWzXL0-7xSIKbWhV)
+
+
+
+<blockquote class="tweet" data-tweet-id="2097281329452704043">
+  <a class="tweet-author" href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1460267738493034503-dlz0nchi_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ladyblue</span>
+    <span class="tweet-handle">@MariaMu24417972</span>
+  </a>
+  <div class="tweet-text">Escucha bien esto:<br>
+Hoy son los gatos <br>
+Mañana serás tú y tus hijos</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener"><img src="/tweets/img-douiuje43p9r83u4.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097444251051180294">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2097444251051180294" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">Sánchez contra Robles: desclasificará un informe de la inteligencia militar del 30 de julio para culparla de que avisó tarde.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2097444251051180294" target="_blank" rel="noopener">8 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097594274208416200">
+  <a class="tweet-author" href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1677073142152327168-kjvyt_eg_bigger.png" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Chopenawer</span>
+    <span class="tweet-handle">@dchopenawer</span>
+  </a>
+  <div class="tweet-text">Cómo de mal está la cosa para que Pedro Sánchez le haya metido esta vacilada a Abascal.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener"><img src="/tweets/img-iozykzf7a_ov4fb2.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097615403149148341">
+  <a class="tweet-author" href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1941768194177236992-7_nojty6_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">RTVE Noticias</span>
+    <span class="tweet-handle">@rtvenoticias</span>
+  </a>
+  <div class="tweet-text">Pedro Sánchez, en <a href="https://x.com/hashtag/Mañaneros9S" target="_blank" rel="noopener">#Mañaneros9S</a>, sobre Ceuta: &quot;No estamos hablando de invasores, estamos hablando de personas, que en su mayoría, están buscando una vida mejor&quot;.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener"><img src="/tweets/img-_oklajbxxgg8pare.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097633865108230378">
+  <a class="tweet-author" href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074022871068721152-op9-nqtp_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pedro Sánchez</span>
+    <span class="tweet-handle">@sanchezcastejon</span>
+  </a>
+  <div class="tweet-text">¿Qué hubiera hecho otro Gobierno?<br>
+¿Se hubiera liado a tiros contra niños, niñas, jóvenes?<br>
+<br>
+Me parece de una gravedad extrema.<br>
+<br>
+La respuesta de las Fuerzas y Cuerpos de Seguridad del Estado fue inteligente y yo, por supuesto, la avalo.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener"><img src="/tweets/media-hrxiyksw0aaw-6h.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097628987849634141">
+  <a class="tweet-author" href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1563120173976002560-0qsj2vzq_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Eduardo Carazo</span>
+    <span class="tweet-handle">@educarazo</span>
+  </a>
+  <div class="tweet-text">ALUCINANTE 👉🏻 La última pregunta de Cintora en TelePedro <a href="https://x.com/hashtag/Mañaneros9S" target="_blank" rel="noopener">#Mañaneros9S</a> a su jefe es sobre sus listas musicales en Spotify 🤷🏻‍♂️<br>
+<br>
+No se había visto nada tan duro desde el último combate de Ilia Topuria 😅😅</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener"><img src="/tweets/img-iowzqv-q6howvpau.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097663875621462279">
+  <a class="tweet-author" href="https://x.com/EstrateMilitar/status/2097663875621462279" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2027344060101300224-b-sktssc_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Estrategias Militares</span>
+    <span class="tweet-handle">@EstrateMilitar</span>
+  </a>
+  <div class="tweet-text">Aclaración  de esa imagen satelite.<br>
+Se trata de la parada de taxis en la frontera del Tarajal.<br>
+<br>
+He comprado la imagen de uno de los días  relacionados y llegara en los próximos días. <br>
+<a href="https://x.com/Nacho_Abad" target="_blank" rel="noopener">@Nacho_Abad</a></div>
+  <img class="tweet-media" src="/tweets/media-hrxmlaswuaayl05.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/EstrateMilitar/status/2097663875621462279" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097706601729626342">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2097706601729626342" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">🔴 ÚLTIMA HORA<br>
+<br>
+El CNI avisó a Marlaska y a Marruecos un día antes de la invasión de Ceuta.<br>
+<br>
+Informa Antonio Rodríguez (<a href="https://x.com/antonioRG9" target="_blank" rel="noopener">@antonioRG9</a>).</div>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2097706601729626342" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097670462230720833">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2097670462230720833" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">‼️ El Gobierno instala en el centro de inmigrantes de Ceuta una antena para que dispongan de wifi.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2097670462230720833" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097738461444710524">
+  <a class="tweet-author" href="https://x.com/Political_Room/status/2097738461444710524" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1244593976184840193-iphldwcb_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">The Political Room</span>
+    <span class="tweet-handle">@Political_Room</span>
+  </a>
+  <div class="tweet-text">🇪🇸🇲🇦🛡️Efectivamente, el Regimiento de Guerra Electrónica Nº 32 alertó del evento inminente.</div>
+  <img class="tweet-media" src="/tweets/media-hryqa3hxeaarwtd.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/Political_Room/status/2097738461444710524" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097712292183888077">
+  <a class="tweet-author" href="https://x.com/Defensagob/status/2097712292183888077" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2014473667485323264-z21dddla_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Ministerio Defensa</span>
+    <span class="tweet-handle">@Defensagob</span>
+  </a>
+  <div class="tweet-text">La mentira, en política, no puede utilizarse como argumento para  desprestigiar la profesionalidad de los miembros del CNI, que nunca ha recibido informe alguno de la CIA sobre la invasión en Ceuta, como se ha afirmado en sede parlamentaria aprovechando la inmunidad de ese marco.</div>
+  <img class="tweet-media" src="/tweets/media-hrysnvsboaafp4y.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/Defensagob/status/2097712292183888077" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097772291601895874">
+  <a class="tweet-author" href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2023769418250285060-tiouigrt_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ABC.es</span>
+    <span class="tweet-handle">@abc_es</span>
+  </a>
+  <div class="tweet-text">El delegado del Gobierno en Ceuta se aferra al cargo y dice que los informes publicados del CNI «no fueron un aviso»</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener"><img src="/tweets/img-d72hcjtsp8afonng.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097770482393063581">
+  <a class="tweet-author" href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2050101713952985088-xupmsfio_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Hugo Manchón</span>
+    <span class="tweet-handle">@hugomanchon</span>
+  </a>
+  <div class="tweet-text">3 minutos DEMOLEDORES que destrozan al Gobierno y sus mentiras. <br>
+<br>
+<a href="https://x.com/hashtag/EleccionesYA" target="_blank" rel="noopener">#EleccionesYA</a></div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener"><img src="/tweets/img-sjlb9yhsdimpavkq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097809936260428006">
+  <a class="tweet-author" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1813878293663244288-tgfsfixv_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Equidistante</span>
+    <span class="tweet-handle">@elequidistante</span>
+  </a>
+  <div class="tweet-text">Os pongo estos 7 minutos de la entrevista bochornosa de Óscar Puente con Cristina Pardo, desarmado ante la realidad.<br>
+<br>
+Es lo que pasa cuando no vas a tus medios de confianza. <br>
+<br>
+Lo disfrutaría más, si no fuera porque estamos en manos de estos desgraciados.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener"><img src="/tweets/img-dxhwykqsm3gmx-qk.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2097818712422109330">
+  <a class="tweet-author" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1813878293663244288-tgfsfixv_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Equidistante</span>
+    <span class="tweet-handle">@elequidistante</span>
+  </a>
+  <div class="tweet-text">Otros dos minutos estupefacientes sobre el famoso post de “Otra crisis más que resuelve Pedro Sánchez” y la fuga vacacional de Sánchez.<br>
+<br>
+Pardo le lleva al huerto, y Puente cae como un cochino.<br>
+<br>
+Ay la hemeroteca.</div>
+  <a class="tweet-media tweet-media-video" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener"><img src="/tweets/img-xx2dwqi6p5lq_pyn.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <a class="tweet-date" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+</blockquote>
+
+
+
+**NOTICIAS DEL DÍA**
+- Bruselas aprueba una ayuda urgente de 114,7 millones para reforzar la frontera de Ceuta y acelerar las deportaciones([fuente](https://www.elespanol.com/mundo/europa/20260909/bruselas-aprueba-ayuda-emergencia-millones-reforzar-frontera-ceuta-acelerar-deportaciones/1003744377904_0.html))

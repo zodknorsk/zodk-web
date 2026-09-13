@@ -4,16 +4,18 @@ date: '2026-09-08'
 description: >-
   Durante la madrugada del 3 de abril de 2026, un F-15E Strike Eagle - callsign
   Dude 44 - realizaba misiones de combate en el suroeste de Irán cuando fue…
-updated: '2026-09-12'
+updated: '2026-09-13'
 tags:
   - osint
   - eeuu
   - iran
 kind: index
-evento: 2026-united-states-f-15e-rescue-operation-in-iran
+evento: operacion-de-rescate-del-f-15e-derribado-en-iran
 orden: 0
 periodo: Del 3 al 5 de abril de 2026
 ---
+![](./pasted-image-20260913001930.png)
+
 > Durante la madrugada del 3 de abril de 2026, un F-15E Strike Eagle - *callsign Dude 44 -* realizaba misiones de combate en el suroeste de Irán cuando fue alcanzado por un MANPADS guiado por infrarrojos. La tripulación, compuesta por el piloto _«Dude 44 Alpha»_ y el oficial de sistemas de armas (WSO) _«Dude 44 Bravo»_ se eyectó en territorio iraní, iniciando lo que sería una de las operaciones de rescate y extracción de operaciones especiales más complejas en la historia militar moderna, requiriendo una respuesta conjunta sin precedentes para operar de forma prolongada en espacio aéreo disputado.
 
 
@@ -25,9 +27,11 @@ El F-15E _Dude 44_, perteneciente al **494th Fighter Squadron** (con base habitu
 
 ## Primeras horas y el rescate del piloto
 
-El avión se estrelló tras ser alcanzado por un misil portátil (MANPADS) —posteriormente identificado por fuentes iraníes como un Misagh-3, aunque la BBC señaló que esta identificación no pudo verificarse de forma independiente—. Ambos tripulantes se eyectaron por separado sobre la provincia de Isfahan.
+El avión fue derribado tras ser alcanzado a 28.000 pies por un misil portátil ([MANPADS](https://es.wikipedia.org/wiki/Sistema_de_defensa_antia%C3%A9rea_port%C3%A1til)). Ambos tripulantes se eyectaron sobre la provincia de Kohgiluyeh y Boyer-Ahmad, pero durante el descenso nocturno, los fuertes vientos de altura separan los paracaídas: «Dude 44 Alpha» (piloto) deriva hacia el oeste, mientras que «Dude 44 Bravo» (WSO) cae en zonas montañosas más agrestes.
 
-En cuanto el F-15E emitió la señal de eyección, el protocolo de combat search and rescue (CSAR) se activó de forma prácticamente automática: dentro de la primera hora tras el derribo ya había activos en el aire moviéndose hacia la zona. Sobre el mediodía del 3 de abril, un HC-130 realizaba maniobras de reabastecimiento en vuelo a baja cota para mantener en el aire a los helicópteros de rescate, mientras varios A-10 Thunderbolt II patrullaban la zona proporcionando apoyo aéreo cercano (CAS) y cobertura frente a una posible respuesta iraní. 
+En cuanto el F-15E emitió la señal de eyección, el protocolo de combat search and rescue (CSAR) se activó de forma prácticamente automática: una hora después de ser derribado, ya había activos en el aire dirigiéndose hacia la zona. 
+
+Vemos los primeros videos de HC-130 realizando maniobras de reabastecimiento en vuelo a baja cota para mantener en el aire a los helicópteros de rescate, mientras varios A-10 Thunderbolt II patrullaban la zona proporcionando apoyo aéreo cercano (CAS) y cobertura frente a una posible respuesta iraní. 
 
 
 <blockquote class="tweet" data-tweet-id="2040077939052523845">
@@ -54,6 +58,7 @@ En cuanto el F-15E emitió la señal de eyección, el protocolo de combat search
   <a class="tweet-date" href="https://x.com/Osinttechnical/status/2040145805802106941" target="_blank" rel="noopener">3 de abril de 2026</a>
 </blockquote>
 
+
 El piloto fue rescatado por fuerzas estadounidenses apenas **siete horas** después del derribo, aunque con heridas de consideración. El WSO, con rango de coronel, quedó "en paradero desconocido": los drones de vigilancia estadounidenses no lograron localizarlo en las primeras horas, dando inicio a una carrera contrarreloj entre las fuerzas de EE. UU. y las iraníes por encontrarlo primero.
 
 Según el Wall Street Journal, Trump pasó buena parte del día en el Ala Oeste, presuntamente presa del pánico y "gritando a sus asesores durante horas", hasta el punto de que los mandos militares le mantuvieron fuera de la Sala de Situación durante gran parte de la operación, informándole solo por teléfono en los momentos clave. Públicamente, la Casa Blanca minimizó el incidente, pero la posible captura del oficial suponía un riesgo de vergüenza política mayúsculo para la administración.
@@ -72,6 +77,11 @@ Indicates at least one of the aircraft’s crew successfully punched out and is 
   <a class="tweet-date" href="https://x.com/Osinttechnical/status/2040060994781601841" target="_blank" rel="noopener">3 de abril de 2026</a>
 </blockquote>
 
+
+Durante la fase final del rescate del piloto, Estados Unidos confirmó la pérdida de un A-10 Thunderbolt II, alcanzado mientras prestaba apoyo aéreo cercano sobre la zona de extracción. El piloto logró eyectarse a salvo ya fuera del espacio aéreo iraní. 
+
+![](./pasted-image-20260912173559.png)
+*A-10 Thunderbolt II del 190th Fighter Squadron sobre Afganistán durante la Operación Enduring Freedom.*
 
 ## La maniobra SERE del oficial de sistemas de armas en los Montes Zagros
 
@@ -93,7 +103,7 @@ Con el WSO ya localizado en su grieta rocosa de los Zagros, la fase final de la 
 
 ![](./composicion-6.png)
 
-Allí aterrizaron dos MC-130J Commando II, cada uno valorado en más de 100 millones de dólares, cargados con parte del centenar de operadores de fuerzas especiales que iban a asegurar la zona y ejecutar el rescate final. El problema llegó casi de inmediato: el terreno, blando y encharcado por la humedad, se tragó literalmente el tren de aterrizaje de ambos aparatos. Los dos C-130 quedaron atascados a la vez en la misma pista, con los motores fríos y las ruedas hundidas en el barro, incapaces de generar la tracción necesaria para despegar de nuevo.
+Allí aterrizaron dos MC-130J Commando II, con parte del centenar de operadores de fuerzas especiales que iban a asegurar la zona y ejecutar el rescate final. El problema llegó casi de inmediato: el terreno, blando y encharcado por la humedad, se tragó literalmente el tren de aterrizaje de ambos aparatos. Los dos C-130 quedaron atascados a la vez en la misma pista, con los motores fríos y las ruedas hundidas en el barro, incapaces de generar la tracción necesaria para despegar de nuevo.
 
 ![](./pasted-image-20260912172010.png)
 *MC-130J Commando II del 492nd Special Operations Wing durante el ejercicio Emerald Warrior 24*
@@ -106,6 +116,8 @@ Con Delta Force asegurando el perímetro y el reloj corriendo —las fuerzas ira
 
 ![](./pasted-image-20260912171604.png)
 *Restos destruidos de la FOB, @Osinttechnical, 5 abril 2026.*
+
+Con un paquete de más de 150 aeronaves (F-22A, F-35A, F-15E) apoyadas por bombarderos (B-2, B-52), aviones cisterna (KC-46, KC-135) y A-10C Thunderbolt II destruyendo carreteras y bloqueando rutas de acceso, helicópteros del 160th SOAR se posan en el filo de una cresta a 2100m de altura, recuperando a _Dude 44 Bravo_, exhausto y herido tras casi 48h de evasión.
 
 Solo entonces entró en juego una tercera oleada: aeronaves de reemplazo —Dash 8 y C295W de Operaciones Especiales—  volaron hasta la pista, recogieron a la totalidad del personal varado junto con el WSO ya rescatado, y despegaron de vuelta a territorio seguro. Fue este tramo final, más que el tiroteo o la persecución por los Zagros, el que estuvo más cerca de convertir la operación en un desastre: casi un centenar de hombres en tierra enemiga, sin aviones operativos, dependiendo de que un tercer avión llegara a tiempo antes de que las fuerzas iraníes cerraran el cerco.
 
@@ -122,11 +134,8 @@ Solo entonces entró en juego una tercera oleada: aeronaves de reemplazo —Dash
 </blockquote>
 
 
-Durante la fase final del rescate del WSO, el 5 de abril, Estados Unidos confirmó la pérdida de un A-10 Thunderbolt II, alcanzado mientras prestaba apoyo aéreo cercano sobre la zona de extracción. El piloto logró eyectarse a salvo ya fuera del espacio aéreo iraní. Fue, junto con el propio F-15E, una de las dos pérdidas de aeronaves tripuladas que Irán pudo reclamar como derribos reales durante toda la operación —el resto de bajas materiales (los dos MC-130J y los cuatro Little Bird) fueron autodestrucciones deliberadas de EE. UU., no derribos.
 
-![](./pasted-image-20260912173559.png)
-*A-10 Thunderbolt II del 190th Fighter Squadron sobre Afganistán durante la Operación Enduring Freedom.*
-## Enjambre de drones ''medusa''?
+## ¿Enjambre de drones "medusa"?
 
 En junio de 2026, más de dos meses después del rescate, [CNN](https://edition.cnn.com/2026/06/23/politics/iran-drones-f-15-pilot-intelligence) publicó una exclusiva basada en cuatro fuentes que abrió un nuevo frente de debate dentro de la comunidad de inteligencia estadounidense: durante su debriefing posterior al rescate, el piloto del F-15E relató haber visto, justo antes de eyectarse, varios drones iraníes interconectados moviéndose como si fueran un único organismo, con drones más pequeños colgando debajo de los grandes a modo de "patas" — una imagen que él mismo comparó con una medusa. Otra fuente citada por CNN describió la escena directamente como un "campo minado de drones" suspendido en el aire.
 
@@ -140,12 +149,12 @@ El hilo quedó abierto meses después: en agosto de 2026, el medio alemán [Focu
 
 ### Pérdidas materiales — Estados Unidos 🇺🇸
 
-| Aeronave                | Cantidad | Circunstancia                                                                                         |
-| ----------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
-| MC-130J Commando II     | 2        | Atascadas en la pista de la FOB y autodestruidas deliberadamente para evitar su captura               |
-| MH-6 / AH-6 Little Bird | 4        | Del 160th SOAR, autodestruidos junto a los MC-130J en la FOB                                          |
-| A-10 Thunderbolt II     | 1        | Derribado por fuerzas iraníes durante la fase final del rescate (5 de abril). Piloto eyectado a salvo |
-| UH-60 Black Hawk        | 2        | Alcanzados por fuego de armas ligeras, dañados pero permanecieron operativos                          |
+| Aeronave                | Cantidad | Circunstancia                                                                                                                   |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| MC-130J Commando II     | 2        | Atascadas en la pista de la FOB y autodestruidas deliberadamente para evitar su captura                                         |
+| MH-6 / AH-6 Little Bird | 4        | Del 160th SOAR, autodestruidos junto a los MC-130J en la FOB                                                                    |
+| A-10 Thunderbolt II     | 1        | Derribado por fuerzas iraníes el 3 de abril durante el rescate del piloto, cerca del estrecho de Ormuz. Piloto eyectado a salvo |
+| HH-60W Jolly Green II   | 2        | Alcanzados por fuego de armas ligeras, dañados pero permanecieron operativos                                                    |
 
 **Coste económico estimado:** ~300 millones de dólares en aeronaves destruidas (cada MC-130J valorado en más de 100 millones por sí solo).
 
