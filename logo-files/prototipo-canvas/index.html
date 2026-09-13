@@ -25,8 +25,8 @@
 <div id="sprite" class="hero-planet" hidden></div>
 <div id="panel">
   <button id="modo">Ver el sprite de ahora (a saltos)</button><br>
-  vuelta: <button data-v="90">90 s</button> <button data-v="120">120 s (actual)</button>
-  <button data-v="180">180 s</button> <button data-v="240">240 s</button> <span id="vel"></span><br>
+  vuelta: <button data-v="90">90 s</button> <button data-v="120">120 s</button>
+  <button data-v="180">180 s (elegida)</button> <button data-v="240">240 s</button> <span id="vel"></span><br>
   <span id="info">cargando…</span>
 </div>
 <script type="module">
@@ -233,7 +233,7 @@ function draw(rot) {                   // rot: giro en celdas, con decimales (co
 // todos los bordes se reajustaban a la vez con patrón 1,1,0,1… -> tirones.)
 // Vuelta en 120 s, como el sprite. Tope de ~60 dibujos/s (en pantallas de
 // 120 Hz se dibuja uno de cada dos fotogramas).
-let VUELTA = 120;
+let VUELTA = 180;                      // elegida por el usuario (13-sep-2026)
 let t0 = null, lastSlot = -1, ms = 0, pasos = 0;
 let rotBase = 0, tBase = null;         // al cambiar de velocidad, el giro sigue desde donde iba
 window.__draw = draw;                  // para depurar desde la consola

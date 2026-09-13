@@ -253,8 +253,8 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
         `now - last >= 15` se colaba algún fotograma de más. Medido: 240/240
         dibujos exactos cada 16,7 ms. ~1,9 ms por dibujo; temperatura en Zen
         bien (lo comprobó el usuario).
-   - **Velocidad**: botones 90/120/180/240 s por vuelta. El usuario se inclina
-     por **180 s** (aún decidiendo). Explicado: más lento = más nítido (menos
+   - **Velocidad: 180 s por vuelta, elegida por el usuario** (probó 90/120/
+     180/240 con botones; 180 queda por defecto en el prototipo). Explicado: más lento = más nítido (menos
      titileo por segundo) pero no más fluido (el salto sigue siendo de 4,6 px
      de pantalla, solo más espaciado).
    - **Siguiente idea que le gustó: más resolución (píxeles más pequeños)**.
