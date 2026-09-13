@@ -61,7 +61,10 @@ Decisiones que hay que respetar:
 
 Pendiente (sin orden, lo decide él):
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
-- Modo noche entero (y cómo llegar a los países del hemisferio sur).
+- Modo noche: en la rama `planeta-noche` (casi terminado; falta que el usuario
+  mire la temperatura en Zen y el móvil, y el merge).
+- Hemisferio sur (cómo llegar a sus países en el hero): aparcado para más
+  adelante, de día y de noche.
 - Ficha de bandera que se sale por abajo si la chapa está muy baja.
 - Ideas aparcadas: chapas que se "planten" al pasar por el centro, 120 s por
   vuelta, borde de atmósfera (propuesto, no pedido), E-2 de perfil.
