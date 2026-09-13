@@ -1507,6 +1507,123 @@ def flag_cells(lon0):
     return out, sombra
 
 
+# ------------------------------------------------------ luces de noche
+# Cada ciudad de más de 15.000 habitantes de GeoNames (CC BY 4.0; ~34.000, con
+# la densidad real: Natural Earth dejaba EE. UU. casi a oscuras) deja una
+# huella de intensidad en píxeles. Descargar a este directorio (gitignored):
+#   curl -sSLO https://download.geonames.org/export/dump/cities15000.zip && \
+#     unzip cities15000.zip && rm cities15000.zip
+# La huella va en píxeles
+# de PANTALLA (tamaño fijo, no se encoge con el planeta): centro + vecinos,
+# más ancha cuanto más grande. Las huellas se SUMAN, así que las zonas densas
+# (Benelux, Ruhr, valle del Po…) se funden solas en mancha de luz, y la suma
+# se reduce a pocos niveles de ámbar (pixel art, no degradado). Es emisiva: no
+# depende de la luna. Las nubes van por encima.
+LUZ_POP_MIN = 15000
+LUZ_EXP     = 0.4                  # intensidad del centro = (población / 100.000) ** esto:
+                                   # pueblo = 1 px tenue, 1 M = núcleo con halo, 10 M = mancha
+LUZ_N4, LUZ_DIAG, LUZ_R2 = 0.30, 0.15, 0.12   # huella: vecinos, diagonales, anillo de radio 2
+LUZ_R2_MIN  = 2.5                  # a partir de esta intensidad la huella lleva anillo de radio 2
+# Factor de luz por país (1 = lo que diga su población). Por debajo: países
+# con red eléctrica escasa (África subsahariana salvo Sudáfrica, y algunos
+# más) y Corea del Norte, casi a oscuras, como en las fotos reales. Por encima:
+# EE. UU. y Canadá, que gastan mucha más luz por habitante y cuya población
+# vive en buena parte en suburbios de menos de 15.000 (GeoNames no los cuenta).
+_LUZ_BAJA = ("AO BI BJ BF BW CF CI CM CD CG KM DJ ER ET GA GH GN GM GW GQ KE LR LS MG ML "
+             "MZ MR MW NA NE NG RW SD SS SN SL SO SZ TD TG TZ UG ZM ZW AF MM YE HT PG").split()
+LUZ_PAIS = dict({k: 0.5 for k in _LUZ_BAJA}, KP=0.08, US=2.2, CA=1.5)
+# Nivel -> (color, opacidad sobre el suelo a la luz de la luna).
+LUZ_UMBRAL = (0.35, 1.0, 1.8, 2.6, 3.4, 4.2)
+LUZ_RAMPA = (
+    ((0xc0, 0x80, 0x34), 0.35),
+    ((0xc0, 0x80, 0x34), 0.70),
+    ((0xd6, 0x98, 0x3e), 1.0),
+    ((0xf2, 0xc2, 0x52), 1.0),
+    ((0xff, 0xdc, 0x78), 1.0),
+    ((0xff, 0xf4, 0xcc), 1.0),
+)
+
+
+def _cargar_luces():
+    import os
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cities15000.txt")
+    out = []
+    with open(ruta, encoding="utf-8") as fh:
+        for linea in fh:
+            f = linea.split("\t")          # 4 lat, 5 lon, 8 país (ISO2), 14 población
+            pop = int(f[14] or 0)
+            if pop < LUZ_POP_MIN:
+                continue
+            a = (pop / 1e5) ** LUZ_EXP * LUZ_PAIS.get(f[8], 1.0)
+            out.append((round(float(f[4]), 2), round(float(f[5]), 2), round(a, 2)))
+    return out
+
+
+LUCES = _cargar_luces()
+_HUELLA = [(0, 0, 1.0)] + [(dx, dy, LUZ_N4) for dx, dy in _N4] + \
+          [(dx, dy, LUZ_DIAG) for dx in (-1, 1) for dy in (-1, 1)]
+_HUELLA_R2 = [(2 * dx, 2 * dy, LUZ_R2) for dx, dy in _N4]
+LUZ_CORE2 = 3.9                    # (~3 M hab.) a partir de aquí el núcleo es de 2x2
+_hg = {}
+for _ox, _oy in ((0, 0), (1, 0), (0, 1), (1, 1)):   # la huella grande = máximo de 4 huellas desplazadas
+    for _dx, _dy, _w in _HUELLA + _HUELLA_R2:
+        _k = (_dx + _ox, _dy + _oy)
+        _hg[_k] = max(_hg.get(_k, 0.0), _w)
+_HUELLA_GRANDE = [(dx, dy, w) for (dx, dy), w in _hg.items()]
+del _hg
+
+
+def _luz_nivel(v):
+    lv = 0
+    while lv < len(LUZ_UMBRAL) and v >= LUZ_UMBRAL[lv]:
+        lv += 1
+    return lv
+
+
+# La suma de TODAS las huellas solo da un velo tenue (nivel 1) en las zonas
+# densas: si llegara más arriba, el Benelux o Inglaterra se quemaban en una
+# mancha plana. El brillo de verdad sale de cada píxel por separado: el
+# halo más fuerte que le llegue, o la suma de los NÚCLEOS que caen en él (así
+# una ciudad con sus afueras, como París, gana brillo).
+LUZ_SUMA_MAX = 1
+
+
+def light_cells(lon0):
+    """(sx, sy) -> nivel de luz (1..len(LUZ_RAMPA))."""
+    acc, pico, nucleo = {}, {}, {}
+    for lat, lon, a in LUCES:
+        rlat, rlon = math.radians(lat), math.radians(lon - lon0)
+        s, cl = math.sin(rlat), math.cos(rlat)
+        vv = cl * math.cos(rlon)
+        pz = SINT * s + COST * vv
+        if pz <= 0.02:
+            continue
+        a *= smooth(0.02, 0.25, pz)                # se apagan al llegar al limbo
+        x = round(cl * math.sin(rlon) * RADIUS + CX - 0.5)
+        y = round((-COST * s + SINT * vv) * RADIUS + CY - 0.5)
+        huella = (_HUELLA_GRANDE if a >= LUZ_CORE2 else
+                  _HUELLA + _HUELLA_R2 if a >= LUZ_R2_MIN else _HUELLA)
+        for dx, dy, w in huella:
+            k = (x + dx, y + dy)
+            acc[k] = acc.get(k, 0.0) + a * w
+            if w == 1.0:
+                nucleo[k] = nucleo.get(k, 0.0) + a
+            elif a * w > pico.get(k, 0.0):
+                pico[k] = a * w
+    out = {}
+    for k, v in acc.items():
+        fuerte = max(pico.get(k, 0.0), nucleo.get(k, 0.0))
+        lv = max(_luz_nivel(fuerte), min(LUZ_SUMA_MAX, _luz_nivel(v)))
+        if lv and 0 <= k[0] < COLS and 0 <= k[1] < VIS:
+            out[k] = lv
+    return out
+
+
+def light_mix(c, lv):
+    col, a = LUZ_RAMPA[lv - 1]
+    return rgba(mix(c, col, a))
+
+
 # ------------------------------------------------------ sprites
 GRID_ROWS = (FRAMES + GRID_COLS - 1) // GRID_COLS
 
@@ -1527,6 +1644,7 @@ def render(night, path, frames=None):
         if not night:                               # chapas por encima de las nubes
             fl, sombra = flag_cells(lon0)
             overlay.update(fl)
+        luces = light_cells(lon0) if night else {}
         for sy in range(VIS):
             row = rows[yoff + sy]
             for sx in range(COLS):
@@ -1535,6 +1653,9 @@ def render(night, path, frames=None):
                     c = cell_index(sx, sy, lon0, night)
                     if (sx, sy) in sombra and c[3]:
                         c = (c[0] // 2, c[1] // 2, c[2] // 2 + 6, 255)
+                    lv = luces.get((sx, sy))
+                    if lv and c[3]:
+                        c = light_mix(c, lv)
                 o = (xoff + sx) * 4
                 row[o] = c[0]; row[o + 1] = c[1]; row[o + 2] = c[2]; row[o + 3] = c[3]
     write_rgba(path, sw, sh, rows)
