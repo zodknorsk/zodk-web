@@ -83,33 +83,95 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
 ## Pendiente
 
 1. ~~Móvil~~ — hecho (commit `7de9a13`); verificado en un teléfono real.
-2. **Caché en producción** — los PNG se llaman siempre igual. Ya van por el
-   segundo cambio con el mismo nombre (28 fotogramas, luces adelgazadas), así que
-   quien tenga la versión vieja en caché tarda en ver la nueva. Antes del
-   **próximo** cambio del planeta: ponerles versión al nombre (`?v=`) o moverlos
-   a `src/assets/` para que Astro les meta hash de contenido.
-3. **Afinar** — `MAPRES` 4→3, tono desierto para el Sáhara, pulir el hielo del
-   polo, tamaño de las luces sueltas, nº de luces de noche… pendiente de ir
-   puliendo con el usuario.
+2. ~~Caché en producción~~ — resuelto de facto: cada cambio del sprite de día
+   sube el `?v=` en `global.css` (va ya por `v=11`). Seguir hacíendolo así en
+   cada cambio futuro del PNG de día.
+3. **Afinar** — tono desierto para el Sáhara, pulir el hielo del polo, tamaño
+   de las luces sueltas, nº de luces de noche… sigue pendiente de ir puliendo
+   con el usuario. (`MAPRES` ya no aplica: ver punto 5, se subió a resolución
+   nativa).
 4. **Aparcado** — aurora boreal en el modo noche.
-5. **Pasada de calidad del pixel art (sprite de DÍA)** — pendiente de empezar
-   la semana del 15-sep-2026, cuando se reinicie el cap semanal, en una **rama
-   nueva** (aparte de `main`, como se hizo con `planeta-hd`). Objetivo: que la
-   Tierra se vea más "smooth" y detallada al estilo del pixel art HD de
-   referencia (Owlboy), sin pretender ese nivel, solo seguir puliendo. Vías,
-   todas por la vía del generador procedural:
-   - **Rampas de paleta**: repartir los 256 colores hacia degradados limpios
-     (profundidad de océano, elevación, terminador) en vez de a muchos tintes
-     de bioma ruidosos. Es lo que más salto de calidad da.
-   - **Dither con criterio**: quitarlo de las zonas grandes (que queden planas
-     y limpias) y dejarlo solo donde aporta textura (limbo, terminador, alta
-     montaña).
-   - **Limpieza de costas y limbo**: paso de post-proceso con AA algorítmico
-     (píxeles de tono intermedio en los bordes) en lugar del borde crudo del
-     rasterizado.
-   - **Halo atmosférico** limpio en el limbo.
-   - **Más fotogramas** para el giro (28 → 60+), gestionando el ancho del PNG.
-   Recordar: solo el sprite de día (el de noche no se toca), vista de horizonte
-   inclinada, nada de nubes de ruido fBm, vigilar el techo de 256 colores y el
-   cache-busting `?v=`.
+5. **Pasada de calidad del pixel art (sprite de DÍA)** — EN CURSO, rama
+   `planeta-pixelart-v2` (creada 13-sep-2026 tal como estaba previsto, sin
+   esperar al 15). Todo esto ya está hecho y en `public/` (sin commitear):
+   - **Rampas de paleta**: mar en 3 tonos (turquesa de costa → plataforma →
+     abisal). Colores de bioma más vivos/alegres (verdes más claros y
+     saturados). Se probó una franja cálida de amanecer/atardecer en el
+     terminador y un brillo especular en el mar (glint) — **el usuario los
+     probó y los rechazó los dos explícitamente, no reintentar salvo que lo
+     pida otra vez**. El turquesa de costa sí gustó, se queda.
+   - **Biomas suavizados**: desenfoque de caja en 2 pasadas sobre el color de
+     bioma (solo entre tierra, sin mezclar con el mar) para que la frontera
+     bosque-oscuro/verde-claro o verde/desierto no corte en seco. Gustó mucho.
+   - **Dither con criterio**: el punteado Bayer que rompe banding ahora se
+     pesa por `term_edge`/`limb_t`/`mtn_edge` — solo actúa cerca del
+     terminador, el limbo o relieve marcado; el interior de mar/tierra en
+     pleno día queda liso.
+   - **AA de limbo y costas**: el borde del disco ya no corta en seco (banda
+     `LIMB_AA` px de suavizado hacia el color de fondo real de la portada);
+     las celdas de costa se sub-muestrean (4 puntos) para mezclar tierra/mar
+     en proporción en vez del escalón crudo del mapa.
+   - **Línea de costa reforzada** (pedido nuevo del usuario, no estaba en la
+     lista original): anillo casi negro (`COAST_COL`) de 3 celdas de grosor
+     decreciente (0,84 / 0,48 / 0,20 de mezcla) alrededor de TODA tierra
+     firme y hielo (Groenlandia incluida — cuidado, es fácil olvidarse del
+     hielo como "terreno" aparte). Al usuario le encantó ("resalta muchísimo").
+     Sub-muestreada con 8 puntos extra por píxel y quedándose con el anillo
+     más fuerte encontrado: sin eso, las islas más pequeñas que un píxel de
+     pantalla (Filipinas, islotes sueltos) perdían la línea de forma
+     aparentemente aleatoria. **Sin fronteras políticas** — se preguntó
+     explícitamente y el usuario reafirmó que no, solo contorno de costa.
+   - **Más fotogramas + más resolución a la vez**: `COLS` 280→400, `RADIUS`
+     143→195, `MAPRES` 2→1 (resolución nativa del mapa, 0,25°), `FRAMES`
+     28→60. Para que quepa en una textura razonable el sprite pasa de tira en
+     fila a REJILLA (`GRID_COLS`=15, `GRID_ROWS`=4, en `generar-planeta-hero.py`).
+   - **Paleta indexada → color real**: con tanto degradado nuevo, el PNG-8 de
+     256 colores se quedó corto (colores "sucios", al más parecido que
+     hubiera libre). Se pasó el sprite de DÍA a PNG truecolor (`png8.write_rgba`,
+     nueva función). El de noche NO se toca, sigue indexado tal cual estaba.
+     Coste: el PNG de día pesa bastante más (~430 KB → ~3 MB entre esto y la
+     subida de resolución/fotogramas). Vigilar si el usuario quiere que se
+     optimice más adelante (oxipng/pngquant sobre el resultado, o replantear).
+   - **Animación CSS rehecha**: la rejilla rompía el truco de un solo eje
+     (`background-position-x` + `steps(FRAMES)`). Se probó un `@keyframes`
+     con una parada manual por fotograma (60 paradas) + `steps(1)` — el
+     usuario lo notó "a trompicones" (sospecha: Firefox/Zen interpola entre
+     paradas tan pegadas en vez de saltar en seco, técnica poco habitual).
+     Se sustituyó por DOS animaciones `steps()` nativas independientes, una
+     por eje (`hero-spin-x`: recorre `GRID_COLS` columnas en `DURACION/GRID_ROWS`
+     segundos; `hero-spin-y`: recorre `GRID_ROWS` filas en toda la `DURACION`),
+     sincronizadas porque el ciclo de X divide exacto a la duración total.
+     Es la misma técnica robusta de siempre, solo que en 2 ejes — si se vuelve
+     a tocar la rejilla, reusar este patrón, no volver al de paradas manuales.
+     De paso: el usuario prefiere el giro CALMADO — con 60 fotogramas en 60s
+     se sentía más ajetreado que antes con 28, aunque la velocidad angular
+     real era la misma; se subió la duración a 120s para compensar. Si se
+     tocan `FRAMES`/`GRID_COLS`/`GRID_ROWS` otra vez, recalcular
+     `aspect-ratio`, `background-size` y las duraciones/steps() de
+     `.hero-planet` en `src/styles/global.css` a mano (están comentadas ahí).
+   - **Pendiente de verificar**: nadie ha visto la animación funcionar en un
+     navegador real todavía (la extensión Claude in Chrome no conectó en toda
+     la sesión). Antes de dar esto por bueno o mergear a `main`, comprobar en
+     Zen/Firefox que el giro va fluido y sin tirones.
+   - **Observación del usuario (13-sep, sin resolver)**: con la costa ahora
+     tan marcada, el relieve de montaña (roca/nieve, `ROCK`/`SNOW`/hillshade
+     en `_surface_at`) "pierde valor", se ve blando/con poca resolución en
+     comparación — el contraste de la línea de costa deja el sombreado de
+     montaña en evidencia. Candidato fuerte para la siguiente sesión: dar al
+     relieve el mismo tratamiento "con carácter" que a la costa (más
+     contraste, bandas más deliberadas/posterizadas o algún trazo de cresta,
+     en vez del hillshade continuo actual).
+   - **Otra observación del usuario (13-sep, sin resolver)**: los puntos de
+     ciudad (`CITY_DARK` en `city_cells()`) también "pierden valor", casi no
+     se ven. Sospecha razonable: su tamaño en píxeles está fijo en el código
+     (1 celda normal, bloque 2×2 para las "grandes"/`MEGA`) y NO se escaló al
+     subir `COLS`/`RADIUS` ~1,4× — el mismo punto absoluto ahora es una
+     fracción más pequeña de un disco más grande. Probar a agrandar el bloque
+     (¿2×2 normal, 3×3 grandes?) antes de tocar el color.
+   - Sigue pendiente el **halo atmosférico** (no se ha tocado más allá del
+     `ATMO` mix que ya había) y el **tono del desierto del Sáhara** de la
+     lista original.
+   Recordar siempre: solo el sprite de día (el de noche no se toca), vista de
+   horizonte inclinada, nada de nubes de ruido fBm, cache-busting `?v=` en
+   cada cambio del PNG de día.
 6. Al terminar del todo, borrar este archivo.
