@@ -112,8 +112,14 @@ const eventos = todosEventos
       <p>
         <span>Historia</span> · <span>Inteligencia</span> · <span>OSINT</span>
       </p>
-      <div class="hero-marco" aria-hidden="true">
-        <span class="hero-mgrs">-- --- ----- -----</span>
+      <div class="hero-marco">
+        <div class="hero-lectura">
+          <button class="hero-giro" type="button" aria-label="Parar el giro del planeta" aria-pressed="false">
+            <svg class="icono-pausa" viewBox="0 0 7 9" aria-hidden="true"><rect x="1" y="1" width="2" height="7" /><rect x="4" y="1" width="2" height="7" /></svg>
+            <svg class="icono-play" viewBox="0 0 6 9" aria-hidden="true"><rect x="1" y="1" width="1" height="7" /><rect x="2" y="2" width="1" height="5" /><rect x="3" y="3" width="1" height="3" /><rect x="4" y="4" width="1" height="1" /></svg>
+          </button>
+          <span class="hero-mgrs" aria-live="off">-- --- ----- -----</span>
+        </div>
       </div>
     </div>
     <div class="hero-mira" aria-hidden="true" hidden></div>
@@ -322,21 +328,36 @@ const eventos = todosEventos
   // apunta (cambia también con el ratón quieto, porque el planeta gira).
   // Fuera del planeta: guiones. Sobre una nave o una chapa, la mira se oculta
   // y la coordenada se queda congelada, como el resto del hero.
+  // Clic en el planeta: se clava una X (gira con él) y la coordenada se queda
+  // fija en ese punto, subrayada. Clic en otro sitio del planeta: la X se
+  // mueve. Clic sobre la X o Esc: se quita y la lectura vuelve a seguir al
+  // ratón.
   const VACIO = "-- --- ----- -----";
-  function montarMira(hero: HTMLElement, geo: (x: number, y: number) => { lat: number; lon: number } | null) {
+  type Geo = { lat: number; lon: number };
+  type Planeta = {
+    geo(x: number, y: number): Geo | null;
+    setMarca(p: Geo | null): void;
+    posMarca(): { x: number; y: number } | null;
+    setParado(b: boolean): void;
+  };
+  function montarMira(hero: HTMLElement, p: Planeta) {
     const lect = hero.querySelector<HTMLElement>(".hero-mgrs");
     const mira = hero.querySelector<HTMLElement>(".hero-mira");
     if (!lect || !mira || !matchMedia("(hover: hover) and (pointer: fine)").matches) return () => {};
     let ptr: { x: number; y: number; ocupado: boolean } | null = null;
+    let fijo: string | null = null;              // coordenada de la X, si hay
+    const escribe = (txt: string) => {
+      if (lect.textContent !== txt) lect.textContent = txt;
+      lect.classList.toggle("fijada", fijo !== null);
+    };
     const actualiza = () => {
       if (ptr?.ocupado) {                          // ficha abierta: todo quieto
         mira.hidden = true;
         hero.classList.remove("apuntando");
         return;
       }
-      const g = ptr ? geo(ptr.x, ptr.y) : null;
-      const txt = g ? mgrs(g.lat, g.lon) : VACIO;
-      if (lect.textContent !== txt) lect.textContent = txt;
+      const g = ptr ? p.geo(ptr.x, ptr.y) : null;
+      escribe(fijo ?? (g ? mgrs(g.lat, g.lon) : VACIO));
       mira.hidden = !g;
       hero.classList.toggle("apuntando", !!g);
       if (g && ptr) {
@@ -351,16 +372,50 @@ const eventos = todosEventos
       actualiza();
     };
     const sale = () => { ptr = null; actualiza(); };
+    const quita = () => { fijo = null; p.setMarca(null); actualiza(); };
+    const clic = (e: MouseEvent) => {
+      if ((e.target as Element | null)?.closest(".hero-craft, .hero-bandera, a, button")) return;
+      const g = p.geo(e.clientX, e.clientY);
+      if (!g) return;
+      const x = p.posMarca();
+      if (fijo && x && Math.hypot(x.x - e.clientX, x.y - e.clientY) < 16) return quita();   // clic sobre la X
+      fijo = mgrs(g.lat, g.lon);
+      p.setMarca(g);
+      actualiza();
+    };
+    const tecla = (e: KeyboardEvent) => { if (e.key === "Escape" && fijo) quita(); };
     hero.addEventListener("pointermove", mueve);
     hero.addEventListener("pointerleave", sale);
+    hero.addEventListener("click", clic);
+    document.addEventListener("keydown", tecla);
     window.addEventListener("scroll", actualiza, { passive: true });
     (hero as HTMLElement & { __actualizaMira?: () => void }).__actualizaMira = actualiza;
     return () => {
       hero.removeEventListener("pointermove", mueve);
       hero.removeEventListener("pointerleave", sale);
+      hero.removeEventListener("click", clic);
+      document.removeEventListener("keydown", tecla);
       window.removeEventListener("scroll", actualiza);
       hero.classList.remove("apuntando");
     };
+  }
+
+  // Botón de play/pausa junto a la coordenada: para y reanuda el giro (el del
+  // canvas de día y la animación del planeta de noche). Al cargar, siempre
+  // gira.
+  function montarGiro(hero: HTMLElement, p: Planeta) {
+    const b = hero.querySelector<HTMLButtonElement>(".hero-giro");
+    if (!b) return () => {};
+    const pon = (parado: boolean) => {
+      p.setParado(parado);
+      hero.classList.toggle("giro-parado", parado);
+      b.setAttribute("aria-pressed", String(parado));
+      b.setAttribute("aria-label", parado ? "Reanudar el giro del planeta" : "Parar el giro del planeta");
+    };
+    const clic = () => pon(!hero.classList.contains("giro-parado"));
+    pon(false);
+    b.addEventListener("click", clic);
+    return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
   }
 
   document.addEventListener("astro:page-load", async () => {
@@ -408,7 +463,10 @@ const eventos = todosEventos
     planeta?.desmontar();
     quitaMira?.();
     planeta = p;
-    quitaMira = hero ? montarMira(hero, p.geo) : null;
+    if (hero) {
+      const q1 = montarMira(hero, p), q2 = montarGiro(hero, p);
+      quitaMira = () => { q1(); q2(); };
+    }
   });
 
   document.addEventListener("astro:before-swap", () => {

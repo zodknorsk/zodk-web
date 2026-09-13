@@ -178,7 +178,7 @@ async function preparar(base) {
 }
 
 // Monta el planeta en `canvas` y lo pone a girar. Devuelve { desmontar, draw,
-// setVuelta, P }. `banderas`: códigos iso de las chapas a pintar (null = todas);
+// setVuelta, setParado, setMarca, posMarca, geo, P }. `banderas`: códigos iso de las chapas a pintar (null = todas);
 // `alMoverBanderas(lista, W, H)` recibe tras cada dibujo dónde queda cada chapa
 // visible ({ iso, x, y } en píxeles del canvas, esquina de su contorno), para
 // colocar encima lo que reacciona al ratón. `alDibujar()` se llama tras cada
@@ -283,6 +283,33 @@ export async function montarPlaneta(canvas, {
     }
   }
 
+  // Marca de blanco: una X en pixel art (blanca con contorno oscuro, como la
+  // mira) clavada en un punto del planeta; gira con él. Solo se ve en la cara
+  // iluminada y por delante; al volver a pasar, reaparece.
+  const X_ART = ["##...##", "###.###", ".#####.", "..###..", ".#####.", "###.###", "##...##"];
+  const X_CELLS = [];
+  for (let y = -1; y <= 7; y++) {
+    for (let x = -1; x <= 7; x++) {
+      const lleno = (yy, xx) => yy >= 0 && yy < 7 && xx >= 0 && xx < 7 && X_ART[yy][xx] === "#";
+      if (lleno(y, x)) X_CELLS.push([x, y, y >= 5 ? pack([214, 220, 228]) : pack([246, 248, 250])]);
+      else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) X_CELLS.push([x, y, pack([16, 19, 28])]);
+    }
+  }
+  let marca = null, marcaPos = null;                 // { lat, lon } y dónde quedó en el canvas
+  function pintaMarca(lon0) {
+    marcaPos = null;
+    if (!marca) return;
+    const [px, py, pz, bright] = proyecta(marca.lat, marca.lon, lon0);
+    if (pz <= 0.06 || bright < 0.12) return;
+    const cx = px * R + D.CX, cy = py * R + D.CY;
+    const ox = Math.round(cx - 0.5 - 3), oy = Math.round(cy - 0.5 - 3);
+    for (const [x, y, c] of X_CELLS) {
+      const X = ox + x, Y = oy + y;
+      if (X >= 0 && X < W && Y >= 0 && Y < H) buf[Y * W + X] = c;
+    }
+    marcaPos = { cx, cy };
+  }
+
   // rot: giro en celdas del mapa, con decimales; y0..y1: filas a pintar.
   function draw(rot, y0 = 0, y1 = H) {
     const rf = Math.round(rot * 256);                 // coma fija: 1/256 de celda
@@ -307,6 +334,7 @@ export async function montarPlaneta(canvas, {
     sombras(vis);
     nubes(lon0);
     chapas(vis);
+    pintaMarca(lon0);
     ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
     if (alDibujar) alDibujar();
@@ -321,6 +349,7 @@ export async function montarPlaneta(canvas, {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   let rot = 0, raf = 0, last = null, t0 = null, lastSlot = -1;
   let enVista = true, completo = false, listo = false;
+  let parado = false, sucio = false;                   // botón de pausa; hay que repintar aunque esté quieto
 
   const activo = () => enVista && !html.classList.contains("dark") && !reduce.matches;
 
@@ -342,12 +371,14 @@ export async function montarPlaneta(canvas, {
     raf = requestAnimationFrame(frame);
     const dt = last === null ? 0 : Math.min(100, now - last);   // sin saltos al volver
     last = now;
-    if (pausado()) return;
-    rot = (rot + dt / 1000 * MW / vuelta) % MW;
+    const quieto = parado || pausado();
+    if (!quieto) rot = (rot + dt / 1000 * MW / vuelta) % MW;
     if (t0 === null) t0 = now;
     const slot = Math.floor((now - t0 + 4) / (1000 / 60));
     if (slot === lastSlot) return;
     lastSlot = slot;
+    if (quieto && completo && !sucio) return;           // parado y sin cambios: nada que pintar
+    sucio = false;
     pintar(!completo);                                  // al (re)arrancar, una vez entero
     completo = true;
   }
@@ -392,6 +423,22 @@ export async function montarPlaneta(canvas, {
     draw,
     geo,
     setVuelta(s) { vuelta = s; },
+    // Botón de play/pausa: con el planeta parado el bucle sigue vivo (para
+    // repintar la marca si cambia) pero no avanza el giro.
+    setParado(b) { parado = b; },
+    // Marca de blanco en { lat, lon } (null = quitarla).
+    setMarca(p) {
+      marca = p;
+      if (!p) marcaPos = null;
+      sucio = true;
+      if (!raf && !html.classList.contains("dark")) pintar(true);   // sin bucle (reduce-motion…)
+    },
+    // Dónde se ve la marca ahora, en coordenadas de pantalla (null si no se ve).
+    posMarca() {
+      if (!marcaPos) return null;
+      const bb = canvas.getBoundingClientRect();
+      return { x: bb.left + marcaPos.cx * bb.width / W, y: bb.top + marcaPos.cy * bb.height / H };
+    },
     desmontar() {
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
