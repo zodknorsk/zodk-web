@@ -1343,6 +1343,77 @@ def cloud_cells(lon0):
     return out
 
 
+# ------------------------------------------------------------ banderas
+# Chapas pixel art (elegidas frente al banderín en mástil) sobre los países que
+# salen en el blog (opción C: de momento España, Marruecos, Irán y EE. UU.).
+# Bandera de 11x7 px con contorno oscuro de 1 px, esquinas recortadas y una
+# sombra de 1 px abajo a la derecha; centrada en el punto del país, gira con el
+# planeta, solo en la cara iluminada y lejos del borde, con la luz de las nubes.
+# Añadir un país = una entrada en BANDERAS (filas de 11 letras de BAND_PAL).
+BAND_PAL = {
+    "R": (0xc8, 0x1e, 0x2d), "Y": (0xf4, 0xc4, 0x30), "E": (0x8e, 0x16, 0x20),   # España
+    "r": (0xc1, 0x27, 0x2d), "g": (0x1f, 0x7a, 0x3c),                           # Marruecos
+    "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
+    "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
+}
+BANDERAS = [   # (nombre, lat, lon del punto del país, filas)
+    ("España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
+                            "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"]),
+    ("Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
+                               "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"]),
+    ("Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
+                          "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
+    ("EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
+                              "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
+]
+BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
+BAND_EDGE = (0x10, 0x13, 0x1c)
+
+
+def _chapa(rows):
+    """-> (celdas {(x, y): rgb} con origen en la esquina de la tela, sombra
+    [(x, y)], ancla (centro de la tela))."""
+    fw, fh = len(rows[0]), len(rows)
+    cells = {}
+    for y in range(-1, fh + 1):
+        for x in range(-1, fw + 1):
+            if x in (-1, fw) and y in (-1, fh):
+                continue                             # esquinas recortadas
+            inside = 0 <= x < fw and 0 <= y < fh
+            cells[(x, y)] = BAND_PAL[rows[y][x]] if inside else BAND_EDGE
+    sombra = [(x + 1, y + 1) for (x, y) in cells if (x + 1, y + 1) not in cells]
+    return cells, sombra, (fw / 2.0, fh / 2.0)
+
+
+CHAPAS = [(n, la, lo) + _chapa(rows) for n, la, lo, rows in BANDERAS]
+
+
+def flag_cells(lon0):
+    """(sx, sy) -> rgba de las chapas, y el conjunto de píxeles en su sombra."""
+    out, sombra = {}, set()
+    for _n, clat, clon, cells, sh, (ax, ay) in CHAPAS:
+        rlat, rlon = math.radians(clat), math.radians(clon - lon0)
+        a, cl = math.sin(rlat), math.cos(rlat)
+        vv = cl * math.cos(rlon)
+        px = cl * math.sin(rlon)
+        py = -COST * a + SINT * vv
+        pz = SINT * a + COST * vv
+        if pz <= BAND_PZ:
+            continue
+        lam = px * SX + py * SY + pz * SZ
+        bright = smooth(TERM_A + 0.06, TERM_B + 0.2, lam)
+        if bright < 0.12:
+            continue                                   # lado de noche
+        t = 0.72 + 0.28 * bright                       # misma luz que las nubes
+        ox = round(px * RADIUS + CX - 0.5 - ax)
+        oy = round(py * RADIUS + CY - 0.5 - ay)
+        for (x, y) in sh:
+            sombra.add((ox + x, oy + y))
+        for (x, y), col in cells.items():
+            out[(ox + x, oy + y)] = rgba(mix(SPACE, col, t))
+    return out, sombra
+
+
 # ------------------------------------------------------ sprites
 GRID_ROWS = (FRAMES + GRID_COLS - 1) // GRID_COLS
 
@@ -1359,12 +1430,20 @@ def render(night, path, frames=None):
         gx, gy = (f % GRID_COLS, f // GRID_COLS) if todos else (0, 0)
         xoff, yoff = gx * COLS, gy * VIS
         overlay = {} if night else cloud_cells(lon0)
+        sombra = set()
+        if not night:                               # chapas por encima de las nubes
+            fl, sombra = flag_cells(lon0)
+            overlay.update(fl)
         if night:                                   # de día, sin puntos de ciudad (de momento)
             overlay.update(city_cells(lon0, night))    # ciudades por encima de nubes
         for sy in range(VIS):
             row = rows[yoff + sy]
             for sx in range(COLS):
-                c = overlay.get((sx, sy)) or cell_index(sx, sy, lon0, night)
+                c = overlay.get((sx, sy))
+                if c is None:
+                    c = cell_index(sx, sy, lon0, night)
+                    if (sx, sy) in sombra and c[3]:
+                        c = (c[0] // 2, c[1] // 2, c[2] // 2 + 6, 255)
                 o = (xoff + sx) * 4
                 row[o] = c[0]; row[o + 1] = c[1]; row[o + 2] = c[2]; row[o + 3] = c[3]
     write_rgba(path, sw, sh, rows)
@@ -1441,6 +1520,11 @@ def export_canvas(outdir):
         "LUT_KMIN": LUT_KMIN, "LUT_KN": LUT_KN, "MATERIALES": len(lut), "prio": prio,
         "SPACE": SPACE, "ATMO": ATMO, "C_BODY": C_BODY, "C_BASE": C_BASE, "C_EDGE": C_EDGE,
         "nubes": nubes,
+        "BAND_PZ": BAND_PZ,
+        "banderas": [{"nombre": n, "lat": la, "lon": lo, "ax": ax, "ay": ay,
+                      "cells": [[x, y, *col] for (x, y), col in cells.items()],
+                      "sombra": [[x, y] for (x, y) in sh]}
+                     for n, la, lo, cells, sh, (ax, ay) in CHAPAS],
     }
     with open(os.path.join(outdir, "planeta-datos.json"), "w") as fh:
         json.dump(datos, fh, separators=(",", ":"))

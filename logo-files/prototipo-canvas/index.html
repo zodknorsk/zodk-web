@@ -205,6 +205,48 @@ function clouds(buf, rot) {
   for (const p of touched) stamped[p] = 0;
 }
 
+// ---- chapas de bandera (países del blog): encima de las nubes, con sombra
+// de 1 px sobre el planeta; solo en la cara iluminada y lejos del borde.
+const FLAGS = D.banderas.map((f) => ({ ...f,
+  cols: f.cells.map(([x, y, r, g, b]) => [x, y, r, g, b]) }));
+function flags(buf, rot) {
+  const lon0 = -rot * 360 / MW;
+  // primero todas las sombras (bajo nubes y chapas), luego las chapas
+  const vis = [];
+  for (const f of FLAGS) {
+    const rlat = f.lat / DEG, rlon = (f.lon - lon0) / DEG;
+    const a = Math.sin(rlat), cl = Math.cos(rlat), vv = cl * Math.cos(rlon);
+    const px = cl * Math.sin(rlon), py = -D.COST * a + D.SINT * vv, pz = D.SINT * a + D.COST * vv;
+    if (pz <= D.BAND_PZ) continue;
+    const lam = px * D.SX + py * D.SY + pz * D.SZ;
+    const bright = smooth(D.TERM_A + 0.06, D.TERM_B + 0.2, lam);
+    if (bright < 0.12) continue;
+    vis.push([f, Math.round(px * R + D.CX - 0.5 - f.ax), Math.round(py * R + D.CY - 0.5 - f.ay),
+              0.72 + 0.28 * bright]);
+  }
+  return vis;
+}
+function flagShadows(buf, vis) {
+  for (const [f, ox, oy] of vis) {
+    for (const [x, y] of f.sombra) {
+      const X = ox + x, Y = oy + y;
+      if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
+      const p = Y * W + X, v = buf[p];
+      if ((v >>> 24) === 0) continue;             // fuera del disco
+      buf[p] = (255 << 24) | ((((v >> 16) & 255) >> 1) + 6 << 16) | ((((v >> 8) & 255) >> 1) << 8) | ((v & 255) >> 1);
+    }
+  }
+}
+function flagBadges(buf, vis) {
+  for (const [f, ox, oy, t] of vis) {
+    for (const [x, y, r, g, b] of f.cols) {
+      const X = ox + x, Y = oy + y;
+      if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
+      buf[Y * W + X] = pack(mixc(D.SPACE, [r, g, b], t));
+    }
+  }
+}
+
 // ---- dibujo
 const cv = $("cv"), ctx = cv.getContext("2d");
 const img = ctx.createImageData(W, H);
@@ -237,7 +279,10 @@ function draw(rot, y0 = 0, y1 = H) {   // rot: giro en celdas (continuo); y0..y1
     if (cov < 1) { r = SP[0] + (r - SP[0]) * cov; g = SP[1] + (g - SP[1]) * cov; b = SP[2] + (b - SP[2]) * cov; }
     buf[p] = (255 << 24) | (Math.round(b) << 16) | (Math.round(g) << 8) | Math.round(r);
   }
+  const vis = flags(buf, rot);
+  flagShadows(buf, vis);
   clouds(buf, rot);
+  flagBadges(buf, vis);
   ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);   // solo sube a la GPU la franja pintada
 }
 
