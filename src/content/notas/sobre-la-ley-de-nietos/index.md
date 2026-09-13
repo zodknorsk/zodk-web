@@ -107,7 +107,7 @@ La realidad es clara: la poca transparencia, el trasfondo del que venimos, los c
 Es urgente dar prioridad a esta cuestión y encontrar una solución antes de los procesos electorales de 2027.<br>
 <br>
 Estamos […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener"><img src="/tweets/img-fndrimtki7kxomyc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-fndrimtki7kxomyc.jpg"><source src="https://video.twimg.com/amplify_video/2097343504624336897/vid/avc1/1920x1080/IKWYyITenROAmjCZ.mp4" type="video/mp4" /><source src="/tweets/1920x1080-ikwyyitenroamjcz.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/PSOE/status/2097356256272892203" target="_blank" rel="noopener">8 de septiembre de 2026</a>
 </blockquote>
 
@@ -124,7 +124,7 @@ Estamos […]</div>
 ¿Por qué el PP celebra la sentencia del TS que les niega el derecho a voto?<br>
 <br>
 Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener"><img src="/tweets/img-whaeuqbq7tj_fkij.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-whaeuqbq7tj_fkij.jpg"><source src="https://video.twimg.com/amplify_video/2097589717386530816/vid/avc1/1280x720/necavcdMKh-_LtIj.mp4" type="video/mp4" /><source src="/tweets/1280x720-necavcdmkh-_ltij.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/patxilopez/status/2097589797321683049" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -149,7 +149,7 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
     <span class="tweet-handle">@felixbolanosg</span>
   </a>
   <div class="tweet-text">Hoy vamos a hablar de la Ley de Nietos.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener"><img src="/tweets/img-ca6n07gdclvlhrod.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ca6n07gdclvlhrod.jpg"><source src="https://video.twimg.com/amplify_video/2098125608328757254/vid/avc1/720x1280/cu0hGVD2z9wPH4iI.mp4" type="video/mp4" /><source src="/tweets/720x1280-cu0hgvd2z9wph4ii.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/felixbolanosg/status/2098125703350825360" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -193,7 +193,7 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
     <span class="tweet-handle">@el_pais</span>
   </a>
   <div class="tweet-text">🔴 ÚLTIMA HORA | El Supremo ve en la ‘ley de nietos’ un “peligro fundado, real y serio” de afectar a la “objetividad” de las elecciones</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener"><img src="/tweets/tweet_video_thumb-g7wwf6gwsaakw_q.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-g7wwf6gwsaakw_q.jpg"><source src="https://video.twimg.com/tweet_video/G7wwf6gWsAAKw_q.mp4" type="video/mp4" /><source src="/tweets/tweet_video-g7wwf6gwsaakw_q.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/el_pais/status/2098032814515990601" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -226,7 +226,7 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
   <div class="tweet-text">🚨Es que es de locos. De verdad, no doy crédito. Y hay cero reacción popular a esta nueva estafa. <br>
 <br>
 Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (consulados, trámites, etc.) para que voten PSOE desde fuera en provincias pequeñas y decidan el […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener"><img src="/tweets/img-nsrg4qxlxcagrebc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-nsrg4qxlxcagrebc.jpg"><source src="https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/3950x2160/m7F1lLEIY2MZ2ZGB.mp4" type="video/mp4" /><source src="/tweets/3950x2160-m7f1lleiy2mz2zgb.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/CapitanBitcoin/status/2069370079205007816" target="_blank" rel="noopener">23 de junio de 2026</a>
 </blockquote>
 

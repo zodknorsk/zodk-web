@@ -42,7 +42,7 @@ Cancelaciones masivas y […]</div>
   <div class="tweet-text">🚩 Bomberos ha sofocado las llamas en varios vehículos frente al colegio Reina Sofía la madrugada de este jueves<br>
 <br>
 <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Incendios" target="_blank" rel="noopener">#Incendios</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2097954960491094518" target="_blank" rel="noopener"><img src="/tweets/img-y_fuj-3jhavzsgnb.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-y_fuj-3jhavzsgnb.jpg"><source src="https://video.twimg.com/amplify_video/2097954707243511808/vid/avc1/1080x1920/lC8YqoiYM-imsVAK.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2097954960491094518" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2097954960491094518" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -57,7 +57,7 @@ Cancelaciones masivas y […]</div>
   <div class="tweet-text">🚩 Un nuevo acto vandálico inutiliza un camión de limpieza en Ceuta y pone en riesgo a los trabajadores. El Comité de Empresa de Servilimpce exige a las autoridades mayor vigilancia para proteger a los operarios y evitar males mayores.<br>
 <br>
 <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Incendios" target="_blank" rel="noopener">#Incendios</a> <a href="https://x.com/hashtag/Servilimpce" target="_blank" rel="noopener">#Servilimpce</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2097988498804375676" target="_blank" rel="noopener"><img src="/tweets/img-pkkhswie9ejwfhh3.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-pkkhswie9ejwfhh3.jpg"><source src="https://video.twimg.com/amplify_video/2097988328045821958/vid/avc1/1080x1920/v7Dqi53QoIgmNRPG.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2097988498804375676" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2097988498804375676" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -82,7 +82,7 @@ Cancelaciones masivas y […]</div>
     <span class="tweet-handle">@pabloharour</span>
   </a>
   <div class="tweet-text">Los invasores ponen trampas a los militares colocando piedras sueltas sobre un cartón en un acantilado para que los soldados que intenten desalojarlos &quot;se vayan directo al vacío&quot; si pisan encima</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/pabloharour/status/2097966652373586418" target="_blank" rel="noopener"><img src="/tweets/img-xh-nyiipvjsyvohh.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-xh-nyiipvjsyvohh.jpg"><source src="https://video.twimg.com/amplify_video/2097966566864486400/vid/avc1/480x854/t4iaxaB_ScFd8qc2.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/pabloharour/status/2097966652373586418" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/pabloharour/status/2097966652373586418" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -189,7 +189,7 @@ El trato que deben recibir y la preocupación humanitaria se circunscribe a lo q
     <span class="tweet-handle">@pedropcelis</span>
   </a>
   <div class="tweet-text">🔥Federico J. Losantos.🔥</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/pedropcelis/status/2098119069954126213" target="_blank" rel="noopener"><img src="/tweets/img-p_bm5prbgewq9v0n.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-p_bm5prbgewq9v0n.jpg"><source src="https://video.twimg.com/amplify_video/2098118977914638336/vid/avc1/576x1024/HeHnhw4EK9FibGKi.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/pedropcelis/status/2098119069954126213" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/pedropcelis/status/2098119069954126213" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
@@ -273,8 +273,8 @@ Ya disponible en Orbyt y en la edición digital con la mejor información</div>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/EmergenciaCeuta" target="_blank" rel="noopener">#EmergenciaCeuta</a> El caos, el descontrol y la falta de medidas definitivas en <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> provoca imágenes como las del <a href="https://x.com/hashtag/Video" target="_blank" rel="noopener">#Video</a>. Inmigrantes desarmando techos de las naves industriales del puerto ceutí <a href="https://x.com/apceuta" target="_blank" rel="noopener">@apceuta</a> <br>
 <a href="https://x.com/hashtag/InvasiónCeuta" target="_blank" rel="noopener">#InvasiónCeuta</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ceuta_ahora/status/2098379728365232320" target="_blank" rel="noopener"><img src="/tweets/img-7sqckl-1a8yf9myc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ceuta_ahora/status/2098379728365232320" target="_blank" rel="noopener"><img src="/tweets/img-tkaeshbdutae2rro.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-7sqckl-1a8yf9myc.jpg"><source src="https://video.twimg.com/amplify_video/2098379691531104257/vid/avc1/478x850/PouniEq6oG4MhKvF.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ceuta_ahora/status/2098379728365232320" target="_blank" rel="noopener">Verlo en X</a></video>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tkaeshbdutae2rro.jpg"><source src="https://video.twimg.com/amplify_video/2098379691505623049/vid/avc1/478x850/l9rYxraiFJ-Lsb-_.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ceuta_ahora/status/2098379728365232320" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ceuta_ahora/status/2098379728365232320" target="_blank" rel="noopener">11 de septiembre de 2026</a>
 </blockquote>
 
@@ -289,7 +289,7 @@ Ya disponible en Orbyt y en la edición digital con la mejor información</div>
   <div class="tweet-text">¿Podemos consentir que la seguridad de CEUTA dependa de Marruecos?<br>
 <br>
 Mi opinión al respecto en <a href="https://x.com/todoesmentiratv" target="_blank" rel="noopener">@todoesmentiratv</a> y último de los tres cortes con mis intervenciones 👇🏼</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/JaviSantamarta/status/2098293970350563485" target="_blank" rel="noopener"><img src="/tweets/img-tlmpm_bott-d0an8.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tlmpm_bott-d0an8.jpg"><source src="https://video.twimg.com/amplify_video/2098293919431692291/vid/avc1/848x530/t7VonKSv-5XVU0pj.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/JaviSantamarta/status/2098293970350563485" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/JaviSantamarta/status/2098293970350563485" target="_blank" rel="noopener">11 de septiembre de 2026</a>
 </blockquote>
 
@@ -305,7 +305,7 @@ Mi opinión al respecto en <a href="https://x.com/todoesmentiratv" target="_blan
 <br>
 🔴 <a href="https://x.com/hashtag/EnBocaDeTodos" target="_blank" rel="noopener">#EnBocaDeTodos</a> en <a href="https://x.com/cuatro" target="_blank" rel="noopener">@cuatro</a> con <a href="https://x.com/Nacho_Abad" target="_blank" rel="noopener">@Nacho_Abad</a><br>
 ➡</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EnBocaDe_Todos/status/2098368727167164754" target="_blank" rel="noopener"><img src="/tweets/img-wi5zxnmjrmyqo9yp.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-wi5zxnmjrmyqo9yp.jpg"><source src="https://video.twimg.com/amplify_video/2098368442609123328/vid/avc1/1280x720/34ReAOMLw2smapa8.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EnBocaDe_Todos/status/2098368727167164754" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EnBocaDe_Todos/status/2098368727167164754" target="_blank" rel="noopener">11 de septiembre de 2026</a>
 </blockquote>
 
@@ -330,7 +330,7 @@ Mi opinión al respecto en <a href="https://x.com/todoesmentiratv" target="_blan
     <span class="tweet-handle">@rubnpulido</span>
   </a>
   <div class="tweet-text">¿Por qué no se van? ¿Por qué la Playa del Trampolín sigue extendiéndose? ¿Por qué las zonas adyacentes no paran de crecer en asentamientos? Pues aquí tenéis gran parte de la respuesta. La trata institucionalizada a un paso de generar más beneficios que el narcotráfico.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/rubnpulido/status/2098487030783021377" target="_blank" rel="noopener"><img src="/tweets/img-sxvjgvawy8kyi9mm.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-sxvjgvawy8kyi9mm.jpg"><source src="https://video.twimg.com/amplify_video/2098486781377449984/vid/avc1/1920x1080/_pPUXN2pHOOAtyVT.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/rubnpulido/status/2098487030783021377" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/rubnpulido/status/2098487030783021377" target="_blank" rel="noopener">11 de septiembre de 2026</a>
 </blockquote>
 
@@ -430,7 +430,7 @@ Creo que algunos han leído el art 582.1 del Código Penal […]</div>
   <div class="tweet-text">Hoy nos enteramos de que el jefe de Gabinete del delegado del Gobierno en Ceuta asegura que tiene pruebas de que él avisó y que hubo una orden de Marlaska para no hacer nada. <br>
 <br>
 🚨 Exigimos al Gobierno explicaciones inmediatas. […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EsterMunoz85/status/2098693485557649769" target="_blank" rel="noopener"><img src="/tweets/img--w67ueg4anphsag5.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img--w67ueg4anphsag5.jpg"><source src="https://video.twimg.com/amplify_video/2098693376514117633/vid/avc1/1080x1080/T38YPLogE5-idtrL.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EsterMunoz85/status/2098693485557649769" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EsterMunoz85/status/2098693485557649769" target="_blank" rel="noopener">12 de septiembre de 2026</a>
 </blockquote>
 

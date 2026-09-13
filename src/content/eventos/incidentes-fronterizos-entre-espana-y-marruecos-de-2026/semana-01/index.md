@@ -26,7 +26,7 @@ rango: 30 julio – 5 agosto
 España ha renunciado a la Seguridad.<br>
 <br>
 📍Frontera del Tarajal, Ceuta. En estos momentos.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Macarena_Olona/status/2082778163797516353" target="_blank" rel="noopener"><img src="/tweets/img-tl4m9uddyfl5hk9g.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tl4m9uddyfl5hk9g.jpg"><source src="https://video.twimg.com/amplify_video/2082777201313804288/vid/avc1/464x832/4FUi3mOmXN_3TCp0.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Macarena_Olona/status/2082778163797516353" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Macarena_Olona/status/2082778163797516353" target="_blank" rel="noopener">30 de julio de 2026</a>
 </blockquote>
 
@@ -39,7 +39,7 @@ España ha renunciado a la Seguridad.<br>
     <span class="tweet-handle">@BRICSinfo</span>
   </a>
   <div class="tweet-text">JUST IN: 🇪🇸 Law enforcement seen opening gates allowing thousands of illegal immigrants into Spain.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/BRICSinfo/status/2082833133863391336" target="_blank" rel="noopener"><img src="/tweets/img-rth5vbckggvgx1cp.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-rth5vbckggvgx1cp.jpg"><source src="https://video.twimg.com/amplify_video/2082778033451069440/vid/avc1/1098x1080/4jVsshHVHCE7PPqX.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/BRICSinfo/status/2082833133863391336" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/BRICSinfo/status/2082833133863391336" target="_blank" rel="noopener">30 de julio de 2026</a>
 </blockquote>
 
@@ -52,7 +52,7 @@ España ha renunciado a la Seguridad.<br>
     <span class="tweet-handle">@davidsantosvlog</span>
   </a>
   <div class="tweet-text">No es una crisis migratoria en Ceuta, es una declaración de guerra de Marruecos.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2082785669152149538" target="_blank" rel="noopener"><img src="/tweets/img-eqtlsbtlhv4koztq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-eqtlsbtlhv4koztq.jpg"><source src="https://video.twimg.com/amplify_video/2082785646532280320/vid/avc1/576x1024/8pS44Q8jg_Gw-LZ6.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2082785669152149538" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2082785669152149538" target="_blank" rel="noopener">30 de julio de 2026</a>
 </blockquote>
 
@@ -69,7 +69,7 @@ España ha renunciado a la Seguridad.<br>
 Además, dice que tiene hepatitis C.<br>
 <br>
 Vienen criminales y enfermos.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2082760020081467498" target="_blank" rel="noopener"><img src="/tweets/img-3hwkp15lhzlh-b7x.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-3hwkp15lhzlh-b7x.jpg"><source src="https://video.twimg.com/amplify_video/2082759939915759616/vid/avc1/1280x720/jnO5CSvctFT-WwcA.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2082760020081467498" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2082760020081467498" target="_blank" rel="noopener">30 de julio de 2026</a>
 </blockquote>
 
@@ -82,7 +82,7 @@ Vienen criminales y enfermos.</div>
     <span class="tweet-handle">@gaceta_es</span>
   </a>
   <div class="tweet-text">🔴 ÚLTIMA HORA | Así se encuentra Castillejos, municipio marroquí cercano a Ceuta, con miles de inmigrantes ilegales rumbo a España</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/gaceta_es/status/2082797224929489391" target="_blank" rel="noopener"><img src="/tweets/img-9fxm_uu0d3tvwxxj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-9fxm_uu0d3tvwxxj.jpg"><source src="https://video.twimg.com/amplify_video/2082796884347731969/vid/avc1/848x478/1gawOrByimHEd_XR.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/gaceta_es/status/2082797224929489391" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/gaceta_es/status/2082797224929489391" target="_blank" rel="noopener">30 de julio de 2026</a>
 </blockquote>
 
@@ -119,7 +119,7 @@ Maybe before it continues lecturing us, it’s time it explained to the world wh
     <span class="tweet-handle">@bertrandmyd</span>
   </a>
   <div class="tweet-text">VIRGEN SANTE</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/bertrandmyd/status/2083024441873678488" target="_blank" rel="noopener"><img src="/tweets/img-kzqbypahh60uwrxz.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-kzqbypahh60uwrxz.jpg"><source src="https://video.twimg.com/amplify_video/2083024126717939712/vid/avc1/1920x1080/9UR8F2bEt5bz_bLo.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/bertrandmyd/status/2083024441873678488" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/bertrandmyd/status/2083024441873678488" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -136,7 +136,7 @@ Maybe before it continues lecturing us, it’s time it explained to the world wh
 <br>
 Cientos de inmigrantes están regresando a Marruecos por sus propios pies y sin ser coaccionados por nadie.<br>
 Cabe recordar que hoy es viernes y la ciudad está prácticamente cerrada.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/bertrandmyd/status/2083118427217027437" target="_blank" rel="noopener"><img src="/tweets/img-gsqwu0oosktg2ndx.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-gsqwu0oosktg2ndx.jpg"><source src="https://video.twimg.com/amplify_video/2083117939914379264/vid/avc1/1920x1080/WDnA86Dx7-dxHbAh.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/bertrandmyd/status/2083118427217027437" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/bertrandmyd/status/2083118427217027437" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -149,7 +149,7 @@ Cabe recordar que hoy es viernes y la ciudad está prácticamente cerrada.</div>
     <span class="tweet-handle">@davidsantosvlog</span>
   </a>
   <div class="tweet-text">La Policía carga contra españoles de Ceuta que quieren ir a recibir a Pedro Sánchez al helipuerto.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2083130605148000493" target="_blank" rel="noopener"><img src="/tweets/img-mdaso6gw9hkvpiwv.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-mdaso6gw9hkvpiwv.jpg"><source src="https://video.twimg.com/amplify_video/2083130550512959488/vid/avc1/1080x1920/pXiCmJdW1zjUM1E-.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2083130605148000493" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2083130605148000493" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -188,7 +188,7 @@ Primeras imagenes que se ven de la policía marroquí escoltando inmigrantes has
 This is a state-orchestrated invasion of Spain.<br>
 <br>
 🇪🇸🇲🇦</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/visegrad24/status/2083153767164170326" target="_blank" rel="noopener"><img src="/tweets/img-3zsgern_gatmzvod.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-3zsgern_gatmzvod.jpg"><source src="https://video.twimg.com/amplify_video/2083153738416467968/vid/avc1/720x1280/gJgXV4Lj7o65Tc69.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/visegrad24/status/2083153767164170326" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/visegrad24/status/2083153767164170326" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -203,7 +203,7 @@ This is a state-orchestrated invasion of Spain.<br>
   <div class="tweet-text">No ha sido apaciguamiento, ha sido rendición a los marroquíes.<br>
 A partir de ahora, yo bloqueaba la salida de dinero a Marruecos y bloqueaba completamente la frontera con ellos para estrangular su economía, como medida de disuasión.<br>
 Ademas, denuncia a la UE para imponer sanciones.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/capTercio/status/2083176746199761174" target="_blank" rel="noopener"><img src="/tweets/img-9gptyxg5xhmm4pfy.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-9gptyxg5xhmm4pfy.jpg"><source src="https://video.twimg.com/amplify_video/2083176675160866817/vid/avc1/576x1024/XTi5az_DjLKaoEWV.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/capTercio/status/2083176746199761174" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/capTercio/status/2083176746199761174" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -220,7 +220,7 @@ Primeras palabras de Sánchez en Ceuta, la culpa: de las mafias.
   <div class="tweet-text">La cooperación con Marruecos es fundamental para seguir luchando contra las mafias que trafican con seres humanos. <br>
 <br>
 El Gobierno agradece la colaboración de las autoridades marroquíes para reforzar la cooperación y facilitar la repatriación de las personas migrantes que han […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/PSOE/status/2083155309518872734" target="_blank" rel="noopener"><img src="/tweets/img-kjkcokyjfrf3amma.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-kjkcokyjfrf3amma.jpg"><source src="https://video.twimg.com/amplify_video/2083155112826925056/vid/avc1/1920x1080/YD_-AhreIsbWkYEj.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/PSOE/status/2083155309518872734" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/PSOE/status/2083155309518872734" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -266,7 +266,7 @@ España es el circo de Europa.</div>
   <div class="tweet-text">⭕️ÚLTIMA HORA| Cientos de marroquíes asalta el CETI de Ceuta.<br>
 <br>
 El gobierno nos miente, no hay una situación de normalidad.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2083279422870741383" target="_blank" rel="noopener"><img src="/tweets/img-7pmtjtlblnoiyvk-.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-7pmtjtlblnoiyvk-.jpg"><source src="https://video.twimg.com/amplify_video/2083279365937242113/vid/avc1/1080x1484/lDacx948aIt5trPq.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2083279422870741383" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2083279422870741383" target="_blank" rel="noopener">31 de julio de 2026</a>
 </blockquote>
 
@@ -279,7 +279,7 @@ El gobierno nos miente, no hay una situación de normalidad.</div>
     <span class="tweet-handle">@Espball</span>
   </a>
   <div class="tweet-text">El Ejército actuando en Ceuta.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Espball/status/2083340058686271668" target="_blank" rel="noopener"><img src="/tweets/img-tmqtcbkcz6lntvho.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tmqtcbkcz6lntvho.jpg"><source src="https://video.twimg.com/amplify_video/2083340040118185984/vid/avc1/576x1024/wdUVzQVZOFnPtlps.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Espball/status/2083340058686271668" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Espball/status/2083340058686271668" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -325,7 +325,7 @@ El gobierno nos miente, no hay una situación de normalidad.</div>
     <span class="tweet-handle">@TheObjective_es</span>
   </a>
   <div class="tweet-text">🗣️ Marlaska: «Marruecos no es ninguna amenaza ni para Ceuta ni para el resto de España. Es un socio absolutamente fiable»</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/TheObjective_es/status/2083543567553774063" target="_blank" rel="noopener"><img src="/tweets/img-eryuh1klyvjyzggb.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-eryuh1klyvjyzggb.jpg"><source src="https://video.twimg.com/amplify_video/2083543208596787200/vid/avc1/1920x1080/Naz6vm2JL-TS8h0F.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TheObjective_es/status/2083543567553774063" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/TheObjective_es/status/2083543567553774063" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -340,7 +340,7 @@ El presidente, de vacaciones:
     <span class="tweet-handle">@eldebate_com</span>
   </a>
   <div class="tweet-text">🔴 Sánchez cuelga un vídeo en Instagram recomendando canciones para este verano en plena crisis de Ceuta</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/eldebate_com/status/2083493079844000098" target="_blank" rel="noopener"><img src="/tweets/img-zlcjfzpnbttk9qqc.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-zlcjfzpnbttk9qqc.jpg"><source src="https://video.twimg.com/amplify_video/2083492997363126272/vid/avc1/1080x1920/OdGmjhfOD6RcqEzC.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/eldebate_com/status/2083493079844000098" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/eldebate_com/status/2083493079844000098" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -371,7 +371,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
   <div class="tweet-text">Hoy ha comenzado la instalación de las barreras de contención en el espigón del Tarajal (Ceuta), en un operativo conjunto de la Guardia Civil, la <a href="https://x.com/Armada_esp" target="_blank" rel="noopener">@Armada_esp</a>  y <a href="https://x.com/salvamentogob" target="_blank" rel="noopener">@salvamentogob</a> Marítimo (Sasemar). <br>
 <br>
 ✔️ El dispositivo consta de una barrera neumática de 500 metros, reforzada con una […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/guardiacivil/status/2083617779366625620" target="_blank" rel="noopener"><img src="/tweets/img-t2ngvrxitlh8jpka.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-t2ngvrxitlh8jpka.jpg"><source src="https://video.twimg.com/amplify_video/2083617730406608896/vid/avc1/1024x576/ffizJyaeBDnphjTp.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/guardiacivil/status/2083617779366625620" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/guardiacivil/status/2083617779366625620" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -386,7 +386,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
   <div class="tweet-text">Esto de <a href="https://x.com/Albert_Rivera" target="_blank" rel="noopener">@Albert_Rivera</a> , de hace unos meses. Como siempre, profético:<br>
 <br>
 &quot;La geopolítica no perdona. Canarias, Ceuta y Melilla, no son periferia, son tan España como Madrid o cualquier territorio nacional. Y son frontera estratégica de España y de Europa. Y las fronteras no se […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ACOM_es/status/2083532195684127091" target="_blank" rel="noopener"><img src="/tweets/img-wegrvu9ggjy8xwz8.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-wegrvu9ggjy8xwz8.jpg"><source src="https://video.twimg.com/amplify_video/2083532106244730880/vid/avc1/720x1280/tMTBpX1wqHmJzw4P.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ACOM_es/status/2083532195684127091" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ACOM_es/status/2083532195684127091" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -420,7 +420,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
     <span class="tweet-handle">@Dreetje8400</span>
   </a>
   <div class="tweet-text">Ze zijn vertrokken, volgens de regimepers</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Dreetje8400/status/2083461771109503137" target="_blank" rel="noopener"><img src="/tweets/img-l1qhuq_oytp5vr_h.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-l1qhuq_oytp5vr_h.jpg"><source src="https://video.twimg.com/amplify_video/2083433111598026752/vid/avc1/576x768/gsCO9PIb0fLoPnnN.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Dreetje8400/status/2083461771109503137" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Dreetje8400/status/2083461771109503137" target="_blank" rel="noopener">1 de agosto de 2026</a>
 </blockquote>
 
@@ -447,7 +447,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
     <span class="tweet-handle">@juanBravoBaena</span>
   </a>
   <div class="tweet-text">Aunque el Gobierno hable de vuelta a la normalidad y el Presidente se dedique a hacer tiktoks de recomendaciones musicales, esta es la situación de Ceuta durante la noche:</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/juanBravoBaena/status/2083775865343574117" target="_blank" rel="noopener"><img src="/tweets/img-gjgieml8vzugkfvj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-gjgieml8vzugkfvj.jpg"><source src="https://video.twimg.com/amplify_video/2083775778395758592/vid/avc1/720x1280/YvKWRaop-nuAhxgH.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/juanBravoBaena/status/2083775865343574117" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/juanBravoBaena/status/2083775865343574117" target="_blank" rel="noopener">2 de agosto de 2026</a>
 </blockquote>
 
@@ -462,7 +462,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
   <div class="tweet-text">Marroquís cruzan a Ceuta por el hueco entre el espigón y “la boya” instalada por el gobierno.<br>
 <br>
 Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@elalcazar_es</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/elalcazar_es/status/2083891471627776485" target="_blank" rel="noopener"><img src="/tweets/img-5prn2qxfftuql-o5.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-5prn2qxfftuql-o5.jpg"><source src="https://video.twimg.com/amplify_video/2083842471411257344/vid/avc1/1080x1920/6Avl883Itlr93hGd.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elalcazar_es/status/2083891471627776485" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/elalcazar_es/status/2083891471627776485" target="_blank" rel="noopener">2 de agosto de 2026</a>
 </blockquote>
 
@@ -477,7 +477,7 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
   <div class="tweet-text">🇪🇸🇲🇦 | El ex-Ministro de Defensa Federico Trillo sobre la posición de los EEUU cuando Marruecos ocupó Perejil en 2002 durante el gobierno de Aznar: <br>
 <br>
 «Los americanos ya entonces apoyaban a Marruecos».</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2083978202217582877" target="_blank" rel="noopener"><img src="/tweets/img-84uwlm8qiygqr1tl.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-84uwlm8qiygqr1tl.jpg"><source src="https://video.twimg.com/amplify_video/2083613166622097408/vid/avc1/1280x720/sCey1TvYEebz_kvp.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2083978202217582877" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/herqles_es/status/2083978202217582877" target="_blank" rel="noopener">2 de agosto de 2026</a>
 </blockquote>
 
@@ -499,7 +499,7 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
   <div class="tweet-text">💥 Juan José Imbroda, presidente de Melilla, 'estalla' contra el Gobierno de Pedro Sánchez:<br>
 <br>
 &quot;¿Qué le debe el Gobierno nacional a Marruecos para que nos paguen así y aguantar? España está aquí mucho antes de que fuera un sueño la nación marroquí&quot;</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/voz_populi/status/2084224167512068392" target="_blank" rel="noopener"><img src="/tweets/img-pinqdghctmelnsh5.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-pinqdghctmelnsh5.jpg"><source src="https://video.twimg.com/amplify_video/2084223404098383872/vid/avc1/1280x720/6HXWPcFYjJpThpYT.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/voz_populi/status/2084224167512068392" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/voz_populi/status/2084224167512068392" target="_blank" rel="noopener">3 de agosto de 2026</a>
 </blockquote>
 
@@ -537,7 +537,7 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
     <span class="tweet-handle">@revuelta_es</span>
   </a>
   <div class="tweet-text">🔴 Así manipula la televisión a menores marroquíes en Ceuta para generar compasión y justificar su reparto por toda España.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/revuelta_es/status/2084373619635843439" target="_blank" rel="noopener"><img src="/tweets/img-p-sxsup4lmdfiegg.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-p-sxsup4lmdfiegg.jpg"><source src="https://video.twimg.com/amplify_video/2084373600673439744/vid/avc1/540x960/2tgTgrVj5ddNiVeT.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/revuelta_es/status/2084373619635843439" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/revuelta_es/status/2084373619635843439" target="_blank" rel="noopener">3 de agosto de 2026</a>
 </blockquote>
 
@@ -551,7 +551,7 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
   </a>
   <div class="tweet-text">Acabamos de llegar a Brindisi. Como para el gobierno Meloni ya no somos Schengen, la policía controla uno a uno nuestros documentos. <br>
 VERGÜENZA de gobierno italiano.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener"><img src="/tweets/img-1tt1dsc4nbdk-3pj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-1tt1dsc4nbdk-3pj.jpg"><source src="https://video.twimg.com/amplify_video/2084409178269876224/vid/avc1/1080x1920/hzDuinMSKw9tDylP.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener">3 de agosto de 2026</a>
 </blockquote>
 
@@ -566,7 +566,7 @@ VERGÜENZA de gobierno italiano.</div>
     <span class="tweet-handle">@elespanolcom</span>
   </a>
   <div class="tweet-text">🔴 <a href="https://x.com/hashtag/URGENTE" target="_blank" rel="noopener">#URGENTE</a> | Marlaska dice que 72.000 personas entraron de forma irregular en Ceuta y que 70.000 ya han regresado a Marruecos</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/elespanolcom/status/2084613949933195508" target="_blank" rel="noopener"><img src="/tweets/img-eibzg283vkwmjill.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-eibzg283vkwmjill.jpg"><source src="https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/2160x3840/7vUronhKkCGCpv9A.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elespanolcom/status/2084613949933195508" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/elespanolcom/status/2084613949933195508" target="_blank" rel="noopener">4 de agosto de 2026</a>
 </blockquote>
 
@@ -579,7 +579,7 @@ VERGÜENZA de gobierno italiano.</div>
     <span class="tweet-handle">@okdiario</span>
   </a>
   <div class="tweet-text">🔴 Los médicos de Ceuta desmienten a Mónica García: «Que venga y nos diga a la cara que no hay colapso sanitario».</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2084572551410237807" target="_blank" rel="noopener"><img src="/tweets/img-0d19-nupznqkdflp.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-0d19-nupznqkdflp.jpg"><source src="https://video.twimg.com/amplify_video/2084534936585785344/vid/avc1/1920x1080/L-R1A_Zt6JaDoLpb.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2084572551410237807" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2084572551410237807" target="_blank" rel="noopener">4 de agosto de 2026</a>
 </blockquote>
 
@@ -606,7 +606,7 @@ VERGÜENZA de gobierno italiano.</div>
   <div class="tweet-text">⭕️ En el último año más de 1.000 millones de € públicos españoles fueron a proyectos (algunos absurdos) en MARRUECOS.<br>
 <br>
 Lo he contado hace un momento en <a href="https://x.com/EnBocaDe_Todos" target="_blank" rel="noopener">@EnBocaDe_Todos</a>. <a href="https://x.com/cuatro" target="_blank" rel="noopener">@cuatro</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/PabloCamPiq/status/2084602006316962247" target="_blank" rel="noopener"><img src="/tweets/img-iw5ikxu4ckaq0g7b.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iw5ikxu4ckaq0g7b.jpg"><source src="https://video.twimg.com/amplify_video/2084599726263975936/vid/avc1/854x482/NOGiK3UWWWvpd7KF.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/PabloCamPiq/status/2084602006316962247" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/PabloCamPiq/status/2084602006316962247" target="_blank" rel="noopener">4 de agosto de 2026</a>
 </blockquote>
 
@@ -641,7 +641,7 @@ Damn...</div>
   <div class="tweet-text">🗣️ Juan Jesús Vivas, presidente de la ciudad autónoma:<br>
 <br>
 «Ceuta está viviendo una situación límite, pedimos socorro a quien tiene las capacidades ejecutivas, que es el Gobierno».</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/TheObjective_es/status/2084934970351493574" target="_blank" rel="noopener"><img src="/tweets/img-cbfegmkml1ggq3o6.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-cbfegmkml1ggq3o6.jpg"><source src="https://video.twimg.com/amplify_video/2084912165530603520/vid/avc1/1920x1080/sz-NdQI58xlB4lxy.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TheObjective_es/status/2084934970351493574" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/TheObjective_es/status/2084934970351493574" target="_blank" rel="noopener">5 de agosto de 2026</a>
 </blockquote>
 
@@ -656,7 +656,7 @@ Damn...</div>
   <div class="tweet-text">Dice RTVE que los inmigrantes que ASALTARON la valla de Ceuta son Diplomados y Licendiados <br>
 <br>
 Hay que cerrar ese estercolero</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Anonymous_TA/status/2084942215961337857" target="_blank" rel="noopener"><img src="/tweets/img-r5tn36mzhfkfvwfb.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-r5tn36mzhfkfvwfb.jpg"><source src="https://video.twimg.com/amplify_video/2084942059543068672/vid/avc1/882x494/95LNK8-YekxWzH1g.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Anonymous_TA/status/2084942215961337857" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Anonymous_TA/status/2084942215961337857" target="_blank" rel="noopener">5 de agosto de 2026</a>
 </blockquote>
 
@@ -669,7 +669,7 @@ Hay que cerrar ese estercolero</div>
     <span class="tweet-handle">@Albiol_XG</span>
   </a>
   <div class="tweet-text">Si Marruecos tiene capacidad para organizar el Mundial de fútbol 2030 y gastarse miles de millones en construir un estadio para 115.000 espectadores, tiene dinero para acoger de vuelta a los menores que han saltado a Ceuta.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Albiol_XG/status/2084971100409061875" target="_blank" rel="noopener"><img src="/tweets/img-pxeqchborrlpsjxy.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-pxeqchborrlpsjxy.jpg"><source src="https://video.twimg.com/amplify_video/2084970732572876800/vid/avc1/640x352/dHXunjRuiZ5yIN_t.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Albiol_XG/status/2084971100409061875" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Albiol_XG/status/2084971100409061875" target="_blank" rel="noopener">5 de agosto de 2026</a>
 </blockquote>
 

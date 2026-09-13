@@ -29,6 +29,8 @@ import {
   enParalelo,
   mediaDeTweet,
   descargarMedia,
+  videosDeTweet,
+  descargarVideos,
   construirTarjeta,
 } from "./tweets.mjs";
 
@@ -229,7 +231,7 @@ function idsDeTweets(cuerpo) {
   return [...ids];
 }
 
-function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, tarjetasCache }) {
+function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasCache }) {
   const lineas = separarTweetsDeLineas(cuerpo).split("\n");
   for (let i = 0; i < lineas.length; i++) {
     const m = lineas[i].trim().match(RE_TWEET_SUELTO);
@@ -237,7 +239,7 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, tarjetasCache }) {
     const tweet = tweets.get(m[1]);
     let html;
     if (tweet) {
-      html = construirTarjeta(tweet, mediaMapa);
+      html = construirTarjeta(tweet, mediaMapa, videoMapa);
     } else if (tarjetasCache.has(m[1])) {
       // X no ha respondido por este tweet (borrado, cuenta suspendida, fallo
       // puntual...) pero ya lo teníamos horneado de una ejecución anterior:
@@ -305,7 +307,7 @@ function convertirTikTok(cuerpo) {
  * o null. `copiarImagen(nombre)` copia la imagen y devuelve su nombre final.
  */
 function transformarCuerpo(cuerpo, ctx) {
-  const { resolver, copiarImagen, tweets, mediaMapa, tarjetasCache, esEventoSemana } = ctx;
+  const { resolver, copiarImagen, tweets, mediaMapa, videoMapa, tarjetasCache, esEventoSemana } = ctx;
 
   let s = cuerpo;
 
@@ -324,7 +326,7 @@ function transformarCuerpo(cuerpo, ctx) {
   }
 
   s = convertirTikTok(s);
-  s = insertarTarjetasTweet(s, { tweets, mediaMapa, tarjetasCache });
+  s = insertarTarjetasTweet(s, { tweets, mediaMapa, videoMapa, tarjetasCache });
 
   // Imágenes embebidas de Obsidian: ![[archivo.png]] / ![[archivo.png|123]]
   s = s.replace(/!\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/g, (_, archivo, alt) => {
@@ -442,12 +444,28 @@ async function main() {
     mapaEnlaces.set(generarSlug(it.titulo), it.url);
     mapaEnlaces.set(generarSlug(it.stem), it.url);
   }
+
+  // Vídeo autoalojado: activado por defecto, pero se puede desactivar con
+  // `videos_locales: false` en el frontmatter. En un evento se lee solo del
+  // índice y se aplica a todas sus páginas/semanas (no hace falta repetirlo
+  // en cada una). Para esas notas/eventos, la tarjeta usa solo la fuente en
+  // vivo de X, sin descargar ni comprimir nada.
+  const eventoVideoLocal = new Map();
+  for (const it of items) {
+    if (it.clase.tipo === "evento" && it.clase.kind === "index") {
+      eventoVideoLocal.set(it.clase.eventoSlug, it.data.videos_locales !== false);
+    }
+  }
+  const permiteVideoLocal = (it) => it.clase.tipo === "evento"
+    ? eventoVideoLocal.get(it.clase.eventoSlug) ?? true
+    : it.data.videos_locales !== false;
   const resolver = (destino) => mapaEnlaces.get(generarSlug(destino)) || null;
 
   // --- Descarga de tweets: primero los JSON, luego todas sus imágenes ---
   const idsTweets = [...new Set(items.flatMap((it) => idsDeTweets(it.content)))];
   let tweets = new Map();
   let mediaMapa = new Map();
+  let videoMapa = new Map();
   if (idsTweets.length) {
     console.log(`Descargando ${idsTweets.length} tweet(s) de X...`);
     tweets = await enParalelo(idsTweets, 12, descargarTweet);
@@ -458,6 +476,24 @@ async function main() {
     const mediaUrls = validos.flatMap(mediaDeTweet);
     console.log(`Descargando ${new Set(mediaUrls).size} imagen(es) de tweets...`);
     mediaMapa = await descargarMedia(mediaUrls, PUBLICO_TWEETS, "/tweets");
+
+    const idsSinVideoLocal = new Set(
+      items.filter((it) => !permiteVideoLocal(it)).flatMap((it) => idsDeTweets(it.content)),
+    );
+    if (idsSinVideoLocal.size) {
+      console.log(`  ${idsSinVideoLocal.size} tweet(s) sin vídeo local (videos_locales: false): solo fuente en vivo de X.`);
+    }
+    const videoUrls = validos
+      .filter((t) => !idsSinVideoLocal.has(t.id_str))
+      .flatMap(videosDeTweet);
+    if (videoUrls.length) {
+      console.log(`Descargando y comprimiendo ${new Set(videoUrls).size} vídeo(s) de tweets...`);
+      videoMapa = await descargarVideos(videoUrls, PUBLICO_TWEETS, "/tweets");
+      const fallidosVideo = new Set(videoUrls).size - videoMapa.size;
+      if (fallidosVideo) {
+        console.log(`  ${fallidosVideo} no se pudieron comprimir (la tarjeta usará solo la fuente en vivo de X).`);
+      }
+    }
   }
 
   // --- Pasada 2: escribir cada archivo ---
@@ -476,7 +512,7 @@ async function main() {
     };
 
     const cuerpo = transformarCuerpo(it.content, {
-      resolver, copiarImagen, tweets, mediaMapa, tarjetasCache,
+      resolver, copiarImagen, tweets, mediaMapa, videoMapa, tarjetasCache,
       esEventoSemana: it.clase.kind === "semana",
     });
 
