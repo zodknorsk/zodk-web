@@ -43,7 +43,7 @@ Vemos los primeros videos de HC-130 realizando maniobras de reabastecimiento en 
     <span class="tweet-handle">@Osinttechnical</span>
   </a>
   <div class="tweet-text">USAF HC-130 refueling a pair of HH-60G Pavehawks over Iran while searching for the downed F-15E aircrew today.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Osinttechnical/status/2040077939052523845" target="_blank" rel="noopener"><img src="/tweets/img-djtxoflxwsxf1y17.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-djtxoflxwsxf1y17.jpg"><source src="https://video.twimg.com/amplify_video/2040077885113856001/vid/avc1/208x480/PoOMVG-OKJV-R60z.mp4" type="video/mp4" /><source src="/tweets/208x480-poomvg-okjv-r60z.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Osinttechnical/status/2040077939052523845" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Osinttechnical/status/2040077939052523845" target="_blank" rel="noopener">3 de abril de 2026</a>
 </blockquote>
 
@@ -56,7 +56,7 @@ Vemos los primeros videos de HC-130 realizando maniobras de reabastecimiento en 
     <span class="tweet-handle">@Osinttechnical</span>
   </a>
   <div class="tweet-text">Footage of Iranian police firing small arms at a pair of USAF HH-60Ws searching for the downed F-15E crew earlier today.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Osinttechnical/status/2040145805802106941" target="_blank" rel="noopener"><img src="/tweets/img-mkipn_scgei03bgj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-mkipn_scgei03bgj.jpg"><source src="https://video.twimg.com/amplify_video/2040145573580288000/vid/avc1/478x848/AOCYREfUR-PH8sqp.mp4" type="video/mp4" /><source src="/tweets/478x848-aocyrefur-ph8sqp.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Osinttechnical/status/2040145805802106941" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Osinttechnical/status/2040145805802106941" target="_blank" rel="noopener">3 de abril de 2026</a>
 </blockquote>
 
@@ -131,7 +131,7 @@ Solo entonces entró en juego una tercera oleada: aeronaves de reemplazo —Dash
     <span class="tweet-handle">@Osinttechnical</span>
   </a>
   <div class="tweet-text">Footage of a USAF C-295W from the 427th Special Operations Squadron flying low over the western Iranian desert early this morning.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Osinttechnical/status/2040895085944991766" target="_blank" rel="noopener"><img src="/tweets/img-2vymg7m9zvg8pwnu.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-2vymg7m9zvg8pwnu.jpg"><source src="https://video.twimg.com/amplify_video/2040895035500277760/vid/avc1/720x666/ZbXTYsNgw2MNjwuB.mp4" type="video/mp4" /><source src="/tweets/720x666-zbxtysngw2mnjwub.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Osinttechnical/status/2040895085944991766" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Osinttechnical/status/2040895085944991766" target="_blank" rel="noopener">5 de abril de 2026</a>
 </blockquote>
 

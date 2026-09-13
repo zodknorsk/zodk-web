@@ -175,7 +175,7 @@ Por ello proponemos activar el procedimiento previsto en el artículo 102 de la 
     <span class="tweet-handle">@rubnpulido</span>
   </a>
   <div class="tweet-text">Según la Ordenanza Municipal de uso y aprovechamiento de playas de la Ciudad Autónoma de Ceuta: queda prohibida, durante todo el año y a cualquier hora, la instalación de tiendas de campaña y las acampadas de cualquier duración en todas las playas del litoral ceutí. Las sanciones […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/rubnpulido/status/2086168429724123463" target="_blank" rel="noopener"><img src="/tweets/img-slgjcczr81kjkjac.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-slgjcczr81kjkjac.jpg"><source src="https://video.twimg.com/amplify_video/2086160079317827584/vid/avc1/356x640/g9LDjzfZ2aRhY5rL.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/rubnpulido/status/2086168429724123463" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/rubnpulido/status/2086168429724123463" target="_blank" rel="noopener">8 de agosto de 2026</a>
 </blockquote>
 
@@ -219,7 +219,7 @@ Según medios locales, los servicios de inteligencia italianos consideran que la
     <span class="tweet-handle">@WillyTolerdoo</span>
   </a>
   <div class="tweet-text">Manifestación masiva contra la lamentable gestión de Pedro Sánchez en Ceuta</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/WillyTolerdoo/status/2086527044431565080" target="_blank" rel="noopener"><img src="/tweets/img-wdxtxamkgnk4cvsz.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-wdxtxamkgnk4cvsz.jpg"><source src="https://video.twimg.com/amplify_video/2086526995844792320/vid/avc1/720x1280/bHHLu12n-BbZdJwW.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/WillyTolerdoo/status/2086527044431565080" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/WillyTolerdoo/status/2086527044431565080" target="_blank" rel="noopener">9 de agosto de 2026</a>
 </blockquote>
 
@@ -232,7 +232,7 @@ Según medios locales, los servicios de inteligencia italianos consideran que la
     <span class="tweet-handle">@elespanolcom</span>
   </a>
   <div class="tweet-text">📚 En plena escalada de la crisis migratoria y con la atención mediática centrada en la gestión de las fronteras, Pedro Sánchez ha vuelto a activar sus redes sociales para recomendar &quot;tres libros para el verano&quot;</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/elespanolcom/status/2086472570614759632" target="_blank" rel="noopener"><img src="/tweets/img-0dpv__hovtneeggl.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-0dpv__hovtneeggl.jpg"><source src="https://video.twimg.com/amplify_video/2086463912472363008/vid/avc1/1080x1920/mG0KrZhJ92s705tD.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elespanolcom/status/2086472570614759632" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/elespanolcom/status/2086472570614759632" target="_blank" rel="noopener">9 de agosto de 2026</a>
 </blockquote>
 
@@ -268,7 +268,7 @@ Ya le van conociendo fuera.</div>
     <span class="tweet-handle">@WillyTolerdoo</span>
   </a>
   <div class="tweet-text">La maravillosa gestión de Pedro Sánchez en Ceuta</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/WillyTolerdoo/status/2086764510438683025" target="_blank" rel="noopener"><img src="/tweets/img-m10fknqa2ya5woyd.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-m10fknqa2ya5woyd.jpg"><source src="https://video.twimg.com/amplify_video/2086764367500939264/vid/avc1/720x1280/Qtmz6sp-j_3aMPmJ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/WillyTolerdoo/status/2086764510438683025" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/WillyTolerdoo/status/2086764510438683025" target="_blank" rel="noopener">10 de agosto de 2026</a>
 </blockquote>
 
@@ -295,7 +295,7 @@ Brunner señala así […]</div>
     <span class="tweet-handle">@EFEnoticias</span>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> | El Gobierno eleva a 80.000 las personas que entraron en Ceuta los días 30 y 31 de julio.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EFEnoticias/status/2086787574790558127" target="_blank" rel="noopener"><img src="/tweets/tweet_video_thumb-hpxcomewoaadcbe.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-hpxcomewoaadcbe.jpg"><source src="https://video.twimg.com/tweet_video/HPXCOMEWoAADcBE.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EFEnoticias/status/2086787574790558127" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EFEnoticias/status/2086787574790558127" target="_blank" rel="noopener">10 de agosto de 2026</a>
 </blockquote>
 
@@ -316,7 +316,7 @@ Brunner señala así […]</div>
   <div class="tweet-text">Miles de marroquíes se AGRUPAN en la frontera con Ceuta<br>
 <br>
 Espero lo PEOR</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Anonymous_TA/status/2087231421853143173" target="_blank" rel="noopener"><img src="/tweets/img-pdinzl6e9e9i1pwb.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-pdinzl6e9e9i1pwb.jpg"><source src="https://video.twimg.com/amplify_video/2087231377649397760/vid/avc1/576x1024/aK3XOwO2FSwINFi2.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Anonymous_TA/status/2087231421853143173" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Anonymous_TA/status/2087231421853143173" target="_blank" rel="noopener">11 de agosto de 2026</a>
 </blockquote>
 
@@ -346,7 +346,7 @@ El ministro del Interior, Fernando Grande-Marlaska, condecoró a ocho altos carg
   <div class="tweet-text">🔴 MUY IMPORTANTE | El actual ministro de justicia marroquí acaba de declarar en una televisión árabe que quieren negociar con España el estatus de Ceuta y Melilla a quien considera ciudades marroquíes<br>
 <br>
 Esta sería la primera declaración oficial del gobierno marroquí sobre el tema</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/TalebSahara/status/2087281265590354191" target="_blank" rel="noopener"><img src="/tweets/img-9lbsw3cqkrbr3buv.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-9lbsw3cqkrbr3buv.jpg"><source src="https://video.twimg.com/amplify_video/2087281219318714369/vid/avc1/1920x1064/S2MxAdj7xLxOzbjc.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TalebSahara/status/2087281265590354191" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/TalebSahara/status/2087281265590354191" target="_blank" rel="noopener">11 de agosto de 2026</a>
 </blockquote>
 
@@ -380,7 +380,7 @@ OKDIARIO capta a los padres de Sánchez en La Mareta con camarero, escolta y coc
   <div class="tweet-text">💥 El periodista y escritor Chani estalla contra Sánchez por viajar a ver el eclipse tras la crisis migratoria en Ceuta.<br>
 <br>
 &quot;Es el presidente de una nación que ha visto invadidas y violadas sus fronteras, que tiene una ciudad en emergencia absoluta, y se viene a hacer el capullo […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2087149852048166920" target="_blank" rel="noopener"><img src="/tweets/img-ziqyajuhusp7tsti.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ziqyajuhusp7tsti.jpg"><source src="https://video.twimg.com/ext_tw_video/2087148364869537792/pu/vid/avc1/1280x720/P6esnJgGnWK0uSKe.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2087149852048166920" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2087149852048166920" target="_blank" rel="noopener">11 de agosto de 2026</a>
 </blockquote>
 
@@ -405,7 +405,7 @@ OKDIARIO capta a los padres de Sánchez en La Mareta con camarero, escolta y coc
     <span class="tweet-handle">@wallstwolverine</span>
   </a>
   <div class="tweet-text">Se registra un incendio en parques de Ceuta provocado por inmigrantes.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/wallstwolverine/status/2087471550500856285" target="_blank" rel="noopener"><img src="/tweets/img-dmh5tozts0ldopav.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-dmh5tozts0ldopav.jpg"><source src="https://video.twimg.com/amplify_video/2087275126177792001/vid/avc1/1080x1920/SWRoooXEtzjxyXDC.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2087471550500856285" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2087471550500856285" target="_blank" rel="noopener">12 de agosto de 2026</a>
 </blockquote>
 
@@ -430,7 +430,7 @@ OKDIARIO capta a los padres de Sánchez en La Mareta con camarero, escolta y coc
     <span class="tweet-handle">@wallstwolverine</span>
   </a>
   <div class="tweet-text">Margarita Robles, minstra de Defensa, tras su reunión con el presidente de Ceuta: “Lo que pasó el día 30 no puede volver a ocurrir. Tiene que quedar muy claro que Ceuta y Melilla no son españolas, son españolísimas. No se las toca”</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/wallstwolverine/status/2087545476971106522" target="_blank" rel="noopener"><img src="/tweets/img--tnry4ddu04pt4_k.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img--tnry4ddu04pt4_k.jpg"><source src="https://video.twimg.com/amplify_video/2087506536931196928/vid/avc1/1920x1080/duHT_T7pcfsLLbuo.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2087545476971106522" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2087545476971106522" target="_blank" rel="noopener">12 de agosto de 2026</a>
 </blockquote>
 
@@ -449,7 +449,7 @@ Una vecina de Ceuta ha estallado este miércoles ante la presencia de la ministr
 Vía: AlRojoVivo<br>
 <br>
 📲 Todos los detalles: […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2087510117528789399" target="_blank" rel="noopener"><img src="/tweets/img-tacez1fws4hfhfux.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tacez1fws4hfhfux.jpg"><source src="https://video.twimg.com/ext_tw_video/2087510074038091776/pu/vid/avc1/720x1280/vDG9SohCEm1dHDZJ.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2087510117528789399" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2087510117528789399" target="_blank" rel="noopener">12 de agosto de 2026</a>
 </blockquote>
 

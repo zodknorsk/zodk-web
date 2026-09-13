@@ -27,7 +27,7 @@ rango: 3 septiembre – 9 septiembre
     <span class="tweet-handle">@educarazo</span>
   </a>
   <div class="tweet-text">Alguien NO aplaude el anuncio de Sánchez de “publicar todos los informes”</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/educarazo/status/2095421208351175066" target="_blank" rel="noopener"><img src="/tweets/img-nxnv0difm4oysk_i.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-nxnv0difm4oysk_i.jpg"><source src="https://video.twimg.com/amplify_video/2095421186603905024/vid/avc1/1056x576/HQ4pCJg8_sJBJLni.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/educarazo/status/2095421208351175066" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/educarazo/status/2095421208351175066" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
@@ -42,7 +42,7 @@ rango: 3 septiembre – 9 septiembre
   <div class="tweet-text">🟢 Abascal retrata a Pedro Sánchez tras la invasión a Ceuta:<br>
 <br>
 &quot;Marruecos no necesita embajador en España, usted es su embajador aquí&quot;</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/voz_populi/status/2095433830509195352" target="_blank" rel="noopener"><img src="/tweets/img-lmhfkaueae96u9iq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-lmhfkaueae96u9iq.jpg"><source src="https://video.twimg.com/amplify_video/2095433610128187392/vid/avc1/1280x720/0gs5wxR4PuMzWLvX.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/voz_populi/status/2095433830509195352" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/voz_populi/status/2095433830509195352" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
@@ -107,7 +107,7 @@ rango: 3 septiembre – 9 septiembre
     <span class="tweet-handle">@rubnpulido</span>
   </a>
   <div class="tweet-text">Por cierto, que la cámara del capó del coche dejase de funcionar podría no ser casual. El dispositivo —que opera por wifi— pudo haber sido inhibido deliberadamente por los drones marroquíes que operaban sobre el terreno. Había uno grabándonos sin el menor pudor. ¿Cómo tolera […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/rubnpulido/status/2095548326087147752" target="_blank" rel="noopener"><img src="/tweets/img-jh410tenvpb-4kyz.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-jh410tenvpb-4kyz.jpg"><source src="https://video.twimg.com/amplify_video/2095548146575106049/vid/avc1/1920x1080/Di6c8dqvpKpYFAEu.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/rubnpulido/status/2095548326087147752" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/rubnpulido/status/2095548326087147752" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
@@ -120,7 +120,7 @@ rango: 3 septiembre – 9 septiembre
     <span class="tweet-handle">@wallstwolverine</span>
   </a>
   <div class="tweet-text">Así han cazado una cría de delfín los inmigrantes en Ceuta:</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/wallstwolverine/status/2095595001577148622" target="_blank" rel="noopener"><img src="/tweets/img-oozen9g4mpo0_gla.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-oozen9g4mpo0_gla.jpg"><source src="https://video.twimg.com/amplify_video/2095594825827651584/vid/avc1/1080x1920/fWGCO3VXi5j5b7t8.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2095595001577148622" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2095595001577148622" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
@@ -143,7 +143,7 @@ rango: 3 septiembre – 9 septiembre
   <div class="tweet-text">💥 Vicente Vallés retrata una vez más a Pedro Sánchez y al Gobierno tras sus explicaciones en el Congreso sobre la invasión de Ceuta:<br>
 <br>
 “Moncloa ya ha hecho lecturas falaces de otros informes que no confirmaban las tesis del Gobierno”</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/voz_populi/status/2095756469035475244" target="_blank" rel="noopener"><img src="/tweets/img-hwikxxxeqmho5v8c.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hwikxxxeqmho5v8c.jpg"><source src="https://video.twimg.com/ext_tw_video/2095499423941861376/pu/vid/avc1/720x1280/h2_Ss8wPbcm9P2IH.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/voz_populi/status/2095756469035475244" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/voz_populi/status/2095756469035475244" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
 
@@ -187,7 +187,7 @@ El Gobierno reduce de 12 a 8 los policías que vigilan el puesto fronterizo de C
     <span class="tweet-handle">@Espball</span>
   </a>
   <div class="tweet-text">Patriot.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Espball/status/2095790577358942368" target="_blank" rel="noopener"><img src="/tweets/img-yod_kiwzswke2ih8.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-yod_kiwzswke2ih8.jpg"><source src="https://video.twimg.com/amplify_video/2095790553699094528/vid/avc1/1256x720/Zod8fUgyqkHzNZhw.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Espball/status/2095790577358942368" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Espball/status/2095790577358942368" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
 
@@ -218,7 +218,7 @@ El Gobierno reduce de 12 a 8 los policías que vigilan el puesto fronterizo de C
 New migrants are still coming in<br>
 <br>
 🇪🇸</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/visegrad24/status/2095823686871753137" target="_blank" rel="noopener"><img src="/tweets/img-nln5rltfaq08rsyw.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-nln5rltfaq08rsyw.jpg"><source src="https://video.twimg.com/amplify_video/2095819802174713856/vid/avc1/464x848/lCZvLq3LKz6fBe_8.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/visegrad24/status/2095823686871753137" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/visegrad24/status/2095823686871753137" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
 
@@ -231,7 +231,7 @@ New migrants are still coming in<br>
     <span class="tweet-handle">@CSinsoles</span>
   </a>
   <div class="tweet-text">Hay que quitarse el maricomplejinismo.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/CSinsoles/status/2095760873415405646" target="_blank" rel="noopener"><img src="/tweets/img-_0_-9qnuv5cjta78.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-_0_-9qnuv5cjta78.jpg"><source src="https://video.twimg.com/amplify_video/2095647262567260164/vid/avc1/1280x720/DPv1Xtdfv8biahlr.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/CSinsoles/status/2095760873415405646" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/CSinsoles/status/2095760873415405646" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
 
@@ -258,7 +258,7 @@ New migrants are still coming in<br>
   <div class="tweet-text">ÚLTIMA HORA: El think tank más cercano a Trump se pone del lado de España en Ceuta.<br>
 <br>
 Kevin Roberts, presidente de la Heritage Foundation y cara visible del Project 2025, lo llama por su nombre: &quot;una invasión por parte de Marruecos, que está usando a personas como peones para sus […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Josevizner/status/2095805236493341000" target="_blank" rel="noopener"><img src="/tweets/img-bdnmun_uaeicsomq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-bdnmun_uaeicsomq.jpg"><source src="https://video.twimg.com/amplify_video/2095804912198443008/vid/avc1/1024x576/E7ydGSuudGrjyUvE.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Josevizner/status/2095805236493341000" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Josevizner/status/2095805236493341000" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
 
@@ -315,7 +315,7 @@ Abrimos hilo. 🧵</div>
 El Frente Polisario lanza una andanada de ataques sobre &quot;El Muro&quot; -la gigantesca línea defensiva de Marruecos en el Sáhara Occidental.<br>
 <br>
 Como es habitual han recurrido al uso de lanzacohetes de artillería Grad de diseño soviético adaptados sobre […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Political_Room/status/2096033145187373236" target="_blank" rel="noopener"><img src="/tweets/img-sm_9qdvnmzmjm1yk.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-sm_9qdvnmzmjm1yk.jpg"><source src="https://video.twimg.com/amplify_video/2096032768040026112/vid/avc1/1280x720/0qMYyKR0VYQTjJu2.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Political_Room/status/2096033145187373236" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Political_Room/status/2096033145187373236" target="_blank" rel="noopener">5 de septiembre de 2026</a>
 </blockquote>
 
@@ -332,7 +332,7 @@ Como es habitual han recurrido al uso de lanzacohetes de artillería Grad de dis
 La ONG alojada en un edificio público cedido por el Gobierno también gestiona las carpas para 900 inmigrantes ilegales junto a una guardería en Ceuta.<br>
 <br>
 🔗 Noticia completa</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2096121186602152236" target="_blank" rel="noopener"><img src="/tweets/img-gpq4jnzpucwwzibe.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-gpq4jnzpucwwzibe.jpg"><source src="https://video.twimg.com/ext_tw_video/2096121154037600258/pu/vid/avc1/1280x720/7BJEMciYo2iqEsHL.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2096121186602152236" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2096121186602152236" target="_blank" rel="noopener">5 de septiembre de 2026</a>
 </blockquote>
 
@@ -375,7 +375,7 @@ El barco de la Guardia Civil 'Duque de Ahumada' es de gestión compartida entre 
     <span class="tweet-handle">@europapress</span>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> | El Gobierno toma el control del puerto de Ceuta para instalar, de forma provisional hasta el 31 de diciembre, carpas y otros espacios destinados a la &quot;atención humanitaria&quot; y gestión de la crisis migratoria</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/europapress/status/2096212212188672193" target="_blank" rel="noopener"><img src="/tweets/tweet_video_thumb-hrc9zynbsaebnrm.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-hrc9zynbsaebnrm.jpg"><source src="https://video.twimg.com/tweet_video/HRc9zynbsAEbNRm.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/europapress/status/2096212212188672193" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/europapress/status/2096212212188672193" target="_blank" rel="noopener">5 de septiembre de 2026</a>
 </blockquote>
 
@@ -410,7 +410,7 @@ Todas las personas merecen un trato digno.</div>
 El mensaje es: aquí hay sitio. Venid.<br>
 <br>
 Y vendrán más. MILLONES. 🚨</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Capitana_espana/status/2096277759446155387" target="_blank" rel="noopener"><img src="/tweets/img-vq1ltgodh8h7qims.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-vq1ltgodh8h7qims.jpg"><source src="https://video.twimg.com/amplify_video/2096231356917235715/vid/avc1/2162x1284/MrqFZ1uk6Km0YVby.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Capitana_espana/status/2096277759446155387" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Capitana_espana/status/2096277759446155387" target="_blank" rel="noopener">5 de septiembre de 2026</a>
 </blockquote>
 
@@ -424,7 +424,7 @@ Y vendrán más. MILLONES. 🚨</div>
   </a>
   <div class="tweet-text">Margarita Robles, a mí me da que está cavando su tumba, políticamente hablando, por qué? Por decir la verdad.<br>
 🇪🇸⚔️☠️</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Gonzor_1212/status/2096219675830939884" target="_blank" rel="noopener"><img src="/tweets/img-yrbopdyxi_v_-fkv.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-yrbopdyxi_v_-fkv.jpg"><source src="https://video.twimg.com/amplify_video/2096219608189452292/vid/avc1/576x1024/aLYPVtUMzlIYIuqi.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Gonzor_1212/status/2096219675830939884" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Gonzor_1212/status/2096219675830939884" target="_blank" rel="noopener">5 de septiembre de 2026</a>
 </blockquote>
 
@@ -453,7 +453,7 @@ Ceuta, 2026.</div>
     <span class="tweet-handle">@ceuta_ahora</span>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/EmergenciaCeuta" target="_blank" rel="noopener">#EmergenciaCeuta</a> La presión en el Puerto de Ceuta es cada vez mayor. El video fue grabado ayer tarde desde el Ferry. Abrir un campamento de 1.000  inmigrantes cerca de la Estación Marítima, mas pareciera la intención del Gobierno Sánchez de colapsar Ceuta por sus cuatro esquinas.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ceuta_ahora/status/2096511170467287401" target="_blank" rel="noopener"><img src="/tweets/img-uwmwb0pmqprlsits.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-uwmwb0pmqprlsits.jpg"><source src="https://video.twimg.com/amplify_video/2096511104998608896/vid/avc1/478x850/vi5qd3BhyCQFpsjC.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ceuta_ahora/status/2096511170467287401" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ceuta_ahora/status/2096511170467287401" target="_blank" rel="noopener">6 de septiembre de 2026</a>
 </blockquote>
 
@@ -485,7 +485,7 @@ lanzamiento de una silla a la cabeza de un militar y los momentos posteriores en
 ‼️Más de 50 agresiones registradas a los diferentes cuerpos policiales y militares.<br>
 <br>
 ⁉️Cuál es el límite⁉️</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/_Laura_Garcia_P/status/2096536770238161203" target="_blank" rel="noopener"><img src="/tweets/img-fw5vaahfaqiadrno.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-fw5vaahfaqiadrno.jpg"><source src="https://video.twimg.com/amplify_video/2096536715695439875/vid/avc1/720x1280/NlIFaFA2IzVIsxnG.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/_Laura_Garcia_P/status/2096536770238161203" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/_Laura_Garcia_P/status/2096536770238161203" target="_blank" rel="noopener">6 de septiembre de 2026</a>
 </blockquote>
 
@@ -502,7 +502,7 @@ lanzamiento de una silla a la cabeza de un militar y los momentos posteriores en
 Quiero dejar claro que estas carpas son temporales. No son permanentes.<br>
 <br>
 Y que, para que las personas migrantes puedan ser retornadas pronto, es necesario tener […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/avtorresp/status/2096528490258477546" target="_blank" rel="noopener"><img src="/tweets/img-ukttqm-cxhi77ia7.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ukttqm-cxhi77ia7.jpg"><source src="https://video.twimg.com/amplify_video/2096528336365441024/vid/avc1/1920x1080/4Gmzr-fOidkH0Kdg.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/avtorresp/status/2096528490258477546" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/avtorresp/status/2096528490258477546" target="_blank" rel="noopener">6 de septiembre de 2026</a>
 </blockquote>
 
@@ -517,7 +517,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
   <div class="tweet-text">🇪🇸🇲🇦 | El propagandista sanchista conocido como 'Perro andaluz', genera indignación entre los ceutíes al reírse de su miedo a la invasión:<br>
 <br>
 «No puede ser una invasión si los invasores quieren una manta y un caldito».</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2096554261047869731" target="_blank" rel="noopener"><img src="/tweets/img-kcmm7nf8hhhtoqai.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-kcmm7nf8hhhtoqai.jpg"><source src="https://video.twimg.com/amplify_video/2096554183952396294/vid/avc1/480x670/sZirXIbZW8LvluOn.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2096554261047869731" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/herqles_es/status/2096554261047869731" target="_blank" rel="noopener">6 de septiembre de 2026</a>
 </blockquote>
 
@@ -587,7 +587,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
     <span class="tweet-handle">@pabloharour</span>
   </a>
   <div class="tweet-text">Un inmigrante llegado a Ceuta: «Para que te acepten el asilo tienes que fingir que eres LGTBI o un perseguido religioso»</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener"><img src="/tweets/img-bwhvqx1w9zbs1ltg.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-bwhvqx1w9zbs1ltg.jpg"><source src="https://video.twimg.com/amplify_video/2096875147646951426/vid/avc1/1920x1080/4af_CMuKeuWovMWq.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/pabloharour/status/2096886194311475229" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -603,7 +603,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
 <br>
 🔴 <a href="https://x.com/hashtag/EnBocaDeTodos" target="_blank" rel="noopener">#EnBocaDeTodos</a> en <a href="https://x.com/cuatro" target="_blank" rel="noopener">@cuatro</a> con <a href="https://x.com/Nacho_Abad" target="_blank" rel="noopener">@Nacho_Abad</a><br>
 ➡</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener"><img src="/tweets/img-hoeciwxry1k-xjvi.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hoeciwxry1k-xjvi.jpg"><source src="https://video.twimg.com/amplify_video/2096897683692933120/vid/avc1/1280x720/i4S36rcdMBPMMZCn.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EnBocaDe_Todos/status/2096897764160401579" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -628,7 +628,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
     <span class="tweet-handle">@europapress</span>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/EnDirecto" target="_blank" rel="noopener">#EnDirecto</a> | Sánchez asegura que el Gobierno responderá con contundencia a la crisis migratoria de Ceuta: &quot;Quienes tengan derecho a asilo lo tendrán en España, como exige la ética y el derecho, y quienes no, serán devueltos&quot;</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener"><img src="/tweets/img-ay6tw2lhjrurvbw-.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ay6tw2lhjrurvbw-.jpg"><source src="https://video.twimg.com/amplify_video/2096910692196495360/vid/avc1/1280x720/w3lHzytNQX6FS0Q7.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/europapress/status/2096911309845504437" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -643,7 +643,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
   <div class="tweet-text">‼️ Sánchez evita hacer autocrítica y asegura que los reproches por la gestión en Ceuta son cosa de la &quot;internacional ultraderechista&quot; por su buena gestión: &quot;Por algo será&quot;. <br>
 <br>
 🔗</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener"><img src="/tweets/img-uinizti934cggsva.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-uinizti934cggsva.jpg"><source src="https://video.twimg.com/amplify_video/2096912513044545540/vid/avc1/1920x1080/LhGJHrFC1FGZdxFU.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2096914159887593949" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -660,7 +660,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
 📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio<br>
 <br>
 <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Trampolín" target="_blank" rel="noopener">#Trampolín</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener"><img src="/tweets/img-nk0ic5g_jnzw_f84.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-nk0ic5g_jnzw_f84.jpg"><source src="https://video.twimg.com/amplify_video/2096928367240998912/vid/avc1/1080x1920/2SVCJhgJ1gaFDPad.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2096929220811219175" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -673,7 +673,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
     <span class="tweet-handle">@davidsantosvlog</span>
   </a>
   <div class="tweet-text">Menudo repaso de esta ceutí al gobierno de inútiles que tenemos en España.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener"><img src="/tweets/img-eklt7frlvlop8rhq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-eklt7frlvlop8rhq.jpg"><source src="https://video.twimg.com/amplify_video/2096920357470883840/vid/avc1/1280x720/1fs-vyI90UKKXKJM.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2096920517194264693" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -688,7 +688,7 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
   <div class="tweet-text">🇪🇸🇲🇦 | El testimonio de las operarias de limpieza en Ceuta refleja la insalubridad del campamento irregular: <br>
 <br>
 Denuncian que el olor es insoportable y que las papeleras están llenas de botellas de alcohol y botes de pegamento que consumen los inmigrantes.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener"><img src="/tweets/img-w67ecziessmdno8-.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-w67ecziessmdno8-.jpg"><source src="https://video.twimg.com/amplify_video/2096991788368113664/vid/avc1/720x1280/C8oiQG-H_dsYA5O3.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/herqles_es/status/2096991878717567196" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -701,7 +701,7 @@ Denuncian que el olor es insoportable y que las papeleras están llenas de botel
     <span class="tweet-handle">@europapress</span>
   </a>
   <div class="tweet-text">Marlaska dice que ningún informe constata autoría en la crisis de Ceuta: &quot;Manifiesto mi confianza en Marruecos&quot;</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener"><img src="/tweets/img-m1hkkbketfy3b3oy.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-m1hkkbketfy3b3oy.jpg"><source src="https://video.twimg.com/amplify_video/2097026470485143552/vid/avc1/1080x1920/UfWhVUJpS7u5PQWt.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/europapress/status/2097027597083328639" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -716,7 +716,7 @@ Denuncian que el olor es insoportable y que las papeleras están llenas de botel
   <div class="tweet-text">💥 Los militares desalojan las ‘toperas’ donde se escondían inmigrantes ilegales tras ver el programa de Iker Jiménez y los devuelven a Marruecos.<br>
 <br>
 🔗</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener"><img src="/tweets/img-vqzzktzjlmtabb8c.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-vqzzktzjlmtabb8c.jpg"><source src="https://video.twimg.com/ext_tw_video/2097054279345258497/pu/vid/avc1/1280x720/eSLgM1AalmJSdRk7.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2097054318981488724" target="_blank" rel="noopener">7 de septiembre de 2026</a>
 </blockquote>
 
@@ -793,7 +793,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
   <div class="tweet-text">🔴 El cinismo de Sánchez tras la invasión en Ceuta.<br>
 <br>
 &quot;Necesitamos migrantes, mano de obra para una economía que está creciendo&quot;.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener"><img src="/tweets/img-ikx_ouewblqjuv3y.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ikx_ouewblqjuv3y.jpg"><source src="https://video.twimg.com/amplify_video/2094317076751982592/vid/avc1/1920x1080/X4240-XcLF5Pdccu.mp4?tag=16" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2094321445715189830" target="_blank" rel="noopener">31 de agosto de 2026</a>
 </blockquote>
 
@@ -821,7 +821,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
     <span class="tweet-handle">@WillyTolerdoo</span>
   </a>
   <div class="tweet-text">Colegios llenos de mierda en el comienzo del curso escolar en Ceuta</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener"><img src="/tweets/img-adozuafhbl6wzvna.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-adozuafhbl6wzvna.jpg"><source src="https://video.twimg.com/amplify_video/2097251031206051840/vid/avc1/720x1280/plXhYheN6RJV0sgH.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/WillyTolerdoo/status/2097251077661900954" target="_blank" rel="noopener">8 de septiembre de 2026</a>
 </blockquote>
 
@@ -836,7 +836,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
   <div class="tweet-text">🔴 El Gobierno anuncia más plazas para alojar a los inmigrantes tras la invasión de Ceuta: «Llegaremos hasta las 6.000».<br>
 <br>
 🔗 Siga la actualidad política en directo:</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener"><img src="/tweets/img-ka8aju6sx9eanba9.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ka8aju6sx9eanba9.jpg"><source src="https://video.twimg.com/ext_tw_video/2097289089468784640/pu/vid/avc1/1280x720/Si_0H1ie-U4t8f62.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2097289129260159471" target="_blank" rel="noopener">8 de septiembre de 2026</a>
 </blockquote>
 
@@ -849,7 +849,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
     <span class="tweet-handle">@pabloharour</span>
   </a>
   <div class="tweet-text">Vecinos de Ceuta reciben a Marlaska con mucho cariño</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener"><img src="/tweets/img-lwo6bf8con6mrur1.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-lwo6bf8con6mrur1.jpg"><source src="https://video.twimg.com/amplify_video/2097348553383567360/vid/avc1/1080x1920/Kt2JM5iAfUc5ln6E.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/pabloharour/status/2097348717972013191" target="_blank" rel="noopener">8 de septiembre de 2026</a>
 </blockquote>
 
@@ -876,7 +876,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
   <div class="tweet-text">Escucha bien esto:<br>
 Hoy son los gatos <br>
 Mañana serás tú y tus hijos</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener"><img src="/tweets/img-douiuje43p9r83u4.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-douiuje43p9r83u4.jpg"><source src="https://video.twimg.com/amplify_video/2097281266899189761/vid/avc1/720x1280/4auyOBec7AGPYO4E.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/MariaMu24417972/status/2097281329452704043" target="_blank" rel="noopener">8 de septiembre de 2026</a>
 </blockquote>
 
@@ -901,7 +901,7 @@ Mañana serás tú y tus hijos</div>
     <span class="tweet-handle">@dchopenawer</span>
   </a>
   <div class="tweet-text">Cómo de mal está la cosa para que Pedro Sánchez le haya metido esta vacilada a Abascal.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener"><img src="/tweets/img-iozykzf7a_ov4fb2.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iozykzf7a_ov4fb2.jpg"><source src="https://video.twimg.com/amplify_video/2097594228562153472/vid/avc1/800x1080/DajJggIAwh3ghoIe.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/dchopenawer/status/2097594274208416200" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -914,7 +914,7 @@ Mañana serás tú y tus hijos</div>
     <span class="tweet-handle">@rtvenoticias</span>
   </a>
   <div class="tweet-text">Pedro Sánchez, en <a href="https://x.com/hashtag/Mañaneros9S" target="_blank" rel="noopener">#Mañaneros9S</a>, sobre Ceuta: &quot;No estamos hablando de invasores, estamos hablando de personas, que en su mayoría, están buscando una vida mejor&quot;.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener"><img src="/tweets/img-_oklajbxxgg8pare.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-_oklajbxxgg8pare.jpg"><source src="https://video.twimg.com/amplify_video/2097615227009318912/vid/avc1/1280x720/nmUXqwAyZ21jFQCb.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/rtvenoticias/status/2097615403149148341" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -932,7 +932,7 @@ Mañana serás tú y tus hijos</div>
 Me parece de una gravedad extrema.<br>
 <br>
 La respuesta de las Fuerzas y Cuerpos de Seguridad del Estado fue inteligente y yo, por supuesto, la avalo.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener"><img src="/tweets/media-hrxiyksw0aaw-6h.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/media-hrxiyksw0aaw-6h.jpg"><source src="https://video.twimg.com/amplify_video/2097630172044312576/vid/avc1/1920x1080/qIBQ0I60DYB2pWbr.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/sanchezcastejon/status/2097633865108230378" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -947,7 +947,7 @@ La respuesta de las Fuerzas y Cuerpos de Seguridad del Estado fue inteligente y 
   <div class="tweet-text">ALUCINANTE 👉🏻 La última pregunta de Cintora en TelePedro <a href="https://x.com/hashtag/Mañaneros9S" target="_blank" rel="noopener">#Mañaneros9S</a> a su jefe es sobre sus listas musicales en Spotify 🤷🏻‍♂️<br>
 <br>
 No se había visto nada tan duro desde el último combate de Ilia Topuria 😅😅</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener"><img src="/tweets/img-iowzqv-q6howvpau.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iowzqv-q6howvpau.jpg"><source src="https://video.twimg.com/amplify_video/2097628896703504385/vid/avc1/1920x1080/nxghe8j3hJ9HWshT.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/educarazo/status/2097628987849634141" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -1031,7 +1031,7 @@ Informa Antonio Rodríguez (<a href="https://x.com/antonioRG9" target="_blank" r
     <span class="tweet-handle">@abc_es</span>
   </a>
   <div class="tweet-text">El delegado del Gobierno en Ceuta se aferra al cargo y dice que los informes publicados del CNI «no fueron un aviso»</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener"><img src="/tweets/img-d72hcjtsp8afonng.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-d72hcjtsp8afonng.jpg"><source src="https://video.twimg.com/amplify_video/2097770794151792640/vid/avc1/1080x1920/AD_VJcEqqOlsTBaq.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/abc_es/status/2097772291601895874" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -1046,7 +1046,7 @@ Informa Antonio Rodríguez (<a href="https://x.com/antonioRG9" target="_blank" r
   <div class="tweet-text">3 minutos DEMOLEDORES que destrozan al Gobierno y sus mentiras. <br>
 <br>
 <a href="https://x.com/hashtag/EleccionesYA" target="_blank" rel="noopener">#EleccionesYA</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener"><img src="/tweets/img-sjlb9yhsdimpavkq.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-sjlb9yhsdimpavkq.jpg"><source src="https://video.twimg.com/amplify_video/2097769672057782283/vid/avc1/1920x1080/KHTXo6-cZfWn0HhL.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/hugomanchon/status/2097770482393063581" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -1063,7 +1063,7 @@ Informa Antonio Rodríguez (<a href="https://x.com/antonioRG9" target="_blank" r
 Es lo que pasa cuando no vas a tus medios de confianza. <br>
 <br>
 Lo disfrutaría más, si no fuera porque estamos en manos de estos desgraciados.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener"><img src="/tweets/img-dxhwykqsm3gmx-qk.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-dxhwykqsm3gmx-qk.jpg"><source src="https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/2290x1288/Hn__VbvMG_-7cewJ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 
@@ -1080,7 +1080,7 @@ Lo disfrutaría más, si no fuera porque estamos en manos de estos desgraciados.
 Pardo le lleva al huerto, y Puente cae como un cochino.<br>
 <br>
 Ay la hemeroteca.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener"><img src="/tweets/img-xx2dwqi6p5lq_pyn.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-xx2dwqi6p5lq_pyn.jpg"><source src="https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/2288x1290/OEqZQ9EAJir2I_gL.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">9 de septiembre de 2026</a>
 </blockquote>
 

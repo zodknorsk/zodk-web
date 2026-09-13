@@ -39,7 +39,7 @@ La Comisión Europea ha recordado este jueves que España tiene el «deber» de 
     <span class="tweet-handle">@wallstwolverine</span>
   </a>
   <div class="tweet-text">Enfrentamientos entre inmigrantes en Ceuta:</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener"><img src="/tweets/img-sgflfbnplft8qrpl.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-sgflfbnplft8qrpl.jpg"><source src="https://video.twimg.com/amplify_video/2090414570779140096/vid/avc1/720x1280/z2wjVo6XhRAeTyOU.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
@@ -87,7 +87,7 @@ Más info en el hilo</div>
 &quot;Es indignante, no puede ser que estemos peor atendidos nosotros&quot;.<br>
 <br>
 &quot;Les dan una botella para cada uno, nosotros la compartimos&quot;.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/unaicano10/status/2090370759961248101" target="_blank" rel="noopener"><img src="/tweets/img-qtuscneyea6saysj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-qtuscneyea6saysj.jpg"><source src="https://video.twimg.com/amplify_video/2090367416375078912/vid/avc1/1920x1080/glTDDlXptdqUTcKh.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/unaicano10/status/2090370759961248101" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/unaicano10/status/2090370759961248101" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
@@ -105,7 +105,7 @@ Más info en el hilo</div>
 Han reventado por dentro a la niña estos salvajes.<br>
 <br>
   &quot;Y hay al menos 4 niños varones agredidos sexualmente […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/albernap/status/2090370483464044946" target="_blank" rel="noopener"><img src="/tweets/img-v4fuxq5j1z8pydhn.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-v4fuxq5j1z8pydhn.jpg"><source src="https://video.twimg.com/amplify_video/2090370170040545280/vid/avc1/1280x720/w6v_0DhD5znIBif9.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/albernap/status/2090370483464044946" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/albernap/status/2090370483464044946" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
@@ -124,7 +124,7 @@ Han reventado por dentro a la niña estos salvajes.<br>
 El Gobierno actuará con responsabilidad y estudiando cada caso.<br>
 <br>
 Hablamos de niños y niñas y sus […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/patxilopez/status/2090400983868199089" target="_blank" rel="noopener"><img src="/tweets/img-hreqxkztnzcnliir.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hreqxkztnzcnliir.jpg"><source src="https://video.twimg.com/amplify_video/2090395425303867392/vid/avc1/1920x1080/BG2Zhn98BNMqjWJ5.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/patxilopez/status/2090400983868199089" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/patxilopez/status/2090400983868199089" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
@@ -137,7 +137,7 @@ Hablamos de niños y niñas y sus […]</div>
     <span class="tweet-handle">@egtegain</span>
   </a>
   <div class="tweet-text">En Nov de 2025, Juan Vivas de PP y Presidente de Ceuta, se derritio en Halagos a Pedro Sánchez y le regaló una Camiseta del AD de Ceuta.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/egtegain/status/2090351559972462915" target="_blank" rel="noopener"><img src="/tweets/img-t19lh-snqii8ncnj.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-t19lh-snqii8ncnj.jpg"><source src="https://video.twimg.com/amplify_video/2090351416812421120/vid/avc1/1080x720/C33sNGXEWxV5sFJ-.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/egtegain/status/2090351559972462915" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/egtegain/status/2090351559972462915" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
@@ -158,7 +158,7 @@ Hablamos de niños y niñas y sus […]</div>
   <div class="tweet-text">🔴 Los invasores marroquíes okupan y destrozan un colegio de Ceuta a dos semanas del inicio del curso escolar.<br>
 <br>
 🔗 Noticia completa:</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2090786345635471567" target="_blank" rel="noopener"><img src="/tweets/img-6thej8ddtmqzcb_v.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-6thej8ddtmqzcb_v.jpg"><source src="https://video.twimg.com/ext_tw_video/2090786308125814784/pu/vid/avc1/1280x720/4gt5bAcfAcNmb1DI.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2090786345635471567" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2090786345635471567" target="_blank" rel="noopener">21 de agosto de 2026</a>
 </blockquote>
 
@@ -216,7 +216,7 @@ Así lo afirma Guillermo Pulido, uno de los mayores especialistas en Estudios Es
   <div class="tweet-text">🔴El ministro de Justicia marroquí dice que las ciudades de Ceuta y Melilla constituyen un derecho &quot;histórico y geográfico&quot; de Marruecos y que el objetivo es que &quot;retornen al seno de la patria&quot;<br>
 <br>
 ▪️Asegura que es esencial la creación de un foro u organismo de diálogo</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/24horas_rne/status/2090863300770668608" target="_blank" rel="noopener"><img src="/tweets/img-tv39pbotqc_iy4ne.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tv39pbotqc_iy4ne.jpg"><source src="https://video.twimg.com/amplify_video/2090862889112330240/vid/avc1/1920x1080/ZEdrw_BeBoqoh8bP.mp4?tag=16" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/24horas_rne/status/2090863300770668608" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/24horas_rne/status/2090863300770668608" target="_blank" rel="noopener">21 de agosto de 2026</a>
 </blockquote>
 
@@ -313,7 +313,7 @@ Because vaccines work</div>
   <div class="tweet-text">El estadio Alfonso Murube corea el himno nacional antes del Ceuta - Las Palmas, y a continuación todo el público estalla: &quot;¡Pedro Sánchez, hijo de put*!&quot; y &quot;¡Ceuta no se vende!&quot;.<br>
 <br>
 Por lo que sea, esos cánticos no los veréis en &quot;canales oficiales&quot; .</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/GuajeSalvaje/status/2091231433545142696" target="_blank" rel="noopener"><img src="/tweets/img-imtdl_ouosvpwh4u.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-imtdl_ouosvpwh4u.jpg"><source src="https://video.twimg.com/amplify_video/2091210999994990592/vid/avc1/1080x1920/t0s88SEHiqnkluRI.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/GuajeSalvaje/status/2091231433545142696" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/GuajeSalvaje/status/2091231433545142696" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
@@ -326,7 +326,7 @@ Por lo que sea, esos cánticos no los veréis en &quot;canales oficiales&quot; .
     <span class="tweet-handle">@JulianMaciasT</span>
   </a>
   <div class="tweet-text">Marhuenda y Jiménez Losantos, los que van de periodistas patrióticos, confirmando que trabajan para los servicios de inteligencia de Marruecos.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/JulianMaciasT/status/2091212954439967065" target="_blank" rel="noopener"><img src="/tweets/img-ailqlhve3vp0dwft.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ailqlhve3vp0dwft.jpg"><source src="https://video.twimg.com/amplify_video/2091110325147803648/vid/avc1/844x488/m8UEyObVy84O51kU.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/JulianMaciasT/status/2091212954439967065" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/JulianMaciasT/status/2091212954439967065" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
@@ -339,7 +339,7 @@ Por lo que sea, esos cánticos no los veréis en &quot;canales oficiales&quot; .
     <span class="tweet-handle">@CapitanBitcoin</span>
   </a>
   <div class="tweet-text">🚨CEUTA: han arruinado la ciudad.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/CapitanBitcoin/status/2091282798921572826" target="_blank" rel="noopener"><img src="/tweets/img-hytny9ege-hrrn_w.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hytny9ege-hrrn_w.jpg"><source src="https://video.twimg.com/amplify_video/2091282657535488000/vid/avc1/720x736/IbWTiieIsxWWjBYi.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/CapitanBitcoin/status/2091282798921572826" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/CapitanBitcoin/status/2091282798921572826" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
@@ -420,7 +420,7 @@ No solo es la permisividad ante cualquier ataque o invasión, es el regalo const
   </a>
   <div class="tweet-text">Continúan las concentraciones en Ceuta. Difícil que se vean por TV, no quieren que se sepa.<br>
 Ceuta no se vende.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Ramon_Rouco_/status/2091246371630121295" target="_blank" rel="noopener"><img src="/tweets/img-qol7iwu-evt5tp6c.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-qol7iwu-evt5tp6c.jpg"><source src="https://video.twimg.com/amplify_video/2091246353624043520/vid/avc1/400x640/C7wQ7tmROsYDGaVW.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Ramon_Rouco_/status/2091246371630121295" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Ramon_Rouco_/status/2091246371630121295" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
@@ -435,7 +435,7 @@ Ceuta no se vende.</div>
   <div class="tweet-text">🔴 HISTÓRICO | El Ceuta FC se niega a jugar el primer minuto de partido como reivindicación y queja contra Sánchez por abandonarles tras la invasión.<br>
 <br>
 Les acompañan miles de aficionados con banderas de España y gritos de “¡Ceuta no se vende, se defiende!”.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/unaicano10/status/2091231981304435141" target="_blank" rel="noopener"><img src="/tweets/img-iksdsdq-zwbq-blg.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iksdsdq-zwbq-blg.jpg"><source src="https://video.twimg.com/amplify_video/2091214006212067328/vid/avc1/1920x1080/EYQ0r5x3WWY2ifBC.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/unaicano10/status/2091231981304435141" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/unaicano10/status/2091231981304435141" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
@@ -533,7 +533,7 @@ Informa Teresa Gómez (<a href="https://x.com/teresagomezgp" target="_blank" rel
   <div class="tweet-text">Noche de disturbios en Loman del Colmenar, Ceuta.<br>
 <br>
 Inmigrantes ilegales se enfrentan a vecinos y policía.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/labanderaes/status/2091781894060839390" target="_blank" rel="noopener"><img src="/tweets/img-zn7yqfoiq0y43jjm.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-zn7yqfoiq0y43jjm.jpg"><source src="https://video.twimg.com/amplify_video/2091781871738753024/vid/avc1/576x1024/n5Vn-nWzrXNNCQR8.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/labanderaes/status/2091781894060839390" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/labanderaes/status/2091781894060839390" target="_blank" rel="noopener">24 de agosto de 2026</a>
 </blockquote>
 
@@ -546,7 +546,7 @@ Inmigrantes ilegales se enfrentan a vecinos y policía.</div>
     <span class="tweet-handle">@abc_es</span>
   </a>
   <div class="tweet-text">El delegado del Gobierno en Ceuta admite ahora que la ciudad está «lejos de la normalidad»</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/abc_es/status/2091845450500321341" target="_blank" rel="noopener"><img src="/tweets/img-_r8l16zvfcyvgrsz.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-_r8l16zvfcyvgrsz.jpg"><source src="https://video.twimg.com/amplify_video/2091845388789526528/vid/avc1/1080x1920/MCIzCENyxjwFErps.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/abc_es/status/2091845450500321341" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/abc_es/status/2091845450500321341" target="_blank" rel="noopener">24 de agosto de 2026</a>
 </blockquote>
 
@@ -630,7 +630,7 @@ On 24 Aug 2026, Jabaroot posted on DarkForums what it says is a 70,000-record da
 Española para al ejército al presenciar la agresión de un hombre a una mujer: “La está pegando. Mírale la cara como la tiene”<br>
 El agresor se enfrenta al ejército: “Es mi mujer. Estoy casado” <br>
 Sin comentarios, no? Silencio, si decimos algo somos racistas.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/RABAGOISABEL/status/2091855158401536492" target="_blank" rel="noopener"><img src="/tweets/img-jte67zruo2u9ezh8.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-jte67zruo2u9ezh8.jpg"><source src="https://video.twimg.com/amplify_video/2091855115250528256/vid/avc1/720x972/F-s0ieBvJblr9QqV.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/RABAGOISABEL/status/2091855158401536492" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/RABAGOISABEL/status/2091855158401536492" target="_blank" rel="noopener">24 de agosto de 2026</a>
 </blockquote>
 
@@ -643,7 +643,7 @@ Sin comentarios, no? Silencio, si decimos algo somos racistas.</div>
     <span class="tweet-handle">@EFEnoticias</span>
   </a>
   <div class="tweet-text"><a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> | El Gobierno de España solicita formalmente a la Comisión Europea (CE) financiación de asistencia de emergencia para hacer frente a la crisis migratoria en Ceuta.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/EFEnoticias/status/2091934695718064372" target="_blank" rel="noopener"><img src="/tweets/tweet_video_thumb-hqglfdnxuaawfc3.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-hqglfdnxuaawfc3.jpg"><source src="https://video.twimg.com/tweet_video/HQgLfDnXUAAWfc3.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EFEnoticias/status/2091934695718064372" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EFEnoticias/status/2091934695718064372" target="_blank" rel="noopener">24 de agosto de 2026</a>
 </blockquote>
 
@@ -662,7 +662,7 @@ Sin comentarios, no? Silencio, si decimos algo somos racistas.</div>
   <div class="tweet-text">🇲🇦🇪🇸 Día nuevo, amenaza nueva de Marruecos. <br>
 <br>
 Esta vez en plena ceremonia del Mawlid ante el rey Mohamed VI, el ministro de Asuntos Religiosos Ahmed Toufiq ha sacado a relucir Ceuta y llama a movilizarse para “liberar los territorios ocupados”.  Refuerza las reivindicaciones de […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/Political_Room/status/2092121720094167444" target="_blank" rel="noopener"><img src="/tweets/img-cagekskouz2--gpz.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-cagekskouz2--gpz.jpg"><source src="https://video.twimg.com/amplify_video/2092121680881623041/vid/avc1/1066x720/keZJtTbl1lsiz9dU.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Political_Room/status/2092121720094167444" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/Political_Room/status/2092121720094167444" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -679,7 +679,7 @@ Esta vez en plena ceremonia del Mawlid ante el rey Mohamed VI, el ministro de As
 Tijeras de poda, azadas, hierros, cristales rotos…<br>
 <br>
 Las imágenes difundidas por este periódico corresponden a los primeros diez días de la invasión, ahora, ese número se ha […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2092129386711470155" target="_blank" rel="noopener"><img src="/tweets/img-jfftldnontg62-ab.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-jfftldnontg62-ab.jpg"><source src="https://video.twimg.com/amplify_video/2092129340834091008/vid/avc1/1080x1920/mw5wKjkHcTLk7eiy.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2092129386711470155" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2092129386711470155" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -694,7 +694,7 @@ Las imágenes difundidas por este periódico corresponden a los primeros diez d�
   <div class="tweet-text">🔴 Moncloa difunde imágenes del Consejo de Seguridad sin el Rey para vender que Sánchez se pone al frente de la crisis de Ceuta.<br>
 <br>
 🔗</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/okdiario/status/2092187042956398752" target="_blank" rel="noopener"><img src="/tweets/img-epmdeg2coa4sus2m.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-epmdeg2coa4sus2m.jpg"><source src="https://video.twimg.com/ext_tw_video/2092187022974656512/pu/vid/avc1/1280x720/VJGrRhsZVl8qRLlE.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2092187042956398752" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/okdiario/status/2092187042956398752" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -709,7 +709,7 @@ Las imágenes difundidas por este periódico corresponden a los primeros diez d�
   <div class="tweet-text">🔴 TVE borra de la red social X el vídeo que deja en evidencia la sumisión del Gobierno ante las provocaciones de Marruecos.<br>
 <br>
 La Hora de La 1 ha borrado de la red social X el corte donde exponía las contradicciones de Moncloa: mientras el Gobierno califica a Marruecos de aliado […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/labanderaes/status/2092206628363731079" target="_blank" rel="noopener"><img src="/tweets/img-jlylhu2tjtii_wng.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-jlylhu2tjtii_wng.jpg"><source src="https://video.twimg.com/amplify_video/2092206580720640001/vid/avc1/1920x1080/WsamuREbQi_rsLq0.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/labanderaes/status/2092206628363731079" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/labanderaes/status/2092206628363731079" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -765,7 +765,7 @@ La Hora de La 1 ha borrado de la red social X el corte donde exponía las contra
 📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio<br>
 <br>
 <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Manifestación" target="_blank" rel="noopener">#Manifestación</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/ElFarodeCeuta/status/2092282935059665133" target="_blank" rel="noopener"><img src="/tweets/img-7pgr7lmpyijjj7zl.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-7pgr7lmpyijjj7zl.jpg"><source src="https://video.twimg.com/amplify_video/2092282578053058560/vid/avc1/1080x1920/mh7ymInl8Jaxw1V7.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2092282935059665133" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2092282935059665133" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -778,7 +778,7 @@ La Hora de La 1 ha borrado de la red social X el corte donde exponía las contra
     <span class="tweet-handle">@herqles_es</span>
   </a>
   <div class="tweet-text">🇪🇸🇲🇦 | Máxima tensión en la playa del Trampolín: despliegue de gases y material antidisturbios ante la aglomeración de cientos de inmigrantes.</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2092310991891526073" target="_blank" rel="noopener"><img src="/tweets/img-so8v8fzds7ow2t4t.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-so8v8fzds7ow2t4t.jpg"><source src="https://video.twimg.com/amplify_video/2092310964460736512/vid/avc1/576x1024/kkZ2PPRxLCePG5zk.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2092310991891526073" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/herqles_es/status/2092310991891526073" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
@@ -853,7 +853,7 @@ Trabajamos para recuperar la normalidad en Ceuta.</div>
 Defensa afirma que el CNI avisó un día antes de lo que iba a ocurrir, pero Interior lo niega y Moncloa lo respalda <a href="https://rtve.es/play/videos/directo/canales-lineales/la-1/" target="_blank" rel="noopener">rtve.es/play/videos/di…</a><br>
 <br>
 <a href="https://x.com/hashtag/LaHora26A" target="_blank" rel="noopener">#LaHora26A</a></div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/LaHoraTVE/status/2092506106840993907" target="_blank" rel="noopener"><img src="/tweets/img-0izjov4knmf638le.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-0izjov4knmf638le.jpg"><source src="https://video.twimg.com/amplify_video/2092506017254838272/vid/avc1/1920x1080/F2TdhgYnwetdC1wv.mp4?tag=16" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/LaHoraTVE/status/2092506106840993907" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/LaHoraTVE/status/2092506106840993907" target="_blank" rel="noopener">26 de agosto de 2026</a>
 </blockquote>
 
@@ -895,8 +895,8 @@ Defensa afirma que el CNI avisó un día antes de lo que iba a ocurrir, pero Int
   <div class="tweet-text">🇪🇸 <a href="https://x.com/hashtag/Urgente" target="_blank" rel="noopener">#Urgente</a> | Desmantelan la hípica de Ceuta para instalar carpas de inmigrantes y suprimen las terapias con caballos para niños con discapacidad.<br>
 <br>
 La pista principal del Centro Ecuestre de Ceuta, recién remodelada con una inversión cercana a los 200.000 euros, ha comenzado a ser […]</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2092597653032878412" target="_blank" rel="noopener"><img src="/tweets/img-zbrlkobdpyj60er2.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
-  <a class="tweet-media tweet-media-video" href="https://x.com/herqles_es/status/2092597653032878412" target="_blank" rel="noopener"><img src="/tweets/img-ywiyda9dah-vcrfu.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-zbrlkobdpyj60er2.jpg"><source src="https://video.twimg.com/amplify_video/2092597617532321792/vid/avc1/720x1280/U71M61Bz_gc0Pf1T.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2092597653032878412" target="_blank" rel="noopener">Verlo en X</a></video>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-ywiyda9dah-vcrfu.jpg"><source src="https://video.twimg.com/amplify_video/2092597617502920704/vid/avc1/720x1280/fCjWEG8N6h1aQFKE.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/herqles_es/status/2092597653032878412" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/herqles_es/status/2092597653032878412" target="_blank" rel="noopener">26 de agosto de 2026</a>
 </blockquote>
 
@@ -957,7 +957,7 @@ Hoy esas mismas instalaciones aparecen en el BOE de forma oficial para albergar 
     <span class="tweet-handle">@joseriverof</span>
   </a>
   <div class="tweet-text">Tensión en aumento en Ceuta. Centenares de ceutíes han ido a la playa del Trampolín para desalojar a los inmigrantes y destruir sus casetas. La Policía ha tenido que intervenir e incluso hacer algún disparo disuasorio al aire. Y el ministro habla de final de año… es insostenible</div>
-  <a class="tweet-media tweet-media-video" href="https://x.com/joseriverof/status/2092708207663706587" target="_blank" rel="noopener"><img src="/tweets/img-iuwpedgigvpfutb_.jpg" alt="Miniatura del vídeo" loading="lazy" /><span>▶ Ver vídeo en X</span></a>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iuwpedgigvpfutb_.jpg"><source src="https://video.twimg.com/amplify_video/2092708196854951937/vid/avc1/356x640/jvta1NSpSXBwVwp0.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/joseriverof/status/2092708207663706587" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/joseriverof/status/2092708207663706587" target="_blank" rel="noopener">26 de agosto de 2026</a>
 </blockquote>
 
