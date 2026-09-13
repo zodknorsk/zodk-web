@@ -12,8 +12,8 @@ planeta basta con mapa_tierra.py, que ya esta generado.
 """
 import json, math, sys, time
 
-GRID_W = 1440           # columnas: 0.25 grados
-GRID_H = 720            # filas
+GRID_W = 2880           # columnas: 0.125 grados (antes 1440 = 0.25; subido para el canvas a 600 px)
+GRID_H = 1440           # filas
 ICE_WATER_LAT = 82.0    # mar por encima de esta latitud -> hielo
 ICE_LAND_LAT  = 75.0    # tierra por encima de esta latitud -> hielo
 # Groenlandia como hielo (su silueta girando anima el polo). Solo de 70N hacia

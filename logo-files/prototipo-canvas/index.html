@@ -25,8 +25,8 @@
 <div id="sprite" class="hero-planet" hidden></div>
 <div id="panel">
   <button id="modo">Ver el sprite de ahora (a saltos)</button><br>
-  vuelta: <button data-v="90">90 s</button> <button data-v="120">120 s</button>
-  <button data-v="180">180 s (elegida)</button> <button data-v="240">240 s</button> <span id="vel"></span><br>
+  vuelta: <button data-v="90">90 s (elegida)</button> <button data-v="120">120 s</button>
+  <button data-v="180">180 s</button> <button data-v="240">240 s</button> <span id="vel"></span><br>
   <span id="info">cargando…</span>
 </div>
 <script type="module">
@@ -64,7 +64,8 @@ for (let i = 0; i < MW * MH; i++) {
 // enciendan y apaguen al girar. Cada píxel lee del nivel cuyo texel mide lo
 // que él, y al juntar celdas gana la de más prioridad (costa > tierra > mar).
 const PRIO = Uint8Array.from(D.prio);
-const LMAX = 5;                        // 1440 / 32 = 45: niveles exactos hasta 5
+let LMAX = 0;                          // niveles exactos: mientras MW sea divisible
+while (LMAX < 6 && MW % (2 << LMAX) === 0) LMAX++;
 const lvOff = [0], lvW = [MW];
 let lvTotal = MW * MH;
 for (let L = 1; L <= LMAX; L++) { lvOff.push(lvTotal); lvW.push(MW >> L); lvTotal += (MW >> L) * MH; }
@@ -90,6 +91,7 @@ for (let i = 0; i < lut.length; i++) {
 
 // ---- precálculo por píxel (el sol y el terminador no se mueven con el giro)
 const W = D.COLS, H = D.VIS, R = D.RADIUS;
+$("cv").width = W; $("cv").height = H;
 const smooth = (e0, e1, x) => { let t = (x - e0) / (e1 - e0); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); };
 const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
 const RIN = 1 - D.LIMB_AA / R, ROUT = 1 + D.LIMB_AA / R, RRMAX = ROUT * ROUT;
@@ -145,6 +147,10 @@ for (let sy = 0; sy < H; sy++) {
   }
 }
 const N = idx.length;
+// Primer píxel del disco de cada fila (idx va fila a fila): para dibujar solo
+// las filas que se ven en pantalla.
+const rowStart = new Int32Array(H + 1);
+{ let n = 0; for (let y = 0; y <= H; y++) { while (n < N && ((idx[n] / W) | 0) < y) n++; rowStart[y] = n; } }
 const pIdx = Int32Array.from(idx), pRow = Int32Array.from(rowOf), pCol = Int32Array.from(colOf);
 const pKN = Uint8Array.from(kN), pKI = Uint8Array.from(kI);
 // MIP_TOL: cuánto más pequeño que la huella del píxel se admite el texel antes
@@ -198,17 +204,18 @@ const cv = $("cv"), ctx = cv.getContext("2d");
 const img = ctx.createImageData(W, H);
 const buf = new Uint32Array(img.data.buffer);
 const SP = D.SPACE, AT = D.ATMO;
-function draw(rot) {                   // rot: giro en celdas, con decimales (continuo)
+function draw(rot, y0 = 0, y1 = H) {   // rot: giro en celdas (continuo); y0..y1: filas a pintar
   const rf = Math.round(rot * 256);    // coma fija: 1/256 de celda, todo en enteros
+  const n0 = rowStart[y0], n1 = rowStart[y1];
   if (window.__mip) {
-    for (let n = 0; n < N; n++) {
+    for (let n = n0; n < n1; n++) {
       let c = (pCol[n] - rf) >> (8 + pL[n]);   // >> redondea hacia abajo también en negativos
       if (c < 0) c += pWrap[n];
       const m = lv[pBase[n] + c];
       buf[pIdx[n]] = lut[m * KN + (iceMat[m] ? pKI[n] : pKN[n])];
     }
   } else {
-    for (let n = 0; n < N; n++) {
+    for (let n = n0; n < n1; n++) {
       let c = (pCol[n] - rf) >> 8;
       if (c < 0) c += MW;
       const m = mat[pRow[n] + c];
@@ -216,6 +223,7 @@ function draw(rot) {                   // rot: giro en celdas, con decimales (co
     }
   }
   for (let i = 0; i < post.length; i += 3) {
+    if (post[i] < n0 || post[i] >= n1) continue;
     const p = pIdx[post[i]], a = post[i + 1], cov = post[i + 2];
     const v = buf[p];
     let r = v & 255, g = (v >> 8) & 255, b = (v >> 16) & 255;
@@ -224,7 +232,7 @@ function draw(rot) {                   // rot: giro en celdas, con decimales (co
     buf[p] = (255 << 24) | (Math.round(b) << 16) | (Math.round(g) << 8) | Math.round(r);
   }
   clouds(buf, rot);
-  ctx.putImageData(img, 0, 0);
+  ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);   // solo sube a la GPU la franja pintada
 }
 
 // Giro CONTINUO: en cada fotograma de pantalla el mapa avanza la fracción de
@@ -233,7 +241,7 @@ function draw(rot) {                   // rot: giro en celdas, con decimales (co
 // todos los bordes se reajustaban a la vez con patrón 1,1,0,1… -> tirones.)
 // Vuelta en 120 s, como el sprite. Tope de ~60 dibujos/s (en pantallas de
 // 120 Hz se dibuja uno de cada dos fotogramas).
-let VUELTA = 180;                      // elegida por el usuario (13-sep-2026)
+let VUELTA = 90;                       // elegida por el usuario con los píxeles finos (13-sep-2026); antes 180
 let t0 = null, lastSlot = -1, ms = 0, pasos = 0;
 let rotBase = 0, tBase = null;         // al cambiar de velocidad, el giro sigue desde donde iba
 window.__draw = draw;                  // para depurar desde la consola
@@ -256,8 +264,12 @@ function loop(now) {
     if (tBase === null) tBase = now;
     const rot = (rotBase + (now - tBase) / 1000 * MW / VUELTA) % MW;
     window.__rotNow = rot; window.__tNow = now;
+    // Filas del canvas que caen dentro de la ventana (el planeta es más alto
+    // que la pantalla: por debajo del pliegue no se pinta nada).
+    const bb = cv.getBoundingClientRect(), k = H / bb.height;
+    const y0 = Math.max(0, Math.floor(-bb.top * k)), y1 = Math.min(H, Math.ceil((innerHeight - bb.top) * k));
     const a = performance.now();
-    draw(rot);
+    if (y1 > y0) draw(rot, y0, y1);
     ms += performance.now() - a; pasos++;
     if (pasos % 60 === 0) {
       $("info").textContent = `canvas continuo · ${N} píxeles · ${(ms / pasos).toFixed(2)} ms por dibujo · ~60 dibujos/s`;

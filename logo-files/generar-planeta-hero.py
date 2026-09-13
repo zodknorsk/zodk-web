@@ -49,8 +49,8 @@ OCEAN_COAST   = (0x5b, 0xd0, 0xe6)  # turquesa vivo junto a la costa (el "punch"
 OCEAN_SHALLOW = (0x43, 0x8f, 0xc6)  # plataforma continental
 OCEAN_DEEP    = (0x1d, 0x50, 0x8c)  # océano profundo
 OCEAN_MID     = (0x4f, 0xb0, 0xd6)  # franja intermedia entre el turquesa y la plataforma
-SEA_BANDS     = (2.4, 4.4)          # distancia a costa (celdas) donde acaba cada franja
-SEA_WOBBLE    = 2.2                 # cuánto se ondulan los bordes de franja (celdas)
+SEA_BANDS     = (2.4, 4.4)          # distancia a costa (celdas de 0,25°) donde acaba cada franja
+SEA_WOBBLE    = 2.2                 # cuánto se ondulan los bordes de franja (celdas de 0,25°)
 COAST_AA      = False               # mezcla tierra/mar en las celdas de costa (borde borroso)
 LAND  = (0x54, 0xa2, 0x59)
 ICE   = (0xdb, 0xe3, 0xec)
@@ -121,8 +121,8 @@ LUCES_SUELTAS = [
 # aguanta una textura de GPU (~8192 px). Se reparte en una REJILLA de
 # GRID_COLS x GRID_ROWS fotogramas; el CSS anima background-position con un
 # @keyframes explícito (uno por fotograma), no con steps() sobre un solo eje.
-COLS      = 400        # ancho del fotograma, en px (1 px = 1 celda) — antes 280
-RADIUS    = 195.0      # radio de la esfera, en celdas — antes 143
+COLS      = 600        # ancho del planeta, en px — 280 -> 400 -> 600 (canvas, píxeles más finos)
+RADIUS    = 292.5      # radio de la esfera, en px — 143 -> 195 -> 292.5
 CDOWN     = 0.92        # fracción del radio que se dibuja hacia abajo
 TILT      = 20.0        # latitud del sub-observador (0 = ecuador de frente)
 FRAMES    = 60          # fotogramas de la rotación — antes 28, giro más fluido
@@ -177,6 +177,15 @@ def _mcell(lat, lon):
     return (int((90.0 - lat) / 180.0 * MH), int((lon + 180.0) / 360.0 * MW))
 
 
+# Escalas para que el resto de parámetros no dependa de la resolución:
+#   KC    = celdas del mapa por cada celda de 0,25° (1 a 0,25°, 2 a 0,125°)
+#   SCALE = píxeles del planeta respecto al de 400 px (1,5 con COLS = 600)
+# Lo que debe medir lo mismo EN PÍXELES (copas, dunas, manchas de mezcla) se
+# divide entre SCALE en grados; lo que debe medir lo mismo RESPECTO AL PLANETA
+# (franjas del mar, franja de mezcla, claros) se mantiene en grados (x KC celdas).
+KC = MW // 1440
+SCALE = COLS / 400.0
+
 # Estrecho de Gibraltar: el submuestreo une Iberia y Marruecos; se abre a mano
 # una celda de mar (~1 grado, un pixel de canal).
 _gr, _gc = _mcell(35.6, -5.5)
@@ -187,7 +196,7 @@ for _c in (_gc - 1, _gc, _gc + 1):
 import random
 from collections import deque
 
-DMAX = 8
+DMAX = 8 * KC
 _land = [[GRID[r][c] != 0 for c in range(MW)] for r in range(MH)]
 COAST = [bytearray(MW) for _ in range(MH)]
 COAST2 = [bytearray(MW) for _ in range(MH)]         # 2ª celda de tierra adentro (línea más gruesa)
@@ -200,7 +209,7 @@ _dq = deque()
 # Ruido de valor a baja frecuencia (interpolado): transiciones de bioma suaves,
 # sin el "confeti" que daba el ruido por celda.
 random.seed(20260910)
-_NC = 7                                            # celdas por nodo de ruido
+_NC = 7 * KC                                       # celdas por nodo de ruido
 _NW, _NH = MW // _NC + 2, MH // _NC + 2
 _NG = [[random.random() for _ in range(_NW)] for _ in range(_NH)]
 
@@ -247,27 +256,39 @@ for r in range(MH):
         else:
             SEADIST[r][c] = DMAX
 
-# Segundo y tercer anillo (celdas más adentro) para engrosar la línea de costa
-# Y, sobre todo, para que no se salte por sub-muestreo: con un anillo de 1 sola
-# celda, en las zonas donde la proyección comprime más (lejos del centro del
-# disco) un píxel puede caer justo entre medias y "perderse" el anillo entero,
-# dejando huecos sueltos en la línea. Ensanchar a 3 celdas lo hace más robusto.
+# Anillos de la línea de costa por distancia tierra adentro (en celdas):
+# COAST = anillo oscuro, COAST2/COAST3 = los dos que lo suavizan hacia dentro.
+# A 0,25° (KC=1) eran 1+1+1 celdas; a 0,125° el oscuro va de 2 celdas para que
+# siga midiendo ~1 px de pantalla y el muestreo (sobre todo el vertical, que no
+# tiene mipmaps) no se lo salte. Tres anillos también evitan huecos cuando la
+# proyección comprime el mapa lejos del centro del disco.
+_T3, _T2, _T1 = KC, KC + 1, KC + 2
+_LD = [bytearray(MW) for _ in range(MH)]
+_dq2 = deque()
 for r in range(MH):
     for c in range(MW):
-        if _land[r][c] and not COAST[r][c]:
-            for dr, dcx in _N4:
-                rr, cc = r + dr, (c + dcx) % MW
-                if 0 <= rr < MH and _land[rr][cc] and COAST[rr][cc]:
-                    COAST2[r][c] = 1
-                    break
+        if COAST[r][c]:
+            _LD[r][c] = 1
+            _dq2.append((r, c))
+while _dq2:
+    r, c = _dq2.popleft()
+    d = _LD[r][c]
+    if d >= _T1:
+        continue
+    for dr, dcx in _N4:
+        rr, cc = r + dr, (c + dcx) % MW
+        if 0 <= rr < MH and _land[rr][cc] and not _LD[rr][cc]:
+            _LD[rr][cc] = d + 1
+            _dq2.append((rr, cc))
 for r in range(MH):
+    lr, c1, c2, c3 = _LD[r], COAST[r], COAST2[r], COAST3[r]
     for c in range(MW):
-        if _land[r][c] and not COAST[r][c] and not COAST2[r][c]:
-            for dr, dcx in _N4:
-                rr, cc = r + dr, (c + dcx) % MW
-                if 0 <= rr < MH and _land[rr][cc] and COAST2[rr][cc]:
-                    COAST3[r][c] = 1
-                    break
+        d = lr[c]
+        if d:
+            c1[c] = 1 if d <= _T3 else 0
+            c2[c] = 1 if _T3 < d <= _T2 else 0
+            c3[c] = 1 if _T2 < d <= _T1 else 0
+del _LD
 
 # 1 pasada de filtro de moda 3x3 (solo tierra): quita celdas de bioma sueltas
 # sin llegar a aplanar las regiones.
@@ -446,8 +467,8 @@ for r in range(MH):
         if e < 250:
             MTNK[r][c] = 8
             continue
-        ex = (_elev_bi(lat, lon + _md) - _elev_bi(lat, lon - _md)) * 2.0
-        ez = (_elev_bi(lat + _md, lon) - _elev_bi(lat - _md, lon)) * 2.0
+        ex = (_elev_bi(lat, lon + _md) - _elev_bi(lat, lon - _md)) * (0.5 / _md)   # desnivel por grado
+        ez = (_elev_bi(lat + _md, lon) - _elev_bi(lat - _md, lon)) * (0.5 / _md)
         kk = 900.0
         nl = math.sqrt(ex * ex + ez * ez + kk * kk) or 1.0
         hs = (ex * 0.6 - ez * 0.6 + kk * 0.75) / nl       # luz desde el NO
@@ -463,7 +484,7 @@ for r in range(MH):
 # un bosque dibujado. Cada celda guarda qué parte de copa le toca:
 #   0 hueco entre copas, 1 borde en sombra (abajo-dcha), 2 cuerpo, 3 luz (arriba-izda)
 # Viven en el mapa (0,25°), así que giran con el planeta como la costa.
-CROWN_SP   = 1.0                   # separación media entre copas, en grados de arco
+CROWN_SP   = 1.0 / SCALE           # separación media entre copas, en grados de arco (~4-5 px)
 CROWN_R    = (0.55, 0.78)          # radio relativo a CROWN_SP (min, max)
 _LX, _LY   = -0.70, 0.71           # hacia la luz, en (este, norte): el NO
 CROWN = [bytearray(MW) for _ in range(MH)]
@@ -478,11 +499,11 @@ CROWN_U = [bytearray(MW) for _ in range(MH)]        # azar de la copa (densidad 
 # sin costura). MIXBIO = bioma que le toca a cada celda; las copas toman el de
 # su centro (copa entera, no partida). Colores planos por bioma: las manchas
 # ya hacen de transición, no hace falta difuminar.
-MEZCLA_R = 9                           # radio de la ventana, en celdas (~2,25°)
+MEZCLA_R = 9 * KC                      # radio de la ventana, en celdas (~2,25°)
 MIXBIO = [bytearray(BIOME[r]) for r in range(MH)]
 random.seed(4711)
 _MN = [(n, [[random.random() for _ in range(MW // n)] for _ in range(MH // n + 2)])
-       for n in (6, 3)]
+       for n in (round(6 * KC / SCALE), round(3 * KC / SCALE))]
 
 
 def _mix_noise(r, c):
@@ -607,7 +628,7 @@ PATCH_VAR = (0.80,     0.25,  0.0,      0.5,    0.40,   0.0)   # cuánto aclaran
 MEADOW    = (0x9d, 0xbf, 0x6c)         # suelo de los claros del templado
 random.seed(777)
 _PN = [(n, [[random.random() for _ in range(MW // n)] for _ in range(MH // n + 2)])
-       for n in (24, 9)]
+       for n in (24 * KC, 9 * KC)]
 
 
 def _patch_noise(r, c):
@@ -642,11 +663,11 @@ for r in range(MH):
 # cálida y dunas densas) de llanuras de grava (reg, más gris, dunas sueltas),
 # para que el Sáhara no sea una alfombra uniforme.
 #   DUNE: 0 nada, 1 sombra fuerte (sotavento), 2 sombra suave, 3 cresta al sol
-DUNE_SP   = 1.65                   # separación media entre dunas, en grados de arco
-DUNE_LEN  = (0.80, 1.30)           # semilongitud de la cresta, en grados
-DUNE_BEND = 0.55                   # curvatura de la media luna (grados en los cuernos)
-DUNE_LIT  = 0.30                   # ancho de la cara al sol, en grados
-DUNE_SH   = 0.42                   # ancho de la cara en sombra, en grados
+DUNE_SP   = 1.65 / SCALE           # separación media entre dunas, en grados de arco
+DUNE_LEN  = (0.80 / SCALE, 1.30 / SCALE)   # semilongitud de la cresta, en grados
+DUNE_BEND = 0.55 / SCALE           # curvatura de la media luna (grados en los cuernos)
+DUNE_LIT  = 0.30 / SCALE           # ancho de la cara al sol, en grados
+DUNE_SH   = 0.42 / SCALE           # ancho de la cara en sombra, en grados
 DUNE_K    = (0, -2, -1, 1)         # escalón de rampa por código
 ERG = (0xdc, 0xb6, 0x76)           # arena de mar de dunas (más cálida)
 REG = (0xc2, 0xb0, 0x8e)           # llanura de grava (más gris)
@@ -909,13 +930,13 @@ def _surface_at(lat, lon):
     tex_k = 0
     if terrain == 0:                       # mar en FRANJAS planas: turquesa de costa ->
         sd = SEADIST[gr][gc]               # turquesa medio -> plataforma -> abisal. Los
-        if sd <= 1:                        # bordes se ondulan con el ruido de manchas para
+        if sd <= KC:                       # bordes se ondulan con el ruido de manchas para
             surf = OCEAN_COAST             # no calcar el contorno de la costa.
         else:
-            d = sd + (_mix_noise(gr, gc) - 0.5) * SEA_WOBBLE
-            if d <= SEA_BANDS[0]:
+            d = sd + (_mix_noise(gr, gc) - 0.5) * SEA_WOBBLE * KC
+            if d <= SEA_BANDS[0] * KC:
                 surf = OCEAN_MID
-            elif d <= SEA_BANDS[1]:
+            elif d <= SEA_BANDS[1] * KC:
                 surf = OCEAN_SHALLOW
             else:
                 surf = OCEAN_DEEP
