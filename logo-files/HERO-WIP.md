@@ -373,6 +373,18 @@ retiraría como se retiró el de día.
      de noche. Pendientes menores: si la chapa está muy abajo, la ficha se sale
      por abajo (abrirla hacia arriba); el evento de incidentes España-Marruecos
      solo lleva la etiqueta `marruecos` (el usuario decide si añade `españa`).
+   - **Título rediseñado + coordenadas MGRS (13-sep-2026)**. Con el planeta
+     más realista el título perdía protagonismo; se le enseñaron maquetas
+     reales en el navegador. Descartó: rótulo pixel art, título en el cielo
+     (bajando el planeta), cartela de expediente ("tapa mucho planeta"),
+     sombra gruesa, nombre en negrita. Eligió: marco de visor con esquinas
+     largas blancas (`.hero-marco`) alrededor de todo el título; nombre sin
+     negrita, algo más grande, con contorno negro de 1 px; lema en IBM Plex
+     Mono 600. Bajo la esquina inferior derecha, `.hero-mgrs`: MGRS con 5
+     dígitos (`src/scripts/mgrs.js`, con UPS en los casquetes) del punto bajo el
+     cursor, que da `geo(x, y)` de `planeta.js`; guiones fuera del planeta y de
+     noche; congelado con una ficha abierta. Sobre el planeta el cursor es una
+     mira (`.hero-mira`). Solo con ratón.
    - **Problema para el futuro (lo señaló el usuario): hemisferio sur.** El
      hero enseña sobre todo el hemisferio norte (Polo Norte arriba, inclinación
      de 20° y el planeta más grande que la pantalla: se ve de ~20°N hacia

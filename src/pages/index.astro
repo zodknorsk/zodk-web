@@ -112,7 +112,11 @@ const eventos = todosEventos
       <p>
         <span>Historia</span> · <span>Inteligencia</span> · <span>OSINT</span>
       </p>
+      <div class="hero-marco" aria-hidden="true">
+        <span class="hero-mgrs">-- --- ----- -----</span>
+      </div>
     </div>
+    <div class="hero-mira" aria-hidden="true" hidden></div>
     <div
       class:list={[
         "hero-craft",
@@ -308,13 +312,61 @@ const eventos = todosEventos
   // portada y se desmonta al salir. Se congela, como el resto del hero, con el
   // ratón sobre una nave.
   import { montarPlaneta } from "../scripts/planeta.js";
+  import { mgrs } from "../scripts/mgrs.js";
 
   let planeta: { desmontar(): void } | null = null;
+  let quitaMira: (() => void) | null = null;
+
+  // Mira y coordenada MGRS: con ratón, sobre el planeta el cursor pasa a ser
+  // una mira y bajo el marco del título sale la coordenada del punto que
+  // apunta (cambia también con el ratón quieto, porque el planeta gira).
+  // Fuera del planeta: guiones. Sobre una nave o una chapa, la mira se oculta
+  // y la coordenada se queda congelada, como el resto del hero.
+  const VACIO = "-- --- ----- -----";
+  function montarMira(hero: HTMLElement, geo: (x: number, y: number) => { lat: number; lon: number } | null) {
+    const lect = hero.querySelector<HTMLElement>(".hero-mgrs");
+    const mira = hero.querySelector<HTMLElement>(".hero-mira");
+    if (!lect || !mira || !matchMedia("(hover: hover) and (pointer: fine)").matches) return () => {};
+    let ptr: { x: number; y: number; ocupado: boolean } | null = null;
+    const actualiza = () => {
+      if (ptr?.ocupado) {                          // ficha abierta: todo quieto
+        mira.hidden = true;
+        hero.classList.remove("apuntando");
+        return;
+      }
+      const g = ptr ? geo(ptr.x, ptr.y) : null;
+      const txt = g ? mgrs(g.lat, g.lon) : VACIO;
+      if (lect.textContent !== txt) lect.textContent = txt;
+      mira.hidden = !g;
+      hero.classList.toggle("apuntando", !!g);
+      if (g && ptr) {
+        const r = hero.getBoundingClientRect();
+        mira.style.left = `${ptr.x - r.left}px`;
+        mira.style.top = `${ptr.y - r.top}px`;
+      }
+    };
+    const mueve = (e: PointerEvent) => {
+      const t = e.target as Element | null;
+      ptr = { x: e.clientX, y: e.clientY, ocupado: !!t?.closest(".hero-craft, .hero-bandera, .hero-cambio, a, button") };
+      actualiza();
+    };
+    const sale = () => { ptr = null; actualiza(); };
+    hero.addEventListener("pointermove", mueve);
+    hero.addEventListener("pointerleave", sale);
+    window.addEventListener("scroll", actualiza, { passive: true });
+    (hero as HTMLElement & { __actualizaMira?: () => void }).__actualizaMira = actualiza;
+    return () => {
+      hero.removeEventListener("pointermove", mueve);
+      hero.removeEventListener("pointerleave", sale);
+      window.removeEventListener("scroll", actualiza);
+      hero.classList.remove("apuntando");
+    };
+  }
 
   document.addEventListener("astro:page-load", async () => {
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
-    const hero = cv.closest(".hero");
+    const hero = cv.closest<HTMLElement>(".hero");
 
     // Chapas: cada una lleva encima un <div> que reacciona al ratón (y al
     // teclado) y despliega la ficha de artículos; el planeta avisa en cada
@@ -350,15 +402,20 @@ const eventos = todosEventos
       alPintar: () => cv.parentElement?.classList.add("planeta-listo"),
       banderas: [...chapas.keys()],
       alMoverBanderas,
+      alDibujar: () => (hero as (HTMLElement & { __actualizaMira?: () => void }) | null)?.__actualizaMira?.(),
     });
     if (!cv.isConnected) return p.desmontar();   // se salió de la portada mientras cargaba
     planeta?.desmontar();
+    quitaMira?.();
     planeta = p;
+    quitaMira = hero ? montarMira(hero, p.geo) : null;
   });
 
   document.addEventListener("astro:before-swap", () => {
     planeta?.desmontar();
+    quitaMira?.();
     planeta = null;
+    quitaMira = null;
   });
 </script>
 
