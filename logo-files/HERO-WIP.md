@@ -157,9 +157,10 @@ Hecho y aprobado:
    CSS encima de la nave (`.craft-luz`, tamaño fijo en pantalla: dentro de la
    foto reducida saldrían de <1 px), posiciones en `aeronaves.ts` (`luces`, en
    % de la imagen; morro a la izquierda → ala derecha = arriba = verde,
-   izquierda = abajo = roja, blanca en cola, destellos blancos dobles en las
-   puntas y baliza roja intermitente; solo opacidad, lo mueve la GPU; con
-   reduced-motion, fijas). Decisión propia, avisada: el Shahed-136 va a
+   izquierda = abajo = roja), fijas. Se probaron también blanca de cola,
+   destellos blancos en las puntas y baliza roja intermitente: el usuario las
+   QUITÓ ("quita las luces adicionales que no sean verde y rojo"), no
+   reponerlas. Decisión propia, avisada: el Shahed-136 va a
    oscuras (como en la realidad) y el Sentinel-2 no lleva (satélite; tiene su
    SVG de noche de antes).
 

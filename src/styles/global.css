@@ -478,9 +478,8 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 
 /* Luces de posición, solo de noche (posiciones en aeronaves.ts, en % de la
    imagen). Tamaño fijo en pantalla: dentro de la foto, reducida, quedarían de
-   menos de 1 px. Verde ala derecha (arriba), roja ala izquierda (abajo),
-   blanca en la cola, destellos blancos dobles en las puntas de ala y baliza
-   roja intermitente. El parpadeo es solo opacidad (lo mueve la GPU). */
+   menos de 1 px. Solo verde en el ala derecha (arriba) y roja en la izquierda
+   (abajo), fijas. */
 .craft-luz {
   position: absolute;
   width: 3px;
@@ -492,32 +491,6 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
 html.dark .craft-luz:not([hidden]) { display: block; }
 .craft-luz--der { background: #6dff96; box-shadow: 0 0 3px 1px rgba(51, 221, 102, 0.8); }
 .craft-luz--izq { background: #ff6a5e; box-shadow: 0 0 3px 1px rgba(255, 59, 48, 0.8); }
-.craft-luz--cola { background: #fff; box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.6); }
-.craft-luz--baliza {
-  background: #ff3b30;
-  box-shadow: 0 0 4px 2px rgba(255, 59, 48, 0.7);
-  animation: luz-baliza 1.3s steps(1, end) infinite;
-}
-.craft-luz--der::after,
-.craft-luz--izq::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  background: #fff;
-  box-shadow: 0 0 6px 3px rgba(255, 255, 255, 0.85);
-  opacity: 0;
-  animation: luz-estrobo 1.7s steps(1, end) infinite;
-}
-@keyframes luz-estrobo {
-  0% { opacity: 1; }
-  4% { opacity: 0; }
-  11% { opacity: 1; }
-  15% { opacity: 0; }
-}
-@keyframes luz-baliza {
-  0% { opacity: 1; }
-  25% { opacity: 0; }
-}
 
 .hero-craft::after { /* zona de hover ampliada */
   content: "";
@@ -1013,7 +986,6 @@ html.home main { padding-top: 9.5rem; }
   .hero-sparkle,
   .hero-scroll { animation: none; }
   .hero-craft { transition: none; } /* revelado y cambio de objeto instantáneos */
-  .craft-luz, .craft-luz::after { animation: none; }   /* luces fijas, sin destellos */
   .hero-craft--orbita { left: 22%; top: 16%; } /* aparcado en sitio visible, sin tapar el botón */
   /* botón: sin hundirse; la hélice no gira (initHelice se autodesactiva); las
      palas sí siguen poniéndose rojas al pulsar */

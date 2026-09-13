@@ -19,12 +19,12 @@
 // PNG tal cual; su versión de noche (-noche.png, a la luz de la luna) la saca
 // logo-files/generar-naves-noche.py. Todas en public/zodk-<id>[-noche].{svg,png}.
 //
-// Luces de posición (solo de noche): puntos encima de la nave, en % de su
-// imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala
-// DERECHA es la de arriba (verde) y la IZQUIERDA la de abajo (roja); blanca en
-// la cola; en las puntas de ala, destellos blancos; baliza roja intermitente
-// en el fuselaje. Sin `luces`, la nave va a oscuras (el Shahed-136, como en la
-// realidad; el satélite no lleva).
+// Luces de posición (solo de noche): puntos fijos encima de la nave, en % de
+// su imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala
+// DERECHA es la de arriba (verde) y la IZQUIERDA la de abajo (roja). Solo esas
+// dos (el usuario quitó la blanca de cola, los destellos y la baliza). Sin
+// `luces`, la nave va a oscuras (el Shahed-136, como en la realidad; el
+// satélite no lleva).
 
 export type Aeronave = {
   id: string;
@@ -46,8 +46,6 @@ export type Aeronave = {
   luces?: {
     der: [number, number];
     izq: [number, number];
-    cola?: [number, number];
-    baliza?: [number, number];
   };
   specs: [string, string][]; // [etiqueta, valor]
 };
@@ -62,7 +60,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "430 / 450",
     vuelo: "sweep",
     bandera: "🇹🇷",
-    luces: { der: [52, 2], izq: [52, 97], cola: [92, 50], baliza: [55, 50] },
+    luces: { der: [52, 2], izq: [52, 97] },
     specs: [
       ["Fabricante", "Baykar"],
       ["Origen", "Turquía"],
@@ -81,7 +79,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "234 / 328",
     vuelo: "fijo-izq",
     bandera: "🇺🇸",
-    luces: { der: [64, 2], izq: [66, 93], cola: [97, 42], baliza: [55, 40] },
+    luces: { der: [64, 2], izq: [66, 93] },
     specs: [
       ["Fabricante", "Northrop Grumman"],
       ["Origen", "EE. UU."],
@@ -101,7 +99,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "244 / 265",
     vuelo: "fijo-centro",
     bandera: "🇺🇸",
-    luces: { der: [54, 2], izq: [53, 89], cola: [92, 40], baliza: [40, 39] },
+    luces: { der: [54, 2], izq: [53, 89] },
     specs: [
       ["Fabricante", "General Atomics"],
       ["Origen", "EE. UU."],
@@ -121,7 +119,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "426 / 416",
     vuelo: "fijo",
     bandera: "🇺🇸",
-    luces: { der: [57, 3], izq: [56, 92], cola: [97, 50], baliza: [40, 50] },
+    luces: { der: [57, 3], izq: [56, 92] },
     specs: [
       ["Fabricante", "Northrop Grumman"],
       ["Origen", "EE. UU."],
@@ -141,7 +139,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "813 / 394",
     vuelo: "fijo-arriba",
     bandera: "🇺🇸",
-    luces: { der: [57, 17], izq: [65, 86], cola: [98, 46], baliza: [45, 46] },
+    luces: { der: [57, 17], izq: [65, 86] },
     specs: [
       ["Fabricante", "Lockheed (Skunk Works)"],
       ["Origen", "EE. UU."],
@@ -161,7 +159,7 @@ export const AERONAVES: Aeronave[] = [
     ratio: "857 / 466",
     vuelo: "fijo-arriba-der",
     bandera: "🇺🇸",
-    luces: { der: [84, 7], izq: [84, 92], cola: [97, 50], baliza: [45, 50] },
+    luces: { der: [84, 7], izq: [84, 92] },
     specs: [
       ["Fabricante", "Lockheed (Skunk Works)"],
       ["Origen", "EE. UU."],

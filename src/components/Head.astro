@@ -229,7 +229,7 @@ const socialImageURL = new URL(image, Astro.site);
       el.style.setProperty("--sprite", "url(" + a.sprite + ")");
       el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
       el.style.setProperty("--escala", String(a.escala || 1));
-      for (const k of ["der", "izq", "cola", "baliza"]) {   // luces de posición (de noche)
+      for (const k of ["der", "izq"]) {   // luces de posición (de noche)
         const luz = el.querySelector(".craft-luz--" + k);
         const p = a.luces && a.luces[k];
         if (!luz) continue;
