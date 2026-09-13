@@ -2,8 +2,8 @@
 title: Operación de rescate del F-15E derribado en Irán
 date: '2026-09-08'
 description: >-
-  Durante la madrugada del 3 de abril de 2026, un F-15E Strike Eagle - callsign
-  Dude 44 - realizaba misiones de combate en el suroeste de Irán cuando fue…
+  Marineros de EE. UU. se preparan para organizar el armamento en la cubierta de
+  vuelo del USS Abraham Lincoln, 28 de febrero de 2026.
 updated: '2026-09-13'
 tags:
   - osint
@@ -15,6 +15,8 @@ orden: 0
 periodo: Del 3 al 5 de abril de 2026
 ---
 ![](./pasted-image-20260913001930.png)
+*Marineros de EE. UU. se preparan para organizar el armamento en la cubierta de vuelo del USS _Abraham Lincoln_, 28 de febrero de 2026.*
+
 
 > Durante la madrugada del 3 de abril de 2026, un F-15E Strike Eagle - *callsign Dude 44 -* realizaba misiones de combate en el suroeste de Irán cuando fue alcanzado por un MANPADS guiado por infrarrojos. La tripulación, compuesta por el piloto _«Dude 44 Alpha»_ y el oficial de sistemas de armas (WSO) _«Dude 44 Bravo»_ se eyectó en territorio iraní, iniciando lo que sería una de las operaciones de rescate y extracción de operaciones especiales más complejas en la historia militar moderna, requiriendo una respuesta conjunta sin precedentes para operar de forma prolongada en espacio aéreo disputado.
 
