@@ -153,7 +153,7 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      navegador real todavía (la extensión Claude in Chrome no conectó en toda
      la sesión). Antes de dar esto por bueno o mergear a `main`, comprobar en
      Zen/Firefox que el giro va fluido y sin tirones.
-   - **Observación del usuario (13-sep, sin resolver)**: con la costa ahora
+   - **Observación del usuario (13-sep, resuelta en el punto 6)**: con la costa ahora
      tan marcada, el relieve de montaña (roca/nieve, `ROCK`/`SNOW`/hillshade
      en `_surface_at`) "pierde valor", se ve blando/con poca resolución en
      comparación — el contraste de la línea de costa deja el sombreado de
@@ -161,7 +161,7 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      relieve el mismo tratamiento "con carácter" que a la costa (más
      contraste, bandas más deliberadas/posterizadas o algún trazo de cresta,
      en vez del hillshade continuo actual).
-   - **Otra observación del usuario (13-sep, sin resolver)**: los puntos de
+   - **Otra observación del usuario (13-sep, superada: se quitaron las ciudades de día, punto 6)**: los puntos de
      ciudad (`CITY_DARK` en `city_cells()`) también "pierden valor", casi no
      se ven. Sospecha razonable: su tamaño en píxeles está fijo en el código
      (1 celda normal, bloque 2×2 para las "grandes"/`MEGA`) y NO se escaló al
@@ -174,4 +174,41 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
    Recordar siempre: solo el sprite de día (el de noche no se toca), vista de
    horizonte inclinada, nada de nubes de ruido fBm, cache-busting `?v=` en
    cada cambio del PNG de día.
-6. Al terminar del todo, borrar este archivo.
+6. **Pixel art "de ilustración" (13-sep-2026, misma rama)** — el usuario trajo
+   de referencia una escena pixel art de monolitos con hierba y pidió acercar
+   el planeta a ese estilo. Hecho en `generar-planeta-hero.py` (aprobado paso a
+   paso con renders), **aún sin regenerar el sprite de 60 fotogramas ni
+   copiarlo a `public/`**:
+   - **Rampas con cambio de tono** (`ramp()`): sombrear ya no es mezclar hacia
+     negro; cada escalón oscurece y gira el tono hacia azul-violeta (sombras)
+     o hacia amarillo (luces). Los cálidos giran a media velocidad (si no, el
+     desierto en sombra quedaba óxido); el mar gira menos de la mitad (si no,
+     el lado de noche se iba a añil).
+   - **Copas de árbol** (`CROWN`): racimos redondos sobre la esfera, pintados
+     de norte a sur, con luz arriba-izquierda y borde en sombra. Densidad y
+     escalones por bioma (`CROWN_DENS`, `CROWN_K`). Manchas grandes (`PATCH`)
+     alternan bosque cerrado y claros de pradera: sin ellas EE. UU./Europa
+     salían uniformes y saturados (lo señaló el usuario).
+   - **Relieve en bandas** (`MTNK`): DEM interpolado a 0,25°, sombreado en
+     escalones enteros de rampa, sin punteado Bayer. Resuelve lo del relieve
+     "blando" junto a la costa marcada.
+   - **Nieve y roca por copas enteras**: la nieve cuaja en copas completas
+     (le gusta cómo queda), la roca asoma primero entre los árboles.
+   - **Dunas** (`DUNE`): medias lunas en todos los desiertos, cresta al sol y
+     sotavento en sombra, solo en llano. Erg (arena cálida, dunas densas) y reg
+     (grava gris, dunas sueltas) por manchas. Le gustaron.
+   - **Franja de mezcla entre biomas** (`MIXBIO`, idea del usuario): en vez de
+     difuminar el color en la frontera, una franja de ~4-5° donde los dos
+     biomas se mezclan a manchas (toques verdes en el desierto, toques áridos
+     en la selva). Global. Sustituye al difuminado `BIOME_RGB`, que se quitó.
+     Antes se probó entrelazar copas sueltas + frontera deshilachada a escala
+     de 1 px y quedaba peor (ruido, bordes de recortable): descartado.
+   - **Ciudades quitadas del sprite de día** (pedido del usuario: "de momento
+     pasamos de ellas"). `city_cells()` sigue ahí para la noche congelada.
+   - `python3 generar-planeta-hero.py --frame N salida.png` genera un solo
+     fotograma (~9 s) para probar sin rehacer los 60.
+   Pendiente de este bloque: halo turquesa de costa en franjas nítidas (hoy es
+   degradado), quizá que las manchas verdes dentro del desierto sean copas
+   sueltas (sabana) en vez de selva cerrada, luego regenerar los 60
+   fotogramas, `cp` a `public/`, subir `?v=` y verificar el giro en Zen.
+7. Al terminar del todo, borrar este archivo.
