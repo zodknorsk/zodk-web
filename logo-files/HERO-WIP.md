@@ -385,6 +385,25 @@ retiraría como se retiró el de día.
      cursor, que da `geo(x, y)` de `planeta.js`; guiones fuera del planeta y de
      noche; congelado con una ficha abierta. Sobre el planeta el cursor es una
      mira (`.hero-mira`). Solo con ratón.
+   - **Marca de blanco y play/pausa (13-sep-2026)**. Parar el planeta al
+     apuntar se descartó ("la mira casi siempre estará sobre el planeta, no
+     giraría nunca"). Clic en el planeta: X en pixel art blanca (`setMarca`,
+     gira con el planeta; se oculta de noche/por detrás y reaparece) y la
+     coordenada queda fija (`.hero-mgrs.fijada`). Clic en otro punto: la mueve;
+     clic sobre la X o Esc: la quita. Botón `.hero-giro` junto a la coordenada
+     (`setParado`; también para el sprite de noche con `.giro-parado`); al
+     cargar siempre gira.
+   - **PENDIENTE para la próxima sesión (lo pidió el usuario al cerrar)**:
+     1. La X un poco más pequeña (hoy 7x7 + contorno, `X_ART` en planeta.js).
+     2. El botón play/pausa en un sitio FIJO un pelín más a la izquierda: hoy
+        se desplaza porque la zona MGRS tiene 1 o 2 dígitos (`8T` / `11T`, y
+        UPS es aún más corta). Lo mínimo para que no se mueva nunca (p. ej. la
+        lectura con ancho fijo de monoespaciada y el botón anclado a su
+        izquierda).
+     3. El "subrayado" de la coordenada fijada NO es una línea: quería un
+        resaltado tipo MARCADOR, fondo blanco que tape todos los números y el
+        texto en color oscuro encima. Hoy está hecho con text-decoration
+        (malinterpretado): rehacer.
    - **Problema para el futuro (lo señaló el usuario): hemisferio sur.** El
      hero enseña sobre todo el hemisferio norte (Polo Norte arriba, inclinación
      de 20° y el planeta más grande que la pantalla: se ve de ~20°N hacia

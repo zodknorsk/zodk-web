@@ -360,16 +360,52 @@ html.dark .hero-planet-canvas { display: none; }
     linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
   filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
 }
-.hero-mgrs {
+.hero-lectura {
   position: absolute;
   right: 0;
-  bottom: -20px;
+  bottom: -22px;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.hero-mgrs {
   font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.9), -1px 0px 0 rgba(3, 4, 8, 0.9), 0px 1px 0 rgba(3, 4, 8, 0.9), 0px -1px 0 rgba(3, 4, 8, 0.9), 1px 1px 0 rgba(3, 4, 8, 0.9), -1px -1px 0 rgba(3, 4, 8, 0.9), 1px -1px 0 rgba(3, 4, 8, 0.9), -1px 1px 0 rgba(3, 4, 8, 0.9);
   white-space: nowrap;
 }
+
+/* Coordenada fijada (hay una X en el planeta): más blanca y subrayada. */
+.hero-mgrs.fijada {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: #fff;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+/* Botón de play/pausa del giro, en pixel art (SVG con bordes nítidos). */
+.hero-giro {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(1px 0 0 #05060a) drop-shadow(-1px 0 0 #05060a) drop-shadow(0 1px 0 #05060a) drop-shadow(0 -1px 0 #05060a);
+}
+.hero-giro svg { height: 12px; width: auto; fill: currentColor; shape-rendering: crispEdges; }
+.hero-giro:hover, .hero-giro:focus-visible { color: #e6c078; outline: none; }
+.hero-giro .icono-play { display: none; }
+.hero.giro-parado .hero-giro .icono-play { display: block; }
+.hero.giro-parado .hero-giro .icono-pausa { display: none; }
+/* De noche el planeta es el sprite viejo con animación CSS: se para igual. */
+.hero.giro-parado .hero-planet { animation-play-state: paused; }
 
 /* Mira: sustituye al cursor mientras está sobre el planeta. */
 .hero.apuntando { cursor: none; }
