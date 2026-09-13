@@ -451,8 +451,32 @@ const eventos = todosEventos
     el.style.backgroundPosition = `${(i / (FASES - 1)) * 100}% 0`;
   }
 
+  // Al cambiar de tema, el sol se pone tras la Tierra y sale la luna (o al
+  // revés): marca .a-noche / .a-dia en .hero-astro mientras dura (CSS).
+  let quitaAstro: (() => void) | null = null;
+  function montarAstro() {
+    const a = document.querySelector<HTMLElement>(".hero-astro");
+    if (!a) return () => {};
+    const html = document.documentElement;
+    let noche = html.classList.contains("dark"), t = 0;
+    const mo = new MutationObserver(() => {
+      const d = html.classList.contains("dark");
+      if (d === noche) return;
+      noche = d;
+      a.classList.remove("a-noche", "a-dia");
+      void a.offsetWidth;                          // reinicia la animación
+      a.classList.add(d ? "a-noche" : "a-dia");
+      clearTimeout(t);
+      t = window.setTimeout(() => a.classList.remove("a-noche", "a-dia"), 2700);
+    });
+    mo.observe(html, { attributes: true, attributeFilter: ["class"] });
+    return () => { mo.disconnect(); clearTimeout(t); };
+  }
+
   document.addEventListener("astro:page-load", async () => {
     faseLuna();
+    quitaAstro?.();
+    quitaAstro = montarAstro();
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest<HTMLElement>(".hero");
@@ -504,6 +528,8 @@ const eventos = todosEventos
   });
 
   document.addEventListener("astro:before-swap", () => {
+    quitaAstro?.();
+    quitaAstro = null;
     planeta?.desmontar();
     quitaMira?.();
     planeta = null;
