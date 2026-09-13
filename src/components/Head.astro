@@ -229,6 +229,13 @@ const socialImageURL = new URL(image, Astro.site);
       el.style.setProperty("--sprite", "url(" + a.sprite + ")");
       el.style.setProperty("--sprite-noche", "url(" + a.spriteNoche + ")");
       el.style.setProperty("--escala", String(a.escala || 1));
+      for (const k of ["der", "izq", "cola", "baliza"]) {   // luces de posición (de noche)
+        const luz = el.querySelector(".craft-luz--" + k);
+        const p = a.luces && a.luces[k];
+        if (!luz) continue;
+        luz.hidden = !p;
+        if (p) { luz.style.left = p[0] + "%"; luz.style.top = p[1] + "%"; }
+      }
       el.style.animation = "none";
       void el.offsetWidth; // reinicia la animacion de la trayectoria
       el.style.animation = "";
