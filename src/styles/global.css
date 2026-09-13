@@ -217,8 +217,19 @@ article .tiktok a {
     hero-spin-y 120s steps(4, jump-none) infinite;
 }
 
+/* Modo oscuro: el planeta de noche NO se toca (decisión del usuario). Sigue
+   siendo la tira antigua de 28 fotogramas de 280x274, así que lleva sus propias
+   reglas, las mismas que en main: la rejilla del sprite de día no le vale. */
 html.dark .hero-planet {
   background-image: url(/zodk-planeta-noche.png);
+  aspect-ratio: 280 / 274;
+  background-size: 2800% 100%;
+  animation: hero-spin 60s steps(28, jump-none) infinite;
+}
+
+@keyframes hero-spin {
+  from { background-position-x: 0%; }
+  to   { background-position-x: 100%; }
 }
 
 @keyframes hero-spin-x {
