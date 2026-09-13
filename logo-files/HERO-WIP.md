@@ -177,8 +177,11 @@ Hecho y aprobado:
    (480 px, 95 estrellas, casi todas tenues; `generar-estrellas.py`) en
    `.hero-stars::after`, encima de la de siempre.
 
-Siguiente: hemisferio sur (pendiente de hablarlo), revisión general en Zen
-(temperatura) y móvil, y decidir el merge.
+**Hemisferio sur: APARCADO para más adelante, tanto de día como de noche**
+(decisión del usuario, 13-sep-2026). Ya no va ligado a la noche.
+
+Siguiente: revisión general en Zen (temperatura de noche) y móvil, y decidir
+el merge.
 
 ## Modo noche — notas VIEJAS (antes del rediseño del día)
 
