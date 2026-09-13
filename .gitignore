@@ -36,3 +36,6 @@ logo-files/zodk-estrellas.png
 # Se quitan de aquí y se commitean cuando el usuario dé el visto bueno.
 public/zodk-tb3.svg
 public/zodk-tb3-noche.svg
+
+# Datos del prototipo del planeta en canvas (se regeneran con generar-planeta-hero.py --canvas)
+logo-files/prototipo-canvas/planeta-*

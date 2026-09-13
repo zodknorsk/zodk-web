@@ -212,8 +212,60 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      (`SEA_BANDS`, `SEA_WOBBLE`), mismo ancho que el degradado de antes. Sin
      la mezcla tierra/mar en celdas de costa (`COAST_AA = False`): costa en
      escalón de píxel limpio. Gustó ("muy bien").
-   Pendiente de este bloque: quizá cambiar el punteado Bayer del terminador
-   por franjas onduladas (se le preguntó, no opinó), quizá que las manchas verdes dentro del desierto sean copas
-   sueltas (sabana) en vez de selva cerrada, luego regenerar los 60
-   fotogramas, `cp` a `public/`, subir `?v=` y verificar el giro en Zen.
-7. Al terminar del todo, borrar este archivo.
+   - **Sprite de 60 fotogramas regenerado** con todo lo anterior, copiado a
+     `public/` y `?v=12` en `global.css` (3,6 MB, algo menos que antes).
+   Pendiente de este bloque (menor): quizá cambiar el punteado Bayer del
+   terminador por franjas onduladas (se le preguntó, no opinó), quizá que las
+   manchas verdes dentro del desierto sean copas sueltas (sabana) en vez de
+   selva cerrada.
+7. **Planeta en `<canvas>` en vez de sprite (EN CURSO, 13-sep-2026)** — al
+   ver el sprite nuevo en la web el usuario notó que "va a saltos de 2 s": 60
+   fotogramas en 120 s, cada salto gira 6° ≈ 20 px del sprite ≈ 90 px de su
+   pantalla (el planeta se pinta a ~4,6 px de pantalla por píxel del sprite).
+   Opciones planteadas: **A** más fotogramas (120 → saltos de 1 s, ~7 MB; no
+   recomendado) o **B** canvas girando píxel a píxel. **Eligió B.**
+   - **Prototipo**: `logo-files/prototipo-canvas/index.html` (fuera de
+     `public/`, no se publica). Datos con
+     `python3 generar-planeta-hero.py --canvas prototipo-canvas` (gitignored):
+     `planeta-mapa.png` (material por celda a 0,25°, R+G*256, B=hielo),
+     `planeta-lut.png` (color por material y escalón de luz, rampas incluidas),
+     `planeta-datos.json` (constantes, prioridades, nubes). ~255 KB en total
+     frente a 3,6 MB del sprite. Para verlo: `cd ~/Documents/zodk-web &&
+     python3 -m http.server 4400` y abrir
+     `http://127.0.0.1:4400/logo-files/prototipo-canvas/`. Botón para comparar
+     con el sprite a saltos y botones de velocidad.
+   - **Cómo funciona**: el sol/terminador no se mueven respecto al observador,
+     así que por píxel se precalcula al cargar la celda del mapa, el escalón de
+     luz, halo y borde; en cada fotograma solo se busca material → color.
+   - **Lo que se aprendió por el camino (no repetir)**:
+     1. Girar a golpes de una celda entera (12/s) se veía a tirones: en la
+        zona visible (35-70°N) una celda son 0,5-0,8 px y todos los bordes se
+        reajustaban a la vez con patrón irregular 1,1,0,1…
+     2. Ajustar la celda para que un paso = 1 px exacto NO sirve: la velocidad
+        en píxeles depende de la latitud (cos φ), solo cuadra en una.
+     3. **Giro continuo** (redibujar cada fotograma con fracción de celda, en
+        coma fija 1/256) = cada borde avanza su píxel a ritmo constante.
+     4. **Mipmaps en longitud con prioridad** (costa > tierra > mar): cerca del
+        polo un píxel abarca 2-6 celdas y leer una sola hacía parpadear costas
+        e islas. Titileo de costa medido: ~1,5 % → ~0,27 % (polo), ~1,7 % →
+        ~0,6 % (latitudes medias). Umbral `setTol(0)`.
+     5. Dibujar en franjas fijas de 1/60 s (su pantalla va a 120 Hz): con
+        `now - last >= 15` se colaba algún fotograma de más. Medido: 240/240
+        dibujos exactos cada 16,7 ms. ~1,9 ms por dibujo; temperatura en Zen
+        bien (lo comprobó el usuario).
+   - **Velocidad**: botones 90/120/180/240 s por vuelta. El usuario se inclina
+     por **180 s** (aún decidiendo). Explicado: más lento = más nítido (menos
+     titileo por segundo) pero no más fluido (el salto sigue siendo de 4,6 px
+     de pantalla, solo más espaciado).
+   - **Siguiente idea que le gustó: más resolución (píxeles más pequeños)**.
+     Es lo que buscaba en parte con la referencia de Owlboy: allí un píxel son
+     ~3,7 px de pantalla, aquí 4,6. A 1,5× (canvas de 600 px) quedaría ~3,1 y
+     el movimiento sería más fino. Implica: mapa a 0,125° (re-rasterizar
+     Natural Earth, relieve de `etopo.tiff` más fino), recalibrar en grados
+     copas/dunas/franjas para que sigan midiendo lo mismo en píxeles, textura
+     ~2880×1440 y 2,25× más píxeles que dibujar (vigilar temperatura en Zen).
+   - Falta después: integrar el canvas en el hero (`index.astro`,
+     `global.css`, `Head.astro`: pausar fuera de pantalla, `prefers-reduced-
+     motion` → planeta quieto, sprite o imagen fija de respaldo sin JS) y decidir
+     si el sprite de 60 fotogramas se retira.
+8. Al terminar del todo, borrar este archivo.
