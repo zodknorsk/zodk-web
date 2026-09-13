@@ -413,12 +413,19 @@ export async function montarPlaneta(canvas, {
   // iluminada y por delante; al volver a pasar, reaparece.
   const X_ART = ["#...#", "##.##", ".###.", "##.##", "#...#"];
   const XN = X_ART.length;
-  const X_CELLS = [];
+  // De noche, en verde de visión nocturna (a juego con el visor del título).
+  const X_CELLS = [], X_CELLS_N = [];
   for (let y = -1; y <= XN; y++) {
     for (let x = -1; x <= XN; x++) {
       const lleno = (yy, xx) => yy >= 0 && yy < XN && xx >= 0 && xx < XN && X_ART[yy][xx] === "#";
-      if (lleno(y, x)) X_CELLS.push([x, y, y >= XN - 2 ? pack([214, 220, 228]) : pack([246, 248, 250])]);
-      else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) X_CELLS.push([x, y, pack([16, 19, 28])]);
+      if (lleno(y, x)) {
+        const bajo = y >= XN - 2;
+        X_CELLS.push([x, y, pack(bajo ? [214, 220, 228] : [246, 248, 250])]);
+        X_CELLS_N.push([x, y, pack(bajo ? [104, 222, 126] : [141, 255, 158])]);
+      } else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) {
+        X_CELLS.push([x, y, pack([16, 19, 28])]);
+        X_CELLS_N.push([x, y, pack([6, 20, 10])]);
+      }
     }
   }
   let marca = null, marcaPos = null;                 // { lat, lon } y dónde quedó en el canvas
@@ -429,7 +436,7 @@ export async function montarPlaneta(canvas, {
     if (pz <= 0.06 || bright < 0.12) return;
     const cx = px * R + D.CX, cy = py * R + D.CY;
     const ox = Math.round(cx - 0.5 - (XN >> 1)), oy = Math.round(cy - 0.5 - (XN >> 1));
-    for (const [x, y, c] of X_CELLS) {
+    for (const [x, y, c] of luna ? X_CELLS_N : X_CELLS) {
       const X = ox + x, Y = oy + y;
       if (X >= 0 && X < W && Y >= 0 && Y < H) buf[Y * W + X] = c;
     }
