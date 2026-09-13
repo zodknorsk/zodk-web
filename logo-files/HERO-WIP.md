@@ -294,6 +294,16 @@ plantear otra cosa, pero el fundido de dos capas queda aparcado.
      línea recta cruzando Groenlandia); en el canvas, en mipmaps de nivel ≥3
      la costa ya no gana (si no, islotes árticos salpicaban el polo de negro);
      grietas de agua probadas y quitadas (quedaban como puntos sueltos).
+   - **Banderas (13-sep-2026)**: chapas pixel art sobre los países del blog.
+     Opciones dadas: A todos los países (satura, desaconsejado), B solo los
+     grandes, **C solo los países que salen en el blog — elegida**, de momento
+     España, Marruecos, Irán y EE. UU. Estilo: se enseñaron renders de
+     **chapa** (bandera plana 11x7 con contorno oscuro, esquinas recortadas y
+     sombra de 1 px) y de banderín en mástil ondeando; eligió **"clarísimamente
+     la chapa"**. Siempre visibles en la cara iluminada (`BAND_PZ`, misma luz
+     que las nubes). En `BANDERAS` / `BAND_PAL` del generador y en el JSON del
+     canvas. Aparcado para más adelante: que se "planten" al pasar por el
+     centro y una ficha al pasar el ratón con enlace a los artículos.
    - Falta después: integrar el canvas en el hero (`index.astro`,
      `global.css`, `Head.astro`: pausar fuera de pantalla, `prefers-reduced-
      motion` → planeta quieto, sprite o imagen fija de respaldo sin JS) y decidir
