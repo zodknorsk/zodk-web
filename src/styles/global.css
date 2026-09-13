@@ -190,9 +190,9 @@ article .tiktok a {
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 600 / 561;
+  aspect-ratio: 600 / 585;
   transform: translateX(-50%);
-  background: url(/planeta/planeta-quieto.png?v=2) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/planeta-quieto.png?v=6) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
@@ -360,29 +360,42 @@ html.dark .hero-planet-canvas { display: none; }
     linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
   filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
 }
+/* Ancho fijo, el de la coordenada más larga (18 caracteres, zona de 2 cifras):
+   el botón queda anclado a la izquierda y no se mueve aunque la lectura
+   cambie de largo (zona de 1 cifra, UPS en los polos). */
 .hero-lectura {
   position: absolute;
   right: 0;
   bottom: -22px;
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-}
-.hero-mgrs {
+  gap: 0.8rem;
   font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: 0.14em;
+  width: calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em));
+}
+.hero-mgrs {
+  padding-left: 0.14em;   /* compensa el letter-spacing que queda al final */
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.9), -1px 0px 0 rgba(3, 4, 8, 0.9), 0px 1px 0 rgba(3, 4, 8, 0.9), 0px -1px 0 rgba(3, 4, 8, 0.9), 1px 1px 0 rgba(3, 4, 8, 0.9), -1px -1px 0 rgba(3, 4, 8, 0.9), 1px -1px 0 rgba(3, 4, 8, 0.9), -1px 1px 0 rgba(3, 4, 8, 0.9);
   white-space: nowrap;
 }
 
-/* Coordenada fijada (hay una X en el planeta): más blanca y subrayada. */
+/* Coordenada fijada (hay una X en el planeta): resaltada como con marcador,
+   fondo blanco con contorno oscuro de 1 px y texto oscuro. El margen va con
+   box-shadow para que no empuje nada. */
 .hero-mgrs.fijada {
-  color: #fff;
-  text-decoration: underline;
-  text-decoration-color: #fff;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 4px;
+  color: #10131c;
+  text-shadow: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(3, 4, 8, 0.9);
+}
+
+/* En pantallas táctiles no hay cursor que apuntar: sin coordenada (se quedaba
+   en guiones), solo el botón, bajo la esquina del marco. */
+@media (hover: none), (pointer: coarse) {
+  .hero-lectura { width: auto; }
+  .hero-mgrs { display: none; }
 }
 
 /* Botón de play/pausa del giro, en pixel art (SVG con bordes nítidos). */
@@ -705,16 +718,20 @@ html.dark .hero-craft { background-image: var(--sprite-noche); }
   left: 50%;
   top: 12%;
   width: min(1900px, 122vw);
-  aspect-ratio: 600 / 561;
+  aspect-ratio: 600 / 585;
   transform: translateX(-50%);
   pointer-events: none;
   z-index: 2;
 }
+/* Con una ficha de país abierta, la capa sube por encima de naves, mira y
+   botón de cambio (misma altura que las naves y, al ir antes en el HTML, una
+   nave que pasara por delante tapaba la ficha). */
+.hero-banderas:has(.hero-bandera:hover, .hero-bandera:focus-within) { z-index: 4; }
 html.dark .hero-banderas { display: none; }   /* de noche no hay chapas (planeta viejo) */
 .hero-bandera {
   position: absolute;
   width: calc(13 / 600 * 100%);   /* chapa de 11x7 + contorno, en píxeles del canvas */
-  height: calc(9 / 561 * 100%);
+  height: calc(9 / 585 * 100%);
   pointer-events: auto;
   outline: none;
 }

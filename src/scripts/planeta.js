@@ -16,7 +16,7 @@
 
 // Subir al regenerar public/planeta/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const PLANETA_V = 2;
+export const PLANETA_V = 6;
 
 const cargas = new Map();              // base -> Promise de datos preparados (una vez por página)
 
@@ -44,7 +44,6 @@ const mixc = (a, b, t) =>
   [0, 1, 2].map((i) => Math.round(a[i] + (b[i] - a[i]) * Math.max(0, Math.min(1, t))));
 const pack = (c) => (255 << 24) | (c[2] << 16) | (c[1] << 8) | c[0];
 const DEG = 180 / Math.PI;
-const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
 
 export function cargarPlaneta(base = "/planeta/") {
   if (!cargas.has(base)) cargas.set(base, preparar(base));
@@ -58,10 +57,10 @@ async function preparar(base) {
     bitmap(`${base}planeta-mapa.png${v}`),
     bitmap(`${base}planeta-lut.png${v}`),
   ]);
-  const MW = D.MW, MH = D.MH, KN = D.LUT_KN, KMIN = D.LUT_KMIN;
+  const MW = D.MW, MH = D.MH, KN = D.LUT_KN, KMIN = D.LUT_KMIN * D.LIGHT_SUB;
 
   // Mapa: material por celda, y qué materiales son hielo (el limbo los
-  // oscurece menos y con punteado suave).
+  // oscurece menos).
   const mp = pixels(mapBm);
   const mat = new Uint16Array(MW * MH);
   const iceMat = new Uint8Array(D.MATERIALES);
@@ -129,14 +128,13 @@ async function preparar(base) {
       const lon = Math.atan2(px, py * D.SINT + pz * D.COST) * DEG;
       let r = Math.floor((90 - lat) / 180 * MH);
       r = r < 0 ? 0 : r >= MH ? MH - 1 : r;
-      const dc = Math.sqrt(rr), dth = (BAYER[sy & 3][sx & 3] + 0.5) / 16;
+      const dc = Math.sqrt(rr);
       const lam = px * D.SX + py * D.SY + pz * D.SZ;
       const termT = smooth(D.TERM_A, D.TERM_B, lam);
       const limbT = smooth(0.72, 1, dc);
-      const ditherW = Math.max(1 - Math.abs(termT * 2 - 1), limbT);
-      const kFor = (limbMul, dw) => {
+      const kFor = (limbMul) => {
         const bright = (D.NIGHT + (1 - D.NIGHT) * termT) * (1 - D.LIMB_K * limbT * limbMul);
-        const k = Math.floor(Math.log(Math.max(bright, 1e-3)) / D.LNSTEP + 0.5 + (dth - 0.5) * 0.8 * dw);
+        const k = Math.floor(Math.log(Math.max(bright, 1e-3)) / D.LNSTEP * D.LIGHT_SUB + 0.5);   // en 1/LIGHT_SUB de escalón
         return Math.max(0, Math.min(KN - 1, k - KMIN));
       };
       // Huella del píxel en celdas de longitud (lo que cambia la longitud al
@@ -150,12 +148,12 @@ async function preparar(base) {
       row.push(lvOff[L] + r * lvW[L]);
       col.push(Math.round((lon + 180) / 360 * MW * 256));   // columna en 1/256 de celda
       lev.push(L);
-      kN.push(kFor(1, ditherW));
-      kI.push(kFor(0.7, ditherW * D.ICE_DITHER));
+      kN.push(kFor(1));
+      kI.push(kFor(0.7));
       let haloA = 0, cov = 1;
       if (dc > 0.93 && lam > 0) {
         const halo = smooth(0.93, 1, dc) * smooth(0, 0.45, lam);
-        haloA = 0.3 * (Math.floor(halo * 4 + 0.5 + (dth - 0.5) * 0.8) / 4);
+        haloA = 0.3 * (Math.floor(halo * 4 + 0.5) / 4);
       }
       if (dc > RIN) cov = 1 - smooth(RIN, ROUT, dc);
       if (haloA > 0 || cov < 1) post.push(n, haloA, cov);
@@ -223,7 +221,10 @@ export async function montarPlaneta(canvas, {
     return [px, py, pz, smooth(D.TERM_A + 0.06, D.TERM_B + 0.2, lam)];
   }
 
-  // Nubes: plantillas ya escaladas en Python, estampadas encima.
+  // Nubes: plantillas ya escaladas, en espejo y sombreadas en Python,
+  // estampadas encima. Tonos de D.C_NUBE: canto al sol, cuerpo, canto en
+  // sombra, base, borde (el _cloud_t del generador: junto al terminador se apagan).
+  const NUBE_T = [(t) => Math.min(1, t + 0.1), (t) => Math.min(1, t + 0.1), (t) => t, (t) => t, (t) => Math.max(0.7, t)];
   function nubes(lon0) {
     const touched = [];
     for (const nb of D.nubes) {
@@ -231,12 +232,9 @@ export async function montarPlaneta(canvas, {
       if (pz <= 0.5 || bright < 0.12) continue;
       const cx = px * R + D.CX - 0.5, cy = py * R + D.CY - 0.5;
       const xsc = 0.72 + 0.28 * pz, t = 0.72 + 0.28 * bright;
-      const cols = [pack(mixc(SP, D.C_BODY, Math.min(1, t + 0.1))),
-                    pack(mixc(SP, D.C_BASE, t)),
-                    pack(mixc(SP, D.C_EDGE, Math.max(0.7, t)))];
+      const cols = D.C_NUBE.map((c, i) => pack(mixc(SP, c, NUBE_T[i](t))));
       for (const [ox, oy, k] of nb.cells) {
-        const ddx = ox - nb.dw / 2;
-        const x = Math.round(cx + (nb.flip ? -ddx : ddx) * xsc);
+        const x = Math.round(cx + (ox - nb.dw / 2) * xsc);
         const y = Math.round(cy + oy - nb.dh / 2);
         if (x < 0 || x >= W || y < 0 || y >= H) continue;
         const p = y * W + x;
@@ -286,12 +284,13 @@ export async function montarPlaneta(canvas, {
   // Marca de blanco: una X en pixel art (blanca con contorno oscuro, como la
   // mira) clavada en un punto del planeta; gira con él. Solo se ve en la cara
   // iluminada y por delante; al volver a pasar, reaparece.
-  const X_ART = ["##...##", "###.###", ".#####.", "..###..", ".#####.", "###.###", "##...##"];
+  const X_ART = ["#...#", "##.##", ".###.", "##.##", "#...#"];
+  const XN = X_ART.length;
   const X_CELLS = [];
-  for (let y = -1; y <= 7; y++) {
-    for (let x = -1; x <= 7; x++) {
-      const lleno = (yy, xx) => yy >= 0 && yy < 7 && xx >= 0 && xx < 7 && X_ART[yy][xx] === "#";
-      if (lleno(y, x)) X_CELLS.push([x, y, y >= 5 ? pack([214, 220, 228]) : pack([246, 248, 250])]);
+  for (let y = -1; y <= XN; y++) {
+    for (let x = -1; x <= XN; x++) {
+      const lleno = (yy, xx) => yy >= 0 && yy < XN && xx >= 0 && xx < XN && X_ART[yy][xx] === "#";
+      if (lleno(y, x)) X_CELLS.push([x, y, y >= XN - 2 ? pack([214, 220, 228]) : pack([246, 248, 250])]);
       else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) X_CELLS.push([x, y, pack([16, 19, 28])]);
     }
   }
@@ -302,7 +301,7 @@ export async function montarPlaneta(canvas, {
     const [px, py, pz, bright] = proyecta(marca.lat, marca.lon, lon0);
     if (pz <= 0.06 || bright < 0.12) return;
     const cx = px * R + D.CX, cy = py * R + D.CY;
-    const ox = Math.round(cx - 0.5 - 3), oy = Math.round(cy - 0.5 - 3);
+    const ox = Math.round(cx - 0.5 - (XN >> 1)), oy = Math.round(cy - 0.5 - (XN >> 1));
     for (const [x, y, c] of X_CELLS) {
       const X = ox + x, Y = oy + y;
       if (X >= 0 && X < W && Y >= 0 && Y < H) buf[Y * W + X] = c;

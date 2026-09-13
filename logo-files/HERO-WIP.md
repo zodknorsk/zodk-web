@@ -393,17 +393,32 @@ retiraría como se retiró el de día.
      clic sobre la X o Esc: la quita. Botón `.hero-giro` junto a la coordenada
      (`setParado`; también para el sprite de noche con `.giro-parado`); al
      cargar siempre gira.
-   - **PENDIENTE para la próxima sesión (lo pidió el usuario al cerrar)**:
-     1. La X un poco más pequeña (hoy 7x7 + contorno, `X_ART` en planeta.js).
-     2. El botón play/pausa en un sitio FIJO un pelín más a la izquierda: hoy
-        se desplaza porque la zona MGRS tiene 1 o 2 dígitos (`8T` / `11T`, y
-        UPS es aún más corta). Lo mínimo para que no se mueva nunca (p. ej. la
-        lectura con ancho fijo de monoespaciada y el botón anclado a su
-        izquierda).
-     3. El "subrayado" de la coordenada fijada NO es una línea: quería un
-        resaltado tipo MARCADOR, fondo blanco que tape todos los números y el
-        texto en color oscuro encima. Hoy está hecho con text-decoration
-        (malinterpretado): rehacer.
+   - **Retoques del 13-sep por la tarde (hechos, aprobados)**:
+     1. X de blanco en 5x5 (`X_ART`), antes 7x7.
+     2. `.hero-lectura` de ancho fijo (el de la coordenada más larga, 18
+        caracteres): el botón play/pausa ya no se mueve con `8T`/`11T`/UPS.
+     3. Coordenada fijada con resaltado tipo MARCADOR (fondo blanco, contorno
+        oscuro de 1 px, texto oscuro), no subrayado.
+     4. En táctil (`hover: none` / `pointer: coarse`) no hay coordenada (se
+        quedaba en guiones): solo el botón. Pendiente de verlo en un móvil real.
+     5. Disco completo (`CDOWN` 0,92 → 1,0, lienzo 600x585): en móvil el
+        planeta entero cabe en pantalla y se veía el corte recto de abajo.
+     6. **Luz del terminador/limbo en escalones LISOS de 1/3** (`LIGHT_SUB` = 3;
+        la LUT lleva 37 columnas). Se quitó el punteado Bayer (mosquitera). Se
+        probaron bordes ONDULADOS por ruido y el usuario los RECHAZÓ ("no me
+        gusta esa ondulación para nada"): no reintentar. Con escalones enteros
+        las franjas "se notaban demasiado"; con cuartos casi es un degradado.
+     7. Nubes: mismas 8 plantillas, pero eran solo un CONTORNO y por eso salían
+        como donuts: `_cloud_fill` rellena el interior (las muescas de 1 celda
+        entre lóbulos se respetan), rampa de tonos (`C_NUBE`) y escala
+        `CLOUD_SIZE` 1,0-1,3 (se enseñó 1,3-1,7; eligió la pequeña; "más
+        adelante le meteremos más mano"; ojo, muy grandes no quedan bien).
+     8. Sabana (`SAV`): en la franja de mezcla desierto/verde, copas más
+        sueltas y suelo de hierba seca a manchas (no mezclando colores).
+     9. Desiertos nuevos en `DESIERTOS`: Omán/Emiratos/este de Yemen y Cuerno
+        de África (salían estepa verde y selva).
+     10. Con una ficha de país abierta, `.hero-banderas` sube a z-index 4 (una
+        nave que pasaba por delante la tapaba).
    - **Problema para el futuro (lo señaló el usuario): hemisferio sur.** El
      hero enseña sobre todo el hemisferio norte (Polo Norte arriba, inclinación
      de 20° y el planeta más grande que la pantalla: se ve de ~20°N hacia
