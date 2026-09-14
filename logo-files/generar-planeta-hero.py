@@ -1333,6 +1333,7 @@ BAND_PAL = {
     "r": (0xc1, 0x27, 0x2d), "g": (0x1f, 0x7a, 0x3c),                           # Marruecos
     "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
     "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
+    "k": (0x1a, 0x1a, 0x1a),                                                    # Afganistán
 }
 BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
     ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
@@ -1343,6 +1344,11 @@ BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el
                           "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
     ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
                               "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
+    # Afganistán: bandera talibán actual, blanca con la shahada — trazos
+    # sueltos arriba que bajan a una línea llena (caligrafía) y una segunda
+    # línea más corta debajo (el sello), sin ser una raya recta.
+    ("AF", "Afganistán", 34.5553, 69.2075, ["WWWWWWWWWWW", "WWWWWWWWWWW", "WWWkWWkWWWW", "WWkkkWkkWWW",
+                                      "WWkkkkkkkWW", "WWWkkkkkWWW", "WWWWWWWWWWW"]),
 ]
 BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
 BAND_EDGE = (0x10, 0x13, 0x1c)
