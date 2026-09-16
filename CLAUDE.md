@@ -62,6 +62,14 @@ Decisiones que hay que respetar:
 - Animaciones: nunca SVG animado con miles de formas (calienta la CPU en Zen,
   su navegador); canvas o sprite PNG.
 
+## Proyecto Luna (rama `moon-project`)
+
+Idea aparcada, sin código todavía: un segundo planeta (la Luna, mismo estilo
+pixel art) al pulsar el icono de la Luna del hero, con chapas en los sitios
+de alunizaje en vez de banderas de país. **Antes de tocarlo, leer
+`logo-files/LUNA-WIP.md`** (ahí está todo: qué se reutiliza de la Tierra, qué
+hace falta de nuevo, y qué queda pendiente de decidir).
+
 Pendiente (sin orden, lo decide él):
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
 - Probar la noche en su móvil real (consumo: si se calienta, 30 fps en táctil
