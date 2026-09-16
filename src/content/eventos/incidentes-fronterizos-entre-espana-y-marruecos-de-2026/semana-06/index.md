@@ -17,7 +17,9 @@ rango: 3 septiembre – 9 septiembre
 
 [![342](./pasted-image-20260903180111.png)](https://theobjective.com/wp-content/uploads/2026/09/informe_ceuta_sept__compressed.pdf)
 
-[enlace](https://youtu.be/Y-mci3pBpTw)
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/Y-mci3pBpTw" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
+
 
 
 <blockquote class="tweet" data-tweet-id="2095421208351175066">
@@ -863,7 +865,9 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
 
 **SESIÓN DE CONTROL AL GOBIERNO 09/09/2026** 
 
-[enlace](https://www.youtube.com/live/726L9U3PDMQ?si=fWzXL0-7xSIKbWhV)
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/726L9U3PDMQ" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
+
 
 
 
