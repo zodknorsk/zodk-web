@@ -41,7 +41,7 @@ Con el apoyo aéreo canalizado a través de estos pequeños equipos de Fuerzas E
 
 ## Operación Anaconda
 
-<!-- imagen no encontrada: Composición 2.png -->
+![](./composicion-2.png)
 
 Anaconda nació de una idea clásica de manual militar: _hammer and anvil_ (martillo y yunque) y de las lecciones aprendidas de la batalla de Tora Bora. El martillo lo formarían unos 400 hombres de la milicia afgana del general Zia, junto con Boinas Verdes americanos, empujando desde FOB Gardez hacia el centro del valle de Shahi Khot, infestado de combatientes de Al-Qaeda que escaparon de la batalla de Tora Bora, para forzar al enemigo a huir. El yunque contra el que se estrellarían serían las tropas convencionales de las divisiones 10th Mountain y 101st Airborne, bajo el mando del general Franklin Hagenbeck, posicionadas en las montañas hacia la frontera con Pakistán —la ruta de escape que, según la inteligencia americana, tomarían los combatientes en fuga. Fue la operación más grande de la guerra hasta ese momento.
 
