@@ -662,7 +662,7 @@ Dos de los casos son anteriores al ataque híbrido.</div>
 
 <blockquote class="tweet" data-tweet-id="2089708338657337654">
   <a class="tweet-author" href="https://x.com/SrLiberal/status/2089708338657337654" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2064767963752718336-qz7ezugi_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2100323141851525120-ju7_axe3_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Sr.Liberal</span>
     <span class="tweet-handle">@SrLiberal</span>
   </a>
