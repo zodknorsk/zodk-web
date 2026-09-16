@@ -122,7 +122,7 @@ Con Delta Force asegurando el perímetro y el reloj corriendo —las fuerzas ira
 Con un paquete de más de 150 aeronaves (F-22A, F-35A, F-15E) apoyadas por bombarderos (B-2, B-52), aviones cisterna (KC-46, KC-135) y A-10C Thunderbolt II destruyendo carreteras y bloqueando rutas de acceso, helicópteros del 160th SOAR se posan en el filo de una cresta a 2100m de altura, recuperando a _Dude 44 Bravo_, exhausto y herido tras casi 48h de evasión.
 
 
-<video controls playsinline preload="metadata" src="/adjuntos/footage-released-of-the-downed-f15e-wso-being-picked-up-by-usaf-pjs-in-iran-footage-reminds-me-of-the-ending-scene-of-the-movie-behind-enemy-lines-where-it-was-a-navy-wso-i-believe-r-navy-2026-09-16-18-10-42_0-06db1f6c.mp4"></video>
+<video controls playsinline preload="none" src="/adjuntos/footage-released-of-the-downed-f15e-wso-being-picked-up-by-usaf-pjs-in-iran-footage-reminds-me-of-the-ending-scene-of-the-movie-behind-enemy-lines-where-it-was-a-navy-wso-i-believe-r-navy-2026-09-16-18-10-42_0-06db1f6c.mp4"></video>
 
 
 Solo entonces entró en juego una tercera oleada: aeronaves de reemplazo —Dash 8 y C295W de Operaciones Especiales—  volaron hasta la pista, recogieron a la totalidad del personal varado junto con el WSO ya rescatado, y despegaron de vuelta a territorio seguro. Fue este tramo final, más que el tiroteo o la persecución por los Zagros, el que estuvo más cerca de convertir la operación en un desastre: casi un centenar de hombres en tierra enemiga, sin aviones operativos, dependiendo de que un tercer avión llegara a tiempo antes de que las fuerzas iraníes cerraran el cerco.
