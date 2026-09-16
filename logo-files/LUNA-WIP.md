@@ -90,3 +90,41 @@ enfoque de proyección, inclinación, resolución, sensación general), pero:
 Nada de código hecho todavía — solo esta idea y este documento. Antes de
 escribir una sola línea: reunir la lista de alunizajes a marcar (eso decide
 lo de la rotación) y encontrar/descargar el modelo de elevación lunar.
+
+## Candidatos a alunizaje/sonda (repaso del 16-sep-2026, sin decidir aún)
+
+Repartidos por categoría. **Dato clave para lo de la rotación** (ver
+arriba): casi todo esto está en la cara VISIBLE; los únicos en la cara
+OCULTA son Chang'e 4 y Chang'e 6 (China). Si entran esos dos, el planeta
+tiene que girar; si el usuario se queda solo con cara visible, puede quedarse
+quieto.
+
+- **Tripulados — Apolo (EE. UU., cara visible):** 11 (Mar de la Tranquilidad,
+  1969, primer paso humano), 12, 14, 15, 16, 17 (1972, el último). El 13 no
+  cuenta, no llegó a alunizar.
+- **Programa soviético Luna (cara visible):** Luna 9 (1966, primer alunizaje
+  suave de la historia), Luna 16/20/24 (retorno de muestras sin
+  tripulación), Luna 17 y 21 (róvers Lunojod 1 y 2, primeros vehículos con
+  ruedas en otro cuerpo celeste). Luna 2 fue un impacto deliberado, no un
+  aterrizaje.
+- **Surveyor (EE. UU., cara visible):** 1, 3, 5, 6, 7 — aterrizajes suaves de
+  prueba antes de mandar gente.
+- **China — Chang'e:** Chang'e 3 (2013, cara visible, róver Yutu);
+  **Chang'e 4 (2019, cara OCULTA**, cráter Von Kármán, róver Yutu-2: primer
+  alunizaje de la historia en la cara oculta); Chang'e 5 (2020, cara
+  visible, retorno de muestras); **Chang'e 6 (2024, cara OCULTA**, primeras
+  muestras traídas de la cara oculta).
+- **India:** Chandrayaan-3 (2023, primer éxito indio, cerca del polo sur
+  lunar — zona de interés por el hielo de agua). Chandrayaan-2 se estrelló
+  en 2019 (candidato si se quieren incluir también fracasos).
+- **Japón:** SLIM (2024, alunizaje de precisión, cráter Shioli, cara
+  visible).
+- **Privados (EE. UU.):** Intuitive Machines "Odysseus"/IM-1 (2024, primer
+  alunizaje privado con éxito, cerca del polo sur, aunque acabó tumbado de
+  lado) e IM-2 (2025); Firefly "Blue Ghost" (2025, éxito); Astrobotic
+  Peregrine (2024, fallo, no llegó a posarse).
+- **Israel:** Beresheet (2019, intento privado, fallo — se estrelló).
+
+Pendiente: el usuario decide qué entra de esta lista antes de avanzar con el
+código (rovers vs solo alunizajes, si se incluyen fracasos, polo sur como
+zona destacada por el hielo...).
