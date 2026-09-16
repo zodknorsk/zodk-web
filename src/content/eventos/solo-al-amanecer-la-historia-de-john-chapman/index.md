@@ -41,7 +41,7 @@ Con el apoyo aéreo canalizado a través de estos pequeños equipos de Fuerzas E
 
 ## Operación Anaconda
 
-![](./composicion-2.png)
+![](./composicion-2.png) _Valle de Shah-i-Kot con los puestos de observación de la Task Force AFO, posiciones de bloqueo y la cima de Takur Ghar._
 
 Anaconda nació de una idea clásica del manual militar: _hammer and anvil_ (martillo y yunque) y de las lecciones aprendidas de la batalla de Tora Bora. El martillo lo formarían unos 400 hombres de la milicia afgana del general Zia, junto con Boinas Verdes americanos, empujando desde FOB Gardez hacia el centro del valle de Shah-i-Kot (Objective Remington) —infestado de combatientes de Al Qaeda que escaparon de la batalla de Tora Bora— para forzar al enemigo a huir. El yunque contra el que se estrellarían serían las tropas convencionales de las divisiones 10th Mountain y 101st Airborne, bajo el mando del general Franklin Hagenbeck, posicionadas en las montañas al este hacia la frontera con Pakistán —la ruta de escape que, según la inteligencia americana, tomarían los combatientes en fuga. Fue la operación más grande de la guerra hasta ese momento.
 
@@ -81,7 +81,7 @@ Fue entonces cuando oyó las palas de los rotores de un MH-47 remontando la lade
 
 ## «_Razor 01_» y «_Razor 02_» — la historia de aquellos Rangers
 
-![](./pasted-image-20260914213311.png)
+![](./pasted-image-20260914213311.png) _Razor 01 en la cima de Takur Ghar._
 
 «_Razor 01_» llevaba dieciocho hombres (Chalk 1): 15 Rangers, 2 PJs y un CCT. El piloto, Greg Calvert, hizo un primer pase para evaluar la zona antes de comprometerse, y en la aproximación final, a apenas 30 metros de altura, la cabina estalló —agujeros por todo el parabrisas, su casco rozado varias veces por el impacto de las balas. Un RPG destrozó el motor derecho. Calvert logró un aterrizaje casi sin velocidad horizontal, firme pero brusco, y supo al instante que no volverían a despegar.
 
