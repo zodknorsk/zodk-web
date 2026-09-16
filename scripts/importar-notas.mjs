@@ -371,7 +371,13 @@ function transformarCuerpo(cuerpo, ctx) {
         console.warn(`  ⚠ vídeo no encontrado: ${archivo}`);
         return `<!-- vídeo no encontrado: ${archivo} -->`;
       }
-      return `\n<video controls playsinline preload="metadata" src="/adjuntos/${copiado}"></video>\n`;
+      // preload="none" (no "metadata"): así no dispara ninguna petición al
+      // cargar la página. El CDN de GitHub Pages a veces responde mal a la
+      // petición Range con la que el navegador pide los metadatos nada más
+      // cargar (200 con el archivo entero en vez de 206 parcial), y eso hace
+      // que el navegador dé el vídeo por no soportado. Con preload="none" no
+      // se pide nada hasta que el usuario pulsa play, y ahí sí responde bien.
+      return `\n<video controls playsinline preload="none" src="/adjuntos/${copiado}"></video>\n`;
     }
     const copiado = copiarImagen(archivo);
     if (!copiado) {
