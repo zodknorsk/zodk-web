@@ -111,7 +111,12 @@ function indexarImagenes() {
         if ([".git", ".obsidian", ".trash"].includes(e.name)) continue;
         recorrer(p);
       } else if (exts.has(path.extname(e.name).toLowerCase())) {
-        if (!indice.has(e.name)) indice.set(e.name, p);
+        // Normalizado a NFC: macOS guarda los nombres de archivo en NFD (acentos
+        // "descompuestos"), pero el texto de las notas (tecleado o pegado desde
+        // Obsidian) llega en NFC. Sin esto, "Composición.png" en la nota nunca
+        // encuentra al "Composición.png" del disco aunque se vean idénticos.
+        const nombre = e.name.normalize("NFC");
+        if (!indice.has(nombre)) indice.set(nombre, p);
       }
     }
   };
@@ -462,6 +467,7 @@ async function main() {
   // como las imágenes), así que el nombre lleva un hash de la ruta de origen
   // para no colisionar si dos notas usan un vídeo con el mismo nombre.
   const copiarVideo = (nombre) => {
+    nombre = nombre.normalize("NFC");
     const origen = indiceImagenes.get(nombre) || indiceImagenes.get(path.basename(nombre));
     if (!origen) return null;
     const ext = path.extname(origen).toLowerCase();
@@ -566,6 +572,7 @@ async function main() {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
 
     const copiarImagen = (nombre) => {
+      nombre = nombre.normalize("NFC");
       const origen = indiceImagenes.get(nombre) || indiceImagenes.get(path.basename(nombre));
       if (!origen) return null;
       const ext = path.extname(origen);
