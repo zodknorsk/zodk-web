@@ -190,12 +190,12 @@ article .tiktok a {
   width: min(1900px, 122vw);
   aspect-ratio: 600 / 585;
   transform: translateX(-50%);
-  background: url(/planeta/planeta-quieto.png?v=9) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/planeta-quieto.png?v=10) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
 }
-html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png?v=8); }
+html.dark .hero-planet { background-image: url(/planeta/planeta-quieto-noche.png?v=10); }
 .hero-planet.planeta-listo { background-image: none; }
 .hero-planet-canvas {
   position: absolute;

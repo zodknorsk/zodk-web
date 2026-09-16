@@ -1344,11 +1344,11 @@ BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el
                           "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
     ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
                               "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
-    # Afganistán: bandera talibán actual, blanca con la shahada — trazos
-    # sueltos arriba que bajan a una línea llena (caligrafía) y una segunda
-    # línea más corta debajo (el sello), sin ser una raya recta.
-    ("AF", "Afganistán", 34.5553, 69.2075, ["WWWWWWWWWWW", "WWWWWWWWWWW", "WWWkWWkWWWW", "WWkkkWkkWWW",
-                                      "WWkkkkkkkWW", "WWWkkkkkWWW", "WWWWWWWWWWW"]),
+    # Afganistán: bandera talibán actual, blanca con la shahada. Tres palabras
+    # sueltas (sin línea base continua, que se leía como un peine), una cola en
+    # diagonal y dos puntos bajo la palabra de la derecha.
+    ("AF", "Afganistán", 34.5553, 69.2075, ["WWWWWWWWWWW", "WWkWWWWkWkW", "WWkWWkWkWkW", "WkkWkkWkkkW",
+                                      "WWWWkWWWWWW", "WWWkWWWkWkW", "WWWWWWWWWWW"]),
 ]
 BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
 BAND_EDGE = (0x10, 0x13, 0x1c)
