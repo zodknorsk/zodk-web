@@ -1,9 +1,9 @@
 ---
-title: Solo al amanecer - La historia de John Chapman
+title: Alone at Dawn - La historia de John Chapman
 date: '2026-09-13'
 description: >-
-  Tech Sgt. John A. Chapman, 24th Special Tactics Squadron, Afganistán, un mes
-  antes de Takur Ghar. Fotografía oficial de la Fuerza Aérea de EE. UU.
+  En la madrugada del 4 de marzo de 2002, en la nevada cima de Takur Ghar a 3100
+  metros de altura, mientras intentaban recuperar a un compañero caído en…
 updated: '2026-09-15'
 tags:
   - osint
@@ -12,12 +12,10 @@ tags:
 kind: index
 evento: solo-al-amanecer-la-historia-de-john-chapman
 orden: 0
-periodo: 3-4 de marzo de 2002
 ---
 ![](./pasted-image-20260913155314.png) _Tech Sgt. John A. Chapman, 24th Special Tactics Squadron, Afganistán, un mes antes de Takur Ghar. Fotografía oficial de la Fuerza Aérea de EE. UU._
 
 > En la madrugada del 4 de marzo de 2002, en la nevada cima de Takur Ghar a 3100 metros de altura, mientras intentaban recuperar a un compañero caído en dicha cima, un Combat Controller de la Fuerza Aérea estadounidense libró una batalla en solitario contra decenas de combatientes atrincherados de Al Qaeda. Dado por muerto y dejado atrás por su equipo en aquel pico, John Chapman continuó combatiendo solo al amanecer, dando su vida para proteger a la fuerza de reacción rápida que venía en su ayuda.
-
 
 ## Technical Sergeant John A. Chapman
 
@@ -43,7 +41,7 @@ Con el apoyo aéreo canalizado a través de estos pequeños equipos de Fuerzas E
 
 ## Operación Anaconda
 
-![](./composicion-2.png)
+<!-- imagen no encontrada: Composición 2.png -->
 
 Anaconda nació de una idea clásica de manual militar: _hammer and anvil_ (martillo y yunque) y de las lecciones aprendidas de la batalla de Tora Bora. El martillo lo formarían unos 400 hombres de la milicia afgana del general Zia, junto con Boinas Verdes americanos, empujando desde FOB Gardez hacia el centro del valle de Shahi Khot, infestado de combatientes de Al-Qaeda que escaparon de la batalla de Tora Bora, para forzar al enemigo a huir. El yunque contra el que se estrellarían serían las tropas convencionales de las divisiones 10th Mountain y 101st Airborne, bajo el mando del general Franklin Hagenbeck, posicionadas en las montañas hacia la frontera con Pakistán —la ruta de escape que, según la inteligencia americana, tomarían los combatientes en fuga. Fue la operación más grande de la guerra hasta ese momento.
 
@@ -102,4 +100,5 @@ En mayo de 2015, la secretaria de la Fuerza Aérea, Deborah Lee James, leyó un 
 El proceso se prolongó dos años más por la resistencia de mandos de SEAL Team Six —principalmente el almirante Tim Szymanski— a reconocer que su equipo había dejado a un hombre con vida en la montaña, lo que expertos en la Medalla de Honor describen como el primer intento de una rama militar de bloquear la solicitud de otra. En julio de 2017 el subsecretario de Defensa Bob Work confirmó la aprobación, señalando un análisis del FBI que fijaba el combate final en una hora tras la retirada del equipo. Trump comunicó la decisión a la viuda de Chapman el 26 de marzo de 2018, y la ceremonia se celebró en la Casa Blanca el 22 de agosto: Chapman se convirtió en el primer aviador en recibir la Medalla de Honor desde Vietnam. Contando también la concedida a Slabinski ese mismo año, Takur Ghar es, proporcionalmente, la batalla con más condecoraciones al valor de la historia militar estadounidense.
 
 ## La primera medalla de honor grabada en video
-![](https://www.youtube.com/watch?v=3oKMjTqdTYo)
+
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/3oKMjTqdTYo" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>

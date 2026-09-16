@@ -10,11 +10,14 @@
 //   3. Traduce el frontmatter en español al que esperan las colecciones de Astro.
 //   4. Convierte la sintaxis de Obsidian a Markdown/HTML estándar:
 //        - ![[imagen.png]]  y  ![](<imagen.png>)   -> ![](./imagen.png) + copia
+//        - ![[vídeo.mp4]]                          -> <video> + copia a public/adjuntos/
+//        - ![](youtube.com/watch?v=...)            -> <iframe> embebido
 //        - [[Nota]] / [[Nota#sección|texto]]       -> enlace resuelto (o texto)
 //        - URL de tweet embebida (![](x.com/...))  -> tarjeta HTML ya descargada
 //        - <blockquote class="tiktok-embed">       -> cita estática con enlace
 //   5. Escribe el resultado en src/content/{notas,eventos}/ (se regenera entero
-//      cada vez) y las imágenes de tweets en public/tweets/.
+//      cada vez), las imágenes de tweets en public/tweets/ y los vídeos
+//      locales de la bóveda en public/adjuntos/.
 //
 // Uso:   npm run importar          (BOVEDA_PATH=... para otra ruta)
 // ---------------------------------------------------------------------------
@@ -22,6 +25,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import crypto from "node:crypto";
 import matter from "gray-matter";
 import GithubSlugger from "github-slugger";
 import {
@@ -53,6 +57,7 @@ const RAIZ = process.cwd();
 const DESTINO_NOTAS = path.join(RAIZ, "src", "content", "notas");
 const DESTINO_EVENTOS = path.join(RAIZ, "src", "content", "eventos");
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
+const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 
 const CARPETA_EVENTOS = "03 - Eventos";
 const CARPETAS_IGNORADAS = new Set([
@@ -66,6 +71,16 @@ const RE_TWEET_SUELTO = new RegExp(
   `^(?:!\\[[^\\]]*\\]\\(\\s*)?<?\\s*${RE_TWEET_URL.source}\\S*\\s*>?\\s*\\)?$`,
 );
 const EXT_IMAGEN = /\.(png|jpe?g|webp|gif|svg|avif)$/i;
+const EXT_VIDEO = /\.(mp4|mov|webm)$/i;
+
+// URL de un vídeo de YouTube, envuelta en `![](...)` (así los embebe el
+// usuario en Obsidian: watch?v=, live/ o youtu.be/, con o sin `?si=...`).
+const RE_YOUTUBE = new RegExp(
+  `!\\[[^\\]]*\\]\\(\\s*<?\\s*https?://(?:www\\.)?` +
+  `(?:youtube\\.com/(?:watch\\?v=|live/|embed/)|youtu\\.be/)` +
+  `([A-Za-z0-9_-]{6,})[^)\\s>]*\\s*>?\\s*\\)`,
+  "gi",
+);
 
 // --- Utilidades generales ------------------------------------------------
 
@@ -84,7 +99,10 @@ function buscarMarkdown(dir) {
 }
 
 function indexarImagenes() {
-  const exts = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".avif"]);
+  const exts = new Set([
+    ".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".avif",
+    ".mp4", ".mov", ".webm",
+  ]);
   const indice = new Map();
   const recorrer = (dir) => {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -103,14 +121,23 @@ function indexarImagenes() {
 
 const slugger = new GithubSlugger();
 /** Slug para URLs (sin tildes, minúsculas, con guiones). */
+// slugger.slug() convierte cada espacio en un guion pero deja los guiones
+// literales del texto tal cual: un título con " - " como separador visual
+// (p. ej. "Solo al amanecer - La historia...") produce "---" (el guion del
+// espacio + el guion literal + el guion del otro espacio). Se colapsan aquí
+// los guiones repetidos para que la URL quede limpia.
+function limpiarGuiones(slug) {
+  return slug.replace(/-{2,}/g, "-").replace(/^-|-$/g, "");
+}
+
 function generarSlug(texto) {
   slugger.reset();
-  return slugger.slug(texto.normalize("NFD").replace(/[̀-ͯ]/g, ""));
+  return limpiarGuiones(slugger.slug(texto.normalize("NFD").replace(/[̀-ͯ]/g, "")));
 }
 /** Ancla de encabezado, igual que las que genera Astro (conserva tildes). */
 function generarAncla(texto) {
   slugger.reset();
-  return slugger.slug(texto);
+  return limpiarGuiones(slugger.slug(texto));
 }
 
 function aFechaISO(valor) {
@@ -307,7 +334,7 @@ function convertirTikTok(cuerpo) {
  * o null. `copiarImagen(nombre)` copia la imagen y devuelve su nombre final.
  */
 function transformarCuerpo(cuerpo, ctx) {
-  const { resolver, copiarImagen, tweets, mediaMapa, videoMapa, tarjetasCache, esEventoSemana } = ctx;
+  const { resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache, esEventoSemana } = ctx;
 
   let s = cuerpo;
 
@@ -328,12 +355,23 @@ function transformarCuerpo(cuerpo, ctx) {
   s = convertirTikTok(s);
   s = insertarTarjetasTweet(s, { tweets, mediaMapa, videoMapa, tarjetasCache });
 
-  // Imágenes embebidas de Obsidian: ![[archivo.png]] / ![[archivo.png|123]]
+  // Adjuntos embebidos de Obsidian: ![[archivo.png]] / ![[archivo.png|123]] /
+  // ![[archivo.mp4]]. Los vídeos locales se renderizan como <video>, el resto
+  // como imagen.
   s = s.replace(/!\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/g, (_, archivo, alt) => {
-    const copiado = copiarImagen(archivo.trim());
+    archivo = archivo.trim();
+    if (EXT_VIDEO.test(archivo)) {
+      const copiado = copiarVideo(archivo);
+      if (!copiado) {
+        console.warn(`  ⚠ vídeo no encontrado: ${archivo}`);
+        return `<!-- vídeo no encontrado: ${archivo} -->`;
+      }
+      return `\n<video controls playsinline preload="metadata" src="/adjuntos/${copiado}"></video>\n`;
+    }
+    const copiado = copiarImagen(archivo);
     if (!copiado) {
-      console.warn(`  ⚠ imagen no encontrada: ${archivo.trim()}`);
-      return `<!-- imagen no encontrada: ${archivo.trim()} -->`;
+      console.warn(`  ⚠ imagen no encontrada: ${archivo}`);
+      return `<!-- imagen no encontrada: ${archivo} -->`;
     }
     const etiqueta = /^\d+$/.test((alt || "").trim()) ? "" : (alt || "").trim();
     return `![${etiqueta}](./${copiado})`;
@@ -367,6 +405,16 @@ function transformarCuerpo(cuerpo, ctx) {
     return etiqueta; // destino no publicado: solo el texto
   });
 
+  // Vídeos de YouTube embebidos como si fueran una imagen: ![](url). Van
+  // antes de la regla genérica de abajo, si no se convertirían en un enlace.
+  s = s.replace(RE_YOUTUBE, (_, id) => {
+    return (
+      `\n<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/${id}" ` +
+      `title="Vídeo de YouTube" loading="lazy" allowfullscreen ` +
+      `allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>\n`
+    );
+  });
+
   // "Imágenes" que son URLs a webs (no imágenes reales).
   s = s.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, (original, alt, url) => {
     if (EXT_IMAGEN.test(url.split("?")[0])) return original;
@@ -396,7 +444,9 @@ async function main() {
 
   // El contenido generado se regenera entero. public/tweets/ NO se borra: sirve
   // de caché de imágenes entre ejecuciones (bórrala a mano si quieres limpiarla).
-  for (const d of [DESTINO_NOTAS, DESTINO_EVENTOS]) {
+  // public/adjuntos/ sí se regenera entera: son ficheros locales de la bóveda,
+  // recopiarlos es barato y así no se acumulan vídeos huérfanos.
+  for (const d of [DESTINO_NOTAS, DESTINO_EVENTOS, PUBLICO_ADJUNTOS]) {
     fs.rmSync(d, { recursive: true, force: true });
     fs.mkdirSync(d, { recursive: true });
   }
@@ -407,6 +457,19 @@ async function main() {
   }
 
   const indiceImagenes = indexarImagenes();
+
+  // Los vídeos van a una carpeta pública compartida (no a la del artículo,
+  // como las imágenes), así que el nombre lleva un hash de la ruta de origen
+  // para no colisionar si dos notas usan un vídeo con el mismo nombre.
+  const copiarVideo = (nombre) => {
+    const origen = indiceImagenes.get(nombre) || indiceImagenes.get(path.basename(nombre));
+    if (!origen) return null;
+    const ext = path.extname(origen).toLowerCase();
+    const hash = crypto.createHash("sha1").update(origen).digest("hex").slice(0, 8);
+    const base = `${generarSlug(path.basename(origen, ext))}-${hash}${ext}`;
+    fs.copyFileSync(origen, path.join(PUBLICO_ADJUNTOS, base));
+    return base;
+  };
 
   // --- Pasada 1: recopilar lo publicado y construir el mapa de enlaces ---
   const items = [];
@@ -512,7 +575,7 @@ async function main() {
     };
 
     const cuerpo = transformarCuerpo(it.content, {
-      resolver, copiarImagen, tweets, mediaMapa, videoMapa, tarjetasCache,
+      resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache,
       esEventoSemana: it.clase.kind === "semana",
     });
 

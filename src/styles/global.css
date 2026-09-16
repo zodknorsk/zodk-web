@@ -146,6 +146,20 @@ article .tweet-date {
   @apply block mt-3 font-mono text-sm no-underline opacity-60;
 }
 
+/* --- Vídeo local y embeds de YouTube (importar-notas.mjs) --------------- */
+article video {
+  @apply w-full my-6 rounded-lg;
+}
+
+article .video-embed {
+  @apply relative my-6 overflow-hidden rounded-lg;
+  aspect-ratio: 16 / 9;
+}
+
+article .video-embed iframe {
+  @apply absolute inset-0 size-full border-0;
+}
+
 /* --- Citas de TikTok (el importador convierte el embed en esto) --------- */
 article .tiktok {
   @apply not-italic font-sans;
