@@ -64,9 +64,10 @@ Decisiones que hay que respetar:
 
 ## Proyecto Luna (rama `moon-project`)
 
-Idea aparcada, sin código todavía: un segundo planeta (la Luna, mismo estilo
-pixel art) al pulsar el icono de la Luna del hero, con chapas en los sitios
-de alunizaje en vez de banderas de país. **Antes de tocarlo, leer
+Un segundo planeta (la Luna, mismo estilo pixel art) al pulsar el icono de la
+Luna del hero: dos caras fijas (visible luminosa / oculta más oscura) con un
+botón para cambiar, y más adelante chapas en los alunizajes. Hecho (16-sep):
+primer boceto aprobado de la cara visible (`logo-files/generar-luna.py`). **Antes de tocarlo, leer
 `logo-files/LUNA-WIP.md`** (ahí está todo: qué se reutiliza de la Tierra, qué
 hace falta de nuevo, y qué queda pendiente de decidir).
 
