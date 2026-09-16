@@ -1,7 +1,7 @@
 # Proyecto Luna — documento de traspaso
 
-Rama: `moon-project` (creada desde `main` el 16-sep-2026, todavía sin código:
-solo este documento). Aparcado a propósito para retomarlo otro día, o con el
+Rama: `moon-project` (creada desde `main` el 16-sep-2026). Primer boceto de
+la cara visible hecho y aprobado: ver "Estado". Aparcado a propósito para retomarlo otro día, o con el
 reinicio semanal de tokens. **Leer esto primero** al volver, antes de tocar
 nada.
 
@@ -87,9 +87,54 @@ enfoque de proyección, inclinación, resolución, sensación general), pero:
 
 ## Estado
 
-Nada de código hecho todavía — solo esta idea y este documento. Antes de
-escribir una sola línea: reunir la lista de alunizajes a marcar (eso decide
-lo de la rotación) y encontrar/descargar el modelo de elevación lunar.
+### Decisión de diseño (16-sep-2026)
+
+Los alunizajes/chapas se aparcan: primero se diseña la Luna. **Dos caras
+FIJAS** (no gira): la **cara visible**, luminosa, con la historia de
+alunizajes, y un botón que lleve a la **cara oculta**, más oscura (luz rasante,
+media luz; ojo, la "cara oscura" es un mito, es decisión de estilo), con las
+naves chinas y futuras. Idea para el cambio: la Luna gira media vuelta en 1-2 s
+al pulsar el botón y la luz cambia a la vez. Protagonista posible de la cara
+oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
+
+### Cara visible — PRIMER BOCETO APROBADO (16-sep-2026)
+
+- Generador: `logo-files/generar-luna.py` (Python estándar, ~9 s). Imagen
+  estática 600x600 (radio 292,5, como la Tierra), norte arriba, de frente.
+  `python3 generar-luna.py --derecha --zoom` saca la aprobada:
+  `prototipo-luna/luna-visible-derecha.png` (+ zoom x4 del centro).
+- Banco de pruebas: `logo-files/prototipo-luna/` (servir la raíz del repo con
+  `python3 -m http.server 4400`, abrir `/logo-files/prototipo-luna/`).
+- Fuentes (NASA, dominio público, en `logo-files/luna-fuentes/`, gitignored,
+  ~70 MB; los `curl` están en el docstring del script): relieve LOLA
+  `ldem_16.img` (16 px/grado) y mosaico de color LROC WAC 4k del CGI Moon Kit
+  (SVS 4720), pasado a BMP con `sips`.
+- Aprobado por el usuario:
+  - **Luz por la derecha** (`LADO` = 1), fase 38°, subida 14°. Por la
+    izquierda la sombra tapaba el Mar de las Crisis.
+  - **Penumbra original** (`TERM_A/B` = -0,01/0,30). Se probó una más corta
+    (0,15) y la descartó: "la de antes está bien".
+  - Colores por albedo en 6 materiales (`ALBEDO`: mares gris algo frío,
+    tierras altas gris algo cálido, rayos claros) con las rampas de la Tierra.
+  - Cráteres: relieve con exageración 3,2, sombras proyectadas cerca del
+    terminador y **limpieza** (`DERIV_DEG` 0,22, `ALB_BLUR` 3, `LIMPIAR` 2:
+    sin ella salía grano de foto).
+  - **Relieve rasante** (`RELIEVE_ELEV_MAX` = 30°): con el sol alto los
+    cráteres del centro salían blandos, de un solo tono (82 % de píxeles sin
+    escalón de relieve). Para sombrear el relieve el sol no sube de 30°
+    (mismo azimut); luz general y sombras proyectadas siguen con el sol real.
+- En `prototipo-luna/` quedan también descartes para comparar:
+  `luna-visible.png` (luz por la izquierda) y `…-penumbra-corta.png`, ambos
+  ANTERIORES al relieve rasante.
+
+### Siguiente
+
+1. Cara oculta: luz rasante / media luz, más oscura, cuenca Aitken.
+2. Transición entre caras (media vuelta) → pasar a `<canvas>` como la Tierra
+   (hoy es un PNG estático) o dos PNG + animación; decidir entonces.
+3. Página nueva en Astro y enlace desde el icono de la Luna del hero (solo
+   sale en tema oscuro: decidir si el sol también enlaza).
+4. Después: chapas de alunizajes (lista de candidatos abajo).
 
 ## Candidatos a alunizaje/sonda (repaso del 16-sep-2026, sin decidir aún)
 

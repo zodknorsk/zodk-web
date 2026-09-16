@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: Luna, cara visible</title>
+<!--
+  Banco de pruebas de la Luna (Proyecto Luna). Imágenes de generar-luna.py.
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-luna/
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a url(../../public/zodk-estrellas.png);
+    overflow: hidden; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #luna { position: absolute; left: 50%; top: 50%; height: min(94vh, 94vw); aspect-ratio: 1;
+    transform: translate(-50%, -50%); image-rendering: pixelated; }
+  #luna.zoom { height: min(94vh, 94vw); }
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 2; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+  button.on { background: #fff; outline: 2px solid #9fd3e6; }
+</style>
+</head>
+<body>
+<img id="luna" alt="">
+<div id="panel">
+  luz: <button data-f="luna-visible-derecha">A · por la derecha</button>
+  <button data-f="luna-visible-derecha-penumbra-corta">A2 · derecha, penumbra corta</button>
+  <button data-f="luna-visible">B · por la izquierda</button><br>
+  vista: <button data-z="0">disco entero</button> <button data-z="1">zoom x4 del centro (píxel real; A y B)</button>
+</div>
+<script>
+  const img = document.getElementById("luna");
+  let f = "luna-visible-derecha", z = "0";
+  const pinta = () => {
+    img.src = f + (z === "1" ? "-zoom" : "") + ".png?" + Date.now();
+    document.querySelectorAll("button").forEach(b =>
+      b.classList.toggle("on", b.dataset.f === f || b.dataset.z === z));
+  };
+  document.querySelectorAll("button").forEach(b => b.onclick = () => {
+    if (b.dataset.f) f = b.dataset.f; else z = b.dataset.z;
+    pinta();
+  });
+  pinta();
+</script>
+</body>
+</html>

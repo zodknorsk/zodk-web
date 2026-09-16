@@ -37,3 +37,7 @@ logo-files/zodk-estrellas.png
 # Se quitan de aquí y se commitean cuando el usuario dé el visto bueno.
 public/zodk-tb3.svg
 public/zodk-tb3-noche.svg
+
+# Proyecto Luna: fuentes de la NASA (~70 MB, se re-descargan con los curl de
+# logo-files/generar-luna.py) y la caché de su pasada lenta.
+logo-files/luna-fuentes/

@@ -1,0 +1,461 @@
+#!/usr/bin/env python3
+"""La Luna en pixel art (Proyecto Luna, rama moon-project) — PRIMER BOCETO.
+
+Cara visible tal como se ve desde la Tierra: disco completo, norte arriba, sin
+inclinación ni giro. Mismo lenguaje que la Tierra del hero
+(generar-planeta-hero.py): proyección ortográfica, luz en escalones lisos de
+1/LIGHT_SUB, rampas de color con cambio de tono (sombras frías), relieve en
+escalones enteros de rampa.
+
+Fuentes (NASA, dominio público; pesadas y sin trackear, en luna-fuentes/):
+  - Relieve: LOLA/LRO, LDEM_16 (16 px/grado, int16 en metros x 0,5):
+      curl -sSLO https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.img
+  - Claros/oscuros (mares y tierras altas): mosaico de color LROC WAC del
+    "CGI Moon Kit" (SVS 4720), 4096x2048, centrado en 0° de longitud:
+      curl -sSLO https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif
+      sips -s format bmp lroc_color_poles_4k.tif --out lroc_4k.bmp
+
+Uso:
+    python3 generar-luna.py              # luz por la izquierda -> prototipo-luna/luna-visible.png
+    python3 generar-luna.py --derecha    # luz por la derecha   -> prototipo-luna/luna-visible-derecha.png
+    python3 generar-luna.py --penumbra-corta   # paso luz/sombra más seco (TERM_B 0,15)
+    python3 generar-luna.py --zoom       # además, un recorte ampliado x4 para revisar los píxeles
+    python3 generar-luna.py --recalc     # rehace la pasada lenta (geometría/luz)
+
+Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
+http://127.0.0.1:4400/logo-files/prototipo-luna/
+
+La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
+luna-fuentes/cache-visible.bin; si solo cambian paleta o umbrales de albedo, no
+se repite.
+"""
+import array
+import colorsys
+import math
+import os
+import pickle
+import sys
+
+from png8 import write_rgba
+
+AQUI = os.path.dirname(os.path.abspath(__file__))
+FUENTES = os.path.join(AQUI, "luna-fuentes")
+SALIDA = os.path.join(AQUI, "prototipo-luna")
+
+
+def smooth(e0, e1, x):
+    t = max(0.0, min(1.0, (x - e0) / (e1 - e0)))
+    return t * t * (3.0 - 2.0 * t)
+
+
+def mix(a, b, t):
+    t = max(0.0, min(1.0, t))
+    return tuple(a[i] + (b[i] - a[i]) * t for i in range(3))
+
+
+# ------------------------------------------------------------ geometría
+SIZE    = 600          # lienzo cuadrado, en px (el de la Tierra: 600 de ancho)
+RADIUS  = 292.5        # radio del disco, en px (el mismo que la Tierra)
+LAT0, LON0 = 0.0, 0.0  # punto sub-terrestre: la cara visible de frente
+SUPER   = 3            # submuestras por lado de píxel (3x3) para relieve y albedo
+LIMB_AA = 1.3          # semiancho del suavizado del borde del disco (px)
+
+# Luz: casi llena, algo ladeada desde arriba a la izquierda (como el sol de la
+# Tierra en el hero). FASE = ángulo sol-Luna-observador: 0 = llena de frente
+# (plana, sin relieve), 90 = media luna.
+FASE    = 38.0         # grados
+SOL_ARR = 14.0         # cuánto sube la luz hacia el norte (grados)
+LADO    = -1           # de dónde viene la luz: -1 izquierda (oeste), +1 derecha (este)
+
+# Terminador: la Luna no tiene atmósfera, así que es mucho más seco que el de
+# la Tierra (allí TERM_A/B = -0,34/0,60).
+TERM_A, TERM_B = -0.01, 0.30
+NOCHE   = 0.07         # brillo de la cara sin sol (luz cenicienta de la Tierra)
+LIMB_K  = 0.10         # oscurecimiento del borde (la Luna llena apenas lo tiene)
+
+RELIEVE_EXAG = 3.2     # exageración de pendientes para el sombreado
+RELIEVE_K    = 1.25    # >1: más escalones entre ladera al sol y en sombra
+RELIEVE_MIN, RELIEVE_MAX = -6, 3
+# Con el sol alto (centro del disco y la zona a su derecha) las laderas apenas
+# cambian de brillo y los cráteres salen blandos, de un solo tono. Para el
+# SOMBREADO del relieve (no para la luz general ni las sombras proyectadas) la
+# altura del sol se limita a este valor: mismo azimut, luz más rasante.
+RELIEVE_ELEV_MAX = 30.0  # grados (aprobado); None = sol real en todas partes
+SOMBRA_K     = -9      # escalones que baja una sombra proyectada (no llega a negro)
+SOMBRA_ELEV  = 22.0    # por encima de esta altura del sol (grados) no se buscan sombras
+
+LUNA_R = 1737400.0     # radio lunar de referencia (m)
+
+# Limpieza de pixel art: a 600 px un píxel son ~9 km, así que los cráteres
+# pequeños y el grano del mosaico salían como píxeles sueltos (parecía una foto
+# con ruido). Se suaviza lo que queda por debajo de ~2 px y se quitan los
+# píxeles aislados al final.
+DERIV_DEG = 0.22       # paso de la derivada del relieve, en grados (~1 px en el centro)
+ALB_BLUR  = 3          # radio (px del mosaico, ~0,09° cada uno) del suavizado del albedo
+LIMPIAR   = 2          # pasadas de quitar píxeles aislados (0 = sin limpieza)
+
+# ------------------------------------------------ rampas con cambio de tono
+# Igual que en la Tierra: cada escalón hacia la sombra oscurece y gira el tono
+# hacia azul-violeta; hacia la luz, hacia amarillo y menos saturado.
+STEP        = 0.84
+LIGHT_SUB   = 3
+_LNSTEP     = -math.log(STEP)
+HUE_SHADOW  = 250.0 / 360.0
+HUE_LIGHT   = 55.0 / 360.0
+HUE_STEP    = 6.0 / 360.0
+HUE_MAX     = 26.0 / 360.0
+SAT_SHADOW  = 0.03
+SAT_SH_MAX  = 0.10
+SAT_LIGHT   = 0.06
+
+SPACE = (0x05, 0x06, 0x0a)
+
+# Materiales por albedo (valor del mosaico LROC, 0-255; en la cara visible los
+# mares se agrupan en torno a 80 y las tierras altas en torno a 145).
+ALBEDO = [  # (hasta, color a plena luz)
+    (76,  (0x5a, 0x5d, 0x66)),   # mar oscuro (Tranquilidad, Serenidad…)
+    (100, (0x6d, 0x70, 0x77)),   # mar
+    (124, (0x86, 0x87, 0x8a)),   # borde de mar / tierras bajas
+    (160, (0xa3, 0xa1, 0x9d)),   # tierras altas
+    (186, (0xbd, 0xba, 0xb3)),   # tierras altas claras
+    (256, (0xda, 0xd7, 0xcf)),   # rayos y eyecta fresca (Tycho, Copérnico…)
+]
+
+
+def ramp(col, k):
+    h, s, v = colorsys.rgb_to_hsv(col[0] / 255.0, col[1] / 255.0, col[2] / 255.0)
+    if k < 0:
+        if s < 0.12:
+            h = 225.0 / 360.0                   # grises: sombra fría, no rosada
+        amt = min(HUE_MAX, -k * HUE_STEP)
+        if 60.0 / 360.0 <= h <= HUE_SHADOW:
+            h = min(h + amt, HUE_SHADOW)
+        s = min(1.0, s + min(SAT_SH_MAX, -k * SAT_SHADOW))
+        v *= STEP ** -k
+    elif k > 0:
+        d = (HUE_LIGHT - h + 0.5) % 1.0 - 0.5
+        amt = min(HUE_MAX, k * HUE_STEP)
+        h = HUE_LIGHT if abs(d) <= amt else (h + math.copysign(amt, d)) % 1.0
+        s = max(0.0, s - k * SAT_LIGHT)
+        v = min(1.0, v / STEP ** k)
+    r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    return (r * 255.0, g * 255.0, b * 255.0)
+
+
+# --------------------------------------------------------------- fuentes
+def cargar():
+    dem = array.array("h")
+    with open(os.path.join(FUENTES, "ldem_16.img"), "rb") as fh:
+        dem.frombytes(fh.read())
+    if sys.byteorder != "little":
+        dem.byteswap()
+    with open(os.path.join(FUENTES, "lroc_4k.bmp"), "rb") as fh:
+        bmp = fh.read()
+    off = int.from_bytes(bmp[10:14], "little")
+    alb = bmp[off + 1::3]                       # canal verde (el mapa es casi gris)
+    return dem, _desenfocar(alb, ALB_W, ALB_H, ALB_BLUR)
+
+
+def _desenfocar(src, w, h, rad):
+    """Media móvil separable (horizontal circular, vertical con borde)."""
+    if rad <= 0:
+        return src
+    n = 2 * rad + 1
+    tmp = array.array("f", bytes(4 * w * h))
+    for r in range(h):
+        b = r * w
+        fila = src[b:b + w]
+        acc = sum(fila[-rad:]) + sum(fila[:rad + 1])
+        for c in range(w):
+            tmp[b + c] = acc / n
+            acc += fila[(c + rad + 1) % w] - fila[(c - rad) % w]
+    out = array.array("f", bytes(4 * w * h))
+    for c in range(w):
+        col = [tmp[r * w + c] for r in range(h)]
+        acc = col[0] * rad + sum(col[:rad + 1])
+        for r in range(h):
+            out[r * w + c] = acc / n
+            acc += col[min(h - 1, r + rad + 1)] - col[max(0, r - rad)]
+    return out
+
+
+DEM_W, DEM_H, DEM_PPD = 5760, 2880, 16
+ALB_W, ALB_H = 4096, 2048
+
+
+def hacer_muestreo(dem, alb):
+    def altura(lat, lon):
+        """Metros sobre la esfera de referencia (bilineal). lon en grados, cualquier rango."""
+        fr = (90.0 - lat) * DEM_PPD - 0.5
+        fc = (lon % 360.0) * DEM_PPD - 0.5
+        r0 = math.floor(fr); c0 = math.floor(fc)
+        tr = fr - r0; tc = fc - c0
+        r0 = 0 if r0 < 0 else DEM_H - 1 if r0 >= DEM_H else r0
+        r1 = r0 + 1 if r0 + 1 < DEM_H else r0
+        c0 %= DEM_W
+        c1 = (c0 + 1) % DEM_W
+        b0, b1 = r0 * DEM_W, r1 * DEM_W
+        a = dem[b0 + c0] * (1 - tc) + dem[b0 + c1] * tc
+        b = dem[b1 + c0] * (1 - tc) + dem[b1 + c1] * tc
+        return (a * (1 - tr) + b * tr) * 0.5
+
+    def albedo(lat, lon):
+        fr = (90.0 - lat) / 180.0 * ALB_H - 0.5
+        fc = ((lon + 180.0) % 360.0) / 360.0 * ALB_W - 0.5
+        r0 = math.floor(fr); c0 = math.floor(fc)
+        tr = fr - r0; tc = fc - c0
+        r0 = 0 if r0 < 0 else ALB_H - 1 if r0 >= ALB_H else r0
+        r1 = r0 + 1 if r0 + 1 < ALB_H else r0
+        c0 %= ALB_W
+        c1 = (c0 + 1) % ALB_W
+        b0, b1 = r0 * ALB_W, r1 * ALB_W
+        a = alb[b0 + c0] * (1 - tc) + alb[b0 + c1] * tc
+        b = alb[b1 + c0] * (1 - tc) + alb[b1 + c1] * tc
+        return a * (1 - tr) + b * tr
+
+    return altura, albedo
+
+
+# ---------------------------------------------------- pasada lenta: geometría
+def sol():
+    f, a = math.radians(FASE), math.radians(SOL_ARR)
+    # coordenadas de vista: x derecha, y arriba, z hacia el observador
+    x = LADO * math.sin(f) * math.cos(a)
+    y = math.sin(f) * math.sin(a)
+    z = math.cos(f)
+    n = math.sqrt(x * x + y * y + z * z)
+    return x / n, y / n, z / n
+
+
+def pasada_lenta():
+    dem, alb = cargar()
+    altura, albedo = hacer_muestreo(dem, alb)
+    SX, SY, SZ = sol()
+    d_deg = DERIV_DEG
+    d_m = math.radians(d_deg) * LUNA_R
+    sl0, cl0 = math.sin(math.radians(LAT0)), math.cos(math.radians(LAT0))
+    paso_sombra = 1.0 / DEM_PPD                  # grados por paso al buscar sombras
+    paso_m = math.radians(paso_sombra) * LUNA_R
+    subs = [((i + 0.5) / SUPER) for i in range(SUPER)]
+
+    out = []                                     # por píxel: None o (albedo, lam_esfera, k_relieve, sombra, dc)
+    for sy in range(SIZE):
+        fila = []
+        for sx in range(SIZE):
+            cx = (sx + 0.5 - SIZE / 2.0) / RADIUS
+            cy = -(sy + 0.5 - SIZE / 2.0) / RADIUS
+            dc = math.sqrt(cx * cx + cy * cy)
+            if dc > 1.0 + LIMB_AA / RADIUS:
+                fila.append(None)
+                continue
+            a_acc = 0.0
+            n_acc = [0.0, 0.0, 0.0]
+            cnt = 0
+            lat_c = lon_c = None
+            for oy in subs:
+                for ox in subs:
+                    x = (sx + ox - SIZE / 2.0) / RADIUS
+                    y = -(sy + oy - SIZE / 2.0) / RADIUS
+                    rr = x * x + y * y
+                    if rr >= 1.0:
+                        continue
+                    z = math.sqrt(1.0 - rr)
+                    # rotar al sistema de la Luna (solo inclinación en latitud; LON0 se suma)
+                    yy = y * cl0 + z * sl0
+                    zz = -y * sl0 + z * cl0
+                    lat = math.degrees(math.asin(max(-1.0, min(1.0, yy))))
+                    lon = math.degrees(math.atan2(x, zz)) + LON0
+                    a_acc += albedo(lat, lon)
+                    # normal local desde el relieve
+                    cl = max(0.02, math.cos(math.radians(lat)))
+                    he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
+                    hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
+                    ne, nn, nu = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG, 1.0
+                    ln = math.sqrt(ne * ne + nn * nn + 1.0)
+                    ne, nn, nu = ne / ln, nn / ln, nu / ln
+                    # base local (E, N, U) en coordenadas de vista
+                    Ux, Uy, Uz = x, y, z
+                    # eje de giro de la Luna en vista (con LAT0 = 0 es (0, 1, 0))
+                    ax, ay, az = 0.0, cl0, -sl0
+                    # E = eje x U, normalizado
+                    Ex, Ey, Ez = ay * Uz - az * Uy, az * Ux - ax * Uz, ax * Uy - ay * Ux
+                    le = math.sqrt(Ex * Ex + Ey * Ey + Ez * Ez) or 1e-9
+                    Ex, Ey, Ez = Ex / le, Ey / le, Ez / le
+                    Nx, Ny, Nz = Uy * Ez - Uz * Ey, Uz * Ex - Ux * Ez, Ux * Ey - Uy * Ex
+                    n_acc[0] += ne * Ex + nn * Nx + nu * Ux
+                    n_acc[1] += ne * Ey + nn * Ny + nu * Uy
+                    n_acc[2] += ne * Ez + nn * Nz + nu * Uz
+                    cnt += 1
+                    if lat_c is None or (abs(ox - 0.5) < 0.2 and abs(oy - 0.5) < 0.2):
+                        lat_c, lon_c = lat, lon
+                        Ec, Nc, Uc = (Ex, Ey, Ez), (Nx, Ny, Nz), (Ux, Uy, Uz)
+            if cnt == 0:
+                # anillo de suavizado exterior: sin superficie, solo borde
+                fila.append((None, 0.0, 0, False, dc))
+                continue
+            A = a_acc / cnt
+            nx, ny, nz = n_acc
+            ln = math.sqrt(nx * nx + ny * ny + nz * nz) or 1.0
+            nx, ny, nz = nx / ln, ny / ln, nz / ln
+            ux, uy, uz = Uc
+            lam_s = ux * SX + uy * SY + uz * SZ     # luz sobre la esfera lisa
+            lam_l = nx * SX + ny * SY + nz * SZ     # luz sobre el relieve
+            if lam_s > 0.02:
+                ratio = max(lam_l, 0.004) / lam_s
+                if RELIEVE_ELEV_MAX is not None and lam_s > math.sin(math.radians(RELIEVE_ELEV_MAX)):
+                    ex_, ey_, ez_ = Ec
+                    nx_, ny_, nz_ = Nc
+                    se = SX * ex_ + SY * ey_ + SZ * ez_
+                    sn = SX * nx_ + SY * ny_ + SZ * nz_
+                    ls = math.sqrt(se * se + sn * sn) or 1.0
+                    ch = math.cos(math.radians(RELIEVE_ELEV_MAX)) / ls
+                    sv = math.sin(math.radians(RELIEVE_ELEV_MAX))
+                    Lx = ch * (se * ex_ + sn * nx_) + sv * ux
+                    Ly = ch * (se * ey_ + sn * ny_) + sv * uy
+                    Lz = ch * (se * ez_ + sn * nz_) + sv * uz
+                    ratio = max(nx * Lx + ny * Ly + nz * Lz, 0.004) / sv
+                k_rel = round(math.log(ratio) / _LNSTEP * RELIEVE_K)
+                k_rel = max(RELIEVE_MIN, min(RELIEVE_MAX, k_rel))
+            else:
+                k_rel = 0
+            # sombra proyectada: marcha sobre el relieve hacia el sol
+            sombra = False
+            if lam_l <= 0.0 and lam_s > 0.0:
+                sombra = True
+            elev_sol = math.degrees(math.asin(max(-1.0, min(1.0, lam_s))))
+            if not sombra and 0.0 < elev_sol < SOMBRA_ELEV:
+                se = SX * Ec[0] + SY * Ec[1] + SZ * Ec[2]
+                sn = SX * Nc[0] + SY * Nc[1] + SZ * Nc[2]
+                ls = math.sqrt(se * se + sn * sn) or 1.0
+                se, sn = se / ls, sn / ls
+                tan_e = math.tan(math.radians(elev_sol))
+                h0 = altura(lat_c, lon_c)
+                cl = max(0.05, math.cos(math.radians(lat_c)))
+                # hasta donde podría llegar la sombra del pico más alto (~6 km)
+                n_pasos = min(160, int(6000.0 / max(tan_e, 0.02) / paso_m) + 1)
+                for i in range(1, n_pasos + 1):
+                    t = i * paso_sombra
+                    D = i * paso_m
+                    h = altura(lat_c + sn * t, lon_c + se * t / cl) - D * D / (2 * LUNA_R)
+                    if h > h0 + D * tan_e:
+                        sombra = True
+                        break
+            fila.append((A, lam_s, k_rel, sombra, dc))
+        out.append(fila)
+        if sy % 50 == 0:
+            print(f"  fila {sy}/{SIZE}", flush=True)
+    return out
+
+
+# --------------------------------------------------------- pasada rápida: color
+def _limpiar(grid):
+    """Un píxel cuyos 4 vecinos coinciden entre sí (y no con él) toma su valor;
+    uno con 3 de 4 vecinos iguales y distintos a él, también."""
+    out = [fila[:] for fila in grid]
+    for y in range(1, SIZE - 1):
+        for x in range(1, SIZE - 1):
+            v = grid[y][x]
+            if v is None:
+                continue
+            vec = (grid[y - 1][x], grid[y + 1][x], grid[y][x - 1], grid[y][x + 1])
+            if None in vec or v in vec:
+                continue
+            for cand in vec:
+                if vec.count(cand) >= 3:
+                    out[y][x] = cand
+                    break
+    return out
+
+
+def colorear(datos):
+    _cache = {}
+    filas = []
+    r_in = 1.0 - LIMB_AA / RADIUS
+    r_out = 1.0 + LIMB_AA / RADIUS
+    # 1) material y escalón de rampa por píxel (enteros/tercios: se pueden limpiar)
+    grid = [[None] * SIZE for _ in range(SIZE)]
+    k_noche = math.log(NOCHE) / _LNSTEP
+    for y, fila in enumerate(datos):
+        for x, p in enumerate(fila):
+            if p is None or p[0] is None:
+                continue
+            A, lam_s, k_rel, sombra, dc = p
+            m = 0
+            while m < len(ALBEDO) - 1 and A >= ALBEDO[m][0]:
+                m += 1
+            bright = NOCHE + (1.0 - NOCHE) * smooth(TERM_A, TERM_B, lam_s)
+            bright *= 1.0 - LIMB_K * smooth(0.75, 1.0, dc)
+            kg = math.floor(math.log(max(bright, 1e-3)) / _LNSTEP * LIGHT_SUB + 0.5) / LIGHT_SUB
+            if lam_s > 0.0:
+                k = max(kg + (SOMBRA_K if sombra else k_rel), k_noche)   # la sombra no pasa de la luz cenicienta
+            else:
+                k = kg
+            grid[y][x] = (m, round(k * LIGHT_SUB))
+    for _ in range(LIMPIAR):
+        grid = _limpiar(grid)
+    # 2) color
+    for y, fila in enumerate(datos):
+        row = bytearray(SIZE * 4)
+        for i, p in enumerate(fila):
+            if p is None:
+                continue
+            dc = p[4]
+            g = grid[y][i]
+            if g is None:
+                col = SPACE
+            else:
+                col = _cache.get(g)
+                if col is None:
+                    col = _cache[g] = ramp(ALBEDO[g[0]][1], g[1] / LIGHT_SUB)
+            if dc > r_in:
+                col = mix(SPACE, col, 1.0 - smooth(r_in, r_out, dc))
+            j = i * 4
+            row[j:j + 4] = bytes((max(0, min(255, round(col[0]))),
+                                  max(0, min(255, round(col[1]))),
+                                  max(0, min(255, round(col[2]))), 255))
+        filas.append(bytes(row))
+    return filas
+
+
+def main():
+    os.makedirs(SALIDA, exist_ok=True)
+    cache = os.path.join(FUENTES, "cache-visible.bin")
+    global LADO, TERM_B
+    nombre = "luna-visible"
+    if "--derecha" in sys.argv:
+        LADO, nombre = 1, "luna-visible-derecha"
+    if "--penumbra-corta" in sys.argv:          # no toca la pasada lenta: solo el color
+        TERM_B = 0.15
+        nombre += "-penumbra-corta"
+    firma = (SIZE, RADIUS, LAT0, LON0, SUPER, FASE, SOL_ARR, LADO, DERIV_DEG, ALB_BLUR, RELIEVE_ELEV_MAX, RELIEVE_EXAG, RELIEVE_K,
+             RELIEVE_MIN, RELIEVE_MAX, SOMBRA_ELEV)
+    datos = None
+    if "--recalc" not in sys.argv and os.path.exists(cache):
+        with open(cache, "rb") as fh:
+            f, d = pickle.load(fh)
+        if f == firma:
+            datos = d
+    if datos is None:
+        print("pasada lenta (proyección, relieve, sombras)…")
+        datos = pasada_lenta()
+        with open(cache, "wb") as fh:
+            pickle.dump((firma, datos), fh)
+    filas = colorear(datos)
+    ruta = os.path.join(SALIDA, nombre + ".png")
+    write_rgba(ruta, SIZE, SIZE, filas)
+    print("->", ruta)
+    if "--zoom" in sys.argv:                    # recorte ampliado x4 (vecino más próximo) para revisar píxeles
+        x0, y0, n, z = 225, 225, 150, 4       # centro del disco
+        zfilas = []
+        for fila in filas[y0:y0 + n]:
+            fz = bytearray()
+            for i in range(x0, x0 + n):
+                fz += fila[i * 4:i * 4 + 4] * z
+            zfilas += [bytes(fz)] * z
+        rz = os.path.join(SALIDA, nombre + "-zoom.png")
+        write_rgba(rz, n * z, n * z, zfilas)
+        print("->", rz)
+
+
+if __name__ == "__main__":
+    main()
