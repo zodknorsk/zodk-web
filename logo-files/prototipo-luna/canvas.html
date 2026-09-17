@@ -6,7 +6,7 @@
 <title>Prueba: Luna en canvas</title>
 <!--
   Banco de pruebas de la media vuelta de la Luna (src/scripts/luna.js), con
-  los datos de: python3 logo-files/generar-luna.py --canvas logo-files/prototipo-luna/canvas/
+  los datos de la web: python3 logo-files/generar-luna.py --canvas public/luna/
   Servir desde la raíz del repo:
     cd ~/Documents/zodk-web && python3 -m http.server 4400
   y abrir http://127.0.0.1:4400/logo-files/prototipo-luna/canvas.html
@@ -35,15 +35,15 @@ import { montarLuna } from "../../src/scripts/luna.js";
 
 const estado = document.getElementById("estado");
 const luna = await montarLuna(document.getElementById("luna"), {
-  base: "canvas/",
+  base: "../../public/luna/",
   alTerminar: (c) => { estado.textContent = `cara ${c}`; },
 });
 estado.textContent = `cara ${luna.cara()}`;
 window.luna = luna;                    // para probar desde la consola: luna.fotograma(0.5)
 document.getElementById("girar").onclick = () => luna.girar();
 document.getElementById("png").onclick = () => luna.pintarCara(luna.cara());
-document.getElementById("real").onclick = () => {
-  document.getElementById("ms").textContent = `(${luna.medir().toFixed(1)} ms por fotograma)`;
+document.getElementById("real").onclick = async () => {
+  document.getElementById("ms").textContent = `(${(await luna.medir()).toFixed(1)} ms por fotograma)`;
 };
 </script>
 </body>

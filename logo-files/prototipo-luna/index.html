@@ -34,9 +34,18 @@
   visible: <button data-f="luna-visible-derecha">A · por la derecha (aprobada)</button>
   <button data-f="luna-visible-derecha-penumbra-corta">A2 · derecha, penumbra corta</button>
   <button data-f="luna-visible">B · por la izquierda</button><br>
+  visible, mares: <button data-f="luna-visible-derecha-valles">V1 · mares sin manchas</button>
+  <button data-f="luna-visible-derecha-valles-rm2.5">V2 · V1 + relieve en los mares</button>
+  <button data-f="luna-visible-derecha-valles-rm1.8">V2a · menos relieve</button>
+  <button data-f="luna-visible-derecha-valles-rm2.5-sm2">V2b · mismo relieve, más suave</button><br>
   oculta: <button data-f="luna-oculta-f65">O1 · de frente, fase 65°</button>
   <button data-f="luna-oculta-sur-f65">O2 · inclinada al sur, fase 65°</button>
   <button data-f="luna-oculta-sur-f90">O3 · inclinada al sur, media luz (90°)</button><br>
+  oculta oscura (con los mares de la V2): <button data-f="luna-oculta-sur-f65-valles-rm2.5">O2 · sin oscurecer</button>
+  <button data-f="luna-oculta-sur-f65-valles-rm2.5-e0.7">D1 · luz 70 %</button>
+  <button data-f="luna-oculta-sur-f65-valles-rm2.5-e0.5">D2 · luz 50 %</button>
+  <button data-f="luna-oculta-sur-f65-valles-rm2.5-e0.6-frio0.5">D3 · luz 60 %, frío suave</button>
+  <button data-f="luna-oculta-sur-f65-valles-rm2.5-e0.6-frio1">D4 · luz 60 %, frío</button><br>
   vista: <button data-z="0">disco entero</button> <button data-z="1">zoom x4 del centro (píxel real)</button>
   <button id="bm">marcas: Aitken y Chang'e (solo oculta)</button>
 </div>
@@ -80,7 +89,7 @@
       sitio("Chang'e 4", -45.44, 177.59) + sitio("Chang'e 6", -41.64, 206.01);
   };
   const pinta = () => {
-    img.src = f + (z === "1" ? "-zoom" : "") + ".png?" + Date.now();
+    img.src = f + (z === "1" && !/-e0|-frio/.test(f) ? "-zoom" : "") + ".png?" + Date.now();
     document.querySelectorAll("button").forEach(b =>
       b.classList.toggle("on", b.dataset.f === f || b.dataset.z === z || (b.id === "bm" && marcas)));
     dibujaMarcas();

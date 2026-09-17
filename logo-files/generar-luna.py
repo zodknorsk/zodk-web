@@ -128,6 +128,24 @@ ALBEDO = [  # (hasta, color a plena luz)
     (186, (0xbd, 0xba, 0xb3)),   # tierras altas claras
     (256, (0xda, 0xd7, 0xcf)),   # rayos y eyecta fresca (Tycho, Copérnico…)
 ]
+# Pruebas del 17-sep-2026 (la cara visible "parece de poca resolución"): en la
+# cara visible los mares se amontonan en 80-89 y el corte de 76 los partía en
+# manchas de dos grises casi iguales. Umbrales en los valles del histograma:
+# un solo "mar" de 66 a 104 (con "mar oscuro" solo para lo muy oscuro).
+ALBEDO_VALLE = [66, 104, 128, 160, 186, 256]
+# Relieve extra en los mares (llanos: sin esto no tienen bordes nítidos, solo
+# manchas): multiplica la exageración donde el albedo es de mar, con rampa
+# entre MARES_A y MARES_B.
+RELIEVE_MARES = 1.0
+MARES_A, MARES_B = 100, 120
+# Paso de la derivada del relieve dentro de los mares, en veces DERIV_DEG: más
+# largo = relieve más suave (quita el grano que sale al exagerar, deja las
+# arrugas de lava, que miden varios km).
+MARES_DERIV = 1.0
+# Cara oculta más oscura (bocetos 17-sep-2026): EXPOSICION multiplica toda la
+# luz (1 = como la visible); FRIO (0-1) enfría los colores hacia azul.
+EXPOSICION = 1.0
+FRIO = 0.0
 
 
 def ramp(col, k):
@@ -147,6 +165,8 @@ def ramp(col, k):
         s = max(0.0, s - k * SAT_LIGHT)
         v = min(1.0, v / STEP ** k)
     r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    if FRIO:
+        r, g, b = r * (1 - 0.10 * FRIO), g * (1 - 0.03 * FRIO), min(1.0, b * (1 + 0.10 * FRIO))
     return (r * 255.0, g * 255.0, b * 255.0)
 
 
@@ -273,12 +293,23 @@ def pasada_lenta():
                     zz = -y * sl0 + z * cl0
                     lat = math.degrees(math.asin(max(-1.0, min(1.0, yy))))
                     lon = math.degrees(math.atan2(x, zz)) + LON0
-                    a_acc += albedo(lat, lon)
+                    a_acc += albedo(lat, lon)   # (se vuelve a leer abajo si RELIEVE_MARES; da igual, es barato)
                     # normal local desde el relieve
                     cl = max(0.02, math.cos(math.radians(lat)))
                     he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
                     hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
-                    ne, nn, nu = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG, 1.0
+                    exag = RELIEVE_EXAG
+                    if RELIEVE_MARES != 1.0 or MARES_DERIV != 1.0:
+                        t_mar = 1.0 - smooth(MARES_A, MARES_B, albedo(lat, lon))   # 1 = mar
+                        exag *= 1.0 + (RELIEVE_MARES - 1.0) * t_mar
+                        if MARES_DERIV != 1.0 and t_mar > 0.0:
+                            d2 = d_deg * MARES_DERIV
+                            d2_m = d_m * MARES_DERIV
+                            he2 = (altura(lat, lon + d2 / cl) - altura(lat, lon - d2 / cl)) / (2 * d2_m)
+                            hn2 = (altura(lat + d2, lon) - altura(lat - d2, lon)) / (2 * d2_m)
+                            he += (he2 - he) * t_mar
+                            hn += (hn2 - hn) * t_mar
+                    ne, nn, nu = -he * exag, -hn * exag, 1.0
                     ln = math.sqrt(ne * ne + nn * nn + 1.0)
                     ne, nn, nu = ne / ln, nn / ln, nu / ln
                     # base local (E, N, U) en coordenadas de vista
@@ -383,7 +414,7 @@ def colorear(datos):
     r_out = 1.0 + LIMB_AA / RADIUS
     # 1) material y escalón de rampa por píxel (enteros/tercios: se pueden limpiar)
     grid = [[None] * SIZE for _ in range(SIZE)]
-    k_noche = math.log(NOCHE) / _LNSTEP
+    k_noche = math.log(NOCHE * EXPOSICION) / _LNSTEP
     for y, fila in enumerate(datos):
         for x, p in enumerate(fila):
             if p is None or p[0] is None:
@@ -393,7 +424,7 @@ def colorear(datos):
             while m < len(ALBEDO) - 1 and A >= ALBEDO[m][0]:
                 m += 1
             bright = NOCHE + (1.0 - NOCHE) * smooth(TERM_A, TERM_B, lam_s)
-            bright *= 1.0 - LIMB_K * smooth(0.75, 1.0, dc)
+            bright *= (1.0 - LIMB_K * smooth(0.75, 1.0, dc)) * EXPOSICION
             kg = math.floor(math.log(max(bright, 1e-3)) / _LNSTEP * LIGHT_SUB + 0.5) / LIGHT_SUB
             if lam_s > 0.0:
                 k = max(kg + (SOMBRA_K if sombra else k_rel), k_noche)   # la sombra no pasa de la luz cenicienta
@@ -434,18 +465,30 @@ def colorear(datos):
 #                  del relieve (este, norte; ya exagerada) de -1..1 a 0..255
 #   luna-lut.png   color de cada material (fila) por escalón de luz (columna)
 #   luna-datos.json  constantes de luz/geometría y las dos caras
-CARAS = {   # como las aprobadas (visible: --derecha; oculta: --oculta --sur)
-    "visible": {"lat0": 0.0, "lon0": 0.0, "fase": 38.0, "lado": 1, "png": "luna-visible-derecha.png"},
-    "oculta": {"lat0": -30.0, "lon0": 180.0, "fase": 65.0, "lado": 1, "png": "luna-oculta-sur-f65.png"},
+# Las aprobadas (17-sep-2026). Las dos llevan los mares de la V2 (--valles
+# --relieve-mares 2.5: el mapa del giro es uno solo para las dos caras).
+#   visible: --derecha --valles --relieve-mares 2.5                         (V2)
+#   oculta:  --oculta --sur --valles --relieve-mares 2.5 --exposicion 0.6 --frio 0.5   (D3)
+CARAS = {
+    "visible": {"lat0": 0.0, "lon0": 0.0, "fase": 38.0, "lado": 1, "exposicion": 1.0, "frio": 0.0,
+                "png": "luna-visible-derecha-valles-rm2.5.png"},
+    "oculta": {"lat0": -30.0, "lon0": 180.0, "fase": 65.0, "lado": 1, "exposicion": 0.6, "frio": 0.5,
+               "png": "luna-oculta-sur-f65-valles-rm2.5-e0.6-frio0.5.png"},
 }
 MAPA_W, MAPA_H = 1440, 720  # 4 px/grado (~7,6 km por celda; un píxel del disco son ~6 km)
-LUT_KMIN, LUT_KMAX = -17, 4   # escalones de rampa que caben (noche + relieve + sombra)
+LUT_KMIN, LUT_KMAX = -20, 4   # escalones de rampa que caben (noche con exposición 0,6 + relieve + sombra)
+FRIO_PASOS = 5                # LUT por cada tono frío de 0 a FRIO_MAX (el giro pasa de uno a otro)
+NORMAL_NIVELES = 64           # niveles por componente de la normal en el mapa (menos = PNG más ligero)
 
 
 def export_canvas(outdir):
     import json
     import shutil
+    global ALBEDO, RELIEVE_MARES, FRIO
     os.makedirs(outdir, exist_ok=True)
+    ALBEDO = [(u, col) for u, (_, col) in zip(ALBEDO_VALLE, ALBEDO)]
+    RELIEVE_MARES = 2.5
+    q = NORMAL_NIVELES - 1
     dem, alb = cargar()
     altura, albedo = hacer_muestreo(dem, alb)
     d_deg = DERIV_DEG
@@ -463,23 +506,28 @@ def export_canvas(outdir):
                 m += 1
             he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
             hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
-            ne, nn = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG
+            exag = RELIEVE_EXAG * (1.0 + (RELIEVE_MARES - 1.0) * (1.0 - smooth(MARES_A, MARES_B, A)))
+            ne, nn = -he * exag, -hn * exag
             ln = math.sqrt(ne * ne + nn * nn + 1.0)
             o = c * 4
-            fila[o:o + 4] = bytes((m, round((ne / ln + 1) * 127.5), round((nn / ln + 1) * 127.5), 255))
+            fila[o:o + 4] = bytes((m, round((ne / ln + 1) / 2 * q), round((nn / ln + 1) / 2 * q), 255))
         filas.append(bytes(fila))
         if r % 90 == 0:
             print(f"  mapa {r}/{MAPA_H}", flush=True)
     write_rgba(os.path.join(outdir, "luna-mapa.png"), MAPA_W, MAPA_H, filas)
     kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
-    lut = []
-    for _, col in ALBEDO:
-        fila = bytearray(kn * 4)
-        for j in range(kn):
-            rgb = ramp(col, LUT_KMIN + j / LIGHT_SUB)
-            fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
-        lut.append(bytes(fila))
-    write_rgba(os.path.join(outdir, "luna-lut.png"), kn, len(ALBEDO), lut)
+    frio_max = max(c["frio"] for c in CARAS.values())
+    lut = []                                    # filas: FRIO_PASOS+1 bloques de materiales
+    for paso in range(FRIO_PASOS + 1):
+        FRIO = frio_max * paso / FRIO_PASOS
+        for _, col in ALBEDO:
+            fila = bytearray(kn * 4)
+            for j in range(kn):
+                rgb = ramp(col, LUT_KMIN + j / LIGHT_SUB)
+                fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
+            lut.append(bytes(fila))
+    FRIO = 0.0
+    write_rgba(os.path.join(outdir, "luna-lut.png"), kn, len(lut), lut)
     caras = {}
     for nombre, cara in CARAS.items():
         shutil.copyfile(os.path.join(SALIDA, cara["png"]), os.path.join(outdir, f"luna-{nombre}.png"))
@@ -491,6 +539,8 @@ def export_canvas(outdir):
         "RELIEVE_ELEV_MAX": RELIEVE_ELEV_MAX, "SOMBRA_K": SOMBRA_K,
         "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
         "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "caras": caras,
+        "MATERIALES": len(ALBEDO), "FRIO_PASOS": FRIO_PASOS, "FRIO_MAX": frio_max,
+        "NORMAL_NIVELES": NORMAL_NIVELES,
     }
     with open(os.path.join(outdir, "luna-datos.json"), "w") as fh:
         json.dump(datos, fh, separators=(",", ":"))
@@ -514,12 +564,35 @@ def main():
         nombre += f"-f{FASE:g}"
     elif "--derecha" in sys.argv:
         LADO, nombre = 1, "luna-visible-derecha"
+    global ALBEDO, RELIEVE_MARES
+    if "--valles" in sys.argv:                  # umbrales de albedo en los valles del histograma
+        ALBEDO = [(u, col) for u, (_, col) in zip(ALBEDO_VALLE, ALBEDO)]
+        nombre += "-valles"
+    if "--relieve-mares" in sys.argv:           # más relieve en los mares
+        RELIEVE_MARES = float(sys.argv[sys.argv.index("--relieve-mares") + 1])
+        nombre += f"-rm{RELIEVE_MARES:g}"
+    global LIMPIAR, MARES_DERIV, EXPOSICION, FRIO
+    if "--exposicion" in sys.argv:              # no toca la pasada lenta: solo el color
+        EXPOSICION = float(sys.argv[sys.argv.index("--exposicion") + 1])
+        nombre += f"-e{EXPOSICION:g}"
+    if "--frio" in sys.argv:
+        FRIO = float(sys.argv[sys.argv.index("--frio") + 1])
+        nombre += f"-frio{FRIO:g}"
+    if "--suave-mares" in sys.argv:             # relieve de los mares más suave (menos grano)
+        MARES_DERIV = float(sys.argv[sys.argv.index("--suave-mares") + 1])
+        nombre += f"-sm{MARES_DERIV:g}"
+    if "--limpiar" in sys.argv:                 # pasadas de quitar píxeles aislados (no toca la pasada lenta)
+        LIMPIAR = int(sys.argv[sys.argv.index("--limpiar") + 1])
+        nombre += f"-l{LIMPIAR}"
     if "--penumbra-corta" in sys.argv:          # no toca la pasada lenta: solo el color
         TERM_B = 0.15
         nombre += "-penumbra-corta"
-    cache = os.path.join(FUENTES, "cache-visible.bin" if nombre.startswith("luna-visible") else f"cache-{nombre}.bin")
+    cache = os.path.join(FUENTES, "cache-visible.bin" if nombre.startswith("luna-visible") and RELIEVE_MARES == 1.0
+                         and MARES_DERIV == 1.0
+                         else f"cache-{nombre}.bin")
     firma = (SIZE, RADIUS, LAT0, LON0, SUPER, FASE, SOL_ARR, LADO, DERIV_DEG, ALB_BLUR, RELIEVE_ELEV_MAX, RELIEVE_EXAG, RELIEVE_K,
-             RELIEVE_MIN, RELIEVE_MAX, SOMBRA_ELEV)
+             RELIEVE_MIN, RELIEVE_MAX, SOMBRA_ELEV) + ((RELIEVE_MARES, MARES_A, MARES_B, MARES_DERIV)
+                                                if RELIEVE_MARES != 1.0 or MARES_DERIV != 1.0 else ())
     datos = None
     if "--recalc" not in sys.argv and os.path.exists(cache):
         with open(cache, "rb") as fh:

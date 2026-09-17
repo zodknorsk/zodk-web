@@ -1,0 +1,78 @@
+---
+// La Luna (ruta "/luna"): la segunda "portada" del Proyecto Luna. Se llega
+// desde la Tierra de la portada pulsando la luna de arriba a la izquierda
+// (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón de
+// abajo da media vuelta a la cara oculta y vuelve.
+// Motor: src/scripts/luna.js (datos en public/luna/, de
+// logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero>
+  <section slot="hero" class="hero luna-hero" aria-label="La Luna">
+    <div class="hero-stars" aria-hidden="true"></div>
+    <!-- Mismo tamaño y sitio que donde termina el vuelo desde la Tierra
+         (.luna-disco en global.css). El fondo es la cara visible: se ve sin JS
+         y mientras carga el canvas. -->
+    <div class="luna-disco" role="img" aria-label="La Luna, cara visible">
+      <canvas class="luna-canvas" aria-hidden="true"></canvas>
+    </div>
+    <!-- PLACEHOLDER: botón provisional hasta que haya dibujo propio. Se puede
+         cambiar el contenido sin tocar el JS mientras mantenga la clase
+         .luna-cambio y el <span class="luna-cambio-texto">. -->
+    <button class="luna-cambio" type="button" hidden>
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M13 8a5 5 0 1 1-1.5-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.2 1.6" />
+        <path d="M12.6 1.8v3.4H9.2" fill="none" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+      <span class="luna-cambio-texto">cara oculta</span>
+    </button>
+  </section>
+  <div id="hero-sentinel" aria-hidden="true"></div>
+</PageLayout>
+
+<script>
+  // Como el planeta de la portada: la web cambia de página sin recargar
+  // (ClientRouter), así que se monta en cada llegada y se desmonta al salir.
+  import { montarLuna } from "../scripts/luna.js";
+
+  type Luna = { girar(): void; cara(): string; desmontar(): void };
+  let luna: Luna | null = null;
+  let quitaBoton: (() => void) | null = null;
+
+  const TEXTO: Record<string, [string, string]> = {   // [etiqueta, aria-label] según la cara que se ve
+    visible: ["cara oculta", "Girar la Luna a la cara oculta"],
+    oculta: ["cara visible", "Girar la Luna a la cara visible"],
+  };
+
+  document.addEventListener("astro:page-load", async () => {
+    const cv = document.querySelector<HTMLCanvasElement>(".luna-canvas");
+    const boton = document.querySelector<HTMLButtonElement>(".luna-cambio");
+    if (!cv || !boton) return;
+    const disco = cv.parentElement as HTMLElement;
+    const pon = (cara: string) => {
+      boton.querySelector(".luna-cambio-texto")!.textContent = TEXTO[cara][0];
+      boton.setAttribute("aria-label", TEXTO[cara][1]);
+      disco.setAttribute("aria-label", `La Luna, cara ${cara}`);
+    };
+    const l = await montarLuna(cv, {
+      alEmpezar: () => { boton.disabled = true; },
+      alTerminar: (cara: string) => { boton.disabled = false; pon(cara); },
+    });
+    if (!cv.isConnected) return l.desmontar();   // se salió de la página mientras cargaba
+    disco.classList.add("luna-lista");
+    luna = l;
+    pon(l.cara());
+    boton.hidden = false;
+    const clic = () => l.girar();
+    boton.addEventListener("click", clic);
+    quitaBoton = () => boton.removeEventListener("click", clic);
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    luna?.desmontar();
+    quitaBoton?.();
+    luna = null;
+    quitaBoton = null;
+  });
+</script>
