@@ -27,6 +27,9 @@ Cara oculta (bocetos, 17-sep-2026; siempre luz por la derecha):
     python3 generar-luna.py --oculta --sur       # inclinada 30° al sur: cuenca Polo Sur-Aitken
     python3 generar-luna.py --oculta --fase 90   # otra fase (90 = media luz: la mitad izquierda a oscuras)
 
+Datos del <canvas> (media vuelta entre caras, src/scripts/luna.js):
+    python3 generar-luna.py --canvas carpeta/    # mapa + LUT + datos + las dos caras aprobadas
+
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
 http://127.0.0.1:4400/logo-files/prototipo-luna/
 
@@ -423,7 +426,81 @@ def colorear(datos):
     return filas
 
 
+# ------------------------------------------------------ datos del <canvas>
+# La Luna en reposo es el PNG aprobado de cada cara (con sombras proyectadas,
+# supermuestreo y limpieza). Solo durante la media vuelta se pinta en tiempo
+# real desde un mapa en latitud/longitud:
+#   luna-mapa.png  MAPA_W x MAPA_H: R = material por albedo (0-5), G/B = normal
+#                  del relieve (este, norte; ya exagerada) de -1..1 a 0..255
+#   luna-lut.png   color de cada material (fila) por escalón de luz (columna)
+#   luna-datos.json  constantes de luz/geometría y las dos caras
+CARAS = {   # como las aprobadas (visible: --derecha; oculta: --oculta --sur)
+    "visible": {"lat0": 0.0, "lon0": 0.0, "fase": 38.0, "lado": 1, "png": "luna-visible-derecha.png"},
+    "oculta": {"lat0": -30.0, "lon0": 180.0, "fase": 65.0, "lado": 1, "png": "luna-oculta-sur-f65.png"},
+}
+MAPA_W, MAPA_H = 1440, 720  # 4 px/grado (~7,6 km por celda; un píxel del disco son ~6 km)
+LUT_KMIN, LUT_KMAX = -17, 4   # escalones de rampa que caben (noche + relieve + sombra)
+
+
+def export_canvas(outdir):
+    import json
+    import shutil
+    os.makedirs(outdir, exist_ok=True)
+    dem, alb = cargar()
+    altura, albedo = hacer_muestreo(dem, alb)
+    d_deg = DERIV_DEG
+    d_m = math.radians(d_deg) * LUNA_R
+    filas = []
+    for r in range(MAPA_H):
+        lat = 90.0 - (r + 0.5) * 180.0 / MAPA_H
+        cl = max(0.02, math.cos(math.radians(lat)))
+        fila = bytearray(MAPA_W * 4)
+        for c in range(MAPA_W):
+            lon = (c + 0.5) * 360.0 / MAPA_W - 180.0
+            A = albedo(lat, lon)
+            m = 0
+            while m < len(ALBEDO) - 1 and A >= ALBEDO[m][0]:
+                m += 1
+            he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
+            hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
+            ne, nn = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG
+            ln = math.sqrt(ne * ne + nn * nn + 1.0)
+            o = c * 4
+            fila[o:o + 4] = bytes((m, round((ne / ln + 1) * 127.5), round((nn / ln + 1) * 127.5), 255))
+        filas.append(bytes(fila))
+        if r % 90 == 0:
+            print(f"  mapa {r}/{MAPA_H}", flush=True)
+    write_rgba(os.path.join(outdir, "luna-mapa.png"), MAPA_W, MAPA_H, filas)
+    kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
+    lut = []
+    for _, col in ALBEDO:
+        fila = bytearray(kn * 4)
+        for j in range(kn):
+            rgb = ramp(col, LUT_KMIN + j / LIGHT_SUB)
+            fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
+        lut.append(bytes(fila))
+    write_rgba(os.path.join(outdir, "luna-lut.png"), kn, len(ALBEDO), lut)
+    caras = {}
+    for nombre, cara in CARAS.items():
+        shutil.copyfile(os.path.join(SALIDA, cara["png"]), os.path.join(outdir, f"luna-{nombre}.png"))
+        caras[nombre] = {k: v for k, v in cara.items() if k != "png"}
+    datos = {
+        "SIZE": SIZE, "RADIUS": RADIUS, "LIMB_AA": LIMB_AA, "SOL_ARR": SOL_ARR,
+        "TERM_A": TERM_A, "TERM_B": TERM_B, "NOCHE": NOCHE, "LIMB_K": LIMB_K,
+        "RELIEVE_K": RELIEVE_K, "RELIEVE_MIN": RELIEVE_MIN, "RELIEVE_MAX": RELIEVE_MAX,
+        "RELIEVE_ELEV_MAX": RELIEVE_ELEV_MAX, "SOMBRA_K": SOMBRA_K,
+        "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
+        "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "caras": caras,
+    }
+    with open(os.path.join(outdir, "luna-datos.json"), "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+
+
 def main():
+    if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
+        export_canvas(sys.argv[2])
+        print("->", sys.argv[2])
+        return
     os.makedirs(SALIDA, exist_ok=True)
     global LADO, TERM_B, LAT0, LON0, FASE
     nombre = "luna-visible"
