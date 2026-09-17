@@ -30,7 +30,7 @@ empezar, `git push` al terminar.
 cómo funciona, qué se probó y descartó, y por qué.
 
 Estado (13-sep-2026): publicado en `main` (merge de la rama
-`planeta-pixelart-v2`, que se deja en GitHub como registro). Planeta de día en
+`daylight-planet-v2`, que se deja en GitHub como registro). Planeta de día en
 `<canvas>` con giro continuo (`src/scripts/planeta.js`, 90 s por vuelta), datos
 en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
 
