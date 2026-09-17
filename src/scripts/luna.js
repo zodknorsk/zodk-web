@@ -6,9 +6,18 @@
 // media vuelta se pinta en tiempo real, desde un mapa en latitud/longitud con
 // el material (albedo) y la normal del relieve de cada celda, con la misma luz
 // que el generador (terminador, relieve rasante, escalones de 1/LIGHT_SUB) salvo
-// las sombras proyectadas. Durante el giro cambian a la vez la vista, la fase,
-// la exposición y el tono frío de una cara a la otra. Con la Luna quieta no se
-// gasta nada.
+// las sombras proyectadas. Con la Luna quieta no se gasta nada.
+//
+// El giro (17-sep-2026, rehecho: antes giraba e inclinaba a la vez, rápido, y
+// la luz se apagaba en mitad del movimiento):
+// - UNA sola rotación de verdad de una orientación a la otra, alrededor de un
+//   único eje (de la visible a la oculta sale un eje casi vertical, inclinado
+//   15° hacia quien mira), siempre hacia el mismo lado (SENTIDO);
+// - suave (`duracion`, 2,8 s, arranque y frenada en seno);
+// - la fase de la luz, la exposición y el tono frío pasan de una cara a la
+//   otra a la vez que gira: se va oscureciendo (o aclarando) según rota.
+//   (Se probó que la exposición llegara al final, como una cámara que se
+//   adapta: el usuario lo prefiere a la vez que el giro.)
 //
 // Datos de `python3 logo-files/generar-luna.py --canvas public/luna/`:
 //   luna-mapa.png   R = material, G/B = normal este/norte (0..NORMAL_NIVELES-1 -> -1..1)
@@ -28,8 +37,52 @@ export const LUNA_V = 2;
 
 const DEG = Math.PI / 180;
 // Sentido del giro, el mismo a la ida y a la vuelta: 1 = la superficie se
-// mueve hacia la izquierda (lon0 siempre crece), -1 = hacia la derecha.
+// mueve hacia la izquierda, -1 = hacia la derecha (elegido por el usuario).
 const SENTIDO = -1;
+
+// --- Orientaciones como matrices 3x3 (filas). Una cara se ve desde (lat0,
+// lon0): la matriz pasa de coordenadas de vista (x derecha, y arriba, z hacia
+// quien mira) a las de la Luna (y = norte, z = lon 0 en el ecuador, x = lon
+// 90° E): M = Ry(lon0) · Rx(lat0).
+const mul3 = (A, B) => A.map((f) => [0, 1, 2].map((j) => f[0] * B[0][j] + f[1] * B[1][j] + f[2] * B[2][j]));
+const tras3 = (A) => [0, 1, 2].map((i) => [A[0][i], A[1][i], A[2][i]]);
+function orientacion(lat0, lon0) {
+  const a = lat0 * DEG, b = lon0 * DEG, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
+  return mul3([[cb, 0, sb], [0, 1, 0], [-sb, 0, cb]], [[1, 0, 0], [0, ca, sa], [0, -sa, ca]]);
+}
+// Rotación de ángulo `phi` alrededor del eje unitario n (Rodrigues).
+function rotEje(n, phi) {
+  const c = Math.cos(phi), s = Math.sin(phi), k = 1 - c, [x, y, z] = n;
+  return [
+    [c + x * x * k, x * y * k - z * s, x * z * k + y * s],
+    [y * x * k + z * s, c + y * y * k, y * z * k - x * s],
+    [z * x * k - y * s, z * y * k + x * s, c + z * z * k],
+  ];
+}
+// Trayecto de la cara A a la B: eje y ángulo de la rotación D = MB·MAᵀ, con
+// el ángulo elegido (θ o θ - 2π, las dos llegan) para girar según SENTIDO.
+function trayecto(A, B) {
+  const MA = orientacion(A.lat0, A.lon0), MB = orientacion(B.lat0, B.lon0);
+  const Dm = mul3(MB, tras3(MA));
+  const tr = Dm[0][0] + Dm[1][1] + Dm[2][2];
+  const th = Math.acos(Math.max(-1, Math.min(1, (tr - 1) / 2)));
+  let n;
+  if (Math.sin(th) > 1e-3) {
+    const d = 2 * Math.sin(th);
+    n = [(Dm[2][1] - Dm[1][2]) / d, (Dm[0][2] - Dm[2][0]) / d, (Dm[1][0] - Dm[0][1]) / d];
+  } else {                                        // media vuelta exacta: eje desde la diagonal
+    n = [0, 1, 2].map((i) => Math.sqrt(Math.max(0, (Dm[i][i] + 1) / 2)));
+    const g = n.indexOf(Math.max(...n));
+    for (let i = 0; i < 3; i++) if (i !== g && Dm[g][i] + Dm[i][g] < 0) n[i] = -n[i];
+  }
+  // ¿Hacia dónde va en pantalla, con ángulo positivo, el punto del centro?
+  const P0 = [MA[0][2], MA[1][2], MA[2][2]];      // MA·(0,0,1)
+  const nxP = [n[1] * P0[2] - n[2] * P0[1], n[2] * P0[0] - n[0] * P0[2], n[0] * P0[1] - n[1] * P0[0]];
+  const vx = -(MA[0][0] * nxP[0] + MA[1][0] * nxP[1] + MA[2][0] * nxP[2]);   // x de MAᵀ·(-(n × P0))
+  const derecha = vx > 0;
+  const phiFin = derecha === (SENTIDO < 0) ? th : th - 2 * Math.PI;
+  return { MA, n, phiFin };
+}
 const smooth = (e0, e1, x) => {
   let t = (x - e0) / (e1 - e0);
   t = t < 0 ? 0 : t > 1 ? 1 : t;
@@ -136,7 +189,7 @@ function cargarGiro(base, D) {
 export async function montarLuna(canvas, {
   base = "/luna/",
   cara: inicial = "visible",
-  duracion = 1.6,
+  duracion = 2.8,
   alEmpezar = () => {},
   alTerminar = () => {},
 } = {}) {
@@ -163,6 +216,8 @@ export async function montarLuna(canvas, {
     // aún no ha optimizado el bucle): se hace uno sin enseñarlo.
     if (vivo && !girando) g.calentar();
   }));
+
+  const lerp = (x, y, t) => x + (y - x) * t;
 
   function montarGiro({ niveles, lut }) {
     const img = ctx.createImageData(S, S);
@@ -201,23 +256,24 @@ export async function montarLuna(canvas, {
     const NIV = niveles.length, CELDA0 = D.MAPA_W / 360 / DEG / R;   // celdas de longitud que abarca un píxel en el ecuador
     const INV_LN_LS = LS / LN, INV_LN_RK = D.RELIEVE_K / LN;
 
-    // Un fotograma con la Luna vista desde (lat0, lon0), luz de fase `fase`,
-    // exposición `expo` y tono frío `frio`, como pasada_lenta() + colorear()
-    // del generador (sin sombras proyectadas, con una muestra por píxel).
-    function calcular(lat0, lon0, fase, lado, expo, frio) {
+    // Un fotograma con la Luna en la orientación M (ver orientacion()), luz
+    // de fase `fase`, exposición `expo` y tono frío `frio`, como pasada_lenta()
+    // + colorear() del generador (sin sombras proyectadas, una muestra por píxel).
+    function calcular(M, fase, lado, expo, frio) {
       const f = fase * DEG, a = D.SOL_ARR * DEG;
       let SX = lado * Math.sin(f) * Math.cos(a), SY = Math.sin(f) * Math.sin(a), SZ = Math.cos(f);
       const sn0 = Math.sqrt(SX * SX + SY * SY + SZ * SZ);
       SX /= sn0; SY /= sn0; SZ /= sn0;
-      const sl0 = Math.sin(lat0 * DEG), cl0 = Math.cos(lat0 * DEG);
-      const ay = cl0, az = sl0;                  // eje de giro en vista (x = 0)
-      const lonOff = lon0 + 180;
+      const [[m00, m01, m02], [m10, m11, m12], [m20, m21, m22]] = M;
+      const ax = m10, ay = m11, az = m12;        // norte de la Luna en vista (Mᵀ·(0,1,0))
       const jNoche = Math.round(Math.log(D.NOCHE * expo) / LN * LS);   // la sombra no pasa de la luz cenicienta
       const paso = D.FRIO_MAX > 0 ? Math.round(frio / D.FRIO_MAX * D.FRIO_PASOS) : 0;
       const base = paso * NMAT;
       for (let n = 0; n < NP; n++) {
         const ux = pX[n], uy = pY[n], uz = pZ[n];
-        const yy = uy * cl0 + uz * sl0, zz = uz * cl0 - uy * sl0;
+        const xx = m00 * ux + m01 * uy + m02 * uz;
+        const yy = m10 * ux + m11 * uy + m12 * uz;
+        const zz = m20 * ux + m21 * uy + m22 * uz;
         const clatR = Math.sqrt(Math.max(0, 1 - yy * yy));   // coseno de la latitud
         const clat = clatR > 0.02 ? clatR : 0.02;
         // huella del píxel en celdas de longitud del nivel 0 -> nivel de mipmap
@@ -228,7 +284,7 @@ export async function montarLuna(canvas, {
         const lat = Math.asin(yy > 1 ? 1 : yy < -1 ? -1 : yy);
         let r = ((0.5 - lat / Math.PI) * MH) | 0;
         r = r < 0 ? 0 : r >= MH ? MH - 1 : r;
-        let lon = Math.atan2(ux, zz) / DEG + lonOff;
+        let lon = Math.atan2(xx, zz) / DEG + 180;
         lon -= Math.floor(lon / 360) * 360;
         let c = (lon / 360 * nv.w) | 0;
         if (c >= nv.w) c = 0;
@@ -242,7 +298,7 @@ export async function montarLuna(canvas, {
           const ne = nv.ne[i] / 127, nn = nv.nn[i] / 127;
           const nu = Math.sqrt(Math.max(0, 1 - ne * ne - nn * nn));
           // base local: E = eje x U, N = U x E
-          let Ex = ay * uz - az * uy, Ey = az * ux, Ez = -ay * ux;
+          let Ex = ay * uz - az * uy, Ey = az * ux - ax * uz, Ez = ax * uy - ay * ux;
           const le = Math.sqrt(Ex * Ex + Ey * Ey + Ez * Ez) || 1e-9;
           Ex /= le; Ey /= le; Ez /= le;
           const Nx = uy * Ez - uz * Ey, Ny = uz * Ex - ux * Ez, Nz = ux * Ey - uy * Ex;
@@ -298,24 +354,22 @@ export async function montarLuna(canvas, {
       }
     }
 
-    const lerp = (x, y, t) => x + (y - x) * t;
-    // Vista intermedia `e` (0..1) entre las caras A y B. La longitud avanza
-    // siempre en el mismo sentido (SENTIDO), también al volver.
-    function pintar(A, B, e) {
-      const dLon = (((B.lon0 - A.lon0) * SENTIDO % 360) + 360) % 360 * SENTIDO;
-      calcular(lerp(A.lat0, B.lat0, e), A.lon0 + dLon * e, lerp(A.fase, B.fase, e), A.lado,
-        lerp(A.exposicion, B.exposicion, e), lerp(A.frio, B.frio, e));
+    // De la cara A a la B: `e` = cuánto ha girado (0..1), `x` = cuánto ha
+    // cambiado la exposición y el tono (0..1; hoy, lo mismo que `e`).
+    function pintar(A, B, tray, e, x) {
+      const M = mul3(rotEje(tray.n, tray.phiFin * e), tray.MA);
+      calcular(M, lerp(A.fase, B.fase, e), A.lado, lerp(A.exposicion, B.exposicion, x), lerp(A.frio, B.frio, x));
       ctx.putImageData(img, 0, 0);
     }
     function calentar() {
       const c = D.caras[actual];
-      calcular(c.lat0, c.lon0, c.fase, c.lado, c.exposicion, c.frio);   // sin putImageData: no se ve
+      calcular(orientacion(c.lat0, c.lon0), c.fase, c.lado, c.exposicion, c.frio);   // sin putImageData: no se ve
     }
     return { pintar, calentar };
   }
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-  const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  const inOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
   const otra = (c) => (c === "visible" ? "oculta" : "visible");
 
   async function girar(destino = otra(actual)) {
@@ -332,13 +386,14 @@ export async function montarLuna(canvas, {
     if (reduce.matches) return termina();       // sin movimiento: cambio directo
     const g = await preparar();
     if (!vivo) return;
-    const A = D.caras[actual], B = D.caras[destino];
+    const A = D.caras[actual], B = D.caras[destino], tray = trayecto(A, B);
     const t0 = performance.now();
     const paso = (ahora) => {
       if (!vivo) return;
-      const t = Math.min(1, (ahora - t0) / (duracion * 1000));
-      if (t >= 1) return termina();
-      g.pintar(A, B, easeInOut(t));
+      const s = (ahora - t0) / 1000;
+      if (s >= duracion) return termina();
+      const e = inOutSine(s / duracion);
+      g.pintar(A, B, tray, e, e);
       raf = requestAnimationFrame(paso);
     };
     raf = requestAnimationFrame(paso);
@@ -348,12 +403,14 @@ export async function montarLuna(canvas, {
   // cuánto tarda uno en ms.
   async function fotograma(e) {
     const g = await preparar();
-    g.pintar(D.caras[actual], D.caras[otra(actual)], e);
+    const A = D.caras[actual], B = D.caras[otra(actual)];
+    g.pintar(A, B, trayecto(A, B), e, e);
   }
   async function medir() {
     const g = await preparar();
+    const A = D.caras[actual], B = D.caras[otra(actual)];
     const t0 = performance.now();
-    g.pintar(D.caras[actual], D.caras[actual], 0);
+    g.pintar(A, B, trayecto(A, B), 0, 0);
     return performance.now() - t0;
   }
 

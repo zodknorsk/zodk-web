@@ -1,8 +1,9 @@
 ---
 // La Luna (ruta "/luna"): la segunda "portada" del Proyecto Luna. Se llega
 // desde la Tierra de la portada pulsando la luna de arriba a la izquierda
-// (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón de
-// abajo da media vuelta a la cara oculta y vuelve.
+// (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón
+// de abajo a la derecha da media vuelta a la cara oculta y vuelve; el de abajo
+// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás.
 // Motor: src/scripts/luna.js (datos en public/luna/, de
 // logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
@@ -17,10 +18,16 @@ import PageLayout from "@layouts/PageLayout.astro";
     <div class="luna-disco" role="img" aria-label="La Luna, cara visible">
       <canvas class="luna-canvas" aria-hidden="true"></canvas>
     </div>
-    <!-- PLACEHOLDER: botón provisional hasta que haya dibujo propio. Se puede
-         cambiar el contenido sin tocar el JS mientras mantenga la clase
-         .luna-cambio y el <span class="luna-cambio-texto">. -->
-    <button class="luna-cambio" type="button" hidden>
+    <!-- PLACEHOLDER: botones provisionales hasta que haya dibujo propio. Se
+         puede cambiar su contenido sin tocar el JS mientras mantengan las
+         clases .luna-volver y .luna-cambio (con su <span class="luna-cambio-texto">). -->
+    <button class="luna-boton luna-volver" type="button" aria-label="Volver a la Tierra" hidden>
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+      <span>volver a la Tierra</span>
+    </button>
+    <button class="luna-boton luna-cambio" type="button" hidden>
       <svg viewBox="0 0 16 16" aria-hidden="true">
         <path d="M13 8a5 5 0 1 1-1.5-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.2 1.6" />
         <path d="M12.6 1.8v3.4H9.2" fill="none" stroke="currentColor" stroke-width="1.6" />
@@ -34,11 +41,52 @@ import PageLayout from "@layouts/PageLayout.astro";
 <script>
   // Como el planeta de la portada: la web cambia de página sin recargar
   // (ClientRouter), así que se monta en cada llegada y se desmonta al salir.
-  import { montarLuna } from "../scripts/luna.js";
+  import { navigate } from "astro:transitions/client";
+  import { montarLuna, LUNA_V } from "../scripts/luna.js";
+  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
 
-  type Luna = { girar(): void; cara(): string; desmontar(): void };
+  type Luna = { girar(): void; cara(): string; girando(): boolean; desmontar(): void };
   let luna: Luna | null = null;
   let quitaBoton: (() => void) | null = null;
+  let estrellasTierra: string | null = null;   // posición de las estrellas al aterrizar en la portada
+
+  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (src/scripts/viaje-luna.js).
+  // Para saber dónde acaban la luna del hero y la Tierra se ponen aquí un icono
+  // y una Tierra con las clases de la portada (mismo sitio y tamaño, y la
+  // Tierra del tema que toque); se van con la página al aterrizar.
+  async function volverATierra(hero: HTMLElement, l: Luna, disco: HTMLElement, apagar: HTMLElement[]) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/");
+    const img = new Image();
+    img.src = `/luna/luna-${l.cara()}.png?v=${LUNA_V}`;
+    await img.decode().catch(() => {});
+    const astro = document.createElement("div");
+    astro.className = "hero-astro";
+    astro.setAttribute("aria-hidden", "true");
+    const icono = document.createElement("span");
+    icono.className = "astro-luna";
+    icono.style.backgroundPosition = faseLunaHoy();
+    astro.append(icono);
+    const planeta = document.createElement("div");
+    planeta.className = "hero-planet";
+    planeta.setAttribute("aria-hidden", "true");
+    hero.append(astro, planeta);
+    const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
+    const vuelo = volarALuna({
+      icono, planeta, estrellas, apagar, img, inverso: true,
+      iconoVisible: document.documentElement.classList.contains("dark"),
+    });
+    disco.style.visibility = "hidden";          // la sustituye la capa del vuelo, en el mismo sitio
+    l.desmontar();
+    estrellasTierra = await vuelo.fin;
+    navigate("/");
+  }
+
+  // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo.
+  document.addEventListener("astro:after-swap", () => {
+    if (estrellasTierra === null) return;
+    document.querySelector<HTMLElement>(".hero:not(.luna-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasTierra);
+    estrellasTierra = null;
+  });
 
   const TEXTO: Record<string, [string, string]> = {   // [etiqueta, aria-label] según la cara que se ve
     visible: ["cara oculta", "Girar la Luna a la cara oculta"],
@@ -48,7 +96,9 @@ import PageLayout from "@layouts/PageLayout.astro";
   document.addEventListener("astro:page-load", async () => {
     const cv = document.querySelector<HTMLCanvasElement>(".luna-canvas");
     const boton = document.querySelector<HTMLButtonElement>(".luna-cambio");
-    if (!cv || !boton) return;
+    const volver = document.querySelector<HTMLButtonElement>(".luna-volver");
+    const hero = document.querySelector<HTMLElement>(".luna-hero");
+    if (!cv || !boton || !volver || !hero) return;
     const disco = cv.parentElement as HTMLElement;
     const pon = (cara: string) => {
       boton.querySelector(".luna-cambio-texto")!.textContent = TEXTO[cara][0];
@@ -56,17 +106,28 @@ import PageLayout from "@layouts/PageLayout.astro";
       disco.setAttribute("aria-label", `La Luna, cara ${cara}`);
     };
     const l = await montarLuna(cv, {
-      alEmpezar: () => { boton.disabled = true; },
-      alTerminar: (cara: string) => { boton.disabled = false; pon(cara); },
+      alEmpezar: () => { boton.disabled = volver.disabled = true; },
+      alTerminar: (cara: string) => { boton.disabled = volver.disabled = false; pon(cara); },
     });
     if (!cv.isConnected) return l.desmontar();   // se salió de la página mientras cargaba
     disco.classList.add("luna-lista");
     luna = l;
     pon(l.cara());
-    boton.hidden = false;
+    boton.hidden = volver.hidden = false;
     const clic = () => l.girar();
+    let enVuelo = false;
+    const clicVolver = () => {
+      if (enVuelo || l.girando()) return;
+      enVuelo = true;
+      boton.disabled = volver.disabled = true;
+      volverATierra(hero, l, disco, [boton, volver]);
+    };
     boton.addEventListener("click", clic);
-    quitaBoton = () => boton.removeEventListener("click", clic);
+    volver.addEventListener("click", clicVolver);
+    quitaBoton = () => {
+      boton.removeEventListener("click", clic);
+      volver.removeEventListener("click", clicVolver);
+    };
   });
 
   document.addEventListener("astro:before-swap", () => {

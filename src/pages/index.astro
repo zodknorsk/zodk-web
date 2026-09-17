@@ -345,7 +345,7 @@ const eventos = todosEventos
   import { montarPlaneta } from "../scripts/planeta.js";
   import { mgrs } from "../scripts/mgrs.js";
   import { LUNA_V } from "../scripts/luna.js";
-  import { volarALuna } from "../scripts/viaje-luna.js";
+  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
 
   let planeta: { desmontar(): void } | null = null;
   let quitaMira: (() => void) | null = null;
@@ -444,17 +444,10 @@ const eventos = todosEventos
     return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
   }
 
-  // Fase de la luna de hoy: public/zodk-luna-fases.png trae FASES fases en fila
-  // (0 = luna nueva, FASES/2 = llena; logo-files/generar-astros.py). Edad de la
-  // luna desde una luna nueva conocida (6-ene-2000, 18:14 UTC) y mes sinódico
-  // medio: basta para el día.
-  const FASES = 30, MES_SINODICO = 29.530588853, LUNA_NUEVA = Date.UTC(2000, 0, 6, 18, 14);
+  // Fase de la luna de hoy (faseLunaHoy() en viaje-luna.js; sin JS, llena).
   function faseLuna() {
     const el = document.querySelector<HTMLElement>(".astro-luna");
-    if (!el) return;
-    const edad = ((((Date.now() - LUNA_NUEVA) / 86400000) % MES_SINODICO) + MES_SINODICO) % MES_SINODICO;
-    const i = Math.round((edad / MES_SINODICO) * FASES) % FASES;
-    el.style.backgroundPosition = `${(i / (FASES - 1)) * 100}% 0`;
+    if (el) el.style.backgroundPosition = faseLunaHoy();
   }
 
   // Al cambiar de tema, el sol se pone tras la Tierra y sale la luna (o al

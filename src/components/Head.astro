@@ -114,6 +114,13 @@ const socialImageURL = new URL(image, Astro.site);
       const isDark = document.documentElement.classList.contains("dark");
       localStorage.setItem("theme", isDark ? "light" : "dark");
       toggleTheme(!isDark);
+      // El icono nuevo sale relleno y se vacía (global.css, .tema-pulsado).
+      themeButton.classList.remove("tema-pulsado");
+      void themeButton.offsetWidth;                // reinicia la animación
+      themeButton.classList.add("tema-pulsado");
+      clearTimeout(themeButton._tPulsado);
+      themeButton._tPulsado = setTimeout(() => themeButton.classList.remove("tema-pulsado"), 900);
+      marcaEstrellas(!isDark);
     });
 
     // Si el usuario no ha elegido tema a mano, seguir el del sistema en vivo.
@@ -125,6 +132,20 @@ const socialImageURL = new URL(image, Astro.site);
       }
     );
 
+  }
+
+  // Al pasar a noche, las estrellas de más del hero (.hero-stars::after) se
+  // encienden poco a poco en vez de salir de golpe: html.estrellas-entrando
+  // mientras dura (global.css). Solo al cambiar de tema, no al cargar.
+  let tEstrellas = 0;
+  function marcaEstrellas(aNoche) {
+    const html = document.documentElement;
+    html.classList.remove("estrellas-entrando");
+    clearTimeout(tEstrellas);
+    if (!aNoche) return;
+    void html.offsetWidth;
+    html.classList.add("estrellas-entrando");
+    tEstrellas = setTimeout(() => html.classList.remove("estrellas-entrando"), 3200);
   }
 
   // La cabecera "sólida" (con logo) se activa con la clase "scrolled".

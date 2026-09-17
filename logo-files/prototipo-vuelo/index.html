@@ -45,7 +45,7 @@
   button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
     padding: 2px 7px; cursor: pointer; margin: 1px 0; }
   button.on { background: #fff; outline: 2px solid #9fd3e6; }
-  #volar { background: #ffd84a; font-size: 13px; padding: 4px 12px; }
+  #volar, #volver { background: #ffd84a; font-size: 13px; padding: 4px 12px; }
   #desc { color: #cfd6de; line-height: 1.4; margin-top: 4px; }
 </style>
 </head>
@@ -62,7 +62,7 @@
   <b>Píxeles:</b> <span id="pixeles"></span><br>
   <b>Duración:</b> <button data-v="4">4 s</button> <button data-v="5">5 s</button> <button data-v="6">6 s</button>
   <button data-v="7">7 s</button> <button data-v="8">8 s</button>
-  &nbsp; <button id="volar">▶ volar</button>
+  &nbsp; <button id="volar">▶ volar</button> <button id="volver">◀ volver</button>
   <div id="desc"></div>
 </div>
 <script type="module">
@@ -104,22 +104,25 @@ document.querySelectorAll("#tierras button, #pixeles button").forEach((b) => b.a
 const img = new Image();
 img.src = "../../public/luna/luna-visible.png?v=2";
 let enVuelo = false;
-document.getElementById("volar").onclick = async () => {
+// ▶ volar: de la Tierra a la Luna. ◀ volver: al revés (como el botón de /luna).
+const vuelo = async (inverso) => {
   if (enVuelo) return;
   enVuelo = true;
   await img.decode();
   const $ = (s) => document.querySelector(s);
   const v = volarALuna({
     icono: $(".astro-luna"), planeta: $(".hero-planet"), estrellas: $(".hero-stars"),
-    apagar: [$(".hero-titulo")], img, tierra, pixeles, duracion: segundos * 1000,
+    apagar: [$(".hero-titulo")], img, tierra, pixeles, duracion: segundos * 1000, inverso,
   });
   await v.fin;
-  $(".luna-final").style.display = "block";         // lo que se vería en /luna
+  if (!inverso) $(".luna-final").style.display = "block";   // lo que se vería en /luna
   await new Promise((r) => setTimeout(r, 1500));
   $(".luna-final").style.display = "";
   v.limpiar();
   enVuelo = false;
 };
+document.getElementById("volar").onclick = () => vuelo(false);
+document.getElementById("volver").onclick = () => vuelo(true);
 pinta();
 </script>
 </body>
