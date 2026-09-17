@@ -145,8 +145,29 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
 ### Siguiente
 
 1. ~~Cara oculta~~ (hecho, ver arriba).
-2. Transición entre caras (media vuelta) → pasar a `<canvas>` como la Tierra
-   (hoy es un PNG estático) o dos PNG + animación; decidir entonces.
+2. **EN CURSO (17-sep-2026): media vuelta en `<canvas>`** (el usuario eligió
+   canvas frente a dos PNG con fundido). Motor en `src/scripts/luna.js`, banco
+   de pruebas `prototipo-luna/canvas.html` (botón "girar"; en consola
+   `luna.fotograma(0.5)` pinta un fotograma intermedio sin animar).
+   - **En reposo se pinta el PNG aprobado** de cada cara, tal cual. Solo
+     durante el giro (1,6 s, ease-in-out) se pinta en tiempo real: la vista va
+     de (lat0 0, lon0 0, fase 38°) a (lat0 -30, lon0 180, fase 65°) interpolando
+     los tres; luz siempre por la derecha. Con la Luna quieta no gasta CPU.
+   - Datos: `python3 generar-luna.py --canvas prototipo-luna/canvas/` →
+     `luna-mapa.png` (1440x720, 4 px/grado: R = material por albedo, G/B =
+     normal del relieve ya exagerada), `luna-lut.png`, `luna-datos.json` y copia
+     de las dos caras aprobadas. **El mapa pesa 2,3 MB**: aligerar antes de
+     publicar (normales con menos niveles, WebP sin pérdida…).
+   - En tiempo real es la misma luz que el generador (terminador, relieve
+     rasante, autosombra, limpieza de 2 pasadas) salvo sombras proyectadas y
+     supermuestreo; el último fotograma y el PNG casi no se distinguen, así que
+     el cambio al PNG al acabar no se nota.
+   - Mipmaps solo en longitud (como la Tierra): con pirámide 2x2 salían bloques
+     en abanico alrededor del polo sur.
+   - Rendimiento (Mac, Chrome): ~12 ms por fotograma tras calentar; el primero
+     tarda ~45 ms, por eso se pinta uno en un rato libre al cargar. Falta
+     probarlo en Zen y en móvil.
+   - Con `prefers-reduced-motion` cambia de cara sin giro.
 3. Página nueva en Astro y enlace desde el icono de la Luna del hero (solo
    sale en tema oscuro: decidir si el sol también enlaza).
 4. Después: chapas de alunizajes (lista de candidatos abajo).
