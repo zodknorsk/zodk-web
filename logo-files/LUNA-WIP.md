@@ -279,8 +279,42 @@ llanos, no tenían relieve que diera bordes nítidos.
     factores enteros: con la ventana estrecha (menos de ×2) seguía suavizada.
     Comparado en Zen con la misma ventana y el mismo giro: antes bordes
     difuminados, después bloques nítidos.
+  - Comprobado con el usuario: con esto **en Zen no se calienta** (era la duda,
+    porque el canvas de la Tierra pasa a ser bastante más grande).
 - Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
   del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
+
+### PRÓXIMA SESIÓN: empezar por las chapas de los alunizajes
+
+Todo lo anterior (caras, giro, vuelo, vuelta, botones provisionales, nitidez y
+velocidad en Zen) está hecho y commiteado en `moon-project`. Lo siguiente es
+**el contenido de `/luna`: las chapas de los alunizajes**, que es lo que le da
+sentido a la página. Cómo arrancar:
+
+1. **Decidir con el usuario qué entra**, de la lista de "Candidatos" del final
+   de este documento: ¿solo alunizajes con éxito o también fracasos
+   (Beresheet, Chandrayaan-2, Peregrine)? ¿Los róvers cuentan aparte?
+   ¿Entran las dos de la cara oculta (Chang'e 4 y 6)? ¿Y el polo sur como
+   zona destacada por el hielo? Sin esa lista no se toca código.
+2. **Datos**: un `src/data/alunizajes.ts` al estilo de `src/data/paises.ts`
+   (sitio, misión, fecha, lat/lon, agencia/país, tripulada o no, y las
+   etiquetas del artículo del blog al que enlaza), y en qué cara cae cada uno.
+3. **Dibujo de la chapa**: en la Tierra son banderas pixel art generadas en
+   `generar-planeta-hero.py` (`CHAPAS`/`flag_cells`, ver `HERO-WIP.md`). Para
+   la Luna hay que decidir con el usuario qué se dibuja: ¿bandera del país,
+   silueta de la nave, un número…? Es una decisión suya, de aspecto.
+4. **Colocarlas**: la Luna en reposo es un PNG fijo, así que las chapas se
+   pueden pintar encima con HTML/CSS posicionado (como `.hero-bandera` en la
+   portada, que se coloca con lo que devuelve el canvas). Hace falta la
+   proyección de lat/lon a píxel de cada cara: es la de `generar-luna.py`
+   (`orientacion()` en `luna.js` hace justo esa cuenta) y ya se usó en el
+   banco `prototipo-luna/index.html` (botón "marcas", que dibuja Aitken y los
+   Chang'e). Ojo al giro: mientras gira hay que ocultarlas o moverlas.
+5. **Ficha al pasar el ratón**: misma idea que `.craft-dossier` de la portada.
+
+Contexto útil que ya existe: `prototipo-luna/index.html` (botón "marcas") para
+comprobar dónde cae cada coordenada, y el apartado "Candidatos" de abajo con
+la lista repasada y en qué cara está cada misión.
 
 ### Siguiente
 
