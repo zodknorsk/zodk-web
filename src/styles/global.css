@@ -331,7 +331,7 @@ html.dark .hero-luna-enlace { display: block; }
   width: var(--luna-tam);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: url(/luna/luna-visible.png?v=2) no-repeat 0 0 / 100% 100%;
+  background: url(/luna/luna-visible.png?v=3) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   z-index: 1;
 }
