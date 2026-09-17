@@ -57,12 +57,6 @@ enfoque de proyección, inclinación, resolución, sensación general), pero:
   se retome esto (no se ha descargado nada todavía). Para el albedo/textura
   de fondo (distinguir *maria* oscuros de tierras altas claras) el mosaico
   de la cámara WAC de la propia LRO es la referencia obvia, también público.
-- El script de resaltado de contorno que se hizo para la Tierra
-  (`logo-files/extraer-fronteras.py` → `fronteras.py`, en la rama
-  `planeta-resaltado-pais-hover`) **no aplica tal cual** (no hay fronteras
-  políticas en la Luna), pero la misma idea — trazar un contorno progresivo
-  al pasar el ratón — podría reutilizarse para marcar el borde de un cráter
-  grande o de un *mare* si en algún momento interesa.
 - El patrón de máscara rasterizada por capas (`mapa_tierra.py`,
   `rasterizar.py`: fuente pesada sin trackear → módulo Python pequeño
   trackeado) es el mismo patrón a seguir para lo que sea que se rasterice de
