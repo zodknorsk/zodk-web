@@ -103,6 +103,14 @@
   .luna-chapa.flip-x .craft-specs { left: auto; right: calc(100% + 92px);
     transform: translateY(-50%) translateX(6px); }
   .luna-chapa.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+  /* La ficha va centrada en la chapa, pero con las que caen muy arriba o muy
+     abajo (Chang'e 3 en el borde norte, Chandrayaan-3 e IM-1 en el polo sur)
+     se salía de la pantalla: ahí se ancla por su borde en vez de centrarse. */
+  .luna-chapa.ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
+  .luna-chapa.ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
+  .luna-chapa:is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
+  .luna-chapa:is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
+    transform: translateY(0) translateX(0); }
 
   /* --- Nuevo para la ficha de misión (no existía en la Tierra): foto + texto,
      en dos variantes para comparar (botón "boceto A/B" en el panel). ------ */
@@ -225,6 +233,17 @@
       texto: "Alunizó el 1 de diciembre de 2020: primera misión china en traer muestras lunares a la Tierra (casi 2 kg)." },
     { nombre: "Chang'e 6", pais: "CN", anio: 2024, lat: -41.64, lon: 206.01, foto: "fotos/change-6.jpg",
       texto: "Alunizó el 2 de junio de 2024 en la cara oculta: primeras muestras traídas de esa cara de la Luna." },
+
+    { nombre: "Chandrayaan-3", pais: "IN", anio: 2023, lat: -69.373, lon: 32.319, foto: "fotos/chandrayaan-3.jpg",
+      texto: "Alunizó el 23 de agosto de 2023 a 69° de latitud sur, lo más cerca del polo a lo que ha llegado nadie. India fue el cuarto país en alunizar." },
+
+    { nombre: "SLIM", pais: "JP", anio: 2024, lat: -13.316, lon: 25.251, foto: "fotos/slim.jpg",
+      texto: "Alunizó el 19 de enero de 2024 junto al cráter Shioli, a 55 m de su objetivo: el alunizaje más preciso hasta la fecha. Quedó volcado y aun así siguió midiendo." },
+
+    { nombre: "IM-1 · Odysseus", pais: "US", anio: 2024, lat: -80.13, lon: 1.44, foto: "fotos/im1-odysseus.jpg",
+      texto: "Alunizó el 22 de febrero de 2024 cerca del cráter Malapert A: primer alunizaje privado de la historia y el primero de EE. UU. desde el Apolo 17. Acabó apoyado de lado." },
+    { nombre: "Blue Ghost", pais: "US", anio: 2025, lat: 18.56, lon: 61.81, foto: "fotos/blue-ghost.jpg",
+      texto: "Alunizó el 2 de marzo de 2025 en el Mar de las Crisis: el primer alunizaje privado completamente redondo, derecho y operando un día lunar entero." },
   ];
 
   // --- Chapas: se crean todas las que caen en esta cara (lat0/lon0 de la
@@ -260,6 +279,10 @@
     const lado = () => {
       const r = el.getBoundingClientRect();
       el.classList.toggle("flip-x", r.right + 280 > window.innerWidth);
+      const alto = el.querySelector(".craft-specs").offsetHeight;
+      const centro = r.top + r.height / 2;
+      el.classList.toggle("ancla-arriba", centro - alto / 2 < 8);
+      el.classList.toggle("ancla-abajo", centro + alto / 2 > window.innerHeight - 8);
     };
     el.addEventListener("mouseenter", lado);
     el.addEventListener("focus", lado);
