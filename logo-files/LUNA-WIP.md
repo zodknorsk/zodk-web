@@ -121,9 +121,30 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
   `luna-visible.png` (luz por la izquierda) y `…-penumbra-corta.png`, ambos
   ANTERIORES al relieve rasante.
 
+### Cara oculta — PRIMER BOCETO APROBADO (17-sep-2026)
+
+- `python3 generar-luna.py --oculta --sur --zoom` saca la aprobada:
+  `prototipo-luna/luna-oculta-sur-f65.png` (**O2** en el banco de pruebas).
+- Mismo generador, paleta, limpieza y relieve que la cara visible; solo
+  cambian encuadre y luz:
+  - **Encuadre**: de espaldas a la Tierra (`LON0` = 180) e **inclinada 30° al
+    sur** (`LAT0` = -30), para que la cuenca Polo Sur-Aitken (~53° S, 191° E) y
+    los sitios de Chang'e 4 y 6 queden en el centro-abajo del disco.
+  - **Luz por la derecha, fase 65°** (`--fase`): el tercio izquierdo en
+    sombra y los cráteres junto al terminador en luz rasante.
+- Descartes: fase 90° ("media luz", O3 en el banco: la mitad izquierda negra y
+  Chang'e 4 casi en sombra), 115° (casi todo a oscuras, ni se enseñó) y de
+  frente sin inclinar (O1: Aitken queda pegada al borde de abajo).
+- Aún no es "más oscura" que la visible (la cara oculta es casi toda tierras
+  altas, claras). Si se quiere apagar: brillo general o paleta.
+- El botón "marcas" del banco de pruebas dibuja el contorno aproximado de
+  Aitken y los dos Chang'e encima (solo referencia, no es parte del dibujo).
+- Corregido de paso: el eje de giro en vista tenía el signo de `LAT0` al
+  revés (`az`); con `LAT0` = 0 (cara visible) no cambiaba nada.
+
 ### Siguiente
 
-1. Cara oculta: luz rasante / media luz, más oscura, cuenca Aitken.
+1. ~~Cara oculta~~ (hecho, ver arriba).
 2. Transición entre caras (media vuelta) → pasar a `<canvas>` como la Tierra
    (hoy es un PNG estático) o dos PNG + animación; decidir entonces.
 3. Página nueva en Astro y enlace desde el icono de la Luna del hero (solo
