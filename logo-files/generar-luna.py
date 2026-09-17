@@ -19,8 +19,7 @@ Uso:
     python3 generar-luna.py              # luz por la izquierda -> prototipo-luna/luna-visible.png
     python3 generar-luna.py --derecha    # luz por la derecha   -> prototipo-luna/luna-visible-derecha.png
     python3 generar-luna.py --penumbra-corta   # paso luz/sombra más seco (TERM_B 0,15)
-    python3 generar-luna.py --noche 0.16 # más luz cenicienta: el lado de noche deja de
-                                         # confundirse con el fondo (ver NOCHE)
+    python3 generar-luna.py --noche 0.07 # otra luz cenicienta en el lado sin sol (ver NOCHE)
     python3 generar-luna.py --zoom       # además, un recorte ampliado x4 para revisar los píxeles
     python3 generar-luna.py --recalc     # rehace la pasada lenta (geometría/luz)
 
@@ -82,10 +81,13 @@ LADO    = -1           # de dónde viene la luz: -1 izquierda (oeste), +1 derech
 TERM_A, TERM_B = -0.01, 0.30
 # Brillo de la cara sin sol (luz cenicienta: el sol no le da, pero la Tierra
 # llena sí la ilumina; es lo que deja ver los mares en el lado oscuro de una
-# luna creciente real). Ojo: con 0,07 el lado de noche queda en ~(7,6,8), casi
-# idéntico a SPACE (5,6,10), así que no se distingue la Luna del fondo y una
-# chapa puesta ahí parece flotar en el espacio (visto con Luna 9, 17-sep-2026).
-NOCHE   = 0.07         # se cambia con --noche (solo color: no rehace la pasada lenta)
+# luna creciente real). Subido de 0,07 a 0,16 el 17-sep-2026: con 0,07 el
+# terreno de noche quedaba en (7,6,8), casi idéntico a SPACE (5,6,10), así que
+# no se distinguía la Luna del fondo y una chapa puesta ahí parecía flotar en
+# el espacio (se vio con Luna 9). Con 0,16 queda en (15,14,17): se ven los
+# mares y sigue leyéndose como noche. Comparado en prototipo-luna/noche.html
+# (0,07 / 0,12 / 0,16 / 0,22); el usuario eligió 0,16.
+NOCHE   = 0.16         # se cambia con --noche (solo color: no rehace la pasada lenta)
 LIMB_K  = 0.10         # oscurecimiento del borde (la Luna llena apenas lo tiene)
 
 RELIEVE_EXAG = 3.2     # exageración de pendientes para el sombreado
