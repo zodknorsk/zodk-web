@@ -262,10 +262,22 @@ export async function montarPlaneta(canvas, {
   const P = await cargarPlaneta(base);
   const { D, W, H, R, MW, KN, lv, lut, iceMat, rowStart, post, postN } = P;
   const { pIdx, pBase, pCol, pL, pWrap, pKN, pKI, pKNn, pKIn } = P;
-  canvas.width = W;
-  canvas.height = H;
+  // El planeta (W x H px de arte) se pinta en un lienzo aparte y se vuelca al
+  // canvas visible, que mide lo mismo que en pantalla (píxeles de dispositivo),
+  // ampliado sin suavizado. Antes el canvas era de W x H y lo ampliaba el CSS
+  // con image-rendering: pixelated, pero Firefox/Zen lo suavizaba igual (se
+  // veía con menos detalle, más a pantalla completa). Igual que la Luna
+  // (src/scripts/luna.js). Se probó ampliar solo un número entero de veces:
+  // con la ventana estrecha (menos de ×2) seguía suavizado. Tope LADO_MAX de
+  // ancho para no disparar la memoria.
+  const LADO_MAX = 3000;
+  const fuente = document.createElement("canvas");
+  fuente.width = W;
+  fuente.height = H;
+  const fctx = fuente.getContext("2d");
   const ctx = canvas.getContext("2d");
-  const img = ctx.createImageData(W, H);
+  let anchoCv = 0;
+  const img = fctx.createImageData(W, H);
   const buf = new Uint32Array(img.data.buffer);
   const stamped = new Uint8Array(W * H);
   const SP = D.SPACE, AT = D.ATMO, NAT = D.N_ATMO, GL = D.AIRGLOW;
@@ -412,7 +424,14 @@ export async function montarPlaneta(canvas, {
   const aurTope = Uint8Array.from({ length: AUR_N * AUR_ARCOS.length }, (_, i) => Math.round(AUR_K * (0.35 + 0.65 * rnd(i * 7 + 3) ** 0.8)));
   const aurPerfil = Float32Array.from({ length: AUR_K }, (_, k) => (k < 2 ? 0.55 - k * 0.05 : Math.exp(-(k - 1) / 4.5) * 0.5));
   const aurAlto = Float32Array.from({ length: AUR_K }, (_, k) => 1 + AUR_H0 + (AUR_H1 - AUR_H0) * k / (AUR_K - 1));
-  let auroraCv = null, auroraCtx = null, auroraImg = null, auroraBuf = null;
+  let auroraCv = null, auroraFuente = null, auroraCtx = null, auroraImg = null, auroraBuf = null;
+  function vuelcaAurora() {
+    if (!auroraCv) return;
+    const a = auroraCv.getContext("2d");
+    a.imageSmoothingEnabled = auroraCv.width < W;
+    a.clearRect(0, 0, auroraCv.width, auroraCv.height);
+    a.drawImage(auroraFuente, 0, 0, auroraCv.width, auroraCv.height);
+  }
   let aurInicio = null;                                // cuándo empieza a encenderse (ms)
   let aurCola = null, aurSentido = 1;                  // dónde arranca el encendido en el óvalo (0..1) y hacia dónde
   let aurAcc = null, aurVio = null, aurToc = null, aurMarca = null;
@@ -520,13 +539,15 @@ export async function montarPlaneta(canvas, {
       }
     }
     if (!auroraBuf) {
+      auroraFuente = document.createElement("canvas");
+      auroraFuente.width = W; auroraFuente.height = AUR_MT;
       auroraCv = document.createElement("canvas");
-      auroraCv.width = W; auroraCv.height = AUR_MT;
+      auroraCv.width = canvas.width; auroraCv.height = Math.round(AUR_MT * canvas.height / H);
       auroraCv.className = "hero-aurora";
       auroraCv.setAttribute("aria-hidden", "true");
       auroraCv.style.cssText = `position:absolute;left:0;width:100%;top:${-AUR_MT / H * 100}%;height:${AUR_MT / H * 100}%;image-rendering:pixelated;pointer-events:none`;
       canvas.parentElement?.appendChild(auroraCv);
-      auroraCtx = auroraCv.getContext("2d");
+      auroraCtx = auroraFuente.getContext("2d");
       auroraImg = auroraCtx.createImageData(W, AUR_MT);
       auroraBuf = new Uint32Array(auroraImg.data.buffer);
     }
@@ -554,6 +575,7 @@ export async function montarPlaneta(canvas, {
       }
     }
     auroraCtx.putImageData(auroraImg, 0, 0);
+    vuelcaAurora();
   }
 
   // Chapas de bandera (países del blog): sombra de 1 px sobre el planeta, y la
@@ -712,7 +734,8 @@ export async function montarPlaneta(canvas, {
       auroraCv.style.opacity = String(k < 1 ? (luna ? e : 1 - e) : 1);
       if (!luna && k >= 1) auroraCv.style.visibility = "hidden";
     }
-    ctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo sube a la GPU la franja pintada
+    fctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo la franja pintada
+    vuelca();
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
     if (alDibujar) alDibujar();
     return true;
@@ -723,6 +746,34 @@ export async function montarPlaneta(canvas, {
   // toque y cada borde salta su píxel justo cuando le toca, a ritmo constante.
   // Se dibuja en franjas fijas de 1/60 s (con 4 ms de margen): a 120 Hz, justo
   // un fotograma de cada dos. Solo se pintan las filas que caen en la ventana.
+  // Lienzo de arte entero al canvas visible (sin suavizado si se amplía; si
+  // se ve más pequeño que el arte, suavizado: reducir sin suavizar pierde
+  // píxeles). Entero y no por franjas: con escala no entera, las franjas
+  // dejarían costuras.
+  function vuelca() {
+    ctx.imageSmoothingEnabled = canvas.width < W;
+    ctx.imageSmoothingQuality = "high";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(fuente, 0, 0, canvas.width, canvas.height);
+  }
+  function ajusta() {
+    const w = Math.round(canvas.getBoundingClientRect().width * (window.devicePixelRatio || 1));
+    const nuevo = Math.min(LADO_MAX, w > 0 ? w : W);
+    if (nuevo === anchoCv) return;
+    anchoCv = nuevo;
+    canvas.width = nuevo;                              // (cambiar el tamaño borra el canvas)
+    canvas.height = Math.round(nuevo * H / W);
+    vuelca();
+    if (auroraCv) {
+      auroraCv.width = canvas.width;
+      auroraCv.height = Math.round(AUR_MT * canvas.height / H);
+      vuelcaAurora();
+    }
+  }
+  ajusta();
+  const ro = new ResizeObserver(() => ajusta());
+  ro.observe(canvas);
+
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   let rot = 0, raf = 0, last = null, t0 = null, lastSlot = -1;
   let enVista = true, completo = false, listo = false;
@@ -850,6 +901,7 @@ export async function montarPlaneta(canvas, {
     },
     desmontar() {
       auroraCv?.remove();
+      ro.disconnect();
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       io.disconnect();

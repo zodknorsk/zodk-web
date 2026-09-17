@@ -257,6 +257,28 @@ llanos, no tenían relieve que diera bordes nítidos.
   - Estrellas de noche: 170 por baldosa (antes 95; `generar-estrellas.py`,
     `?v=2` en el CSS); al pasar a noche con el botón se encienden en 3 s
     (`html.estrellas-entrando`). En `/luna`, siempre las de noche.
+- **Pruebas en Zen (17-sep-2026)**: vuelo y animaciones bien, pero la media
+  vuelta iba a trompicones y la Luna se veía "con menos detalle", sobre todo
+  a pantalla completa. Causas y arreglos en `luna.js`:
+  - Zen/Firefox suaviza el canvas ampliado por CSS aunque lleve
+    `image-rendering: pixelated`. Ahora el lienzo va al tamaño real en
+    pantalla (píxeles de dispositivo, `ajusta()` con ResizeObserver) y la Luna
+    de 600 px se amplía al dibujarla sin suavizado (`vuelca()`).
+  - Cálculo del giro: 20-22 ms por fotograma en Zen (12 en Chrome). Con tablas
+    (brillo del terminador, fila del mapa y mipmap, coseno de la latitud,
+    escalón de relieve por tabla directa en vez de `Math.log`, que era lo más
+    caro en Firefox), niveles de mipmap en arrays planos y `atan2` aproximado:
+    7-9 ms en Zen y 7 en Chrome. Ojo: el escalón de relieve con un BUCLE de
+    umbrales era más lento que el log.
+  - El banco `prototipo-luna/canvas.html?medir` mide solo al cargar (para
+    navegadores que no se pueden manejar desde fuera).
+  - **La Tierra de la portada (`planeta.js`) tenía el mismo problema** en Zen
+    y lleva el mismo arreglo: se pinta en un lienzo de arte aparte (600 x 585)
+    y se vuelca entero y sin suavizado a un canvas del tamaño real en pantalla
+    (tope 3000 px de ancho); la aurora igual. Se probó ampliar solo por
+    factores enteros: con la ventana estrecha (menos de ×2) seguía suavizada.
+    Comparado en Zen con la misma ventana y el mismo giro: antes bordes
+    difuminados, después bloques nítidos.
 - Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
   del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
 
