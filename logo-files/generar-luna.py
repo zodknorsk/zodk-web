@@ -22,11 +22,16 @@ Uso:
     python3 generar-luna.py --zoom       # además, un recorte ampliado x4 para revisar los píxeles
     python3 generar-luna.py --recalc     # rehace la pasada lenta (geometría/luz)
 
+Cara oculta (bocetos, 17-sep-2026; siempre luz por la derecha):
+    python3 generar-luna.py --oculta             # de frente (lon 180), fase 65° -> luna-oculta-f65.png
+    python3 generar-luna.py --oculta --sur       # inclinada 30° al sur: cuenca Polo Sur-Aitken
+    python3 generar-luna.py --oculta --fase 90   # otra fase (90 = media luz: la mitad izquierda a oscuras)
+
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
 http://127.0.0.1:4400/logo-files/prototipo-luna/
 
 La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
-luna-fuentes/cache-visible.bin; si solo cambian paleta o umbrales de albedo, no
+luna-fuentes/cache-<nombre>.bin; si solo cambian paleta o umbrales de albedo, no
 se repite.
 """
 import array
@@ -275,8 +280,9 @@ def pasada_lenta():
                     ne, nn, nu = ne / ln, nn / ln, nu / ln
                     # base local (E, N, U) en coordenadas de vista
                     Ux, Uy, Uz = x, y, z
-                    # eje de giro de la Luna en vista (con LAT0 = 0 es (0, 1, 0))
-                    ax, ay, az = 0.0, cl0, -sl0
+                    # eje de giro de la Luna en vista (con LAT0 = 0 es (0, 1, 0);
+                    # con LAT0 < 0 el polo norte se inclina hacia atrás)
+                    ax, ay, az = 0.0, cl0, sl0
                     # E = eje x U, normalizado
                     Ex, Ey, Ez = ay * Uz - az * Uy, az * Ux - ax * Uz, ax * Uy - ay * Ux
                     le = math.sqrt(Ex * Ex + Ey * Ey + Ez * Ez) or 1e-9
@@ -419,14 +425,22 @@ def colorear(datos):
 
 def main():
     os.makedirs(SALIDA, exist_ok=True)
-    cache = os.path.join(FUENTES, "cache-visible.bin")
-    global LADO, TERM_B
+    global LADO, TERM_B, LAT0, LON0, FASE
     nombre = "luna-visible"
-    if "--derecha" in sys.argv:
+    if "--oculta" in sys.argv:                  # media vuelta: la cara que nunca se ve desde la Tierra
+        LON0, FASE, LADO, nombre = 180.0, 65.0, 1, "luna-oculta"
+        if "--sur" in sys.argv:                 # la cuenca Polo Sur-Aitken (~53° S, 191° E) hacia el centro
+            LAT0 = -30.0
+            nombre += "-sur"
+        if "--fase" in sys.argv:
+            FASE = float(sys.argv[sys.argv.index("--fase") + 1])
+        nombre += f"-f{FASE:g}"
+    elif "--derecha" in sys.argv:
         LADO, nombre = 1, "luna-visible-derecha"
     if "--penumbra-corta" in sys.argv:          # no toca la pasada lenta: solo el color
         TERM_B = 0.15
         nombre += "-penumbra-corta"
+    cache = os.path.join(FUENTES, "cache-visible.bin" if nombre.startswith("luna-visible") else f"cache-{nombre}.bin")
     firma = (SIZE, RADIUS, LAT0, LON0, SUPER, FASE, SOL_ARR, LADO, DERIV_DEG, ALB_BLUR, RELIEVE_ELEV_MAX, RELIEVE_EXAG, RELIEVE_K,
              RELIEVE_MIN, RELIEVE_MAX, SOMBRA_ELEV)
     datos = None
