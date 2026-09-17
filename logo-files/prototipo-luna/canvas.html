@@ -40,6 +40,24 @@ const luna = await montarLuna(document.getElementById("luna"), {
 });
 estado.textContent = `cara ${luna.cara()}`;
 window.luna = luna;                    // para probar desde la consola: luna.fotograma(0.5)
+// ?medir: al cargar, 12 fotogramas en tiempo real y los ms de los 6 últimos
+// (para navegadores que no se pueden manejar desde fuera, como Zen).
+if (new URLSearchParams(location.search).has("medir")) {
+  const t = [];
+  for (let i = 0; i < 12; i++) t.push(await luna.medir());
+  // con un fotograma más para que el navegador termine de pintar
+  const conPintado = [];
+  for (let i = 0; i < 6; i++) {
+    const a = performance.now();
+    await luna.medir();
+    await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+    conPintado.push(performance.now() - a);
+  }
+  document.getElementById("ms").textContent =
+    `(${navigator.userAgent.includes("Firefox") ? "Firefox/Zen" : "Chrome"}: cálculo ${t.slice(6).map((x) => x.toFixed(1)).join(" · ")} ms; `
+    + `con pintado ${conPintado.map((x) => x.toFixed(0)).join(" · ")} ms)`;
+  luna.pintarCara(luna.cara());
+}
 document.getElementById("girar").onclick = () => luna.girar();
 document.getElementById("png").onclick = () => luna.pintarCara(luna.cara());
 document.getElementById("real").onclick = async () => {

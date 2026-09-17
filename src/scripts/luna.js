@@ -196,16 +196,39 @@ export async function montarLuna(canvas, {
   const P = await cargarLuna(base);
   const { D } = P;
   const S = D.SIZE, R = D.RADIUS, C = S / 2, MH = D.MAPA_H;
-  canvas.width = S;
-  canvas.height = S;
   const ctx = canvas.getContext("2d");
   let actual = inicial, raf = 0, girando = false, vivo = true;
 
-  function pintarCara(nombre) {
-    ctx.clearRect(0, 0, S, S);
-    ctx.drawImage(P.caras[nombre], 0, 0);
+  // El lienzo va al tamaño real en pantalla (píxeles de dispositivo) y la Luna
+  // (600 px de arte) se amplía al dibujarla, sin suavizado. Antes el canvas
+  // era de 600 px y lo ampliaba el CSS con image-rendering: pixelated, pero
+  // Firefox/Zen lo suavizaba igual: se veía con menos detalle, más cuanto más
+  // grande (a pantalla completa). Si se ve más pequeña que 600, suavizada
+  // (reducir sin suavizado pierde píxeles).
+  const LADO_MAX = 2400;
+  let lado = 0;
+  const fuente = document.createElement("canvas");   // fotograma del giro a 600 px, antes de ampliar
+  fuente.width = fuente.height = S;
+  const fuenteCtx = fuente.getContext("2d");
+  function vuelca(origen) {
+    ctx.imageSmoothingEnabled = lado < S;
+    ctx.imageSmoothingQuality = "high";
+    ctx.clearRect(0, 0, lado, lado);
+    ctx.drawImage(origen, 0, 0, lado, lado);
   }
-  pintarCara(actual);
+  function pintarCara(nombre) {
+    vuelca(P.caras[nombre]);
+  }
+  function ajusta() {
+    const w = Math.round(canvas.getBoundingClientRect().width * (window.devicePixelRatio || 1));
+    const nuevo = Math.min(LADO_MAX, w > 0 ? w : S);
+    if (nuevo === lado) return;
+    lado = canvas.width = canvas.height = nuevo;   // (cambiar el tamaño borra el lienzo)
+    if (!girando) pintarCara(actual);
+  }
+  ajusta();
+  const observa = new ResizeObserver(() => ajusta());
+  observa.observe(canvas);
 
   // Lo del giro se prepara en un rato libre (o al pulsar, si llega antes).
   let preparando = null;
@@ -220,7 +243,7 @@ export async function montarLuna(canvas, {
   const lerp = (x, y, t) => x + (y - x) * t;
 
   function montarGiro({ niveles, lut }) {
-    const img = ctx.createImageData(S, S);
+    const img = fuenteCtx.createImageData(S, S);
     const buf = new Uint32Array(img.data.buffer);
     const LS = D.LIGHT_SUB, LN = D.LNSTEP, KN = D.LUT_KN, KMIN = D.LUT_KMIN * LS;
     const NMAT = D.MATERIALES;
@@ -252,9 +275,53 @@ export async function montarLuna(canvas, {
     }
     const NP = idx.length;
     const pIdx = Int32Array.from(idx), pX = Float32Array.from(vx), pY = Float32Array.from(vy);
-    const pZ = Float32Array.from(vz), pCov = Float32Array.from(cv), pLimb = Float32Array.from(limb);
-    const NIV = niveles.length, CELDA0 = D.MAPA_W / 360 / DEG / R;   // celdas de longitud que abarca un píxel en el ecuador
+    const pZ = Float32Array.from(vz), pCov = Float32Array.from(cv);
     const INV_LN_LS = LS / LN, INV_LN_RK = D.RELIEVE_K / LN;
+    const NIV = niveles.length, CELDA0 = D.MAPA_W / 360 / DEG / R;   // celdas de longitud que abarca un píxel en el ecuador
+    // Todos los niveles de mipmap seguidos en un solo array por dato (leer de
+    // objetos en cada píxel era de lo que más pesaba en Firefox).
+    const nvOff = new Int32Array(NIV), nvW = new Int32Array(NIV);
+    let totalCeldas = 0;
+    niveles.forEach((nv, L) => { nvOff[L] = totalCeldas; nvW[L] = nv.w; totalCeldas += nv.w * MH; });
+    const MAT = new Uint8Array(totalCeldas), NE = new Int8Array(totalCeldas), NN = new Int8Array(totalCeldas);
+    niveles.forEach((nv, L) => { MAT.set(nv.mat, nvOff[L]); NE.set(nv.ne, nvOff[L]); NN.set(nv.nn, nvOff[L]); });
+    for (let i = 0; i < totalCeldas; i++) MAT[i] = ((MAT[i] + 20) / 40) | 0;   // media ×40 -> material
+    // Escalón de relieve round(log(ratio)·k) por tabla directa: ratio de 0 a
+    // 4 en pasos de 1/KR_PASO (por encima de 4 ya es el máximo).
+    const KR_PASO = 1024, KR_N = 4 * KR_PASO;
+    const KREL = new Int8Array(KR_N);
+    for (let i = 0; i < KR_N; i++) {
+      const k = Math.round(Math.log(Math.max(i + 0.5, 0.5) / KR_PASO) * INV_LN_RK);
+      KREL[i] = k < D.RELIEVE_MIN ? D.RELIEVE_MIN : k > D.RELIEVE_MAX ? D.RELIEVE_MAX : k;
+    }
+    const INV127 = 1 / 127, INV_2PI = 1 / (2 * Math.PI);
+
+    // Tablas para no hacer en cada píxel lo más caro (en Firefox/Zen el giro
+    // iba a 20-22 ms por fotograma y en Chrome a 12; con esto, 7-9 en los dos):
+    // - brillo por terminador (smooth + log) según lamS, de -1 a 1;
+    const TN = 4096, TH = TN / 2;
+    const TERM_J = new Float32Array(TN + 1);
+    for (let i = 0; i <= TN; i++) {
+      const b = D.NOCHE + (1 - D.NOCHE) * smooth(D.TERM_A, D.TERM_B, i / TH - 1);
+      TERM_J[i] = Math.log(b > 1e-3 ? b : 1e-3) * INV_LN_LS;
+    }
+    const pLimbJ = Float32Array.from(limb, (l) => Math.log(l) * INV_LN_LS);
+    // - fila del mapa (asin) y nivel de mipmap según la coordenada norte.
+    //   (El escalón de relieve con un bucle de umbrales en vez de log era más
+    //   lento; con tabla directa, KREL más abajo, no.)
+    const YN = 8192, YH = YN / 2;
+    const FILA = new Int32Array(YN + 1), NIVEL = new Uint8Array(YN + 1), CLAT = new Float32Array(YN + 1);
+    for (let i = 0; i <= YN; i++) {
+      const y = i / YH - 1;
+      const r = ((0.5 - Math.asin(y) / Math.PI) * MH) | 0;
+      FILA[i] = r < 0 ? 0 : r >= MH ? MH - 1 : r;
+      CLAT[i] = Math.sqrt(Math.max(0, 1 - y * y));
+      const cl = Math.max(0.02, CLAT[i]);
+      const foot = CELDA0 / cl;                    // huella del píxel en celdas de longitud del nivel 0
+      let L = 0;
+      if (foot > 1) { L = 1; let fm = 2; while (fm < foot && L < NIV - 1) { fm *= 2; L++; } }
+      NIVEL[i] = L;
+    }
 
     // Un fotograma con la Luna en la orientación M (ver orientacion()), luz
     // de fase `fase`, exposición `expo` y tono frío `frio`, como pasada_lenta()
@@ -267,6 +334,7 @@ export async function montarLuna(canvas, {
       const [[m00, m01, m02], [m10, m11, m12], [m20, m21, m22]] = M;
       const ax = m10, ay = m11, az = m12;        // norte de la Luna en vista (Mᵀ·(0,1,0))
       const jNoche = Math.round(Math.log(D.NOCHE * expo) / LN * LS);   // la sombra no pasa de la luz cenicienta
+      const expoJ = Math.log(expo) * INV_LN_LS;
       const paso = D.FRIO_MAX > 0 ? Math.round(frio / D.FRIO_MAX * D.FRIO_PASOS) : 0;
       const base = paso * NMAT;
       for (let n = 0; n < NP; n++) {
@@ -274,33 +342,32 @@ export async function montarLuna(canvas, {
         const xx = m00 * ux + m01 * uy + m02 * uz;
         const yy = m10 * ux + m11 * uy + m12 * uz;
         const zz = m20 * ux + m21 * uy + m22 * uz;
-        const clatR = Math.sqrt(Math.max(0, 1 - yy * yy));   // coseno de la latitud
-        const clat = clatR > 0.02 ? clatR : 0.02;
-        // huella del píxel en celdas de longitud del nivel 0 -> nivel de mipmap
-        const foot = CELDA0 / clat;
-        let L = 0;
-        if (foot > 1) { L = 1; let fm = 2; while (fm < foot && L < NIV - 1) { fm *= 2; L++; } }
-        const nv = niveles[L];
-        const lat = Math.asin(yy > 1 ? 1 : yy < -1 ? -1 : yy);
-        let r = ((0.5 - lat / Math.PI) * MH) | 0;
-        r = r < 0 ? 0 : r >= MH ? MH - 1 : r;
-        let lon = Math.atan2(xx, zz) / DEG + 180;
-        lon -= Math.floor(lon / 360) * 360;
-        let c = (lon / 360 * nv.w) | 0;
-        if (c >= nv.w) c = 0;
-        const i = r * nv.w + c;
-        const m = ((nv.mat[i] + 20) / 40) | 0;
+        let yi = ((yy + 1) * YH) | 0;
+        yi = yi < 0 ? 0 : yi > YN ? YN : yi;
+        const L = NIVEL[yi], w = nvW[L];
+        // longitud: atan2(xx, zz) aproximado (error < 1e-5 rad), de 0 a 1 vuelta
+        const axx = xx < 0 ? -xx : xx, azz = zz < 0 ? -zz : zz;
+        const mayor = axx > azz ? axx : azz;
+        const q = mayor > 0 ? (axx > azz ? azz : axx) / mayor : 0, q2 = q * q;
+        let ang = q * (0.999866 + q2 * (-0.3302995 + q2 * (0.180141 + q2 * (-0.085133 + q2 * 0.0208351))));
+        if (axx > azz) ang = 1.5707963 - ang;
+        if (zz < 0) ang = 3.1415927 - ang;
+        if (xx < 0) ang = -ang;
+        let c = ((ang * INV_2PI + 0.5) * w) | 0;
+        if (c >= w) c = 0;
+        const i = nvOff[L] + FILA[yi] * w + c;
+        const m = MAT[i];
         const lamS = ux * SX + uy * SY + uz * SZ;
-        let bright = D.NOCHE + (1 - D.NOCHE) * smooth(D.TERM_A, D.TERM_B, lamS);
-        bright *= pLimb[n] * expo;
-        let j = Math.floor(Math.log(bright > 1e-3 ? bright : 1e-3) * INV_LN_LS + 0.5);   // en 1/LS de escalón
+        let li = ((lamS + 1) * TH) | 0;
+        li = li < 0 ? 0 : li > TN ? TN : li;
+        let j = Math.floor(TERM_J[li] + pLimbJ[n] + expoJ + 0.5);   // en 1/LS de escalón
         if (lamS > 0) {
-          const ne = nv.ne[i] / 127, nn = nv.nn[i] / 127;
+          const ne = NE[i] * INV127, nn = NN[i] * INV127;
           const nu = Math.sqrt(Math.max(0, 1 - ne * ne - nn * nn));
           // base local: E = eje x U, N = U x E
-          let Ex = ay * uz - az * uy, Ey = az * ux - ax * uz, Ez = ax * uy - ay * ux;
-          const le = Math.sqrt(Ex * Ex + Ey * Ey + Ez * Ez) || 1e-9;
-          Ex /= le; Ey /= le; Ez /= le;
+          // |eje x U| = coseno de la latitud (tabla)
+          const le = 1 / (CLAT[yi] || 1e-9);
+          const Ex = (ay * uz - az * uy) * le, Ey = (az * ux - ax * uz) * le, Ez = (ax * uy - ay * ux) * le;
           const Nx = uy * Ez - uz * Ey, Ny = uz * Ex - ux * Ez, Nz = ux * Ey - uy * Ex;
           const nx = ne * Ex + nn * Nx + nu * ux, ny = ne * Ey + nn * Ny + nu * uy, nz = ne * Ez + nn * Nz + nu * uz;
           const lamL = nx * SX + ny * SY + nz * SZ;
@@ -315,8 +382,7 @@ export async function montarLuna(canvas, {
                 + sinEM * (nx * ux + ny * uy + nz * uz);
               ratio = (d > 0.004 ? d : 0.004) / sinEM;
             }
-            kRel = Math.round(Math.log(ratio) * INV_LN_RK);
-            kRel = kRel < D.RELIEVE_MIN ? D.RELIEVE_MIN : kRel > D.RELIEVE_MAX ? D.RELIEVE_MAX : kRel;
+            kRel = ratio >= 4 ? D.RELIEVE_MAX : KREL[(ratio * KR_PASO) | 0];
           }
           j += kRel * LS;
           if (j < jNoche) j = jNoche;
@@ -359,7 +425,8 @@ export async function montarLuna(canvas, {
     function pintar(A, B, tray, e, x) {
       const M = mul3(rotEje(tray.n, tray.phiFin * e), tray.MA);
       calcular(M, lerp(A.fase, B.fase, e), A.lado, lerp(A.exposicion, B.exposicion, x), lerp(A.frio, B.frio, x));
-      ctx.putImageData(img, 0, 0);
+      fuenteCtx.putImageData(img, 0, 0);
+      vuelca(fuente);
     }
     function calentar() {
       const c = D.caras[actual];
@@ -417,6 +484,7 @@ export async function montarLuna(canvas, {
   function desmontar() {
     vivo = false;
     if (raf) cancelAnimationFrame(raf);
+    observa.disconnect();
   }
 
   return { girar, cara: () => actual, girando: () => girando, medir, pintarCara, fotograma, desmontar };
