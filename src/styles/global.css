@@ -261,6 +261,89 @@ html.dark .astro-luna { opacity: 1; }
 .hero-astro.a-noche .astro-luna,
 .hero-astro.a-dia .astro-sol { animation: astro-sube 1.6s cubic-bezier(0.1, 0.4, 0.5, 1) 0.9s both; }
 
+/* Enlace a la Luna (Proyecto Luna): encima de la luna de arriba a la
+   izquierda, con su misma caja; solo de noche, que es cuando se ve la luna.
+   Al pulsarlo, index.astro hace el vuelo hasta /luna. */
+.hero-luna-enlace {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  z-index: 2;
+  display: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+html.dark .hero-luna-enlace { display: block; }
+.hero-luna-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
+
+/* Vuelo de la Tierra a la Luna: capa fija con la cara visible, que crece desde
+   la luna del hero hasta donde queda en /luna (.luna-disco). */
+.viaje-luna {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.viaje-luna img {
+  position: absolute;
+  transform-origin: 0 0;
+  image-rendering: pixelated;
+  will-change: transform, opacity;
+}
+
+/* --- La Luna (/luna) --------------------------------------------------------
+   Mismo fondo que la portada. El disco, centrado; --luna-tam lo usa también el
+   vuelo desde la Tierra para saber dónde termina. */
+:root { --luna-tam: min(80vh, 90vw); }
+@supports (height: 1svh) { :root { --luna-tam: min(80svh, 90vw); } }
+.luna-disco {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--luna-tam);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: url(/luna/luna-visible.png?v=2) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+.luna-disco.luna-lista { background-image: none; }
+.luna-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+/* PLACEHOLDER del botón de cambio de cara (hasta que haya dibujo propio). */
+.luna-cambio {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.2rem, calc((100svh - var(--luna-tam)) / 2 - 3.2rem));
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border: 1.5px dashed #7c8794;
+  border-radius: 4px;
+  background: #05060acc;
+  color: #cfd6de;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.luna-cambio[hidden] { display: none; }
+.luna-cambio svg { width: 1rem; height: 1rem; }
+.luna-cambio:hover, .luna-cambio:focus-visible { color: #fff; border-color: #cfd6de; }
+.luna-cambio:disabled { opacity: 0.5; cursor: default; }
+
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
    (::before) para despegarlo del pixel art.
@@ -862,6 +945,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
   .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
+  .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }

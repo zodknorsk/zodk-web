@@ -91,6 +91,9 @@ const eventos = todosEventos
       <span class="astro-sol"></span>
       <span class="astro-luna"></span>
     </div>
+    <!-- Proyecto Luna: la luna (solo de noche) lleva a /luna con un vuelo
+         (montarViaje() más abajo). -->
+    <a class="hero-luna-enlace" href="/luna" aria-label="Viajar a la Luna" title="Viajar a la Luna"></a>
     <div
       class="hero-planet"
       role="img"
@@ -338,8 +341,10 @@ const eventos = todosEventos
   // página sin recargar (ClientRouter), así que se monta en cada llegada a la
   // portada y se desmonta al salir. Se congela, como el resto del hero, con el
   // ratón sobre una nave.
+  import { navigate } from "astro:transitions/client";
   import { montarPlaneta } from "../scripts/planeta.js";
   import { mgrs } from "../scripts/mgrs.js";
+  import { LUNA_V } from "../scripts/luna.js";
 
   let planeta: { desmontar(): void } | null = null;
   let quitaMira: (() => void) | null = null;
@@ -473,10 +478,102 @@ const eventos = todosEventos
     return () => { mo.disconnect(); clearTimeout(t); };
   }
 
+  // Vuelo a la Luna: al pulsar la luna del hero, la cara visible de /luna crece
+  // desde ella hasta su sitio en /luna (centrada, --luna-tam) mientras la
+  // Tierra se aleja hacia abajo y el resto del hero se apaga; al llegar se
+  // cambia de página. La Luna de /luna arranca con la misma imagen en el mismo
+  // sitio, así que el cambio no se nota. Con reduced-motion, directo.
+  const VUELO_MS = 2200;
+  const LUNA_IMG = `/luna/luna-visible.png?v=${LUNA_V}`;
+  const ICONO_DISCO = 32 / 56;       // diámetro del disco en el icono (generar-astros.py: r = 16 en 56 px)
+  const CARA_DISCO = 585 / 600;      // y en la cara de /luna (radio 292,5 en 600 px)
+  let quitaViaje: (() => void) | null = null;
+  function montarViaje(hero: HTMLElement) {
+    const enlace = hero.querySelector<HTMLAnchorElement>(".hero-luna-enlace");
+    const icono = hero.querySelector<HTMLElement>(".astro-luna");
+    if (!enlace || !icono) return () => {};
+    let img: HTMLImageElement | null = null;
+    let enVuelo = false;
+    const precarga = () => {
+      if (img) return;
+      img = new Image();
+      img.src = LUNA_IMG;
+      img.decode().catch(() => {});
+    };
+    const clic = async (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
+      e.preventDefault();
+      if (enVuelo) return;
+      enVuelo = true;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/luna");
+      precarga();
+      await img!.decode().catch(() => {});
+
+      // Origen: el disco del icono. Destino: donde queda la Luna en /luna.
+      const ri = icono.getBoundingClientRect();
+      const d0 = ri.width * ICONO_DISCO;
+      const sonda = document.createElement("div");
+      sonda.style.cssText = "position:fixed;visibility:hidden;width:var(--luna-tam)";
+      document.body.append(sonda);
+      const d1 = sonda.getBoundingClientRect().width * CARA_DISCO;
+      sonda.remove();
+      const t0 = d0 / CARA_DISCO, t1 = d1 / CARA_DISCO;   // lado de la imagen entera
+      const x0 = ri.left + ri.width / 2 - t0 / 2, y0 = ri.top + ri.height / 2 - t0 / 2;
+      const x1 = (innerWidth - t1) / 2, y1 = (innerHeight - t1) / 2;
+
+      const capa = document.createElement("div");
+      capa.className = "viaje-luna";
+      const cara = img!.cloneNode() as HTMLImageElement;
+      cara.alt = "";
+      cara.style.width = cara.style.height = `${t1}px`;
+      cara.style.left = cara.style.top = "0";
+      capa.append(cara);
+      document.body.append(capa);
+
+      const suave = "cubic-bezier(0.55, 0, 0.25, 1)";
+      const opts = { duration: VUELO_MS, easing: suave, fill: "forwards" as FillMode };
+      const k = t0 / t1;
+      cara.animate([
+        { transform: `translate(${x0}px, ${y0}px) scale(${k})`, opacity: 0 },
+        { opacity: 1, offset: 0.18 },
+        { transform: `translate(${x1}px, ${y1}px) scale(1)`, opacity: 1 },
+      ], opts);
+      icono.animate([{ opacity: 1 }, { opacity: 0, offset: 0.18 }, { opacity: 0 }], opts);
+      // La Tierra se aleja: baja y se hace pequeña; lo demás se apaga antes.
+      const planeta = hero.querySelector<HTMLElement>(".hero-planet");
+      planeta?.animate([
+        { transform: "translateX(-50%)", opacity: 1 },
+        { transform: "translateX(-50%) translateY(55vh) scale(0.55)", opacity: 0 },
+      ], { ...opts, duration: VUELO_MS * 0.85, easing: "cubic-bezier(0.45, 0, 0.35, 1)" });   // se ha ido antes de llegar
+      for (const el of hero.querySelectorAll<HTMLElement>(
+        ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira",
+      )) {
+        el.animate([{ opacity: 1 }, { opacity: 0, offset: 0.3 }, { opacity: 0 }], { ...opts, easing: "ease-out" });
+      }
+      await new Promise((r) => setTimeout(r, VUELO_MS));
+      // La capa se va con la página vieja al cambiar (ClientRouter sustituye el <body>).
+      navigate("/luna");
+    };
+    enlace.addEventListener("pointerenter", precarga);
+    enlace.addEventListener("focus", precarga);
+    enlace.addEventListener("touchstart", precarga, { passive: true });
+    enlace.addEventListener("click", clic);
+    return () => {
+      enlace.removeEventListener("pointerenter", precarga);
+      enlace.removeEventListener("focus", precarga);
+      enlace.removeEventListener("touchstart", precarga);
+      enlace.removeEventListener("click", clic);
+    };
+  }
+
   document.addEventListener("astro:page-load", async () => {
     faseLuna();
     quitaAstro?.();
     quitaAstro = montarAstro();
+    quitaViaje?.();
+    quitaViaje = null;
+    const heroViaje = document.querySelector<HTMLElement>(".hero");
+    if (heroViaje?.querySelector(".hero-luna-enlace")) quitaViaje = montarViaje(heroViaje);
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest<HTMLElement>(".hero");
@@ -530,6 +627,8 @@ const eventos = todosEventos
   document.addEventListener("astro:before-swap", () => {
     quitaAstro?.();
     quitaAstro = null;
+    quitaViaje?.();
+    quitaViaje = null;
     planeta?.desmontar();
     quitaMira?.();
     planeta = null;

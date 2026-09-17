@@ -121,6 +121,24 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
   `luna-visible.png` (luz por la izquierda) y `…-penumbra-corta.png`, ambos
   ANTERIORES al relieve rasante.
 
+### Cara visible — mares retocados: V2 APROBADA (17-sep-2026)
+
+Al usuario la visible le parecía "de poca resolución" (la oculta menos, por
+los cráteres). Causa: en la visible los mares se amontonan en albedo 80-89 y
+el corte de 76 los partía en manchas de dos grises casi iguales; y los mares,
+llanos, no tenían relieve que diera bordes nítidos.
+- **Aprobada V2**: `--derecha --valles --relieve-mares 2.5`
+  (`luna-visible-derecha-valles-rm2.5.png`). `--valles` = umbrales de albedo
+  en los valles del histograma (`ALBEDO_VALLE`: un solo "mar" de 66 a 104);
+  `--relieve-mares 2.5` = exageración del relieve ×2,5 donde el albedo es de
+  mar (rampa `MARES_A/B` 100-120): salen las arrugas de lava.
+- Descartes: V1 (solo `--valles`), V2a (relieve ×1,8: menos grano pero
+  arrugas flojas), V2b (×2,5 con `--suave-mares 2`, derivada más larga en los
+  mares: más suave; el usuario prefirió la V2 tal cual, con su grano), y
+  `--limpiar 4` (no cambia casi nada: el grano va en grupitos, no sueltos).
+- Pendiente: pasar estos ajustes a `CARAS`/`--canvas` (el mapa del giro usa
+  un solo juego de umbrales y relieve para las dos caras).
+
 ### Cara oculta — PRIMER BOCETO APROBADO (17-sep-2026)
 
 - `python3 generar-luna.py --oculta --sur --zoom` saca la aprobada:
@@ -141,6 +159,45 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
   Aitken y los dos Chang'e encima (solo referencia, no es parte del dibujo).
 - Corregido de paso: el eje de giro en vista tenía el signo de `LAT0` al
   revés (`az`); con `LAT0` = 0 (cara visible) no cambiaba nada.
+
+### Cara oculta oscura — D3 APROBADA (17-sep-2026)
+
+- `--oculta --sur --valles --relieve-mares 2.5 --exposicion 0.6 --frio 0.5`
+  (`luna-oculta-sur-f65-valles-rm2.5-e0.6-frio0.5.png`): luz al 60 % y tono
+  frío suave. Lleva también los mares de la V2 (el mapa del giro es uno solo).
+- Descartes: D1 luz 70 % (tras el giro apenas se nota el cambio), D2 50 %
+  (plana y sucia), D4 60 % con frío 1 (demasiado azul, parece un filtro).
+  El usuario dudó y pidió criterio: se eligió D3.
+
+### Página /luna y vuelo desde la Tierra (17-sep-2026, a revisar por el usuario)
+
+- **`src/pages/luna.astro`** (ruta `/luna`): mismo fondo de estrellas que la
+  portada (`PageLayout hero`), la Luna centrada (`.luna-disco`, tamaño
+  `--luna-tam` en `global.css`) y un **botón PLACEHOLDER** abajo
+  (`.luna-cambio`, texto "cara oculta"/"cara visible") que da la media vuelta.
+  Sin JS se ve la cara visible (fondo del div).
+- **Datos en `public/luna/`** (`generar-luna.py --canvas public/luna/`, con
+  `CARAS` = V2 y D3). Al regenerar: subir `LUNA_V` en `src/scripts/luna.js` y
+  el `?v=` de `luna-visible.png` en `global.css` (`.luna-disco`).
+  - Durante el giro cambian a la vez vista, fase, exposición (1 → 0,6) y tono
+    frío (0 → 0,5; LUT con `FRIO_PASOS` = 5 tonos intermedios).
+  - **Gira siempre hacia el mismo lado**, a la ida y a la vuelta: la
+    superficie se mueve hacia la DERECHA (`SENTIDO` = -1 en `luna.js`; lon0
+    siempre decrece). Pedido del usuario; se probó antes hacia la izquierda y
+    era "al revés".
+  - Mapa con normales en 64 niveles (`NORMAL_NIVELES`): 1,5 MB (antes 2,3).
+    Se baja en segundo plano tras enseñar la cara; si se pulsa antes, el giro
+    espera.
+- **Vuelo**: en la portada, de noche, un enlace `.hero-luna-enlace` sobre la
+  luna de arriba a la izquierda (el sol no enlaza). Al pulsar (`montarViaje()`
+  en `index.astro`), la cara visible crece desde el disco del icono hasta su
+  sitio en `/luna` en 2,2 s mientras la Tierra baja, encoge y se apaga (acaba
+  al 85 % del tiempo) y el título, naves y demás se apagan; al terminar,
+  `navigate("/luna")` (ClientRouter). La Luna de `/luna` arranca con la misma
+  imagen en el mismo sitio. Las estrellas no se mueven (así casan con las de
+  `/luna`). Siempre aterriza en la cara visible. Con reduced-motion, directo.
+- Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
+  del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
 
 ### Siguiente
 
@@ -168,8 +225,8 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
      tarda ~45 ms, por eso se pinta uno en un rato libre al cargar. Falta
      probarlo en Zen y en móvil.
    - Con `prefers-reduced-motion` cambia de cara sin giro.
-3. Página nueva en Astro y enlace desde el icono de la Luna del hero (solo
-   sale en tema oscuro: decidir si el sol también enlaza).
+3. ~~Página nueva en Astro y enlace desde el icono de la Luna~~ (hecho, a
+   revisar: ver "Página /luna y vuelo desde la Tierra").
 4. Después: chapas de alunizajes (lista de candidatos abajo).
 
 ## Candidatos a alunizaje/sonda (repaso del 16-sep-2026, sin decidir aún)
