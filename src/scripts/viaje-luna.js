@@ -56,21 +56,37 @@ const rota = (v, k, ang) => {
   ];
 };
 
+// Fase de hoy para la tira de la luna del hero (public/zodk-luna-fases.png,
+// FASES fases en fila; logo-files/generar-astros.py): background-position.
+// Edad de la luna desde una luna nueva conocida (6-ene-2000, 18:14 UTC) y mes
+// sinódico medio: basta para el día.
+export function faseLunaHoy() {
+  const FASES = 30, MES_SINODICO = 29.530588853, LUNA_NUEVA = Date.UTC(2000, 0, 6, 18, 14);
+  const edad = ((((Date.now() - LUNA_NUEVA) / 86400000) % MES_SINODICO) + MES_SINODICO) % MES_SINODICO;
+  const i = Math.round((edad / MES_SINODICO) * FASES) % FASES;
+  return `${(i / (FASES - 1)) * 100}% 0`;
+}
+
 /**
  * Hace el vuelo. Resuelve con la posición final de las estrellas (para
- * colocar las de /luna igual) cuando termina; la capa del vuelo se queda
- * puesta (la quita el cambio de página, o `limpiar()` del resultado).
+ * colocar las de la otra página igual) cuando termina; la capa del vuelo se
+ * queda puesta (la quita el cambio de página, o `limpiar()` del resultado).
+ * `inverso`: el mismo vuelo hacia atrás, de /luna a la Tierra (en /luna se
+ * ponen un icono y una Tierra con las clases de la portada, para medir dónde
+ * acaban); `iconoVisible` = false si en la portada no se ve la luna (de día):
+ * entonces la Luna se apaga en vez de fundirse con el icono.
  * Elegido por el usuario (17-sep-2026): tierra "encima", píxeles "directo"
  * (con el fundido del icono al dibujo algo más largo) y 6 s.
  * @param {{ icono: HTMLElement, planeta: HTMLElement, estrellas: HTMLElement,
  *   apagar?: HTMLElement[], img: HTMLImageElement, duracion?: number,
  *   tierra?: keyof typeof TIERRAS, pixeles?: keyof typeof PIXELES,
- *   velocidad?: number }} o
+ *   velocidad?: number, inverso?: boolean, iconoVisible?: boolean }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
 export function volarALuna({
   icono, planeta, estrellas, apagar = [], img,
   duracion = 6000, tierra = "encima", pixeles = "directo", velocidad = 1,
+  inverso = false, iconoVisible = true,
 }) {
   const W = innerWidth, H = innerHeight, CX = W / 2, CY = H / 2;
   const F = Math.max(W, H) * 0.9;                    // focal en px
@@ -154,7 +170,7 @@ export function volarALuna({
       const f = suave(clamp01(t / FUNDIDO_HASTA));
       // el icono sigue opaco debajo hasta que el dibujo casi lo tapa (si no, a
       // mitad de fundido se transparentan las estrellas), y luego se apaga su halo
-      o[iIcono] = 1 - suave(clamp01((f - 0.5) / 0.5));
+      o[iIcono] = iconoVisible ? 1 - suave(clamp01((f - 0.5) / 0.5)) : 0;
       o[iOriginal] = f;
     } else if (pixeles === "icono") {
       o[iIcono] = 1;
@@ -211,43 +227,58 @@ export function volarALuna({
     planeta.style.opacity = String(op);
   };
 
+  // Estrellas: dónde queda el punto del infinito que al principio estaba en
+  // el centro, sumado a donde ya estuvieran (tras un vuelo anterior) y
+  // contando desde el instante en que empieza este vuelo.
+  const posPrevia = getComputedStyle(estrellas).getPropertyValue("--estrellas-pos").trim();
+  const [bx, by] = (posPrevia.match(/-?[\d.]+/g) ?? ["0", "0"]).map(Number);
+  const desplaza = (c) => [(F * c.der[2]) / c.del[2], (F * c.aba[2]) / c.del[2]];
+  const [ix0, iy0] = desplaza(camara(inverso ? 1 : 0));
+
+  // Pinta el vuelo con avance p (0..1).
+  const pinta = (p) => {
+    const t = inverso ? 1 - p : p;
+    const c = camara(t);
+    const r = resta(luna, c.pos), z = punto(r, c.del);
+    const lx = CX + (F * punto(r, c.der)) / z, ly = CY + (F * punto(r, c.aba)) / z;
+    const d = (2 * F) / z;                           // diámetro del disco en px
+    const k = d / dLuna1;
+    if (vivo !== null) {
+      // resolución para que cada píxel de arte mida ~3 px de pantalla, en pasos de 8
+      const res = Math.min(585, Math.max(16, Math.round(d / 3 / 8) * 8));
+      if (res !== vivoRes) {
+        vivoRes = res;
+        const cv = /** @type {HTMLCanvasElement} */ (capas[vivo].el);
+        cv.width = cv.height = Math.round(res / CARA_DISCO);
+        const x = cv.getContext("2d");
+        x.imageSmoothingEnabled = true;
+        x.imageSmoothingQuality = "high";
+        x.drawImage(img, 0, 0, cv.width, cv.height);
+      }
+    }
+    const ops = opacidades(t, d);
+    capas.forEach(({ el, lado, res }, i) => {
+      el.style.opacity = String(ops[i]);
+      if (ops[i] === 0) return;
+      el.style.transform = `translate(${lx - (lado * k) / 2}px, ${ly - (lado * k) / 2}px) scale(${k})`;
+      // si sus píxeles miden menos de uno de pantalla, suavizada (en pixelado titila)
+      if (el !== ic) el.style.imageRendering = d / res < 0.97 ? "auto" : "pixelated";
+    });
+    const [ix, iy] = desplaza(c);
+    const pos = `${(bx + ix - ix0).toFixed(1)}px ${(by + iy - iy0).toFixed(1)}px`;
+    estrellas.style.setProperty("--estrellas-pos", pos);
+    moverTierra(t, ix, iy);
+    return pos;
+  };
+
   let raf = 0;
+  pinta(0);                                          // ya, antes de que el navegador pinte nada
   const fin$ = new Promise((resolve) => {
     const t0 = performance.now();
     const frame = (ahora) => {
-      const t = Math.min(1, ((ahora - t0) * velocidad) / duracion);
-      const c = camara(t);
-      const r = resta(luna, c.pos), z = punto(r, c.del);
-      const lx = CX + (F * punto(r, c.der)) / z, ly = CY + (F * punto(r, c.aba)) / z;
-      const d = (2 * F) / z;                         // diámetro del disco en px
-      const k = d / dLuna1;
-      if (vivo !== null) {
-        // resolución para que cada píxel de arte mida ~3 px de pantalla, en pasos de 8
-        const res = Math.min(585, Math.max(16, Math.round(d / 3 / 8) * 8));
-        if (res !== vivoRes) {
-          vivoRes = res;
-          const cv = /** @type {HTMLCanvasElement} */ (capas[vivo].el);
-          cv.width = cv.height = Math.round(res / CARA_DISCO);
-          const x = cv.getContext("2d");
-          x.imageSmoothingEnabled = true;
-          x.imageSmoothingQuality = "high";
-          x.drawImage(img, 0, 0, cv.width, cv.height);
-        }
-      }
-      const ops = opacidades(t, d);
-      capas.forEach(({ el, lado, res }, i) => {
-        el.style.opacity = String(ops[i]);
-        if (ops[i] === 0) return;
-        el.style.transform = `translate(${lx - (lado * k) / 2}px, ${ly - (lado * k) / 2}px) scale(${k})`;
-        // si sus píxeles miden menos de uno de pantalla, suavizada (en pixelado titila)
-        if (el !== ic) el.style.imageRendering = d / res < 0.97 ? "auto" : "pixelated";
-      });
-      // Estrellas: dónde queda el punto del infinito que al principio estaba en el centro
-      const ix = (F * c.der[2]) / c.del[2], iy = (F * c.aba[2]) / c.del[2];
-      const pos = `${ix.toFixed(1)}px ${iy.toFixed(1)}px`;
-      estrellas.style.setProperty("--estrellas-pos", pos);
-      moverTierra(t, ix, iy);
-      if (t < 1) {
+      const p = Math.min(1, ((ahora - t0) * velocidad) / duracion);
+      const pos = pinta(p);
+      if (p < 1) {
         raf = requestAnimationFrame(frame);
         return;
       }
@@ -262,7 +293,8 @@ export function volarALuna({
     capa.remove();
     icono.style.visibility = "";
     planeta.style.transform = planeta.style.opacity = planeta.style.willChange = "";
-    estrellas.style.removeProperty("--estrellas-pos");
+    if (posPrevia) estrellas.style.setProperty("--estrellas-pos", posPrevia);
+    else estrellas.style.removeProperty("--estrellas-pos");
     for (const el of apagar) el.getAnimations().forEach((a) => a.cancel());
   };
   return { fin: fin$, limpiar };

@@ -181,6 +181,14 @@ llanos, no tenían relieve que diera bordes nítidos.
   el `?v=` de `luna-visible.png` en `global.css` (`.luna-disco`).
   - Durante el giro cambian a la vez vista, fase, exposición (1 → 0,6) y tono
     frío (0 → 0,5; LUT con `FRIO_PASOS` = 5 tonos intermedios).
+  - **Giro rehecho (17-sep-2026, tarde)**: antes giraba e inclinaba a la vez
+    (bamboleo), en 1,6 s, y la luz se apagaba a mitad. Ahora UNA rotación de
+    verdad de una orientación a la otra (`trayecto()`: eje y ángulo de
+    MB·MAᵀ; de la visible a la oculta, eje casi vertical inclinado 15° hacia
+    quien mira), en **2,8 s** con arranque y frenada en seno ("un pelín más
+    rápido" que 3,2). Fase, exposición y tono frío cambian **a la vez que
+    gira** (se probó que la exposición llegara al final, como una cámara que
+    se adapta; el usuario prefiere que se oscurezca según rota).
   - **Gira siempre hacia el mismo lado**, a la ida y a la vuelta: la
     superficie se mueve hacia la DERECHA (`SENTIDO` = -1 en `luna.js`; lon0
     siempre decrece). Pedido del usuario; se probó antes hacia la izquierda y
@@ -222,6 +230,33 @@ llanos, no tenían relieve que diera bordes nítidos.
     versión aún más plana (zoom 2D uniforme) y otra en la que la cámara
     atravesaba la Tierra (en la escena 3D la Tierra está entre la cámara y la
     Luna: por eso la Tierra va aparte).
+- **Vuelta a la Tierra (17-sep-2026)**: botón PLACEHOLDER "volver a la
+  Tierra" abajo a la izquierda de `/luna` (el de cambio de cara pasó abajo a
+  la derecha: en el centro lo tapaba la barra de Astro en desarrollo). Es el
+  mismo vuelo hacia atrás (`volarALuna({ inverso: true })`): la Luna (la cara
+  que se esté viendo) se aleja hacia arriba a la izquierda y se funde con el
+  icono (de día, se apaga: allí está el sol), la Tierra sube desde abajo y
+  las estrellas giran de vuelta; al llegar, `navigate("/")` y la portada
+  coloca sus estrellas donde quedaron. Para medir dónde acaban icono y
+  Tierra, `/luna` añade al hero un `.hero-astro` y un `.hero-planet` con las
+  clases de la portada (misma geometría y la Tierra quieta del tema). La fase
+  de hoy del icono sale de `faseLunaHoy()` (viaje-luna.js; la usa también la
+  portada).
+  - **La vuelta se queda así** (Tierra "encima" al revés: sube desde abajo).
+    Se probaron y DESCARTARON dos ideas de Tierra "escondida detrás de la
+    Luna": "detras" (la Luna encogía en su sitio y la Tierra aparecía: "¿qué
+    mierda es esta?") y "rodea" (la Luna se apartaba grande a su esquina
+    destapando la Tierra, que luego se acercaba). Tras la segunda: "Nada, deja
+    esto. Vuelve a lo que me hiciste antes, que me gustó." No reintentar.
+- **Detalles de la web hechos en esta rama (17-sep-2026)** (no son solo de la
+  Luna; se publican con el merge):
+  - Botón de tema con dos modelos, vacío y relleno: se rellena con
+    transición al pasar el ratón o con foco, y al pulsar el icono nuevo sale
+    relleno y se vacía (`.tema-icono`, `.tema-pulsado`). Sobre el hero, al
+    pasar el ratón, en blanco (en tema claro se pintaba negro sobre negro).
+  - Estrellas de noche: 170 por baldosa (antes 95; `generar-estrellas.py`,
+    `?v=2` en el CSS); al pasar a noche con el botón se encienden en 3 s
+    (`html.estrellas-entrando`). En `/luna`, siempre las de noche.
 - Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
   del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
 

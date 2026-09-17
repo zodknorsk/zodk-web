@@ -176,6 +176,24 @@ article .tiktok a {
   @apply block mt-3 text-sm no-underline opacity-75;
 }
 
+/* Botón de tema (ThemeToggle.astro): el icono vacío se rellena al pasar el
+   ratón (o con foco) con una transición, del mismo color que su trazo; al
+   pulsar, el icono nuevo sale relleno y se vacía. */
+#theme-button .tema-icono :is(circle, path) {
+  fill: currentColor;
+  fill-opacity: 0;
+  transition: fill-opacity 0.35s ease-in-out, fill 0.3s ease-in-out;
+}
+html.dark #theme-button:is(:hover, :focus-visible) .tema-icono circle { fill: #fff; fill-opacity: 1; }
+html:not(.dark) #theme-button:is(:hover, :focus-visible) .tema-icono path { fill: #000; fill-opacity: 1; }
+/* Sobre el hero (portada y /luna, cabecera transparente) el fondo es negro en
+   los dos temas: el icono al pasar el ratón, en blanco (el trazo negro de
+   group-hover:stroke-black lo hacía desaparecer). */
+html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono { stroke: #fff; }
+html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono :is(circle, path) { fill: #fff; }
+@keyframes tema-relleno { from { fill-opacity: 1; } }
+#theme-button.tema-pulsado .tema-icono :is(circle, path) { animation: tema-relleno 0.8s ease-in-out; }
+
 /* --- Portada: el hero del planeta ------------------------------------------
    Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
    al sol en modo claro, a la luz de la luna y con las ciudades encendidas en
@@ -326,11 +344,12 @@ html.dark .hero-luna-enlace { display: block; }
   image-rendering: pixelated;
 }
 /* PLACEHOLDER del botón de cambio de cara (hasta que haya dibujo propio). */
-.luna-cambio {
+/* Botones de /luna (PLACEHOLDER): cambio de cara abajo a la derecha (en el
+   centro caía encima de la barra de herramientas de Astro en desarrollo) y
+   volver a la Tierra abajo a la izquierda. */
+.luna-boton {
   position: absolute;
-  left: 50%;
-  bottom: max(1.2rem, calc((100svh - var(--luna-tam)) / 2 - 3.2rem));
-  transform: translateX(-50%);
+  bottom: max(1.5rem, 5svh);
   z-index: 2;
   display: flex;
   align-items: center;
@@ -347,10 +366,12 @@ html.dark .hero-luna-enlace { display: block; }
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
-.luna-cambio[hidden] { display: none; }
-.luna-cambio svg { width: 1rem; height: 1rem; }
-.luna-cambio:hover, .luna-cambio:focus-visible { color: #fff; border-color: #cfd6de; }
-.luna-cambio:disabled { opacity: 0.5; cursor: default; }
+.luna-cambio { right: max(1.25rem, 4vw); }
+.luna-volver { left: max(1.25rem, 4vw); }
+.luna-boton[hidden] { display: none; }
+.luna-boton svg { width: 1rem; height: 1rem; }
+.luna-boton:hover, .luna-boton:focus-visible { color: #fff; border-color: #cfd6de; }
+.luna-boton:disabled { opacity: 0.5; cursor: default; }
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
@@ -988,7 +1009,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   position: absolute;
   inset: 0;
   display: none;
-  background: url(/zodk-estrellas-noche.png) repeat;
+  background: url(/zodk-estrellas-noche.png?v=2) repeat;
   background-size: 480px 480px;
   background-position: var(--estrellas-pos, 0 0);
   image-rendering: pixelated;
@@ -996,6 +1017,16 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 
 html.dark .hero-stars { opacity: 0.9; }
 html.dark .hero-stars::after { display: block; }
+/* En /luna siempre es de noche: las estrellas de más, también en tema claro. */
+.luna-hero .hero-stars { opacity: 0.9; }
+.luna-hero .hero-stars::after { display: block; }
+/* Al pasar a noche (no al cargar), las estrellas de más se encienden poco a
+   poco: Head.astro pone html.estrellas-entrando mientras dura. Animación y no
+   transición porque el botón de tema anula las transiciones al cambiar. */
+@keyframes estrellas-entran { from { opacity: 0; } }
+@keyframes estrellas-suben { from { opacity: 0.7; } }
+html.estrellas-entrando .hero:not(.luna-hero) .hero-stars { animation: estrellas-suben 3s ease-in-out both; }
+html.estrellas-entrando .hero:not(.luna-hero) .hero-stars::after { animation: estrellas-entran 3s ease-in-out both; }
 
 .hero-sparkle {
   position: absolute;
