@@ -196,6 +196,32 @@ llanos, no tenían relieve que diera bordes nítidos.
   `navigate("/luna")` (ClientRouter). La Luna de `/luna` arranca con la misma
   imagen en el mismo sitio. Las estrellas no se mueven (así casan con las de
   `/luna`). Siempre aterriza en la cara visible. Con reduced-motion, directo.
+- **Vuelo rehecho (17-sep-2026, tarde)**, en `src/scripts/viaje-luna.js`
+  (lo usa `index.astro`; banco `logo-files/prototipo-vuelo/` con botones para
+  combinar variantes y duración). Cámara simulada: avanza hasta la Luna con
+  perspectiva (tamaño con 1/distancia: casi no crece al principio y se echa
+  encima al final) y en el primer 60 % gira hacia ella (la Luna va al centro,
+  las estrellas se desplazan y `/luna` las coloca igual al aterrizar).
+  - Idea del usuario: "viajar a la Luna es ampliarla cada vez más hasta que
+    aparece el dibujo original".
+  - **Elegido: Tierra "encima"** (como si pasáramos rozándola: crece ×1,5 y
+    sale rápido por abajo, del todo) **+ 6 s** ("el sweet spot"; 3,4 era
+    rápido) **+ píxeles "directo"**: el dibujo HD desde el principio (de
+    pequeño se reduce suavizado, no pixelado, que titilaba) y el icono pixel
+    art se funde con él en el primer 40 % del vuelo (`FUNDIDO_HASTA`; con 0,2 y 0,32
+    "pasaba demasiado rápido de pixel a HD").
+  - Probado y DESCARTADO "gradual": versiones del dibujo de 32 a 585 px con
+    la paleta del dibujo, afinándose a lo largo del vuelo. "Se ve muy raro,
+    como que va pasando por fases": quiere HD desde el principio, solo un
+    fundido más largo.
+  - La capa de la Luna va DETRÁS de la Tierra (la Tierra está más cerca): se
+    veía la Luna por encima cuando se cruzaban.
+  - Descartes (siguen en el banco): Tierra "cae" (encoge y cae; primera
+    versión), "a una esquina" (quitada: "nononono"), "giro", "aleja", "apaga";
+    píxeles "etapas" (icono → 64/128/256 px), "icono", "constante". Primera
+    versión aún más plana (zoom 2D uniforme) y otra en la que la cámara
+    atravesaba la Tierra (en la escena 3D la Tierra está entre la cámara y la
+    Luna: por eso la Tierra va aparte).
 - Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
   del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
 
