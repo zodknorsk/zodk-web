@@ -66,10 +66,13 @@ Decisiones que hay que respetar:
 
 Un segundo planeta (la Luna, mismo estilo pixel art) al pulsar el icono de la
 Luna del hero: dos caras fijas (visible luminosa / oculta más oscura) con un
-botón para cambiar, y más adelante chapas en los alunizajes. Hecho (16-sep):
-primer boceto aprobado de la cara visible (`logo-files/generar-luna.py`). **Antes de tocarlo, leer
-`logo-files/LUNA-WIP.md`** (ahí está todo: qué se reutiliza de la Tierra, qué
-hace falta de nuevo, y qué queda pendiente de decidir).
+botón para cambiar, y chapas en los alunizajes. Hecho (17-sep): las dos caras,
+la media vuelta en canvas, la página `/luna`, el vuelo desde la Tierra y la
+vuelta; y en banco de pruebas (`logo-files/prototipo-luna/chapas.html`) las
+chapas de alunizaje con ficha y filtro por país, pendientes de pasar a
+`luna.astro`. **Antes de tocarlo, leer `logo-files/LUNA-WIP.md`** (ahí está
+todo: qué se reutiliza de la Tierra, qué hace falta de nuevo, y qué queda
+pendiente de decidir).
 
 Pendiente (sin orden, lo decide él):
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.

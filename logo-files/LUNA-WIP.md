@@ -284,42 +284,112 @@ llanos, no tenían relieve que diera bordes nítidos.
 - Pendiente: que el usuario lo pruebe (Chrome, Zen, móvil); dibujo definitivo
   del botón; volver a la Tierra desde `/luna` (hoy solo con el logo/cabecera).
 
-### PRÓXIMA SESIÓN: empezar por las chapas de los alunizajes
+### Chapas de alunizaje — BANCO DE PRUEBAS (17-sep-2026, noche)
 
-Todo lo anterior (caras, giro, vuelo, vuelta, botones provisionales, nitidez y
-velocidad en Zen) está hecho y commiteado en `moon-project`. Lo siguiente es
-**el contenido de `/luna`: las chapas de los alunizajes**, que es lo que le da
-sentido a la página. Cómo arrancar:
+Hecho en `prototipo-luna/chapas.html` (banco aparte: **no se ha tocado
+`luna.astro` ni `luna.js`**, decisión del usuario: "primero en el banco de
+pruebas"). Servir la raíz del repo y abrir
+`/logo-files/prototipo-luna/chapas.html`.
 
-1. **Decidir con el usuario qué entra**, de la lista de "Candidatos" del final
-   de este documento: ¿solo alunizajes con éxito o también fracasos
-   (Beresheet, Chandrayaan-2, Peregrine)? ¿Los róvers cuentan aparte?
-   ¿Entran las dos de la cara oculta (Chang'e 4 y 6)? ¿Y el polo sur como
-   zona destacada por el hielo? Sin esa lista no se toca código.
-2. **Datos**: un `src/data/alunizajes.ts` al estilo de `src/data/paises.ts`
-   (sitio, misión, fecha, lat/lon, agencia/país, tripulada o no, y las
-   etiquetas del artículo del blog al que enlaza), y en qué cara cae cada uno.
-3. **Dibujo de la chapa**: en la Tierra son banderas pixel art generadas en
-   `generar-planeta-hero.py` (`CHAPAS`/`flag_cells`, ver `HERO-WIP.md`). Para
-   la Luna hay que decidir con el usuario qué se dibuja: ¿bandera del país,
-   silueta de la nave, un número…? Es una decisión suya, de aspecto.
-4. **Colocarlas**: la Luna en reposo es un PNG fijo, así que las chapas se
-   pueden pintar encima con HTML/CSS posicionado (como `.hero-bandera` en la
-   portada, que se coloca con lo que devuelve el canvas). Hace falta la
-   proyección de lat/lon a píxel de cada cara: es la de `generar-luna.py`
-   (`orientacion()` en `luna.js` hace justo esa cuenta) y ya se usó en el
-   banco `prototipo-luna/index.html` (botón "marcas", que dibuja Aitken y los
-   Chang'e). Ojo al giro: mientras gira hay que ocultarlas o moverlas.
-5. **Ficha al pasar el ratón**: misma idea que `.craft-dossier` de la portada.
+- **Qué se marca**: los 20 alunizajes reales de la bóveda
+  (`02 - Temas/moon-project/` en boveda-osint: 6 Apolo, 6 Luna soviéticas, 4
+  Chang'e, Chandrayaan-3, SLIM, IM-1 y Blue Ghost). En el banco están cargadas
+  las 16 de EE. UU./Rusia/China. **Los fracasos se quedan fuera** (decisión del
+  usuario): Chandrayaan-2, Peregrine, IM-2 y Beresheet no alunizaron. Se
+  descartó de paso la idea previa de "éxitos en color, fracasos en blanco y
+  negro": ya no hay fracasos que pintar.
+- **Dibujo de la chapa: bandera del país**, en el mismo píxel art que la
+  Tierra (filas de 11x7 + contorno de 1px, como `BANDERAS`/`_chapa()` en
+  `generar-planeta-hero.py`). La de EE. UU. es literalmente la de la Tierra;
+  Rusia, China, India y Japón son nuevas. **Aprobadas todas el 17-sep-2026**
+  ("las banderas me gustan, go"); se revisan en `prototipo-luna/banderas.html`
+  (cada una grande y al tamaño real). Ojo con China: el primer intento repartía
+  las estrellas por toda la tela y se rehizo (estrella grande de 2x2 y las
+  cuatro pequeñas en arco, compactas arriba a la izquierda).
+- **Ficha al pasar el ratón**: las clases del sitio tal cual
+  (`.craft-dossier`/`.craft-linea`/`.craft-specs`), copiadas al banco porque es
+  HTML suelto. Nuevo respecto a la Tierra: lleva **foto de la misión**. El
+  usuario eligió el **boceto A (con foto)**; la foto va en recorte **cuadrado**
+  (`aspect-ratio: 1/1`), porque con la tira apaisada de la primera versión
+  Aldrin salía cortado por la mitad. El boceto B (solo texto) sigue en el banco
+  con un botón, por si acaso.
+- **Sin enlace todavía**: decisión del usuario, las entradas del blog se irán
+  escribiendo poco a poco. El hueco del "leer más" queda para entonces.
+- **Filtro por país**: columna de banderas a la izquierda, en blanco y negro
+  (`filter: grayscale(1)`). Al clicar una se pone a color y aparecen sus
+  chapas; es **acumulativo** (EE. UU. + Rusia = las dos a la vez) y funciona
+  como **interruptor** (clic otra vez y se apaga). Solo se pintan las chapas de
+  **la cara que se está viendo** (decisión del usuario): si se activa China
+  mirando la visible, salen Chang'e 3 y 5, y Chang'e 4 y 6 aparecerán al girar
+  a la oculta, sin girar sola la Luna.
+- **Colocación**: `proyecta()` en el banco es la misma cuenta de
+  `orientacion()` en `luna.js`, generalizada con `lon0` (el `proyecta` del
+  `index.html` tenía 180 fijo porque solo servía para revisar la oculta). La
+  chapa se coloca restando medio ancho/alto **en %**, no en px, para que siga
+  bien cuando el disco se amplía.
+- La columna ocupa una franja a la izquierda (`--franja`) y la Luna se centra
+  en lo que queda: antes, con la ventana estrecha, la columna tapaba la chapa
+  de Luna 9.
 
-Contexto útil que ya existe: `prototipo-luna/index.html` (botón "marcas") para
-comprobar dónde cae cada coordenada, y el apartado "Candidatos" de abajo con
-la lista repasada y en qué cara está cada misión.
+### Cuánto se estorban las chapas entre sí (cuentas del 17-sep-2026)
+
+Con las coordenadas reales y esta proyección (chapa de 13x9 px del lienzo de
+600, como `.hero-bandera`):
+
+- La mayoría van sobradas, a 60 px o más unas de otras.
+- **El polo sur es el problema**: Chandrayaan-3 e IM-1 caen a 13 y 4 px del
+  borde del disco, aplastadas contra el limbo, y a 56 px entre ellas. Con los
+  fracasos dentro era peor (IM-2 a 0,9 px del borde y a 12 px de IM-1: se
+  solapaban). **Candidato a marcarse como una sola zona destacada** (el hielo
+  del polo sur) en vez de chapas sueltas.
+- Cerca pero manejable: Luna 16 y Luna 20 (22 px; son vecinas de verdad, a
+  127 km) y Apolo 17 con Luna 21 (28 px). No se solapan, pero sus fichas sí se
+  pisarían si no se desplazan.
+- Chang'e 4 y 6, en la oculta, van a 105 px y bien dentro del disco.
+
+### Luz cenicienta del lado de noche: NOCHE 0,07 -> 0,16 (17-sep-2026)
+
+Al poner la chapa de **Luna 9** (7° N, 64° O), que cae pasado el terminador, el
+usuario vio que "parecía que estaba flotando". No era un fallo de posición: con
+`NOCHE = 0,07` el terreno sin sol se pintaba en **(7,6,8)** y el fondo del
+espacio es **(5,6,10)** — el mismo color, así que no se veía la Luna debajo.
+
+- Se probó antes un **halo** alrededor del disco (idea del usuario) y **lo
+  descartó**: "el halo no me ha gustado nada, prefiero sin halo que con halo".
+  Además solo habría servido para chapas justo en el borde, y Luna 9 está
+  bastante hacia dentro.
+- `generar-luna.py` tiene ahora **`--noche`** (solo color: no rehace la pasada
+  lenta). Comparación de 0,07 / 0,12 / 0,16 / 0,22 con la chapa encima en
+  `prototipo-luna/noche.html`. **Elegido 0,16** (terreno en (15,14,17): se ven
+  los mares y sigue leyéndose como noche), y es ya el valor por defecto.
+- Aplicado a la página real: `--canvas public/luna/` regenerado (las dos caras,
+  el mapa, la LUT y `luna-datos.json`, que lleva NOCHE y por tanto el giro en
+  tiempo real también cambia), con `LUNA_V` a **3** en `luna.js` y el `?v=3` de
+  `.luna-disco` en `global.css`. La cara oculta también se aclara en su lado de
+  noche: es el mismo NOCHE por 0,6 de exposición.
+
+### PRÓXIMA SESIÓN: pasar las chapas del banco a /luna
+
+El banco ya tiene resuelto el aspecto y el comportamiento. Lo que queda es
+llevarlo a la página de verdad:
+
+1. **Datos**: sacar `MISIONES`/`PAISES` del banco a un `src/data/alunizajes.ts`
+   al estilo de `src/data/paises.ts`, con las 20 misiones (faltan por meter en
+   el banco Chandrayaan-3, SLIM, IM-1 y Blue Ghost) y su cara.
+2. **`luna.astro`**: capa de chapas y columna de países con las clases reales
+   de `global.css` (quitar las copias del banco), y las fotos a `public/`.
+3. **Giro**: mientras gira hay que ocultar las chapas y recolocarlas al acabar,
+   con la cara nueva (el banco es de una sola cara y no lo cubre).
+4. **Ficha**: hoy solo se desplaza a la izquierda si no cabe por la derecha
+   (`flip-x`); no mira si se sale por arriba (con Chang'e 3, pegada al borde
+   superior, se recorta).
+5. **Enlace** a la entrada del blog cuando existan, y decidir qué hacer con el
+   polo sur (ver las cuentas de arriba).
 
 ### Siguiente
 
 1. ~~Cara oculta~~ (hecho, ver arriba).
-2. **EN CURSO (17-sep-2026): media vuelta en `<canvas>`** (el usuario eligió
+2. ~~Media vuelta en `<canvas>`~~ (hecho, 17-sep-2026; el usuario eligió
    canvas frente a dos PNG con fundido). Motor en `src/scripts/luna.js`, banco
    de pruebas `prototipo-luna/canvas.html` (botón "girar"; en consola
    `luna.fotograma(0.5)` pinta un fotograma intermedio sin animar).
@@ -344,15 +414,16 @@ la lista repasada y en qué cara está cada misión.
    - Con `prefers-reduced-motion` cambia de cara sin giro.
 3. ~~Página nueva en Astro y enlace desde el icono de la Luna~~ (hecho, a
    revisar: ver "Página /luna y vuelo desde la Tierra").
-4. Después: chapas de alunizajes (lista de candidatos abajo).
+4. ~~Chapas de alunizajes~~: hechas en el banco de pruebas, ver "Chapas de
+   alunizaje" arriba. Falta pasarlas a `/luna` (ver "PRÓXIMA SESIÓN").
 
-## Candidatos a alunizaje/sonda (repaso del 16-sep-2026, sin decidir aún)
+## Candidatos a alunizaje/sonda (repaso del 16-sep-2026; DECIDIDO el 17-sep)
 
-Repartidos por categoría. **Dato clave para lo de la rotación** (ver
-arriba): casi todo esto está en la cara VISIBLE; los únicos en la cara
-OCULTA son Chang'e 4 y Chang'e 6 (China). Si entran esos dos, el planeta
-tiene que girar; si el usuario se queda solo con cara visible, puede quedarse
-quieto.
+**Ya decidido**: entran los 20 que sí alunizaron, uno por nota en la bóveda
+(`02 - Temas/moon-project/`), y quedan fuera los que se estrellaron o no
+llegaron (Chandrayaan-2, Peregrine, IM-2 y Beresheet). Entran también Chang'e 4
+y 6, así que **la Luna tiene las dos caras** (ya estaba montado el giro).
+La lista de abajo se deja como repaso de dónde cae cada una.
 
 - **Tripulados — Apolo (EE. UU., cara visible):** 11 (Mar de la Tranquilidad,
   1969, primer paso humano), 12, 14, 15, 16, 17 (1972, el último). El 13 no

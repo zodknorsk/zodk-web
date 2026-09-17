@@ -31,7 +31,12 @@
   html, body { margin: 0; height: 100%; background: #05060a url(../../public/zodk-estrellas.png);
     overflow: hidden; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
 
-  #escena { position: absolute; left: 50%; top: 50%; height: min(98vh, 98vw); aspect-ratio: 1;
+  /* La columna de países ocupa una franja a la izquierda (--franja): la Luna
+     se centra en lo que queda, para que no le tape el borde (con la ventana
+     estrecha la columna se comía la chapa de Luna 9). */
+  :root { --franja: 62px; }
+  #escena { position: absolute; left: calc(50% + var(--franja) / 2); top: 50%;
+    height: min(98vh, calc(98vw - var(--franja))); aspect-ratio: 1;
     transform: translate(-50%, -50%); }
   #luna { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
 
@@ -54,17 +59,24 @@
   button.on { background: #fff; outline: 2px solid #9fd3e6; }
 
   /* --- Columna de países (filtro), fija a la izquierda --------------------- */
-  #paises { position: fixed; left: 16px; top: 50%; transform: translateY(-50%); z-index: 5;
-    display: flex; flex-direction: column; gap: 10px; }
-  .pais-boton { display: flex; align-items: center; gap: 0.5rem; background: rgba(6, 8, 12, 0.55);
-    border: 1px solid rgba(230, 192, 120, 0.18); border-radius: 4px; padding: 5px 9px;
-    cursor: pointer; color: #9fb3c8; transition: background 0.15s ease, border-color 0.15s ease; }
+  #paises { position: fixed; left: 10px; top: 50%; transform: translateY(-50%); z-index: 5;
+    display: flex; flex-direction: column; gap: 8px; }
+  .pais-boton { position: relative; display: block; background: rgba(6, 8, 12, 0.55);
+    border: 1px solid rgba(230, 192, 120, 0.18); border-radius: 4px; padding: 4px 7px;
+    cursor: pointer; color: #9fb3c8; line-height: 1;
+    transition: background 0.15s ease, border-color 0.15s ease; }
   .pais-boton:hover, .pais-boton:focus-visible { border-color: rgba(230, 192, 120, 0.5); }
   .pais-boton.activo { background: rgba(230, 192, 120, 0.14); border-color: rgba(230, 192, 120, 0.6); }
-  .pais-bandera { font-size: 1.3rem; filter: grayscale(1); opacity: 0.5;
+  .pais-bandera { font-size: 1.4rem; filter: grayscale(1); opacity: 0.5;
     transition: filter 0.2s ease, opacity 0.2s ease; }
   .pais-boton.activo .pais-bandera { filter: grayscale(0); opacity: 1; }
-  .pais-nombre { font-size: 0.68rem; letter-spacing: 0.04em; }
+  /* El nombre solo al pasar el ratón: así la columna es estrecha y no le come
+     sitio a la Luna. */
+  .pais-nombre { position: absolute; left: calc(100% + 8px); top: 50%; translate: 0 -50%;
+    padding: 3px 7px; border-radius: 3px; background: rgba(6, 8, 12, 0.9);
+    border: 1px solid rgba(230, 192, 120, 0.25); font-size: 0.66rem; letter-spacing: 0.04em;
+    white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+  .pais-boton:is(:hover, :focus-visible) .pais-nombre { opacity: 1; }
   .pais-boton.activo .pais-nombre { color: #e6c078; }
 
   /* --- Copiado de src/styles/global.css (Ficha / .craft-*) --------------- */
