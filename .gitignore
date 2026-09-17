@@ -41,3 +41,6 @@ public/zodk-tb3-noche.svg
 # Proyecto Luna: fuentes de la NASA (~70 MB, se re-descargan con los curl de
 # logo-files/generar-luna.py) y la caché de su pasada lenta.
 logo-files/luna-fuentes/
+
+# Caché de Python al importar los módulos de logo-files/ (png8, etc.)
+__pycache__/

@@ -19,6 +19,8 @@ Uso:
     python3 generar-luna.py              # luz por la izquierda -> prototipo-luna/luna-visible.png
     python3 generar-luna.py --derecha    # luz por la derecha   -> prototipo-luna/luna-visible-derecha.png
     python3 generar-luna.py --penumbra-corta   # paso luz/sombra más seco (TERM_B 0,15)
+    python3 generar-luna.py --noche 0.16 # más luz cenicienta: el lado de noche deja de
+                                         # confundirse con el fondo (ver NOCHE)
     python3 generar-luna.py --zoom       # además, un recorte ampliado x4 para revisar los píxeles
     python3 generar-luna.py --recalc     # rehace la pasada lenta (geometría/luz)
 
@@ -78,7 +80,12 @@ LADO    = -1           # de dónde viene la luz: -1 izquierda (oeste), +1 derech
 # Terminador: la Luna no tiene atmósfera, así que es mucho más seco que el de
 # la Tierra (allí TERM_A/B = -0,34/0,60).
 TERM_A, TERM_B = -0.01, 0.30
-NOCHE   = 0.07         # brillo de la cara sin sol (luz cenicienta de la Tierra)
+# Brillo de la cara sin sol (luz cenicienta: el sol no le da, pero la Tierra
+# llena sí la ilumina; es lo que deja ver los mares en el lado oscuro de una
+# luna creciente real). Ojo: con 0,07 el lado de noche queda en ~(7,6,8), casi
+# idéntico a SPACE (5,6,10), así que no se distingue la Luna del fondo y una
+# chapa puesta ahí parece flotar en el espacio (visto con Luna 9, 17-sep-2026).
+NOCHE   = 0.07         # se cambia con --noche (solo color: no rehace la pasada lenta)
 LIMB_K  = 0.10         # oscurecimiento del borde (la Luna llena apenas lo tiene)
 
 RELIEVE_EXAG = 3.2     # exageración de pendientes para el sombreado
@@ -571,10 +578,13 @@ def main():
     if "--relieve-mares" in sys.argv:           # más relieve en los mares
         RELIEVE_MARES = float(sys.argv[sys.argv.index("--relieve-mares") + 1])
         nombre += f"-rm{RELIEVE_MARES:g}"
-    global LIMPIAR, MARES_DERIV, EXPOSICION, FRIO
+    global LIMPIAR, MARES_DERIV, EXPOSICION, FRIO, NOCHE
     if "--exposicion" in sys.argv:              # no toca la pasada lenta: solo el color
         EXPOSICION = float(sys.argv[sys.argv.index("--exposicion") + 1])
         nombre += f"-e{EXPOSICION:g}"
+    if "--noche" in sys.argv:                   # luz cenicienta del lado sin sol (solo color)
+        NOCHE = float(sys.argv[sys.argv.index("--noche") + 1])
+        nombre += f"-n{NOCHE:g}"
     if "--frio" in sys.argv:
         FRIO = float(sys.argv[sys.argv.index("--frio") + 1])
         nombre += f"-frio{FRIO:g}"

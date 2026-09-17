@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: luz cenicienta del lado de noche</title>
+<!--
+  Comparación de NOCHE (luz cenicienta: lo que ilumina la cara sin sol) en la
+  cara visible, con la chapa de Luna 9 encima — que es justo la que "flotaba"
+  porque a NOCHE 0,07 el terreno de noche queda en (7,6,8), casi idéntico al
+  fondo del espacio (5,6,10).
+  Recorte del borde izquierdo del disco (x 0-160, y 190-350 del lienzo de 600),
+  ampliado x3 sin suavizado. Generado con:
+    python3 generar-luna.py --derecha --valles --relieve-mares 2.5 --noche N
+  Servir: cd ~/Documents/zodk-web && python3 -m http.server 4400
+  Abrir:  http://127.0.0.1:4400/logo-files/prototipo-luna/noche.html
+-->
+<style>
+  html, body { margin: 0; background: #05060a; color: #dfe4ea;
+    font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; padding: 20px; }
+  h1 { font-size: 13px; color: #e6c078; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 4px; }
+  p.sub { color: #8b93a0; margin: 0 0 18px; font-size: 11.5px; }
+  .tira { display: grid; grid-template-columns: repeat(2, max-content); gap: 16px 18px; }
+  .caso { }
+  .caso h2 { font-size: 12px; color: #e6c078; margin: 0 0 6px; font-weight: normal; }
+  .caso h2 span { color: #8b93a0; }
+  .vista { position: relative; width: 320px; height: 320px; background-repeat: no-repeat;
+    background-size: 1200px 1200px;            /* 600 px del lienzo x2 */
+    background-position: 0px -380px;           /* recorte desde y = 190 */
+    image-rendering: pixelated; border: 1px solid #222a3a; }
+  /* Chapa de Luna 9 (lienzo 38, 264) dentro del recorte, al mismo x2. */
+  .chapa { position: absolute; left: 70px; top: 139px; width: 26px; height: 18px;
+    image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<h1>Luz cenicienta del lado de noche (NOCHE)</h1>
+<p class="sub">Borde izquierdo de la cara visible, x2. La banderita es Luna 9, la que parecía flotar en el espacio.</p>
+<div class="tira" id="tira"></div>
+<script>
+  const CASOS = [
+    { n: "", etiqueta: "0,07", nota: "actual — terreno (7,6,8), fondo (5,6,10)" },
+    { n: "-n0.12", etiqueta: "0,12", nota: "terreno (11,11,13)" },
+    { n: "-n0.16", etiqueta: "0,16", nota: "terreno (15,14,17)" },
+    { n: "-n0.22", etiqueta: "0,22", nota: "terreno (21,20,25)" },
+  ];
+  // Misma bandera de Rusia que en chapas.html (11x7 + contorno de 1px).
+  const FILAS = ["wwwwwwwwwww", "wwwwwwwwwww", "zzzzzzzzzzz", "zzzzzzzzzzz",
+                 "zzzzzzzzzzz", "vvvvvvvvvvv", "vvvvvvvvvvv"];
+  const PAL = { w: "#f4f4f4", z: "#0039a6", v: "#d52b1e" };
+  let rects = `<rect x="0" y="0" width="13" height="9" fill="#10131c"/>`;
+  for (let y = 0; y < 7; y++)
+    for (let x = 0; x < 11; x++)
+      rects += `<rect x="${x + 1}" y="${y + 1}" width="1" height="1" fill="${PAL[FILAS[y][x]]}"/>`;
+  const bandera = `<svg class="chapa" viewBox="0 0 13 9">${rects}</svg>`;
+
+  document.getElementById("tira").innerHTML = CASOS.map((c) => `
+    <div class="caso">
+      <h2>NOCHE ${c.etiqueta} <span>· ${c.nota}</span></h2>
+      <div class="vista" style="background-image:url(luna-visible-derecha-valles-rm2.5${c.n}.png)">${bandera}</div>
+    </div>`).join("");
+</script>
+</body>
+</html>
