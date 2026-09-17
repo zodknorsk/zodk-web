@@ -278,19 +278,27 @@ html.dark .astro-luna { opacity: 1; }
 html.dark .hero-luna-enlace { display: block; }
 .hero-luna-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
 
-/* Vuelo de la Tierra a la Luna: capa fija con la cara visible, que crece desde
-   la luna del hero hasta donde queda en /luna (.luna-disco). */
+/* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
+   resolución (index.astro), que crece desde la luna del hero hasta donde queda
+   en /luna (.luna-disco). */
 .viaje-luna {
   position: fixed;
   inset: 0;
   z-index: 40;
   pointer-events: none;
 }
-.viaje-luna img {
+.viaje-luna > * {
   position: absolute;
+  left: 0;
+  top: 0;
   transform-origin: 0 0;
   image-rendering: pixelated;
   will-change: transform, opacity;
+}
+/* copia de la luna del hero (misma tira de fases; la fase la pone el JS) */
+.viaje-icono {
+  background: url(/zodk-luna-fases.png) no-repeat;
+  background-size: 3000% 100%;
 }
 
 /* --- La Luna (/luna) --------------------------------------------------------
@@ -968,6 +976,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   pointer-events: none;
   background: url(/zodk-estrellas.png) repeat;
   background-size: 320px 320px;
+  background-position: var(--estrellas-pos, 0 0);   /* el vuelo a la Luna las desplaza */
   image-rendering: pixelated;
   opacity: 0.7;
 }
@@ -981,6 +990,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   display: none;
   background: url(/zodk-estrellas-noche.png) repeat;
   background-size: 480px 480px;
+  background-position: var(--estrellas-pos, 0 0);
   image-rendering: pixelated;
 }
 
