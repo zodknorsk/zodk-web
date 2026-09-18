@@ -368,25 +368,64 @@ espacio es **(5,6,10)** — el mismo color, así que no se veía la Luna debajo.
   `.luna-disco` en `global.css`. La cara oculta también se aclara en su lado de
   noche: es el mismo NOCHE por 0,6 de exposición.
 
-### PRÓXIMA SESIÓN: pasar las chapas del banco a /luna
+### Chapas en /luna de verdad (18-sep-2026, madrugada) — HECHO
 
-El banco ya tiene resuelto el aspecto y el comportamiento. Lo que queda es
-llevarlo a la página de verdad:
+El banco ya está llevado a la página real. Lo que hay ahora:
 
-1. **Datos**: sacar `MISIONES`/`PAISES` del banco a un `src/data/alunizajes.ts`
-   al estilo de `src/data/paises.ts`, con las 20 misiones (faltan por meter en
-   el banco Chandrayaan-3, SLIM, IM-1 y Blue Ghost) y su cara.
-2. **`luna.astro`**: capa de chapas y columna de países con las clases reales
-   de `global.css` (quitar las copias del banco), y las fotos a `public/`.
-3. **Giro**: mientras gira hay que ocultar las chapas y recolocarlas al acabar,
-   con la cara nueva (el banco es de una sola cara y no lo cubre).
-4. **Ficha**: hoy solo se desplaza a la izquierda si no cabe por la derecha
-   (`flip-x`); no mira si se sale por arriba (con Chang'e 3, pegada al borde
-   superior, se recorta).
-5. **Enlace** a la entrada del blog cuando existan, y decidir qué hacer con el
-   polo sur (ver las cuentas de arriba).
+- **`src/data/alunizajes.ts`**: los 20 alunizajes (nombre, país, año, lat/lon,
+  foto y texto) y los cinco países con su bandera en pixel art (filas de 11x7 +
+  paleta, mismo formato que `BANDERAS` en `generar-planeta-hero.py`), más
+  `svgBandera()`. Añadir una misión = una línea ahí y su foto en
+  `public/alunizajes/`.
+- **`luna.js`**: `sitio(lat, lon, cara?)` devuelve dónde cae un punto en la
+  cara que se ve (píxeles del lienzo de 600, tanto por uno y `vis`). La
+  geometría no se repite fuera del motor. Ojo: las caras vienen en
+  `luna-datos.json` bajo la clave **`caras`** (minúscula).
+- **`luna.astro`**: capa `.luna-chapas` y columna `.luna-paises`, con las
+  clases reales de `global.css` (`.craft-dossier`, `.craft-linea`,
+  `.craft-specs`), no las copias del banco.
+  - Mientras la Luna gira, las chapas se esconden (`alEmpezar`) y al terminar
+    se recolocan en la cara nueva (`alTerminar`), así que Chang'e 4 y 6
+    aparecen solas al pasar a la oculta.
+  - Al volver a la Tierra, la capa y la columna van en la lista de lo que se
+    apaga con el vuelo: si no, se quedaban flotando mientras la Luna se aleja.
+  - En táctil no se pintan (`@media (hover: none)`), como las banderas de país
+    de la portada: sin ratón no hay ficha que abrir.
+- **La columna** (revisada por el usuario la misma noche): bandera de pixel
+  art —la misma chapa que va sobre la Luna, no el emoji— con el **nombre del
+  país al lado, siempre visible**. En gris cuando está apagada, a color al
+  encenderla, y el nombre en dorado. Se probó la versión estrecha con el
+  nombre solo al pasar el ratón y **la descartó**: quería ver los nombres.
+  Margen izquierdo de `max(2rem, 5vw)`.
 
-### Siguiente
+Comprobado en `/luna` con el servidor de desarrollo: los cinco países encienden
+y apagan, la ficha sale con su foto y se coloca al lado que quepa, el giro
+lleva bien las chapas de una cara a otra y la vuelta a la Tierra las apaga.
+
+### PRÓXIMA SESIÓN
+
+Lo gordo está hecho. Lo que queda, por orden de lo que más se nota:
+
+1. **Enlace a los artículos**: hoy la ficha no enlaza a ningún sitio (decisión
+   del usuario: las entradas del blog se irán escribiendo poco a poco). Cuando
+   haya alguna, añadir el enlace a la ficha. Las notas de la bóveda están en
+   `02 - Temas/moon-project/` (boveda-osint), una por alunizaje.
+2. **El polo sur**: Chandrayaan-3 e IM-1 están tan cerca del polo que se ven
+   desde LAS DOS caras y salen aplastados contra el borde de abajo. Sin
+   decidir: agruparlos como una sola "zona del polo sur" (el hielo) o dejarlos
+   como están. Ver las cuentas en "Cuánto se estorban las chapas entre sí".
+3. **Ventana estrecha**: con ~750 px de ancho la columna pisa el borde
+   izquierdo de la Luna (ahí el disco ocupa el 90 % del ancho y no queda hueco
+   al lado). Habría que bajarla o achicarla solo en pantallas estrechas.
+4. **Probarlo en Zen y en móvil**, que hasta ahora solo se ha visto en Chrome.
+5. **Dibujo definitivo de los botones** de cambio de cara y volver a la Tierra
+   (siguen siendo los PLACEHOLDER de siempre).
+6. Pendientes viejos que siguen: el mapa del giro pesa 1,5 MB; y las fotos de
+   las misiones soviéticas, SLIM e IM-1 son imágenes orbitales del LRO (el
+   punto de alunizaje visto desde arriba), menos vistosas que las de superficie
+   de los Apolo — si aparecen mejores, se cambian.
+
+### Por dónde se fue pasando (histórico, todo hecho)
 
 1. ~~Cara oculta~~ (hecho, ver arriba).
 2. ~~Media vuelta en `<canvas>`~~ (hecho, 17-sep-2026; el usuario eligió
@@ -414,8 +453,9 @@ llevarlo a la página de verdad:
    - Con `prefers-reduced-motion` cambia de cara sin giro.
 3. ~~Página nueva en Astro y enlace desde el icono de la Luna~~ (hecho, a
    revisar: ver "Página /luna y vuelo desde la Tierra").
-4. ~~Chapas de alunizajes~~: hechas en el banco de pruebas, ver "Chapas de
-   alunizaje" arriba. Falta pasarlas a `/luna` (ver "PRÓXIMA SESIÓN").
+4. ~~Chapas de alunizajes~~: primero en el banco de pruebas y luego en `/luna`
+   de verdad (18-sep-2026). Ver "Chapas de alunizaje" y "Chapas en /luna de
+   verdad" arriba.
 
 ## Candidatos a alunizaje/sonda (repaso del 16-sep-2026; DECIDIDO el 17-sep)
 

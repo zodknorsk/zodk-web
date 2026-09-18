@@ -66,11 +66,11 @@ Decisiones que hay que respetar:
 
 Un segundo planeta (la Luna, mismo estilo pixel art) al pulsar el icono de la
 Luna del hero: dos caras fijas (visible luminosa / oculta más oscura) con un
-botón para cambiar, y chapas en los alunizajes. Hecho (17-sep): las dos caras,
+botón para cambiar, y chapas en los alunizajes. Hecho (18-sep): las dos caras,
 la media vuelta en canvas, la página `/luna`, el vuelo desde la Tierra y la
-vuelta; y en banco de pruebas (`logo-files/prototipo-luna/chapas.html`) las
-chapas de alunizaje con ficha y filtro por país, pendientes de pasar a
-`luna.astro`. **Antes de tocarlo, leer `logo-files/LUNA-WIP.md`** (ahí está
+vuelta, y las chapas de los 20 alunizajes con su ficha y la columna para
+encenderlos por país (datos en `src/data/alunizajes.ts`). Falta enlazar cada
+ficha con su artículo del blog. **Antes de tocarlo, leer `logo-files/LUNA-WIP.md`** (ahí está
 todo: qué se reutiliza de la Tierra, qué hace falta de nuevo, y qué queda
 pendiente de decidir).
 
