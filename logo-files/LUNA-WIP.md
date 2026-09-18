@@ -402,28 +402,59 @@ Comprobado en `/luna` con el servidor de desarrollo: los cinco países encienden
 y apagan, la ficha sale con su foto y se coloca al lado que quepa, el giro
 lleva bien las chapas de una cara a otra y la vuelta a la Tierra las apaga.
 
-### PRÓXIMA SESIÓN
+### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche — instrucciones del usuario, en orden)
 
-Lo gordo está hecho. Lo que queda, por orden de lo que más se nota:
+1. **Añadir los alunizajes nuevos de la bóveda**: además de los 20 que ya están
+   en `src/data/alunizajes.ts`, la bóveda (`02 - Temas/moon-project/` en
+   boveda-osint) ha sumado **Luna 13** (1966, Oceanus Procellarum, alunizaje
+   suave real) y los **5 Surveyor** (1, 3, 5, 6, 7 — antes solo estaban
+   apuntados en `Alunizajes.md`, sin nota propia ni chapa). El usuario dice
+   "ya deberían estar todos": al empezar, revisar la carpeta de la bóveda por
+   si hay alguno más antes de dar la lista por cerrada. Cada uno necesita su
+   línea en `alunizajes.ts` y su foto en `public/alunizajes/` (las fotos ya
+   están en la bóveda, en `02 - Temas/Adjuntos/alunizaje-luna-13.jpg` y
+   `alunizaje-surveyor-{1,3,5,6,7}.{jpg,png}`, sacadas de Wikimedia Commons,
+   dominio público NASA).
+2. **Enlace real en cada ficha**: cada chapa debe enlazar a su nota. Antes de
+   programarlo, **preguntar al usuario si hace falta poner `publicar: true`**
+   en las notas de la bóveda — hoy todas lo tienen en `false`, y si el import
+   del blog (`scripts/importar-notas.mjs`) solo trae las publicadas, el
+   enlace apuntaría a una página que no existe hasta que se cambie.
+3. **Los dos Queqiao, solo en la cara oculta y siempre visibles**: no son un
+   país más que se pueda apagar/encender desde la columna de banderas — están
+   siempre ahí mientras se ve la cara oculta (aparecen al llegar, desaparecen
+   al volver a la visible, igual que Chang'e 4/6 pero sin depender del
+   filtro). El pixel art ya está hecho y en el repo:
+   `public/luna/zodk-sat-queqiao-noche.svg` y `zodk-sat-queqiao2-noche.svg`
+   (mismo estilo/paleta que `zodk-sat-sentinel`; solo existe versión noche
+   porque la cara oculta no tiene ciclo día/noche, así que no hace falta la
+   variante día).
+4. **Los satélites se mueven un poco**: no son una chapa fija en un punto de
+   la superficie como las de alunizaje, sino que quedan "semiestáticos"
+   flotando sobre la cuenca Polo Sur-Aitken — pequeño movimiento continuo
+   dentro de un área acotada, no una órbita completa ni nada que los saque de
+   ahí.
+5. **El botón de "cara oculta" enciende China solo**: al pulsarlo, se apagan
+   todos los países que estén encendidos y se enciende (si no lo estaba ya)
+   el filtro de China, para que salgan sus dos alunizajes (Chang'e 4 y 6) de
+   inmediato en vez de que el usuario tenga que activarlo a mano cada vez.
 
-1. **Enlace a los artículos**: hoy la ficha no enlaza a ningún sitio (decisión
-   del usuario: las entradas del blog se irán escribiendo poco a poco). Cuando
-   haya alguna, añadir el enlace a la ficha. Las notas de la bóveda están en
-   `02 - Temas/moon-project/` (boveda-osint), una por alunizaje.
-2. **El polo sur**: Chandrayaan-3 e IM-1 están tan cerca del polo que se ven
+Pendientes de antes, sin resolver, por orden de lo que más se nota:
+
+6. **El polo sur**: Chandrayaan-3 e IM-1 están tan cerca del polo que se ven
    desde LAS DOS caras y salen aplastados contra el borde de abajo. Sin
    decidir: agruparlos como una sola "zona del polo sur" (el hielo) o dejarlos
    como están. Ver las cuentas en "Cuánto se estorban las chapas entre sí".
-3. **Ventana estrecha**: con ~750 px de ancho la columna pisa el borde
+7. **Ventana estrecha**: con ~750 px de ancho la columna pisa el borde
    izquierdo de la Luna (ahí el disco ocupa el 90 % del ancho y no queda hueco
    al lado). Habría que bajarla o achicarla solo en pantallas estrechas.
-4. **Probarlo en Zen y en móvil**, que hasta ahora solo se ha visto en Chrome.
-5. **Dibujo definitivo de los botones** de cambio de cara y volver a la Tierra
+8. **Probarlo en Zen y en móvil**, que hasta ahora solo se ha visto en Chrome.
+9. **Dibujo definitivo de los botones** de cambio de cara y volver a la Tierra
    (siguen siendo los PLACEHOLDER de siempre).
-6. Pendientes viejos que siguen: el mapa del giro pesa 1,5 MB; y las fotos de
-   las misiones soviéticas, SLIM e IM-1 son imágenes orbitales del LRO (el
-   punto de alunizaje visto desde arriba), menos vistosas que las de superficie
-   de los Apolo — si aparecen mejores, se cambian.
+10. Pendientes viejos que siguen: el mapa del giro pesa 1,5 MB; y las fotos de
+    las misiones soviéticas, SLIM e IM-1 son imágenes orbitales del LRO (el
+    punto de alunizaje visto desde arriba), menos vistosas que las de superficie
+    de los Apolo — si aparecen mejores, se cambian.
 
 ### Por dónde se fue pasando (histórico, todo hecho)
 
