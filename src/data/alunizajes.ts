@@ -1,6 +1,6 @@
 // Alunizajes con chapa sobre la Luna de /luna. Una chapa por misión que SÍ se
-// posó (los intentos que se estrellaron o no llegaron no entran: Chandrayaan-2,
-// Peregrine, IM-2 y Beresheet). Al pasar el ratón por una chapa se despliega su
+// posó, aunque fuera mal (Luna 23, IM-1 e IM-2 volcaron); los intentos que se
+// estrellaron o no llegaron no entran: Chandrayaan-2, Peregrine y Beresheet. Al pasar el ratón por una chapa se despliega su
 // ficha, con el mismo estilo que las de las naves y los países de la portada.
 //
 // La chapa es la bandera del país en pixel art, con el mismo formato que las de
@@ -126,6 +126,8 @@ export const ALUNIZAJES: Alunizaje[] = [
     texto: "Alunizó el 22 de febrero de 2024 cerca del cráter Malapert A: primer alunizaje privado de la historia y el primero de EE. UU. desde el Apolo 17. Acabó apoyado de lado." },
   { nombre: "Blue Ghost", pais: "US", anio: 2025, lat: 18.56, lon: 61.81, grupo: "privadas", foto: "blue-ghost.jpg", nota: "blue-ghost-mission-1-2025",
     texto: "Alunizó el 2 de marzo de 2025 en el Mar de las Crisis: el primer alunizaje privado completamente redondo, derecho y operando un día lunar entero." },
+  { nombre: "IM-2 · Athena", pais: "US", anio: 2025, cara: "visible", lat: -84.7906, lon: 29.1957, grupo: "privadas", foto: "im2-athena.png", nota: "im-2-athena-2025",
+    texto: "Alunizó el 6 de marzo de 2025 en Mons Mouton, cerca del polo sur, pero le falló el altímetro: volcó y acabó de lado dentro de un cráter. Funcionó unas 13 horas." },
 
   // --- URSS: programa Luna (todas no tripuladas) ---------------------------
   { nombre: "Luna 9", pais: "RU", anio: 1966, lat: 7.03, lon: -64.33, foto: "luna-9.jpg", nota: "luna-9-1966",
@@ -140,6 +142,8 @@ export const ALUNIZAJES: Alunizaje[] = [
     texto: "Alunizó el 21 de febrero de 1972 y trajo muestras de tierras altas, cerca de donde ya lo había hecho Luna 16." },
   { nombre: "Luna 21", pais: "RU", anio: 1973, lat: 25.85, lon: 30.45, foto: "luna-21.jpg", nota: "luna-21-1973",
     texto: "Alunizó el 15 de enero de 1973 y desplegó el Lunojod 2, que recorrió 39 km en cuatro meses." },
+  { nombre: "Luna 23", pais: "RU", anio: 1974, lat: 12.6669, lon: 62.1511, foto: "luna-23.png", nota: "luna-23-1974",
+    texto: "Alunizó el 6 de noviembre de 1974 en el Mar de las Crisis, pero volcó: el taladro se dañó y no pudo traer muestras. Luna 24 lo consiguió dos años después, a unos cientos de metros." },
   { nombre: "Luna 24", pais: "RU", anio: 1976, lat: 12.7145, lon: 62.2097, foto: "luna-24.jpg", nota: "luna-24-1976",
     texto: "Alunizó el 18 de agosto de 1976: última misión del programa Luna y última en traer muestras hasta la Chang'e 5 en 2020." },
 
