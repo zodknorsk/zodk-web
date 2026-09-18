@@ -7,13 +7,17 @@
 // Motor: src/scripts/luna.js (datos en public/luna/, de
 // logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
-import { ALUNIZAJES, PAISES_LUNA, svgBandera } from "../data/alunizajes";
+import { getCollection } from "astro:content";
+import { ALUNIZAJES, PAISES_LUNA, RELES, svgBandera } from "../data/alunizajes";
 
 // Chapas y columna se pintan desde src/data/alunizajes.ts. El sitio de cada
 // chapa lo pone el script al llegar (depende de la cara que se vea), así que
 // aquí salen ocultas.
 const paises = PAISES_LUNA.filter((p) => ALUNIZAJES.some((a) => a.pais === p.codigo));
 const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
+// La ficha solo enlaza a la nota si está publicada: sin `publicar: true` en la
+// bóveda no hay página y el enlace daría 404.
+const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
 ---
 
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero>
@@ -32,6 +36,8 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
         <div
           class="luna-chapa"
           data-pais={a.pais}
+          data-clave={a.grupo ? `${a.pais}:${a.grupo}` : a.pais}
+          data-cara={a.cara}
           data-lat={a.lat}
           data-lon={a.lon}
           tabindex="0"
@@ -50,6 +56,46 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
                 {porCodigo[a.pais].nombre} · {a.anio}
               </div>
               <p class="mision-texto">{a.texto}</p>
+              {publicadas.has(a.nota) && (
+                <a class="mision-enlace" href={`/notas/${a.nota}`}>Leer la nota →</a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <!-- Relés Queqiao (China): solo en la cara oculta y siempre, sin filtro.
+         Flotan sobre la cuenca Polo Sur-Aitken, cada uno bajo la misión a la
+         que dio servicio (Queqiao, Chang'e 4; Queqiao-2, Chang'e 6), con una
+         deriva pequeña en CSS. Por turnos, una onda sube de la nave a su relé
+         y sale hacia la derecha (hacia la Tierra). El script los enseña al
+         llegar a la oculta. Ficha al pasar el ratón, como las chapas. -->
+    <div class="luna-sats">
+      {[1, 2].map((i) => (
+        <div class={`luna-onda luna-onda--${i}`} aria-hidden="true">
+          {[0, 1, 2, 3, 4].map((k) => <span class="luna-onda-paso" style={`--k:${k}`}><i /></span>)}
+        </div>
+      ))}
+      {RELES.map((r, i) => (
+        <div
+          class={`luna-sat luna-sat--${i + 1}`}
+          style={`background-image:url(/luna/${r.sprite})`}
+          tabindex="0"
+          aria-label={`${r.nombre} (China, ${r.anio}): ficha del satélite`}
+        >
+          <div class="craft-dossier">
+            <span class="craft-linea" />
+            <span class="bandera-puente" />
+            <div class="craft-specs">
+              <div class="craft-specs-titulo">{r.nombre}</div>
+              <div class="craft-clase">
+                <span class="craft-flag">🇨🇳</span>
+                China · {r.anio} · relé de la {r.sirve}
+              </div>
+              <p class="mision-texto">{r.texto}</p>
+              {publicadas.has(r.nota) && (
+                <a class="mision-enlace" href={`/notas/${r.nota}`}>Leer la nota →</a>
+              )}
             </div>
           </div>
         </div>
@@ -58,10 +104,29 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
     <!-- Columna de países: enciende y apaga los alunizajes de cada uno. -->
     <div class="luna-paises" hidden>
       {paises.map((p) => (
-        <button class="luna-pais" type="button" data-pais={p.codigo} aria-pressed="false">
-          <span class="luna-pais-bandera" set:html={svgBandera(p)} />
-          <span class="luna-pais-nombre">{p.nombre}</span>
-        </button>
+        <div class="luna-pais-grupo">
+          <button
+            class="luna-pais"
+            type="button"
+            data-pais={p.codigo}
+            aria-pressed="false"
+            aria-expanded={p.grupos ? "false" : undefined}
+          >
+            <span class="luna-pais-bandera" set:html={svgBandera(p)} />
+            <span class="luna-pais-nombre">{p.nombre}</span>
+          </button>
+          {p.grupos && (
+            <div class="luna-subgrupos" inert>
+              <div class="luna-subgrupos-dentro">
+                {p.grupos.map((g) => (
+                  <button class="luna-subgrupo" type="button" data-pais={p.codigo} data-clave={`${p.codigo}:${g.codigo}`} aria-pressed="false">
+                    {g.nombre}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       ))}
     </div>
     <!-- PLACEHOLDER: botones provisionales hasta que haya dibujo propio. Se
@@ -155,10 +220,16 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
     // cara nueva (las de la otra cara se quedan fuera).
     let esconderChapas = () => {};
     let colocarChapas = () => {};
+    const sats = document.querySelector<HTMLElement>(".luna-sats");
     const l = await montarLuna(cv, {
-      alEmpezar: () => { boton.disabled = volver.disabled = true; esconderChapas(); },
+      alEmpezar: () => {
+        boton.disabled = volver.disabled = true;
+        esconderChapas();
+        sats?.classList.remove("en-vista");
+      },
       alTerminar: (cara: string) => {
         boton.disabled = volver.disabled = false;
+        sats?.classList.toggle("en-vista", cara === "oculta");
         pon(cara);
         colocarChapas();
       },
@@ -178,19 +249,38 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
       // La chapa mide 13x9 del lienzo de 600: se resta medio ancho/alto en %
       // (no en px) para que siga centrada al ampliarse el disco.
       const DX = (13 / 600 / 2) * 100, DY = (9 / 600 / 2) * 100;
+      // Chapas encendidas a menos de una chapa de distancia (Apolo 12 y
+      // Surveyor 3 cayeron a 180 m; Apolo 11 y Surveyor 5, a 4 px) se ponen
+      // lado a lado, pegadas y centradas en su punto medio, la más al oeste a
+      // la izquierda. Cuentas en píxeles del lienzo de 600.
+      const PASO = 14;
       colocarChapas = () => {
+        const grupos: { u: number; v: number; els: { el: HTMLElement; u: number }[] }[] = [];
         for (const el of chapas) {
           const p = l.sitio(Number(el.dataset.lat), Number(el.dataset.lon));
-          el.hidden = !encendidos.has(el.dataset.pais!) || !p.vis;
+          const otraCara = el.dataset.cara && el.dataset.cara !== l.cara();
+          el.hidden = !encendidos.has(el.dataset.clave!) || !p.vis || !!otraCara;
           if (el.hidden) continue;
-          el.style.left = `calc(${p.u * 100}% - ${DX}%)`;
-          el.style.top = `calc(${p.v * 100}% - ${DY}%)`;
+          const u = p.u * 600, v = p.v * 600;
+          const g = grupos.find((g) => Math.hypot(g.u - u, g.v - v) < 13);
+          if (!g) { grupos.push({ u, v, els: [{ el, u }] }); continue; }
+          g.els.push({ el, u });
+          g.u += (u - g.u) / g.els.length;
+          g.v += (v - g.v) / g.els.length;
+        }
+        for (const g of grupos) {
+          g.els.sort((a, b) => a.u - b.u);
+          g.els.forEach(({ el }, i) => {
+            const u = g.u + (i - (g.els.length - 1) / 2) * PASO;
+            el.style.left = `calc(${(u / 600) * 100}% - ${DX}%)`;
+            el.style.top = `calc(${(g.v / 600) * 100}% - ${DY}%)`;
+          });
         }
       };
       esconderChapas = () => { for (const el of chapas) el.hidden = true; };
       // Dónde cabe la ficha: al lado que quede sitio, y anclada por su borde si
       // centrada se saldría por arriba o por abajo.
-      for (const el of chapas) {
+      for (const el of [...chapas, ...document.querySelectorAll<HTMLElement>(".luna-sat")]) {
         const sitioFicha = () => {
           const r = el.getBoundingClientRect();
           el.classList.toggle("flip-x", r.right + 380 > window.innerWidth);
@@ -202,16 +292,54 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
         el.addEventListener("mouseenter", sitioFicha);
         el.addEventListener("focus", sitioFicha);
       }
+      // Un país con subgrupos (EE. UU.) no tiene clave propia: su botón solo
+      // despliega o recoge sus casillas (sin encender nada), y se ve encendido
+      // mientras quede alguna casilla encendida, también con él recogido.
+      const subs = [...columna.querySelectorAll<HTMLButtonElement>(".luna-subgrupo")];
+      const pinta = () => {
+        for (const b of subs) b.setAttribute("aria-pressed", String(encendidos.has(b.dataset.clave!)));
+        for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
+          const suyas = subs.filter((s) => s.dataset.pais === b.dataset.pais);
+          const on = suyas.length ? suyas.some((s) => encendidos.has(s.dataset.clave!)) : encendidos.has(b.dataset.pais!);
+          b.setAttribute("aria-pressed", String(on));
+        }
+        colocarChapas();
+      };
       for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
         b.addEventListener("click", () => {
-          const codigo = b.dataset.pais!;
-          const on = !encendidos.has(codigo);
-          on ? encendidos.add(codigo) : encendidos.delete(codigo);
-          b.setAttribute("aria-pressed", String(on));
-          colocarChapas();
+          const grupo = b.parentElement!;
+          const cajas = grupo.querySelector<HTMLElement>(".luna-subgrupos");
+          if (cajas) {
+            const abrir = !grupo.classList.contains("abierto");
+            grupo.classList.toggle("abierto", abrir);
+            b.setAttribute("aria-expanded", String(abrir));
+            cajas.inert = !abrir;
+            return;
+          }
+          const c = b.dataset.pais!;
+          encendidos.has(c) ? encendidos.delete(c) : encendidos.add(c);
+          pinta();
+        });
+      }
+      for (const b of subs) {
+        b.addEventListener("click", () => {
+          const c = b.dataset.clave!;
+          encendidos.has(c) ? encendidos.delete(c) : encendidos.add(c);
+          pinta();
         });
       }
       columna.hidden = false;
+      // La columna va centrada en vertical; al desplegar las casillas de un
+      // país crecería por arriba y por abajo y se movería todo, también el
+      // botón que se está señalando. Se fija su borde de arriba donde queda
+      // recogida y así solo empuja hacia abajo.
+      const fija = () => {
+        columna.style.top = columna.style.transform = "";
+        columna.style.top = `${columna.offsetTop - columna.offsetHeight / 2}px`;
+        columna.style.transform = "none";
+      };
+      fija();
+      new ResizeObserver(() => { if (!columna.querySelector(".abierto")) fija(); }).observe(hero);
     }
 
     const clic = () => l.girar();
@@ -222,7 +350,7 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
       // flotando mientras la Luna se aleja hacia el icono.
-      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : [])]);
+      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : [])]);
     };
     boton.addEventListener("click", clic);
     volver.addEventListener("click", clicVolver);

@@ -402,6 +402,105 @@ Comprobado en `/luna` con el servidor de desarrollo: los cinco países encienden
 y apagan, la ficha sale con su foto y se coloca al lado que quepa, el giro
 lleva bien las chapas de una cara a otra y la vuelta a la Tierra las apaga.
 
+### 26 alunizajes y enlace a su nota (18-sep-2026, noche) — HECHO
+
+Pasos 1 y 2 de la lista de abajo.
+
+- **Lista cerrada: 26**. La carpeta de la bóveda tiene 26 notas de misión: las
+  20 de antes, **Luna 13** y los **Surveyor 1, 3, 5, 6 y 7**. Sus líneas están
+  en `alunizajes.ts` (coordenadas de Wikipedia/NASA) y sus fotos en
+  `public/alunizajes/`, copiadas tal cual de la bóveda (las de Surveyor 6 y 7
+  son PNG; la de Surveyor 3 pesa 3,8 MB).
+- **Chapas que se pisan, lado a lado** (decisión del usuario): Surveyor 3
+  alunizó a 180 m del Apolo 12 (0 px) y Surveyor 5 cae a 4 px del Apolo 11.
+  `colocarChapas()` en `luna.astro` junta las chapas encendidas que queden a
+  menos de 13 px (el ancho de una) y las pone pegadas (14 px de paso) en su
+  punto medio, la más al oeste a la izquierda. Es genérico: vale para choques
+  futuros.
+- **Enlace**: cada alunizaje lleva `nota` (slug en `/notas/`) y la ficha
+  termina con "Leer la nota →" (estilo de los enlaces de las banderas de la
+  portada). Solo sale si la nota existe en la colección `notas`, para no dejar
+  enlaces rotos. El usuario eligió pasar **las 26 notas a `publicar: true`**
+  en la bóveda (siguen en `estado: borrador`) e importarlas.
+  - Ojo con `npm run importar`: regenera TODO `src/content/`, y esta vez trajo
+    cambios ajenos a la Luna (dos eventos que pasaban a notas, un avatar de
+    tweet en Ceuta y Melilla). Se deshicieron para dejar en la rama solo lo de
+    la Luna; al fusionar con `main` o volver a importar, reaparecerán.
+- Arreglado de paso: la chapa abierta sube de capa (`z-index: 1`); antes las
+  chapas de después en el HTML se pintaban encima de su ficha y podían tapar
+  el enlace.
+
+### Subgrupos de EE. UU. y polo sur solo en la visible (18-sep-2026, noche)
+
+- **Casillas bajo EE. UU.**, que se abren **con clic** (primero se hizo al
+  pasar el ratón y el usuario prefirió el clic). Clic en EE. UU.: el botón
+  sube 3 px y debajo se despliegan tres casillas, en este orden: **Programa
+  Surveyor**, **Programa Apolo**, **Misiones privadas** (IM-1 y Blue Ghost),
+  sin encender ninguna. Otro clic las recoge. Cada casilla enciende y apaga lo
+  suyo. Al recoger, lo encendido se queda encendido y EE. UU. sigue en dorado
+  mientras quede alguna casilla encendida. Datos: `grupos` en el país y `grupo`
+  en cada misión (`alunizajes.ts`); la chapa lleva `data-clave` (`US:apolo`...).
+  Recogidas, las casillas van con `inert` (fuera del tabulador).
+  - La columna iba centrada con `translateY(-50%)`: al desplegar se movía toda,
+    también el botón pulsado. Ahora `fija()` le pone el `top` en px donde queda
+    recogida y solo empuja hacia abajo.
+- **"Leer la nota →" en dorado** (`#e6c078`, más claro al pasar el ratón),
+  para que resalte.
+- **Chandrayaan-3 e IM-1, solo en la visible** (campo `cara` en
+  `alunizajes.ts`): por estar tan al sur se veían también desde la oculta, y el
+  usuario quiere que allí estén solo los dos únicos alunizajes de esa cara
+  (Chang'e 4 y 6). Esto resuelve en parte el punto 6 de abajo (siguen pegadas
+  al borde en la visible).
+
+### Relés Queqiao en la cara oculta (18-sep-2026, noche) — HECHO
+
+Pasos 3 y 4 de la lista de abajo.
+
+- `.luna-sats` en `luna.astro`: capa del tamaño del disco (como `.luna-chapas`)
+  con los dos SVG de `public/luna/` de fondo, pixelados. Un píxel del dibujo =
+  un píxel de la Luna: 56x36 del lienzo de 600.
+- Sitio: mitad de abajo de la cuenca Polo Sur-Aitken, cada relé bajo la misión
+  a la que sirvió: **Queqiao** centrado en (255, 455), bajo Chang'e 4, y
+  **Queqiao-2** en (400, 462), bajo Chang'e 6. La cuenca va más o menos de x
+  167 a 479 y de y 252 a 540 en la oculta; Chang'e 4 y 6 caen en (291, 378) y
+  (396, 370).
+- Sin filtro: aparecen con fundido (0,8 s) al terminar el giro a la oculta
+  (`alTerminar`) y se van al empezar a girar (`alEmpezar`). Se apagan también
+  con el vuelo de vuelta a la Tierra. Se ven también en táctil (no dependen
+  del ratón).
+- Deriva: rombo pequeño en CSS (`luna-sat-deriva`, ±10 % del ancho del sprite
+  y ±11 % del alto: ~6 y ~4 px del lienzo), 16 s el uno y 21 s el otro,
+  desfasados. Parada cuando no se ven y sin ella con reduced-motion. Mismo
+  enfoque que el Sentinel-2 de la portada (SVG de ~650 rect movido con
+  `transform`), que en Zen no calienta.
+- **Ficha y ondas (18-sep-2026, noche)**:
+  - Cada relé tiene ficha al pasar el ratón (las mismas reglas CSS que las
+    chapas, con `:is(.luna-chapa, .luna-sat)`), sin foto, y el satélite se
+    para mientras se mira. Datos en `RELES` (`alunizajes.ts`). Enlaza a su nota
+    si está publicada: `🇨🇳 Queqiao (2018)` y `🇨🇳 Queqiao-2 (2024)` en
+    `02 - Temas/moon-project/`, creadas VACÍAS y con `publicar: false`: el
+    usuario las rellenará.
+  - El usuario preguntó si cada relé dio servicio a una Chang'e: sí, Queqiao a
+    Chang'e 4 y Queqiao-2 a Chang'e 6. Su idea previa era una onda de satélite
+    a satélite; al explicárselo eligió el recorrido real y **dejar los
+    satélites donde estaban**.
+  - Ondas (`.luna-onda`, CSS puro): pulso dorado de **6x6 px** del lienzo (se probó 8x8: "un pelín más pequeños") con
+    **cuatro pasos de estela**. **Primero** Chang'e 4 -> plato de Queqiao ->
+    hacia la derecha ("hacia la Tierra", sin dibujarla); **luego** Chang'e 6 ->
+    Queqiao-2 -> derecha. El tramo final sale del disco y se apaga ya en el
+    espacio. Ciclo de **7 s** (la segunda, 3,5 s después): subida 0,45 s,
+    salida 2,4 s. Paradas cuando no se ven. El pulso apunta al plato en
+    reposo: con la deriva puede llegar unos px desviado.
+  - **Dibujos rehechos** con `logo-files/generar-queqiao.py` (antes eran SVG a
+    mano casi iguales entre sí). Referencias: los renders de Wikipedia que pasó
+    el usuario. Queqiao = plato gris de malla enorme con varillas, caja dorada,
+    ala corta y antenas finas; Queqiao-2 = plato dorado arriba con trípode,
+    cuerpo azul, alas de tres paneles y antenita verde. La onda 1 llega ahora
+    al buje del plato de Queqiao (244,456).
+  - Primera versión (4x4 px, 2 pasos de estela, 9 s, apagada dentro del
+    disco): el usuario la pidió con más estela, más rápida y que se apagara
+    más tarde.
+
 ### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche — instrucciones del usuario, en orden)
 
 1. **Añadir los alunizajes nuevos de la bóveda**: además de los 20 que ya están

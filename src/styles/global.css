@@ -361,6 +361,124 @@ html.dark .hero-luna-enlace { display: block; }
   pointer-events: none;
   z-index: 2;
 }
+/* Relés Queqiao en la cara oculta: misma capa del tamaño del disco que las
+   chapas, en % del lienzo de 600. Un píxel del dibujo = un píxel de la Luna
+   (224x144 en celdas de 4 = 56x36). Centros en (255, 455) y (400, 462): la
+   mitad de abajo de la cuenca Polo Sur-Aitken, bajo Chang'e 4 y 6. Solo de
+   noche (la cara oculta no cambia con el tema). Aparecen con fundido al
+   llegar a la oculta; ocultos, la deriva se para para no gastar. */
+.luna-sats {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--luna-tam);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+.luna-sats:has(.luna-sat:hover, .luna-sat:focus-within) { z-index: 4; }
+.luna-sat {
+  position: absolute;
+  width: calc(56 / 600 * 100%);
+  aspect-ratio: 224 / 144;
+  background: center / contain no-repeat;
+  image-rendering: pixelated;
+  outline: none;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0s linear 0.8s;
+  animation: luna-sat-deriva 16s linear infinite paused;
+}
+.luna-sat--1 { left: calc(227 / 600 * 100%); top: calc(437 / 600 * 100%); }
+.luna-sat--2 {
+  left: calc(372 / 600 * 100%);
+  top: calc(444 / 600 * 100%);
+  animation-duration: 21s;
+  animation-delay: -8s;
+}
+.luna-sats.en-vista :is(.luna-sat, .luna-onda) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease;
+  animation-play-state: running;
+}
+.luna-sats.en-vista .luna-sat { pointer-events: auto; }
+/* Mirando la ficha, el satélite se queda quieto. */
+.luna-sats.en-vista .luna-sat:is(:hover, :focus-within) { animation-play-state: paused; }
+
+/* Ondas nave -> relé -> Tierra. Primero Chang'e 4 -> Queqiao, luego Chang'e 6
+   -> Queqiao-2 (la 2 con medio ciclo de retraso). Cada onda es un pulso de
+   6x6 px del lienzo con cuatro pasos de estela (--k) algo retrasados y cada
+   vez más tenues. Para moverlo en % del disco y no del propio punto, el que se
+   traslada es un envoltorio del tamaño de la capa (inset 0) y el punto va
+   dentro, en el sitio de salida. Recorridos en píxeles del lienzo de 600:
+     1: Chang'e 4 (291,378) -> buje del plato de Queqiao (244,456) -> (743,380)
+     2: Chang'e 6 (396,370) -> plato de Queqiao-2 (400,454) -> (740,410)
+   El tramo final sale del disco y se apaga ya en el espacio. */
+.luna-onda {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0s linear 0.8s;
+  animation-play-state: paused; /* lo heredan los pasos: parado si no se ve */
+}
+.luna-onda-paso {
+  position: absolute;
+  inset: 0;
+  animation: luna-onda-1 7s linear infinite;
+  animation-delay: calc(var(--k) * 0.045s);
+  animation-play-state: inherit;
+}
+.luna-onda--2 .luna-onda-paso {
+  animation-name: luna-onda-2;
+  animation-delay: calc(3.5s + var(--k) * 0.045s);
+}
+.luna-onda-paso i {
+  position: absolute;
+  width: calc(6 / 600 * 100%);
+  aspect-ratio: 1;
+  background: #e6c078;
+  opacity: calc(1 - var(--k) * 0.2);
+}
+.luna-onda--1 i { left: calc(288 / 600 * 100%); top: calc(375 / 600 * 100%); }
+.luna-onda--2 i { left: calc(393 / 600 * 100%); top: calc(367 / 600 * 100%); }
+/* 0-6,5 %: sube de la nave al relé (0,45 s); un respiro en el plato; 8-42 %:
+   sale hacia la derecha (2,4 s) y se apaga en el último tramo, fuera del
+   disco; el resto del ciclo, apagada (en ese rato va la otra). */
+@keyframes luna-onda-1 {
+  0%    { transform: translate(0, 0); opacity: 0; }
+  1.5%  { opacity: 1; }
+  6.5%  { transform: translate(calc(-47 / 600 * 100%), calc(78 / 600 * 100%)); }
+  8%    { transform: translate(calc(-47 / 600 * 100%), calc(78 / 600 * 100%)); opacity: 1; }
+  32%   { opacity: 1; }
+  42%   { transform: translate(calc(452 / 600 * 100%), calc(2 / 600 * 100%)); opacity: 0; }
+  100%  { transform: translate(calc(452 / 600 * 100%), calc(2 / 600 * 100%)); opacity: 0; }
+}
+@keyframes luna-onda-2 {
+  0%    { transform: translate(0, 0); opacity: 0; }
+  1.5%  { opacity: 1; }
+  6.5%  { transform: translate(calc(4 / 600 * 100%), calc(84 / 600 * 100%)); }
+  8%    { transform: translate(calc(4 / 600 * 100%), calc(84 / 600 * 100%)); opacity: 1; }
+  32%   { opacity: 1; }
+  42%   { transform: translate(calc(344 / 600 * 100%), calc(40 / 600 * 100%)); opacity: 0; }
+  100%  { transform: translate(calc(344 / 600 * 100%), calc(40 / 600 * 100%)); opacity: 0; }
+}
+/* Rombo pequeño y lento, como la deriva de las naves "fijas" de la portada:
+   ~6 px del lienzo a los lados y ~4 arriba y abajo (en % del propio sprite). */
+@keyframes luna-sat-deriva {
+  0%   { transform: translate(-10%, 0); }
+  25%  { transform: translate(0, -11%); }
+  50%  { transform: translate(10%, 0); }
+  75%  { transform: translate(0, 11%); }
+  100% { transform: translate(-10%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .luna-sat { animation: none; }
+  .luna-onda { display: none; }
+}
 /* Con una ficha abierta, por encima de los botones. */
 .luna-chapas:has(.luna-chapa:hover, .luna-chapa:focus-within) { z-index: 4; }
 .luna-chapa {
@@ -379,24 +497,27 @@ html.dark .hero-luna-enlace { display: block; }
   overflow: visible;
   cursor: pointer;
 }
-.luna-chapa:is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
-.luna-chapa:is(:hover, :focus-within) .craft-linea { transform: scale(1); }
-.luna-chapa:is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
-.luna-chapa.flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
-.luna-chapa.flip-x .bandera-puente { left: auto; right: 100%; }
-.luna-chapa.flip-x .craft-specs {
+/* La chapa abierta, por encima de las demás: si no, las que van después en el
+   HTML se pintaban sobre su ficha y podían tapar el enlace. */
+:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) { z-index: 1; }
+:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+:is(.luna-chapa, .luna-sat).flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+:is(.luna-chapa, .luna-sat).flip-x .bandera-puente { left: auto; right: 100%; }
+:is(.luna-chapa, .luna-sat).flip-x .craft-specs {
   left: auto;
   right: calc(100% + 92px);
   transform: translateY(-50%) translateX(6px);
 }
-.luna-chapa.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+:is(.luna-chapa, .luna-sat).flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
 /* La ficha va centrada en la chapa, pero las que caen muy arriba o muy abajo
    (Chang'e 3 en el norte, Chandrayaan-3 e IM-1 en el polo sur) se salían de la
    pantalla: ahí se ancla por su borde en vez de centrarse. */
-.luna-chapa.ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
-.luna-chapa.ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
-.luna-chapa:is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
-.luna-chapa:is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
+:is(.luna-chapa, .luna-sat).ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
+:is(.luna-chapa, .luna-sat).ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
+:is(.luna-chapa, .luna-sat):is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
+:is(.luna-chapa, .luna-sat):is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
   transform: translateY(0) translateX(0);
 }
 /* Ficha de misión: la de las naves más la foto del alunizaje. */
@@ -411,6 +532,17 @@ html.dark .hero-luna-enlace { display: block; }
   filter: saturate(0.9);
 }
 .mision-texto { margin: 0; font-size: 0.7rem; line-height: 1.5; color: #dfe4ea; }
+/* Enlace a la nota de la misión: en el dorado del sitio para que resalte. */
+.mision-enlace {
+  display: block;
+  margin-top: 0.6rem;
+  color: #e6c078;
+  font-size: 0.72rem;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.mision-enlace:hover,
+.mision-enlace:focus-visible { color: #f5dcaa; }
 
 /* --- Columna de países de /luna ---------------------------------------------
    Una bandera por país, en blanco y negro; al pulsarla se enciende y aparecen
@@ -470,6 +602,49 @@ html.dark .hero-luna-enlace { display: block; }
   white-space: nowrap;
 }
 .luna-pais[aria-pressed="true"] .luna-pais-nombre { color: #e6c078; }
+/* Subgrupos de un país (EE. UU.: Surveyor, Apolo, privadas): al pulsar el país,
+   su botón sube un poco y debajo se despliegan sus casillas, que filtran por
+   separado; otro clic las recoge. El despliegue es con
+   grid-template-rows (0fr -> 1fr) para animar la altura sin fijarla. */
+.luna-pais-grupo { display: flex; flex-direction: column; }
+.luna-pais-grupo .luna-pais { transition: background 0.15s ease, border-color 0.15s ease, transform 0.2s ease; }
+.luna-pais-grupo.abierto .luna-pais { transform: translateY(-3px); }
+.luna-subgrupos {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.25s ease, opacity 0.2s ease;
+}
+.luna-pais-grupo.abierto .luna-subgrupos { grid-template-rows: 1fr; opacity: 1; }
+.luna-subgrupos-dentro {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-left: 0.9rem;
+}
+.luna-subgrupo:first-child { margin-top: 0.3rem; }
+.luna-subgrupo {
+  padding: 5px 10px;
+  border: 1px solid rgba(230, 192, 120, 0.18);
+  border-radius: 4px;
+  background: rgba(6, 8, 12, 0.55);
+  color: #7d8896;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.luna-subgrupo:is(:hover, :focus-visible) { border-color: rgba(230, 192, 120, 0.5); }
+.luna-subgrupo[aria-pressed="true"] {
+  background: rgba(230, 192, 120, 0.14);
+  border-color: rgba(230, 192, 120, 0.6);
+  color: #e6c078;
+}
 
 /* En táctil no hay "pasar el ratón" y la ficha no se puede abrir: fuera chapas
    y columna, igual que las banderas de país de la portada. */
