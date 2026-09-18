@@ -11,9 +11,12 @@ type Props = {
   // a sangre entre la cabecera y <main>, y <html> lleva la clase "home"
   // (para que la cabecera sea transparente sobre el planeta hasta el scroll).
   hero?: boolean;
+  // Sin cabecera (logo, notas / eventos, día/noche): /luna, donde no pinta
+  // nada (la Luna no cambia con el tema) y estorba a la escena.
+  cabecera?: boolean;
 };
 
-const { title, description, hero = false } = Astro.props;
+const { title, description, hero = false, cabecera = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,7 +25,7 @@ const { title, description, hero = false } = Astro.props;
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
   </head>
   <body>
-    <Header />
+    {cabecera && <Header />}
     {hero && <slot name="hero" />}
     <main>
       <slot />

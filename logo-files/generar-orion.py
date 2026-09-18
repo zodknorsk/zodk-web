@@ -15,6 +15,8 @@ la portada (alas algo más claras) y la de día sigue su misma relación.
 En PNG y no en SVG: 32 dibujos en un SVG animado es lo que calienta Zen.
 
 Uso:  python3 generar-orion.py [--png DIR]   (--png: tira ampliada x3, PPM)
+      python3 generar-orion.py --css         (@keyframes nave-sombra, para
+                                              pegar en global.css)
 """
 import importlib.util
 import math
@@ -364,6 +366,56 @@ def fotograma(k):
     return orion(eje, GIRO_ORBITA, CARA_ORBITA, esc=ESCALA, ref=normal)
 
 
+# Sombra de la Luna sobre la Orion en la cara visible (idea del usuario): el
+# Sol de esa cara (luz por la derecha, fase 38°, 14° por encima, como
+# generar-luna.py --derecha) proyecta la sombra de la Luna hacia la izquierda y
+# hacia atrás. La nave entra en ella al llegar al borde izquierdo y sale ya
+# tapada por el disco. Radios en tanto por uno del diámetro del disco, como
+# pos_orbita(). Sale como animación CSS de brillo (--css).
+SOL_VISIBLE = (38, 14)              # fase y altura del Sol en la cara visible
+SOMBRA_BRILLO = 0.35                # brillo en plena sombra (luz de la Tierra)
+FRANJA = 0.08                       # ancho del paso a la sombra en la línea día/noche
+PENUMBRA = (0.70, 0.50)             # de dónde empieza a oscurecer a sombra plena
+                                    # (distancia al eje de la sombra). Era
+                                    # (0,56, 0,46): el usuario la quiso antes
+
+
+def sombra(f):
+    """0 (al sol) .. 1 (en plena sombra) en la fracción f de la vuelta."""
+    fase, alt = (math.radians(g) for g in SOL_VISIBLE)
+    sol = (math.sin(fase) * math.cos(alt), -math.sin(alt), -math.cos(fase) * math.cos(alt))
+    p = pos_orbita(f)
+    d = sum(p[i] * sol[i] for i in range(3))     # < 0: más allá de la Luna vista desde el Sol
+
+    def suave(a, b, x):
+        u = min(1.0, max(0.0, (x - a) / (b - a)))
+        return u * u * (3 - 2 * u)
+    eje = math.sqrt(max(0.0, sum(c * c for c in p) - d * d))
+    proyectada = suave(0.1, -0.05, d) * suave(PENUMBRA[0], PENUMBRA[1], eje)
+    # Y la franja oscura del disco tal como se ve (pedido del usuario: "que se
+    # oscurezca cuando llega a la sombra de la Luna"): a la izquierda de la
+    # línea día/noche de la cara visible, x < -cos(fase)·√(R² - y²), también
+    # más allá del borde izquierdo, para que no se aclare al salir del disco.
+    x, y = p[0], p[1]
+    if abs(y) >= 0.5:
+        return proyectada
+    frontera = -math.cos(fase) * math.sqrt(0.25 - y * y)
+    vista = suave(frontera, frontera - FRANJA, x)
+    return max(proyectada, vista)
+
+
+def css_sombra(pasos=64):
+    """@keyframes nave-sombra: filter brightness a lo largo de la vuelta."""
+    vals = [round(1 - (1 - SOMBRA_BRILLO) * sombra((k / pasos) % 1.0), 3) for k in range(pasos + 1)]
+    lineas = []
+    for k, b in enumerate(vals):
+        # Sin los puntos de en medio de un tramo constante (sí sus extremos).
+        if 0 < k < pasos and vals[k - 1] == b == vals[k + 1]:
+            continue
+        lineas.append(f"  {k / pasos * 100:.2f}% {{ filter: brightness({b}); }}")
+    return "@keyframes nave-sombra {\n" + "\n".join(lineas) + "\n}"
+
+
 def png(celdas, ancho, alto, paleta, ruta):
     """PNG RGBA de 1 px por celda (fondo transparente), sin dependencias."""
     import struct
@@ -422,6 +474,9 @@ def ppm(celdas, ancho, paleta, ruta, z=10, fondo=(40, 40, 48)):
 
 
 if __name__ == "__main__":
+    if "--css" in sys.argv:
+        print(css_sombra())
+        sys.exit()
     vista = sys.argv[sys.argv.index("--png") + 1] if "--png" in sys.argv else None
     t = tira([fotograma(k) for k in range(FOTOGRAMAS)])
     ancho = W * FOTOGRAMAS

@@ -88,16 +88,20 @@ export function volarALuna({
   duracion = 6000, tierra = "encima", pixeles = "directo", velocidad = 1,
   inverso = false, iconoVisible = true,
 }) {
-  const W = innerWidth, H = innerHeight, CX = W / 2, CY = H / 2;
+  // Tamaño y sitio de la Luna en /luna: --luna-tam y --luna-dy (cuánto sube
+  // respecto al centro), medidos con una sonda. La cámara acaba mirando a ese
+  // punto, así que CY es el centro del disco, no el de la ventana.
+  const sonda = document.createElement("div");
+  sonda.style.cssText = "position:fixed;visibility:hidden;top:0;width:var(--luna-tam);margin-top:var(--luna-dy)";
+  document.body.append(sonda);
+  const rs = sonda.getBoundingClientRect();
+  sonda.remove();
+  const W = innerWidth, H = innerHeight, CX = W / 2, CY = H / 2 + rs.top;
   const F = Math.max(W, H) * 0.9;                    // focal en px
   const ri = icono.getBoundingClientRect();
   const m0 = [ri.left + ri.width / 2, ri.top + ri.height / 2];
   const dLuna0 = ri.width * ICONO_DISCO;
-  const sonda = document.createElement("div");
-  sonda.style.cssText = "position:fixed;visibility:hidden;width:var(--luna-tam)";
-  document.body.append(sonda);
-  const dLuna1 = sonda.getBoundingClientRect().width * CARA_DISCO;
-  sonda.remove();
+  const dLuna1 = rs.width * CARA_DISCO;
 
   // --- Escena en 3D (x derecha, y abajo, z hacia dentro)
   const zL = (2 * F) / dLuna0;
