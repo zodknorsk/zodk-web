@@ -59,7 +59,7 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
     <div class="luna-paises" hidden>
       {paises.map((p) => (
         <button class="luna-pais" type="button" data-pais={p.codigo} aria-pressed="false">
-          <span class="luna-pais-bandera">{p.bandera}</span>
+          <span class="luna-pais-bandera" set:html={svgBandera(p)} />
           <span class="luna-pais-nombre">{p.nombre}</span>
         </button>
       ))}
