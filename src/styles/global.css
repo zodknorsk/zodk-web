@@ -405,6 +405,12 @@ html.dark .hero-luna-enlace { display: block; }
   animation-play-state: running;
 }
 .luna-sats.en-vista .luna-sat { pointer-events: auto; }
+/* Con China apagada no salen ondas (ver pintaBotones en luna.astro). */
+.luna-sats.sin-ondas .luna-onda {
+  opacity: 0;
+  visibility: hidden;
+  animation-play-state: paused;
+}
 /* Mirando la ficha, el satélite se queda quieto. */
 .luna-sats.en-vista .luna-sat:is(:hover, :focus-within) { animation-play-state: paused; }
 
@@ -466,6 +472,78 @@ html.dark .hero-luna-enlace { display: block; }
   42%   { transform: translate(calc(344 / 600 * 100%), calc(40 / 600 * 100%)); opacity: 0; }
   100%  { transform: translate(calc(344 / 600 * 100%), calc(40 / 600 * 100%)); opacity: 0; }
 }
+/* Orion (Artemis II) orbitando la Luna.
+   La capa tiene el tamaño y sitio del disco pero SIN transform ni z-index, para
+   no crear contexto de apilado: así la nave puede ir por delante del disco
+   (z 3) o por detrás (z 0; el disco es z 1). Elipse = dos vaivenes suaves
+   desfasados un cuarto: X de -0,62 a 0,62 del disco y Y de -0,16 a 0,16, en
+   T = 16 s cada tramo (vuelta de 32 s; era de 28 y se pidió algo más lenta). Primera mitad: va a la derecha por
+   arriba y por detrás; segunda: a la izquierda por abajo y por delante.
+   La nave gira según va (idea del usuario): tira PNG de 32 fotogramas, uno
+   por cada 1/32 de vuelta, que logo-files/generar-orion.py calcula con estas
+   mismas curvas (si cambian T, los radios o el ease, hay que regenerarla).
+   Por delante va de perfil; en el borde izquierdo gira pasando por la vista
+   de cola (la X de alas entera) y en el derecho por la de frente. */
+.luna-orbitas {
+  position: absolute;
+  left: calc(50% - var(--luna-tam) / 2);
+  top: calc(50% - var(--luna-tam) / 2);
+  width: var(--luna-tam);
+  height: var(--luna-tam);
+  pointer-events: none;
+}
+.luna-nave-x {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  --t: 16s;
+  animation:
+    nave-x var(--t) ease-in-out infinite alternate,
+    nave-z calc(var(--t) * 2) linear infinite;
+}
+.luna-nave-y {
+  animation: nave-y var(--t) ease-in-out calc(var(--t) * -1.5) infinite alternate;
+}
+.luna-nave {
+  position: absolute;
+  width: calc(var(--luna-tam) * 64 / 600);
+  aspect-ratio: 64 / 56;
+  transform: translate(-50%, -50%);
+  background: url(/luna/zodk-orion-giro.png) 0 0 / 3200% 100% no-repeat;
+  image-rendering: pixelated;
+  animation: nave-giro calc(var(--t) * 2) steps(32) infinite;
+}
+.luna-hero.cara-oculta .luna-nave { background-image: url(/luna/zodk-orion-giro-noche.png); }
+/* Ficha: al pasar el ratón (o con foco) la órbita se para y la nave sube por
+   encima de todo, también si estaba asomando por detrás del disco (el
+   !important gana a la animación de z-index). */
+.luna-nave { pointer-events: auto; cursor: pointer; outline: none; }
+.luna-orbitas:has(.luna-nave:is(:hover, :focus-within)) :is(.luna-nave-x, .luna-nave-y, .luna-nave) {
+  animation-play-state: paused;
+}
+.luna-nave-x:has(.luna-nave:is(:hover, :focus-within)) { z-index: 5 !important; }
+/* Radio X: 0,62 del disco, pero sin pasar del borde de la ventana (con la
+   ventana estrecha el disco ocupa el 90 % del ancho). */
+@keyframes nave-x {
+  from { transform: translateX(calc(-1 * min(var(--luna-tam) * 0.62, 50vw - var(--luna-tam) * 0.05))); }
+  to   { transform: translateX(min(var(--luna-tam) * 0.62, 50vw - var(--luna-tam) * 0.05)); }
+}
+@keyframes nave-y {
+  from { transform: translateY(calc(var(--luna-tam) * -0.16)); }
+  to   { transform: translateY(calc(var(--luna-tam) * 0.16)); }
+}
+@keyframes nave-z {
+  0%, 49.9%  { z-index: 0; }
+  50%, 100%  { z-index: 3; }
+}
+/* Fotograma k de la tira durante el k-ésimo 1/32 de la vuelta: con steps(32)
+   el último valor es 31/32 del final, así que el final va a 32/31 del 100 %. */
+@keyframes nave-giro {
+  to { background-position: calc(100% * 32 / 31) 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .luna-nave-x, .luna-nave-y, .luna-nave { animation-play-state: paused; }
+}
 /* Rombo pequeño y lento, como la deriva de las naves "fijas" de la portada:
    ~6 px del lienzo a los lados y ~4 arriba y abajo (en % del propio sprite). */
 @keyframes luna-sat-deriva {
@@ -499,25 +577,25 @@ html.dark .hero-luna-enlace { display: block; }
 }
 /* La chapa abierta, por encima de las demás: si no, las que van después en el
    HTML se pintaban sobre su ficha y podían tapar el enlace. */
-:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) { z-index: 1; }
-:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
-:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-linea { transform: scale(1); }
-:is(.luna-chapa, .luna-sat):is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
-:is(.luna-chapa, .luna-sat).flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
-:is(.luna-chapa, .luna-sat).flip-x .bandera-puente { left: auto; right: 100%; }
-:is(.luna-chapa, .luna-sat).flip-x .craft-specs {
+:is(.luna-chapa, .luna-sat, .luna-nave):is(:hover, :focus-within) { z-index: 1; }
+:is(.luna-chapa, .luna-sat, .luna-nave):is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+:is(.luna-chapa, .luna-sat, .luna-nave):is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+:is(.luna-chapa, .luna-sat, .luna-nave):is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+:is(.luna-chapa, .luna-sat, .luna-nave).flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+:is(.luna-chapa, .luna-sat, .luna-nave).flip-x .bandera-puente { left: auto; right: 100%; }
+:is(.luna-chapa, .luna-sat, .luna-nave).flip-x .craft-specs {
   left: auto;
   right: calc(100% + 92px);
   transform: translateY(-50%) translateX(6px);
 }
-:is(.luna-chapa, .luna-sat).flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+:is(.luna-chapa, .luna-sat, .luna-nave).flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
 /* La ficha va centrada en la chapa, pero las que caen muy arriba o muy abajo
    (Chang'e 3 en el norte, Chandrayaan-3 e IM-1 en el polo sur) se salían de la
    pantalla: ahí se ancla por su borde en vez de centrarse. */
-:is(.luna-chapa, .luna-sat).ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
-:is(.luna-chapa, .luna-sat).ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
-:is(.luna-chapa, .luna-sat):is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
-:is(.luna-chapa, .luna-sat):is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
+:is(.luna-chapa, .luna-sat, .luna-nave).ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
+:is(.luna-chapa, .luna-sat, .luna-nave).ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
+:is(.luna-chapa, .luna-sat, .luna-nave):is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
+:is(.luna-chapa, .luna-sat, .luna-nave):is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
   transform: translateY(0) translateX(0);
 }
 /* Ficha de misión: la de las naves más la foto del alunizaje. */

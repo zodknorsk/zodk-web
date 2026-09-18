@@ -101,6 +101,36 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
         </div>
       ))}
     </div>
+    <!-- Orion (Artemis II) orbitando la Luna, en las dos caras: por delante
+         de derecha a izquierda y por detrás, tapada por el disco. Gira según
+         va: tira de 32 fotogramas public/luna/zodk-orion-giro*.png, de
+         logo-files/generar-orion.py.
+         Paleta de día en la cara visible y de noche en la oculta. Al pasar
+         el ratón se para y sale su ficha, como las de los Queqiao. -->
+    <div class="luna-orbitas">
+      <div class="luna-nave-x">
+        <div class="luna-nave-y">
+          <div class="luna-nave" tabindex="0" aria-label="Orion, Artemis II (EE. UU., 2026): ficha de la nave">
+            <div class="craft-dossier">
+              <span class="craft-linea" />
+              <span class="bandera-puente" />
+              <div class="craft-specs">
+                <div class="craft-specs-titulo">Orion · Artemis II</div>
+                <div class="craft-clase">
+                  <span class="craft-flag">🇺🇸</span>
+                  EE. UU. · 2026 · sobrevuelo tripulado
+                </div>
+                <p class="mision-texto">
+                  En abril de 2026 llevó a cuatro astronautas (Reid Wiseman, Victor Glover, Christina Koch y
+                  el canadiense Jeremy Hansen) a rodear la Luna y volver sin alunizar: el primer vuelo
+                  tripulado más allá de la órbita terrestre desde el Apolo 17.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Columna de países: enciende y apaga los alunizajes de cada uno. -->
     <div class="luna-paises" hidden>
       {paises.map((p) => (
@@ -220,6 +250,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     // cara nueva (las de la otra cara se quedan fuera).
     let esconderChapas = () => {};
     let colocarChapas = () => {};
+    let soloChina = () => {};
     const sats = document.querySelector<HTMLElement>(".luna-sats");
     const l = await montarLuna(cv, {
       alEmpezar: () => {
@@ -230,6 +261,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       alTerminar: (cara: string) => {
         boton.disabled = volver.disabled = false;
         sats?.classList.toggle("en-vista", cara === "oculta");
+        hero.classList.toggle("cara-oculta", cara === "oculta");
         pon(cara);
         colocarChapas();
       },
@@ -280,7 +312,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       esconderChapas = () => { for (const el of chapas) el.hidden = true; };
       // Dónde cabe la ficha: al lado que quede sitio, y anclada por su borde si
       // centrada se saldría por arriba o por abajo.
-      for (const el of [...chapas, ...document.querySelectorAll<HTMLElement>(".luna-sat")]) {
+      for (const el of [...chapas, ...document.querySelectorAll<HTMLElement>(".luna-sat, .luna-nave")]) {
         const sitioFicha = () => {
           const r = el.getBoundingClientRect();
           el.classList.toggle("flip-x", r.right + 380 > window.innerWidth);
@@ -296,14 +328,27 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       // despliega o recoge sus casillas (sin encender nada), y se ve encendido
       // mientras quede alguna casilla encendida, también con él recogido.
       const subs = [...columna.querySelectorAll<HTMLButtonElement>(".luna-subgrupo")];
-      const pinta = () => {
+      const pintaBotones = () => {
         for (const b of subs) b.setAttribute("aria-pressed", String(encendidos.has(b.dataset.clave!)));
         for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
           const suyas = subs.filter((s) => s.dataset.pais === b.dataset.pais);
           const on = suyas.length ? suyas.some((s) => encendidos.has(s.dataset.clave!)) : encendidos.has(b.dataset.pais!);
           b.setAttribute("aria-pressed", String(on));
         }
-        colocarChapas();
+        // Las ondas nave -> relé -> Tierra salen de Chang'e 4 y 6: con China
+        // apagada no hay de dónde salir. Los relés se quedan a la vista.
+        sats?.classList.toggle("sin-ondas", !encendidos.has("CN"));
+      };
+      const pinta = () => { pintaBotones(); colocarChapas(); };
+      // Al ir a la cara oculta se apaga todo y se enciende China, para que
+      // Chang'e 4 y 6 salgan al llegar sin activarlas a mano. Solo botones:
+      // las chapas las coloca alTerminar al acabar el giro.
+      pintaBotones();
+      soloChina = () => {
+        encendidos.clear();
+        for (const b of subs) if (b.dataset.pais === "CN") encendidos.add(b.dataset.clave!);
+        encendidos.add("CN");
+        pintaBotones();
       };
       for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
         b.addEventListener("click", () => {
@@ -342,7 +387,10 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       new ResizeObserver(() => { if (!columna.querySelector(".abierto")) fija(); }).observe(hero);
     }
 
-    const clic = () => l.girar();
+    const clic = () => {
+      if (!l.girando() && l.cara() === "visible") soloChina();
+      l.girar();
+    };
     let enVuelo = false;
     const clicVolver = () => {
       if (enVuelo || l.girando()) return;
@@ -350,7 +398,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
       // flotando mientras la Luna se aleja hacia el icono.
-      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : [])]);
+      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas")]);
     };
     boton.addEventListener("click", clic);
     volver.addEventListener("click", clicVolver);
