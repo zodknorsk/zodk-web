@@ -7,6 +7,13 @@
 // Motor: src/scripts/luna.js (datos en public/luna/, de
 // logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
+import { ALUNIZAJES, PAISES_LUNA, svgBandera } from "../data/alunizajes";
+
+// Chapas y columna se pintan desde src/data/alunizajes.ts. El sitio de cada
+// chapa lo pone el script al llegar (depende de la cara que se vea), así que
+// aquí salen ocultas.
+const paises = PAISES_LUNA.filter((p) => ALUNIZAJES.some((a) => a.pais === p.codigo));
+const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
 ---
 
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero>
@@ -17,6 +24,45 @@ import PageLayout from "@layouts/PageLayout.astro";
          y mientras carga el canvas. -->
     <div class="luna-disco" role="img" aria-label="La Luna, cara visible">
       <canvas class="luna-canvas" aria-hidden="true"></canvas>
+    </div>
+    <!-- Chapas de alunizaje: una por misión, encima del disco. El script las
+         coloca (y esconde las de la otra cara) según la cara que se vea. -->
+    <div class="luna-chapas">
+      {ALUNIZAJES.map((a) => (
+        <div
+          class="luna-chapa"
+          data-pais={a.pais}
+          data-lat={a.lat}
+          data-lon={a.lon}
+          tabindex="0"
+          hidden
+          aria-label={`${a.nombre} (${porCodigo[a.pais].nombre}, ${a.anio}): ficha de la misión`}
+        >
+          <Fragment set:html={svgBandera(porCodigo[a.pais])} />
+          <div class="craft-dossier">
+            <span class="craft-linea" />
+            <span class="bandera-puente" />
+            <div class="craft-specs">
+              <img class="mision-foto" src={`/alunizajes/${a.foto}`} alt="" loading="lazy" width="256" height="256" />
+              <div class="craft-specs-titulo">{a.nombre}</div>
+              <div class="craft-clase">
+                <span class="craft-flag">{porCodigo[a.pais].bandera}</span>
+                {porCodigo[a.pais].nombre} · {a.anio}
+              </div>
+              <p class="mision-texto">{a.texto}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <!-- Columna de países: enciende y apaga los alunizajes de cada uno. -->
+    <div class="luna-paises" hidden>
+      {paises.map((p) => (
+        <button class="luna-pais" type="button" data-pais={p.codigo} aria-pressed="false">
+          <span class="luna-pais-bandera">{p.bandera}</span>
+          <span class="luna-pais-nombre">{p.nombre}</span>
+        </button>
+      ))}
     </div>
     <!-- PLACEHOLDER: botones provisionales hasta que haya dibujo propio. Se
          puede cambiar su contenido sin tocar el JS mientras mantengan las
@@ -105,22 +151,78 @@ import PageLayout from "@layouts/PageLayout.astro";
       boton.setAttribute("aria-label", TEXTO[cara][1]);
       disco.setAttribute("aria-label", `La Luna, cara ${cara}`);
     };
+    // Chapas: mientras gira se esconden todas y al acabar se recolocan en la
+    // cara nueva (las de la otra cara se quedan fuera).
+    let esconderChapas = () => {};
+    let colocarChapas = () => {};
     const l = await montarLuna(cv, {
-      alEmpezar: () => { boton.disabled = volver.disabled = true; },
-      alTerminar: (cara: string) => { boton.disabled = volver.disabled = false; pon(cara); },
+      alEmpezar: () => { boton.disabled = volver.disabled = true; esconderChapas(); },
+      alTerminar: (cara: string) => {
+        boton.disabled = volver.disabled = false;
+        pon(cara);
+        colocarChapas();
+      },
     });
     if (!cv.isConnected) return l.desmontar();   // se salió de la página mientras cargaba
     disco.classList.add("luna-lista");
     luna = l;
     pon(l.cara());
     boton.hidden = volver.hidden = false;
+
+    // --- Chapas de alunizaje y columna de países --------------------------
+    const capa = document.querySelector<HTMLElement>(".luna-chapas");
+    const columna = document.querySelector<HTMLElement>(".luna-paises");
+    const chapas = [...document.querySelectorAll<HTMLElement>(".luna-chapa")];
+    const encendidos = new Set<string>();
+    if (capa && columna) {
+      // La chapa mide 13x9 del lienzo de 600: se resta medio ancho/alto en %
+      // (no en px) para que siga centrada al ampliarse el disco.
+      const DX = (13 / 600 / 2) * 100, DY = (9 / 600 / 2) * 100;
+      colocarChapas = () => {
+        for (const el of chapas) {
+          const p = l.sitio(Number(el.dataset.lat), Number(el.dataset.lon));
+          el.hidden = !encendidos.has(el.dataset.pais!) || !p.vis;
+          if (el.hidden) continue;
+          el.style.left = `calc(${p.u * 100}% - ${DX}%)`;
+          el.style.top = `calc(${p.v * 100}% - ${DY}%)`;
+        }
+      };
+      esconderChapas = () => { for (const el of chapas) el.hidden = true; };
+      // Dónde cabe la ficha: al lado que quede sitio, y anclada por su borde si
+      // centrada se saldría por arriba o por abajo.
+      for (const el of chapas) {
+        const sitioFicha = () => {
+          const r = el.getBoundingClientRect();
+          el.classList.toggle("flip-x", r.right + 380 > window.innerWidth);
+          const alto = el.querySelector<HTMLElement>(".craft-specs")!.offsetHeight;
+          const centro = r.top + r.height / 2;
+          el.classList.toggle("ancla-arriba", centro - alto / 2 < 8);
+          el.classList.toggle("ancla-abajo", centro + alto / 2 > window.innerHeight - 8);
+        };
+        el.addEventListener("mouseenter", sitioFicha);
+        el.addEventListener("focus", sitioFicha);
+      }
+      for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
+        b.addEventListener("click", () => {
+          const codigo = b.dataset.pais!;
+          const on = !encendidos.has(codigo);
+          on ? encendidos.add(codigo) : encendidos.delete(codigo);
+          b.setAttribute("aria-pressed", String(on));
+          colocarChapas();
+        });
+      }
+      columna.hidden = false;
+    }
+
     const clic = () => l.girar();
     let enVuelo = false;
     const clicVolver = () => {
       if (enVuelo || l.girando()) return;
       enVuelo = true;
       boton.disabled = volver.disabled = true;
-      volverATierra(hero, l, disco, [boton, volver]);
+      // Las chapas y la columna se apagan con los botones: si no, se quedaban
+      // flotando mientras la Luna se aleja hacia el icono.
+      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : [])]);
     };
     boton.addEventListener("click", clic);
     volver.addEventListener("click", clicVolver);
