@@ -322,12 +322,16 @@ html.dark .hero-luna-enlace { display: block; }
 /* --- La Luna (/luna) --------------------------------------------------------
    Mismo fondo que la portada. El disco, centrado; --luna-tam lo usa también el
    vuelo desde la Tierra para saber dónde termina. */
-:root { --luna-tam: min(80vh, 90vw); }
-@supports (height: 1svh) { :root { --luna-tam: min(80svh, 90vw); } }
+/* Tamaño del disco y cuánto sube respecto al centro (--luna-dy: para dejar
+   aire entre la Luna y el mando de cara de abajo; el usuario no la quería más
+   pequeña). El vuelo desde la Tierra lee las dos variables al aterrizar
+   (viaje-luna.js), así que acaba justo sobre el disco. */
+:root { --luna-tam: min(80vh, 90vw); --luna-dy: -3.5vh; }
+@supports (height: 1svh) { :root { --luna-tam: min(80svh, 90vw); --luna-dy: -3.5svh; } }
 .luna-disco {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% + var(--luna-dy));
   width: var(--luna-tam);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
@@ -354,7 +358,7 @@ html.dark .hero-luna-enlace { display: block; }
 .luna-chapas {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% + var(--luna-dy));
   width: var(--luna-tam);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
@@ -370,7 +374,7 @@ html.dark .hero-luna-enlace { display: block; }
 .luna-sats {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% + var(--luna-dy));
   width: var(--luna-tam);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
@@ -435,12 +439,15 @@ html.dark .hero-luna-enlace { display: block; }
   position: absolute;
   inset: 0;
   animation: luna-onda-1 7s linear infinite;
-  animation-delay: calc(var(--k) * 0.045s);
+  /* Retrasos NEGATIVOS (restando un ciclo entero): con uno positivo, durante
+     la espera el punto se quedaba visible y quieto en su salida (encima de la
+     bandera de Chang'e 6 la primera vez que se llegaba a la oculta). */
+  animation-delay: calc(var(--k) * 0.045s - 7s);
   animation-play-state: inherit;
 }
 .luna-onda--2 .luna-onda-paso {
   animation-name: luna-onda-2;
-  animation-delay: calc(3.5s + var(--k) * 0.045s);
+  animation-delay: calc(var(--k) * 0.045s - 3.5s);   /* medio ciclo después de la 1 */
 }
 .luna-onda-paso i {
   position: absolute;
@@ -487,7 +494,7 @@ html.dark .hero-luna-enlace { display: block; }
 .luna-orbitas {
   position: absolute;
   left: calc(50% - var(--luna-tam) / 2);
-  top: calc(50% - var(--luna-tam) / 2);
+  top: calc(50% - var(--luna-tam) / 2 + var(--luna-dy));
   width: var(--luna-tam);
   height: var(--luna-tam);
   pointer-events: none;
@@ -509,16 +516,29 @@ html.dark .hero-luna-enlace { display: block; }
   width: calc(var(--luna-tam) * 64 / 600);
   aspect-ratio: 64 / 56;
   transform: translate(-50%, -50%);
+}
+/* El dibujo va en ::before para que la sombra (filter) no oscurezca la ficha. */
+.luna-nave::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: url(/luna/zodk-orion-giro.png) 0 0 / 3200% 100% no-repeat;
   image-rendering: pixelated;
-  animation: nave-giro calc(var(--t) * 2) steps(32) infinite;
+  animation:
+    nave-giro calc(var(--t) * 2) steps(32) infinite,
+    nave-sombra calc(var(--t) * 2) linear infinite;
 }
-.luna-hero.cara-oculta .luna-nave { background-image: url(/luna/zodk-orion-giro-noche.png); }
+.luna-hero.cara-oculta .luna-nave::before { background-image: url(/luna/zodk-orion-giro-noche.png); }
+/* La sombra de la Luna solo cuenta en la cara visible (idea del usuario). La
+   animación corre siempre, para no desfasarse de la órbita al cambiar de
+   cara; en la oculta se anula (el !important gana a la animación). */
+.luna-hero.cara-oculta .luna-nave::before { filter: none !important; }
 /* Ficha: al pasar el ratón (o con foco) la órbita se para y la nave sube por
    encima de todo, también si estaba asomando por detrás del disco (el
    !important gana a la animación de z-index). */
 .luna-nave { pointer-events: auto; cursor: pointer; outline: none; }
-.luna-orbitas:has(.luna-nave:is(:hover, :focus-within)) :is(.luna-nave-x, .luna-nave-y, .luna-nave) {
+.luna-orbitas:has(.luna-nave:is(:hover, :focus-within)) :is(.luna-nave-x, .luna-nave-y),
+.luna-orbitas:has(.luna-nave:is(:hover, :focus-within)) .luna-nave::before {
   animation-play-state: paused;
 }
 .luna-nave-x:has(.luna-nave:is(:hover, :focus-within)) { z-index: 5 !important; }
@@ -535,6 +555,30 @@ html.dark .hero-luna-enlace { display: block; }
 @keyframes nave-z {
   0%, 49.9%  { z-index: 0; }
   50%, 100%  { z-index: 3; }
+}
+/* Sombra de la Luna (cara visible): brillo a lo largo de la vuelta, de
+   `python3 logo-files/generar-orion.py --css`. Se oscurece al cruzar por
+   delante la línea día/noche de la cara visible (hacia el 85 % de la vuelta),
+   sigue a oscuras al salir del disco y por detrás (sombra proyectada): 35 %
+   en sombra plena (luz de la Tierra). */
+@keyframes nave-sombra {
+  0.00% { filter: brightness(0.35); }
+  26.56% { filter: brightness(0.35); }
+  28.12% { filter: brightness(0.385); }
+  29.69% { filter: brightness(0.492); }
+  31.25% { filter: brightness(0.62); }
+  32.81% { filter: brightness(0.736); }
+  34.38% { filter: brightness(0.82); }
+  35.94% { filter: brightness(0.872); }
+  37.50% { filter: brightness(0.898); }
+  39.06% { filter: brightness(0.938); }
+  40.62% { filter: brightness(0.985); }
+  42.19% { filter: brightness(1.0); }
+  84.38% { filter: brightness(1.0); }
+  85.94% { filter: brightness(0.73); }
+  87.50% { filter: brightness(0.353); }
+  89.06% { filter: brightness(0.35); }
+  100.00% { filter: brightness(0.35); }
 }
 /* Fotograma k de la tira durante el k-ésimo 1/32 de la vuelta: con steps(32)
    el último valor es 31/32 del final, así que el final va a 32/31 del 100 %. */
@@ -730,34 +774,113 @@ html.dark .hero-luna-enlace { display: block; }
   .luna-chapas, .luna-paises { display: none; }
 }
 /* PLACEHOLDER del botón de cambio de cara (hasta que haya dibujo propio). */
-/* Botones de /luna (PLACEHOLDER): cambio de cara abajo a la derecha (en el
-   centro caía encima de la barra de herramientas de Astro en desarrollo) y
-   volver a la Tierra abajo a la izquierda. */
-.luna-boton {
+/* Botones de /luna (elegidos el 18-sep-2026 en public/_bocetos/botones.html).
+   Mando de cara (propuesta E1, "deslizador") abajo en el centro: un solo
+   botón; la píldora dorada va detrás de la cara que se ve y, al pulsar, se
+   desliza a la otra en lo mismo que tarda el giro (2,8 s, curva en seno como
+   luna.js). Iconos: miniaturas de las dos caras aprobadas. Volver a la Tierra
+   (propuesta B, HUD) abajo a la derecha: dos esquinas doradas que al pasar el
+   ratón se cierran en un marco. */
+.luna-cambio, .luna-volver {
   position: absolute;
   bottom: max(1.5rem, 5svh);
   z-index: 2;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #cfd6de;
+  cursor: pointer;
+}
+:is(.luna-cambio, .luna-volver)[hidden] { display: none; }
+
+.luna-cambio {
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+  border: 1px solid rgba(230, 192, 120, 0.33);
+  border-radius: 999px;
+  background: rgba(5, 6, 10, 0.87);
+  box-shadow: 0 0 0 4px rgba(5, 6, 10, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --lado: 0;
+  --giro: 2.8s cubic-bezier(0.37, 0, 0.63, 1);
+}
+.luna-cambio[data-cara="oculta"] { --lado: 1; }
+.luna-cambio:disabled { cursor: default; }
+.luna-cambio:is(:hover, :focus-visible):not(:disabled) { border-color: rgba(230, 192, 120, 0.7); }
+.luna-cambio:focus-visible { outline: 1px dashed #e6c078; outline-offset: 4px; }
+.luna-cambio-pildora {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 999px;
+  background: linear-gradient(#f0cf8c, #d9ad5e);
+  box-shadow: 0 0 14px rgba(230, 192, 120, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateX(calc(var(--lado) * 100%));
+  transition: transform var(--giro);
+}
+.luna-cambio-cara {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.8rem;
-  border: 1.5px dashed #7c8794;
-  border-radius: 4px;
-  background: #05060acc;
-  color: #cfd6de;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 13px;
+  white-space: nowrap;
+  color: #8b93a0;
+  transition: color var(--giro);
 }
-.luna-cambio { right: max(1.25rem, 4vw); }
-.luna-volver { left: max(1.25rem, 4vw); }
-.luna-boton[hidden] { display: none; }
-.luna-boton svg { width: 1rem; height: 1rem; }
-.luna-boton:hover, .luna-boton:focus-visible { color: #fff; border-color: #cfd6de; }
-.luna-boton:disabled { opacity: 0.5; cursor: default; }
+.luna-cambio[data-cara="visible"] .luna-cambio-cara--visible,
+.luna-cambio[data-cara="oculta"] .luna-cambio-cara--oculta { color: #1a1408; }
+.luna-cambio-icono {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background: center / contain no-repeat;
+  transition: opacity var(--giro), filter var(--giro);
+}
+.luna-cambio-icono--visible { background-image: url(/luna/icono-cara-visible.png); }
+.luna-cambio-icono--oculta { background-image: url(/luna/icono-cara-oculta.png); }
+.luna-cambio[data-cara="oculta"] .luna-cambio-icono--visible,
+.luna-cambio[data-cara="visible"] .luna-cambio-icono--oculta { opacity: 0.45; filter: grayscale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .luna-cambio { --giro: 0s linear; }
+}
+
+.luna-volver {
+  right: max(1.25rem, 4vw);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: none;
+  border: 0;
+}
+.luna-volver::before, .luna-volver::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid #e6c078;
+  opacity: 0.7;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+}
+.luna-volver::before { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.luna-volver::after { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.luna-volver:is(:hover, :focus-visible):not(:disabled) { color: #e6c078; outline: none; }
+.luna-volver:is(:hover, :focus-visible):not(:disabled)::before,
+.luna-volver:is(:hover, :focus-visible):not(:disabled)::after { width: calc(100% - 2px); height: calc(100% - 2px); opacity: 1; }
+.luna-volver:disabled { cursor: default; opacity: 0.5; }
+.luna-volver-tierra {
+  width: 26px;
+  height: 26px;
+  background: url(/planeta/planeta-quieto-noche.png) center / contain no-repeat;
+  image-rendering: pixelated;
+}
 
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave

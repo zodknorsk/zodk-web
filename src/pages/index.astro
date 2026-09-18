@@ -502,9 +502,10 @@ const eventos = todosEventos
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/luna");
       precarga();
       await img!.decode().catch(() => {});
+      // La cabecera también: /luna no la tiene y así no desaparece de golpe.
       const apagar = [...hero.querySelectorAll<HTMLElement>(
         ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira",
-      )];
+      ), ...document.querySelectorAll<HTMLElement>("body > header")];
       const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img! });
       cancela = vuelo.limpiar;
       estrellasLuna = await vuelo.fin;

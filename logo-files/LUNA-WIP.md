@@ -497,6 +497,9 @@ Pasos 3 y 4 de la lista de abajo.
     ala corta y antenas finas; Queqiao-2 = plato dorado arriba con trípode,
     cuerpo azul, alas de tres paneles y antenita verde. La onda 1 llega ahora
     al buje del plato de Queqiao (244,456).
+  - Retrasos de las ondas NEGATIVOS (restando un ciclo): con retraso positivo,
+    la primera vez que se llegaba a la oculta el punto de la onda 2 esperaba
+    visible y quieto encima de la bandera de Chang'e 6 (lo vio el usuario).
   - Primera versión (4x4 px, 2 pasos de estela, 9 s, apagada dentro del
     disco): el usuario la pidió con más estela, más rápida y que se apagara
     más tarde.
@@ -512,6 +515,44 @@ visible no se toca nada: sigue China encendida (Chang'e 3 y 5).
 Y si se apaga China en la oculta, **dejan de salir las ondas** (clase
 `sin-ondas` en `.luna-sats`); los relés siguen a la vista. Al volver a
 encenderla, vuelven.
+
+### Detalles y botones (18-sep-2026, noche)
+
+- **EE. UU. se recoge solo** al desmarcar su última casilla estando desplegado.
+- **Botones intercambiados**: "cara oculta/visible" abajo a la IZQUIERDA y
+  "volver a la Tierra" abajo a la DERECHA (siguen siendo PLACEHOLDER).
+- **/luna sin cabecera** (logo, notas / eventos, día/noche): `PageLayout` tiene
+  `cabecera={false}`. En el vuelo de ida la cabecera se funde con el título
+  (lista `apagar` de index.astro) y en la vuelta entra con un fundido de 0,7 s
+  al aterrizar (`astro:after-swap` en luna.astro). Comprobado en Chrome.
+- **Bocetos de los botones** en `public/_bocetos/botones.html` (TEMPORAL, NO
+  commitear; servido en `localhost:4321/_bocetos/botones.html`): cinco
+  propuestas sobre la Luna real, con selector arriba. Usan iconos que ya
+  existen: la fase de `zodk-luna-fases.png` (cuarto creciente en la visible,
+  menguante en la oculta) y la Tierra de `planeta-quieto-noche.png`.
+  A iconos pixel (el nombre sale al pasar el ratón) · B HUD (esquinas doradas
+  que se cierran en marco) · C discreto (texto + icono, subrayado dorado) ·
+  D discos (astro en círculo con aro dorado) · E mando central (interruptor
+  visible/oculta abajo en el centro + Tierra a la derecha).
+- **Elegido y montado en /luna** (ya no son PLACEHOLDER):
+  - **Mando de cara** = E con deslizador (E1), pero **un solo botón**: se
+    pulse donde se pulse cambia de cara (pedido del usuario). Abajo en el
+    centro. La píldora dorada se desliza a la cara nueva **a la vez que gira
+    la Luna** (2,8 s, curva en seno; `data-cara` lo pone `alEmpezar(destino)`).
+    Iconos: **miniaturas de las dos caras** aprobadas (`icono-cara-*.png`, 64
+    px con `sips -Z 64`, vistas a 20 px); la inactiva, en gris. Se probaron
+    antes las fases de `zodk-luna-fases.png`: el usuario pidió mejorarlas.
+  - **Volver a la Tierra** = HUD de B (esquinas doradas que se cierran en
+    marco al pasar el ratón) con la Tierra de la portada, abajo a la derecha.
+  - Variantes descartadas del mando: E2 (HUD segmentado con barra) y E3
+    (cristal). En desarrollo, el mando queda justo encima de la barra de Astro.
+  - **Aire entre la Luna y el mando**: primero se encogió la Luna (72 svh) y
+    el usuario no la quería más pequeña. Ahora: tamaño de siempre (80 svh),
+    **sube 3,5 svh** (`--luna-dy`, aplicado a disco, chapas, relés y órbita) y
+    el mando es algo más pequeño (letra 0,62 rem, iconos de 16 px). El vuelo
+    lee `--luna-dy` con su sonda y usa el centro del disco como punto de la
+    cámara: comprobado en Chrome que la ida acaba y la vuelta empieza al
+    píxel sobre el disco. En una ventana de 772 de alto: 30 px de aire.
 
 ### Luna 23 e IM-2: ya son 28 (18-sep-2026, noche) — HECHO
 
@@ -570,6 +611,22 @@ la oculta (clase `cara-oculta` en `.luna-hero`, que pone `alTerminar`).
   Artemis II, EE. UU. · 2026, tripulación y texto; sin enlace (no hay nota).
   La órbita se para mientras se mira y la nave sube a z 5.
 - El usuario, al verla girar: "Brutal como te ha quedado".
+- **Sombra de la Luna** (idea del usuario, solo en la cara visible): el Sol de
+  esa cara (derecha, fase 38°, 14° por encima) proyecta la sombra hacia la
+  izquierda y atrás; la nave entra en ella al llegar al borde izquierdo y sale
+  ya tapada. `generar-orion.py --css` calcula `@keyframes nave-sombra` (brillo
+  en 64 puntos de la vuelta, penumbra suave, 35 % en plena sombra) y se pega en
+  global.css. Primero oscurecía al llegar al borde; el usuario lo quiso
+  **antes**: penumbra ampliada (0,70 -> 0,50 del eje de la sombra) y suavizado
+  también el lado del Sol, así que empieza hacia el 87 % de la vuelta, aún por
+  delante, y llega a sombra plena justo en el borde. Y **aún antes** ("que se oscurezca cuando llega
+  a la sombra de la Luna"): ahora también cuenta la franja oscura del disco
+  tal como se ve, a la izquierda de la línea día/noche de la cara visible
+  (x < -cos 38° · √(R² - y²)), y más allá del borde izquierdo para que no se
+  aclare al salir. Se oscurece al cruzar esa línea (84-87,5 % de la vuelta). El dibujo va en `.luna-nave::before` para que el filtro no
+  oscurezca la ficha; la animación corre siempre (si se añadiera al cambiar de
+  cara, arrancaría desfasada) y en la oculta se anula con `filter: none
+  !important`.
 - Pendiente: con la ventana estrecha el extremo izquierdo cae detrás de la
   columna de países.
 

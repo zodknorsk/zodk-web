@@ -20,7 +20,7 @@ const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
 const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
 ---
 
-<PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero>
+<PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero cabecera={false}>
   <section slot="hero" class="hero luna-hero" aria-label="La Luna">
     <div class="hero-stars" aria-hidden="true"></div>
     <!-- Mismo tamaño y sitio que donde termina el vuelo desde la Tierra
@@ -159,21 +159,18 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
         </div>
       ))}
     </div>
-    <!-- PLACEHOLDER: botones provisionales hasta que haya dibujo propio. Se
-         puede cambiar su contenido sin tocar el JS mientras mantengan las
-         clases .luna-volver y .luna-cambio (con su <span class="luna-cambio-texto">). -->
-    <button class="luna-boton luna-volver" type="button" aria-label="Volver a la Tierra" hidden>
-      <svg viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.6" />
-      </svg>
+    <!-- Botones: volver a la Tierra (HUD, con esquinas doradas como las fichas)
+         abajo a la derecha, y el mando de cara abajo en el centro: UN solo
+         botón, se pulse donde se pulse cambia de cara; la píldora dorada se
+         desliza a la cara nueva a la vez que gira la Luna. -->
+    <button class="luna-volver" type="button" aria-label="Volver a la Tierra" hidden>
       <span>volver a la Tierra</span>
+      <span class="luna-volver-tierra" aria-hidden="true"></span>
     </button>
-    <button class="luna-boton luna-cambio" type="button" hidden>
-      <svg viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M13 8a5 5 0 1 1-1.5-3.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.2 1.6" />
-        <path d="M12.6 1.8v3.4H9.2" fill="none" stroke="currentColor" stroke-width="1.6" />
-      </svg>
-      <span class="luna-cambio-texto">cara oculta</span>
+    <button class="luna-cambio" type="button" data-cara="visible" hidden>
+      <span class="luna-cambio-pildora" aria-hidden="true"></span>
+      <span class="luna-cambio-cara luna-cambio-cara--visible"><span class="luna-cambio-icono luna-cambio-icono--visible"></span>cara visible</span>
+      <span class="luna-cambio-cara luna-cambio-cara--oculta">cara oculta<span class="luna-cambio-icono luna-cambio-icono--oculta"></span></span>
     </button>
   </section>
   <div id="hero-sentinel" aria-hidden="true"></div>
@@ -222,16 +219,20 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     navigate("/");
   }
 
-  // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo.
+  // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo, y
+  // la cabecera (que /luna no tiene) entra con un fundido en vez de de golpe.
   document.addEventListener("astro:after-swap", () => {
     if (estrellasTierra === null) return;
     document.querySelector<HTMLElement>(".hero:not(.luna-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasTierra);
+    document.querySelector<HTMLElement>("body > header")?.animate(
+      [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out" },
+    );
     estrellasTierra = null;
   });
 
-  const TEXTO: Record<string, [string, string]> = {   // [etiqueta, aria-label] según la cara que se ve
-    visible: ["cara oculta", "Girar la Luna a la cara oculta"],
-    oculta: ["cara visible", "Girar la Luna a la cara visible"],
+  const TEXTO: Record<string, string> = {   // aria-label del mando según la cara que se ve
+    visible: "Cara visible. Girar la Luna a la cara oculta",
+    oculta: "Cara oculta. Girar la Luna a la cara visible",
   };
 
   document.addEventListener("astro:page-load", async () => {
@@ -242,8 +243,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     if (!cv || !boton || !volver || !hero) return;
     const disco = cv.parentElement as HTMLElement;
     const pon = (cara: string) => {
-      boton.querySelector(".luna-cambio-texto")!.textContent = TEXTO[cara][0];
-      boton.setAttribute("aria-label", TEXTO[cara][1]);
+      boton.dataset.cara = cara;
+      boton.setAttribute("aria-label", TEXTO[cara]);
       disco.setAttribute("aria-label", `La Luna, cara ${cara}`);
     };
     // Chapas: mientras gira se esconden todas y al acabar se recolocan en la
@@ -253,7 +254,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     let soloChina = () => {};
     const sats = document.querySelector<HTMLElement>(".luna-sats");
     const l = await montarLuna(cv, {
-      alEmpezar: () => {
+      alEmpezar: (destino: string) => {
+        boton.dataset.cara = destino;   // la píldora se desliza mientras gira
         boton.disabled = volver.disabled = true;
         esconderChapas();
         sats?.classList.remove("en-vista");
@@ -371,6 +373,11 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
           const c = b.dataset.clave!;
           encendidos.has(c) ? encendidos.delete(c) : encendidos.add(c);
           pinta();
+          // Si se desmarca la última casilla, el país se recoge solo.
+          const grupo = b.closest<HTMLElement>(".luna-pais-grupo")!;
+          if (!subs.some((s) => s.dataset.pais === b.dataset.pais && encendidos.has(s.dataset.clave!))) {
+            grupo.querySelector<HTMLButtonElement>(".luna-pais")!.click();
+          }
         });
       }
       columna.hidden = false;
