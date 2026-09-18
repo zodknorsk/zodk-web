@@ -219,7 +219,13 @@ function extraerDescripcion(cuerpo) {
  */
 function clasificar(ruta) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
-  if (partes[0] !== CARPETA_EVENTOS || partes.length < 3) return { tipo: "nota" };
+  if (partes[0] !== CARPETA_EVENTOS || partes.length < 2) return { tipo: "nota" };
+
+  // Nota suelta en `03 - Eventos/`: evento de una sola página (solo índice).
+  if (partes.length === 2) {
+    const eventoSlug = generarSlug(path.basename(ruta, ".md"));
+    return { tipo: "evento", eventoSlug, kind: "index", orden: 0, subSlug: "" };
+  }
 
   const carpetaEvento = partes[1];
   const eventoSlug = generarSlug(carpetaEvento);

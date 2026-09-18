@@ -28,6 +28,9 @@ de la bóveda forman un evento jerárquico:
 - `SEMANA N - ...`                            → `/eventos/<slug>/semana-0N`
 - cualquier otra nota de la carpeta           → página de análisis `/eventos/<slug>/<slug-nota>`
 
+Una nota suelta directamente en `03 - Eventos/` (sin carpeta propia) es un
+evento de una sola página: `/eventos/<slug-del-nombre-de-archivo>`.
+
 El importador traduce los `[[SEMANA 2]]` y los `[[...#30 de julio]]` a enlaces y
 anclas reales, y convierte los embeds de TikTok en una cita estática con enlace.
 
