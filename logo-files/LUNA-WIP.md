@@ -501,6 +501,55 @@ Pasos 3 y 4 de la lista de abajo.
     disco): el usuario la pidió con más estela, más rápida y que se apagara
     más tarde.
 
+### "Cara oculta" enciende China sola (18-sep-2026, noche) — HECHO
+
+Paso 5 de la lista de abajo. Al pulsar el botón desde la cara visible,
+`soloChina()` en `luna.astro` vacía los países encendidos (también las casillas
+de EE. UU.) y enciende China; solo pinta los botones, y las chapas las coloca
+`alTerminar` al llegar, así que Chang'e 4 y 6 aparecen solas. Al volver a la
+visible no se toca nada: sigue China encendida (Chang'e 3 y 5).
+
+Y si se apaga China en la oculta, **dejan de salir las ondas** (clase
+`sin-ondas` en `.luna-sats`); los relés siguen a la vista. Al volver a
+encenderla, vuelven.
+
+### Orion (Artemis II) orbitando la Luna (18-sep-2026, noche) — APROBADA
+
+Idea del usuario: la nave que rodeó la Luna en abril de 2026, en pixel art,
+**orbitando en las dos caras**, con paleta de día en la visible y de noche en
+la oculta (clase `cara-oculta` en `.luna-hero`, que pone `alTerminar`).
+
+- **Dibujo**: `logo-files/generar-orion.py`, un pequeño renderizador 3D: la
+  Orion con medidas reales aproximadas (cápsula cónica de 5 m, anillo dorado,
+  ESM blanco, tobera y cuatro alas en X de 5,2 m inclinadas 35° hacia atrás),
+  iluminada desde arriba a la izquierda y rasterizada con z-buffer.
+- **Gira según va**: tira PNG de **32 fotogramas** de 64x56
+  (`public/luna/zodk-orion-giro.png` y `…-noche.png`, ~10 KB cada una), uno
+  por cada 1/32 de vuelta. `pos_orbita()` repite las curvas del CSS (ease-in-out
+  de CSS, elipse ±0,62 x ±0,16, Y con -1,5 T): la nave apunta hacia donde va y
+  su giro se mide respecto al plano de la órbita. Por delante va de perfil; en
+  el borde izquierdo gira pasando por la **vista de cola** (X entera) y en el
+  derecho por la **de frente**. Si cambian T, radios o ease en el CSS, hay que
+  regenerar la tira. En CSS, `steps(32)` hasta `calc(100% * 32 / 31)`.
+  Comprobado en Chrome: en el instante k se ve el fotograma k.
+- **Órbita** (`.luna-orbitas`): vuelta de **32 s** (era de 28 y el usuario
+  la quiso un pelín más lenta; la tira no cambia, va en fracciones de vuelta), por delante de derecha a
+  izquierda (z 3) y por detrás tapada por el disco (z 0; la capa no crea
+  contexto de apilado a propósito). X limitada al ancho de la ventana.
+- Historia: perfil a mano ("me gusta mucho", pero quería ver más alas) ->
+  3/4 desde delante, perfil con X girada (muñones) e "intermedia" desde atrás
+  -> las cuatro orbitando a la vez para comparar -> el usuario propuso cambiar
+  de vista según la órbita (perfil / A desde atrás / 3/4 desde delante, con
+  volteos) -> el paso por el borde izquierdo "no me gusta": era un espejo
+  instantáneo (A a la izquierda -> A a la derecha). Se aceptó la propuesta de
+  "más puntos": los 32 fotogramas calculados, que giran pasando por la cola.
+- **Ficha** al pasar el ratón (mismas reglas que chapas y relés): Orion ·
+  Artemis II, EE. UU. · 2026, tripulación y texto; sin enlace (no hay nota).
+  La órbita se para mientras se mira y la nave sube a z 5.
+- El usuario, al verla girar: "Brutal como te ha quedado".
+- Pendiente: con la ventana estrecha el extremo izquierdo cae detrás de la
+  columna de países.
+
 ### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche — instrucciones del usuario, en orden)
 
 1. **Añadir los alunizajes nuevos de la bóveda**: además de los 20 que ya están
