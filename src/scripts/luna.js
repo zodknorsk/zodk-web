@@ -487,5 +487,19 @@ export async function montarLuna(canvas, {
     observa.disconnect();
   }
 
-  return { girar, cara: () => actual, girando: () => girando, medir, pintarCara, fotograma, desmontar };
+  // Dónde cae un punto de la Luna (lat/lon en grados, norte y este +) sobre la
+  // cara que se está viendo: en píxeles del lienzo de arte (0..SIZE, los del
+  // PNG) y en tanto por uno, que es lo que necesitan las chapas de alunizaje
+  // para colocarse encima con el DOM. `vis` es false si el punto cae en la
+  // cara de atrás. Misma cuenta que orientacion() y que generar-luna.py.
+  function sitio(lat, lon, cara = actual) {
+    const { lat0, lon0 } = D.caras[cara];
+    const la = lat * DEG, lo = (lon - lon0) * DEG, l0 = lat0 * DEG;
+    const xx = Math.cos(la) * Math.sin(lo), yy = Math.sin(la), zz = Math.cos(la) * Math.cos(lo);
+    const c0 = Math.cos(l0), s0 = Math.sin(l0);
+    const x = C + xx * R, y = C - (yy * c0 - zz * s0) * R;
+    return { x, y, u: x / S, v: y / S, vis: yy * s0 + zz * c0 > 0 };
+  }
+
+  return { girar, cara: () => actual, girando: () => girando, sitio, medir, pintarCara, fotograma, desmontar };
 }
