@@ -291,7 +291,7 @@ Hecho en `prototipo-luna/chapas.html` (banco aparte: **no se ha tocado
 pruebas"). Servir la raíz del repo y abrir
 `/logo-files/prototipo-luna/chapas.html`.
 
-- **Qué se marca**: los 20 alunizajes reales de la bóveda
+- **Qué se marca** (entonces; hoy son 28, ver arriba): los 20 alunizajes reales de la bóveda
   (`02 - Temas/moon-project/` en boveda-osint: 6 Apolo, 6 Luna soviéticas, 4
   Chang'e, Chandrayaan-3, SLIM, IM-1 y Blue Ghost). En el banco están cargadas
   las 16 de EE. UU./Rusia/China. **Los fracasos se quedan fuera** (decisión del
@@ -512,6 +512,29 @@ visible no se toca nada: sigue China encendida (Chang'e 3 y 5).
 Y si se apaga China en la oculta, **dejan de salir las ondas** (clase
 `sin-ondas` en `.luna-sats`); los relés siguen a la vista. Al volver a
 encenderla, vuelven.
+
+### Luna 23 e IM-2: ya son 28 (18-sep-2026, noche) — HECHO
+
+El usuario comparó con el mapa de la Wikipedia inglesa ("Moon landing": 28
+alunizajes suaves) y faltaban dos, las marcadas allí como éxito parcial:
+- **Luna 23** (6-nov-1974, Mare Crisium, 12,6669 N 62,1511 E): volcó, sin
+  muestras. OJO: en esa figura sale como "Luna 22*", una errata (Luna 22 fue
+  un orbitador).
+- **IM-2 · Athena** (6-mar-2025, Mons Mouton, 84,7906 S 29,1957 E): le falló
+  el altímetro y acabó de lado en un cráter; unas 13 h de vida.
+Se habían dejado fuera por error: IM-2 se contó entre los que "no alunizaron"
+(como Peregrine o Beresheet), pero se posó, igual que IM-1, que también volcó.
+Criterio que queda: entran todas las que se posaron, aunque fuera mal.
+- Notas nuevas en la bóveda, `🇷🇺 Luna 23 (1974)` y `🇺🇸 IM-2 - Athena (2025)`,
+  con `publicar: true` como las demás, y sus líneas en `Alunizajes.md`. Fotos
+  del LRO (NASA/GSFC/ASU, dominio público, de Wikimedia Commons):
+  `alunizaje-luna-23.png` e `alunizaje-im2-athena.png`. La de Athena del
+  artículo de Wikipedia no está en Commons (probablemente no libre): descartada.
+- En la web: IM-2 en "Misiones privadas" y solo en la cara visible, como IM-1.
+  Luna 23 cae a unos cientos de metros de Luna 24 y IM-2 a ~12 px de IM-1: las
+  dos parejas salen lado a lado. El import volvió a traer cambios ajenos (los
+  dos eventos, el tweet y ahora también el índice de Ceuta y Melilla, cambio
+  del usuario sin commitear): deshechos.
 
 ### Orion (Artemis II) orbitando la Luna (18-sep-2026, noche) — APROBADA
 
