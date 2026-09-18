@@ -5,7 +5,7 @@ description: >-
   La mañana del pasado 30 de julio de 2026 se produjo el mayor incidente
   fronterizo entre España y Marruecos de la historia moderna. Aprovechando el
   pequeño…
-updated: '2026-09-08'
+updated: '2026-09-18'
 tags:
   - marruecos
   - osint
@@ -106,3 +106,13 @@ Tras el inicio de la crisis migratoria, Pese a que el Gobierno español evitó e
 - [14 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#14-de-septiembre)
 - [15 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#15-de-septiembre)
 - [16 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-07#16-de-septiembre)
+
+## Semana 8 (17 - 23 sep)
+
+- [17 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#17-de-septiembre)
+- [18 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#18-de-septiembre)
+- [19 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#19-de-septiembre)
+- [20 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#20-de-septiembre)
+- [21 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#21-de-septiembre)
+- [22 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#22-de-septiembre)
+- [23 de septiembre](/eventos/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-08#23-de-septiembre)
