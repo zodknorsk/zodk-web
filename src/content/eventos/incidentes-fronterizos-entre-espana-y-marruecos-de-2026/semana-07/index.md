@@ -4,7 +4,7 @@ date: '2026-09-03'
 description: >-
   Marruecos ocultó al Gobierno y a la Guardia Civil la instalación de la nueva
   puerta en Ceuta
-updated: '2026-09-13'
+updated: '2026-09-19'
 tags:
   - marruecos
   - osint
@@ -449,19 +449,601 @@ Creo que algunos han leído el art 582.1 del Código Penal […]</div>
 </blockquote>
 
 
+
+<blockquote class="tweet" data-tweet-id="2098900849028186414">
+  <a class="tweet-author" href="https://x.com/Mr_Jones_k/status/2098900849028186414" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2039469784882941952-ps1uzpa3_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Mr. Jones</span>
+    <span class="tweet-handle">@Mr_Jones_k</span>
+  </a>
+  <div class="tweet-text">🔴Advertencia. Este es el sonido de una violación en Ceuta. Dejo en tus manos el querer oírlo o no.<br>
+<br>
+Los violadores próximamente estarán en tus calles.</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-1dymthnq_3_s5ifg.jpg"><source src="https://video.twimg.com/amplify_video/2098899544394158091/vid/avc1/480x502/dDYjLpVzVoY7SCgj.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Mr_Jones_k/status/2098900849028186414" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/Mr_Jones_k/status/2098900849028186414" target="_blank" rel="noopener">12 de septiembre de 2026</a>
+</blockquote>
+
+
+
 ## 13 de septiembre
 
-**NOTICIAS DEL DÍA**
-- 
-## 14 de septiembre
+
+<blockquote class="tweet" data-tweet-id="2099003182101807390">
+  <a class="tweet-author" href="https://x.com/laSextaXplica/status/2099003182101807390" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1579436603570806784-mb2-736a_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">laSexta Xplica</span>
+    <span class="tweet-handle">@laSextaXplica</span>
+  </a>
+  <div class="tweet-text">Un cámara de laSexta sufre una agresión durante altercados en Ceuta: &quot;Me han tirado una piedra a la espalda&quot;</div>
+  <a class="tweet-date" href="https://x.com/laSextaXplica/status/2099003182101807390" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2098784582875123724">
+  <a class="tweet-author" href="https://x.com/EFEnoticias/status/2098784582875123724" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1853443874607255552-yoquhtmr_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EFE Noticias</span>
+    <span class="tweet-handle">@EFEnoticias</span>
+  </a>
+  <div class="tweet-text">Los migrantes marroquíes extienden su asentamiento en la costa de Ceuta a la playa Benítez, situada al lado de la playa del Trampolín.</div>
+  <a class="tweet-date" href="https://x.com/EFEnoticias/status/2098784582875123724" target="_blank" rel="noopener">12 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099082641546903869">
+  <a class="tweet-author" href="https://x.com/europapress/status/2099082641546903869" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">🔴 Un apuñalado en la playa del Trampolín durante una reyerta y varios detenidos por allanamiento, acoso sexual y tenencia de armas esta madrugada en Ceuta</div>
+  <a class="tweet-date" href="https://x.com/europapress/status/2099082641546903869" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099040057151668665">
+  <a class="tweet-author" href="https://x.com/patxilopez/status/2099040057151668665" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1635669343831818242-tbdyh1k6_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">patxilopez</span>
+    <span class="tweet-handle">@patxilopez</span>
+  </a>
+  <div class="tweet-text">Publicar 40 informes sobre la crisis de Ceuta es un ejercicio de transparencia sin precedentes.<br>
+<br>
+Y esos informes dejan algo claro: el Gobierno actuó con la información de la que disponía en cada momento.<br>
+<br>
+Nadie alertó de la dimensión que finalmente tuvo la entrada en Ceuta.<br>
+<br>
+La […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-rfbov4p2c0k_1rv6.jpg"><source src="https://video.twimg.com/amplify_video/2099039790549307393/vid/avc1/1280x720/KNABVeWblgSYHrFs.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/patxilopez/status/2099040057151668665" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/patxilopez/status/2099040057151668665" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099047344247362027">
+  <a class="tweet-author" href="https://x.com/Cojo_Nazos/status/2099047344247362027" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1752589647736090624-t1nd2pgm_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Oliver333</span>
+    <span class="tweet-handle">@Cojo_Nazos</span>
+  </a>
+  <div class="tweet-text">Esto acaba de pasar con una reportera de TVE. Cachetazo en el culo del gorras y a disimular...<a href="https://x.com/hashtag/Feminismo" target="_blank" rel="noopener">#Feminismo</a> <a href="https://x.com/hashtag/TVE" target="_blank" rel="noopener">#TVE</a> <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-jwo8-ccgo_wbncvu.jpg"><source src="https://video.twimg.com/amplify_video/2099047104530227202/vid/avc1/1280x720/jI_lNJgd9fgBi54o.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Cojo_Nazos/status/2099047344247362027" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/Cojo_Nazos/status/2099047344247362027" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099157282055491867">
+  <a class="tweet-author" href="https://x.com/ElFarodeCeuta/status/2099157282055491867" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1090567697262354435-emwlzazk_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Faro de Ceuta</span>
+    <span class="tweet-handle">@ElFarodeCeuta</span>
+  </a>
+  <div class="tweet-text">🚩 Una mujer ha denunciado una agresión sexual en pleno centro de Ceuta tras ser abordada y sujetada por un hombre. Su pareja persiguió y redujo al sujeto en la calle hasta la llegada de los efectivos policiales<br>
+<br>
+<a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/AgresiónSexual" target="_blank" rel="noopener">#AgresiónSexual</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hkkluea4z1oyx0hw.jpg"><source src="https://video.twimg.com/amplify_video/2099157107325235200/vid/avc1/1080x1920/SCSuRIEbIPBcrxpB.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ElFarodeCeuta/status/2099157282055491867" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2099157282055491867" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099053611334381816">
+  <a class="tweet-author" href="https://x.com/elmundoes/status/2099053611334381816" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1854121701396852738-t89707ny_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL MUNDO</span>
+    <span class="tweet-handle">@elmundoes</span>
+  </a>
+  <div class="tweet-text">La mayoría de inmigrantes entrevistados en Ceuta alegan ser gays o perseguidos políticos para intentar quedarse en España <br>
+<br>
+✍️ Quico Alsedo</div>
+  <a class="tweet-date" href="https://x.com/elmundoes/status/2099053611334381816" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099258268111540379">
+  <a class="tweet-author" href="https://x.com/navedelmisterio/status/2099258268111540379" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1245856204821278721-la5gcc7e_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Iker Jiménez</span>
+    <span class="tweet-handle">@navedelmisterio</span>
+  </a>
+  <div class="tweet-text">Ceuta: lo que no se vio<br>
+La Reflexión de Iker Jiménez en <a href="https://x.com/CuartoMileniotv" target="_blank" rel="noopener">@CuartoMileniotv</a> <br>
+<a href="https://x.com/hashtag/CuartoMilenio" target="_blank" rel="noopener">#CuartoMilenio</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-rocvht3pbr_sku8u.jpg"><source src="https://video.twimg.com/amplify_video/2099257260723625991/vid/avc1/1920x1080/Mv2vv6lymuDTfUOB.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/navedelmisterio/status/2099258268111540379" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/navedelmisterio/status/2099258268111540379" target="_blank" rel="noopener">13 de septiembre de 2026</a>
+</blockquote>
+
 
 **NOTICIAS DEL DÍA**
-- 
+
+- Sánchez ha financiado Marruecos con mil millones de euros desde el 'caso Pegasus'([fuente](https://theobjective.com/espana/politica/2026-09-13/sanchez-financiado-marruecos-mil-millones-caso-pegasus/))
+
+
+## 14 de septiembre - ¿dónde estuvo el delegado del gobierno?
+
+
+<blockquote class="tweet" data-tweet-id="2099271913365471601">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2099271913365471601" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/LoMásLeído" target="_blank" rel="noopener">#LoMásLeído</a> | Los socios de Sánchez abandonan el barco: el PNV dice ahora que no descarta que Marruecos esté «cantajeando» al presidente.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2099271913365471601" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099381210115981770">
+  <a class="tweet-author" href="https://x.com/entrammbasaguas/status/2099381210115981770" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1974454015539675136-gwxcn8of_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Alejandro Entrambasaguas</span>
+    <span class="tweet-handle">@entrammbasaguas</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/EXCLUSIVA" target="_blank" rel="noopener">#EXCLUSIVA</a> El delegado del Gobierno en Ceuta estuvo desaparecido 9 horas tras recibir la llamada del CNI que insistió en la avalancha. Duarte las horas más críticas, Miguel Ángel Pérez Triano estuvo «inoperativo, totalmente incomunicado».</div>
+  <a class="tweet-date" href="https://x.com/entrammbasaguas/status/2099381210115981770" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099450347341201618">
+  <a class="tweet-author" href="https://x.com/europapress/status/2099450347341201618" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">🔴 El PSOE cae dos puntos en el CIS tras la crisis de Ceuta, pero mantiene 5,9 puntos de ventaja sobre PP, con Vox al alza</div>
+  <img class="tweet-media" src="/tweets/media-hsk-9lrx0aeqsaz.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/europapress/status/2099450347341201618" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099416794481975727">
+  <a class="tweet-author" href="https://x.com/elmundoes/status/2099416794481975727" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1854121701396852738-t89707ny_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL MUNDO</span>
+    <span class="tweet-handle">@elmundoes</span>
+  </a>
+  <div class="tweet-text">Interior rebaja la vigilancia sobre la Inteligencia marroquí: apartan a tres policías tras investigar a un súbdito vinculado a Mohamed VI</div>
+  <a class="tweet-date" href="https://x.com/elmundoes/status/2099416794481975727" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099479365230723528">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2099479365230723528" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/URGENTE" target="_blank" rel="noopener">#URGENTE</a> | Brote de varicela en Ceuta: cinco inmigrantes ingresan en las urgencias del hospital en las últimas 24 horas</div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2099479365230723528" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099461947200582128">
+  <a class="tweet-author" href="https://x.com/Undercover_Camo/status/2099461947200582128" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/595683478852730883-bznchtid_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">RO-1</span>
+    <span class="tweet-handle">@Undercover_Camo</span>
+  </a>
+  <div class="tweet-text">Ceuta.<br>
+<br>
+Acoso sexual de los magrebíes a chicas que pasean al lado de la playa.</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-gfnprryvooi5liby.jpg"><source src="https://video.twimg.com/amplify_video/2099461908810395648/vid/avc1/720x1200/RKeD2sXuTL7GUcvf.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Undercover_Camo/status/2099461947200582128" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/Undercover_Camo/status/2099461947200582128" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099510185463005311">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2099510185463005311" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">‼️ Lo último del PSOE: «Mientras los socialistas buscamos la manera de cómo ayudar a Ceuta, el PP se pregunta cómo Ceuta les puede ayudar a ellos».<br>
+<br>
+🎙️ Montse Mínguez, portavoz del PSOE.</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-3bcoth_sl_ksc5zp.jpg"><source src="https://video.twimg.com/ext_tw_video/2099510145147375616/pu/vid/avc1/1280x720/JGp8Ppbu51cn0K5-.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2099510185463005311" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2099510185463005311" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099497840741429592">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2099497840741429592" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">💥 «No nos dejan defendernos». <br>
+<br>
+📲 Noticia completa:</div>
+  <img class="tweet-media" src="/tweets/media-hslqkg_x0aaaqy3.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/okdiario/status/2099497840741429592" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099463132322140636">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2099463132322140636" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">‼️ Marlaska insiste en que «no hubo alertas» en Ceuta pese a quedar en evidencia tras confirmarse los avisos previos.<br>
+<br>
+«Respecto a las alertas, cualquier alerta que se diera era una alerta de las operativas y normales, atendiendo a las circunstancias»</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-lombofohkp0mexz8.jpg"><source src="https://video.twimg.com/amplify_video/2099435370433691648/vid/avc1/1920x1080/TOGTIYiSei1O1mJQ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2099463132322140636" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2099463132322140636" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099274295146877102">
+  <a class="tweet-author" href="https://x.com/Mr_Jones_k/status/2099274295146877102" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2039469784882941952-ps1uzpa3_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Mr. Jones</span>
+    <span class="tweet-handle">@Mr_Jones_k</span>
+  </a>
+  <div class="tweet-text">Le han roto parte de la panadería y le van a robar todo el pan.<br>
+<br>
+Menos mal que llega la policía justo a tiempo.<br>
+<br>
+🔴Imágenes impactantes.</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-2l-d57_rnq1do4ud.jpg"><source src="https://video.twimg.com/amplify_video/2099273427802824704/vid/avc1/480x612/ShIxLEU1dPxQTty3.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/Mr_Jones_k/status/2099274295146877102" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/Mr_Jones_k/status/2099274295146877102" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099524825186230773">
+  <a class="tweet-author" href="https://x.com/gaceta_es/status/2099524825186230773" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1805900859940704256-lwb1aaao_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">LA GACETA</span>
+    <span class="tweet-handle">@gaceta_es</span>
+  </a>
+  <div class="tweet-text">El Gobierno de Sánchez prepara en Rabat un gran foro empresarial para impulsar inversiones españolas en Marruecos</div>
+  <a class="tweet-date" href="https://x.com/gaceta_es/status/2099524825186230773" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099602490475901209">
+  <a class="tweet-author" href="https://x.com/El_Hormiguero/status/2099602490475901209" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2097003390949584896-fldkn2qr_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Hormiguero</span>
+    <span class="tweet-handle">@El_Hormiguero</span>
+  </a>
+  <div class="tweet-text">El mensaje de <a href="https://x.com/JuanVivasLara" target="_blank" rel="noopener">@JuanVivasLara</a> a España <a href="https://x.com/hashtag/HarlemVivasEH" target="_blank" rel="noopener">#HarlemVivasEH</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-t-7jx8xmv6nnl4v-.jpg"><source src="https://video.twimg.com/ext_tw_video/2099602350386089985/pu/vid/avc1/1280x720/VN5sfBXcvQatuvW7.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/El_Hormiguero/status/2099602490475901209" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/El_Hormiguero/status/2099602490475901209" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099597924464275464">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2099597924464275464" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">🔴 ÚLTIMA HORA<br>
+<br>
+Sánchez exculpa a Marruecos por el asalto en 'El intermedio': «No vimos una actitud pasiva».</div>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2099597924464275464" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
 ## 15 de septiembre
 
+
+<blockquote class="tweet" data-tweet-id="2099626962113245464">
+  <a class="tweet-author" href="https://x.com/wallstwolverine/status/2099626962113245464" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1733980849383620608-2nrd0h81_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Wall Street Wolverine</span>
+    <span class="tweet-handle">@wallstwolverine</span>
+  </a>
+  <div class="tweet-text">Sánchez presume de que Ceuta ha pasado de tener 500 plazas para acoger ilegales antes de la invasión a 6.000, y anuncia que se llegará a 10.000.</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-e2jowlhsbyelfybz.jpg"><source src="https://video.twimg.com/amplify_video/2099618173666365440/vid/avc1/1280x720/ZRtY2BjdbHGS3ftT.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2099626962113245464" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/wallstwolverine/status/2099626962113245464" target="_blank" rel="noopener">14 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099737878288888259">
+  <a class="tweet-author" href="https://x.com/libertaddigital/status/2099737878288888259" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1872197644967165952-y3gflrji_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Libertad Digital</span>
+    <span class="tweet-handle">@libertaddigital</span>
+  </a>
+  <div class="tweet-text">🔴 La respuesta de Sánchez a un vecino de Ceuta: &quot;A lo mejor para una serie de Netflix están bien, pero la realidad se tiene que construir en base a hechos y no a bulos&quot;</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-vuuelvzrllb0jocx.jpg"><source src="https://video.twimg.com/amplify_video/2099590408212770816/vid/avc1/1920x1080/St7Uu3XP6pgkunzi.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/libertaddigital/status/2099737878288888259" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/libertaddigital/status/2099737878288888259" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099858015872590237">
+  <a class="tweet-author" href="https://x.com/eldebate_com/status/2099858015872590237" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1442418106752802819-jfs68qcx_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Debate</span>
+    <span class="tweet-handle">@eldebate_com</span>
+  </a>
+  <div class="tweet-text">✈️ Italia prorroga otros 15 días, por segunda vez, los controles a viajes desde España por la crisis de Ceuta</div>
+  <a class="tweet-date" href="https://x.com/eldebate_com/status/2099858015872590237" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099863222006210754">
+  <a class="tweet-author" href="https://x.com/larazon_es/status/2099863222006210754" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2015117885245431808-bzbp5b5m_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">La Razón</span>
+    <span class="tweet-handle">@larazon_es</span>
+  </a>
+  <div class="tweet-text">🗣️ Laura García, portavoz de Jupol, estalla contra Marlaska: &quot;Me encantaría saber si dormiría donde están los policías en Ceuta&quot;.<br>
+<br>
+➡️ La portavoz del sindicato lamenta que los agentes desplegados en la ciudad tengan condiciones precarias</div>
+  <a class="tweet-date" href="https://x.com/larazon_es/status/2099863222006210754" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099865821145071803">
+  <a class="tweet-author" href="https://x.com/el_pais/status/2099865821145071803" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2013261416153722880-tqll1glg_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL PAÍS</span>
+    <span class="tweet-handle">@el_pais</span>
+  </a>
+  <div class="tweet-text">📺 TV en DIRECTO | Albares, ministro de Exteriores, sobre la crisis en Ceuta: &quot;En 48 horas, este Gobierno ha retornado más irregulares que prácticamente toda la Unión Europea junta en 2025. El 90% retornó en las primeras 48 horas&quot;</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-s-ii7sn_exovqvtt.jpg"><source src="https://video.twimg.com/amplify_video/2099865467766591488/vid/avc1/1920x1080/QDLxDuWq_b_VNtoU.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/el_pais/status/2099865821145071803" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/el_pais/status/2099865821145071803" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099717673194078437">
+  <a class="tweet-author" href="https://x.com/ChoneraCirce/status/2099717673194078437" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2086452355831042048-ko3woz4q_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Yeyo Balbás</span>
+    <span class="tweet-handle">@ChoneraCirce</span>
+  </a>
+  <div class="tweet-text">Moviendo la ventana de Overton. Para canjear una ciudad que lleva 446 años siendo española por el contenido de un móvil.</div>
+  <a class="tweet-date" href="https://x.com/ChoneraCirce/status/2099717673194078437" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099983866991640835">
+  <a class="tweet-author" href="https://x.com/yipikayei7/status/2099983866991640835" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2056455424442761216-in4gnase_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">•</span>
+    <span class="tweet-handle">@yipikayei7</span>
+  </a>
+  <div class="tweet-text">Queda prácticamente un mes para el próximo partido en el Santiago Bernabéu y desde el club se va a iniciar una campaña para salvarle el culo a estos dos perros sarracenos.<br>
+<br>
+Me encargaré de tuitear este vídeo cada día para que no quede en el olvido el insulto a la afición que les […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-k0urwsijum9a5zi2.jpg"><source src="https://video.twimg.com/amplify_video/2099946036441550848/vid/avc1/1920x1080/_UwAvd4rvBsaSUKR.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/yipikayei7/status/2099983866991640835" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/yipikayei7/status/2099983866991640835" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2099952919718101494">
+  <a class="tweet-author" href="https://x.com/elalcazar_es/status/2099952919718101494" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2011714026481340416-qyw_ug8c_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Alcázar</span>
+    <span class="tweet-handle">@elalcazar_es</span>
+  </a>
+  <div class="tweet-text">🇪🇸🇲🇦 <a href="https://x.com/hashtag/URGENTE" target="_blank" rel="noopener">#URGENTE</a> | El vídeo donde se ve a Mbappé y a Vinicius colocándose mal la camiseta de apoyo a Ceuta y quitándosela antes de tiempo.<br>
+<br>
+Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@elalcazar_es</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-omsailb5vedzhswb.jpg"><source src="https://video.twimg.com/amplify_video/2099952574333939712/vid/avc1/1920x1080/jIzFnJY2rEgOyor4.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elalcazar_es/status/2099952919718101494" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/elalcazar_es/status/2099952919718101494" target="_blank" rel="noopener">15 de septiembre de 2026</a>
+</blockquote>
+
+
+
+
+
 **NOTICIAS DEL DÍA**
 - 
-## 16 de septiembre
+## 16 de septiembre - Comienza el foco en Vivas
+
+
+<blockquote class="tweet" data-tweet-id="2100318050956271825">
+  <a class="tweet-author" href="https://x.com/AJENews/status/2100318050956271825" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2015737777850048512-3azl7gnk_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Al Jazeera Breaking News</span>
+    <span class="tweet-handle">@AJENews</span>
+  </a>
+  <div class="tweet-text">BREAKING: Morocco and Israel have agreed to upgrade diplomatic ties to full embassy level and exchange ambassadors, according to a joint US-Moroccan-Israeli statement.<br>
+<br>
+🔴 More on</div>
+  <img class="tweet-media" src="/tweets/media-hsxt2kuwyaaye6e.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/AJENews/status/2100318050956271825" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100085369685381304">
+  <a class="tweet-author" href="https://x.com/CristinaSegui/status/2100085369685381304" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1998163461574938624-ks543upb_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Cristina Seguí</span>
+    <span class="tweet-handle">@CristinaSegui</span>
+  </a>
+  <div class="tweet-text">Localizado el cadáver de un varón en la zona del Recinto:</div>
+  <a class="tweet-date" href="https://x.com/CristinaSegui/status/2100085369685381304" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100108016481612047">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2100108016481612047" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🔴 El Gobierno envía a cárceles de la península a los 70 invasores más peligrosos por agresión sexual y robos con violencia. <br>
+<br>
+✍️ Informa Rosalina Moreno (<a href="https://x.com/rosalina_mb" target="_blank" rel="noopener">@rosalina_mb</a>).</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2100108016481612047" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100143648176214277">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2100143648176214277" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">🔴 Sánchez, preguntado por los mil menores que aún permanecen en las calles de Ceuta mes y medio después de la invasión: «Pregúntele a Vivas».</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-1jj-jyrjkl_isfb-.jpg"><source src="https://video.twimg.com/ext_tw_video/2100143628211396608/pu/vid/avc1/720x900/t-LbGpCsZIJhCgwQ.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TheObjective_es/status/2100143648176214277" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2100143648176214277" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100137045083512840">
+  <a class="tweet-author" href="https://x.com/pabloharour/status/2100137045083512840" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1804226965102043137-4manq6_1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pablo Haro Urquízar</span>
+    <span class="tweet-handle">@pabloharour</span>
+  </a>
+  <div class="tweet-text">🔴 ÚLTIMA HORA | La Policía Nacional detiene a un inmigrante marroquí acusado de rajarle la cara con un arma blanca a un menor de 17 años en Ceuta</div>
+  <a class="tweet-date" href="https://x.com/pabloharour/status/2100137045083512840" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100143904305848693">
+  <a class="tweet-author" href="https://x.com/pabloharour/status/2100143904305848693" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1804226965102043137-4manq6_1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pablo Haro Urquízar</span>
+    <span class="tweet-handle">@pabloharour</span>
+  </a>
+  <div class="tweet-text">🔴 OJO A ESTO<br>
+<br>
+El ejército marroquí habría sacado a 68 niñas de un orfanato para enviarlas a Ceuta</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hurwpbgzr6abgm7n.jpg"><source src="https://video.twimg.com/amplify_video/2100141002799353857/vid/avc1/576x1024/Y75AjSNBgQdKugKy.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/pabloharour/status/2100143904305848693" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/pabloharour/status/2100143904305848693" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100141333167919118">
+  <a class="tweet-author" href="https://x.com/marcosagusstinn/status/2100141333167919118" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2092968034231066624-im7v-hxe_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Marcos Agustín</span>
+    <span class="tweet-handle">@marcosagusstinn</span>
+  </a>
+  <div class="tweet-text">🇪🇺🇲🇦Europe strikes back Morocco<br>
+<br>
+The EU study to suspend its trade deal.<br>
+<br>
+🔸 Over 60% of Morocco’s exports go to the EU, with no substitute market.<br>
+<br>
+🔸 A 25% fall could cut Morocco’s GDP by 2–3%.<br>
+<br>
+🔸 A 50% fall could cut it by 3.5–5.6%.<br>
+<br>
+🔸 Europe could push Morocco into an […]</div>
+  <a class="tweet-date" href="https://x.com/marcosagusstinn/status/2100141333167919118" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100172392534348022">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2100172392534348022" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/SesiónDeDescontrol" target="_blank" rel="noopener">#SesiónDeDescontrol</a> | La carcajada final: Sánchez se parte cuando le recuerdan sus vacaciones en plena crisis de Ceuta<br>
+<br>
+✍️ La crónica de <a href="https://x.com/DanielRamirez99" target="_blank" rel="noopener">@DanielRamirez99</a>, desde el Congreso de los Diputados</div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2100172392534348022" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100282908577575292">
+  <a class="tweet-author" href="https://x.com/europapress/status/2100282908577575292" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">El Congreso convalida el decreto con 309 millones de euros para Ceuta, con Vox en contra y abstención de Junts</div>
+  <a class="tweet-date" href="https://x.com/europapress/status/2100282908577575292" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100160548469895659">
+  <a class="tweet-author" href="https://x.com/MananerosTVE/status/2100160548469895659" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2095410387370074112--fhfmfz7_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Mañaneros 360</span>
+    <span class="tweet-handle">@MananerosTVE</span>
+  </a>
+  <div class="tweet-text">▶️ Sánchez, sobre los menores en Ceuta: &quot;Pregúntele a Vivas&quot;.<br>
+<br>
+⚫️ Sánchez resalta el &quot;cambio&quot; de Vivas respecto a 2021: &quot;Trabajamos codo con codo y en 2026 no sucede lo mismo&quot;.<br>
+<br>
+🗣️ &quot;El señor Vivas tendrá que dar muchas explicaciones sobre su papel en toda esta crisis&quot;, dice […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-nqa2lgvvv2tcjq2k.jpg"><source src="https://video.twimg.com/amplify_video/2100160324674396160/vid/avc1/1920x1080/7eTRV5FiofQzRN2Q.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/MananerosTVE/status/2100160548469895659" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/MananerosTVE/status/2100160548469895659" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2100205783967228265">
+  <a class="tweet-author" href="https://x.com/SG_UGT/status/2100205783967228265" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2071160697753632768-pdpgnx0p_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Pepe Álvarez</span>
+    <span class="tweet-handle">@SG_UGT</span>
+  </a>
+  <div class="tweet-text">Usar Ceuta para dividirnos es una política miserable que están pagando los y las ceutíes y las personas migrantes.<br>
+<br>
+El gobierno de Ceuta tiene que hacerse cargo de sus competencias y las CCAA acoger a los niños y niñas que hoy siguen sin solución.<br>
+<br>
+Cada uno tiene que asumir sus […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-6nc859kc6ztaj8ma.jpg"><source src="https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/3840x2160/e5fVCowAGwYRjfJl.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/SG_UGT/status/2100205783967228265" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/SG_UGT/status/2100205783967228265" target="_blank" rel="noopener">16 de septiembre de 2026</a>
+</blockquote>
+
+
+
 
 **NOTICIAS DEL DÍA**
 -
