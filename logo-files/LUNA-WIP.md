@@ -1,9 +1,36 @@
 # Proyecto Luna — documento de traspaso
 
-Rama: `moon-project` (creada desde `main` el 16-sep-2026). Primer boceto de
-la cara visible hecho y aprobado: ver "Estado". Aparcado a propósito para retomarlo otro día, o con el
-reinicio semanal de tokens. **Leer esto primero** al volver, antes de tocar
+Rama: `moon-project` (creada desde `main` el 16-sep-2026; subida a GitHub,
+último commit del 18-sep-2026 noche). **Sin fusionar con `main`**: zodk.eu
+aún no tiene nada de esto. **Leer esto primero** al volver, antes de tocar
 nada.
+
+## Resumen del estado (18-sep-2026, noche)
+
+`/luna` está completa a falta de revisarla para publicar (ver "PRÓXIMA
+SESIÓN"). Qué hay:
+
+- **La Luna** en pixel art, dos caras fijas (visible luminosa, oculta más
+  oscura y fría), media vuelta en canvas de 2,8 s entre ellas
+  (`src/scripts/luna.js`, datos de `logo-files/generar-luna.py`). Sube 3,5 svh
+  respecto al centro (`--luna-dy`) para dejar aire al mando.
+- **Vuelo** de ida desde la luna de la portada (de noche) y de vuelta con el
+  botón, aterrizando al píxel (`src/scripts/viaje-luna.js`). `/luna` no tiene
+  cabecera: se funde al despegar y vuelve con fundido al aterrizar.
+- **28 alunizajes** con chapa (bandera en pixel art) y ficha con foto, texto y
+  enlace a su nota del blog (`src/data/alunizajes.ts`; notas en
+  `02 - Temas/moon-project/` de la bóveda, todas con `publicar: true`).
+  Columna de países a la izquierda (EE. UU. con casillas Surveyor / Apolo /
+  privadas, que se abren con clic). Chapas que se pisan, lado a lado.
+- **Cara oculta**: al ir a ella se enciende China sola (Chang'e 4 y 6); relés
+  **Queqiao** y **Queqiao-2** siempre a la vista, con deriva, ficha y ondas
+  nave -> relé -> Tierra por turnos (paradas si se apaga China).
+- **Orion (Artemis II)** orbitando la Luna en las dos caras, 32 fotogramas
+  que giran según va, ficha, y en la visible se oscurece al cruzar la línea
+  día/noche y en la sombra de la Luna (`logo-files/generar-orion.py`).
+- **Botones definitivos**: mando de cara en el centro (un solo botón, píldora
+  dorada que se desliza con el giro, iconos de las dos caras) y "volver a la
+  Tierra" en HUD abajo a la derecha.
 
 ## La idea (contada por el usuario, 16-sep-2026)
 
@@ -630,61 +657,50 @@ la oculta (clase `cara-oculta` en `.luna-hero`, que pone `alTerminar`).
 - Pendiente: con la ventana estrecha el extremo izquierdo cae detrás de la
   columna de países.
 
-### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche — instrucciones del usuario, en orden)
+### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche)
 
-1. **Añadir los alunizajes nuevos de la bóveda**: además de los 20 que ya están
-   en `src/data/alunizajes.ts`, la bóveda (`02 - Temas/moon-project/` en
-   boveda-osint) ha sumado **Luna 13** (1966, Oceanus Procellarum, alunizaje
-   suave real) y los **5 Surveyor** (1, 3, 5, 6, 7 — antes solo estaban
-   apuntados en `Alunizajes.md`, sin nota propia ni chapa). El usuario dice
-   "ya deberían estar todos": al empezar, revisar la carpeta de la bóveda por
-   si hay alguno más antes de dar la lista por cerrada. Cada uno necesita su
-   línea en `alunizajes.ts` y su foto en `public/alunizajes/` (las fotos ya
-   están en la bóveda, en `02 - Temas/Adjuntos/alunizaje-luna-13.jpg` y
-   `alunizaje-surveyor-{1,3,5,6,7}.{jpg,png}`, sacadas de Wikimedia Commons,
-   dominio público NASA).
-2. **Enlace real en cada ficha**: cada chapa debe enlazar a su nota. Antes de
-   programarlo, **preguntar al usuario si hace falta poner `publicar: true`**
-   en las notas de la bóveda — hoy todas lo tienen en `false`, y si el import
-   del blog (`scripts/importar-notas.mjs`) solo trae las publicadas, el
-   enlace apuntaría a una página que no existe hasta que se cambie.
-3. **Los dos Queqiao, solo en la cara oculta y siempre visibles**: no son un
-   país más que se pueda apagar/encender desde la columna de banderas — están
-   siempre ahí mientras se ve la cara oculta (aparecen al llegar, desaparecen
-   al volver a la visible, igual que Chang'e 4/6 pero sin depender del
-   filtro). El pixel art ya está hecho y en el repo:
-   `public/luna/zodk-sat-queqiao-noche.svg` y `zodk-sat-queqiao2-noche.svg`
-   (mismo estilo/paleta que `zodk-sat-sentinel`; solo existe versión noche
-   porque la cara oculta no tiene ciclo día/noche, así que no hace falta la
-   variante día).
-4. **Los satélites se mueven un poco**: no son una chapa fija en un punto de
-   la superficie como las de alunizaje, sino que quedan "semiestáticos"
-   flotando sobre la cuenca Polo Sur-Aitken — pequeño movimiento continuo
-   dentro de un área acotada, no una órbita completa ni nada que los saque de
-   ahí.
-5. **El botón de "cara oculta" enciende China solo**: al pulsarlo, se apagan
-   todos los países que estén encendidos y se enciende (si no lo estaba ya)
-   el filtro de China, para que salgan sus dos alunizajes (Chang'e 4 y 6) de
-   inmediato en vez de que el usuario tenga que activarlo a mano cada vez.
+Lo pedido para esta sesión (pasos 1-5 de la lista anterior) está hecho, y
+también la Orion, los botones y los detalles de abajo. El usuario: "no queda
+nada por añadir". **El polo sur se descarta** (Chandrayaan-3, IM-1 e IM-2 se
+quedan pegadas al borde de abajo: "creo que se va a quedar así").
 
-Pendientes de antes, sin resolver, por orden de lo que más se nota:
+Lo que queda es para **publicar** (fusionar `moon-project` con `main`):
 
-6. **El polo sur**: Chandrayaan-3 e IM-1 están tan cerca del polo que se ven
-   desde LAS DOS caras y salen aplastados contra el borde de abajo. Sin
-   decidir: agruparlos como una sola "zona del polo sur" (el hielo) o dejarlos
-   como están. Ver las cuentas en "Cuánto se estorban las chapas entre sí".
-7. **Ventana estrecha**: con ~750 px de ancho la columna pisa el borde
-   izquierdo de la Luna (ahí el disco ocupa el 90 % del ancho y no queda hueco
-   al lado). Habría que bajarla o achicarla solo en pantallas estrechas.
-8. **Probarlo en Zen y en móvil**, que hasta ahora solo se ha visto en Chrome.
-9. **Dibujo definitivo de los botones** de cambio de cara y volver a la Tierra
-   (siguen siendo los PLACEHOLDER de siempre).
-10. Pendientes viejos que siguen: el mapa del giro pesa 1,5 MB; y las fotos de
-    las misiones soviéticas, SLIM e IM-1 son imágenes orbitales del LRO (el
-    punto de alunizaje visto desde arriba), menos vistosas que las de superficie
-    de los Apolo — si aparecen mejores, se cambian.
+1. **Las 28 notas saldrían en el blog tal cual**: tienen `publicar: true` pero
+   están en borrador (foto y un párrafo). Aparecerían en el listado de notas y
+   en el RSS. Que el usuario decida si publicarlas así o ampliarlas antes.
+2. **Import limpio en `main`**: `npm run importar` regenera todo
+   `src/content/` y trae cambios de la bóveda ajenos a la Luna (dos eventos
+   que pasaron a notas, el avatar de un tweet, Ceuta y Melilla). En esta rama
+   se han ido deshaciendo; al fusionar hay que importar en `main` de verdad.
+3. **Probar en Zen y en móvil**: solo se ha visto en Chrome. En táctil no hay
+   fichas (sin ratón): se ven Luna, relés y Orion, pero las chapas y la
+   columna se ocultan.
+
+Menores, sin prisa:
+
+4. Con la ventana estrecha, la Orion pasa por detrás de la columna de países
+   en el borde izquierdo.
+5. Fotos poco vistosas (vistas del LRO desde órbita): soviéticas, SLIM, IM-1,
+   IM-2. Si aparecen mejores, se cambian.
+6. Notas de los Queqiao vacías (`publicar: false`) y sin nota de la Orion: la
+   ficha enlazará en cuanto existan y estén publicadas.
+7. `Alunizajes.md` (bóveda) dice "20" en su sección de estado.
+8. El mapa del giro de la Luna pesa 1,5 MB.
+9. `public/_bocetos/botones.html`: bocetos de los botones, sin commitear;
+   borrar cuando ya no hagan falta.
 
 ### Por dónde se fue pasando (histórico, todo hecho)
+
+Sesión del 18-sep-2026 (noche), en orden: 26 alunizajes (Luna 13 y Surveyor)
+y enlace a su nota -> casillas de EE. UU. -> Chandrayaan-3 e IM-1 solo en la
+visible -> relés Queqiao (sitio, deriva, fichas, ondas, dibujos nuevos) ->
+"cara oculta" enciende China -> ondas paradas sin China -> Orion (perfil,
+vistas, giro de 32 fotogramas, ficha, sombra) -> Luna 23 e IM-2 (28) ->
+EE. UU. se recoge solo, sin cabecera en /luna, botones definitivos, Luna más
+arriba. Detalle de cada cosa en su apartado de "Estado", más arriba.
+
+Antes:
 
 1. ~~Cara oculta~~ (hecho, ver arriba).
 2. ~~Media vuelta en `<canvas>`~~ (hecho, 17-sep-2026; el usuario eligió
