@@ -135,13 +135,22 @@ lienzo visible a ×3 del arte— y medido por el usuario: de 19,6 W a **9,7-13,5
 el reposo de su portátil. La nitidez del pixel art no se resiente (lo comparó él
 de noche a ×5 y a ×3).
 
-**La portada lleva medidor**: `?medir` imprime fps y los ms por fotograma
-partidos en dibujo y volcado, y `?lienzo=N` fuerza el múltiplo del arte. Antes
-de optimizar nada del canvas, mirar ahí: razonando sobre el papel se falló tres
-veces seguidas. Todo el detalle, los números y las trampas al medir (vatios,
-nunca ventiladores, y sin grabar la pantalla) están en `temperatura-zen.md`,
-junto con cuatro cabos sueltos menores (la Luna tiene el mismo montaje sin
-tocar, dos cosillas de la Orion y probarlo en el móvil).
+**`/luna` también**, la misma noche: el pico del giro de cara (la CPU subía de
+50-54 °C a 60-64) se va saltando las dos pasadas de limpieza mientras gira
+—invisible en 2,8 s, y la cara final es un PNG ya limpio—, con un tope de 60 fps
+(a 30 "se nota muchísimo": rechazado) y el mismo arreglo del lienzo. Y el vuelo
+Tierra ↔ Luna ya no hace pico: el planeta seguía girando y repintándose durante
+los 6 segundos del vuelo, y ahora se para al empezar.
+
+**Hay medidores puestos**: en la portada, `?medir` (fps y ms partidos en dibujo
+y volcado) y `?lienzo=N`; en `/luna`, `?orion=...` para atribuir vatios a la
+nave que orbita. Antes de optimizar nada, mirar ahí: razonando sobre el papel se
+falló cinco veces seguidas en este tema. Todo el detalle, los números, lo que se
+probó sin éxito y las trampas al medir (vatios, nunca ventiladores, y sin grabar
+la pantalla) están en `temperatura-zen.md`. Cabo suelto conocido: **la Orion de
+`/luna` se lleva la mitad de los vatios de la página** solo por moverse, y las
+cinco hipótesis probadas se descartaron; el usuario lo aparcó porque en reposo
+el portátil está en silencio y a 49 °C.
 
 ### Repaso del repositorio (20-sep-2026, commit `9ceb03b`)
 

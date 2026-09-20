@@ -1,9 +1,11 @@
-# La portada calienta en Zen — resuelto, con un par de cabos sueltos
+# La web calentaba en Zen — resuelto (portada y Luna)
 
-**Estado al 20-sep-2026 (noche).** Resuelto. La causa está localizada y medida,
-y hay dos arreglos aplicados que dejan la portada en unos 5 ms de trabajo por
-fotograma (antes 10) y el portátil en **9,7-13,5 W**, prácticamente su reposo.
-Este documento guarda cómo se midió, los números y lo que queda suelto.
+**Estado al 20-sep-2026 (noche).** Resuelto, en la portada y en `/luna`. La
+portada baja a **9,7-13,5 W** (antes 19,6), el pico del giro de cara desaparece
+y el vuelo Tierra ↔ Luna ya no hace pico. Con la web abierta el portátil del
+usuario está **en silencio y a unos 49 °C**. Queda un cabo suelto conocido y
+medido: la Orion de `/luna` (ver su apartado). Este documento guarda cómo se
+midió, los números y lo que se probó sin éxito.
 
 ## Cómo retomar esto (leer antes de tocar nada)
 
@@ -17,7 +19,10 @@ Este documento guarda cómo se midió, los números y lo que queda suelto.
    del arte (`?lienzo=5`, `?lienzo=3`…) y con `?lienzo=pantalla` se vuelve al
    lienzo de antes del 20-sep. Sirve para comparar nitidez y coste en Zen, que
    no se puede manejar desde fuera.
-3. Lo que queda está en "Lo que queda suelto", y es menor.
+3. `/luna` tiene su propio banco de pruebas: `?orion=quieta`, `sin-z`, `capa`,
+   `capa2` y `sin-sprite` atribuyen vatios a cada parte de la nave que orbita
+   (las reglas están en `global.css`, la clase la pone `luna.astro`).
+4. Lo que queda está en "Lo que queda suelto", y es menor.
 
 Contexto general del proyecto: `CLAUDE.md` en la raíz. Detalle del hero y de la
 Luna: `logo-files/HERO-WIP.md` y `logo-files/LUNA-WIP.md`.
@@ -140,30 +145,81 @@ localhost dio 10,5-12,4 W y zodk.eu 12,6-13,5 W (misma versión, la diferencia
 es ruido). Lo que se vio el primer día era el retraso del ventilador, la trampa
 nº 1 de aquí abajo.
 
+## La Luna (`/luna`), misma noche
+
+El usuario avisó de que `/luna` calentaba "bastante con las animaciones". Medido
+con el mismo método, salieron dos cosas distintas: un gasto continuo (la Orion)
+y un pico (el giro de cara). Solo el pico le molestaba.
+
+### La Orion se lleva la mitad del consumo de la página, y no sabemos por qué
+
+Poniendo el ratón encima de la nave se pausan todas sus animaciones, lo que da
+una comparación limpia sin tocar código:
+
+| | Potencia |
+|---|---|
+| `/luna` con la Orion orbitando | 6,7-7,5 W |
+| Con la nave pausada | 2,8-3 W |
+
+Cuatro hipótesis probadas con el banco `?orion=` (las reglas están en
+`global.css`, junto a la nave; la clase la pone `luna.astro`), **las cuatro
+descartadas**:
+
+| Prueba | Qué hace | Potencia |
+|---|---|---|
+| `?orion=quieta` | para solo el movimiento; sprite y sombra siguen | **2,7-3,4 W** |
+| `?orion=sin-z` | quita la animación de `z-index` | 6-7,2 W |
+| `?orion=capa` | `will-change` en los envoltorios que se mueven | 6,1-7 W |
+| `?orion=capa2` | `will-change` en el elemento que pinta el sprite | 6,1-6,6 W |
+| `?orion=sin-sprite` | se mueve, pero pintada como un bloque liso | 6,5-7 W |
+
+O sea: **todo el coste está en que la nave se mueva, y da igual qué se mueva o
+cómo**. No es el sprite, no es rasterizar, no es la falta de capa propia y no es
+el `z-index` arrastrando el grupo al hilo principal. También se probó a cambiar
+el `filter: brightness()` de la sombra por una capa oscura con la opacidad
+animada —lo que recomendaba este documento— y **no cambió nada**: se revirtió
+para no dejar un PNG y una capa de más a cambio de cero vatios.
+
+Queda abierto, pero **no urgente**: con la web en reposo el portátil está en
+silencio y a unos 49 °C. Si alguien lo retoma, el banco `?orion=` ya está
+puesto y lo siguiente que probaría es si el coste está en la composición de la
+capa de la órbita sobre el lienzo de la Luna (esa capa está **a propósito sin
+contexto de apilado** para que la nave pueda pasar por detrás del disco y por
+delante; cambiarlo rompe el efecto).
+
+### El giro de cara: el pico, resuelto
+
+Subía la CPU de 50-54 °C a 60-64. Tres cosas, en orden de lo que aportó:
+
+1. **Saltarse las dos pasadas de limpieza mientras gira** (`limpia = false` en
+   `girar()`, `src/scripts/luna.js`). Recorren las 360.000 celdas dos veces por
+   fotograma para quitar píxeles sueltos, y son la mitad larga del cálculo. En
+   un giro de 2,8 s no se ven, y la cara con la que termina es un PNG ya limpio.
+   Probado por el usuario: **"con sucio no se nota nada"**, y el pico desaparece.
+2. **Tope de 60 fotogramas por segundo** en el giro. La pantalla del usuario va
+   a 120 Hz, así que el cálculo se pedía hasta 120 veces por segundo. **A 30 fps
+   se nota muchísimo** (lo probó: rechazado), a 60 no.
+3. **El mismo arreglo que la portada en el lienzo**: volcado en una pasada
+   (`copy`) y lienzo a ×3 del arte en vez del tope de 2400 (×4). De unos 11,5
+   megapíxeles de relleno por fotograma a 3,2.
+
+### El vuelo Tierra ↔ Luna: resuelto
+
+Ya no hace pico. **El planeta seguía girando y repintándose durante los 6 s del
+vuelo** —un volcado entero del lienzo por fotograma— mientras además se le
+aplicaba una escala. Ahora `montarViaje()` (`src/pages/index.astro`) para el
+giro al empezar el vuelo: el planeta se va encogiendo y alejando, así que no se
+aprecia.
+
 ## Lo que queda suelto
 
-Nada de esto es urgente; la portada ya está en el reposo de la máquina.
-
-1. **La Luna (`src/scripts/luna.js`) tiene el mismo montaje de `625bffb`** y no
-   se ha tocado. Cuesta mucho menos porque las dos caras están quietas y solo
-   se anima el giro de 2,8 s, pero si alguna vez molesta, el arreglo es el
-   mismo: `copy` en el volcado y múltiplo entero del lienzo.
-2. **Bug de la Orion en `/luna`**: la regla de `prefers-reduced-motion`
-   (`src/styles/global.css`, busca `.luna-nave-x, .luna-nave-y, .luna-nave`)
-   pausa el movimiento pero **no `.luna-nave::before`**, que es donde están las
-   animaciones del sprite y del brillo. Con movimiento reducido la nave se
-   queda quieta pero sigue pasando fotogramas y pulsando.
-3. **`filter: brightness()` de la Orion → capa oscura con `opacity`.** En
-   Firefox solo `transform` y `opacity` se animan fuera del hilo principal;
-   `filter` fuerza repintado cada fotograma.
-4. **Probarlo en el móvil**, que es donde el consumo importa de verdad y donde
+1. **La Orion** (arriba): se lleva la mitad de los vatios de `/luna` y no
+   sabemos por qué. Aparcado por decisión del usuario.
+2. **Probarlo en el móvil**, que es donde el consumo importa de verdad y donde
    no se ha mirado nunca.
-
-La capa de la órbita de la Orion está hecha **a propósito sin contexto de
-apilado**, para que la nave pueda pasar por detrás del disco (z 0) y por delante
-(z 3). Eso impide que Firefox le dé capa propia en la GPU, así que repinta el
-trozo de Luna que hay debajo en cada fotograma. Si algún día molesta de verdad,
-ahí está la raíz — pero cambiarlo rompe el efecto de pasar por detrás.
+3. Cuando el tema se dé por cerrado del todo, se pueden borrar los bancos de
+   pruebas: `?orion=` (`global.css` y `luna.astro`). El `?medir` y el `?lienzo`
+   de la portada merece la pena dejarlos.
 
 ## Errores de diagnóstico, para no repetirlos
 

@@ -352,8 +352,11 @@ const eventos = todosEventos
   import { LUNA_V } from "../scripts/luna.js";
   import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
 
-  let planeta: { desmontar(): void } | null = null;
+  let planeta: { desmontar(): void; setParado(b: boolean): void } | null = null;
   let quitaMira: (() => void) | null = null;
+  // Para y reanuda el giro del planeta desde fuera (lo usa el vuelo a la Luna).
+  // Va aparte porque dentro de montarViaje `planeta` es el elemento del hero.
+  const giroPlaneta = (gira: boolean) => planeta?.setParado(!gira);
 
   // Mira y coordenada MGRS: con ratón, sobre el planeta el cursor pasa a ser
   // una mira y bajo el marco del título sale la coordenada del punto que
@@ -535,6 +538,11 @@ const eventos = todosEventos
       // La cabecera también: /luna no la tiene y así no desaparece de golpe.
       const SEL_APAGAR = ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira";
       const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
+      // El planeta deja de girar mientras dura el vuelo: se va encogiendo y el
+      // giro no se aprecia, pero cada repintado cuesta un volcado entero del
+      // lienzo justo en el momento de más trabajo de toda la web (20-sep-2026,
+      // ver temperatura-zen.md).
+      giroPlaneta(false);
       const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img! });
       cancela = vuelo.limpiar;
       estrellasLuna = await vuelo.fin;
@@ -546,7 +554,7 @@ const eventos = todosEventos
     enlace.addEventListener("touchstart", precarga, { passive: true });
     enlace.addEventListener("click", clic);
     return () => {
-      if (enVuelo && estrellasLuna === null) cancela();   // se sale a mitad de vuelo
+      if (enVuelo && estrellasLuna === null) { cancela(); giroPlaneta(true); }   // se sale a mitad de vuelo
       enlace.removeEventListener("pointerenter", precarga);
       enlace.removeEventListener("focus", precarga);
       enlace.removeEventListener("touchstart", precarga);

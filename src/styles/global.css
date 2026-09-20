@@ -517,7 +517,10 @@ html.dark .hero-luna-enlace { display: block; }
   aspect-ratio: 64 / 56;
   transform: translate(-50%, -50%);
 }
-/* El dibujo va en ::before para que la sombra (filter) no oscurezca la ficha. */
+/* El dibujo va en ::before para que la sombra (filter) no oscurezca la ficha.
+   Se probó cambiar el filter por una capa oscura con la opacidad animada, que
+   en Firefox se compone en la GPU: NO cambió el consumo (20-sep-2026), así que
+   se dejó como estaba. Lo caro de la Orion es moverse, no pintarse. */
 .luna-nave::before {
   content: "";
   position: absolute;
@@ -586,8 +589,39 @@ html.dark .hero-luna-enlace { display: block; }
   to { background-position: calc(100% * 32 / 31) 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .luna-nave-x, .luna-nave-y, .luna-nave { animation-play-state: paused; }
+  /* El ::before va aparte a propósito: ahí están el giro del sprite y el
+     brillo, y sin nombrarlo la nave se quedaba quieta pero seguía pasando
+     fotogramas y pulsando con el movimiento reducido. */
+  .luna-nave-x, .luna-nave-y, .luna-nave, .luna-nave::before { animation-play-state: paused; }
 }
+/* Banco de pruebas de consumo de la Orion (luna.astro pone la clase con
+   ?orion=...). Sirve para atribuir vatios a cada parte sin adivinar:
+   - ?orion=quieta: para solo el movimiento; el sprite y la sombra siguen.
+   - ?orion=sin-z:  quita la animación de z-index (la nave va siempre delante).
+     En Firefox, si una animación del grupo no es componible —el z-index no lo
+     es— todo el grupo baja al hilo principal, también las de transform.
+   - ?orion=capa:   pide capa propia para el movimiento (will-change).
+   - ?orion=capa2:  pide capa propia para el elemento que PINTA el sprite, que
+     es lo que hay que cachear: si el dibujo se guarda en su capa, moverla es
+     gratis y no hay que rasterizar la tira en cada fotograma.
+   - ?orion=sin-sprite: la nave se mueve, pero pintada como un bloque de color
+     liso, sin la tira escalada. Si aquí baja el consumo, lo caro es rasterizar
+     el sprite en cada repintado.
+   Se puede borrar cuando el tema esté cerrado; está anotado en
+   temperatura-zen.md. */
+.prueba-orion-quieta :is(.luna-nave-x, .luna-nave-y) { animation-play-state: paused; }
+.prueba-orion-sin-z .luna-nave-x {
+  animation: nave-x var(--t) ease-in-out infinite alternate;
+  z-index: 3;
+}
+.prueba-orion-capa :is(.luna-nave-x, .luna-nave-y) { will-change: transform; }
+.prueba-orion-capa2 .luna-nave { will-change: transform; }
+.prueba-orion-sin-sprite .luna-nave::before {
+  background: #8a9099;
+  animation: none;
+  filter: none;
+}
+
 /* Rombo pequeño y lento, como la deriva de las naves "fijas" de la portada:
    ~6 px del lienzo a los lados y ~4 arriba y abajo (en % del propio sprite). */
 @keyframes luna-sat-deriva {
