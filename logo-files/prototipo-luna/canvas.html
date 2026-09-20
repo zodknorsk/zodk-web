@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: Luna en canvas</title>
+<!--
+  Banco de pruebas de la media vuelta de la Luna (src/scripts/luna.js), con
+  los datos de la web: python3 logo-files/generar-luna.py --canvas public/luna/
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-luna/canvas.html
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a url(../../public/zodk-estrellas.png);
+    overflow: hidden; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #luna { position: absolute; left: 50%; top: 50%; height: min(94vh, 94vw); aspect-ratio: 1;
+    transform: translate(-50%, -50%); image-rendering: pixelated; }
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 2; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="luna"></canvas>
+<div id="panel">
+  <button id="girar">girar (media vuelta)</button>
+  <span id="estado"></span><br>
+  comparar en reposo: <button id="png">PNG aprobado</button> <button id="real">tiempo real</button>
+  <span id="ms"></span>
+</div>
+<script type="module">
+import { montarLuna } from "../../src/scripts/luna.js";
+
+const estado = document.getElementById("estado");
+const luna = await montarLuna(document.getElementById("luna"), {
+  base: "../../public/luna/",
+  alTerminar: (c) => { estado.textContent = `cara ${c}`; },
+});
+estado.textContent = `cara ${luna.cara()}`;
+window.luna = luna;                    // para probar desde la consola: luna.fotograma(0.5)
+// ?medir: al cargar, 12 fotogramas en tiempo real y los ms de los 6 últimos
+// (para navegadores que no se pueden manejar desde fuera, como Zen).
+if (new URLSearchParams(location.search).has("medir")) {
+  const t = [];
+  for (let i = 0; i < 12; i++) t.push(await luna.medir());
+  // con un fotograma más para que el navegador termine de pintar
+  const conPintado = [];
+  for (let i = 0; i < 6; i++) {
+    const a = performance.now();
+    await luna.medir();
+    await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+    conPintado.push(performance.now() - a);
+  }
+  document.getElementById("ms").textContent =
+    `(${navigator.userAgent.includes("Firefox") ? "Firefox/Zen" : "Chrome"}: cálculo ${t.slice(6).map((x) => x.toFixed(1)).join(" · ")} ms; `
+    + `con pintado ${conPintado.map((x) => x.toFixed(0)).join(" · ")} ms)`;
+  luna.pintarCara(luna.cara());
+}
+document.getElementById("girar").onclick = () => luna.girar();
+document.getElementById("png").onclick = () => luna.pintarCara(luna.cara());
+document.getElementById("real").onclick = async () => {
+  document.getElementById("ms").textContent = `(${(await luna.medir()).toFixed(1)} ms por fotograma)`;
+};
+</script>
+</body>
+</html>

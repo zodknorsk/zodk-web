@@ -30,7 +30,7 @@ empezar, `git push` al terminar.
 cómo funciona, qué se probó y descartó, y por qué.
 
 Estado (13-sep-2026): publicado en `main` (merge de la rama
-`planeta-pixelart-v2`, que se deja en GitHub como registro). Planeta de día en
+`daylight-planet-v2`, que se deja en GitHub como registro). Planeta de día en
 `<canvas>` con giro continuo (`src/scripts/planeta.js`, 90 s por vuelta), datos
 en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
 
@@ -61,6 +61,18 @@ Decisiones que hay que respetar:
   bioma equivocado, se corrige con una caja.
 - Animaciones: nunca SVG animado con miles de formas (calienta la CPU en Zen,
   su navegador); canvas o sprite PNG.
+
+## Proyecto Luna (rama `moon-project`)
+
+Un segundo planeta (la Luna, mismo estilo pixel art) al pulsar el icono de la
+Luna del hero: dos caras fijas (visible luminosa / oculta más oscura) con un
+botón para cambiar, y chapas en los alunizajes. Hecho (18-sep): las dos caras,
+la media vuelta en canvas, la página `/luna`, el vuelo desde la Tierra y la
+vuelta, y las chapas de los 20 alunizajes con su ficha y la columna para
+encenderlos por país (datos en `src/data/alunizajes.ts`). Falta enlazar cada
+ficha con su artículo del blog. **Antes de tocarlo, leer `logo-files/LUNA-WIP.md`** (ahí está
+todo: qué se reutiliza de la Tierra, qué hace falta de nuevo, y qué queda
+pendiente de decidir).
 
 Pendiente (sin orden, lo decide él):
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
