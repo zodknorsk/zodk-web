@@ -51,13 +51,16 @@ const todosEventos = await getCollection("eventos");
 // Chapas de bandera del planeta: un país sale si algún artículo lleva una de
 // sus etiquetas (src/data/paises.ts). Al pasar el ratón por la chapa se
 // despliega una ficha, como la de las naves, con esos artículos. Las notas
-// cuentan una a una; los eventos, por su página índice.
+// cuentan una a una; los eventos, por su página índice. Lo del Proyecto Luna
+// (etiqueta "luna") queda fuera: esas misiones llevan también etiqueta de país
+// (eeuu, china...) para su propio uso en /luna, pero tienen su propia página y
+// no deben salir en las banderas de la Tierra.
 const articulos = [
   ...(await getCollection("notas"))
-    .filter((n) => !n.data.draft)
+    .filter((n) => !n.data.draft && !n.data.tags.some((t) => t.toLowerCase() === "luna"))
     .map((n) => ({ titulo: n.data.title, url: `/notas/${n.slug}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
   ...todosEventos
-    .filter((e) => e.data.kind === "index" && !e.data.draft)
+    .filter((e) => e.data.kind === "index" && !e.data.draft && !e.data.tags.some((t) => t.toLowerCase() === "luna"))
     .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
 ];
 const banderasBlog = PAISES.map((p) => ({
@@ -91,6 +94,9 @@ const eventos = todosEventos
       <span class="astro-sol"></span>
       <span class="astro-luna"></span>
     </div>
+    <!-- Proyecto Luna: la luna (solo de noche) lleva a /luna con un vuelo
+         (montarViaje() más abajo). -->
+    <a class="hero-luna-enlace" href="/luna" aria-label="Viajar a la Luna" title="Viajar a la Luna"></a>
     <div
       class="hero-planet"
       role="img"
@@ -338,8 +344,11 @@ const eventos = todosEventos
   // página sin recargar (ClientRouter), así que se monta en cada llegada a la
   // portada y se desmonta al salir. Se congela, como el resto del hero, con el
   // ratón sobre una nave.
+  import { navigate } from "astro:transitions/client";
   import { montarPlaneta } from "../scripts/planeta.js";
   import { mgrs } from "../scripts/mgrs.js";
+  import { LUNA_V } from "../scripts/luna.js";
+  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
 
   let planeta: { desmontar(): void } | null = null;
   let quitaMira: (() => void) | null = null;
@@ -438,17 +447,10 @@ const eventos = todosEventos
     return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
   }
 
-  // Fase de la luna de hoy: public/zodk-luna-fases.png trae FASES fases en fila
-  // (0 = luna nueva, FASES/2 = llena; logo-files/generar-astros.py). Edad de la
-  // luna desde una luna nueva conocida (6-ene-2000, 18:14 UTC) y mes sinódico
-  // medio: basta para el día.
-  const FASES = 30, MES_SINODICO = 29.530588853, LUNA_NUEVA = Date.UTC(2000, 0, 6, 18, 14);
+  // Fase de la luna de hoy (faseLunaHoy() en viaje-luna.js; sin JS, llena).
   function faseLuna() {
     const el = document.querySelector<HTMLElement>(".astro-luna");
-    if (!el) return;
-    const edad = ((((Date.now() - LUNA_NUEVA) / 86400000) % MES_SINODICO) + MES_SINODICO) % MES_SINODICO;
-    const i = Math.round((edad / MES_SINODICO) * FASES) % FASES;
-    el.style.backgroundPosition = `${(i / (FASES - 1)) * 100}% 0`;
+    if (el) el.style.backgroundPosition = faseLunaHoy();
   }
 
   // Al cambiar de tema, el sol se pone tras la Tierra y sale la luna (o al
@@ -473,10 +475,106 @@ const eventos = todosEventos
     return () => { mo.disconnect(); clearTimeout(t); };
   }
 
+  // Vuelo a la Luna (src/scripts/viaje-luna.js): al pulsar la luna del hero
+  // (solo de noche), la luna se amplía hasta quedar como en /luna y entonces se
+  // cambia de página; las estrellas de /luna se colocan donde quedaron
+  // (astro:after-swap). Con reduced-motion, directo.
+  const LUNA_IMG = `/luna/luna-visible.png?v=${LUNA_V}`;
+  let estrellasLuna: string | null = null;   // posición de las estrellas al aterrizar, para /luna
+
+  // Enlace "luna" de la cabecera (Header.astro): en la portada se comporta
+  // como la luna del hero. De noche, exactamente igual que pulsarla (dispara
+  // un clic real sobre .hero-luna-enlace, así que reutiliza montarViaje sin
+  // duplicar nada). De día, primero cambia a modo noche pulsando el propio
+  // botón de tema (mismo camino que si lo pulsara el usuario) y espera a que
+  // se vea la luna antes de volar.
+  let quitaCabeceraLuna: (() => void) | null = null;
+  function montarEnlaceCabecera(lunaHero: HTMLAnchorElement) {
+    const enlace = document.querySelector<HTMLAnchorElement>("header nav a[href='/luna']");
+    if (!enlace) return () => {};
+    const clic = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (document.documentElement.classList.contains("dark")) {
+        lunaHero.click();
+        return;
+      }
+      document.getElementById("theme-button")?.click();
+      const espera = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
+      setTimeout(() => lunaHero.click(), espera);
+    };
+    enlace.addEventListener("click", clic);
+    return () => enlace.removeEventListener("click", clic);
+  }
+
+  let quitaViaje: (() => void) | null = null;
+  function montarViaje(hero: HTMLElement) {
+    const enlace = hero.querySelector<HTMLAnchorElement>(".hero-luna-enlace");
+    const icono = hero.querySelector<HTMLElement>(".astro-luna");
+    const planeta = hero.querySelector<HTMLElement>(".hero-planet");
+    const estrellas = hero.querySelector<HTMLElement>(".hero-stars");
+    if (!enlace || !icono || !planeta || !estrellas) return () => {};
+    let img: HTMLImageElement | null = null;
+    let enVuelo = false, cancela = () => {};
+    const precarga = () => {
+      if (img) return;
+      img = new Image();
+      img.src = LUNA_IMG;
+      img.decode().catch(() => {});
+    };
+    const clic = async (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
+      e.preventDefault();
+      if (enVuelo) return;
+      enVuelo = true;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/luna");
+      precarga();
+      await img!.decode().catch(() => {});
+      // La cabecera también: /luna no la tiene y así no desaparece de golpe.
+      const apagar = [...hero.querySelectorAll<HTMLElement>(
+        ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira",
+      ), ...document.querySelectorAll<HTMLElement>("body > header")];
+      const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img! });
+      cancela = vuelo.limpiar;
+      estrellasLuna = await vuelo.fin;
+      // La capa se va con la página vieja al cambiar (ClientRouter sustituye el <body>).
+      navigate("/luna");
+    };
+    enlace.addEventListener("pointerenter", precarga);
+    enlace.addEventListener("focus", precarga);
+    enlace.addEventListener("touchstart", precarga, { passive: true });
+    enlace.addEventListener("click", clic);
+    return () => {
+      if (enVuelo && estrellasLuna === null) cancela();   // se sale a mitad de vuelo
+      enlace.removeEventListener("pointerenter", precarga);
+      enlace.removeEventListener("focus", precarga);
+      enlace.removeEventListener("touchstart", precarga);
+      enlace.removeEventListener("click", clic);
+    };
+  }
+
+  // Al aterrizar en /luna, sus estrellas donde quedaron las del vuelo (antes de
+  // que se pinte la página nueva).
+  document.addEventListener("astro:after-swap", () => {
+    if (estrellasLuna === null) return;
+    document.querySelector<HTMLElement>(".luna-hero .hero-stars")?.style.setProperty("--estrellas-pos", estrellasLuna);
+    estrellasLuna = null;
+  });
+
   document.addEventListener("astro:page-load", async () => {
     faseLuna();
     quitaAstro?.();
     quitaAstro = montarAstro();
+    quitaViaje?.();
+    quitaViaje = null;
+    quitaCabeceraLuna?.();
+    quitaCabeceraLuna = null;
+    const heroViaje = document.querySelector<HTMLElement>(".hero");
+    const lunaHero = heroViaje?.querySelector<HTMLAnchorElement>(".hero-luna-enlace") ?? null;
+    if (heroViaje && lunaHero) {
+      quitaViaje = montarViaje(heroViaje);
+      quitaCabeceraLuna = montarEnlaceCabecera(lunaHero);
+    }
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest<HTMLElement>(".hero");
@@ -530,6 +628,10 @@ const eventos = todosEventos
   document.addEventListener("astro:before-swap", () => {
     quitaAstro?.();
     quitaAstro = null;
+    quitaViaje?.();
+    quitaViaje = null;
+    quitaCabeceraLuna?.();
+    quitaCabeceraLuna = null;
     planeta?.desmontar();
     quitaMira?.();
     planeta = null;

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: chapas de alunizaje</title>
+<!--
+  Banco de pruebas de las CHAPAS de alunizaje sobre la cara visible (Proyecto
+  Luna), para decidir el dibujo de la chapa, la ficha y el filtro por país
+  antes de tocar luna.astro/luna.js de verdad (ver LUNA-WIP.md).
+
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-luna/chapas.html
+
+  Reutiliza tal cual las clases .craft-dossier/.craft-linea/.craft-specs/etc.
+  de src/styles/global.css (copiadas aquí porque este banco es HTML suelto,
+  fuera del build de Astro) y el patrón de chapa en píxel art de país de
+  BANDERAS en generar-planeta-hero.py (filas de 11x7 + contorno de 1px); la de
+  EE. UU. es la misma que la de la Tierra (BAND_PAL "US"), Rusia y China son
+  nuevas, solo para este banco.
+
+  Filtro por país (columna de banderas a la izquierda): cada bandera empieza
+  en blanco y negro; al clicarla se enciende (a color) y aparecen sus chapas
+  en la cara que se esté viendo — es acumulativo (varios países a la vez) y
+  un interruptor (clic otra vez la apaga). Una misión de una cara que no se
+  ve (p.ej. Chang'e 4/6 en la oculta, mientras se ve la visible) simplemente
+  no tiene chapa que encender en esta cara: no hace falta tratarla aparte.
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a url(../../public/zodk-estrellas.png);
+    overflow: hidden; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+
+  /* La columna de países ocupa una franja a la izquierda (--franja): la Luna
+     se centra en lo que queda, para que no le tape el borde (con la ventana
+     estrecha la columna se comía la chapa de Luna 9). */
+  :root { --franja: 62px; }
+  #escena { position: absolute; left: calc(50% + var(--franja) / 2); top: 50%;
+    height: min(98vh, calc(98vw - var(--franja))); aspect-ratio: 1;
+    transform: translate(-50%, -50%); }
+  #luna { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+
+  /* Capa de chapas: misma geometría que el disco, 600x600 (ver .hero-banderas
+     en global.css, que hace lo mismo para la Tierra a 600x585). */
+  #chapas { position: absolute; inset: 0; }
+  .luna-chapa {
+    position: absolute;
+    width: calc(13 / 600 * 100%);   /* chapa de 11x7 + contorno, como en la Tierra */
+    height: calc(9 / 600 * 100%);   /* Tierra: 9/585 (600x585); aquí el lienzo es 600x600 */
+    outline: none;
+  }
+  .luna-chapa svg { position: absolute; inset: 0; width: 100%; height: 100%;
+    image-rendering: pixelated; overflow: visible; cursor: pointer; }
+
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 2; max-width: 340px; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+  button.on { background: #fff; outline: 2px solid #9fd3e6; }
+
+  /* --- Columna de países (filtro), fija a la izquierda --------------------- */
+  #paises { position: fixed; left: 10px; top: 50%; transform: translateY(-50%); z-index: 5;
+    display: flex; flex-direction: column; gap: 8px; }
+  .pais-boton { position: relative; display: block; background: rgba(6, 8, 12, 0.55);
+    border: 1px solid rgba(230, 192, 120, 0.18); border-radius: 4px; padding: 4px 7px;
+    cursor: pointer; color: #9fb3c8; line-height: 1;
+    transition: background 0.15s ease, border-color 0.15s ease; }
+  .pais-boton:hover, .pais-boton:focus-visible { border-color: rgba(230, 192, 120, 0.5); }
+  .pais-boton.activo { background: rgba(230, 192, 120, 0.14); border-color: rgba(230, 192, 120, 0.6); }
+  .pais-bandera { font-size: 1.4rem; filter: grayscale(1); opacity: 0.5;
+    transition: filter 0.2s ease, opacity 0.2s ease; }
+  .pais-boton.activo .pais-bandera { filter: grayscale(0); opacity: 1; }
+  /* El nombre solo al pasar el ratón: así la columna es estrecha y no le come
+     sitio a la Luna. */
+  .pais-nombre { position: absolute; left: calc(100% + 8px); top: 50%; translate: 0 -50%;
+    padding: 3px 7px; border-radius: 3px; background: rgba(6, 8, 12, 0.9);
+    border: 1px solid rgba(230, 192, 120, 0.25); font-size: 0.66rem; letter-spacing: 0.04em;
+    white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+  .pais-boton:is(:hover, :focus-visible) .pais-nombre { opacity: 1; }
+  .pais-boton.activo .pais-nombre { color: #e6c078; }
+
+  /* --- Copiado de src/styles/global.css (Ficha / .craft-*) --------------- */
+  .craft-dossier { position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity 0.15s ease; }
+  .luna-chapa:is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+  .craft-linea { position: absolute; background: rgba(230, 192, 120, 0.7); transform: scale(0);
+    transition: transform 0.24s ease; pointer-events: none;
+    top: 50%; left: 100%; width: 92px; height: 1px; transform-origin: left center; }
+  .luna-chapa:is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+  .craft-specs { position: absolute; width: 16rem; padding: 0.7rem 0.85rem; opacity: 0;
+    transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s;
+    background: rgba(6, 8, 12, 0.9); border: 1px solid rgba(230, 192, 120, 0.35); border-radius: 2px;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace; text-align: left;
+    top: 50%; left: calc(100% + 92px); transform: translateY(-50%) translateX(-6px); }
+  .luna-chapa:is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+  .craft-specs-titulo { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c078; }
+  .craft-clase { margin: 0.12rem 0 0.55rem; padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(230, 192, 120, 0.22); font-size: 0.6rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #8b93a0; }
+  .craft-flag { margin-right: 0.3em; font-size: 0.85rem; vertical-align: -0.08em; }
+  .luna-chapa.flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+  .luna-chapa.flip-x .craft-specs { left: auto; right: calc(100% + 92px);
+    transform: translateY(-50%) translateX(6px); }
+  .luna-chapa.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+  /* La ficha va centrada en la chapa, pero con las que caen muy arriba o muy
+     abajo (Chang'e 3 en el borde norte, Chandrayaan-3 e IM-1 en el polo sur)
+     se salía de la pantalla: ahí se ancla por su borde en vez de centrarse. */
+  .luna-chapa.ancla-arriba .craft-specs { top: -8px; transform: translateY(0) translateX(-6px); }
+  .luna-chapa.ancla-abajo .craft-specs { top: auto; bottom: -8px; transform: translateY(0) translateX(-6px); }
+  .luna-chapa:is(.ancla-arriba, .ancla-abajo).flip-x .craft-specs { transform: translateY(0) translateX(6px); }
+  .luna-chapa:is(.ancla-arriba, .ancla-abajo):is(:hover, :focus-within) .craft-specs {
+    transform: translateY(0) translateX(0); }
+
+  /* --- Nuevo para la ficha de misión (no existía en la Tierra): foto + texto,
+     en dos variantes para comparar (botón "boceto A/B" en el panel). ------ */
+  .mision-foto { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+    object-position: center; border-radius: 1px; margin-bottom: 0.55rem; filter: saturate(0.9); }
+  .mision-texto { margin: 0; font-size: 0.7rem; line-height: 1.5; color: #dfe4ea; }
+  #chapas.boceto-b .mision-foto { display: none; }
+  #chapas.boceto-b .craft-specs { width: 13.5rem; }
+  #chapas.boceto-b .craft-specs-titulo::before { content: ""; display: inline-block; width: 0.6rem;
+    height: 0.6rem; margin-right: 0.4rem; vertical-align: -0.05em;
+    background: linear-gradient(#333d74 0 34%, #f4f4f0 34% 66%, #b82638 66% 100%); }
+</style>
+</head>
+<body>
+<div id="escena">
+  <img id="luna" src="luna-visible-derecha-valles-rm2.5.png" alt="">
+  <div id="chapas"></div>
+</div>
+<div id="paises"></div>
+<div id="panel">
+  chapas · <button id="boceto" data-b="a">boceto A: con foto</button>
+  <button data-b="b" class="on-b">boceto B: solo texto</button><br>
+  luz cenicienta (lado de noche):
+  <button data-n="">0,16 · elegida</button>
+  <button data-n="-n0.07">0,07 · la de antes</button>
+  <button data-n="-n0.12">0,12</button>
+  <button data-n="-n0.22">0,22</button><br>
+  <span style="color:#8b93a0">clica un país a la izquierda; pasa el ratón (o tabula) por sus banderitas en la Luna</span>
+</div>
+<script>
+  // Misma proyección que generar-luna.py / luna.js (orientacion), generalizada
+  // con lon0 en vez de fijar 180: cara visible = lat0 0, lon0 0.
+  const R = 292.5, C = 300, rad = Math.PI / 180;
+  const proyecta = (lat, lon, lat0, lon0) => {
+    const la = lat * rad, lo = (lon - lon0) * rad, l0 = lat0 * rad;
+    const xx = Math.cos(la) * Math.sin(lo), yy = Math.sin(la), zz = Math.cos(la) * Math.cos(lo);
+    const c0 = Math.cos(l0), s0 = Math.sin(l0);
+    return { x: C + xx * R, y: C - (yy * c0 - zz * s0) * R, vis: yy * s0 + zz * c0 > 0 };
+  };
+
+  // Un país = bandera de la columna + chapa en píxel art (filas de 11x7 +
+  // contorno de 1px, como en la Tierra). La de EE. UU. es la misma que
+  // BANDERAS "US" en generar-planeta-hero.py; Rusia y China son nuevas, solo
+  // para este banco (aproximadas: no hay que leer más detalle del que se ve
+  // a este tamaño, igual que las de la Tierra ya simplifican Irán/Afganistán).
+  const PAISES = {
+    US: {
+      nombre: "EE. UU.", bandera: "🇺🇸",
+      filas: ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
+              "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"],
+      paleta: { u: "#b82638", w: "#f4f4f0", B: "#333d74" },
+    },
+    RU: {
+      nombre: "Rusia (URSS)", bandera: "🇷🇺",
+      filas: ["wwwwwwwwwww", "wwwwwwwwwww", "zzzzzzzzzzz", "zzzzzzzzzzz",
+              "zzzzzzzzzzz", "vvvvvvvvvvv", "vvvvvvvvvvv"],
+      paleta: { w: "#f4f4f4", z: "#0039a6", v: "#d52b1e" },
+    },
+    CN: {
+      nombre: "China", bandera: "🇨🇳",
+      filas: ["rrrrsrrrrrr", "rssrrsrrrrr", "rssrrrrrrrr", "rrrrrsrrrrr",
+              "rrrrsrrrrrr", "rrrrrrrrrrr", "rrrrrrrrrrr"],
+      paleta: { r: "#c8102e", s: "#f4c430" },
+    },
+    IN: {
+      nombre: "India", bandera: "🇮🇳",
+      filas: ["ooooooooooo", "ooooooooooo", "wwwwwCwwwww", "wwwwwCwwwww",
+              "wwwwwwwwwww", "ggggggggggg", "ggggggggggg"],
+      paleta: { o: "#ff9933", w: "#f4f4f4", g: "#138808", C: "#000080" },
+    },
+    JP: {
+      nombre: "Japón", bandera: "🇯🇵",
+      filas: ["wwwwwwwwwww", "wwwwHHHwwww", "wwwHHHHHwww", "wwwHHHHHwww",
+              "wwwHHHHHwww", "wwwwHHHwwww", "wwwwwwwwwww"],
+      paleta: { w: "#f4f4f4", H: "#bc002d" },
+    },
+  };
+  const svgBandera = (codigo) => {
+    const { filas, paleta } = PAISES[codigo];
+    const fw = 11, fh = 7;
+    let r = `<rect x="0" y="0" width="${fw + 2}" height="${fh + 2}" fill="#10131c"/>`;
+    for (let y = 0; y < fh; y++)
+      for (let x = 0; x < fw; x++)
+        r += `<rect x="${x + 1}" y="${y + 1}" width="1" height="1" fill="${paleta[filas[y][x]]}"/>`;
+    return `<svg viewBox="0 0 ${fw + 2} ${fh + 2}">${r}</svg>`;
+  };
+
+  const MISIONES = [
+    { nombre: "Apolo 11", pais: "US", anio: 1969, lat: 0.674, lon: 23.473, foto: "fotos/apolo-11.jpg",
+      texto: "El módulo lunar Eagle alunizó el 20 de julio de 1969 en el Mar de la Tranquilidad. Neil Armstrong fue el primer ser humano en pisar la Luna." },
+    { nombre: "Apolo 12", pais: "US", anio: 1969, lat: -3.0125, lon: -23.4214, foto: "fotos/apolo-12.jpg",
+      texto: "Alunizó el 19 de noviembre de 1969 en el Océano de las Tormentas, a 180 metros de la sonda Surveyor 3 (1967), de la que se trajeron piezas." },
+    { nombre: "Apolo 14", pais: "US", anio: 1971, lat: -3.6453, lon: -17.4714, foto: "fotos/apolo-14.jpg",
+      texto: "Alunizó el 5 de febrero de 1971 en Fra Mauro. Alan Shepard, primer estadounidense en el espacio, golpeó dos pelotas de golf antes de volver." },
+    { nombre: "Apolo 15", pais: "US", anio: 1971, lat: 26.1008, lon: 3.6527, foto: "fotos/apolo-15.jpg",
+      texto: "Alunizó el 30 de julio de 1971 en Hadley-Apenino. Primera misión en usar el rover lunar (LRV) para alejarse del módulo." },
+    { nombre: "Apolo 16", pais: "US", anio: 1972, lat: -8.9731, lon: 15.5, foto: "fotos/apolo-16.jpg",
+      texto: "Alunizó el 21 de abril de 1972 en las tierras altas de Descartes, el primer alunizaje en tierras altas lunares." },
+    { nombre: "Apolo 17", pais: "US", anio: 1972, lat: 20.1642, lon: 30.7658, foto: "fotos/apolo-17.jpg",
+      texto: "Alunizó el 11 de diciembre de 1972 en Taurus-Littrow. Última misión tripulada a la Luna hasta hoy." },
+
+    { nombre: "Luna 9", pais: "RU", anio: 1966, lat: 7.03, lon: -64.33, foto: "fotos/luna-9.jpg",
+      texto: "Alunizó el 3 de febrero de 1966: primer alunizaje suave de la historia, con las primeras fotos panorámicas desde la superficie lunar." },
+    { nombre: "Luna 16", pais: "RU", anio: 1970, lat: -0.5137, lon: 56.3638, foto: "fotos/luna-16.jpg",
+      texto: "Alunizó el 20 de septiembre de 1970: primera sonda no tripulada en traer muestras lunares a la Tierra (101 g)." },
+    { nombre: "Luna 17", pais: "RU", anio: 1970, lat: 38.28, lon: -35.0, foto: "fotos/luna-17.jpg",
+      texto: "Alunizó el 17 de noviembre de 1970 y desplegó el Lunojod 1, el primer vehículo con ruedas en otro cuerpo celeste." },
+    { nombre: "Luna 20", pais: "RU", anio: 1972, lat: 3.7863, lon: 56.6242, foto: "fotos/luna-20.jpg",
+      texto: "Alunizó el 21 de febrero de 1972 y trajo muestras de tierras altas, cerca de donde ya lo había hecho Luna 16." },
+    { nombre: "Luna 21", pais: "RU", anio: 1973, lat: 25.85, lon: 30.45, foto: "fotos/luna-21.jpg",
+      texto: "Alunizó el 15 de enero de 1973 y desplegó el Lunojod 2, que recorrió 39 km en cuatro meses." },
+    { nombre: "Luna 24", pais: "RU", anio: 1976, lat: 12.7145, lon: 62.2097, foto: "fotos/luna-24.jpg",
+      texto: "Alunizó el 18 de agosto de 1976: última misión del programa Luna y última en traer muestras hasta la Chang'e 5 en 2020." },
+
+    { nombre: "Chang'e 3", pais: "CN", anio: 2013, lat: 44.1214, lon: -19.5116, foto: "fotos/change-3.jpg",
+      texto: "Alunizó el 14 de diciembre de 2013: primer alunizaje lunar chino, con el róver Yutu." },
+    { nombre: "Chang'e 4", pais: "CN", anio: 2019, lat: -45.444, lon: 177.599, foto: "fotos/change-4.jpg",
+      texto: "Alunizó el 3 de enero de 2019 en la cara oculta de la Luna: primer alunizaje de la historia ahí, con el róver Yutu-2." },
+    { nombre: "Chang'e 5", pais: "CN", anio: 2020, lat: 43.0576, lon: -51.9161, foto: "fotos/change-5.jpg",
+      texto: "Alunizó el 1 de diciembre de 2020: primera misión china en traer muestras lunares a la Tierra (casi 2 kg)." },
+    { nombre: "Chang'e 6", pais: "CN", anio: 2024, lat: -41.64, lon: 206.01, foto: "fotos/change-6.jpg",
+      texto: "Alunizó el 2 de junio de 2024 en la cara oculta: primeras muestras traídas de esa cara de la Luna." },
+
+    { nombre: "Chandrayaan-3", pais: "IN", anio: 2023, lat: -69.373, lon: 32.319, foto: "fotos/chandrayaan-3.jpg",
+      texto: "Alunizó el 23 de agosto de 2023 a 69° de latitud sur, lo más cerca del polo a lo que ha llegado nadie. India fue el cuarto país en alunizar." },
+
+    { nombre: "SLIM", pais: "JP", anio: 2024, lat: -13.316, lon: 25.251, foto: "fotos/slim.jpg",
+      texto: "Alunizó el 19 de enero de 2024 junto al cráter Shioli, a 55 m de su objetivo: el alunizaje más preciso hasta la fecha. Quedó volcado y aun así siguió midiendo." },
+
+    { nombre: "IM-1 · Odysseus", pais: "US", anio: 2024, lat: -80.13, lon: 1.44, foto: "fotos/im1-odysseus.jpg",
+      texto: "Alunizó el 22 de febrero de 2024 cerca del cráter Malapert A: primer alunizaje privado de la historia y el primero de EE. UU. desde el Apolo 17. Acabó apoyado de lado." },
+    { nombre: "Blue Ghost", pais: "US", anio: 2025, lat: 18.56, lon: 61.81, foto: "fotos/blue-ghost.jpg",
+      texto: "Alunizó el 2 de marzo de 2025 en el Mar de las Crisis: el primer alunizaje privado completamente redondo, derecho y operando un día lunar entero." },
+  ];
+
+  // --- Chapas: se crean todas las que caen en esta cara (lat0/lon0 de la
+  // vista actual), ocultas hasta que se active su país. --------------------
+  const LAT0 = 0, LON0 = 0;   // cara visible
+  const capa = document.getElementById("chapas");
+  const chapasPorPais = {};   // codigo -> [elementos]
+  for (const m of MISIONES) {
+    const p = proyecta(m.lat, m.lon, LAT0, LON0);
+    if (!p.vis) continue;   // esta misión no cae en la cara que se ve ahora
+    const el = document.createElement("div");
+    el.className = "luna-chapa";
+    el.hidden = true;   // el país empieza apagado
+    el.tabIndex = 0;
+    el.setAttribute("aria-label", `${m.nombre}: ficha de la misión`);
+    // p.x/p.y son el centro de la chapa (lo que da proyecta()); se resta medio
+    // ancho/alto en % para dejar la esquina, como pintan las chapas en la
+    // Tierra (ahí ya viene resuelto desde el canvas: ver ax/ay en _chapa()).
+    el.style.left = `calc(${(p.x / 600) * 100}% - ${(13 / 600 / 2) * 100}%)`;
+    el.style.top = `calc(${(p.y / 600) * 100}% - ${(9 / 600 / 2) * 100}%)`;
+    const pais = PAISES[m.pais];
+    el.innerHTML = `
+      ${svgBandera(m.pais)}
+      <div class="craft-dossier">
+        <span class="craft-linea"></span>
+        <div class="craft-specs">
+          <img class="mision-foto" src="${m.foto}" alt="">
+          <div class="craft-specs-titulo">${m.nombre}</div>
+          <div class="craft-clase">${pais.bandera} ${pais.nombre} · ${m.anio}</div>
+          <p class="mision-texto">${m.texto}</p>
+        </div>
+      </div>`;
+    const lado = () => {
+      const r = el.getBoundingClientRect();
+      el.classList.toggle("flip-x", r.right + 280 > window.innerWidth);
+      const alto = el.querySelector(".craft-specs").offsetHeight;
+      const centro = r.top + r.height / 2;
+      el.classList.toggle("ancla-arriba", centro - alto / 2 < 8);
+      el.classList.toggle("ancla-abajo", centro + alto / 2 > window.innerHeight - 8);
+    };
+    el.addEventListener("mouseenter", lado);
+    el.addEventListener("focus", lado);
+    capa.appendChild(el);
+    (chapasPorPais[m.pais] ??= []).push(el);
+  }
+
+  // --- Columna de países: filtro acumulativo (interruptor por bandera) ---
+  const activos = new Set();
+  const columnaPaises = document.getElementById("paises");
+  for (const codigo of Object.keys(PAISES)) {
+    if (!chapasPorPais[codigo]) continue;   // ese país no tiene ninguna chapa en esta cara
+    const pais = PAISES[codigo];
+    const b = document.createElement("button");
+    b.className = "pais-boton";
+    b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = `<span class="pais-bandera">${pais.bandera}</span><span class="pais-nombre">${pais.nombre}</span>`;
+    b.onclick = () => {
+      const on = !activos.has(codigo);
+      on ? activos.add(codigo) : activos.delete(codigo);
+      b.classList.toggle("activo", on);
+      b.setAttribute("aria-pressed", String(on));
+      for (const el of chapasPorPais[codigo]) el.hidden = !on;
+    };
+    columnaPaises.appendChild(b);
+  }
+
+  // Boceto de ficha (A/B) y luz cenicienta del lado de noche (--noche del
+  // generador): dos grupos de botones independientes.
+  const grupo = (sel, alPulsar) => {
+    const bs = document.querySelectorAll(sel);
+    bs.forEach((b) => b.onclick = () => {
+      bs.forEach((x) => x.classList.remove("on"));
+      b.classList.add("on");
+      alPulsar(b);
+    });
+    bs[0].classList.add("on");
+  };
+  grupo("#panel button[data-b]", (b) => capa.classList.toggle("boceto-b", b.dataset.b === "b"));
+  grupo("#panel button[data-n]", (b) =>
+    document.getElementById("luna").src = `luna-visible-derecha-valles-rm2.5${b.dataset.n}.png`);
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: vuelo a la Luna</title>
+<!--
+  Banco de pruebas del vuelo de la Tierra a la Luna (src/scripts/viaje-luna.js):
+  el mismo código que la portada, con botones para combinar las variantes de
+  la Tierra y de los píxeles. Imita el hero de noche (Tierra quieta, sin
+  canvas). Al terminar deja 1,5 s la Luna de /luna encima y vuelve a empezar.
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-vuelo/
+-->
+<style>
+  :root { --luna-tam: min(80vh, 90vw); }
+  @supports (height: 1svh) { :root { --luna-tam: min(80svh, 90vw); } }
+  html, body { margin: 0; height: 100%; background: #05060a; overflow: hidden;
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  .hero { position: relative; height: 100vh; overflow: hidden; isolation: isolate; }
+  .hero-stars { position: absolute; inset: 0; background: url(../../public/zodk-estrellas.png) repeat;
+    background-size: 320px 320px; background-position: var(--estrellas-pos, 0 0);
+    image-rendering: pixelated; opacity: 0.9; }
+  .hero-stars::after { content: ""; position: absolute; inset: 0;
+    background: url(../../public/zodk-estrellas-noche.png) repeat; background-size: 480px 480px;
+    background-position: var(--estrellas-pos, 0 0); image-rendering: pixelated; }
+  .hero-astro { position: absolute; left: 5%; top: 5%; width: 168px; height: 168px; }
+  .astro-luna { position: absolute; inset: 0; background: url(../../public/zodk-luna-fases.png) no-repeat;
+    background-size: 3000% 100%; image-rendering: pixelated; }
+  .hero-planet { position: absolute; left: 50%; top: 12%; width: min(1900px, 122vw); aspect-ratio: 600 / 585;
+    transform: translateX(-50%); image-rendering: pixelated;
+    background: url(../../public/planeta/planeta-quieto-noche.png) no-repeat 0 0 / 100% 100%; }
+  .hero-titulo { position: absolute; left: 50%; top: 40%; transform: translateX(-50%);
+    font: 2.2rem "IBM Plex Serif", Georgia, serif; color: #fff; text-shadow: 0 0 2px #000; white-space: nowrap; }
+  .luna-final { position: absolute; left: 50%; top: 50%; width: var(--luna-tam); aspect-ratio: 1;
+    transform: translate(-50%, -50%); background: url(../../public/luna/luna-visible.png?v=2) 0 0 / 100% 100%;
+    image-rendering: pixelated; display: none; z-index: 50; }
+  .viaje-luna { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+  .viaje-luna > * { position: absolute; left: 0; top: 0; transform-origin: 0 0; image-rendering: pixelated; }
+  .viaje-icono { background: url(../../public/zodk-luna-fases.png) no-repeat; background-size: 3000% 100%; }
+  #panel { position: fixed; right: 12px; top: 12px; z-index: 60; background: #000c; padding: 8px 10px;
+    border-radius: 6px; line-height: 2; max-width: 30rem; }
+  #panel b { color: #fff; font-weight: normal; }
+  button { font: inherit; color: #05060a; background: #9fd3e6; border: 0; border-radius: 4px;
+    padding: 2px 7px; cursor: pointer; margin: 1px 0; }
+  button.on { background: #fff; outline: 2px solid #9fd3e6; }
+  #volar, #volver { background: #ffd84a; font-size: 13px; padding: 4px 12px; }
+  #desc { color: #cfd6de; line-height: 1.4; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-stars"></div>
+  <div class="hero-astro"><span class="astro-luna"></span></div>
+  <div class="hero-planet"></div>
+  <div class="hero-titulo">el blog de hegoi márquez</div>
+  <div class="luna-final"></div>
+</div>
+<div id="panel">
+  <b>Tierra:</b> <span id="tierras"></span><br>
+  <b>Píxeles:</b> <span id="pixeles"></span><br>
+  <b>Duración:</b> <button data-v="4">4 s</button> <button data-v="5">5 s</button> <button data-v="6">6 s</button>
+  <button data-v="7">7 s</button> <button data-v="8">8 s</button>
+  &nbsp; <button id="volar">▶ volar</button> <button id="volver">◀ volver</button>
+  <div id="desc"></div>
+</div>
+<script type="module">
+import { volarALuna, TIERRAS, PIXELES } from "../../src/scripts/viaje-luna.js";
+
+// Fase de hoy en el icono, como en la portada (faseLuna() de index.astro).
+const FASES = 30, MES = 29.530588853, NUEVA = Date.UTC(2000, 0, 6, 18, 14);
+const edad = ((((Date.now() - NUEVA) / 86400000) % MES) + MES) % MES;
+document.querySelector(".astro-luna").style.backgroundPosition =
+  `${((Math.round((edad / MES) * FASES) % FASES) / (FASES - 1)) * 100}% 0`;
+
+const q = new URLSearchParams(location.search);
+let tierra = q.get("tierra") || "encima", pixeles = q.get("pixeles") || "directo", segundos = Number(q.get("s")) || 6;
+const botones = (cont, opciones, clave) => {
+  for (const k of Object.keys(opciones)) {
+    const b = document.createElement("button");
+    b.textContent = k;
+    b.dataset[clave] = k;
+    b.title = opciones[k];
+    document.getElementById(cont).append(b, " ");
+  }
+};
+botones("tierras", TIERRAS, "t");
+botones("pixeles", PIXELES, "p");
+const pinta = () => {
+  document.querySelectorAll("button").forEach((b) => b.classList.toggle("on",
+    b.dataset.t === tierra || b.dataset.p === pixeles || b.dataset.v === String(segundos)));
+  document.getElementById("desc").textContent = `Tierra: ${TIERRAS[tierra]}. Píxeles: ${PIXELES[pixeles]}.`;
+  history.replaceState(null, "", `?tierra=${tierra}&pixeles=${pixeles}&s=${segundos}`);
+};
+document.querySelectorAll("#panel button").forEach((b) => b.onclick = () => {
+  if (b.dataset.t) tierra = b.dataset.t;
+  else if (b.dataset.p) pixeles = b.dataset.p;
+  else if (b.dataset.v) segundos = Number(b.dataset.v);
+  pinta();
+});
+document.querySelectorAll("#tierras button, #pixeles button").forEach((b) => b.addEventListener("click", pinta));
+
+const img = new Image();
+img.src = "../../public/luna/luna-visible.png?v=2";
+let enVuelo = false;
+// ▶ volar: de la Tierra a la Luna. ◀ volver: al revés (como el botón de /luna).
+const vuelo = async (inverso) => {
+  if (enVuelo) return;
+  enVuelo = true;
+  await img.decode();
+  const $ = (s) => document.querySelector(s);
+  const v = volarALuna({
+    icono: $(".astro-luna"), planeta: $(".hero-planet"), estrellas: $(".hero-stars"),
+    apagar: [$(".hero-titulo")], img, tierra, pixeles, duracion: segundos * 1000, inverso,
+  });
+  await v.fin;
+  if (!inverso) $(".luna-final").style.display = "block";   // lo que se vería en /luna
+  await new Promise((r) => setTimeout(r, 1500));
+  $(".luna-final").style.display = "";
+  v.limpiar();
+  enVuelo = false;
+};
+document.getElementById("volar").onclick = () => vuelo(false);
+document.getElementById("volver").onclick = () => vuelo(true);
+pinta();
+</script>
+</body>
+</html>

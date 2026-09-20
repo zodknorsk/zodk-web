@@ -80,7 +80,7 @@ generados) y al usuario no le convenció el conjunto. Se volvió atrás al sprit
 con sombreado horneado. Si se retoma la fluidez: subir `FRAMES` y ya, o
 plantear otra cosa, pero el fundido de dos capas queda aparcado.
 
-## Modo noche v2 — TERMINADO (rama `planeta-noche`, fusionada en `main` el 13-sep-2026)
+## Modo noche v2 — TERMINADO (rama `night-planet-v2`, fusionada en `main` el 13-sep-2026)
 
 El usuario reabrió la noche: se rehace **desde cero con el mismo pipeline que
 el día** (generador Python → canvas, giro continuo, misma geografía y
@@ -243,7 +243,7 @@ pequeños.
    nativa).
 4. **Aparcado** — aurora boreal en el modo noche.
 5. **Pasada de calidad del pixel art (sprite de DÍA)** — EN CURSO, rama
-   `planeta-pixelart-v2` (creada 13-sep-2026 tal como estaba previsto, sin
+   `daylight-planet-v2` (creada 13-sep-2026 tal como estaba previsto, sin
    esperar al 15). Todo esto ya está hecho y en `public/` (sin commitear):
    - **Rampas de paleta**: mar en 3 tonos (turquesa de costa → plataforma →
      abisal). Colores de bioma más vivos/alegres (verdes más claros y
