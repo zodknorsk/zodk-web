@@ -199,13 +199,19 @@ export async function montarLuna(canvas, {
   const ctx = canvas.getContext("2d");
   let actual = inicial, raf = 0, girando = false, vivo = true;
 
-  // El lienzo va al tamaño real en pantalla (píxeles de dispositivo) y la Luna
-  // (600 px de arte) se amplía al dibujarla, sin suavizado. Antes el canvas
-  // era de 600 px y lo ampliaba el CSS con image-rendering: pixelated, pero
-  // Firefox/Zen lo suavizaba igual: se veía con menos detalle, más cuanto más
-  // grande (a pantalla completa). Si se ve más pequeña que 600, suavizada
-  // (reducir sin suavizado pierde píxeles).
-  const LADO_MAX = 2400;
+  // La Luna (600 px de arte) se amplía al dibujarla en el lienzo visible, sin
+  // suavizado. El canvas NO era de 600 px ampliado por CSS porque Firefox/Zen
+  // lo suavizaba igual: se veía con menos detalle, más cuanto más grande. Si se
+  // ve más pequeña que 600, suavizada (reducir sin suavizado pierde píxeles).
+  //
+  // Pero tampoco va a los píxeles exactos de la pantalla: se queda en un
+  // múltiplo ENTERO del arte y como mucho ×3, y lo que falte lo amplía el CSS,
+  // o sea la GPU al componer, que sale gratis. Es el mismo arreglo que la
+  // portada (src/scripts/planeta.js, 20-sep-2026): allí el volcado costaba
+  // 7,1 ms por fotograma a ×5 y 3,8 a ×3, y el usuario no vio diferencia de
+  // nitidez. Aquí se notaba en el giro, que es lo que más calienta de /luna.
+  // Ver temperatura-zen.md.
+  const LADO_MAX = 2400, MULT_MAX = 3;
   let lado = 0;
   const fuente = document.createElement("canvas");   // fotograma del giro a 600 px, antes de ampliar
   fuente.width = fuente.height = S;
@@ -213,15 +219,20 @@ export async function montarLuna(canvas, {
   function vuelca(origen) {
     ctx.imageSmoothingEnabled = lado < S;
     ctx.imageSmoothingQuality = "high";
-    ctx.clearRect(0, 0, lado, lado);
+    // "copy" sustituye lo que había: una pasada de relleno en vez de dos
+    // (clearRect + drawImage), con el mismo resultado.
+    ctx.globalCompositeOperation = "copy";
     ctx.drawImage(origen, 0, 0, lado, lado);
+    ctx.globalCompositeOperation = "source-over";
   }
   function pintarCara(nombre) {
     vuelca(P.caras[nombre]);
   }
   function ajusta() {
     const w = Math.round(canvas.getBoundingClientRect().width * (window.devicePixelRatio || 1));
-    const nuevo = Math.min(LADO_MAX, w > 0 ? w : S);
+    const bruto = Math.min(LADO_MAX, w > 0 ? w : S);
+    const k = Math.min(MULT_MAX, Math.floor(bruto / S));
+    const nuevo = k >= 2 ? k * S : bruto;            // por debajo de ×2, el tamaño exacto de pantalla
     if (nuevo === lado) return;
     lado = canvas.width = canvas.height = nuevo;   // (cambiar el tamaño borra el lienzo)
     if (!girando) pintarCara(actual);
@@ -326,7 +337,7 @@ export async function montarLuna(canvas, {
     // Un fotograma con la Luna en la orientación M (ver orientacion()), luz
     // de fase `fase`, exposición `expo` y tono frío `frio`, como pasada_lenta()
     // + colorear() del generador (sin sombras proyectadas, una muestra por píxel).
-    function calcular(M, fase, lado, expo, frio) {
+    function calcular(M, fase, lado, expo, frio, limpia = true) {
       const f = fase * DEG, a = D.SOL_ARR * DEG;
       let SX = lado * Math.sin(f) * Math.cos(a), SY = Math.sin(f) * Math.sin(a), SZ = Math.cos(f);
       const sn0 = Math.sqrt(SX * SX + SY * SY + SZ * SZ);
@@ -391,9 +402,11 @@ export async function montarLuna(canvas, {
         j = j < 0 ? 0 : j >= KN ? KN - 1 : j;
         cod[pIdx[n]] = (base + m) * KN + j;
       }
-      // limpieza: como _limpiar() del generador, dos pasadas
+      // limpieza: como _limpiar() del generador, dos pasadas sobre las S x S
+      // celdas. Es la mitad larga del fotograma, y durante el giro se puede
+      // saltar (?giro=sucio): dura 2,8 s y la cara final es un PNG ya limpio.
       let src = cod, dst = cod2;
-      for (let pasada = 0; pasada < 2; pasada++) {
+      for (let pasada = 0; limpia && pasada < 2; pasada++) {
         dst.set(src);
         for (let yy = 1; yy < S - 1; yy++) {
           for (let xx = 1; xx < S - 1; xx++) {
@@ -422,9 +435,9 @@ export async function montarLuna(canvas, {
 
     // De la cara A a la B: `e` = cuánto ha girado (0..1), `x` = cuánto ha
     // cambiado la exposición y el tono (0..1; hoy, lo mismo que `e`).
-    function pintar(A, B, tray, e, x) {
+    function pintar(A, B, tray, e, x, limpia = true) {
       const M = mul3(rotEje(tray.n, tray.phiFin * e), tray.MA);
-      calcular(M, lerp(A.fase, B.fase, e), A.lado, lerp(A.exposicion, B.exposicion, x), lerp(A.frio, B.frio, x));
+      calcular(M, lerp(A.fase, B.fase, e), A.lado, lerp(A.exposicion, B.exposicion, x), lerp(A.frio, B.frio, x), limpia);
       fuenteCtx.putImageData(img, 0, 0);
       vuelca(fuente);
     }
@@ -455,12 +468,28 @@ export async function montarLuna(canvas, {
     if (!vivo) return;
     const A = D.caras[actual], B = D.caras[destino], tray = trayecto(A, B);
     const t0 = performance.now();
+    // Tope de fotogramas por segundo: cada uno calcula la Luna entera píxel a
+    // píxel (7-9 ms en Zen) y el portátil del usuario va a 120 Hz, así que sin
+    // tope el giro pedía ese cálculo 120 veces por segundo y era el pico de
+    // consumo de toda la web. A 60 el giro se ve igual. Ver temperatura-zen.md.
+    const FPS = 60;
+    // Sin las dos pasadas de limpieza: son la mitad larga del fotograma y en un
+    // giro de 2,8 s no se ven (probado por el usuario el 20-sep-2026: "con
+    // sucio no se nota nada", y la CPU dejó de subir de 50 y algo a 60-64 °C).
+    // La cara con la que termina el giro es un PNG ya limpio, así que lo que
+    // queda en pantalla al acabar no se ve afectado.
+    const limpia = false;
+    let ultimo = -1;
     const paso = (ahora) => {
       if (!vivo) return;
       const s = (ahora - t0) / 1000;
       if (s >= duracion) return termina();
-      const e = inOutSine(s / duracion);
-      g.pintar(A, B, tray, e, e);
+      const hueco = Math.floor(s * FPS);
+      if (hueco !== ultimo) {
+        ultimo = hueco;
+        const e = inOutSine(s / duracion);
+        g.pintar(A, B, tray, e, e, limpia);
+      }
       raf = requestAnimationFrame(paso);
     };
     raf = requestAnimationFrame(paso);

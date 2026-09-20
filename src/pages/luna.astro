@@ -273,6 +273,11 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     const volver = document.querySelector<HTMLButtonElement>(".luna-volver");
     const hero = document.querySelector<HTMLElement>(".luna-hero");
     if (!cv || !boton || !volver || !hero) return;
+    // Banco de pruebas de consumo de la Orion (?orion=quieta / sin-z / capa),
+    // igual que el ?medir de la portada: las reglas están en global.css, junto
+    // a la nave. Solo hace algo con el parámetro puesto.
+    const orion = new URLSearchParams(location.search).get("orion");
+    if (orion) hero.classList.add(`prueba-orion-${orion}`);
     const estadoGuardado = leerEstadoLuna();
     const disco = cv.parentElement as HTMLElement;
     const pon = (cara: string) => {
