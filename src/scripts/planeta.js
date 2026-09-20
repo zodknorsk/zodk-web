@@ -744,12 +744,21 @@ export async function montarPlaneta(canvas, {
   // ---- bucle
   // Giro CONTINUO: en cada fotograma el mapa avanza la fracción de celda que
   // toque y cada borde salta su píxel justo cuando le toca, a ritmo constante.
-  // Se dibuja en franjas fijas de 1/60 s (con 4 ms de margen): a 120 Hz, justo
-  // un fotograma de cada dos. Solo se pintan las filas que caen en la ventana.
+  // Se dibuja en franjas fijas de 1/FPS (con 4 ms de margen), así que a 120 Hz
+  // se pinta uno de cada cuatro fotogramas. Solo se pintan las filas que caen
+  // en la ventana.
+  // FPS = 30 y no 60 (20-sep-2026): el planeta da una vuelta cada 90 s, así que
+  // a 30 fps cada fotograma avanza 0,13° — invisible — y se repinta la mitad de
+  // veces. Importa porque cada repintado borra y reescala el lienzo visible
+  // entero (vuelca(), unos 5 MP a pantalla completa): a 60 fps eso calentaba el
+  // portátil del usuario en Zen (medido: 27-33 W de día y 31-37 de noche, frente
+  // a 16 W en reposo). Si se vuelve a tocar, medir con el planeta a pantalla
+  // completa, no en una ventana pequeña.
   // Lienzo de arte entero al canvas visible (sin suavizado si se amplía; si
   // se ve más pequeño que el arte, suavizado: reducir sin suavizar pierde
   // píxeles). Entero y no por franjas: con escala no entera, las franjas
   // dejarían costuras.
+  const FPS = 30;                                      // repintados por segundo (ver el bloque de arriba)
   function vuelca() {
     ctx.imageSmoothingEnabled = canvas.width < W;
     ctx.imageSmoothingQuality = "high";
@@ -820,7 +829,7 @@ export async function montarPlaneta(canvas, {
     const quieto = parado || pausado();
     if (!quieto) rot = (rot + dt / 1000 * MW / vuelta) % MW;
     if (t0 === null) t0 = now;
-    const slot = Math.floor((now - t0 + 4) / (1000 / 60));
+    const slot = Math.floor((now - t0 + 4) / (1000 / FPS));
     if (slot === lastSlot) return;
     lastSlot = slot;
     if (quieto && completo && !sucio && !fundido) return;   // parado y sin cambios: nada que pintar

@@ -126,6 +126,15 @@ Pendiente (sin orden, lo decide él):
 
 ## Mantenimiento
 
+### ABIERTO: la portada calienta en Zen — ver `temperatura-zen.md`
+
+El usuario tiene un problema de ventiladores y temperatura con la web abierta en
+Zen, causado por una regresión de rendimiento que entró con el trabajo de la
+Luna. Hay un arreglo hecho y medido y varias cosas pendientes. **Si el tema sale,
+leer `temperatura-zen.md` en la raíz antes de tocar nada**: está el síntoma, cómo
+medirlo sin engañarse (vatios, nunca ventiladores, y sin grabar la pantalla), los
+datos, la causa y los errores de diagnóstico ya cometidos.
+
 ### Repaso del repositorio (20-sep-2026, commit `9ceb03b`)
 
 Revisión completa a petición del usuario: buscar cosas raras, borrar lo que ya
