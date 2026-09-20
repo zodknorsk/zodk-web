@@ -896,7 +896,7 @@ html.dark .hero-luna-enlace { display: block; }
   align-items: flex-end;
   gap: 6px;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
