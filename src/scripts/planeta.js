@@ -267,10 +267,17 @@ export async function montarPlaneta(canvas, {
   // ampliado sin suavizado. Antes el canvas era de W x H y lo ampliaba el CSS
   // con image-rendering: pixelated, pero Firefox/Zen lo suavizaba igual (se
   // veía con menos detalle, más a pantalla completa). Igual que la Luna
-  // (src/scripts/luna.js). Se probó ampliar solo un número entero de veces:
-  // con la ventana estrecha (menos de ×2) seguía suavizado. Tope LADO_MAX de
-  // ancho para no disparar la memoria.
+  // (src/scripts/luna.js). Tope LADO_MAX de ancho para no disparar la memoria.
+  // Desde el 20-sep-2026 el lienzo visible no va a los píxeles de pantalla sino
+  // a un múltiplo entero del arte, ×3 como mucho: ver anchoVisible, que es
+  // donde está medido por qué.
   const LADO_MAX = 3000;
+  // ?medir imprime los ms por fotograma (Zen no se puede manejar desde fuera).
+  // ?lienzo=pantalla vuelve al lienzo de antes y ?lienzo=3 (o 4, o 5) fuerza ese
+  // múltiplo del arte, para comparar nitidez y coste en el navegador del usuario.
+  const OPC = new URLSearchParams(location.search);
+  const MEDIR = OPC.has("medir");
+  const LIENZO = OPC.get("lienzo");   // "pantalla" = como antes; un número = ese múltiplo del arte
   const fuente = document.createElement("canvas");
   fuente.width = W;
   fuente.height = H;
@@ -704,6 +711,7 @@ export async function montarPlaneta(canvas, {
   function draw(rot, y0 = 0, y1 = H) {
     const luna = esNoche();
     if (luna && !noche) return false;
+    const tMed = MEDIR ? performance.now() : 0;
     borraCielo();
     let k = 1;
     if (fundido) {
@@ -735,7 +743,9 @@ export async function montarPlaneta(canvas, {
       if (!luna && k >= 1) auroraCv.style.visibility = "hidden";
     }
     fctx.putImageData(img, 0, 0, 0, y0, W, y1 - y0);  // solo la franja pintada
+    if (MEDIR) msDibujo += performance.now() - tMed;
     vuelca();
+    if (MEDIR) { medN++; medidor(); }
     if (alMoverBanderas) alMoverBanderas(vis.map(([f, ox, oy]) => ({ iso: f.iso, x: ox - 1, y: oy - 1 })), W, H);
     if (alDibujar) alDibujar();
     return true;
@@ -759,15 +769,63 @@ export async function montarPlaneta(canvas, {
   // píxeles). Entero y no por franjas: con escala no entera, las franjas
   // dejarían costuras.
   const FPS = 30;                                      // repintados por segundo (ver el bloque de arriba)
+
+  // ---- medidor (?medir): caja fija abajo a la izquierda con los ms de cada
+  // parte del fotograma. Sin ?medir no se ejecuta nada de esto.
+  let msDibujo = 0, msVuelca = 0, medN = 0, medT0 = 0, medCaja = null;
+  function medidor() {
+    if (!medCaja) {
+      medCaja = document.createElement("div");
+      medCaja.style.cssText = "position:fixed;left:8px;bottom:8px;z-index:99;background:#000c;color:#7fff7f;"
+        + "font:12px/1.5 ui-monospace,monospace;padding:6px 8px;white-space:pre;pointer-events:none;border-radius:4px";
+      document.body.appendChild(medCaja);
+      medT0 = performance.now();
+      return;
+    }
+    const dt = performance.now() - medT0;
+    if (dt < 1000) return;
+    const n = Math.max(1, medN);
+    medCaja.textContent =
+      `${(medN / dt * 1000).toFixed(0)} fps · dibujo ${(msDibujo / n).toFixed(1)} ms · volcado ${(msVuelca / n).toFixed(1)} ms\n`
+      + `arte ${W}x${H} · lienzo ${canvas.width}x${canvas.height} (x${(canvas.width / W).toFixed(2)}) · `
+      + `${(canvas.width * canvas.height / 1e6).toFixed(2)} MP por volcado`;
+    msDibujo = msVuelca = medN = 0;
+    medT0 = performance.now();
+  }
+
   function vuelca() {
+    const t = MEDIR ? performance.now() : 0;
     ctx.imageSmoothingEnabled = canvas.width < W;
     ctx.imageSmoothingQuality = "high";
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // "copy" sustituye lo que había: una pasada de relleno en vez de dos
+    // (clearRect + drawImage). El resultado es idéntico, también con el cielo
+    // transparente, porque se cubre el lienzo entero.
+    ctx.globalCompositeOperation = "copy";
     ctx.drawImage(fuente, 0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "source-over";
+    if (MEDIR) msVuelca += performance.now() - t;
+  }
+  // El lienzo visible se queda en un múltiplo ENTERO del arte y como mucho ×3.
+  // Lo que falte hasta el tamaño real en pantalla lo amplía el CSS, o sea la
+  // GPU al componer, que sale gratis; el volcado por software es lo que cuesta.
+  // Medido en Zen a pantalla completa (20-sep-2026, con ?medir): a ×5 (el tope
+  // de 3000 px, 8,78 MP) el volcado tardaba 7,1 ms por fotograma; a ×3 (1800 px,
+  // 3,16 MP), 3,8 ms. El usuario comparó las dos de noche —las luces de ciudad
+  // son el detalle más fino— y **las vio iguales de nítidas**, así que ×3.
+  // Por debajo de ×2 se usa el tamaño exacto de pantalla: en ventana estrecha
+  // el múltiplo entero se veía suavizado (se probó al hacer 625bffb).
+  const MULT_MAX = 3;
+  function anchoVisible() {
+    const w = Math.round(canvas.getBoundingClientRect().width * (window.devicePixelRatio || 1));
+    const bruto = Math.min(LADO_MAX, w > 0 ? w : W);
+    if (LIENZO === "pantalla") return bruto;
+    const forzado = Number(LIENZO);
+    if (forzado >= 1) return Math.min(LADO_MAX, Math.round(forzado) * W);
+    const k = Math.min(MULT_MAX, Math.floor(bruto / W));
+    return k >= 2 ? k * W : bruto;
   }
   function ajusta() {
-    const w = Math.round(canvas.getBoundingClientRect().width * (window.devicePixelRatio || 1));
-    const nuevo = Math.min(LADO_MAX, w > 0 ? w : W);
+    const nuevo = anchoVisible();
     if (nuevo === anchoCv) return;
     anchoCv = nuevo;
     canvas.width = nuevo;                              // (cambiar el tamaño borra el canvas)
