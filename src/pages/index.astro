@@ -51,13 +51,16 @@ const todosEventos = await getCollection("eventos");
 // Chapas de bandera del planeta: un país sale si algún artículo lleva una de
 // sus etiquetas (src/data/paises.ts). Al pasar el ratón por la chapa se
 // despliega una ficha, como la de las naves, con esos artículos. Las notas
-// cuentan una a una; los eventos, por su página índice.
+// cuentan una a una; los eventos, por su página índice. Lo del Proyecto Luna
+// (etiqueta "luna") queda fuera: esas misiones llevan también etiqueta de país
+// (eeuu, china...) para su propio uso en /luna, pero tienen su propia página y
+// no deben salir en las banderas de la Tierra.
 const articulos = [
   ...(await getCollection("notas"))
-    .filter((n) => !n.data.draft)
+    .filter((n) => !n.data.draft && !n.data.tags.some((t) => t.toLowerCase() === "luna"))
     .map((n) => ({ titulo: n.data.title, url: `/notas/${n.slug}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
   ...todosEventos
-    .filter((e) => e.data.kind === "index" && !e.data.draft)
+    .filter((e) => e.data.kind === "index" && !e.data.draft && !e.data.tags.some((t) => t.toLowerCase() === "luna"))
     .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
 ];
 const banderasBlog = PAISES.map((p) => ({
@@ -479,6 +482,31 @@ const eventos = todosEventos
   const LUNA_IMG = `/luna/luna-visible.png?v=${LUNA_V}`;
   let estrellasLuna: string | null = null;   // posición de las estrellas al aterrizar, para /luna
 
+  // Enlace "luna" de la cabecera (Header.astro): en la portada se comporta
+  // como la luna del hero. De noche, exactamente igual que pulsarla (dispara
+  // un clic real sobre .hero-luna-enlace, así que reutiliza montarViaje sin
+  // duplicar nada). De día, primero cambia a modo noche pulsando el propio
+  // botón de tema (mismo camino que si lo pulsara el usuario) y espera a que
+  // se vea la luna antes de volar.
+  let quitaCabeceraLuna: (() => void) | null = null;
+  function montarEnlaceCabecera(lunaHero: HTMLAnchorElement) {
+    const enlace = document.querySelector<HTMLAnchorElement>("header nav a[href='/luna']");
+    if (!enlace) return () => {};
+    const clic = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      if (document.documentElement.classList.contains("dark")) {
+        lunaHero.click();
+        return;
+      }
+      document.getElementById("theme-button")?.click();
+      const espera = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
+      setTimeout(() => lunaHero.click(), espera);
+    };
+    enlace.addEventListener("click", clic);
+    return () => enlace.removeEventListener("click", clic);
+  }
+
   let quitaViaje: (() => void) | null = null;
   function montarViaje(hero: HTMLElement) {
     const enlace = hero.querySelector<HTMLAnchorElement>(".hero-luna-enlace");
@@ -539,8 +567,14 @@ const eventos = todosEventos
     quitaAstro = montarAstro();
     quitaViaje?.();
     quitaViaje = null;
+    quitaCabeceraLuna?.();
+    quitaCabeceraLuna = null;
     const heroViaje = document.querySelector<HTMLElement>(".hero");
-    if (heroViaje?.querySelector(".hero-luna-enlace")) quitaViaje = montarViaje(heroViaje);
+    const lunaHero = heroViaje?.querySelector<HTMLAnchorElement>(".hero-luna-enlace") ?? null;
+    if (heroViaje && lunaHero) {
+      quitaViaje = montarViaje(heroViaje);
+      quitaCabeceraLuna = montarEnlaceCabecera(lunaHero);
+    }
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
     const hero = cv.closest<HTMLElement>(".hero");
@@ -596,6 +630,8 @@ const eventos = todosEventos
     quitaAstro = null;
     quitaViaje?.();
     quitaViaje = null;
+    quitaCabeceraLuna?.();
+    quitaCabeceraLuna = null;
     planeta?.desmontar();
     quitaMira?.();
     planeta = null;

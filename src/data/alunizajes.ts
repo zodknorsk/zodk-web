@@ -183,6 +183,11 @@ export const RELES: Rele[] = [
     texto: "Lanzado en marzo de 2024 a una órbita elíptica alrededor de la Luna. Hizo de repetidor para la Chang'e 6 y lo hará para las siguientes misiones chinas al polo sur." },
 ];
 
+// Ficha de la Orion (Artemis II) en luna.astro: el texto vive en el propio
+// .astro (no orbita como un dato más), pero el enlace a su nota sigue el mismo
+// patrón que RELES ("Leer la nota" solo si está publicada).
+export const ORION_NOTA = "orion-artemis-ii";
+
 /** La chapa de un país como SVG (11x7 + contorno de 1 px), igual que en la Tierra. */
 export function svgBandera(pais: Pais): string {
   const fw = 11, fh = 7;

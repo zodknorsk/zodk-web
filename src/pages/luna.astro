@@ -8,7 +8,7 @@
 // logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection } from "astro:content";
-import { ALUNIZAJES, PAISES_LUNA, RELES, svgBandera } from "../data/alunizajes";
+import { ALUNIZAJES, PAISES_LUNA, RELES, ORION_NOTA, svgBandera } from "../data/alunizajes";
 
 // Chapas y columna se pintan desde src/data/alunizajes.ts. El sitio de cada
 // chapa lo pone el script al llegar (depende de la cara que se vea), así que
@@ -125,6 +125,9 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
                   el canadiense Jeremy Hansen) a rodear la Luna y volver sin alunizar: el primer vuelo
                   tripulado más allá de la órbita terrestre desde el Apolo 17.
                 </p>
+                {publicadas.has(ORION_NOTA) && (
+                  <a class="mision-enlace" href={`/notas/${ORION_NOTA}`}>Leer la nota →</a>
+                )}
               </div>
             </div>
           </div>
@@ -159,6 +162,16 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
         </div>
       ))}
     </div>
+    <!-- Menú del Proyecto Luna: enlaces a las notas del blog que dan contexto
+         (alunizajes, relés de la cara oculta y Orion). No depende del motor
+         ni de JS, así que se pinta siempre (a diferencia de las fichas, que
+         necesitan ratón); solo se enlaza si la nota está publicada, como en
+         las fichas. Sustituye a la cabecera normal, que aquí no se pinta. -->
+    <nav class="luna-menu" aria-label="Proyecto Luna">
+      {publicadas.has("alunizajes") && <a href="/notas/alunizajes">alunizajes</a>}
+      {publicadas.has("reles-en-la-cara-oculta") && <a href="/notas/reles-en-la-cara-oculta">relés</a>}
+      {publicadas.has(ORION_NOTA) && <a href={`/notas/${ORION_NOTA}`}>orion</a>}
+    </nav>
     <!-- Botones: volver a la Tierra (HUD, con esquinas doradas como las fichas)
          abajo a la derecha, y el mando de cara abajo en el centro: UN solo
          botón, se pulse donde se pulse cambia de cara; la píldora dorada se
