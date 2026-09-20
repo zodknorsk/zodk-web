@@ -1,69 +1,57 @@
-# Logo zodk.eu — v1.0
+# Logo zodk.eu
 
 Planeta Tierra en pixel art girando sobre su eje con un dron de observación
 sobrevolándolo. Sin dependencias, sin peticiones externas, sin JavaScript.
+Es el logo de la **cabecera**: no confundirlo con el planeta del hero, que es
+otra cosa y va en un canvas (ver `HERO-WIP.md`).
 
-## Contenido
+## Qué hay aquí y qué sirve la web
 
-| Archivo | Peso | Para qué |
+| Archivo (aquí) | En la web | Para qué |
 |---|---|---|
-| `zodk-logo-animado.svg` | 89 KB / **7,1 KB gzip** | Home, hero, header |
-| `zodk-logo-estatico.svg` | 19 KB / **1,5 KB gzip** | Cuando no hay sitio para el picado del dron |
-| `favicon.svg` | 16 KB / **1,2 KB gzip** | Favicon vectorial (solo el globo) |
-| `favicon-16.png` `favicon-32.png` `favicon-48.png` | < 4 KB | Fallback para navegadores viejos |
-| `apple-touch-icon.png` | 180×180 | iOS. Fondo opaco: Apple no respeta la transparencia |
-| `og-image.png` | 1200×630 | Open Graph y Twitter Card |
-| `demo-animado.html` | — | Prueba en claro y oscuro, a dos tamaños |
-| `ANIMACION.md` | — | Cómo funciona y qué tocar para cambiarlo |
 | `generar-logo.py` | — | Regenera el SVG animado. Solo librería estándar |
+| `ANIMACION.md` | — | Cómo funciona la animación y qué tocar |
+| `zodk-favicon.svg` | `public/zodk-favicon-v2.svg` | Favicon vectorial (solo el globo) |
+| `favicon-16.png` `favicon-32.png` | `public/favicon-16-v2.png` `favicon-32-v2.png` | Fallback para navegadores viejos |
+| `favicon.ico` | `public/favicon-v2.ico` (y `public/favicon.ico`) | El `.ico` de siempre; el de la raíz lo piden solos algunos navegadores |
+| `apple-touch-icon.png` | `public/apple-touch-icon-v2.png` (y el de la raíz) | iOS. Fondo opaco: Apple no respeta la transparencia |
+| — | `public/zodk-logo-animado.svg` | El logo de la cabecera, modo claro |
+| — | `public/zodk-logo-nocturno.svg` | El mismo, modo oscuro |
+| — | `public/og-image.png` | Open Graph y Twitter Card (1200×630) |
 
-## Dónde va cada cosa
+El sufijo **`-v2`** es cache-busting: los navegadores cachean el favicon por
+URL de forma muy agresiva y no lo sueltan ni borrando datos, así que al cambiar
+el icono se sube el número en vez de pisar el archivo. Si se vuelve a cambiar:
+`-v3`, y actualizar `src/components/Head.astro`.
 
-Copia los estáticos a la raíz pública (`public/` en Astro) y los SVG que se
-incrustan a `src/assets/`:
-
-```
-public/
-  favicon.svg
-  favicon-16.png
-  favicon-32.png
-  favicon-48.png
-  apple-touch-icon.png
-  og-image.png
-src/assets/
-  zodk-logo-animado.svg
-  zodk-logo-estatico.svg
-```
-
-## Etiquetas del `<head>`
+## Etiquetas del `<head>` (las que hay hoy)
 
 ```html
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-<meta property="og:image" content="https://zodk.eu/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon-v2.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32-v2.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16-v2.png">
+<link rel="icon" type="image/svg+xml" href="/zodk-favicon-v2.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png">
 ```
 
-## Incrustar el logo
+La imagen de Open Graph la pone `Head.astro` por su cuenta: `/og-image.png`, o
+la que traiga la página.
 
-```astro
----
-import logo from '../assets/zodk-logo-animado.svg?raw';
----
-<span class="logo" set:html={logo} />
-```
+## Cómo se incrusta el logo
+
+**No** se incrusta en línea: va como imagen de fondo en CSS, para que el
+navegador se baje solo el SVG del tema activo (el de día pesa 89 KB y el de
+noche 154 KB; con dos `<img>` se bajarían los dos en cada página).
 
 ```css
-.logo svg { width: 52px; height: 67px; image-rendering: pixelated; }
+/* src/styles/global.css */
+.logo-home {
+  width: 78px; height: 100px;
+  background: url(/zodk-logo-animado.svg) center / contain no-repeat;
+  image-rendering: pixelated;
+}
+html.dark .logo-home { background-image: url(/zodk-logo-nocturno.svg); }
 ```
-
-Incrustado en línea es lo preferible: los `@keyframes` van dentro del propio
-SVG, así que funciona igual como `<img>`, pero en línea te ahorras una petición
-y puedes redefinir el color del contorno desde fuera.
 
 **Escala por múltiplos enteros** de 26×33,5 — 52×67, 78×100, 104×134 — para que
 los píxeles queden cuadrados. Cualquier otro valor los deja borrosos aunque
@@ -71,10 +59,10 @@ pongas `image-rendering: pixelated`.
 
 ## Altura mínima
 
-El dron recorre 105 px de los 335 del `viewBox`. Si en el header solo tienes
-sitio para una franja baja, se saldrá de plano: ahí usa
-`zodk-logo-estatico.svg`, que trae el mismo dibujo con el dron quieto en su
-posición inicial.
+El dron recorre 105 px de los 335 del `viewBox`, así que el logo necesita su
+alto completo o se sale de plano. Hubo una versión estática para franjas bajas
+(`zodk-logo-estatico.svg`) que nunca se usó y ya no está en el repo; si hiciera
+falta, sale de `generar-logo.py` con el dron quieto.
 
 ## Modo claro y oscuro
 

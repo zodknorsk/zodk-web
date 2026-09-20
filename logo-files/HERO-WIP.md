@@ -1,25 +1,40 @@
 # Planeta del hero — estado
 
 Portada de zodk.eu: la Tierra en pixel art a pantalla completa, hemisferio
-norte, Polo Norte arriba, girando, con un dron sobrevolándola. Encuadre de
+norte, Polo Norte arriba, girando, con una nave sobrevolándola. Encuadre de
 "horizonte" inclinado (no cenital). **Cambia de día a noche con el botón de
-tema**, igual que el logo. Sin texto de marca.
+tema**, igual que el logo.
 
-## Cómo funciona
+## Cómo funciona (estado actual, sept 2026)
 
-El planeta es un **sprite PNG** de 28 fotogramas en horizontal (1 px = 1 celda).
-La web lo anima moviendo `background-position` a saltos (`steps(28)`, vuelta en
-60 s): un recorte de bitmap, barato en cualquier navegador. Se probó un SVG
-vectorial animado y calentaba la CPU en Firefox/Zen (ver más abajo).
+El planeta es un **`<canvas>` que se redibuja fotograma a fotograma**
+(`src/scripts/planeta.js`), el mismo de día y de noche: 90 s por vuelta, giro
+continuo (no a saltos). No hay sprite: lo que se sirve son **datos**, en
+`public/planeta/` (`planeta-mapa.png` con el material de cada celda,
+`planeta-lut.png` con el color por material y escalón de luz, y
+`planeta-datos.json`), unos 255 KB frente a los 3,6 MB del sprite viejo. Los
+genera `logo-files/generar-planeta-hero.py`. Con el planeta quieto no gasta
+CPU, y el detalle ya no depende del número de fotogramas.
 
-(HISTÓRICO: desde sept 2026 el día y la noche son el MISMO `<canvas>`, ver
-punto 7 y "Modo noche v2". Lo de esta sección describe los sprites viejos.)
-- Modo claro → `public/zodk-planeta-sprite.png` (Tierra de día, sol, terminador
-  suave, ciudades como puntos oscuros — de día no se encienden) + `zodk-dron.svg`.
-- Modo oscuro → `public/zodk-planeta-noche.png` (retirado) + `zodk-dron-noche.svg`.
+Encima del canvas van, en el DOM: el título con su marco de visor, la
+coordenada MGRS del punto bajo el cursor, la mira y la X de blanco al pulsar,
+el botón de play/pausa del giro, las chapas de bandera de los países con
+artículos, la nave de turno, las nubes y —de noche— el sol/luna y la aurora.
 
-El sombreado (terminador, oscurecimiento del borde, atmósfera) va **horneado en
-el sprite**, no como capa CSS. Una sola capa animada.
+Sigue habiendo dos claves que NO cambian: el sombreado (terminador, limbo,
+atmósfera) se calcula al pintar, no como capa CSS encima; y el canvas se dibuja
+a tamaño real de pantalla y se amplía sin suavizado, porque Firefox/Zen suaviza
+un canvas pequeño ampliado por CSS aunque lleve `image-rendering: pixelated`
+(ver "Pruebas en Zen" en LUNA-WIP.md, el mismo arreglo se aplicó aquí).
+
+### Histórico: cómo funcionaba antes (sprite PNG)
+
+Hasta sept 2026 era un **sprite PNG** de 28 fotogramas (luego 60, en rejilla)
+que la web animaba moviendo `background-position` con `steps()`. El sombreado
+iba horneado en la imagen. Se sustituyó porque a 60 fotogramas en 120 s el giro
+"iba a saltos de 2 s" (ver el punto 7 del registro de abajo). Los PNG de
+entonces (`zodk-planeta-sprite.png`, `zodk-planeta-noche.png`) están
+gitignorados y ya no los usa nadie.
 
 ## Pipeline (`logo-files/`)
 
@@ -49,19 +64,25 @@ Los .geojson se re-descargan con los `curl` documentados en cada script.
 - `src/layouts/PageLayout.astro` — prop `hero?: boolean`; pinta `<slot name="hero" />`
   a sangre y pone `class="home at-top"` en `<html>`.
 - `src/pages/index.astro` — `<section slot="hero">` con estrellas, sparkle,
-  `.hero-planet` (div), `.hero-dron` (div), flecha de scroll. Sin texto. Debajo,
+  `.hero-astro` (sol/luna), el enlace `.hero-luna-enlace` que lleva a `/luna`
+  (solo de noche), `.hero-planet` con su `<canvas>`, el título, las chapas de
+  bandera, la nave de turno y la flecha de scroll. Debajo,
   `<div id="hero-sentinel">` marca el límite hero/contenido.
 - `src/components/Head.astro` — `initHeader()`: la cabecera de la portada tiene 3
   estados según clases en `<html>`:
-  1. `at-top` (sin `scrolled`): nav mínima "notas / eventos / tema", sin logo.
+  1. `at-top` (sin `scrolled`): nav mínima "notas / eventos / moon-project /
+     tema", sin logo.
   2. sin nada: al bajar por el hero la cabecera se esconde arriba.
   3. `scrolled`: cabecera sólida con logo, al llegar al contenido del blog.
   Un IntersectionObserver sobre `#hero-sentinel` conmuta `scrolled` (línea de
   activación en `rootMargin: "0px 0px -52% 0px"`, simétrica al subir). El resto
   de páginas, sin centinela, usan el `onScroll()` de siempre.
 - `src/styles/global.css` — bloque "Portada: el hero del planeta" + reglas
-  `html.home` de la cabecera. `html.dark` cambia los sprites a la versión de
-  noche; `.hero-stars::after` añade más estrellas solo en oscuro.
+  `html.home` de la cabecera. `html.dark` cambia a la versión de noche;
+  `.hero-stars::after` añade más estrellas solo en oscuro.
+- La nav de la cabecera lleva también **`moon-project`** (`Header.astro`), que
+  en la portada dispara el vuelo a `/luna` en vez de navegar a secas: ver
+  `LUNA-WIP.md`, "Cómo se llega a /luna".
 
 ## Por qué sprite PNG y no SVG animado
 
@@ -231,7 +252,30 @@ lo prueba en directo tras publicar; si la noche se calienta allí, arreglos
 listos: redibujar la noche a 30 fps en táctil o no pintar los pueblos más
 pequeños.
 
-## Pendiente
+## Pendiente de verdad (al 20-sep-2026)
+
+Lo de la Tierra está **hecho y publicado**: el día (rama `daylight-planet-v2`,
+merge `452b3df`) y la noche (rama `night-planet-v2`, merge `54ac9bd`) se
+fusionaron en `main` el 13-sep-2026 y zodk.eu los sirve. Queda:
+
+- **Afinar cuando le apetezca**: tono del desierto del Sáhara, hielo del polo,
+  tamaño y número de las luces de noche, halo de atmósfera (propuesto, nunca
+  pedido).
+- **Nubes**: "más adelante le meteremos más mano" (hoy, 8 plantillas pixel art
+  a escala 1,0-1,3; más grandes no quedan bien).
+- **Hemisferio sur**: aparcado, de día y de noche.
+- **Móvil**: la noche no se ha probado en su teléfono; si se calienta, plan
+  listo (30 fps en táctil o sin los pueblos más pequeños).
+- Ficha de bandera que se sale por abajo si la chapa cae muy abajo del disco.
+- Ideas aparcadas: chapas que se "planten" al pasar por el centro, 120 s por
+  vuelta, E-2 de perfil (radomo encima).
+
+## Registro de cómo se llegó hasta aquí (histórico, ya hecho)
+
+Los puntos 5, 6 y 7 describen trabajo **terminado y publicado**; se conservan
+por el detalle técnico y, sobre todo, por lo que se probó y el usuario
+RECHAZÓ. Donde ponga "en curso" o "sin commitear", léase como la foto del día
+en que se escribió.
 
 1. ~~Móvil~~ — hecho (commit `7de9a13`); verificado en un teléfono real.
 2. ~~Caché en producción~~ — resuelto de facto: cada cambio del sprite de día

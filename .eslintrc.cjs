@@ -28,5 +28,20 @@ module.exports = {
       },
       rules: {},
     },
+    {
+      // Los <script> de los .astro llevan TypeScript (genéricos, `!`, tipos en
+      // los parámetros). eslint-plugin-astro los extrae como ficheros virtuales
+      // .js, así que el override de arriba no los alcanza: sin esto se parsean
+      // como JS a secas y dan "Parsing error" y `'string' is not defined`.
+      files: ["**/*.astro/*.js", "*.astro/*.js"],
+      parser: "@typescript-eslint/parser",
+      rules: {
+        "no-undef": "off", // los tipos de TS no son variables
+      },
+      // Límite conocido del extractor: dentro de un <script> de .astro, una
+      // llamada con genérico cuyos argumentos ocupan VARIAS líneas
+      // (`querySelectorAll<HTMLElement>(\n ... \n)`) da "Parsing error:
+      // Expression expected". Deja el genérico y sus argumentos en una línea.
+    },
   ],
 };

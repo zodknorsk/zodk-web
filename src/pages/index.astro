@@ -37,8 +37,8 @@ const botonSvg = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox=
 // dibujo con el viewBox recortado a ella; el cuadrado y la flecha se ocultan
 // en CSS (.btn-caja, .btn-flecha). Decisión del usuario: "sin recuadro".
 const heliceSvg = botonSvg.replace(
-  'viewBox="0 0 203.62 179.21" width="407.25" height="358.43"',
-  'viewBox="13.4 94.7 62 62"',
+  `viewBox="0 0 203.62 179.21" width="407.25" height="358.43"`,
+  `viewBox="13.4 94.7 62 62"`,
 );
 
 // Las notas del Proyecto Luna (etiqueta "luna") no salen aquí: se quedan en
@@ -533,9 +533,8 @@ const eventos = todosEventos
       precarga();
       await img!.decode().catch(() => {});
       // La cabecera también: /luna no la tiene y así no desaparece de golpe.
-      const apagar = [...hero.querySelectorAll<HTMLElement>(
-        ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira",
-      ), ...document.querySelectorAll<HTMLElement>("body > header")];
+      const SEL_APAGAR = ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira";
+      const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
       const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img! });
       cancela = vuelo.limpiar;
       estrellasLuna = await vuelo.fin;
