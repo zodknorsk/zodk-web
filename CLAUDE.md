@@ -126,14 +126,22 @@ Pendiente (sin orden, lo decide él):
 
 ## Mantenimiento
 
-### ABIERTO: la portada calienta en Zen — ver `temperatura-zen.md`
+### La portada calentaba en Zen: resuelto (20-sep-2026) — ver `temperatura-zen.md`
 
-El usuario tiene un problema de ventiladores y temperatura con la web abierta en
-Zen, causado por una regresión de rendimiento que entró con el trabajo de la
-Luna. Hay un arreglo hecho y medido y varias cosas pendientes. **Si el tema sale,
-leer `temperatura-zen.md` en la raíz antes de tocar nada**: está el síntoma, cómo
-medirlo sin engañarse (vatios, nunca ventiladores, y sin grabar la pantalla), los
-datos, la causa y los errores de diagnóstico ya cometidos.
+Una regresión de rendimiento que entró con el trabajo de la Luna (commit
+`625bffb`) dejaba la portada haciendo 17,6 megapíxeles de relleno por fotograma
+a 60 fps. Arreglado en tres pasos —30 fps, volcado en una pasada (`copy`) y
+lienzo visible a ×3 del arte— y medido por el usuario: de 19,6 W a **9,7-13,5 W**,
+el reposo de su portátil. La nitidez del pixel art no se resiente (lo comparó él
+de noche a ×5 y a ×3).
+
+**La portada lleva medidor**: `?medir` imprime fps y los ms por fotograma
+partidos en dibujo y volcado, y `?lienzo=N` fuerza el múltiplo del arte. Antes
+de optimizar nada del canvas, mirar ahí: razonando sobre el papel se falló tres
+veces seguidas. Todo el detalle, los números y las trampas al medir (vatios,
+nunca ventiladores, y sin grabar la pantalla) están en `temperatura-zen.md`,
+junto con cuatro cabos sueltos menores (la Luna tiene el mismo montaje sin
+tocar, dos cosillas de la Orion y probarlo en el móvil).
 
 ### Repaso del repositorio (20-sep-2026, commit `9ceb03b`)
 

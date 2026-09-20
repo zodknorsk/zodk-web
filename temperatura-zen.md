@@ -1,26 +1,23 @@
-# La portada calienta en Zen — investigación en curso
+# La portada calienta en Zen — resuelto, con un par de cabos sueltos
 
-**Estado al 20-sep-2026.** Hay un arreglo hecho y medido (bajar el repintado a
-30 fps) que recorta un 20-25 % del consumo, y quedan dos cosas por confirmar y
-un par de mejoras por hacer. Este documento es para retomarlo en frío: explica
-el síntoma, cómo se mide sin engañarse, qué se encontró, qué se hizo y qué falta.
+**Estado al 20-sep-2026 (noche).** Resuelto. La causa está localizada y medida,
+y hay dos arreglos aplicados que dejan la portada en unos 5 ms de trabajo por
+fotograma (antes 10) y el portátil en **9,7-13,5 W**, prácticamente su reposo.
+Este documento guarda cómo se midió, los números y lo que queda suelto.
 
 ## Cómo retomar esto (leer antes de tocar nada)
 
-Si te han mandado aquí para seguir con el tema, el orden es este:
-
-1. **Lee este archivo entero.** Está todo: el síntoma, las dos formas de
-   medirlo mal, los datos, la causa y los errores que ya se cometieron.
-2. **No toques código todavía.** Lo primero que falta es una **comprobación que
-   solo puede hacer el usuario** (apartado "Lo que queda por hacer", punto 1):
-   repetir la medición en orden inverso. Pregúntale si ya la hizo y con qué
-   resultado antes de proponer nada.
-3. **Regla de oro al medir: vatios, no ventiladores, y sin grabar la pantalla.**
+1. **Regla de oro al medir: vatios, no ventiladores, y sin grabar la pantalla.**
    Las dos veces que se ignoró esto el diagnóstico salió mal. Está explicado en
    "Cómo medir esto sin engañarse".
-4. **El paso 3 (lienzo a múltiplo entero) toca la nitidez del pixel art del
-   hero**, que es lo que más le importa al usuario. Ahí no se decide sin
-   enseñarle una comparación real.
+2. **Ahora hay medidor propio**: `zodk.eu/?medir` (o `localhost:4321/?medir`)
+   pinta abajo a la izquierda los fps reales y los ms por fotograma partidos en
+   *dibujo* (pintar el planeta píxel a píxel) y *volcado* (llevarlo a la
+   pantalla), más el tamaño del lienzo. Con `?lienzo=N` se fuerza el múltiplo
+   del arte (`?lienzo=5`, `?lienzo=3`…) y con `?lienzo=pantalla` se vuelve al
+   lienzo de antes del 20-sep. Sirve para comparar nitidez y coste en Zen, que
+   no se puede manejar desde fuera.
+3. Lo que queda está en "Lo que queda suelto", y es menor.
 
 Contexto general del proyecto: `CLAUDE.md` en la raíz. Detalle del hero y de la
 Luna: `logo-files/HERO-WIP.md` y `logo-files/LUNA-WIP.md`.
@@ -54,30 +51,6 @@ La herramienta que usa el usuario es **ThermalForge** en la barra de menús:
 da RPM del ventilador, temperatura de CPU/GPU y **vatios**, que es el número
 bueno.
 
-## Lo que se midió
-
-Primera sesión (grabando, así que ~15 W de más en todo, pero las proporciones
-valen):
-
-| Pantalla | CPU | Potencia |
-|---|---|---|
-| Portada, Tierra de día | 62→69 °C | 27-33 W |
-| Portada, Tierra de noche | 70→74 °C | 31-37 W |
-| Vuelo a la Luna | 77 °C | 37 W (pico, ~3 s) |
-| `/luna` quieta | 60-65 °C | 16-18 W |
-| Giro a la cara oculta | 74 °C | 35 W (pico, ~3 s) |
-| `/luna`, cara oculta | 62 °C | 12,7 W |
-
-O sea: **la Luna en reposo consume lo mismo que la máquina en reposo**. Lo que
-calienta de forma sostenida es **la portada**, y la noche más que el día.
-
-Prueba limpia final (sin grabar, portada de noche, 30 s en cada una):
-
-| Versión | Potencia |
-|---|---|
-| `zodk.eu` (60 fps, código de antes) | **19,6 W** |
-| `localhost` (30 fps, el arreglo) | **14,5-16 W** |
-
 ## La causa
 
 El planeta se dibuja en un lienzo de arte de **600×585 px**. El commit
@@ -88,13 +61,15 @@ lleva ese dibujo a la pantalla:
 - **Antes**: el `<canvas>` medía 600×585 y cada fotograma subía **solo la franja
   repintada** (`putImageData`). El CSS lo ampliaba y de eso se encargaba la GPU,
   gratis. Unos **0,35 megapíxeles por fotograma** en el peor caso.
-- **Después**: el `<canvas>` mide los píxeles reales de la pantalla (en la
-  ventana del usuario, unos 2292×2233) y cada fotograma hace un **borrado
-  completo más un reescalado completo** del lienzo entero (`vuelca()` en
-  `src/scripts/planeta.js`). Son **unos 10,6 megapíxeles por fotograma**.
+- **Después**: el `<canvas>` intenta medir los píxeles reales de la pantalla
+  —y en la práctica se quedaba en el tope `LADO_MAX` de **3000×2925**— y cada
+  fotograma hace un **borrado completo más un reescalado completo** del lienzo
+  entero (`vuelca()` en `src/scripts/planeta.js`): **8,78 megapíxeles, dos
+  veces**, 17,6 MP de relleno por fotograma.
 
-Es **30 veces más trabajo de relleno por fotograma**. A 60 fps eran unos 640
-megapíxeles por segundo, constantes, mientras el hero esté a la vista.
+Es **50 veces más trabajo de relleno por fotograma**. A 60 fps era más de mil
+megapíxeles por segundo, constantes, mientras el hero esté a la vista. Medido
+después con `?medir`: 7,1 ms de volcado frente a 2,9 ms de dibujar la Tierra.
 
 El cambio se hizo por un motivo legítimo: Zen suaviza un canvas pequeño ampliado
 por CSS aunque lleve `image-rendering: pixelated`, y la Luna se veía borrosa. La
@@ -104,92 +79,91 @@ De noche es peor porque la aurora recibió el mismo tratamiento
 (`vuelcaAurora()`), aunque su lienzo es pequeño (24 filas de arte): el grueso
 sigue siendo el volcado del planeta.
 
-## Lo que ya se ha hecho
+## Lo que se ha hecho
 
-**Bajar el repintado de 60 a 30 fps** (`const FPS = 30` en
-`src/scripts/planeta.js`, junto a `vuelca()`; el bucle usa `1000/FPS` para
-decidir cuándo pintar). El planeta da **una vuelta cada 90 s**: a 30 fps cada
-fotograma avanza 0,13°, que es invisible. Medido: **19,6 → 14,5-16 W**.
+### 1. Repintar a 30 fps en vez de 60 (20-sep, mañana)
 
-## Lo que queda por hacer
+`const FPS = 30` en `src/scripts/planeta.js`, junto a `vuelca()`; el bucle usa
+`1000/FPS` para decidir cuándo pintar. El planeta da una vuelta cada 90 s: a
+30 fps cada fotograma avanza 0,13°, que es invisible. Medido: **19,6 → 14,5-16 W**.
 
-### 1. Confirmar que lo del ventilador en localhost era retraso térmico
+### 2. El volcado, en una pasada en vez de dos (20-sep, noche)
 
-Al probar el arreglo, el usuario vio que **en localhost saltaban los
-ventiladores y la CPU se ponía a 60 °C**, cosa que antes no hacía, a pesar de
-que los vatios eran más bajos. La hipótesis es la trampa nº 1 de arriba: midió
-`zodk.eu` primero, que calentó la máquina, y localhost después, con el
-ventilador y la temperatura todavía bajando.
+`vuelca()` borraba el lienzo entero (`clearRect`) y pintaba encima
+(`drawImage`): dos pasadas de relleno sobre los mismos megapíxeles. Ahora pinta
+con `globalCompositeOperation = "copy"`, que sustituye lo que había. El
+resultado es idéntico —también con el cielo transparente, porque se cubre el
+lienzo entero—, con la mitad de relleno.
 
-**Para confirmarlo, repetir la prueba al revés**: dejar la máquina tranquila un
-par de minutos, abrir **primero `localhost:4321`** (en frío) y **después
-`zodk.eu`**. Si es retraso, localhost se queda fresco y el ventilador sube **al
-cambiar a zodk.eu**. Si aun en frío localhost calienta más, hay algo que se nos
-escapa y hay que perseguirlo.
+### 3. El lienzo visible, a ×3 del arte (20-sep, noche)
 
-Para levantar el servidor local con el sitio compilado:
+Es el recorte grande, y salió de mirar el medidor en vez de razonar:
 
-```bash
-cd ~/Documents/zodk-web
-npm run build && npm run preview     # http://localhost:4321
-```
+| | ×5 (como estaba) | ×3 (ahora) |
+|---|---|---|
+| Lienzo | 3000×2925 | 1800×1755 |
+| Píxeles por volcado | 8,78 MP | **3,16 MP** |
+| Volcado | 7,1 ms | **3,8 ms** |
+| Dibujo (el planeta en sí) | 2,9 ms de noche · 1,1 de día | igual |
 
-(Ojo: eso deja un proceso de Node corriendo. Al terminar, `pkill -f "astro preview"`.)
+Dos cosas que solo se supieron al medir:
 
-### 2. Medir de verdad, con un `?medir` en la portada
+- **El lienzo estaba en ×5 por el tope `LADO_MAX` de 3000 px**, no por los
+  píxeles de la pantalla: el hero del usuario mide más de 3000 px de
+  dispositivo, así que **el CSS ya ampliaba un ×1,27 por su cuenta**. La
+  nitidez 1:1 que se creía tener desde `625bffb` no existía.
+- **El volcado cuesta 2,5 veces más que dibujar la Tierra entera.** Todo el
+  esfuerzo de optimizar el pintado píxel a píxel habría sido perseguir la
+  parte barata.
 
-Hasta ahora se ha razonado sobre dónde se va el tiempo, y la primera vez el
-razonamiento falló (ver abajo). Lo que funcionó con el giro de la Luna en Zen
-fue medir: `logo-files/prototipo-luna/canvas.html?medir` imprime los
-milisegundos por fotograma.
+Como lo que falta de ampliación lo hace el CSS (la GPU al componer, gratis),
+bajar el múltiplo solo se paga en nitidez. **El usuario comparó ×5 y ×3 de
+noche, con las luces de ciudad, y las vio iguales**, así que `MULT_MAX = 3`.
+Por debajo de ×2 (ventana estrecha) se sigue usando el tamaño exacto de
+pantalla: ahí el múltiplo entero se veía suavizado, como ya se comprobó al
+hacer `625bffb`.
 
-**Falta montar lo mismo en la portada**: un `?medir` que separe cuánto cuesta
-dibujar píxel a píxel (`draw()`) y cuánto cuesta volcar el lienzo (`vuelca()`).
-Sin ese dato, el paso 3 es una apuesta.
+## Lo que se midió al terminar
 
-### 3. Ajustar el lienzo visible a un múltiplo entero del arte
+Con la máquina fría y **sin grabar la pantalla**, que es la única forma de que
+los números valgan:
 
-Hoy el lienzo se ajusta a los píxeles exactos de la pantalla: en la ventana del
-usuario, una ampliación de **3,82×** sobre el arte de 600 px. Propuesta: usar el
-múltiplo entero inmediatamente inferior (**3×**, o sea 1800×1755) y dejar que el
-CSS haga el resto.
+| Pantalla | Potencia |
+|---|---|
+| Portada de noche, antes de nada (60 fps) | 19,6 W |
+| Portada, con los 30 fps | 14,5-16 W |
+| Portada en frío, ya desplegada | 10,5-13,5 W |
+| Portada de día a ×3 | **9,7 W** |
 
-- Recorta el relleno alrededor de un **38 %** (de 5,1 a 3,16 megapíxeles por
-  volcado).
-- Y debería **verse mejor**: con una ampliación de 3,82×, unos píxeles del
-  dibujo ocupan 4 píxeles de pantalla y otros 3, que es el temblor típico del
-  pixel art mal escalado. A 3× exacto, todos iguales.
-- Cuidado: en ventanas estrechas, donde la ampliación no llegue a 2×, hay que
-  dejar el comportamiento de ahora o se volverá a ver borroso (fue justo lo que
-  se probó y se descartó al hacer `625bffb`).
+También quedó **descartado que localhost calentase más que zodk.eu**: en frío
+localhost dio 10,5-12,4 W y zodk.eu 12,6-13,5 W (misma versión, la diferencia
+es ruido). Lo que se vio el primer día era el retraso del ventilador, la trampa
+nº 1 de aquí abajo.
 
-**Esto toca la nitidez del hero, que es lo que más le importa al usuario: hay
-que enseñarle una comparación real antes de darlo por bueno.**
+## Lo que queda suelto
 
-### 4. La Orion de `/luna` (pequeño, pero confirmado)
+Nada de esto es urgente; la portada ya está en el reposo de la máquina.
 
-En `/luna` la única animación continua es la Orion: cinco animaciones infinitas
-(posición X, posición Y, `z-index`, los 32 fotogramas del sprite y el brillo de
-la sombra). El usuario confirmó con la prueba del ratón encima —que las pausa
-todas— que **sí se nota**. En términos absolutos es poco (la página entera se
-mueve en 16-18 W, casi el reposo de la máquina), pero hay dos cosas fáciles:
+1. **La Luna (`src/scripts/luna.js`) tiene el mismo montaje de `625bffb`** y no
+   se ha tocado. Cuesta mucho menos porque las dos caras están quietas y solo
+   se anima el giro de 2,8 s, pero si alguna vez molesta, el arreglo es el
+   mismo: `copy` en el volcado y múltiplo entero del lienzo.
+2. **Bug de la Orion en `/luna`**: la regla de `prefers-reduced-motion`
+   (`src/styles/global.css`, busca `.luna-nave-x, .luna-nave-y, .luna-nave`)
+   pausa el movimiento pero **no `.luna-nave::before`**, que es donde están las
+   animaciones del sprite y del brillo. Con movimiento reducido la nave se
+   queda quieta pero sigue pasando fotogramas y pulsando.
+3. **`filter: brightness()` de la Orion → capa oscura con `opacity`.** En
+   Firefox solo `transform` y `opacity` se animan fuera del hilo principal;
+   `filter` fuerza repintado cada fotograma.
+4. **Probarlo en el móvil**, que es donde el consumo importa de verdad y donde
+   no se ha mirado nunca.
 
-- **`filter: brightness()` → capa oscura con `opacity`.** En Firefox solo
-  `transform` y `opacity` se animan fuera del hilo principal; `filter` fuerza
-  repintado cada fotograma. El efecto visual se puede conseguir igual con una
-  capa negra encima y la opacidad animada.
-- **Bug**: la regla de `prefers-reduced-motion` de la Orion
-  (`src/styles/global.css`, busca `.luna-nave-x, .luna-nave-y, .luna-nave`)
-  pausa el movimiento pero **no `.luna-nave::before`**, que es donde están las
-  animaciones del sprite y del brillo. Con movimiento reducido la nave se queda
-  quieta pero sigue pasando fotogramas y pulsando. Hay que añadir `::before` a
-  esa regla.
-
-La capa de la órbita está hecha **a propósito sin contexto de apilado**, para
-que la nave pueda pasar por detrás del disco (z 0) y por delante (z 3). Eso
-impide que Firefox le dé capa propia en la GPU, así que repinta el trozo de Luna
-que hay debajo en cada fotograma. Si algún día molesta de verdad, ahí está la
-raíz — pero cambiarlo rompe el efecto de pasar por detrás.
+La capa de la órbita de la Orion está hecha **a propósito sin contexto de
+apilado**, para que la nave pueda pasar por detrás del disco (z 0) y por delante
+(z 3). Eso impide que Firefox le dé capa propia en la GPU, así que repinta el
+trozo de Luna que hay debajo en cada fotograma. Si algún día molesta de verdad,
+ahí está la raíz — pero cambiarlo rompe el efecto de pasar por detrás.
 
 ## Errores de diagnóstico, para no repetirlos
 
@@ -199,6 +173,10 @@ raíz — pero cambiarlo rompe el efecto de pasar por detrás.
    Medir primero.
 2. **Se usó el ventilador como señal.** Es la más engañosa de todas. Vatios.
 3. **Se midió grabando la pantalla.** +15 W de sobrecarga en todas las lecturas.
+4. **Se dio por hecho que el lienzo iba a los píxeles exactos de la pantalla.**
+   Iba al tope de 3000 px, y el CSS ampliaba el resto. Bastó con imprimir el
+   tamaño del lienzo para verlo. Antes de optimizar algo, imprimir lo que de
+   verdad está pasando: el medidor lo pone en pantalla en una línea.
 
 ## Contexto que conviene tener a mano
 
