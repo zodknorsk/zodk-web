@@ -1,14 +1,15 @@
 # Proyecto Luna — documento de traspaso
 
-Rama: `moon-project` (creada desde `main` el 16-sep-2026; subida a GitHub,
-último commit del 18-sep-2026 noche). **Sin fusionar con `main`**: zodk.eu
-aún no tiene nada de esto. **Leer esto primero** al volver, antes de tocar
-nada.
+**PUBLICADO.** La rama `moon-project` (creada desde `main` el 16-sep-2026) se
+fusionó en `main` el **20-sep-2026** (merge `9f5d1e2`, con `--no-ff`) y zodk.eu
+ya sirve todo esto; la rama se deja en GitHub como registro. Lo que se siga
+tocando va sobre `main` o en rama nueva. **Leer esto primero** al volver, antes
+de tocar nada: la parte de abajo es el registro de sesión a sesión, con lo que
+se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 
-## Resumen del estado (18-sep-2026, noche)
+## Resumen del estado (20-sep-2026)
 
-`/luna` está completa a falta de revisarla para publicar (ver "PRÓXIMA
-SESIÓN"). Qué hay:
+Qué hay en `/luna`:
 
 - **La Luna** en pixel art, dos caras fijas (visible luminosa, oculta más
   oscura y fría), media vuelta en canvas de 2,8 s entre ellas
@@ -31,6 +32,37 @@ SESIÓN"). Qué hay:
 - **Botones definitivos**: mando de cara en el centro (un solo botón, píldora
   dorada que se desliza con el giro, iconos de las dos caras) y "volver a la
   Tierra" en HUD abajo a la derecha.
+- **Menú del proyecto** arriba a la derecha (`.luna-menu`): `alunizajes /
+  relés / orion`, con las mismas esquinas doradas que "volver a la Tierra".
+  Hace de cabecera de `/luna` y enlaza a las tres notas que dan contexto; cada
+  entrada solo aparece si su nota está publicada.
+- **La selección aguanta** al entrar en una nota y volver: países/subgrupos
+  encendidos y cara que se ve se guardan en `sessionStorage` (`luna-estado`) y
+  se restauran al montar. "Volver a la Tierra" lo borra, para que una llegada
+  nueva desde el hero empiece limpia.
+
+## Cómo se llega a `/luna` y qué pasa con sus notas (20-sep-2026)
+
+- **Desde el hero**: pulsando la luna del icono, solo de noche (de día ahí
+  está el sol y no enlaza), con el vuelo de `viaje-luna.js`.
+- **Desde la cabecera**: enlace **`moon-project`** junto a notas/eventos
+  (`src/components/Header.astro`). En la portada lo engancha el script de
+  `index.astro` (por `nav a[href='/luna']`): de noche dispara un clic real
+  sobre `.hero-luna-enlace`, así que es exactamente el mismo vuelo sin
+  duplicar código; de día pulsa primero el botón de tema y espera 2,6 s (lo
+  que tarda el sol en ponerse y salir la luna) antes de volar. En el resto de
+  páginas ese script no corre y es una navegación normal.
+- **Las notas con etiqueta `luna` no salen en los listados**: ni en `/notas`,
+  ni en "últimas notas" de la portada, ni en el RSS (filtros en
+  `src/pages/notas/index.astro`, `src/pages/index.astro` y `rss.xml.ts`).
+  Decisión del usuario: "eso se queda todo en la luna". Sus páginas SÍ se
+  generan (`getStaticPaths` no filtra), que si no se romperían los enlaces de
+  las fichas. En esas notas el botón de volver dice **"Volver a la Luna"** y
+  lleva a `/luna` (`notas/[...slug].astro`).
+- Por lo mismo, las misiones tampoco cuentan para las **chapas de bandera de
+  la Tierra**: `index.astro` descarta los artículos etiquetados `luna` al
+  armarlas. Antes salían las 28 misiones colgando de la bandera de EE. UU.,
+  porque las notas llevan también etiqueta de país.
 
 ## La idea (contada por el usuario, 16-sep-2026)
 
@@ -552,11 +584,11 @@ encenderla, vuelven.
   `cabecera={false}`. En el vuelo de ida la cabecera se funde con el título
   (lista `apagar` de index.astro) y en la vuelta entra con un fundido de 0,7 s
   al aterrizar (`astro:after-swap` en luna.astro). Comprobado en Chrome.
-- **Bocetos de los botones** en `public/_bocetos/botones.html` (TEMPORAL, NO
-  commitear; servido en `localhost:4321/_bocetos/botones.html`): cinco
-  propuestas sobre la Luna real, con selector arriba. Usan iconos que ya
-  existen: la fase de `zodk-luna-fases.png` (cuarto creciente en la visible,
-  menguante en la oculta) y la Tierra de `planeta-quieto-noche.png`.
+- **Bocetos de los botones**, cinco propuestas sobre la Luna real, con selector
+  arriba (estaban en `public/_bocetos/botones.html`, nunca commiteado; se borró
+  el 20-sep-2026, ya elegidos y montados). Usaban iconos que ya existen: la
+  fase de `zodk-luna-fases.png` (cuarto creciente en la visible, menguante en
+  la oculta) y la Tierra de `planeta-quieto-noche.png`.
   A iconos pixel (el nombre sale al pasar el ratón) · B HUD (esquinas doradas
   que se cierran en marco) · C discreto (texto + icono, subrayado dorado) ·
   D discos (astro en círculo con aro dorado) · E mando central (interruptor
@@ -657,40 +689,47 @@ la oculta (clase `cara-oculta` en `.luna-hero`, que pone `alTerminar`).
 - Pendiente: con la ventana estrecha el extremo izquierdo cae detrás de la
   columna de países.
 
-### PRÓXIMA SESIÓN (actualizado 18-sep-2026, noche)
+### Publicación (20-sep-2026) — HECHO
 
-Lo pedido para esta sesión (pasos 1-5 de la lista anterior) está hecho, y
-también la Orion, los botones y los detalles de abajo. El usuario: "no queda
-nada por añadir". **El polo sur se descarta** (Chandrayaan-3, IM-1 e IM-2 se
-quedan pegadas al borde de abajo: "creo que se va a quedar así").
+Se fusionó `moon-project` en `main` (merge `9f5d1e2`, `--no-ff`) y se publicó.
+Cómo se hizo, por si vuelve a hacer falta: las dos ramas habían divergido con
+importaciones de contenido propias (Ceuta y Melilla en las dos), así que se
+fusionó con `-X theirs` y **después** se pasó `npm run importar` en `main`, que
+regenera `src/content/` entero desde la bóveda y deja el contenido exacto sin
+depender de cómo resolviera el merge. Al importar aparece siempre algún cambio
+ajeno (el avatar de un tweet que X ha cambiado): se descarta con
+`git checkout --` antes de commitear.
 
-Lo que queda es para **publicar** (fusionar `moon-project` con `main`):
+De la lista de entonces: **las 28 notas se publicaron tal cual** (siguen en
+`estado: borrador` en la bóveda, con foto y un par de párrafos), y las notas de
+los Queqiao y de la Orion las rellenó el usuario, así que sus fichas ya
+enlazan. `Alunizajes.md` ya no dice "20". El polo sur queda **descartado**
+(Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al borde de abajo: "creo que se
+va a quedar así").
 
-1. **Las 28 notas saldrían en el blog tal cual**: tienen `publicar: true` pero
-   están en borrador (foto y un párrafo). Aparecerían en el listado de notas y
-   en el RSS. Que el usuario decida si publicarlas así o ampliarlas antes.
-2. **Import limpio en `main`**: `npm run importar` regenera todo
-   `src/content/` y trae cambios de la bóveda ajenos a la Luna (dos eventos
-   que pasaron a notas, el avatar de un tweet, Ceuta y Melilla). En esta rama
-   se han ido deshaciendo; al fusionar hay que importar en `main` de verdad.
-3. **Probar en Zen y en móvil**: solo se ha visto en Chrome. En táctil no hay
-   fichas (sin ratón): se ven Luna, relés y Orion, pero las chapas y la
-   columna se ocultan.
+### PENDIENTE (actualizado 20-sep-2026)
 
-Menores, sin prisa:
-
-4. Con la ventana estrecha, la Orion pasa por detrás de la columna de países
+1. **Probar `/luna` en Zen y en el móvil**: solo se ha visto en Chrome. En
+   táctil no hay fichas (sin ratón): se ven Luna, relés y Orion, pero las
+   chapas y la columna se ocultan.
+2. Con la ventana estrecha, la Orion pasa por detrás de la columna de países
    en el borde izquierdo.
-5. Fotos poco vistosas (vistas del LRO desde órbita): soviéticas, SLIM, IM-1,
+3. Fotos poco vistosas (vistas del LRO desde órbita): soviéticas, SLIM, IM-1,
    IM-2. Si aparecen mejores, se cambian.
-6. Notas de los Queqiao vacías (`publicar: false`) y sin nota de la Orion: la
-   ficha enlazará en cuanto existan y estén publicadas.
-7. `Alunizajes.md` (bóveda) dice "20" en su sección de estado.
-8. El mapa del giro de la Luna pesa 1,5 MB.
-9. `public/_bocetos/botones.html`: bocetos de los botones, sin commitear;
-   borrar cuando ya no hagan falta.
+4. El mapa del giro de la Luna pesa 1,5 MB.
+5. Si la ventana es muy baja, el menú de arriba a la derecha y la columna de
+   países podrían quedar cerca; no se ha visto pasar, pero está sin comprobar
+   a alturas pequeñas.
 
 ### Por dónde se fue pasando (histórico, todo hecho)
+
+Sesión del 20-sep-2026 (madrugada), la de publicar, en orden: enlace
+`moon-project` en la cabecera (con el cambio a modo noche antes de volar) ->
+las misiones fuera de las chapas de bandera de la Tierra -> menú HUD de
+`/luna` y nota "Relés en la cara oculta" (creada entonces) -> "Leer la nota"
+que le faltaba a la ficha de la Orion -> merge en `main` e import limpio ->
+HUD más grande, las notas de la Luna fuera de `/notas`/portada/RSS y "Volver a
+la Luna" -> la selección de países y la cara aguantan al leer una nota.
 
 Sesión del 18-sep-2026 (noche), en orden: 26 alunizajes (Luna 13 y Surveyor)
 y enlace a su nota -> casillas de EE. UU. -> Chandrayaan-3 e IM-1 solo en la

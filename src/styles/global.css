@@ -773,8 +773,8 @@ html.dark .hero-luna-enlace { display: block; }
 @media (hover: none) {
   .luna-chapas, .luna-paises { display: none; }
 }
-/* PLACEHOLDER del botón de cambio de cara (hasta que haya dibujo propio). */
-/* Botones de /luna (elegidos el 18-sep-2026 en public/_bocetos/botones.html).
+/* Botones de /luna (elegidos el 18-sep-2026 entre cinco bocetos; ver
+   logo-files/LUNA-WIP.md, "Detalles y botones").
    Mando de cara (propuesta E1, "deslizador") abajo en el centro: un solo
    botón; la píldora dorada va detrás de la cara que se ve y, al pulsar, se
    desliza a la otra en lo mismo que tarda el giro (2,8 s, curva en seno como

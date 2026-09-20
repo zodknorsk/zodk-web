@@ -36,7 +36,7 @@ en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
 
 - Regenerar: `cd logo-files && python3 generar-planeta-hero.py`; después subir
   `PLANETA_V` en `planeta.js` y el `?v=` de `planeta-quieto.png` en
-  `src/styles/global.css` (van por 8). Un fotograma suelto para comparar:
+  `src/styles/global.css` (van por 10). Un fotograma suelto para comparar:
   `python3 generar-planeta-hero.py --frame N salida.png` (lon. central = −6·N°).
 - Ver la web: `npm run dev`; en el móvil (misma wifi): `npm run dev:network`.
 
@@ -62,19 +62,59 @@ Decisiones que hay que respetar:
 - Animaciones: nunca SVG animado con miles de formas (calienta la CPU en Zen,
   su navegador); canvas o sprite PNG.
 
-## Proyecto Luna (rama `moon-project`)
+## Proyecto Luna (`/luna`) — publicado
 
-Un segundo planeta (la Luna, mismo estilo pixel art) al pulsar el icono de la
-Luna del hero: dos caras fijas (visible luminosa / oculta más oscura) con un
-botón para cambiar, y chapas en los alunizajes. Hecho (18-sep): las dos caras,
-la media vuelta en canvas, la página `/luna`, el vuelo desde la Tierra y la
-vuelta, y las chapas de los 20 alunizajes con su ficha y la columna para
-encenderlos por país (datos en `src/data/alunizajes.ts`). Falta enlazar cada
-ficha con su artículo del blog. **Antes de tocarlo, leer `logo-files/LUNA-WIP.md`** (ahí está
-todo: qué se reutiliza de la Tierra, qué hace falta de nuevo, y qué queda
-pendiente de decidir).
+Segunda "portada": la Luna en pixel art, con la historia de los alunizajes.
+**Fusionado en `main` y publicado el 20-sep-2026** (la rama `moon-project` se
+deja en GitHub como registro). **Antes de tocarlo, leer
+`logo-files/LUNA-WIP.md`**: ahí está el detalle de todo y, sobre todo, lo que
+se probó y RECHAZÓ.
+
+Qué hay hoy en `/luna`:
+- **Dos caras fijas** (visible luminosa / oculta más oscura y fría) y media
+  vuelta de verdad en `<canvas>` (2,8 s) con el mando de abajo en el centro.
+  Motor `src/scripts/luna.js`, datos en `public/luna/` que genera
+  `logo-files/generar-luna.py`. Al regenerar: subir `LUNA_V` en `luna.js` y el
+  `?v=` de `luna-visible.png` en `global.css` (van por 3).
+- **28 alunizajes** con chapa de bandera, ficha con foto y enlace "Leer la
+  nota". Columna de países a la izquierda (EE. UU. con casillas Surveyor /
+  Apolo / privadas). Datos en `src/data/alunizajes.ts`: añadir una misión =
+  una línea ahí y su foto en `public/alunizajes/`.
+- **Relés Queqiao y Queqiao-2** en la cara oculta, con ficha y ondas
+  nave → relé → Tierra, y la **Orion de Artemis II** orbitando las dos caras
+  (32 fotogramas, ficha y sombra de la Luna).
+- **Menú HUD arriba a la derecha** (`alunizajes / relés / orion`) con enlaces
+  a sus notas del blog. `/luna` no lleva cabecera normal (`cabecera={false}`
+  en `PageLayout`): este menú hace de cabecera.
+- **Se llega** pulsando la luna del hero (solo de noche) o el enlace
+  **`moon-project`** de la cabecera. Desde la portada ese enlace hace el mismo
+  vuelo; si está en modo día, primero cambia a noche y después vuela. Desde el
+  resto de páginas es una navegación normal.
+- **La selección aguanta**: los países/subgrupos encendidos y la cara que se
+  está viendo se guardan en `sessionStorage`, así que entrar en una nota y
+  volver con "Volver a la Luna" lo deja todo igual. Al pulsar "volver a la
+  Tierra" se borra, para que una llegada nueva empiece limpia.
+
+**Las notas etiquetadas `luna` viven solo en la Luna**: no salen en `/notas`,
+ni en "últimas notas" de la portada, ni en el RSS, y su botón de volver lleva
+a `/luna` en vez de a `/notas` (filtros en `src/pages/notas/index.astro`,
+`src/pages/index.astro`, `src/pages/rss.xml.ts` y `notas/[...slug].astro`).
+Sus páginas sí se generan: los enlaces desde `/luna` funcionan.
 
 Pendiente (sin orden, lo decide él):
+- **Probar `/luna` en Zen y en el móvil**: solo se ha visto en Chrome. En
+  táctil no hay fichas (chapas y columna se ocultan con `@media (hover: none)`).
+- Las 28 notas de misión siguen en `estado: borrador` en la bóveda (foto y un
+  par de párrafos); se publicaron así a propósito.
+- Con la ventana estrecha, la Orion pasa por detrás de la columna de países.
+- Fotos poco vistosas (vistas del LRO desde órbita) en las soviéticas, SLIM,
+  IM-1 e IM-2: si aparecen mejores, se cambian.
+- El mapa del giro de la Luna pesa 1,5 MB.
+- Polo sur: **descartado**, Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al
+  borde de abajo.
+
+## Pendiente del planeta de la Tierra
+
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
 - Probar la noche en su móvil real (consumo: si se calienta, 30 fps en táctil
   o sin los pueblos más pequeños).
