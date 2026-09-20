@@ -123,3 +123,64 @@ Pendiente (sin orden, lo decide él):
 - Ficha de bandera que se sale por abajo si la chapa está muy baja.
 - Ideas aparcadas: chapas que se "planten" al pasar por el centro, 120 s por
   vuelta, borde de atmósfera (propuesto, no pedido), E-2 de perfil.
+
+## Mantenimiento
+
+### Repaso del repositorio (20-sep-2026, commit `9ceb03b`)
+
+Revisión completa a petición del usuario: buscar cosas raras, borrar lo que ya
+no se usa, corregir código y dejar la documentación como está la web hoy.
+
+- **ESLint estaba roto y ahora pasa limpio.** Los `<script>` de los `.astro`
+  llevan TypeScript, pero `eslint-plugin-astro` los extrae como ficheros
+  virtuales `.js` que el override de `*.astro` no alcanza: se parseaban como JS
+  a secas (4 errores, `'string' is not defined` y `Parsing error`). Se añadió
+  el override de `**/*.astro/*.js` con el parser de TypeScript.
+  **Límite conocido del extractor**, anotado también en `.eslintrc.cjs`: una
+  llamada con genérico cuyos argumentos ocupan varias líneas
+  (`querySelectorAll<HTMLElement>(\n … \n)`) rompe el parser. Dejar el genérico
+  y sus argumentos en una línea.
+- **Documentación al día**: este archivo, `README.md` (con el aviso de que las
+  notas etiquetadas `luna` no salen en los listados), `logo-files/HERO-WIP.md`
+  (describía el sprite PNG como el sistema actual, cuando es un canvas desde
+  sept 2026), `logo-files/LUNA-WIP.md` (decía "sin fusionar con main") y
+  `logo-files/README.md` (citaba cuatro ficheros que ya no existen). En los dos
+  WIP se separó el **estado de hoy** del **registro histórico**, que se conserva
+  entero: ahí está lo que se probó y el usuario RECHAZÓ.
+- **Borrado por no usarse**: `public/zodk-sat-recon{,-noche}.svg` (un satélite
+  que se dibujó pero nunca llegó a `AERONAVES`), `public/zodk-favicon.svg`
+  (duplicado byte a byte de `zodk-favicon-v2.svg`, que es el que enlaza
+  `Head.astro`) y tres avatares de tweet huérfanos. Sin trackear, también
+  fuera: `public/_bocetos/` y `public/zodk-tb3{,-noche}.svg`.
+  **Se quedan a propósito** `public/favicon.ico` y `public/apple-touch-icon.png`
+  aunque nada los enlace: los navegadores y iOS los piden por su nombre.
+- **Dependencias**: fuera `@astrojs/mdx` (estaba activado en
+  `astro.config.mjs` sin un solo `.mdx`; el importador solo escribe `.md`), y
+  `eslint` con sus plugins a `devDependencies`, que el despliegue no los
+  necesita. **`typescript` se queda en `dependencies` a propósito** (decisión
+  del usuario, 20-sep): `npm run build` ejecuta `astro check`, así que es
+  dependencia de compilación. No moverlo.
+- **Se conserva a propósito** `logo-files/prototipo-luna/` (12 MB de PNG de
+  comparación): es el registro visual de por qué la Luna quedó como quedó, y
+  `LUNA-WIP.md` los cita por su nombre.
+- Comprobado al cerrar: `npm run build` OK (51 páginas), `npm run lint` limpio,
+  ningún enlace interno roto en `dist/` y nada que apunte a lo borrado.
+
+### Pendiente: subir Astro 5 → 7 (el usuario lo hará la semana del 22-sep)
+
+`npm audit` da 4 vulnerabilidades (1 crítica) en `astro` 5.18.2 y `sharp`:
+varios XSS y un RCE por la optimización de imágenes AVIF. La exposición real es
+baja (sitio estático, sin servidor, contenido propio), pero conviene ponerse al
+día. El arreglo es `npx @astrojs/upgrade` → Astro 7.3.3, **cambio mayor**.
+
+Hacerlo **en rama aparte** y vigilar lo que más se puede romper:
+- **ClientRouter**: el vuelo Tierra ↔ Luna vive de `astro:page-load`,
+  `astro:before-swap` y `astro:after-swap` (`index.astro`, `luna.astro`,
+  `viaje-luna.js`). Es lo más frágil de todo el sitio.
+- **Colecciones de contenido**: `src/content/config.ts` y los `getCollection`
+  de todas las páginas.
+- **Integraciones**: `sitemap` y `tailwind` tendrán que subir a la vez.
+
+Probar antes de fusionar: portada de día y de noche, vuelo a `/luna` y vuelta,
+chapas y columna de países, el enlace `moon-project` desde modo día, `/notas`,
+`/eventos`, una nota de misión y el RSS.
