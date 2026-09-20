@@ -6,8 +6,10 @@ import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import { NOTAS } from "@consts";
 
+// Las notas del Proyecto Luna (etiqueta "luna") no salen aquí: se quedan en
+// /luna, y solo se llega a ellas desde allí o desde "moon-project".
 const data = (await getCollection("notas"))
-  .filter((nota) => !nota.data.draft)
+  .filter((nota) => !nota.data.draft && !nota.data.tags.some((t) => t.toLowerCase() === "luna"))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 type Acc = {
