@@ -201,6 +201,25 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
   let quitaBoton: (() => void) | null = null;
   let estrellasTierra: string | null = null;   // posición de las estrellas al aterrizar en la portada
 
+  // Selección de países/chapas y cara: se guarda en sessionStorage para que
+  // "Leer la nota" y volver con "Volver a la Luna" (dos navegaciones sueltas,
+  // no un atrás/adelante del navegador) la dejen tal cual estaba. Al volver a
+  // la Tierra de verdad se borra, para que una llegada nueva desde el hero
+  // empiece siempre limpia (como hasta ahora).
+  const CLAVE_ESTADO = "luna-estado";
+  type EstadoLuna = { encendidos: string[]; cara: string };
+  function leerEstadoLuna(): EstadoLuna | null {
+    try { return JSON.parse(sessionStorage.getItem(CLAVE_ESTADO) ?? "null"); }
+    catch { return null; }
+  }
+  function guardarEstadoLuna(encendidos: Iterable<string>, cara: string) {
+    try { sessionStorage.setItem(CLAVE_ESTADO, JSON.stringify({ encendidos: [...encendidos], cara })); }
+    catch { /* sessionStorage no disponible */ }
+  }
+  function borrarEstadoLuna() {
+    try { sessionStorage.removeItem(CLAVE_ESTADO); } catch { /* sessionStorage no disponible */ }
+  }
+
   // Vuelta a la Tierra: el vuelo de la portada hacia atrás (src/scripts/viaje-luna.js).
   // Para saber dónde acaban la luna del hero y la Tierra se ponen aquí un icono
   // y una Tierra con las clases de la portada (mismo sitio y tamaño, y la
@@ -254,6 +273,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     const volver = document.querySelector<HTMLButtonElement>(".luna-volver");
     const hero = document.querySelector<HTMLElement>(".luna-hero");
     if (!cv || !boton || !volver || !hero) return;
+    const estadoGuardado = leerEstadoLuna();
     const disco = cv.parentElement as HTMLElement;
     const pon = (cara: string) => {
       boton.dataset.cara = cara;
@@ -265,8 +285,10 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     let esconderChapas = () => {};
     let colocarChapas = () => {};
     let soloChina = () => {};
+    let guardarSeleccion = () => {};
     const sats = document.querySelector<HTMLElement>(".luna-sats");
     const l = await montarLuna(cv, {
+      cara: estadoGuardado?.cara === "oculta" ? "oculta" : "visible",
       alEmpezar: (destino: string) => {
         boton.dataset.cara = destino;   // la píldora se desliza mientras gira
         boton.disabled = volver.disabled = true;
@@ -275,6 +297,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
       },
       alTerminar: (cara: string) => {
         boton.disabled = volver.disabled = false;
+        guardarSeleccion();
         sats?.classList.toggle("en-vista", cara === "oculta");
         hero.classList.toggle("cara-oculta", cara === "oculta");
         pon(cara);
@@ -291,7 +314,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     const capa = document.querySelector<HTMLElement>(".luna-chapas");
     const columna = document.querySelector<HTMLElement>(".luna-paises");
     const chapas = [...document.querySelectorAll<HTMLElement>(".luna-chapa")];
-    const encendidos = new Set<string>();
+    const encendidos = new Set<string>(estadoGuardado?.encendidos ?? []);
     if (capa && columna) {
       // La chapa mide 13x9 del lienzo de 600: se resta medio ancho/alto en %
       // (no en px) para que siga centrada al ampliarse el disco.
@@ -354,16 +377,34 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
         // apagada no hay de dónde salir. Los relés se quedan a la vista.
         sats?.classList.toggle("sin-ondas", !encendidos.has("CN"));
       };
-      const pinta = () => { pintaBotones(); colocarChapas(); };
+      const pinta = () => { pintaBotones(); colocarChapas(); guardarSeleccion(); };
+      guardarSeleccion = () => guardarEstadoLuna(encendidos, l.cara());
       // Al ir a la cara oculta se apaga todo y se enciende China, para que
       // Chang'e 4 y 6 salgan al llegar sin activarlas a mano. Solo botones:
       // las chapas las coloca alTerminar al acabar el giro.
       pintaBotones();
+      // Si se vuelve con una selección guardada, sus chapas se pintan ya al
+      // montar (si no, solo se colocan tras un clic o un giro).
+      if (estadoGuardado?.encendidos.length) colocarChapas();
+      // Si se vuelve con algún subgrupo de EE. UU. ya encendido (p. ej. tras
+      // leer una nota de Apolo), se despliegan sus casillas de entrada: si no,
+      // se verían encendidas pero recogidas, como si no hubiera nada activo.
+      for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
+        const grupo = b.parentElement!;
+        const cajas = grupo.querySelector<HTMLElement>(".luna-subgrupos");
+        if (!cajas) continue;
+        const suyas = subs.filter((s) => s.dataset.pais === b.dataset.pais);
+        if (!suyas.some((s) => encendidos.has(s.dataset.clave!))) continue;
+        grupo.classList.add("abierto");
+        b.setAttribute("aria-expanded", "true");
+        cajas.inert = false;
+      }
       soloChina = () => {
         encendidos.clear();
         for (const b of subs) if (b.dataset.pais === "CN") encendidos.add(b.dataset.clave!);
         encendidos.add("CN");
         pintaBotones();
+        guardarSeleccion();
       };
       for (const b of columna.querySelectorAll<HTMLButtonElement>(".luna-pais")) {
         b.addEventListener("click", () => {
@@ -415,6 +456,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
     const clicVolver = () => {
       if (enVuelo || l.girando()) return;
       enVuelo = true;
+      borrarEstadoLuna();   // una llegada nueva desde el hero empieza limpia
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
       // flotando mientras la Luna se aleja hacia el icono.
