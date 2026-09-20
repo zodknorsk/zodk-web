@@ -18,6 +18,11 @@ import { SITE } from "@consts";
           <Link href="/notas" underline={false}>notas</Link>
           <span>{`/`}</span>
           <Link href="/eventos" underline={false}>eventos</Link>
+          <span>{`/`}</span>
+          <!-- En la portada, el script de index.astro engancha este enlace (por
+               href, "nav a[href='/luna']") para que se comporte como la luna del
+               hero (mismo vuelo); en el resto de páginas es una navegación normal. -->
+          <Link href="/luna" underline={false}>moon-project</Link>
         </nav>
         <ThemeToggle />
       </div>

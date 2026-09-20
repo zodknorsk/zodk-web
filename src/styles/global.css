@@ -882,6 +882,47 @@ html.dark .hero-luna-enlace { display: block; }
   image-rendering: pixelated;
 }
 
+/* Menú del Proyecto Luna (arriba a la derecha): mismas esquinas doradas que
+   "volver a la Tierra", en columna y más pequeño, para no competir con la
+   Luna. A diferencia de los botones del motor, son <a> normales: no llevan
+   "hidden" ni dependen de JS. */
+.luna-menu {
+  position: absolute;
+  top: max(1.25rem, 4svh);
+  right: max(1.25rem, 4vw);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.luna-menu a {
+  position: relative;
+  display: inline-block;
+  padding: 6px 10px;
+  color: #cfd6de;
+  text-decoration: none;
+  cursor: pointer;
+}
+.luna-menu a::before, .luna-menu a::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid #e6c078;
+  opacity: 0.55;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+}
+.luna-menu a::before { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.luna-menu a::after { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.luna-menu a:is(:hover, :focus-visible) { color: #e6c078; outline: none; }
+.luna-menu a:is(:hover, :focus-visible)::before,
+.luna-menu a:is(:hover, :focus-visible)::after { width: calc(100% - 2px); height: calc(100% - 2px); opacity: 1; }
+
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
    (::before) para despegarlo del pixel art.
