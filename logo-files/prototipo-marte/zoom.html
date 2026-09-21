@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: Marte con zoom</title>
+<!--
+  Banco de pruebas del zoom y del giro con la mano en WebGL
+  (src/scripts/marte-gl.js), con los datos de
+  python3 logo-files/generar-marte.py --canvas public/marte/
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html
+  ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x4 (para Zen).
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  /* el lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se centra */
+  #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  /* diámetro del disco a zoom x1: el mismo tamaño de píxel que la Luna de /luna */
+  #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
+  .mano, .mano * { cursor: grab !important; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
+    padding: 8px 10px; border-radius: 6px; line-height: 2; }
+  button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; }
+  kbd { border: 1px solid #9fb3c8; border-radius: 3px; padding: 0 4px; }
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="marte"></canvas>
+  <div id="sonda"></div>
+  <div id="panel">
+    <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x4.<br>
+    Mantén <kbd>espacio</kbd> y arrastra para girar.<br>
+    ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
+    <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
+    <button data-z="1">zoom x1</button> <button data-z="4">zoom x4</button><br>
+    <span id="vista"></span> <span id="ms"></span>
+  </div>
+</div>
+<script type="module">
+import { montarMano } from "../../src/scripts/marte.js";
+import { montarMarteGL, montarZoom } from "../../src/scripts/marte-gl.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda");
+const marte = await montarMarteGL($("marte"), {
+  base: "../../public/marte/",
+  disco: () => sonda.getBoundingClientRect().height,
+});
+if (!marte) {
+  $("vista").textContent = "Este navegador no tiene WebGL2.";
+} else {
+  montarMano($("hero"), marte);
+  montarZoom($("hero"), marte);
+  window.marte = marte;                 // para probar desde la consola
+  const muestra = () => {
+    const v = marte.vista();
+    $("vista").textContent = `zoom x${v.zoom.toFixed(2)} · lat0 ${v.lat0.toFixed(0)}° · lon0 ${v.lon0.toFixed(0)}° · `
+      + `teselas ${v.teselas.join(" + ")}`;
+    requestAnimationFrame(muestra);
+  };
+  muestra();
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    const [la, lo] = b.dataset.v.split(",").map(Number);
+    marte.ponVista(la, lo);
+  }));
+  document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
+  if (new URLSearchParams(location.search).has("medir")) {
+    marte.medir(10);
+    const a = marte.medir(30);
+    marte.ponZoom(4);
+    await new Promise((r) => setTimeout(r, 1500));
+    marte.medir(10);
+    const b = marte.medir(30);
+    $("ms").textContent = `· ${navigator.userAgent.includes("Firefox") ? "Firefox/Zen" : "Chrome"}: `
+      + `${a.toFixed(1)} ms por fotograma a x1, ${b.toFixed(1)} a x4`;
+  }
+}
+</script>
+</body>
+</html>

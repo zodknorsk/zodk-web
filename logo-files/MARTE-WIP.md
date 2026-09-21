@@ -12,8 +12,19 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   Marte provisional**, aprobado por el usuario y commiteado en la rama
   (commit `5a99c5c`).
 - **Paso 2, giro con la barra espaciadora: hecho y probado por el usuario**
-  (21-sep-2026: "Zen de momento va bien parece"). Commiteado.
-- **En marcha**: paso 3, el zoom.
+  (21-sep-2026: "Zen de momento va bien parece"). Commit `eafc8b6`.
+- **Paso 3, zoom: hecho y probado por el usuario** (21-sep-2026): en Zen
+  "no parece que se disparen los vatios" y el pellizco del trackpad "abre
+  bien". **Cambio de motor: pasa a WebGL** (ver "Zoom" abajo).
+- **Sin commitear** (paso 3): `src/scripts/marte-gl.js`,
+  `prototipo-marte/zoom.html`, los niveles de `generar-marte.py`,
+  `public/marte/marte-datos.json`, `MARTE_V` (va por 3), `.gitignore` y este
+  documento. **Las teselas (`public/marte/n1/`, `n2/`) no se commitean** hasta
+  que el pixel art sea el definitivo (decisión del usuario; están en
+  `.gitignore`). Hasta entonces solo existen en el Mac.
+- **Pendiente de decidir**: subir el zoom máximo a ×5-×6 (lo propuso el
+  usuario; ver "Decisiones pendientes").
+- **Siguiente paso**: esa decisión; después, el paso 4 (chapas de prueba).
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -25,7 +36,9 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 - [x] 2. **Giro con la barra espaciadora** (estilo Photoshop, ver
       decisiones). **Hecho y probado por el usuario el 21-sep-2026** (Zen
       bien). Ver "Giro con la barra espaciadora" abajo.
-- [ ] 3. **Zoom** con rueda y trackpad, hasta ×4, con la pirámide de mapas.
+- [x] 3. **Zoom** con rueda y trackpad, hasta ×4, con la pirámide de mapas.
+      **Hecho y probado por el usuario el 21-sep-2026** (Zen y trackpad
+      bien). Ver "Zoom" abajo.
 - [ ] 4. Dos o tres **chapas de prueba** pegadas al terreno (Curiosity,
       Perseverance…).
 - [ ] Giro automático y botón, si se decide (ver pendientes).
@@ -48,7 +61,8 @@ pulsa para viajar, y la publicación (merge en `main`).
     arrastrar a los lados cambia la longitud, arriba y abajo inclina hasta
     ver los polos.
   - El píxel no cambia de tamaño con el zoom: el planeta gana detalle.
-  - Zoom **hacia el cursor**, como en un mapa.
+  - Zoom **hacia el cursor** al acercarse, como en un mapa; al alejarse,
+    hacia el centro y sin girar (como Google Earth; ver "Zoom").
   - Las chapas no crecen con el zoom.
   - La luz se queda fija respecto a quien mira, como en la Tierra.
   - El planeta, a ~60 svh (la Luna está a 80): se confirma con un render.
@@ -73,6 +87,17 @@ pulsa para viajar, y la publicación (merge en `main`).
 2. **Móvil / táctil**: sin barra espaciadora, ¿cómo se gira y se hace zoom?
    (lo natural sería arrastrar con un dedo y pellizcar). El usuario lo deja
    por decidir (21-sep-2026).
+3. **Zoom máximo ×5-×6** (lo planteó el usuario el 21-sep-2026: "tal vez un
+   x8 es demasiado, pero un x5 o x6 como lo ves?"). El mapa más fino (16
+   px/grado) está hecho para ×4: pasar de ahí solo agranda las mismas celdas.
+   No hay detalle nuevo y los píxeles dejan de ser todos iguales (alguno
+   sale doble). Recomendación: **×6, con un cuarto nivel de 32 px/grado**
+   (MOLA de 32 y el Viking de 64). Implica ~44 MB más de teselas (una vista
+   baja 3-4 MB), bajar el MOLA de 32 (~130 MB, solo en el Mac) y que el motor
+   guarde las teselas en una caché de tamaño fijo en la GPU en vez de
+   reservar el mapa entero (a 32 px/grado serían 133 MB). Ojo: el MOLA de 32
+   está más "rellenado" entre órbitas y las rayitas norte-sur podrían
+   notarse más.
 
 ## Marte provisional (paso 1, 21-sep-2026)
 
@@ -170,6 +195,78 @@ pulsa para viajar, y la publicación (merge en `main`).
   carpeta/` ejecuta `marte.js` con un canvas simulado y guarda en PNG varias
   vistas y dos fotogramas a mitad de arrastre, además de medir los ms. Sirvió
   para ver la raya de los 180° antes de enseñarlo.
+
+## Zoom (paso 3, 21-sep-2026)
+
+- **Banco**: `prototipo-marte/zoom.html`, en el mismo servidor. Rueda o
+  trackpad (pellizco o dos dedos) para el zoom, hasta ×4; espacio + arrastrar
+  para girar, como en el paso 2. Tiene botones de sitios y de zoom ×1/×4.
+  Abajo salen el zoom, la vista y cuántas teselas han llegado. `?medir` mide
+  al cargar (para Zen).
+- **Cambio de motor: WebGL** (`src/scripts/marte-gl.js`). Marte se pinta en
+  la tarjeta gráfica. El motor de CPU (`marte.js`, el del paso 2) no daba
+  abasto con el zoom:
+  - A ×4 el disco llena la pantalla: unos 850.000 píxeles de arte por
+    fotograma en vez de unos 150.000.
+  - Medido en Node, que usa el motor de JavaScript de Chrome, y sin contar el
+    volcado: **35 ms** por fotograma inclinando y 11 a los lados. La animación
+    del zoom rehace todo en cada fotograma.
+  - **En WebGL: 0,5-0,6 ms por fotograma** en Chrome, a ×1 y a ×4, con la GPU
+    incluida.
+  - Hace las mismas cuentas de luz, la misma paleta y la misma limpieza de
+    píxeles sueltos, y ahora limpia **siempre**, también mientras se arrastra.
+    A ×1 se ve igual que el motor de CPU.
+  - Quieto no se repinta.
+  - `marte.js` se queda por ahora, como respaldo si no hay WebGL2 (pendiente
+    de decidir) y porque `montarMano` vive ahí y la usan los dos motores.
+- **Cómo funciona el zoom**:
+  - El píxel de arte mide siempre lo mismo y el radio del disco crece
+    (`RADIUS × zoom`).
+  - Hay una **pirámide de mapas**: la base de 4 px/grado (`marte-mapa.png`,
+    entera) y dos niveles finos, **8 y 16 px/grado, en teselas** de 360 × 360
+    celdas (`public/marte/n1/` = 32 teselas y 2,4 MB; `n2/` = 128 y 11 MB).
+    Pesan menos de lo estimado en el estudio.
+  - Cada nivel se calcula desde las fuentes a su resolución: al acercarse
+    aparecen de verdad cráteres, fosas y cañones que la base no tiene.
+  - Cada píxel lee del nivel cuya celda mide lo que él **en latitud**. Si su
+    tesela no ha llegado, lee del nivel de debajo.
+  - Solo se bajan las teselas que se ven, las más centrales primero, como
+    mucho 6 a la vez. Una vista a ×4 baja unas 20-30 (~2-3 MB).
+- **Controles**: la rueda cambia el zoom ×1,28 por golpe (100 px); el
+  pellizco (rueda con `ctrlKey`) es más sensible. Hay suavizado de 0,07 s.
+  Safari manda el pellizco como `gesture*`: está previsto, sin probar.
+  **Pellizco y dos dedos sin probar con un trackpad de verdad**: las
+  sensibilidades (`k` en `montarZoom`) se ajustan cuando lo pruebe el
+  usuario.
+- **Comprobado en Chrome** (21-sep-2026):
+  - A ×4 se ven Noctis Labyrinthus, Kasei Valles, las calderas de Tharsis, las
+    fosas de Nili junto a Jezero, **Gale con el Monte Sharp** en el centro y
+    **las espirales del casquete norte** con Chasma Boreale.
+- **Arreglado mientras se probaba**:
+  - **Bloques en abanico en el polo** a ×4. El nivel se elegía también por la
+    longitud, y cerca del polo bajaba a la base. Ahora se elige solo por la
+    latitud. En longitud, las columnas se agrupan de 2 en 2, de 4 en 4… en una
+    rejilla fija del mapa, así que no parpadea al girar.
+  - **Alejar desde una esquina tumbaba el planeta** (de lat0 29° a 83°):
+    mantener el punto bajo el ratón al encoger obliga a girar cada vez más.
+    Ahora, al alejar, hacia el centro y sin girar.
+- **Sin probar o pendiente**:
+  - Safari (el pellizco llega por `gesture*`).
+  - Sin WebGL2, el banco solo lo dice. Para la página de verdad: el motor de
+    CPU sin zoom, o una imagen quieta.
+  - Al pasar de un nivel a otro durante el zoom (×1,5 y ×3) el detalle
+    "salta" de golpe. Es lo normal en un mapa por niveles. Si molesta, se
+    puede mirar.
+  - En las llanuras grandes se ven rayitas de norte a sur a ×4. Parecen
+    fosas reales, pero podrían ser huellas de las órbitas del MOLA. Mirar al
+    pulir.
+  - **Teselas y Git** (decidido): 13 MB por versión, y cada regeneración
+    (con el pulido del pixel art) sumaría otros 13 MB al historial. **No se
+    commitean hasta que el pixel art sea el definitivo** (usuario,
+    21-sep-2026: "me vale así"; esa semana no iba a usar el PC de Linux). En
+    `.gitignore` (`public/marte/n*/`). Para tenerlas en otro ordenador hay
+    que regenerarlas: 800 MB de fuentes y unos 90 s.
+  - **Zen y trackpad: probados por el usuario**, bien.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
