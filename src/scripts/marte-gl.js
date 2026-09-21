@@ -1,0 +1,646 @@
+// Marte en WebGL (Proyecto Marte, rama mars-project): el mismo planeta que
+// src/scripts/marte.js (misma luz, paleta, relieve y limpieza de píxeles
+// sueltos), pintado en la tarjeta gráfica, con zoom.
+//
+// Por qué en la GPU (21-sep-2026): con zoom x4 el disco llena la pantalla y
+// son ~850.000 píxeles de arte por fotograma, no ~150.000. Medido con el
+// motor de marte.js (en Node, el motor de JS de Chrome): 35 ms por fotograma
+// inclinando y 11 a los lados, sin contar el volcado; la animación del zoom
+// rehace todo en cada fotograma. Para la GPU es trabajo de nada, y gasta
+// mucho menos que el mismo cálculo en JavaScript. Quieto no se repinta.
+//
+// Zoom: el píxel de arte mide siempre lo mismo en pantalla (el de la Luna de
+// /luna) y lo que crece es el radio del disco, R = RADIUS·zoom. Para que al
+// acercarse haya más detalle hay una pirámide de mapas (generar-marte.py
+// --canvas): la base de 4 px/grado entera (marte-mapa.png) y dos niveles
+// finos, 8 y 16 px/grado, en teselas de 360 x 360 celdas (n1/, n2/). Cada
+// píxel lee del nivel cuya celda mide lo que él en latitud (derivadas en la
+// GPU); si esa tesela aún no ha llegado, del nivel de debajo. Solo se bajan
+// las teselas que se ven. En longitud, hacia los polos, las celdas se agrupan
+// (mipmaps en la base, como la Luna y la Tierra; columnas agrupadas en los
+// niveles finos) para que el detalle no parpadee al girar.
+//
+// Tres pasadas por fotograma: (1) material y escalón de luz de cada píxel de
+// arte a una textura; (2) dos pasadas de limpieza, como _limpiar() del
+// generador; (3) color con la LUT y ampliación sin suavizado al canvas, que
+// va a un múltiplo entero del arte (x3 como mucho) y lo demás lo amplía el
+// CSS (el arreglo de la Luna y la Tierra para Zen, ver temperatura-zen.md).
+//
+// Lo usa logo-files/prototipo-marte/zoom.html. Detalle en logo-files/MARTE-WIP.md.
+
+import { MARTE_V } from "./marte.js";
+
+const DEG = Math.PI / 180;
+const ZOOM_MAX = 4;                              // decidido por el usuario: x4 "y vamos viendo"
+
+async function bitmap(url) {
+  const blob = await fetch(url).then((r) => {
+    if (!r.ok) throw new Error(`${url}: ${r.status}`);
+    return r.blob();
+  });
+  // Sin gestión de color: los mapas llevan índices y normales.
+  return createImageBitmap(blob, { colorSpaceConversion: "none", premultiplyAlpha: "none" });
+}
+let lienzoLectura = null;
+function pixels(bm) {
+  lienzoLectura ??= document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+  const c = lienzoLectura.canvas;
+  if (c.width < bm.width || c.height < bm.height) { c.width = bm.width; c.height = bm.height; }
+  lienzoLectura.clearRect(0, 0, bm.width, bm.height);
+  lienzoLectura.drawImage(bm, 0, 0);
+  return lienzoLectura.getImageData(0, 0, bm.width, bm.height).data;
+}
+// RGBA del mapa (R material, G/B normal en 0..63) -> un entero de 16 bits
+// por celda: material << 12 | este << 6 | norte.
+function empaqueta(px, n) {
+  const out = new Uint16Array(n);
+  for (let i = 0; i < n; i++) out[i] = (px[i * 4] << 12) | (px[i * 4 + 1] << 6) | px[i * 4 + 2];
+  return out;
+}
+
+// ------------------------------------------------------------------ shaders
+const VERT = `#version 300 es
+void main() {
+  vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
+  gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+}`;
+
+// (1) Material y escalón de luz. Mismas cuentas que calcular() de marte.js.
+function fragCodigos(D, off) {
+  const f = (x) => (Number.isInteger(x) ? `${x}.0` : `${x}`);
+  return `#version 300 es
+precision highp float;
+precision highp int;
+precision highp usampler2D;
+uniform vec2 uTam;          // ancho y alto del arte
+uniform float uR;           // radio del disco en píxeles de arte
+uniform vec3 uM0, uM1, uM2; // vista -> Marte (filas de Ry(lon0)·Rx(lat0))
+uniform vec3 uS;            // sol en vista
+uniform usampler2D uBase;   // nivel 0 y sus mipmaps en longitud, uno al lado del otro
+uniform usampler2D uN1, uN2;
+uniform sampler2D uMask1, uMask2;
+uniform int uNivMax;
+out vec4 o;
+const float PI = 3.141592653589793;
+const float AA = ${f(D.LIMB_AA)};              // semiancho del suavizado del borde, en px de arte
+const float NOCHE = ${f(D.NOCHE)}, TERM_A = ${f(D.TERM_A)}, TERM_B = ${f(D.TERM_B)}, LIMB_K = ${f(D.LIMB_K)};
+const float INV_LN_LS = ${f(D.LIGHT_SUB / D.LNSTEP)}, REL_K = ${f(D.RELIEVE_K / D.LNSTEP)};
+const float SIN_EM = ${f(Math.sin(D.RELIEVE_ELEV_MAX * DEG))}, COS_EM = ${f(Math.cos(D.RELIEVE_ELEV_MAX * DEG))};
+const int REL_MIN = ${D.RELIEVE_MIN}, REL_MAX = ${D.RELIEVE_MAX}, SOMBRA_K = ${D.SOMBRA_K}, LS = ${D.LIGHT_SUB};
+const int KMIN = ${D.LUT_KMIN * D.LIGHT_SUB}, KN = ${D.LUT_KN}, J_NOCHE = ${Math.round(Math.log(D.NOCHE) / D.LNSTEP * D.LIGHT_SUB)};
+const int T = ${D.TESELA};
+const int OFF[6] = int[6](${off.join(", ")});
+const float NQ = ${f((D.NORMAL_NIVELES - 1) / 2)};
+
+void main() {
+  vec2 q = (gl_FragCoord.xy - 0.5 * uTam) / uR;       // y hacia arriba
+  float rr0 = dot(q, q), dc = sqrt(rr0);
+  float rin = 1.0 - AA / uR, rout = 1.0 + AA / uR;
+  // en el anillo de suavizado (y fuera) se lee el punto del borde
+  float k0 = rr0 >= 0.9999 ? sqrt(0.9999 / rr0) : 1.0;
+  vec3 U = vec3(q * k0, 0.0);
+  U.z = sqrt(max(0.0, 1.0 - dot(U.xy, U.xy)));
+  vec3 B = vec3(dot(uM0, U), dot(uM1, U), dot(uM2, U));
+  float lat = asin(clamp(B.y, -1.0, 1.0));
+  float lon = atan(B.x, B.z);
+  // Huella del píxel en grados (derivadas: antes de cualquier rama).
+  float dlat = max(abs(dFdx(lat)), abs(dFdy(lat))) / (PI / 180.0);
+  vec2 dl = vec2(dFdx(lon), dFdy(lon));
+  dl = mod(dl + PI, 2.0 * PI) - PI;                   // la costura de los 180°
+  float dlon = max(abs(dl.x), abs(dl.y)) / (PI / 180.0);
+  if (dc > rout) { o = vec4(0.0); return; }
+  float latD = lat / (PI / 180.0), lonD = lon / (PI / 180.0);
+
+  // Nivel: el de la celda más parecida al píxel en LATITUD. En longitud,
+  // hacia los polos un píxel abarca varias celdas: se agrupan de 2 en 2, de
+  // 4 en 4… (la de la izquierda de cada grupo, como los mipmaps de la base),
+  // siempre en la misma rejilla del mapa, así que al girar no parpadea. Si el
+  // nivel se eligiera también por la longitud, cerca del polo bajaría a la
+  // base y saldrían bloques en abanico (probado el 21-sep-2026).
+  float fLat = log2(max(1e-6, 1.0 / (dlat * 4.0)));
+  int niv = clamp(int(floor(fLat + 0.5)), 0, uNivMax);
+  uint v = 0u;
+  bool listo = false;
+  if (niv >= 2) {
+    int r = clamp(int((90.0 - latD) * 16.0), 0, 180 * 16 - 1);
+    int c = int((lonD + 180.0) * 16.0) % (360 * 16);
+    int k = clamp(int(ceil(log2(max(1.0, dlon * 16.0)) - 0.001)), 0, 7);
+    c = (c >> k) << k;
+    if (texelFetch(uMask2, ivec2(c / T, r / T), 0).r > 0.5) { v = texelFetch(uN2, ivec2(c, r), 0).r; listo = true; }
+    else niv = 1;
+  }
+  if (!listo && niv >= 1) {
+    int r = clamp(int((90.0 - latD) * 8.0), 0, 180 * 8 - 1);
+    int c = int((lonD + 180.0) * 8.0) % (360 * 8);
+    int k = clamp(int(ceil(log2(max(1.0, dlon * 8.0)) - 0.001)), 0, 6);
+    c = (c >> k) << k;
+    if (texelFetch(uMask1, ivec2(c / T, r / T), 0).r > 0.5) { v = texelFetch(uN1, ivec2(c, r), 0).r; listo = true; }
+  }
+  if (!listo) {
+    // base, con mipmap en longitud: celda al menos tan ancha como la huella
+    int k = clamp(int(ceil(log2(max(1.0, dlon * 4.0)) - 0.001)), 0, 5);
+    int r = clamp(int((90.0 - latD) * 4.0), 0, 719);
+    int c = int((lonD + 180.0) * 4.0) % 1440;
+    v = texelFetch(uBase, ivec2(OFF[k] + (c >> k), r), 0).r;
+  }
+  int m = int(v >> 12u);
+  float ne = float((v >> 6u) & 63u) / NQ - 1.0, nn = float(v & 63u) / NQ - 1.0;
+
+  // Luz: terminador, limbo y relieve en escalones de 1/LS (como el generador).
+  float lamS = dot(U, uS);
+  float bright = NOCHE + (1.0 - NOCHE) * smoothstep(TERM_A, TERM_B, lamS);
+  float limb = 1.0 - LIMB_K * smoothstep(0.75, 1.0, dc);
+  int j = int(floor(log(max(bright, 1e-3)) * INV_LN_LS + log(limb) * INV_LN_LS + 0.5));
+  if (lamS > 0.0) {
+    vec3 ax = uM1;                                      // norte de Marte en vista
+    float cl = sqrt(max(0.0, 1.0 - B.y * B.y));
+    vec3 E = cross(ax, U) / max(1e-6, cl), N = cross(U, E);
+    float se = dot(uS, E), sn = dot(uS, N);
+    float nu = sqrt(max(0.0, 1.0 - ne * ne - nn * nn));
+    float lamL = ne * se + nn * sn + nu * lamS;
+    int kRel = 0;
+    if (lamL <= 0.0) kRel = SOMBRA_K;
+    else if (lamS > 0.02) {
+      float ratio;
+      if (lamS > SIN_EM) {                              // relieve rasante
+        float ch = COS_EM / max(1e-6, sqrt(se * se + sn * sn));
+        ratio = max(ch * (ne * se + nn * sn) + nu * SIN_EM, 0.004) / SIN_EM;
+      } else ratio = max(lamL, 0.004) / lamS;
+      kRel = clamp(int(floor(log(ratio) * REL_K + 0.5)), REL_MIN, REL_MAX);
+    }
+    j += kRel * LS;
+    j = max(j, J_NOCHE);
+  }
+  j = clamp(j - KMIN, 0, KN - 1);
+  float cov = dc > rin ? 1.0 - smoothstep(rin, rout, dc) : 1.0;
+  o = vec4(float(m) / 255.0, float(j) / 255.0, cov, 1.0);
+}`;
+}
+
+// (2) Limpieza: como _limpiar() del generador (y marte.js).
+const FRAG_LIMPIA = `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uC;
+uniform ivec2 uTam;
+out vec4 o;
+int cod(ivec2 p) {
+  vec4 t = texelFetch(uC, p, 0);
+  return t.a < 0.5 ? -1 : int(t.r * 255.0 + 0.5) * 256 + int(t.g * 255.0 + 0.5);
+}
+void main() {
+  ivec2 p = ivec2(gl_FragCoord.xy);
+  vec4 t = texelFetch(uC, p, 0);
+  o = t;
+  if (t.a < 0.5 || p.x < 1 || p.y < 1 || p.x >= uTam.x - 1 || p.y >= uTam.y - 1) return;
+  int v = cod(p);
+  int a = cod(p + ivec2(0, 1)), b = cod(p - ivec2(0, 1)), c = cod(p - ivec2(1, 0)), d = cod(p + ivec2(1, 0));
+  if (a < 0 || b < 0 || c < 0 || d < 0 || v == a || v == b || v == c || v == d) return;
+  int n = -1;
+  if ((a == b && (a == c || a == d)) || (a == c && a == d)) n = a;
+  else if (b == c && b == d) n = b;
+  if (n >= 0) o = vec4(float(n / 256) / 255.0, float(n % 256) / 255.0, t.b, 1.0);
+}`;
+
+// (3) Color y ampliación al canvas.
+const FRAG_COLOR = `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D uC;
+uniform sampler2D uLut;
+uniform vec2 uEscala;       // píxeles de arte por píxel del canvas
+uniform vec3 uEspacio;
+out vec4 o;
+void main() {
+  vec4 t = texelFetch(uC, ivec2(floor(gl_FragCoord.xy * uEscala)), 0);
+  if (t.a < 0.5) { o = vec4(0.0); return; }
+  vec3 col = texelFetch(uLut, ivec2(int(t.g * 255.0 + 0.5), int(t.r * 255.0 + 0.5)), 0).rgb;
+  o = vec4(mix(uEspacio, col, t.b), 1.0);
+}`;
+
+function programa(gl, fs) {
+  const sh = (tipo, src) => {
+    const s = gl.createShader(tipo);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || "shader");
+    return s;
+  };
+  const p = gl.createProgram();
+  gl.attachShader(p, sh(gl.VERTEX_SHADER, VERT));
+  gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) || "programa");
+  const u = {};
+  const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+  for (let i = 0; i < n; i++) {
+    const nombre = gl.getActiveUniform(p, i).name;
+    u[nombre] = gl.getUniformLocation(p, nombre);
+  }
+  return { p, u };
+}
+
+function textura(gl, filtro = gl.NEAREST) {
+  const t = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filtro);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filtro);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return t;
+}
+
+// Orientación: filas de M = Ry(lon0)·Rx(lat0) (vista -> Marte), como
+// orientacion() de luna.js.
+function filas(lat0, lon0) {
+  const a = lat0 * DEG, b = lon0 * DEG, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
+  return [[cb, -sb * sa, sb * ca], [0, ca, sa], [-sb, -cb * sa, cb * ca]];
+}
+
+// Monta Marte en `canvas` (WebGL2), que ocupa todo su contenedor, con el
+// disco centrado. `disco()` da el diámetro del disco a zoom x1 en píxeles
+// CSS. Devuelve { vista(), ponVista(lat0, lon0), ponZoom(z), zoom(factor,
+// clientX, clientY), mueve(dx, dy), suelta(), medir(), desmontar() }, o null
+// si el navegador no tiene WebGL2.
+/**
+ * @param {HTMLCanvasElement} canvas
+ * @param {{ base?: string, lat0?: number, lon0?: number, disco?: () => number,
+ *   alPintar?: () => void }} [opciones]
+ */
+export async function montarMarteGL(canvas, {
+  base = "/marte/",
+  lat0: lat0Ini = 10,
+  lon0: lon0Ini = -80,
+  disco = () => 0.6 * window.innerHeight,
+  alPintar = () => {},
+} = {}) {
+  const gl = canvas.getContext("webgl2", {
+    alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false,
+    preserveDrawingBuffer: false, powerPreference: "low-power",
+  });
+  if (!gl) return null;
+  const v = `?v=${MARTE_V}`;
+  const [D, baseBm, lutBm] = await Promise.all([
+    fetch(`${base}marte-datos.json${v}`).then((r) => r.json()),
+    bitmap(`${base}marte-mapa.png${v}`),
+    bitmap(`${base}marte-lut.png${v}`),
+  ]);
+  const MW = D.MAPA_W, MH = D.MAPA_H, R0 = D.RADIUS, T = D.TESELA;
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+
+  // Base y sus mipmaps en longitud (material: el de la izquierda del par;
+  // normal: la media), uno al lado del otro en una sola textura.
+  const off = [0];
+  for (let k = 1; k < 6; k++) off.push(off[k - 1] + (MW >> (k - 1)));
+  const anchoBase = off[5] + (MW >> 5);
+  const base0 = empaqueta(pixels(baseBm), MW * MH);
+  const atlas = new Uint16Array(anchoBase * MH);
+  let nivel = base0, w = MW;
+  for (let k = 0; k < 6; k++) {
+    for (let r = 0; r < MH; r++) atlas.set(nivel.subarray(r * w, (r + 1) * w), r * anchoBase + off[k]);
+    if (k === 5) break;
+    const nw = w >> 1, sig = new Uint16Array(nw * MH);
+    for (let r = 0; r < MH; r++) {
+      for (let c = 0; c < nw; c++) {
+        const p = nivel[r * w + 2 * c], q = nivel[r * w + 2 * c + 1];
+        const e = (((p >> 6) & 63) + ((q >> 6) & 63) + 1) >> 1, n = ((p & 63) + (q & 63) + 1) >> 1;
+        sig[r * nw + c] = (p & 0xf000) | (e << 6) | n;
+      }
+    }
+    nivel = sig;
+    w = nw;
+  }
+  const texBase = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16UI, anchoBase, MH, 0, gl.RED_INTEGER, gl.UNSIGNED_SHORT, atlas);
+  const lp = pixels(lutBm);
+  const texLut = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, lutBm.width, lutBm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+    new Uint8Array(lp.buffer, lp.byteOffset, lutBm.width * lutBm.height * 4));
+
+  // Niveles finos: textura entera (vacía) y una máscara de qué teselas han
+  // llegado. Se crean la primera vez que hacen falta. Si la GPU no admite
+  // texturas tan anchas, el zoom se queda con el detalle del nivel que quepa.
+  const maxTex = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+  const finos = D.NIVELES.slice(1).map((n, i) => ({
+    niv: i + 1, ppd: n.ppd, w: 360 * n.ppd, h: 180 * n.ppd,
+    tf: (180 * n.ppd) / T, tc: (360 * n.ppd) / T, tex: null, mask: null,
+    estado: new Map(),                             // "F-C" -> "pedida" | "lista" | "fallo"
+  })).filter((n) => n.w <= maxTex);
+  const vacia = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16UI, 1, 1, 0, gl.RED_INTEGER, gl.UNSIGNED_SHORT, new Uint16Array(1));
+  const mascaraVacia = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, 1, 1, 0, gl.RED, gl.UNSIGNED_BYTE, new Uint8Array(1));
+  function crear(n) {
+    if (n.tex) return;
+    n.tex = textura(gl);
+    gl.texStorage2D(gl.TEXTURE_2D, 1, gl.R16UI, n.w, n.h);
+    n.mask = textura(gl);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, n.tc, n.tf, 0, gl.RED, gl.UNSIGNED_BYTE, new Uint8Array(n.tc * n.tf));
+  }
+
+  const progCod = programa(gl, fragCodigos(D, off));
+  const progLimpia = programa(gl, FRAG_LIMPIA);
+  const progColor = programa(gl, FRAG_COLOR);
+  const vao = gl.createVertexArray();
+
+  // Sol en vista (x derecha, y arriba, z hacia quien mira).
+  const fa = D.FASE * DEG, sa = D.SOL_ARR * DEG;
+  const S = [D.LADO * Math.sin(fa) * Math.cos(sa), Math.sin(fa) * Math.sin(sa), Math.cos(fa)];
+  const sn = Math.hypot(...S);
+  S.forEach((x, i) => { S[i] = x / sn; });
+
+  let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
+
+  // --- Lienzo: W x H píxeles de arte (los que caben en el contenedor), dos
+  // texturas de trabajo de ese tamaño y el canvas a un múltiplo entero.
+  const MULT_MAX = 3;
+  let W = 0, H = 0, px = 1;
+  const trabajo = [textura(gl), textura(gl)];
+  const fbos = trabajo.map((t) => {
+    const f = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+    return f;
+  });
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  function ajusta() {
+    const r = canvas.parentElement.getBoundingClientRect();
+    const d = disco();
+    if (!(r.width > 0 && r.height > 0 && d > 0)) return false;
+    px = d / (2 * R0);
+    const nW = Math.ceil(r.width / px), nH = Math.ceil(r.height / px);
+    const dpr = window.devicePixelRatio || 1;
+    const k = Math.min(MULT_MAX, Math.floor(px * dpr));
+    canvas.style.width = `${nW * px}px`;
+    canvas.style.height = `${nH * px}px`;
+    // por debajo de x2, el tamaño exacto de pantalla (como la Luna)
+    const cw = k >= 2 ? nW * k : Math.round(nW * px * dpr), ch = k >= 2 ? nH * k : Math.round(nH * px * dpr);
+    if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+    if (nW !== W || nH !== H) {
+      W = nW; H = nH;
+      for (const t of trabajo) {
+        gl.bindTexture(gl.TEXTURE_2D, t);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      }
+    }
+    return true;
+  }
+
+  // --- Un fotograma.
+  function pinta() {
+    const M = filas(lat0, lon0), R = R0 * zoom;
+    gl.bindVertexArray(vao);
+    gl.disable(gl.BLEND);
+    // (1) códigos
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[0]);
+    gl.viewport(0, 0, W, H);
+    const u = progCod.u;
+    gl.useProgram(progCod.p);
+    gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uR, R);
+    gl.uniform3fv(u.uM0, M[0]);
+    gl.uniform3fv(u.uM1, M[1]);
+    gl.uniform3fv(u.uM2, M[2]);
+    gl.uniform3fv(u.uS, S);
+    const n1 = finos[0], n2 = finos[1];
+    const unidad = (i, tex, loc) => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(loc, i); };
+    unidad(0, texBase, u.uBase);
+    unidad(1, n1?.tex || vacia, u.uN1);
+    unidad(2, n2?.tex || vacia, u.uN2);
+    unidad(3, n1?.mask || mascaraVacia, u.uMask1);
+    unidad(4, n2?.mask || mascaraVacia, u.uMask2);
+    gl.uniform1i(u.uNivMax, n2?.tex ? 2 : n1?.tex ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    // (2) limpieza: 0 -> 1 -> 0
+    gl.useProgram(progLimpia.p);
+    gl.uniform2i(progLimpia.u.uTam, W, H);
+    for (let i = 0; i < 2; i++) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbos[1 - i]);
+      unidad(0, trabajo[i], progLimpia.u.uC);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+    // (3) color, al canvas
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.useProgram(progColor.p);
+    unidad(0, trabajo[0], progColor.u.uC);
+    unidad(1, texLut, progColor.u.uLut);
+    gl.uniform2f(progColor.u.uEscala, W / canvas.width, H / canvas.height);
+    gl.uniform3f(progColor.u.uEspacio, D.SPACE[0] / 255, D.SPACE[1] / 255, D.SPACE[2] / 255);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    alPintar();
+  }
+
+  // --- Qué punto de Marte cae en un punto de la pantalla. (x, y) en radios
+  // del disco desde su centro, y hacia arriba. null fuera del disco.
+  function geo(x, y, la0 = lat0, lo0 = lon0) {
+    const rr = x * x + y * y;
+    if (rr >= 1) return null;
+    const U = [x, y, Math.sqrt(1 - rr)], M = filas(la0, lo0);
+    const B = M.map((f) => f[0] * U[0] + f[1] * U[1] + f[2] * U[2]);
+    return { lat: Math.asin(Math.max(-1, Math.min(1, B[1]))), lon: Math.atan2(B[0], B[2]) };
+  }
+  // De píxeles CSS de la ventana a radios del disco.
+  function aDisco(clientX, clientY, R = R0 * zoom) {
+    const r = canvas.getBoundingClientRect();
+    return [((clientX - r.left) / px - W / 2) / R, -((clientY - r.top) / px - H / 2) / R];
+  }
+  // Orientación (sin ladear) que deja el punto (lat, lon) de Marte bajo el
+  // punto (x, y) del disco: la inclinación sale de que la latitud cuadre
+  // (A·cos t + C·sen t = sen lat) y la longitud del centro, de la longitud
+  // relativa. Si no hay solución exacta (sin ladear no siempre la hay), la
+  // más cercana. De las dos inclinaciones posibles, la más cerca de la actual.
+  function orientaPara(x, y, lat, lon) {
+    const rr = x * x + y * y;
+    if (rr >= 0.998) return null;
+    const ux = x, uy = y, uz = Math.sqrt(1 - rr);
+    const rho = Math.hypot(uy, uz), del = Math.atan2(uz, uy);
+    const ac = Math.acos(Math.max(-1, Math.min(1, Math.sin(lat) / rho)));
+    const cand = [del + ac, del - ac].map((t) => Math.atan2(Math.sin(t), Math.cos(t)))
+      .filter((t) => Math.abs(t) <= Math.PI / 2 + 1e-9);
+    if (!cand.length) return null;
+    const t = cand.reduce((m, c) => (Math.abs(c - lat0 * DEG) < Math.abs(m - lat0 * DEG) ? c : m));
+    const zz = -uy * Math.sin(t) + uz * Math.cos(t);
+    return { lat0: t / DEG, lon0: (lon - Math.atan2(ux, zz)) / DEG };
+  }
+
+  // --- Teselas: cuáles hacen falta para lo que se ve. Se muestrea la pantalla
+  // en una rejilla y, en cada punto del disco, se calcula el nivel igual que
+  // el shader (huella de un píxel de arte en latitud).
+  const EN_VUELO_MAX = 6;
+  let enVuelo = 0, cola = [];
+  function planifica() {
+    if (!finos.length) return;
+    const R = R0 * zoom, paso = 24, quiere = new Map();
+    for (let sy = paso / 2; sy < H; sy += paso) {
+      for (let sx = paso / 2; sx < W; sx += paso) {
+        const x = (sx - W / 2) / R, y = -(sy - H / 2) / R;
+        const g = geo(x, y), gx = geo(x + 1 / R, y), gy = geo(x, y + 1 / R);
+        if (!g || !gx || !gy) continue;
+        const dlat = Math.max(Math.abs(gx.lat - g.lat), Math.abs(gy.lat - g.lat)) / DEG;
+        const niv = Math.min(finos.length, Math.floor(Math.log2(1 / Math.max(1e-6, dlat * 4)) + 0.5));
+        if (niv < 1) continue;
+        // también el nivel de debajo: es el respaldo mientras llega el fino
+        for (let l = niv; l >= 1; l--) {
+          const n = finos[l - 1];
+          const f = Math.min(n.tf - 1, Math.floor((90 - g.lat / DEG) * n.ppd / T));
+          const c = Math.floor(((g.lon / DEG + 180) * n.ppd) / T) % n.tc;
+          const clave = `${l}:${f}-${c}`;
+          const d = x * x + y * y;
+          if (!quiere.has(clave) || quiere.get(clave).d > d) quiere.set(clave, { n, f, c, d: d + (niv - l) * 4 });
+        }
+      }
+    }
+    cola = [...quiere.values()].filter((t) => !t.n.estado.has(`${t.f}-${t.c}`)).sort((a, b) => a.d - b.d);
+    baja();
+  }
+  function baja() {
+    while (enVuelo < EN_VUELO_MAX && cola.length) {
+      const t = cola.shift(), clave = `${t.f}-${t.c}`;
+      if (t.n.estado.has(clave)) continue;
+      t.n.estado.set(clave, "pedida");
+      enVuelo++;
+      bitmap(`${base}n${t.n.niv}/${clave}.png${v}`).then((bm) => {
+        if (!vivo) return;
+        crear(t.n);
+        gl.bindTexture(gl.TEXTURE_2D, t.n.tex);
+        gl.texSubImage2D(gl.TEXTURE_2D, 0, t.c * T, t.f * T, T, T, gl.RED_INTEGER, gl.UNSIGNED_SHORT,
+          empaqueta(pixels(bm), T * T));
+        gl.bindTexture(gl.TEXTURE_2D, t.n.mask);
+        gl.texSubImage2D(gl.TEXTURE_2D, 0, t.c, t.f, 1, 1, gl.RED, gl.UNSIGNED_BYTE, new Uint8Array([255]));
+        t.n.estado.set(clave, "lista");
+        pide();
+      }).catch(() => t.n.estado.set(clave, "fallo")).finally(() => { enVuelo--; baja(); });
+    }
+  }
+
+  // --- Bucle: solo mientras hay algo que pintar; como mucho 60 fotogramas por
+  // segundo (el portátil del usuario va a 120 Hz). El zoom se acerca a su
+  // objetivo con una curva suave (cada rueda o pellizco mueve el objetivo).
+  const FPS = 60, TAU = 0.07;
+  let raf = 0, sucio = false, ultimoHueco = -1, tAnt = 0, tPlan = 0;
+  function bucle(ahora) {
+    raf = 0;
+    if (!vivo) return;
+    let sigue = false;
+    if (zoom !== zoomObj) {
+      const dt = tAnt ? Math.min(0.1, (ahora - tAnt) / 1000) : 1 / FPS;
+      zoom += (zoomObj - zoom) * (1 - Math.exp(-dt / TAU));
+      if (Math.abs(zoomObj - zoom) < zoomObj * 1e-3) zoom = zoomObj;
+      if (ancla) {
+        const o = orientaPara(ancla.x * ancla.z / zoom, ancla.y * ancla.z / zoom, ancla.lat, ancla.lon);
+        if (o) { lat0 = o.lat0; lon0 = o.lon0; }
+      }
+      sucio = true;
+      sigue = zoom !== zoomObj;
+    }
+    tAnt = sigue ? ahora : 0;
+    const hueco = Math.floor(ahora / 1000 * FPS);
+    if (sucio && hueco !== ultimoHueco) {
+      ultimoHueco = hueco;
+      sucio = false;
+      pinta();
+      if (ahora - tPlan > 120 || !sigue) { tPlan = ahora; planifica(); }
+    }
+    if (sucio || sigue) raf = requestAnimationFrame(bucle);
+  }
+  const pide = () => { sucio = true; if (!raf) raf = requestAnimationFrame(bucle); };
+
+  function mueve(dx, dy) {
+    // Píxeles CSS -> grados, como si se agarrara el globo por su centro: un
+    // radio de disco arrastrado es un radián de giro (a cualquier zoom).
+    const k = 180 / Math.PI / (R0 * zoom * px);
+    lon0 -= dx * k;
+    lat0 = Math.max(-90, Math.min(90, lat0 + dy * k));
+    ancla = null;
+    pide();
+  }
+  // Zoom hacia el cursor al ACERCARSE: el punto de Marte que hay bajo el
+  // ratón se queda bajo el ratón (si el ratón está fuera del disco, hacia el
+  // centro). Al ALEJARSE, hacia el centro y sin girar, como Google Earth:
+  // mantener el punto bajo el ratón obliga a girar el globo cada vez más según
+  // encoge, y con el ratón en una esquina acababa mirando al polo (probado el
+  // 21-sep-2026: de lat0 29° a 83° en un solo alejamiento).
+  function hazZoom(factor, clientX, clientY) {
+    const nuevo = Math.max(1, Math.min(ZOOM_MAX, zoomObj * factor));
+    if (nuevo === zoomObj) return;
+    if (nuevo < zoomObj) ancla = null;
+    else {
+      const [x, y] = aDisco(clientX, clientY);
+      const g = clientX == null ? null : geo(x, y);
+      ancla = g ? { x, y, z: zoom, lat: g.lat, lon: g.lon } : null;
+    }
+    zoomObj = nuevo;
+    pide();
+  }
+
+  const observa = new ResizeObserver(() => { if (ajusta()) pide(); });
+  observa.observe(canvas.parentElement);
+  if (ajusta()) { pinta(); planifica(); }
+  const perdido = (e) => { e.preventDefault(); vivo = false; };
+  canvas.addEventListener("webglcontextlost", perdido);
+
+  return {
+    vista: () => {
+      const n = finos.map((f) => [...f.estado.values()].filter((e) => e === "lista").length);
+      return { lat0, lon0: ((lon0 + 540) % 360 + 360) % 360 - 180, zoom, teselas: n };
+    },
+    ponVista(la, lo) { lat0 = Math.max(-90, Math.min(90, la)); lon0 = lo; ancla = null; pide(); },
+    ponZoom(z) { zoomObj = Math.max(1, Math.min(ZOOM_MAX, z)); ancla = null; pide(); },
+    zoom: hazZoom,
+    mueve,
+    suelta: () => { planifica(); },
+    // Banco de pruebas: ms de `n` fotogramas completos esperando a la GPU.
+    medir(n = 20) {
+      const t0 = performance.now();
+      for (let i = 0; i < n; i++) { lon0 += 0.5; pinta(); }
+      gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+      lon0 -= 0.5 * n;
+      pinta();
+      return (performance.now() - t0) / n;
+    },
+    desmontar() {
+      vivo = false;
+      if (raf) cancelAnimationFrame(raf);
+      observa.disconnect();
+      canvas.removeEventListener("webglcontextlost", perdido);
+    },
+  };
+}
+
+// Zoom con la rueda del ratón y el trackpad sobre `zona`. En Chrome y Firefox
+// el pellizco del trackpad llega como rueda con ctrlKey (y más fino: pasos
+// pequeños), y el arrastre con dos dedos, como rueda normal. Safari manda el
+// pellizco como eventos gesture*. En todos se anula lo que harían por
+// defecto (scroll o el zoom de la página). Devuelve la función que lo
+// desmonta.
+/**
+ * @param {HTMLElement} zona
+ * @param {{ zoom: (factor: number, clientX?: number, clientY?: number) => void }} marte
+ */
+export function montarZoom(zona, marte) {
+  const rueda = (e) => {
+    e.preventDefault();
+    let d = e.deltaY;
+    if (e.deltaMode === 1) d *= 16;                // en líneas
+    else if (e.deltaMode === 2) d *= window.innerHeight;
+    // un golpe de rueda (100 px) = x1,28; el pellizco, más sensible
+    const k = e.ctrlKey ? 0.012 : 0.0025;
+    marte.zoom(Math.exp(-Math.max(-300, Math.min(300, d)) * k), e.clientX, e.clientY);
+  };
+  let escala = 1;
+  const gesto0 = (e) => { e.preventDefault(); escala = 1; };
+  const gesto = (e) => {
+    e.preventDefault();
+    marte.zoom(e.scale / escala, e.clientX, e.clientY);
+    escala = e.scale;
+  };
+  zona.addEventListener("wheel", rueda, { passive: false });
+  zona.addEventListener("gesturestart", gesto0);
+  zona.addEventListener("gesturechange", gesto);
+  return () => {
+    zona.removeEventListener("wheel", rueda);
+    zona.removeEventListener("gesturestart", gesto0);
+    zona.removeEventListener("gesturechange", gesto);
+  };
+}
