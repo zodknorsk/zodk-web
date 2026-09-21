@@ -9,11 +9,11 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 - Rama **`mars-project`**, creada desde `main` el 21-sep-2026. **Solo en el
   Mac, sin subir a GitHub.** Nada fusionado ni publicado.
 - **Hecho**: estudio del proyecto (abajo), primeras decisiones y **paso 1:
-  Marte provisional**, aprobado por el usuario y commiteado en la rama (dos
-  caras de prueba en el banco, `logo-files/prototipo-marte/`).
-- **En marcha**: paso 2, giro con la barra espaciadora. Primero hay que pasar
-  el mapa al formato del `<canvas>` (material + normal, como `luna-mapa.png`)
-  y montar el motor en JS.
+  Marte provisional**, aprobado por el usuario y commiteado en la rama
+  (commit `5a99c5c`).
+- **Paso 2, giro con la barra espaciadora: hecho y probado por el usuario**
+  (21-sep-2026: "Zen de momento va bien parece"). Commiteado.
+- **En marcha**: paso 3, el zoom.
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -22,8 +22,9 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
       después), a ~60 svh. Enseñar un render. **Hecho y aprobado el
       21-sep-2026** ("me gusta mucho el enfoque… vamos muy bien"). Ver
       "Marte provisional" abajo.
-- [ ] 2. **Giro con la barra espaciadora** (estilo Photoshop, ver
-      decisiones).
+- [x] 2. **Giro con la barra espaciadora** (estilo Photoshop, ver
+      decisiones). **Hecho y probado por el usuario el 21-sep-2026** (Zen
+      bien). Ver "Giro con la barra espaciadora" abajo.
 - [ ] 3. **Zoom** con rueda y trackpad, hasta ×4, con la pirámide de mapas.
 - [ ] 4. Dos o tres **chapas de prueba** pegadas al terreno (Curiosity,
       Perseverance…).
@@ -69,6 +70,9 @@ pulsa para viajar, y la publicación (merge en `main`).
 
    No bloquea nada: los pasos 1 a 4 son iguales con A y con B, y el botón se
    añade al final.
+2. **Móvil / táctil**: sin barra espaciadora, ¿cómo se gira y se hace zoom?
+   (lo natural sería arrastrar con un dedo y pellizcar). El usuario lo deja
+   por decidir (21-sep-2026).
 
 ## Marte provisional (paso 1, 21-sep-2026)
 
@@ -116,6 +120,56 @@ pulsa para viajar, y la publicación (merge en `main`).
   Luna ya hace eso mismo: gira "sucia" y acaba en el PNG limpio).
 - Para revisar el banco no se pudo usar Chrome: la extensión no estaba
   conectada. Se revisaron los PNG directamente.
+
+## Giro con la barra espaciadora (paso 2, 21-sep-2026)
+
+- **Banco**: `prototipo-marte/canvas.html` (mismo servidor que el otro
+  banco). Marte a 60 svh sobre las estrellas, en una ventana de pantalla
+  completa. Con **espacio** pulsado sale la mano abierta; con **espacio +
+  clic y arrastrar**, la mano cerrada y el planeta gira. Botones para saltar a
+  Tharsis, Syrtis y los dos polos; abajo, la vista (lat0/lon0) y los ms del
+  último fotograma. `?medir` mide al cargar (para Zen).
+- **Motor**: `src/scripts/marte.js`.
+  - `montarMarte(canvas, opciones)` pinta el planeta.
+  - `montarMano(zona, marte)` hace la mano. Pone las clases `mano` y
+    `agarrando` en la zona; el cursor lo pone el CSS de la página.
+  - Datos en `public/marte/`, de `generar-marte.py --canvas ../public/marte/`
+    (mapa de 1440 x 720, 641 KB). Al regenerar hay que subir `MARTE_V`; va
+    por 2.
+- **Cómo gira**:
+  - Tipo globo: el norte siempre arriba. Arrastrar a los lados cambia la
+    longitud del centro y arriba o abajo inclina hasta los polos (tope de
+    ±90°).
+  - Un radio de disco arrastrado es un radián de giro.
+  - Al soltar se queda donde se dejó, sin inercia.
+  - Se puede agarrar en todo el hero, no solo sobre el disco.
+- **Coste** (medido en Node, que usa el motor de JavaScript de Chrome; sin
+  contar el volcado a pantalla): **1,5 ms** por fotograma arrastrando a los
+  lados (solo se desplaza el mapa, como la Tierra) y **6 ms** inclinando
+  (rehace las tablas por píxel). Mientras se arrastra, como mucho 60
+  fotogramas por segundo y sin limpieza. Al soltar se pinta uno limpio y ya
+  no se gasta nada. **Falta medir en Zen.**
+- **El lienzo ya ocupa toda la ventana**, con el disco centrado, pensando en
+  el zoom: al acercarse, el disco se saldrá de la pantalla. El píxel de arte
+  mide lo mismo que en la Luna. El volcado es a un múltiplo entero, ×3 como
+  mucho, como en la Luna y la Tierra.
+- **La barra espaciadora** no hace scroll ni pulsa el último botón clicado.
+  Si se navega con el teclado (foco visible en un botón), el espacio sigue
+  pulsando ese botón. Si la ventana pierde el foco con el espacio pulsado
+  (Cmd+Tab), se da por soltado.
+- **Arreglado de paso**: una raya oscura de polo a polo en los 180° O. La
+  columna 0 del mosaico reducido con `sips` sale oscura (la mezcla con negro
+  del borde); el generador usa la columna de al lado.
+- **Aún sin hacer (a propósito)**:
+  - Las sombras proyectadas y el supermuestreo del render de Python: el
+    fotograma en reposo no los tiene. Por la geometría no hacían falta;
+    comparar a ojo si se echan de menos.
+  - Pantallas táctiles: no hay barra espaciadora. **Pendiente de decidir**
+    (el usuario, 21-sep-2026: "Móvil se queda por decidir").
+- **Prueba sin navegador**: `node logo-files/prototipo-marte/probar-en-node.mjs
+  carpeta/` ejecuta `marte.js` con un canvas simulado y guarda en PNG varias
+  vistas y dos fotogramas a mitad de arrastre, además de medir los ms. Sirvió
+  para ver la raya de los 180° antes de enseñarlo.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
