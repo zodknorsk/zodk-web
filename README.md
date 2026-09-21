@@ -59,8 +59,8 @@ detalle, las decisiones y lo que se probó y descartó está en
 ```
 src/
   consts.ts              Configuración del sitio (nombre, email, nº de notas en portada)
+  content.config.ts      Esquemas de las colecciones "notas" y "eventos"
   content/
-    config.ts            Esquemas de las colecciones "notas" y "eventos"
     notas/  eventos/     Contenido generado por el script (no editar a mano)
   layouts/PageLayout.astro   Esqueleto HTML común (<head>, header, footer)
   components/            Piezas reutilizables (Header, Footer, ArrowCard, EventoNav...)

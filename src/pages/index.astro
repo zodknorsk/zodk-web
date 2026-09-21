@@ -60,7 +60,7 @@ const todosEventos = await getCollection("eventos");
 const articulos = [
   ...(await getCollection("notas"))
     .filter((n) => !n.data.draft && !n.data.tags.some((t) => t.toLowerCase() === "luna"))
-    .map((n) => ({ titulo: n.data.title, url: `/notas/${n.slug}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
+    .map((n) => ({ titulo: n.data.title, url: `/notas/${n.id}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
   ...todosEventos
     .filter((e) => e.data.kind === "index" && !e.data.draft && !e.data.tags.some((t) => t.toLowerCase() === "luna"))
     .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
