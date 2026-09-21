@@ -44,3 +44,7 @@ logo-files/luna-fuentes/
 
 # Caché de Python al importar los módulos de logo-files/ (png8, etc.)
 __pycache__/
+
+# Proyecto Marte: fuentes de la NASA/USGS (~800 MB, se re-descargan con los
+# curl de logo-files/generar-marte.py) y la caché de su pasada lenta.
+logo-files/marte-fuentes/
