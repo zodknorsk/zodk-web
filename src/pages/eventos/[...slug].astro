@@ -3,7 +3,7 @@
 //   kind "index"  -> /eventos/<evento>            (portada del evento)
 //   kind "semana" -> /eventos/<evento>/semana-NN  (cronología de esa semana)
 //   kind "pagina" -> /eventos/<evento>/<slug>     (pieza de acompañamiento)
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection, render } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
@@ -14,14 +14,14 @@ export async function getStaticPaths() {
   // Los borradores no generan página (igual que en notas).
   const entradas = (await getCollection("eventos")).filter((e) => !e.data.draft);
   return entradas.map((entrada) => ({
-    params: { slug: entrada.slug },
+    params: { slug: entrada.id },
     props: entrada,
   }));
 }
 type Props = CollectionEntry<"eventos">;
 
 const entrada = Astro.props;
-const { Content, headings } = await entrada.render();
+const { Content, headings } = await render(entrada);
 
 const hermanas = (await getCollection("eventos")).filter(
   (e) => e.data.evento === entrada.data.evento && !e.data.draft,
@@ -37,14 +37,14 @@ let anterior = null;
 let siguiente = null;
 let dias: { text: string; slug: string }[] = [];
 if (entrada.data.kind === "semana") {
-  const i = semanas.findIndex((e) => e.slug === entrada.slug);
+  const i = semanas.findIndex((e) => e.id === entrada.id);
   const prev = semanas[i - 1];
   const next = semanas[i + 1];
   anterior = prev
-    ? { href: `/eventos/${prev.slug}`, label: `Semana ${prev.data.orden}` }
+    ? { href: `/eventos/${prev.id}`, label: `Semana ${prev.data.orden}` }
     : null;
   siguiente = next
-    ? { href: `/eventos/${next.slug}`, label: `Semana ${next.data.orden}` }
+    ? { href: `/eventos/${next.id}`, label: `Semana ${next.data.orden}` }
     : null;
   // Solo los encabezados de día ("## 30 de julio"), no otros h2 sueltos.
   dias = headings
@@ -100,7 +100,7 @@ function diaCorto(texto: string) {
               <ul class="flex flex-col gap-1.5 text-sm">
                 {semanas.map((s) => (
                   <li>
-                    <a href={`/eventos/${s.slug}`} class="opacity-80 hover:opacity-100">
+                    <a href={`/eventos/${s.id}`} class="opacity-80 hover:opacity-100">
                       Semana {s.data.orden}
                     </a>
                     {s.data.rango && <span class="opacity-50"> · {s.data.rango}</span>}
@@ -118,7 +118,7 @@ function diaCorto(texto: string) {
               <ul class="flex flex-col gap-1.5 text-sm">
                 {paginas.map((p) => (
                   <li>
-                    <a href={`/eventos/${p.slug}`} class="opacity-80 hover:opacity-100">
+                    <a href={`/eventos/${p.id}`} class="opacity-80 hover:opacity-100">
                       {p.data.title}
                     </a>
                   </li>
