@@ -90,7 +90,10 @@ LADO    = -1           # -1 izquierda, +1 derecha
 # Terminador algo menos seco que el de la Luna (-0,01/0,30): Marte tiene una
 # atmósfera fina.
 TERM_A, TERM_B = -0.03, 0.32
-NOCHE   = 0.16         # brillo del lado sin sol: el de la Luna, para que no se funda con el fondo
+# Brillo del lado sin sol (y suelo de las sombras del relieve). Empezó en 0,16,
+# el de la Luna; el usuario lo quiso "menos oscuro" y, comparando 0,16 / 0,22 /
+# 0,28 / 0,35 en el banco (21-sep-2026), eligió 0,22.
+NOCHE   = 0.22
 LIMB_K  = 0.10         # oscurecimiento del borde
 
 RELIEVE_EXAG = 2.5     # exageración de pendientes para el sombreado

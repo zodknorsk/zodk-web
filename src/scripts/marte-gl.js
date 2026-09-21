@@ -389,7 +389,7 @@ export async function montarMarteGL(canvas, {
     return true;
   }
 
-  const progCod = programa(gl, fragCodigos(D, off, finos, A));
+  let progCod = programa(gl, fragCodigos(D, off, finos, A));
   const progLimpia = programa(gl, FRAG_LIMPIA);
   const progColor = programa(gl, FRAG_COLOR);
   const vao = gl.createVertexArray();
@@ -642,6 +642,13 @@ export async function montarMarteGL(canvas, {
     },
     ponVista(la, lo) { lat0 = Math.max(-90, Math.min(90, la)); lon0 = lo; ancla = null; pide(); },
     ponZoom(z) { zoomObj = Math.max(1, Math.min(ZOOM_MAX, z)); ancla = null; pide(); },
+    // Banco de pruebas: cambia constantes de luz de marte-datos.json (p. ej.
+    // { NOCHE: 0.28 }) sin regenerar nada; van en el shader, que se recompila.
+    ajustaLuz(cambios) {
+      Object.assign(D, cambios);
+      progCod = programa(gl, fragCodigos(D, off, finos, A));
+      pide();
+    },
     zoom: hazZoom,
     mueve,
     suelta: () => { planifica(); },
