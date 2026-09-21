@@ -21,7 +21,7 @@ export async function GET(context: Context) {
       title: nota.data.title,
       description: nota.data.description ?? "",
       pubDate: nota.data.date,
-      link: `/notas/${nota.slug}/`,
+      link: `/notas/${nota.id}/`,
     })),
   });
 }

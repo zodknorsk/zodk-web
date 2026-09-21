@@ -192,21 +192,47 @@ no se usa, corregir código y dejar la documentación como está la web hoy.
 - Comprobado al cerrar: `npm run build` OK (51 páginas), `npm run lint` limpio,
   ningún enlace interno roto en `dist/` y nada que apunte a lo borrado.
 
-### Pendiente: subir Astro 5 → 7 (el usuario lo hará la semana del 22-sep)
+### Subida a Astro 7 (21-sep-2026, rama `astro-7`, pendiente de fusionar)
 
-`npm audit` da 4 vulnerabilidades (1 crítica) en `astro` 5.18.2 y `sharp`:
-varios XSS y un RCE por la optimización de imágenes AVIF. La exposición real es
-baja (sitio estático, sin servidor, contenido propio), pero conviene ponerse al
-día. El arreglo es `npx @astrojs/upgrade` → Astro 7.3.3, **cambio mayor**.
+Astro 5.18.2 → **7.3.3** (con Vite 8). `npm audit` pasó de 4 vulnerabilidades
+(1 crítica, en `astro` y `sharp`) a **0**. Lo que cambió:
 
-Hacerlo **en rama aparte** y vigilar lo que más se puede romper:
-- **ClientRouter**: el vuelo Tierra ↔ Luna vive de `astro:page-load`,
-  `astro:before-swap` y `astro:after-swap` (`index.astro`, `luna.astro`,
-  `viaje-luna.js`). Es lo más frágil de todo el sitio.
-- **Colecciones de contenido**: `src/content/config.ts` y los `getCollection`
-  de todas las páginas.
-- **Integraciones**: `sitemap` y `tailwind` tendrán que subir a la vez.
+- **Colecciones de contenido**: `src/content/config.ts` pasó a
+  `src/content.config.ts`, con un `loader: glob()` por colección y `z` desde
+  `astro/zod`. En las páginas, `entrada.slug` → `entrada.id` y
+  `entrada.render()` → `render(entrada)`. El `id` sale igual que el viejo
+  `slug` (sin `.md` ni `/index` final): las 51 URLs no cambiaron.
+- **Tailwind**: fuera `@astrojs/tailwind` (no funciona desde Astro 6). Sigue
+  Tailwind 3, conectado como plugin de PostCSS en `astro.config.mjs`, igual
+  que lo hacía la integración por dentro. Pasar a Tailwind 4 sería otro
+  trabajo (cambian nombres de clases); no hace falta.
+- **`compressHTML: true`** en `astro.config.mjs`: Astro 7 borra por defecto
+  los saltos de línea entre etiquetas (reglas de JSX) y podía pegar palabras.
+- **Minificado del CSS con esbuild** (`vite.build.cssMinify`): ver la trampa
+  de abajo.
+- `sharp` a 0.35 y `allowScripts` de `package.json` al día (solo `esbuild`
+  0.28.2 y `fsevents` necesitan script de instalación).
 
-Probar antes de fusionar: portada de día y de noche, vuelo a `/luna` y vuelta,
-chapas y columna de países, el enlace `moon-project` desde modo día, `/notas`,
-`/eventos`, una nota de misión y el RSS.
+**Trampa: Lightning CSS se estrella sin mensaje.** Si `astro build` muere con
+`Segmentation fault` justo tras "Building static entrypoints", es Lightning
+CSS (1.33, en Rust). Lo tumba el ancho de `.hero-lectura` en `global.css`:
+`calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em))` (un número por un
+paréntesis con unidades mezcladas). Vite 8 lo usa para minificar: por eso
+`cssMinify: "esbuild"`, el minificador de Astro 5, y el CSS sale idéntico
+byte a byte. **Pero el compilador de Astro 7 también usa Lightning CSS para los
+`<style>` de los componentes, y ahí `cssMinify` no protege**: si esa forma de
+`calc` va algún día en un `.astro`, deshacer el paréntesis a mano
+(`18ch + 18 * 0.14em` sí compila).
+
+Comprobado antes de fusionar: el HTML de las 51 páginas comparado con el de
+`main` solo cambia en espacios entre etiquetas, `&quot;` en los tuits, `alt=""`
+en las imágenes de las notas, el nombre interno de los estilos
+(`data-astro-cid-…`) y un ancla del evento del F-15E que ahora acaba en guion
+(nada la enlaza). En Chrome: portada de día y de noche, vuelo a `/luna` y
+vuelta (eventos del router en orden), `moon-project` desde modo día, columna
+de países (chapas en la misma posición que en `main`), cara oculta, volver a
+`/luna` desde una nota con la selección guardada, `/notas`, `/eventos`, una
+semana de Ceuta, una nota de misión y el RSS. `npm run lint` y `npm run dev`,
+bien. Visto de paso y **no es de la migración** (también en `main`): durante
+el vuelo de vuelta a la Tierra, la mitad de abajo de la pantalla sale gris
+lisa en Chrome.
