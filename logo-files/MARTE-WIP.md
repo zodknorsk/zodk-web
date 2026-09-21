@@ -4,60 +4,75 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (21-sep-2026, tarde)
+## Dónde estamos (21-sep-2026, noche: pausa de sesión)
 
-- Rama **`mars-project`**, creada desde `main` el 21-sep-2026. **Solo en el
-  Mac, sin subir a GitHub.** Nada fusionado ni publicado.
-- **Hecho**: estudio del proyecto (abajo), primeras decisiones y **paso 1:
-  Marte provisional**, aprobado por el usuario y commiteado en la rama
-  (commit `5a99c5c`).
-- **Paso 2, giro con la barra espaciadora: hecho y probado por el usuario**
-  (21-sep-2026: "Zen de momento va bien parece"). Commit `eafc8b6`.
-- **Paso 3, zoom: hecho y probado por el usuario** (21-sep-2026): en Zen
-  "no parece que se disparen los vatios" y el pellizco del trackpad "abre
-  bien". **Cambio de motor: pasa a WebGL** (ver "Zoom" abajo). Commit
-  `c8bc302`.
-- **Zoom ×6: hecho** (nivel de 24 px/grado y atlas de teselas en la GPU).
-  Commit `21d404b`. Ver "Zoom ×6" abajo.
-- **La mano pasa a clic y arrastrar, como Google Maps** (lo pidió el usuario
-  el 21-sep-2026: "en lugar de barra espaciadora… desplazar haciendo click").
-  Hecho y probado en Chrome; **falta que lo pruebe el usuario**. Sin
-  commitear: `src/scripts/marte.js` (`montarMano`), los dos bancos y este
-  documento.
-- Las teselas (`public/marte/n1/`, `n2/`, `n3/`, 36 MB) siguen fuera de Git
-  hasta el pixel art definitivo.
-- **Chapas: aplazadas** (usuario, 21-sep-2026: "las chapas las
-  implementaremos más tarde", cuando se empiecen a escribir las notas de las
-  misiones).
-- **En marcha: pulido del pixel art.** Hecho: **la sombra menos oscura**
-  (`NOCHE` de 0,16 a **0,22**, elegido por el usuario el 21-sep-2026) y
-  commiteado. Ver "Pulido del pixel art" abajo.
-- Hecho también: **las llanuras en dos tonos** (variante A, elegida por el
-  usuario el 21-sep-2026), aplicada a todos los niveles. Commit `a907648`.
-  Ver "Pulido del pixel art", punto 2.
-- **En marcha: las zonas oscuras "algo pardas"** (el usuario: "vamos con la
-  siguiente"). Tres colores para comparar en el banco (fila "zonas oscuras"
-  de `zoom.html`). **Rechazó A y B** (gris y gris azulado). **Hecho: el
-  "chocolate suave"**, confirmado por el usuario ("sí, chocolate suave").
-  Ver "Pulido del pixel art", punto 3.
-- Chocolate suave: commit `105ff78`.
-- **Casquete norte: hecho y aprobado** ("está bien así"). El casquete se
-  queda como está (prefirió "el de verdad" al más amplio) y **la vista
-  inicial pasa a 12,5° al norte**. Se probó 25° y el usuario pidió "no tanta
-  inclinación, la mitad por lo menos de 25". Ver "Pulido del pixel art",
-  punto 4.
-- **Banco limpio** (el usuario: "limpia de opciones la página de prueba que
-  apenas veo Marte ya"): el panel de `zoom.html` es una línea (Tharsis,
-  Syrtis, polos, ×1, ×6 y la vista). Las comparaciones ya decididas siguen
-  funcionando por la URL (ver el comentario de la cabecera de `zoom.html`).
-- Sin commitear: la variante `casquete-amplio` de `generar-marte.py`,
-  `prototipo-marte/casquete/`, `lat0` = 12,5 en los dos motores, los dos bancos
-  y este documento.
-- **En marcha: el grano en las llanuras a ×6**, el último punto del pulido
-  apuntado.
-  Sin commitear: `--solo-lut`/`--oscuras` en `generar-marte.py`,
-  `prototipo-marte/oscuras/`, la opción `lut` de `marte-gl.js`, el banco y
-  este documento.
+**Rama `mars-project`**, creada desde `main` el 21-sep-2026 y **subida a
+GitHub** el mismo día (`git push -u origin mars-project`). Nada fusionado ni
+publicado: `main` y zodk.eu siguen como estaban.
+
+### Hecho (todo commiteado y aprobado por el usuario)
+
+1. **Estudio y Marte provisional** (`generar-marte.py`, relieve MOLA + color
+   Viking, pixel art con el recorrido de la Luna), a 60 svh con el píxel de la
+   Luna. Commit `5a99c5c`.
+2. **Giro con la mano**, tipo globo (norte arriba). Primero con la barra
+   espaciadora (`eafc8b6`); el usuario lo cambió a **clic y arrastrar, como
+   Google Maps** (`de62b88`). Quieto no se repinta.
+3. **Zoom con rueda y trackpad**, hacia el cursor al acercarse y hacia el
+   centro al alejarse, **hasta ×6**, con el detalle creciendo:
+   - Motor en **WebGL** (`src/scripts/marte-gl.js`): 0,3-0,6 ms por
+     fotograma en Chrome. Zen y trackpad, probados por el usuario.
+   - Pirámide de mapas: base de 4 px/grado + teselas de 8, 16 y 24 px/grado
+     (`public/marte/n1..n3`), en un atlas de tamaño fijo en la GPU.
+   - Commits `c8bc302` (×4) y `21d404b` (×6).
+4. **Pulido del pixel art** (sin pasarse de realismo, pidió el usuario):
+   - **Sombra menos oscura**: `NOCHE` 0,16 → 0,22 (`1e4641b`).
+   - **Llanuras en dos tonos**: el pico de brillo partido en dos tonos casi
+     iguales (`a907648`).
+   - **Zonas oscuras en "chocolate suave"**: rechazó gris y gris azulado;
+     prefiere los tonos reales (`105ff78`).
+   - **Casquete norte**: se queda como estaba y la **vista inicial se inclina
+     12,5° al norte** (se probó 25°: demasiado) (`3b31e39`).
+   - **Grano en las llanuras a ×6**: se probaron tres arreglos y el usuario
+     dijo "**No. Déjalo como estaba**". Sin cambios (ver punto 5 del pulido).
+5. **Bancos de prueba** en `logo-files/prototipo-marte/`:
+   - `zoom.html`: el de ahora, WebGL. Panel mínimo; las comparaciones, por la
+     URL.
+   - `canvas.html`: el motor de CPU.
+   - `index.html`: los PNG del boceto.
+   - `probar-en-node.mjs`: pruebas sin navegador.
+
+### Lo que NO está en Git (ojo al cambiar de ordenador)
+
+- **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
+  hasta que el pixel art sea definitivo (decisión del usuario). Solo están en
+  el Mac.
+- **Las fuentes** (`logo-files/marte-fuentes/`, ~1 GB: MOLA de 16 y 32
+  px/grado y el mosaico Viking con sus reducciones a 8, 16 y 24).
+- En otro ordenador hay que bajar las fuentes (los `curl`/`sips` están en el
+  docstring de `generar-marte.py`) y regenerar: `cd logo-files && python3
+  generar-marte.py --canvas ../public/marte/` (unos 4 min).
+- Verlo: `python3 -m http.server 4400` en la raíz del repo y abrir
+  `http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html`. Tras tocar
+  `marte-gl.js`, recargar a fondo (Cmd+Mayús+R): Chrome guarda en caché el
+  módulo.
+
+### Pendiente (sin orden cerrado; lo decide el usuario)
+
+- **Página `/marte`** de verdad en Astro (como `/luna`: sin cabecera, menú
+  HUD), con el motor WebGL y la mano y el zoom de los bancos.
+- **El Marte pequeño que se pulsa para viajar** y la animación del viaje
+  (¿desde la portada, desde `/luna` o desde las dos?).
+- **Decisiones abiertas** (detalle en "Decisiones pendientes"):
+  - ¿Marte gira solo? Se recomendó que empiece quieto con botón play/pausa.
+  - Móvil y táctil.
+- **Chapas de las misiones**: aplazadas hasta que se escriban las notas en la
+  bóveda.
+- **Sin WebGL2**: hoy el banco solo lo avisa. Para `/marte`, decidir si se
+  usa el motor de CPU (`marte.js`, sin zoom) o una imagen quieta.
+- **Antes de publicar**: commitear las teselas (con el pixel art ya
+  definitivo) y fusionar `mars-project` en `main` (explicando el merge al
+  usuario antes).
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -79,10 +94,10 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
       cuando se empiecen a escribir las notas de las misiones.
 - [ ] Giro automático y botón, si se decide (ver pendientes).
 
-- [ ] 5. **Pulido del pixel art** (en marcha desde el 21-sep-2026): sombra
-      menos oscura, llanuras de un solo tono, zonas oscuras pardas, casquete
-      norte pequeño a ×1, grano en las llanuras a ×6. **Sin pasarse de
-      realismo** (ver decisiones).
+- [x] 5. **Pulido del pixel art** (21-sep-2026), **sin pasarse de realismo**
+      (ver decisiones). Hecho: sombra menos oscura, llanuras en dos tonos,
+      zonas oscuras en chocolate suave y vista inicial a 12,5°. El casquete y
+      el grano de las llanuras se quedan como estaban (decisión del usuario).
 
 Después, sin orden cerrado: las misiones
 (chapa, ficha y nota en la bóveda), página `/marte`, el Marte pequeño que se
@@ -516,6 +531,43 @@ pulsa para viajar, y la publicación (merge en `main`).
 - Una posible opción más, **no preparada**: un casquete "de invierno" más
   grande (escarcha estacional hasta ~65° N). Es real en invierno, pero no
   sale del mosaico: habría que inventar su borde.
+
+### 5. El grano en las llanuras a ×6 (21-sep-2026)
+
+- **Qué es** (visto a ×6 en Elysium Planitia, `?vista=3,150,6`):
+  - Rayitas verticales discontinuas, de norte a sur. Son las huellas de las
+    órbitas del MOLA, casi de polo a polo: entre pasadas el relieve se
+    rellena y quedan escalones este-oeste que la derivada este-oeste recoge.
+  - Puntitos oscuros sueltos: muchos son cráteres pequeños reales.
+  - Líneas diagonales: parecen crestas reales y no se tocan.
+- **Variantes** (`--variante X`, solo en los niveles de 16 px/grado o más,
+  `GRANO_DESDE_PPD`):
+  - **A · `grano-eo`**: derivada este-oeste a 3 celdas en todas partes. Quita
+    las rayitas, pero **ablanda Gale y las mesetas** de alrededor.
+  - **B · `grano-suave`**: A y además 1,5 celdas norte-sur. Algo más blanda
+    todavía.
+  - **C · `grano-llanos`**: la derivada este-oeste de 3 celdas **solo donde
+    es llano** (pendiente regional por debajo del 1 %, con rampa hasta el
+    4 %); en el relieve abrupto, la de siempre. **Quita las rayitas de las
+    llanuras y deja Gale igual de nítido.**
+- **Generar solo una zona**: `--zona lat_sur,lat_norte,lon_oeste,lon_este`
+  saca solo las teselas que la tocan (unos segundos en vez de minutos). Las
+  variantes están en `prototipo-marte/grano/<eo|suave|llanos>/`, con la base,
+  n2 y n3 de la zona −12..18° N, 132..168° E (Gale y Elysium Planitia) y n1
+  enlazado a `public/marte/n1`. Fuera de la zona, el banco cae al nivel 1.
+  Sin variante, el generador saca las teselas idénticas a las de antes
+  (comprobado).
+- **Se comparó** (`zoom.html`, sin botones: por la URL):
+  - Elysium: `?vista=3,150,6` (actual) y `?vista=3,150,6&datos=grano/llanos`.
+  - Gale: `?vista=-5.4,137.4,6` y `?vista=-5.4,137.4,6&datos=grano/llanos`.
+- Se recomendó C. **El usuario dijo "No. Déjalo como estaba"**
+  (21-sep-2026): no se aplica ninguna. Las variantes se quedan en el
+  generador como descartadas (`--variante grano-eo|grano-suave|grano-llanos`,
+  y `--zona` para generar solo una zona). Los datos de prueba de
+  `prototipo-marte/grano/` (6,4 MB de teselas) se borraron: se sacan de
+  nuevo con `--canvas prototipo-marte/grano/llanos/ --niveles 0,2,3 --zona
+  -12,18,132,168 --variante grano-llanos` (y un enlace de `n1` a
+  `public/marte/n1`).
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
