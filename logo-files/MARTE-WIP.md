@@ -33,10 +33,18 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   (`NOCHE` de 0,16 a **0,22**, elegido por el usuario el 21-sep-2026) y
   commiteado. Ver "Pulido del pixel art" abajo.
 - Hecho también: **las llanuras en dos tonos** (variante A, elegida por el
-  usuario el 21-sep-2026), aplicada a todos los niveles. Ver "Pulido del
-  pixel art", punto 2.
-- **Siguiente paso**: el siguiente punto del pulido (zonas oscuras pardas,
-  casquete norte pequeño a ×1, grano a ×6), por decidir con el usuario.
+  usuario el 21-sep-2026), aplicada a todos los niveles. Commit `a907648`.
+  Ver "Pulido del pixel art", punto 2.
+- **En marcha: las zonas oscuras "algo pardas"** (el usuario: "vamos con la
+  siguiente"). Tres colores para comparar en el banco (fila "zonas oscuras"
+  de `zoom.html`). **Rechazó A y B** (gris y gris azulado). **Hecho: el
+  "chocolate suave"**, confirmado por el usuario ("sí, chocolate suave").
+  Ver "Pulido del pixel art", punto 3.
+- **En marcha: el casquete norte pequeño a ×1** (el usuario: "pasa al
+  siguiente tema"). Ver "Pulido del pixel art", punto 4.
+  Sin commitear: `--solo-lut`/`--oscuras` en `generar-marte.py`,
+  `prototipo-marte/oscuras/`, la opción `lut` de `marte-gl.js`, el banco y
+  este documento.
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -405,6 +413,55 @@ pulsa para viajar, y la publicación (merge en `main`).
   una coma colgando.
 - Ojo al probar: Chrome guarda en caché los módulos JS del banco. Tras
   cambiar `marte-gl.js` hace falta recargar a fondo (Cmd+Mayús+R).
+
+### 3. Las zonas oscuras "algo pardas" (21-sep-2026)
+
+- Son los tres materiales oscuros: basalto muy oscuro (el corazón de Syrtis
+  Major), regiones oscuras (Acidalia, Mare Erythraeum…) y la transición. Eran
+  tres marrones (`#5c3c31`, `#724937`, `#8c563b`) que junto al naranja quedan
+  apagados.
+- **Solo cambia la LUT**: el mapa y las teselas son los mismos. Por eso se
+  comparan con todos los niveles de zoom: `generar-marte.py --solo-lut
+  prototipo-marte/oscuras/X.png --oscuras X`, y en el banco `?lut=`.
+- **Variantes** (`OSCURAS` en el generador; `antes` = la de verdad):
+  - **A · `basalto`**: el mismo marrón menos saturado y algo más frío
+    (`#57443f`, `#6c5247`, `#885d46`).
+  - **B · `gris-azulado`**: gris con un punto frío (`#4e474c`, `#655653`,
+    `#845d49`), contraste con el naranja como en las ilustraciones clásicas.
+  - **C · `chocolate`**: marrón más hondo y oscuro (`#4f3129`, `#67402f`,
+    `#88543a`).
+- **Banco**: `zoom.html`, fila "zonas oscuras" (recarga con la misma vista).
+  Botón de sitio nuevo: **Acidalia** (40, −25). Syrtis Major sale con el
+  botón Syrtis o con `?vista=10,85,1`.
+- **Visto en Chrome** (Syrtis a ×1 y ×4, Acidalia a ×1):
+  - A se lee como basalto y se separa mejor del naranja.
+  - B da el contraste más fuerte a ×1, pero a ×4, con la pantalla llena de
+    Syrtis, se ve fría, casi como un filtro (en la Luna se rechazó por "demasiado
+    azul").
+  - C gana contraste pero sigue terrosa.
+- Se recomendó A. **El usuario rechazó A y B** (21-sep-2026): "no me gusta
+  basalto ni gris, me gusta de hecho el pardo / chocolate, ¿son las más
+  reales?".
+  - Respuesta: sí, de las cuatro son las más fieles. En color real, las
+    zonas oscuras de Marte son pardo oscuro (arena basáltica con polvo
+    encima), algo menos rojas que las claras. El gris azulado sale de
+    imágenes procesadas: el mosaico Viking coloreado, contrastes forzados.
+  - Contraste: el albedo de las zonas oscuras es aproximadamente la mitad o
+    un tercio del de las claras. En luminancia, el material más oscuro frente
+    al polvo claro está a ~0,44 en el pardo y a ~0,37 en el chocolate: el
+    chocolate se acerca un poco más.
+  - El usuario: "el chocolate. O un pelín menos de contraste que
+    chocolate". Se hizo **`chocolate-suave`**, a un 70 % del camino del
+    pardo al chocolate (`#53342b`, `#6a4331`, `#89553a`). Comparado sin
+    navegador (prueba en Node, Syrtis a ×1), la diferencia es sutil: deja
+    Syrtis un pelín menos pesada.
+  - **Aplicado el chocolate suave y confirmado por el usuario**
+    (21-sep-2026): en `MATERIALES`, base regenerada (solo cambia la LUT) y
+    `MARTE_V` a 7. En el banco: "la de verdad (chocolate suave)",
+    "pardo (antes)", A, B, C y "C2 · chocolate suave (elegida)".
+  - Durante esta comparación la ventana de Chrome cambió de tamaño y las
+    capturas del navegador fallaron. Para comparar colores sin navegador:
+    la prueba en Node con otra LUT en la carpeta de datos.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 

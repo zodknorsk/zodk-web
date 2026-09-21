@@ -284,7 +284,7 @@ function filas(lat0, lon0) {
 /**
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, disco?: () => number,
- *   alPintar?: () => void, ladoAtlas?: number }} [opciones]
+ *   alPintar?: () => void, ladoAtlas?: number, lut?: string | null }} [opciones]
  */
 export async function montarMarteGL(canvas, {
   base = "/marte/",
@@ -293,6 +293,7 @@ export async function montarMarteGL(canvas, {
   disco = () => 0.6 * window.innerHeight,
   alPintar = () => {},
   ladoAtlas = 12,                                // huecos por lado del atlas (menos, para probar que se vacía bien)
+  lut = null,                                    // otra LUT (URL), para comparar colores en el banco
 } = {}) {
   const gl = canvas.getContext("webgl2", {
     alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false,
@@ -303,7 +304,7 @@ export async function montarMarteGL(canvas, {
   const [D, baseBm, lutBm] = await Promise.all([
     fetch(`${base}marte-datos.json${v}`).then((r) => r.json()),
     bitmap(`${base}marte-mapa.png${v}`),
-    bitmap(`${base}marte-lut.png${v}`),
+    bitmap(lut ?? `${base}marte-lut.png${v}`),
   ]);
   const MW = D.MAPA_W, MH = D.MAPA_H, R0 = D.RADIUS, T = D.TESELA;
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
