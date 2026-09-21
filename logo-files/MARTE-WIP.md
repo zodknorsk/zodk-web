@@ -17,16 +17,19 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   "no parece que se disparen los vatios" y el pellizco del trackpad "abre
   bien". **Cambio de motor: pasa a WebGL** (ver "Zoom" abajo). Commit
   `c8bc302`.
-- **Zoom ×6: hecho, falta que lo pruebe el usuario** (lo pidió el usuario el
-  21-sep-2026: "commit y vamos con el x6"). Nuevo nivel de 24 px/grado y
-  atlas de teselas en la GPU. Ver "Zoom ×6" abajo.
-- **Sin commitear** (×6): `src/scripts/marte-gl.js`,
-  `prototipo-marte/zoom.html`, `generar-marte.py` (MOLA a cualquier
-  resolución y nivel 3), `public/marte/marte-datos.json`, `MARTE_V` (va por
-  4) y este documento. Las teselas (`public/marte/n1/`, `n2/`, `n3/`, 36 MB)
-  siguen fuera de Git hasta el pixel art definitivo.
-- **Siguiente paso**: que el usuario pruebe el ×6; después, el paso 4
-  (chapas de prueba).
+- **Zoom ×6: hecho** (nivel de 24 px/grado y atlas de teselas en la GPU).
+  Commit `21d404b`. Ver "Zoom ×6" abajo.
+- **La mano pasa a clic y arrastrar, como Google Maps** (lo pidió el usuario
+  el 21-sep-2026: "en lugar de barra espaciadora… desplazar haciendo click").
+  Hecho y probado en Chrome; **falta que lo pruebe el usuario**. Sin
+  commitear: `src/scripts/marte.js` (`montarMano`), los dos bancos y este
+  documento.
+- Las teselas (`public/marte/n1/`, `n2/`, `n3/`, 36 MB) siguen fuera de Git
+  hasta el pixel art definitivo.
+- **Chapas: aplazadas** (usuario, 21-sep-2026: "las chapas las
+  implementaremos más tarde", cuando se empiecen a escribir las notas de las
+  misiones).
+- **Siguiente paso**: por decidir con el usuario qué va ahora (ver "Plan").
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -42,9 +45,10 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
       **Hecho y probado por el usuario el 21-sep-2026** (Zen y trackpad
       bien). Ver "Zoom" abajo.
 - [x] 3b. **Zoom hasta ×6** (pedido por el usuario tras probar el ×4). **Hecho
-      el 21-sep-2026; falta que lo pruebe el usuario.** Ver "Zoom ×6" abajo.
+      el 21-sep-2026.** Ver "Zoom ×6" abajo.
 - [ ] 4. Dos o tres **chapas de prueba** pegadas al terreno (Curiosity,
-      Perseverance…).
+      Perseverance…). **Aplazado** por el usuario (21-sep-2026): se hará
+      cuando se empiecen a escribir las notas de las misiones.
 - [ ] Giro automático y botón, si se decide (ver pendientes).
 
 Después, sin orden cerrado: pixel art definitivo de Marte, las misiones
@@ -53,10 +57,12 @@ pulsa para viajar, y la publicación (merge en `main`).
 
 ## Decisiones tomadas
 
-- **Barra espaciadora, como la mano de Photoshop** (usuario, 21-sep-2026):
-  con el espacio pulsado, el cursor es una mano abierta; con espacio + clic y
-  arrastrar, mano cerrada y el planeta gira. Soltar el clic o el espacio
-  termina el arrastre.
+- **Girar con clic y arrastrar, como Google Maps** (usuario, 21-sep-2026). Al
+  pasar por encima, mano abierta; al arrastrar, mano cerrada, y el planeta
+  gira. Sustituye a la barra espaciadora (espacio + arrastrar, como la mano
+  de Photoshop), que fue lo primero que eligió y probó. La cambió "antes de
+  seguir": "en lugar de barra espaciadora, se pueda desplazar haciendo click?
+  a lo google maps". La barra espaciadora ya no hace nada.
 - **Zoom máximo ×6** (usuario, 21-sep-2026). Primero decidió ×4 "y vamos
   viendo". Tras probarlo preguntó por ×5-×6 ("tal vez un x8 es demasiado"),
   y con la recomendación de hacerlo con un nivel nuevo, no agrandando el de
@@ -190,6 +196,22 @@ pulsa para viajar, y la publicación (merge en `main`).
   carpeta/` ejecuta `marte.js` con un canvas simulado y guarda en PNG varias
   vistas y dos fotogramas a mitad de arrastre, además de medir los ms. Sirvió
   para ver la raya de los 180° antes de enseñarlo.
+
+### Cambio: clic y arrastrar en vez de barra espaciadora (21-sep-2026)
+
+- `montarMano(zona, marte)` en `marte.js`, la misma para los dos motores.
+  Pone en `zona` la clase `arrastrable` (cursor `grab` en el CSS de la
+  página) y `agarrando` mientras se arrastra (`grabbing`).
+- El giro no empieza hasta moverse **4 px**: un clic sin arrastrar sigue
+  siendo un clic (lo necesitarán las chapas). Tras un arrastre de verdad se
+  anula el clic que manda el navegador al soltar.
+- No se agarra sobre botones, enlaces, campos ni lo que lleve
+  `data-sin-arrastre` (el panel de los bancos lo lleva).
+- Probado en Chrome: el arrastre gira, un clic sin moverse no cambia nada y
+  los botones del panel funcionan igual.
+- Se quitó todo lo de la barra espaciadora (anular el scroll, el foco
+  visible, etc.). Queda en el historial de Git (commit `eafc8b6`) por si
+  vuelve.
 
 ## Zoom (paso 3, 21-sep-2026)
 
