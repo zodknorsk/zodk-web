@@ -288,7 +288,10 @@ function filas(lat0, lon0) {
  */
 export async function montarMarteGL(canvas, {
   base = "/marte/",
-  lat0: lat0Ini = 10,
+  // Vista inicial inclinada 12,5° al norte (21-sep-2026). Era 10°, con el
+  // casquete norte casi en el borde; se probó 25° y el usuario lo quiso con
+  // "no tanta inclinación, la mitad por lo menos".
+  lat0: lat0Ini = 12.5,
   lon0: lon0Ini = -80,
   disco = () => 0.6 * window.innerHeight,
   alPintar = () => {},

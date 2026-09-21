@@ -157,6 +157,8 @@ UMBRALES = [56, 68, 80, 89, 98, 112]
 HIELO = (0xe4, 0xe1, 0xda)
 HIELO_LAT = 50.0       # por debajo de esta latitud no hay hielo
 HIELO_T = 0.5          # cobertura de hielo (0-1, suavizada) a partir de la que se pinta hielo
+HIELO_R_MIN = 150      # un píxel del mosaico es hielo si es claro (rojo > esto)…
+HIELO_B_R = 0.78       # …y poco rojo (azul > esto x rojo)
 
 
 def ramp(col, k):
@@ -238,7 +240,7 @@ def cargar_color(color_ppd=COLOR_PPD, blur=COLOR_BLUR):
             rr, gg, bb = R[cc], G[cc], B[cc]
             brillo[base + c] = 0.30 * rr + 0.59 * gg + 0.11 * bb
             # hielo: claro y poco rojo (el polvo es naranja, el hielo casi gris)
-            if polar and bb > 0.78 * rr and rr > 150:
+            if polar and bb > HIELO_B_R * rr and rr > HIELO_R_MIN:
                 hielo[base + c] = 1.0
     return _desenfocar(brillo, w, h, blur), _desenfocar(hielo, w, h, blur)
 
@@ -574,8 +576,18 @@ LLANOS_EXAG = 3.0
 LLANOS_A, LLANOS_B = 0.005, 0.03
 
 
+# "casquete-amplio" (pulido, 21-sep-2026): umbral de hielo más suelto, para
+# que el casquete norte llegue hasta donde llega el real (~80-81° N; con los
+# umbrales de siempre está entero hasta 84° N, a medias en 83° y se acaba
+# hacia 76° N).
+CASQUETE_AMPLIO = {"HIELO_R_MIN": 125, "HIELO_B_R": 0.72, "HIELO_T": 0.3}
+
+
 def pon_variante(nombre):
     global LLANURAS
+    if nombre == "casquete-amplio":
+        globals().update(CASQUETE_AMPLIO)
+        return
     assert nombre in ("bandas", "relieve-llanos"), nombre
     LLANURAS = nombre
 
@@ -712,7 +724,7 @@ def main():
         cuales = None
         if "--niveles" in sys.argv:             # p. ej. --niveles 0 (solo la base)
             cuales = {int(x) for x in sys.argv[sys.argv.index("--niveles") + 1].split(",")}
-        if "--variante" in sys.argv:            # pulido, descartadas: bandas, relieve-llanos
+        if "--variante" in sys.argv:            # pulido: bandas, relieve-llanos (descartadas), casquete-amplio
             pon_variante(sys.argv[sys.argv.index("--variante") + 1])
         export_canvas(sys.argv[sys.argv.index("--canvas") + 1], cuales, "--sin-teselas" in sys.argv)
         return
