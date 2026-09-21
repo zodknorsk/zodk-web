@@ -32,9 +32,11 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 - **En marcha: pulido del pixel art.** Hecho: **la sombra menos oscura**
   (`NOCHE` de 0,16 a **0,22**, elegido por el usuario el 21-sep-2026) y
   commiteado. Ver "Pulido del pixel art" abajo.
-- **Siguiente paso**: el siguiente punto del pulido (llanuras de un solo tono,
-  zonas oscuras pardas, casquete norte, grano a ×6), por decidir con el
-  usuario.
+- Hecho también: **las llanuras en dos tonos** (variante A, elegida por el
+  usuario el 21-sep-2026), aplicada a todos los niveles. Ver "Pulido del
+  pixel art", punto 2.
+- **Siguiente paso**: el siguiente punto del pulido (zonas oscuras pardas,
+  casquete norte pequeño a ×1, grano a ×6), por decidir con el usuario.
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -363,6 +365,46 @@ pulsa para viajar, y la publicación (merge en `main`).
   `MARTE_V` a 5. Los botones siguen en el banco para comparar.
 - Los PNG del paso 1 (`marte-tharsis.png`, `marte-syrtis.png`) se quedan con
   0,16: son el registro del boceto provisional.
+
+### 2. Las llanuras de un solo tono (21-sep-2026)
+
+- **Por qué salen lisas**: casi la mitad del planeta cae en el pico de brillo
+  del mosaico (80-98), que es un solo material, y las llanuras son tan llanas
+  que el relieve no dibuja nada.
+- **Variantes** (`generar-marte.py --variante X`, solo la base, sin teselas:
+  se comparan a ×1). Están en `prototipo-marte/llanuras/<variante>/`
+  (`antes` = como estaba, un solo tono; B y C se generaron sobre esa):
+  - **A · `dos-tonos`**: el material del pico se parte en dos tonos casi
+    iguales (`DOS_TONOS`: corte en 89, `#a1613e` y `#ab6843`). Salen manchas
+    suaves que siguen el brillo real (polvo, coladas).
+  - **B · `bandas`**: cada 1000 m de altura suavizada, la banda impar se
+    aclara un tercio de escalón (materiales 8-15 en la LUT). Son terrazas que
+    dibujan las cuencas.
+  - **C · `relieve-llanos`**: la exageración del relieve ×3 donde la pendiente
+    es menor del 0,5 %, con rampa hasta el 3 %. Es como los mares de la Luna.
+- **Banco**: `zoom.html`, fila "llanuras": "la de verdad" (con teselas),
+  "antes", A, B y C. Recarga con los otros datos y la misma vista
+  (`?datos=llanuras/X&vista=lat0,lon0,zoom`). Hay botones nuevos de sitio:
+  **Utopia** (30, 115) y **Amazonis** (20, −155).
+- **Visto en Chrome** (Utopia y Amazonis a ×1):
+  - A rompe las llanuras con manchas suaves y naturales.
+  - B hace terrazas, pero alrededor del volcán Elysium salen anillos
+    concéntricos, como una diana: parece un mapa topográfico.
+  - C llena las llanuras (y algo las tierras altas) de granitos: es lo que
+    más empuja al realismo.
+- **Elegida: A** (usuario, 21-sep-2026: "la A"), la recomendada.
+  Aplicada:
+  - Los dos tonos ya son lo normal en `MATERIALES` y `UMBRALES` del
+    generador: 8 materiales con el hielo.
+  - `--variante` solo admite ya las descartadas, B y C, por si se quieren
+    volver a ver.
+  - Base y teselas regeneradas y `MARTE_V` a 6. En el banco, "antes (un
+    tono)" y "A · dos tonos (elegida)".
+- **Arreglado de paso** en `marte-gl.js`: sin niveles finos (como en estas
+  variantes), el shader no compilaba. GLSL no admite listas vacías y quedaba
+  una coma colgando.
+- Ojo al probar: Chrome guarda en caché los módulos JS del banco. Tras
+  cambiar `marte-gl.js` hace falta recargar a fondo (Cmd+Mayús+R).
 
 ## La idea (contada por el usuario, 21-sep-2026)
 

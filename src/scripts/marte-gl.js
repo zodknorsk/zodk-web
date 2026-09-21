@@ -102,9 +102,9 @@ const int T = ${D.TESELA};
 const int OFF[6] = int[6](${off.join(", ")});
 const int NF = ${NF}, A = ${A};
 const float PPD[${NF + 1}] = float[${NF + 1}](${lista(ppd, f)});
-const float CORTE[${NF}] = float[${NF}](${lista(cortes, f)});
-const int FILA0[${NF + 1}] = int[${NF + 1}](0, ${lista(finos, (n) => n.fila0)});
-const int KMAX[${NF + 1}] = int[${NF + 1}](5, ${lista(finos, (n) => n.kmax)});
+const float CORTE[${Math.max(1, NF)}] = float[${Math.max(1, NF)}](${NF ? lista(cortes, f) : "1e9"});  // (sin niveles finos, uno que no se alcanza: GLSL no admite listas vacías)
+const int FILA0[${NF + 1}] = int[${NF + 1}](${lista([0, ...finos.map((n) => n.fila0)], String)});
+const int KMAX[${NF + 1}] = int[${NF + 1}](${lista([5, ...finos.map((n) => n.kmax)], String)});
 const float NQ = ${f((D.NORMAL_NIVELES - 1) / 2)};
 
 void main() {
