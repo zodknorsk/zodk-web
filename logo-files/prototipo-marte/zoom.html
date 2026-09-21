@@ -14,6 +14,8 @@
   ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x6 (para Zen).
   ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12), para probar que
   se vacía bien cuando no caben todas.
+  ?datos=llanuras/bandas: otros datos (variantes del pulido, de
+  generar-marte.py --variante); ?vista=lat0,lon0,zoom: vista al cargar.
 -->
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden;
@@ -39,11 +41,15 @@
     <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x6.<br>
     Arrastra con el ratón para girar.<br>
     ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
+    <button data-v="30,115">Utopia</button> <button data-v="20,-155">Amazonis</button>
     <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
     <button data-z="1">zoom x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
     sombra (luz del lado sin sol): <button data-noche="0.16">0,16 (la de antes)</button>
     <button data-noche="0.22">0,22 (elegida)</button> <button data-noche="0.28">0,28</button>
     <button data-noche="0.35">0,35</button><br>
+    llanuras (solo la base: comparar a x1): <button data-llanura="">la de verdad</button>
+    <button data-llanura="antes">antes (un tono)</button> <button data-llanura="dos-tonos">A · dos tonos (elegida)</button>
+    <button data-llanura="bandas">B · bandas de altura</button> <button data-llanura="relieve-llanos">C · más relieve en lo llano</button><br>
     <span id="vista"></span> <span id="ms"></span>
   </div>
 </div>
@@ -55,7 +61,7 @@ const $ = (id) => document.getElementById(id);
 const sonda = $("sonda");
 const q = new URLSearchParams(location.search);
 const marte = await montarMarteGL($("marte"), {
-  base: "../../public/marte/",
+  base: q.get("datos") ? `${q.get("datos")}/` : "../../public/marte/",
   disco: () => sonda.getBoundingClientRect().height,
   ...(q.has("atlas") ? { ladoAtlas: Number(q.get("atlas")) } : {}),   // ?atlas=N: atlas de N x N teselas
 });
@@ -77,6 +83,22 @@ if (!marte) {
     marte.ponVista(la, lo);
   }));
   document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
+  // Vista al cargar (?vista=lat0,lon0,zoom) y variantes de las llanuras, que
+  // recargan la página con otros datos y la misma vista.
+  if (q.has("vista")) {
+    const [la, lo, z] = q.get("vista").split(",").map(Number);
+    marte.ponVista(la, lo);
+    if (z) marte.ponZoom(z);
+  }
+  document.querySelectorAll("[data-llanura]").forEach((b) => {
+    if ((q.get("datos") || "") === (b.dataset.llanura && `llanuras/${b.dataset.llanura}`)) b.style.outline = "2px solid #fff";
+    b.addEventListener("click", () => {
+      const v = marte.vista(), u = new URLSearchParams();
+      if (b.dataset.llanura) u.set("datos", `llanuras/${b.dataset.llanura}`);
+      u.set("vista", `${v.lat0.toFixed(2)},${v.lon0.toFixed(2)},${v.zoom.toFixed(2)}`);
+      location.search = u.toString();
+    });
+  });
   // Comparar la sombra (NOCHE) sin regenerar: se cambia en el shader.
   const noches = document.querySelectorAll("[data-noche]");
   const marcaNoche = (v) => noches.forEach((b) => { b.style.outline = Number(b.dataset.noche) === v ? "2px solid #fff" : ""; });

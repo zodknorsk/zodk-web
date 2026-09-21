@@ -28,6 +28,8 @@ Uso:
 Datos del <canvas> (el Marte que se gira con la mano y el zoom):
     python3 generar-marte.py --canvas ../public/marte/   # base + teselas n1/, n2/ + LUT + datos (~3 min)
     python3 generar-marte.py --canvas ../public/marte/ --niveles 0   # solo la base
+    Variantes del pulido, para comparar en el banco (solo la base, sin teselas):
+    python3 generar-marte.py --canvas prototipo-marte/llanuras/bandas/ --niveles 0 --sin-teselas --variante bandas
     Necesita también el mosaico a 16 y 24 px/grado y el MOLA de 32:
       sips -s format bmp -z 2880 5760 Mars_Viking_ClrMosaic_global_925m.tif --out viking_16.bmp
       sips -s format bmp -z 4320 8640 Mars_Viking_ClrMosaic_global_925m.tif --out viking_24.bmp
@@ -133,11 +135,18 @@ MATERIALES = [
     (None, (0x5c, 0x3c, 0x31)),   # basalto muy oscuro (el corazón de Syrtis Major)
     (None, (0x72, 0x49, 0x37)),   # regiones oscuras (Acidalia, Mare Erythraeum…)
     (None, (0x8c, 0x56, 0x3b)),   # transición
-    (None, (0xa6, 0x64, 0x40)),   # óxido medio
+    # Óxido medio, en DOS TONOS casi iguales (pulido del 21-sep-2026). Era uno
+    # solo, #a66440, de 80 a 98: el pico del histograma entero en un material,
+    # porque en la Luna partirlo salía a manchas. Pero así las llanuras
+    # grandes (Utopia, Amazonis) salían de un solo tono. Comparado en el banco
+    # con "bandas de altura" y "más relieve en lo llano" (ver --variante), el
+    # usuario eligió esto: manchas suaves que siguen el brillo real.
+    (None, (0xa1, 0x61, 0x3e)),   # óxido medio, algo más oscuro (80-89)
+    (None, (0xab, 0x68, 0x43)),   # óxido medio, algo más claro (89-98)
     (None, (0xbc, 0x77, 0x49)),   # ocre
     (None, (0xcf, 0x8d, 0x5a)),   # polvo claro (Tharsis, Arabia, Elysium)
 ]
-UMBRALES = [56, 68, 80, 98, 112]   # el pico (84-95) entero en un material: si no, sale a manchas
+UMBRALES = [56, 68, 80, 89, 98, 112]
 HIELO = (0xe4, 0xe1, 0xda)
 HIELO_LAT = 50.0       # por debajo de esta latitud no hay hielo
 HIELO_T = 0.5          # cobertura de hielo (0-1, suavizada) a partir de la que se pinta hielo
@@ -539,8 +548,35 @@ LUT_KMIN, LUT_KMAX = -16, 4   # escalones de rampa que caben (noche + relieve + 
 NORMAL_NIVELES = 64           # niveles por componente de la normal (menos = PNG más ligero)
 
 
+# --------------------------------------- pulido: llanuras de un solo tono
+# Variantes para comparar en el banco (--variante), 21-sep-2026. Con None, el
+# mapa sale como hasta ahora. Las llanuras (Utopia, Amazonis, Tharsis…) salen
+# de un solo tono porque casi la mitad del planeta cae en el pico de brillo
+# del mosaico (un solo material) y son tan llanas que el relieve no dibuja.
+LLANURAS = None
+# ("dos-tonos", el material del pico partido en dos tonos casi iguales, fue la
+# elegida y ya es lo normal: ver MATERIALES.)
+# "bandas": cada BANDA_M metros de altura (suavizada) el tono se aclara
+# BANDA_LUZ tercios de escalón en las bandas impares, como terrazas.
+BANDA_M = 1000.0
+BANDA_SUAVE = 0.4      # grados: separación de las muestras del suavizado (3 x 3)
+BANDA_LUZ = 1
+# "relieve-llanos": la exageración del relieve se multiplica por LLANOS_EXAG
+# donde la pendiente es menor que LLANOS_A, con rampa hasta LLANOS_B.
+LLANOS_EXAG = 3.0
+LLANOS_A, LLANOS_B = 0.005, 0.03
+
+
+def pon_variante(nombre):
+    global LLANURAS
+    assert nombre in ("bandas", "relieve-llanos"), nombre
+    LLANURAS = nombre
+
+
 def _filas_mapa(altura, color, ppd, r0, r1):
     """Filas r0..r1-1 del mapa a `ppd` px/grado, en RGBA."""
+    nm = len(MATERIALES) + 1                    # con el hielo
+    hielo = len(MATERIALES)
     q = NORMAL_NIVELES - 1
     w = 360 * ppd
     d_deg = 1.0 / ppd                           # derivada al paso de una celda
@@ -555,14 +591,23 @@ def _filas_mapa(altura, color, ppd, r0, r1):
             m = material(br, hi, UMBRALES)
             he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
             hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
-            ne, nn = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG
+            exag = RELIEVE_EXAG
+            if LLANURAS == "relieve-llanos":
+                pend = math.sqrt(he * he + hn * hn)
+                exag *= 1.0 + (LLANOS_EXAG - 1.0) * (1.0 - smooth(LLANOS_A, LLANOS_B, pend))
+            elif LLANURAS == "bandas" and m != hielo:
+                d = BANDA_SUAVE
+                hs = sum(altura(lat + i * d, lon + j * d / cl) for i in (-1, 0, 1) for j in (-1, 0, 1)) / 9.0
+                if math.floor(hs / BANDA_M) % 2:
+                    m += nm                     # la variante aclarada del mismo material
+            ne, nn = -he * exag, -hn * exag
             ln = math.sqrt(ne * ne + nn * nn + 1.0)
             o = c * 4
             fila[o:o + 4] = bytes((m, round((ne / ln + 1) / 2 * q), round((nn / ln + 1) / 2 * q), 255))
         yield bytes(fila)
 
 
-def export_canvas(outdir, cuales=None):
+def export_canvas(outdir, cuales=None, sin_teselas=False):
     import json
     os.makedirs(outdir, exist_ok=True)
     dems, colores = {}, {}                      # px/grado -> datos cargados
@@ -591,12 +636,14 @@ def export_canvas(outdir, cuales=None):
             print(f"  nivel {n}: banda {tf + 1}/{h // TESELA}", flush=True)
     kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
     lut = []
-    for col in [c for _, c in MATERIALES] + [HIELO]:
-        fila = bytearray(kn * 4)
-        for j in range(kn):
-            rgb = ramp(col, LUT_KMIN + j / LIGHT_SUB)
-            fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
-        lut.append(bytes(fila))
+    # con "bandas", detrás van las variantes aclaradas de cada material
+    for extra in ((0, BANDA_LUZ) if LLANURAS == "bandas" else (0,)):
+        for col in [c for _, c in MATERIALES] + [HIELO]:
+            fila = bytearray(kn * 4)
+            for j in range(kn):
+                rgb = ramp(col, LUT_KMIN + (j + extra) / LIGHT_SUB)
+                fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
+            lut.append(bytes(fila))
     write_rgba(os.path.join(outdir, "marte-lut.png"), kn, len(lut), lut)
     datos = {
         "RADIUS": RADIUS, "LIMB_AA": LIMB_AA, "FASE": FASE, "SOL_ARR": SOL_ARR, "LADO": LADO,
@@ -606,7 +653,8 @@ def export_canvas(outdir, cuales=None):
         "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
         "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "MATERIALES": len(lut),
         "NORMAL_NIVELES": NORMAL_NIVELES, "TESELA": TESELA,
-        "NIVELES": [{"ppd": ppd, "teselas": t} for ppd, _, _, t in NIVELES],
+        # con --sin-teselas (variantes del banco) solo la base: no hay teselas
+        "NIVELES": [{"ppd": ppd, "teselas": t} for ppd, _, _, t in NIVELES if not (sin_teselas and t)],
         "caras": {n: {"lat0": la, "lon0": lo} for n, (la, lo) in CARAS.items()},
     }
     with open(os.path.join(outdir, "marte-datos.json"), "w") as fh:
@@ -620,7 +668,9 @@ def main():
         cuales = None
         if "--niveles" in sys.argv:             # p. ej. --niveles 0 (solo la base)
             cuales = {int(x) for x in sys.argv[sys.argv.index("--niveles") + 1].split(",")}
-        export_canvas(sys.argv[sys.argv.index("--canvas") + 1], cuales)
+        if "--variante" in sys.argv:            # pulido, descartadas: bandas, relieve-llanos
+            pon_variante(sys.argv[sys.argv.index("--variante") + 1])
+        export_canvas(sys.argv[sys.argv.index("--canvas") + 1], cuales, "--sin-teselas" in sys.argv)
         return
     dem, brillo, hielo = cargar()
     if "--histograma" in sys.argv:
