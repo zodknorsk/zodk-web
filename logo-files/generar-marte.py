@@ -583,7 +583,30 @@ LLANOS_A, LLANOS_B = 0.005, 0.03
 CASQUETE_AMPLIO = {"HIELO_R_MIN": 125, "HIELO_B_R": 0.72, "HIELO_T": 0.3}
 
 
+# ------------------------------------------- pulido: grano en las llanuras
+# A x6, en las llanuras se ven rayitas norte-sur discontinuas: las órbitas del
+# MOLA (casi de polo a polo) dejan escalones este-oeste entre pasada y pasada,
+# y la derivada este-oeste los recoge. Variantes (21-sep-2026), solo en los
+# niveles de GRANO_DESDE_PPD px/grado o más: derivada este-oeste más larga
+# ("grano-eo") y, además, algo más larga también norte-sur ("grano-suave").
+DERIV_EO = 1.0
+DERIV_NS = 1.0
+GRANO_DESDE_PPD = 16
+# "grano-llanos": la derivada este-oeste larga (GRANO_LLANOS_EO celdas) solo
+# donde el terreno es llano (pendiente regional, a esa misma distancia, menor
+# que GRANO_LLANOS_A, con rampa hasta GRANO_LLANOS_B); en el relieve abrupto,
+# la de una celda. "grano-eo" ablandaba también Gale y las mesetas.
+GRANO_LLANOS = False
+GRANO_LLANOS_EO = 3.0
+GRANO_LLANOS_A, GRANO_LLANOS_B = 0.01, 0.04
+GRANO = {"grano-eo": {"DERIV_EO": 3.0}, "grano-suave": {"DERIV_EO": 3.0, "DERIV_NS": 1.5},
+         "grano-llanos": {"GRANO_LLANOS": True}}
+
+
 def pon_variante(nombre):
+    if nombre in GRANO:
+        globals().update(GRANO[nombre])
+        return
     global LLANURAS
     if nombre == "casquete-amplio":
         globals().update(CASQUETE_AMPLIO)
@@ -592,24 +615,36 @@ def pon_variante(nombre):
     LLANURAS = nombre
 
 
-def _filas_mapa(altura, color, ppd, r0, r1):
-    """Filas r0..r1-1 del mapa a `ppd` px/grado, en RGBA."""
+def _filas_mapa(altura, color, ppd, r0, r1, c0=0, c1=None):
+    """Filas r0..r1-1 (columnas c0..c1-1) del mapa a `ppd` px/grado, en RGBA."""
     nm = len(MATERIALES) + 1                    # con el hielo
     hielo = len(MATERIALES)
     q = NORMAL_NIVELES - 1
-    w = 360 * ppd
-    d_deg = 1.0 / ppd                           # derivada al paso de una celda
-    d_m = math.radians(d_deg) * MARTE_R
+    c1 = 360 * ppd if c1 is None else c1
+    # derivada al paso de una celda (más larga en los niveles finos con las
+    # variantes del grano, ver GRANO_DESDE_PPD)
+    fino = ppd >= GRANO_DESDE_PPD
+    d_eo = (DERIV_EO if fino else 1.0) / ppd
+    d_ns = (DERIV_NS if fino else 1.0) / ppd
+    m_eo = math.radians(d_eo) * MARTE_R
+    m_ns = math.radians(d_ns) * MARTE_R
     for r in range(r0, r1):
         lat = 90.0 - (r + 0.5) / ppd
         cl = max(0.02, math.cos(math.radians(lat)))
-        fila = bytearray(w * 4)
-        for c in range(w):
+        fila = bytearray((c1 - c0) * 4)
+        for c in range(c0, c1):
             lon = (c + 0.5) / ppd - 180.0
             br, hi = color(lat, lon)
             m = material(br, hi, UMBRALES)
-            he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
-            hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
+            he = (altura(lat, lon + d_eo / cl) - altura(lat, lon - d_eo / cl)) / (2 * m_eo)
+            hn = (altura(lat + d_ns, lon) - altura(lat - d_ns, lon)) / (2 * m_ns)
+            if GRANO_LLANOS and fino:
+                dl = GRANO_LLANOS_EO / ppd
+                ml = math.radians(dl) * MARTE_R
+                he_l = (altura(lat, lon + dl / cl) - altura(lat, lon - dl / cl)) / (2 * ml)
+                hn_l = (altura(lat + dl, lon) - altura(lat - dl, lon)) / (2 * ml)
+                t = 1.0 - smooth(GRANO_LLANOS_A, GRANO_LLANOS_B, math.sqrt(he_l * he_l + hn_l * hn_l))
+                he += (he_l - he) * t
             exag = RELIEVE_EXAG
             if LLANURAS == "relieve-llanos":
                 pend = math.sqrt(he * he + hn * hn)
@@ -621,7 +656,7 @@ def _filas_mapa(altura, color, ppd, r0, r1):
                     m += nm                     # la variante aclarada del mismo material
             ne, nn = -he * exag, -hn * exag
             ln = math.sqrt(ne * ne + nn * nn + 1.0)
-            o = c * 4
+            o = (c - c0) * 4
             fila[o:o + 4] = bytes((m, round((ne / ln + 1) / 2 * q), round((nn / ln + 1) / 2 * q), 255))
         yield bytes(fila)
 
@@ -668,7 +703,10 @@ def pon_oscuras(nombre):
     MATERIALES = [(None, c) for c in OSCURAS[nombre]] + MATERIALES[3:]
 
 
-def export_canvas(outdir, cuales=None, sin_teselas=False):
+def export_canvas(outdir, cuales=None, sin_teselas=False, zona=None):
+    """`zona` = (lat sur, lat norte, lon oeste, lon este): en los niveles en
+    teselas, solo las que la tocan (para comparar variantes sin rehacer el
+    planeta entero)."""
     import json
     os.makedirs(outdir, exist_ok=True)
     dems, colores = {}, {}                      # px/grado -> datos cargados
@@ -689,10 +727,21 @@ def export_canvas(outdir, cuales=None, sin_teselas=False):
             continue
         carpeta = os.path.join(outdir, f"n{n}")
         os.makedirs(carpeta, exist_ok=True)
+        grados = TESELA / ppd                   # lo que mide una tesela
         for tf in range(h // TESELA):
-            filas = list(_filas_mapa(altura, color, ppd, tf * TESELA, (tf + 1) * TESELA))
-            for tc in range(w // TESELA):
-                a, b = tc * TESELA * 4, (tc + 1) * TESELA * 4
+            cols = range(w // TESELA)
+            if zona:
+                norte, sur = 90.0 - tf * grados, 90.0 - (tf + 1) * grados
+                if sur >= zona[1] or norte <= zona[0]:
+                    continue
+                cols = [tc for tc in cols
+                        if -180.0 + tc * grados < zona[3] and -180.0 + (tc + 1) * grados > zona[2]]
+                if not cols:
+                    continue
+            ca, cb = cols[0] * TESELA, (cols[-1] + 1) * TESELA
+            filas = list(_filas_mapa(altura, color, ppd, tf * TESELA, (tf + 1) * TESELA, ca, cb))
+            for tc in cols:
+                a, b = (tc * TESELA - ca) * 4, ((tc + 1) * TESELA - ca) * 4
                 write_rgba(os.path.join(carpeta, f"{tf}-{tc}.png"), TESELA, TESELA, [f[a:b] for f in filas])
             print(f"  nivel {n}: banda {tf + 1}/{h // TESELA}", flush=True)
     kn, nlut = escribe_lut(os.path.join(outdir, "marte-lut.png"))
@@ -724,9 +773,12 @@ def main():
         cuales = None
         if "--niveles" in sys.argv:             # p. ej. --niveles 0 (solo la base)
             cuales = {int(x) for x in sys.argv[sys.argv.index("--niveles") + 1].split(",")}
-        if "--variante" in sys.argv:            # pulido: bandas, relieve-llanos (descartadas), casquete-amplio
+        if "--variante" in sys.argv:            # pulido: bandas, relieve-llanos, casquete-amplio (descartadas), grano-eo, grano-suave
             pon_variante(sys.argv[sys.argv.index("--variante") + 1])
-        export_canvas(sys.argv[sys.argv.index("--canvas") + 1], cuales, "--sin-teselas" in sys.argv)
+        zona = None
+        if "--zona" in sys.argv:                # lat_sur,lat_norte,lon_oeste,lon_este (solo esas teselas)
+            zona = tuple(float(x) for x in sys.argv[sys.argv.index("--zona") + 1].split(","))
+        export_canvas(sys.argv[sys.argv.index("--canvas") + 1], cuales, "--sin-teselas" in sys.argv, zona)
         return
     dem, brillo, hielo = cargar()
     if "--histograma" in sys.argv:
