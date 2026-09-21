@@ -17,7 +17,7 @@ const paises = PAISES_LUNA.filter((p) => ALUNIZAJES.some((a) => a.pais === p.cod
 const porCodigo = Object.fromEntries(PAISES_LUNA.map((p) => [p.codigo, p]));
 // La ficha solo enlaza a la nota si está publicada: sin `publicar: true` en la
 // bóveda no hay página y el enlace daría 404.
-const publicadas = new Set((await getCollection("notas")).map((n) => n.slug));
+const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
 ---
 
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero cabecera={false}>
