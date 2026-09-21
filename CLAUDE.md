@@ -192,7 +192,7 @@ no se usa, corregir código y dejar la documentación como está la web hoy.
 - Comprobado al cerrar: `npm run build` OK (51 páginas), `npm run lint` limpio,
   ningún enlace interno roto en `dist/` y nada que apunte a lo borrado.
 
-### Subida a Astro 7 (21-sep-2026, rama `astro-7`, pendiente de fusionar)
+### Subida a Astro 7 (21-sep-2026): publicada (merge `516d933` de la rama `astro-7`, que se conserva)
 
 Astro 5.18.2 → **7.3.3** (con Vite 8). `npm audit` pasó de 4 vulnerabilidades
 (1 crítica, en `astro` y `sharp`) a **0**. Lo que cambió:
@@ -224,7 +224,7 @@ byte a byte. **Pero el compilador de Astro 7 también usa Lightning CSS para los
 `calc` va algún día en un `.astro`, deshacer el paréntesis a mano
 (`18ch + 18 * 0.14em` sí compila).
 
-Comprobado antes de fusionar: el HTML de las 51 páginas comparado con el de
+Comprobado antes de publicar: el HTML de las 51 páginas comparado con el de
 `main` solo cambia en espacios entre etiquetas, `&quot;` en los tuits, `alt=""`
 en las imágenes de las notas, el nombre interno de los estilos
 (`data-astro-cid-…`) y un ancla del evento del F-15E que ahora acaba en guion
