@@ -29,7 +29,7 @@
 
 // Subir al regenerar public/marte/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const MARTE_V = 3;
+export const MARTE_V = 4;
 
 const DEG = Math.PI / 180;
 
