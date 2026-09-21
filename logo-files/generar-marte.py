@@ -28,8 +28,10 @@ Uso:
 Datos del <canvas> (el Marte que se gira con la mano y el zoom):
     python3 generar-marte.py --canvas ../public/marte/   # base + teselas n1/, n2/ + LUT + datos (~3 min)
     python3 generar-marte.py --canvas ../public/marte/ --niveles 0   # solo la base
-    Necesita también el mosaico a 16 px/grado:
+    Necesita también el mosaico a 16 y 24 px/grado y el MOLA de 32:
       sips -s format bmp -z 2880 5760 Mars_Viking_ClrMosaic_global_925m.tif --out viking_16.bmp
+      sips -s format bmp -z 4320 8640 Mars_Viking_ClrMosaic_global_925m.tif --out viking_24.bmp
+      curl -sSLO https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg032/megt90n000fb.img
 
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
 http://127.0.0.1:4400/logo-files/prototipo-marte/
@@ -182,12 +184,24 @@ def _leer_bmp(ruta):
     return w, abs(h), filas
 
 
-def cargar(color_ppd=COLOR_PPD, blur=COLOR_BLUR):
+MOLA = {16: "megt90n000eb.img", 32: "megt90n000fb.img"}   # px/grado -> archivo MEGDR
+
+
+def cargar_dem(ppd=DEM_PPD):
     dem = array.array("h")
-    with open(os.path.join(FUENTES, "megt90n000eb.img"), "rb") as fh:
+    with open(os.path.join(FUENTES, MOLA[ppd]), "rb") as fh:
         dem.frombytes(fh.read())
     if sys.byteorder == "little":
         dem.byteswap()                          # MSB_INTEGER
+    assert len(dem) == 360 * ppd * 180 * ppd
+    return dem
+
+
+def cargar(color_ppd=COLOR_PPD, blur=COLOR_BLUR):
+    return (cargar_dem(),) + cargar_color(color_ppd, blur)
+
+
+def cargar_color(color_ppd=COLOR_PPD, blur=COLOR_BLUR):
     w, h, filas = _leer_bmp(os.path.join(FUENTES, f"viking_{color_ppd}.bmp"))
     assert (w, h) == (360 * color_ppd, 180 * color_ppd), (w, h)
     brillo = array.array("f", bytes(4 * w * h))
@@ -207,7 +221,7 @@ def cargar(color_ppd=COLOR_PPD, blur=COLOR_BLUR):
             # hielo: claro y poco rojo (el polvo es naranja, el hielo casi gris)
             if polar and bb > 0.78 * rr and rr > 150:
                 hielo[base + c] = 1.0
-    return dem, _desenfocar(brillo, w, h, blur), _desenfocar(hielo, w, h, blur)
+    return _desenfocar(brillo, w, h, blur), _desenfocar(hielo, w, h, blur)
 
 
 def _desenfocar(src, w, h, rad):
@@ -233,20 +247,21 @@ def _desenfocar(src, w, h, rad):
     return out
 
 
-def hacer_muestreo(dem, brillo, hielo, color_ppd=COLOR_PPD):
+def hacer_muestreo(dem, brillo, hielo, color_ppd=COLOR_PPD, dem_ppd=DEM_PPD):
     cw, chh = 360 * color_ppd, 180 * color_ppd
+    dw, dh = 360 * dem_ppd, 180 * dem_ppd
 
     def altura(lat, lon):
         """Metros sobre el areoide (bilineal). lon en grados este, cualquier rango."""
-        fr = (90.0 - lat) * DEM_PPD - 0.5
-        fc = (lon % 360.0) * DEM_PPD - 0.5
+        fr = (90.0 - lat) * dem_ppd - 0.5
+        fc = (lon % 360.0) * dem_ppd - 0.5
         r0 = math.floor(fr); c0 = math.floor(fc)
         tr = fr - r0; tc = fc - c0
-        r0 = 0 if r0 < 0 else DEM_H - 1 if r0 >= DEM_H else r0
-        r1 = r0 + 1 if r0 + 1 < DEM_H else r0
-        c0 %= DEM_W
-        c1 = (c0 + 1) % DEM_W
-        b0, b1 = r0 * DEM_W, r1 * DEM_W
+        r0 = 0 if r0 < 0 else dh - 1 if r0 >= dh else r0
+        r1 = r0 + 1 if r0 + 1 < dh else r0
+        c0 %= dw
+        c1 = (c0 + 1) % dw
+        b0, b1 = r0 * dw, r1 * dw
         a = dem[b0 + c0] * (1 - tc) + dem[b0 + c1] * tc
         b = dem[b1 + c0] * (1 - tc) + dem[b1 + c1] * tc
         return a * (1 - tr) + b * tr
@@ -507,10 +522,14 @@ def histograma(brillo, hielo):
 #   marte-lut.png    color de cada material (fila) por escalón de luz (columna)
 #   marte-datos.json constantes de luz y geometría, niveles y caras de prueba
 MAPA_W, MAPA_H = 1440, 720    # 4 px/grado: en el zoom x1 un píxel del disco son ~0,26°
-NIVELES = [                   # (px/grado del mapa, px/grado del mosaico de color, en teselas)
-    (4, 8, False),            # base: zoom x1
-    (8, 8, True),             # hasta x2
-    (16, 16, True),           # hasta x4 (el máximo decidido)
+NIVELES = [                   # (px/grado del mapa, del mosaico de color, del MOLA, en teselas)
+    (4, 8, 16, False),        # base: zoom x1
+    (8, 8, 16, True),         # hasta x2
+    (16, 16, 16, True),       # hasta x4
+    # x6 (decidido el 21-sep-2026): 24 y no 32 px/grado. A x6 un píxel de
+    # arte son ~23 px/grado, así que 32 no enseñaría más detalle y pesaría el
+    # doble; con 24 cada celda cae en un píxel. El relieve sale del MOLA de 32.
+    (24, 24, 32, True),
 ]
 TESELA = 360
 LUT_KMIN, LUT_KMAX = -16, 4   # escalones de rampa que caben (noche + relieve + limbo)
@@ -543,15 +562,17 @@ def _filas_mapa(altura, color, ppd, r0, r1):
 def export_canvas(outdir, cuales=None):
     import json
     os.makedirs(outdir, exist_ok=True)
-    fuentes = {}                                # px/grado del color -> (altura, color)
-    for n, (ppd, cppd, teselas) in enumerate(NIVELES):
+    dems, colores = {}, {}                      # px/grado -> datos cargados
+    for n, (ppd, cppd, dppd, teselas) in enumerate(NIVELES):
         if cuales is not None and n not in cuales:
             continue
-        if cppd not in fuentes:
+        if dppd not in dems:
+            print(f"cargando MOLA a {dppd} px/grado…", flush=True)
+            dems[dppd] = cargar_dem(dppd)
+        if cppd not in colores:
             print(f"cargando color a {cppd} px/grado…", flush=True)
-            dem, brillo, hielo = cargar(cppd, COLOR_BLUR)
-            fuentes[cppd] = hacer_muestreo(dem, brillo, hielo, cppd)
-        altura, color = fuentes[cppd]
+            colores[cppd] = cargar_color(cppd, COLOR_BLUR)
+        altura, color = hacer_muestreo(dems[dppd], *colores[cppd], cppd, dppd)
         w, h = 360 * ppd, 180 * ppd
         if not teselas:
             write_rgba(os.path.join(outdir, "marte-mapa.png"), w, h, list(_filas_mapa(altura, color, ppd, 0, h)))
@@ -582,7 +603,7 @@ def export_canvas(outdir, cuales=None):
         "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
         "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "MATERIALES": len(lut),
         "NORMAL_NIVELES": NORMAL_NIVELES, "TESELA": TESELA,
-        "NIVELES": [{"ppd": ppd, "teselas": t} for ppd, _, t in NIVELES],
+        "NIVELES": [{"ppd": ppd, "teselas": t} for ppd, _, _, t in NIVELES],
         "caras": {n: {"lat0": la, "lon0": lo} for n, (la, lo) in CARAS.items()},
     }
     with open(os.path.join(outdir, "marte-datos.json"), "w") as fh:

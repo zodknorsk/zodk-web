@@ -11,7 +11,9 @@
   Servir desde la raíz del repo:
     cd ~/Documents/zodk-web && python3 -m http.server 4400
   y abrir http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html
-  ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x4 (para Zen).
+  ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x6 (para Zen).
+  ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12), para probar que
+  se vacía bien cuando no caben todas.
 -->
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden;
@@ -35,11 +37,11 @@
   <canvas id="marte"></canvas>
   <div id="sonda"></div>
   <div id="panel">
-    <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x4.<br>
+    <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x6.<br>
     Mantén <kbd>espacio</kbd> y arrastra para girar.<br>
     ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
     <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
-    <button data-z="1">zoom x1</button> <button data-z="4">zoom x4</button><br>
+    <button data-z="1">zoom x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
     <span id="vista"></span> <span id="ms"></span>
   </div>
 </div>
@@ -49,9 +51,11 @@ import { montarMarteGL, montarZoom } from "../../src/scripts/marte-gl.js";
 
 const $ = (id) => document.getElementById(id);
 const sonda = $("sonda");
+const q = new URLSearchParams(location.search);
 const marte = await montarMarteGL($("marte"), {
   base: "../../public/marte/",
   disco: () => sonda.getBoundingClientRect().height,
+  ...(q.has("atlas") ? { ladoAtlas: Number(q.get("atlas")) } : {}),   // ?atlas=N: atlas de N x N teselas
 });
 if (!marte) {
   $("vista").textContent = "Este navegador no tiene WebGL2.";
@@ -71,15 +75,15 @@ if (!marte) {
     marte.ponVista(la, lo);
   }));
   document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
-  if (new URLSearchParams(location.search).has("medir")) {
+  if (q.has("medir")) {
     marte.medir(10);
     const a = marte.medir(30);
-    marte.ponZoom(4);
+    marte.ponZoom(6);
     await new Promise((r) => setTimeout(r, 1500));
     marte.medir(10);
     const b = marte.medir(30);
     $("ms").textContent = `· ${navigator.userAgent.includes("Firefox") ? "Firefox/Zen" : "Chrome"}: `
-      + `${a.toFixed(1)} ms por fotograma a x1, ${b.toFixed(1)} a x4`;
+      + `${a.toFixed(1)} ms por fotograma a x1, ${b.toFixed(1)} a x6`;
   }
 }
 </script>

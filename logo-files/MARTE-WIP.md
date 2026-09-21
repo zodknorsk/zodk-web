@@ -15,16 +15,18 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   (21-sep-2026: "Zen de momento va bien parece"). Commit `eafc8b6`.
 - **Paso 3, zoom: hecho y probado por el usuario** (21-sep-2026): en Zen
   "no parece que se disparen los vatios" y el pellizco del trackpad "abre
-  bien". **Cambio de motor: pasa a WebGL** (ver "Zoom" abajo).
-- **Sin commitear** (paso 3): `src/scripts/marte-gl.js`,
-  `prototipo-marte/zoom.html`, los niveles de `generar-marte.py`,
-  `public/marte/marte-datos.json`, `MARTE_V` (va por 3), `.gitignore` y este
-  documento. **Las teselas (`public/marte/n1/`, `n2/`) no se commitean** hasta
-  que el pixel art sea el definitivo (decisión del usuario; están en
-  `.gitignore`). Hasta entonces solo existen en el Mac.
-- **Pendiente de decidir**: subir el zoom máximo a ×5-×6 (lo propuso el
-  usuario; ver "Decisiones pendientes").
-- **Siguiente paso**: esa decisión; después, el paso 4 (chapas de prueba).
+  bien". **Cambio de motor: pasa a WebGL** (ver "Zoom" abajo). Commit
+  `c8bc302`.
+- **Zoom ×6: hecho, falta que lo pruebe el usuario** (lo pidió el usuario el
+  21-sep-2026: "commit y vamos con el x6"). Nuevo nivel de 24 px/grado y
+  atlas de teselas en la GPU. Ver "Zoom ×6" abajo.
+- **Sin commitear** (×6): `src/scripts/marte-gl.js`,
+  `prototipo-marte/zoom.html`, `generar-marte.py` (MOLA a cualquier
+  resolución y nivel 3), `public/marte/marte-datos.json`, `MARTE_V` (va por
+  4) y este documento. Las teselas (`public/marte/n1/`, `n2/`, `n3/`, 36 MB)
+  siguen fuera de Git hasta el pixel art definitivo.
+- **Siguiente paso**: que el usuario pruebe el ×6; después, el paso 4
+  (chapas de prueba).
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -39,6 +41,8 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 - [x] 3. **Zoom** con rueda y trackpad, hasta ×4, con la pirámide de mapas.
       **Hecho y probado por el usuario el 21-sep-2026** (Zen y trackpad
       bien). Ver "Zoom" abajo.
+- [x] 3b. **Zoom hasta ×6** (pedido por el usuario tras probar el ×4). **Hecho
+      el 21-sep-2026; falta que lo pruebe el usuario.** Ver "Zoom ×6" abajo.
 - [ ] 4. Dos o tres **chapas de prueba** pegadas al terreno (Curiosity,
       Perseverance…).
 - [ ] Giro automático y botón, si se decide (ver pendientes).
@@ -53,8 +57,10 @@ pulsa para viajar, y la publicación (merge en `main`).
   con el espacio pulsado, el cursor es una mano abierta; con espacio + clic y
   arrastrar, mano cerrada y el planeta gira. Soltar el clic o el espacio
   termina el arrastre.
-- **Zoom máximo ×4** (16 px/grado) "y vamos viendo" (usuario, 21-sep-2026).
-  Si se queda corto, ×8 (32 px/grado), sabiendo que pesa cuatro veces más.
+- **Zoom máximo ×6** (usuario, 21-sep-2026). Primero decidió ×4 "y vamos
+  viendo". Tras probarlo preguntó por ×5-×6 ("tal vez un x8 es demasiado"),
+  y con la recomendación de hacerlo con un nivel nuevo, no agrandando el de
+  ×4: "vamos con el x6".
 - Criterio propio, propuesto al usuario y sin objeciones (se cambia si lo
   pide):
   - Giro **tipo globo terráqueo**: norte siempre arriba y sin ladear;
@@ -87,17 +93,6 @@ pulsa para viajar, y la publicación (merge en `main`).
 2. **Móvil / táctil**: sin barra espaciadora, ¿cómo se gira y se hace zoom?
    (lo natural sería arrastrar con un dedo y pellizcar). El usuario lo deja
    por decidir (21-sep-2026).
-3. **Zoom máximo ×5-×6** (lo planteó el usuario el 21-sep-2026: "tal vez un
-   x8 es demasiado, pero un x5 o x6 como lo ves?"). El mapa más fino (16
-   px/grado) está hecho para ×4: pasar de ahí solo agranda las mismas celdas.
-   No hay detalle nuevo y los píxeles dejan de ser todos iguales (alguno
-   sale doble). Recomendación: **×6, con un cuarto nivel de 32 px/grado**
-   (MOLA de 32 y el Viking de 64). Implica ~44 MB más de teselas (una vista
-   baja 3-4 MB), bajar el MOLA de 32 (~130 MB, solo en el Mac) y que el motor
-   guarde las teselas en una caché de tamaño fijo en la GPU en vez de
-   reservar el mapa entero (a 32 px/grado serían 133 MB). Ojo: el MOLA de 32
-   está más "rellenado" entre órbitas y las rayitas norte-sur podrían
-   notarse más.
 
 ## Marte provisional (paso 1, 21-sep-2026)
 
@@ -267,6 +262,48 @@ pulsa para viajar, y la publicación (merge en `main`).
     `.gitignore` (`public/marte/n*/`). Para tenerlas en otro ordenador hay
     que regenerarlas: 800 MB de fuentes y unos 90 s.
   - **Zen y trackpad: probados por el usuario**, bien.
+
+## Zoom ×6 (21-sep-2026)
+
+- **Por qué un nivel nuevo**: el nivel de 16 px/grado está hecho para ×4. Por
+  encima solo se agrandarían las mismas celdas: sin detalle nuevo y con
+  píxeles de tamaños distintos, que en pixel art se nota.
+- **Nivel 3 de 24 px/grado, no de 32** (cambio sobre lo propuesto al usuario,
+  que era 32 y ~44 MB):
+  - A ×6 un píxel de arte son ~23 px/grado, así que 32 no enseñaría más
+    detalle y pesaría el doble. Con 24 cada celda cae en un píxel.
+  - Relieve del **MOLA de 32 px/grado** (`megt90n000fb.img`, un solo archivo
+    global de 133 MB, mismo formato que el de 16; `curl` en el docstring).
+  - Color del Viking reducido a 24 (`viking_24.bmp`).
+  - Resultado: **288 teselas y 23 MB**, generadas en 2,4 min (`--canvas
+    ../public/marte/ --niveles 3`). En total, n1 + n2 + n3 = 36 MB.
+- **Cambios en el motor** (`marte-gl.js`):
+  - **Niveles genéricos**: el shader recorre los niveles que traiga
+    `marte-datos.json`. El corte entre dos niveles va a mitad de camino (en
+    escala logarítmica) entre sus resoluciones: de 16 a 24 se pasa hacia
+    ×5,1.
+  - **Atlas de teselas de tamaño fijo en la GPU**: 12 × 12 huecos (37 MB), en
+    vez de reservar el mapa entero de cada nivel (el de 24 serían 75 MB). Un
+    índice dice en qué hueco está cada tesela. Si se llena, sale la que lleva
+    más tiempo sin usarse, nunca una que esté a la vista.
+  - Solo se piden las teselas que caben, las más centrales primero. Las de
+    respaldo (nivel de debajo) solo mientras la fina no ha llegado. Con esto,
+    aunque se vean más teselas que huecos, no entran y salen sin parar.
+    Probado con un atlas de 6 × 6 mirando al polo a ×6: se llena y se queda
+    quieto. `?atlas=N` en el banco cambia el tamaño para probarlo.
+  - `MARTE_V` a 4: el navegador guardaba el `marte-datos.json` viejo, sin el
+    nivel 3.
+- **Comprobado en Chrome**:
+  - Gale a ×6 con muchos más cráteres pequeños.
+  - Jezero con las fosas de Nili muy marcadas.
+  - **El casquete norte entero a ×6** con sus espirales y Chasma Boreale:
+    84 teselas y 3,5 MB para ir de ×1 a ×6 mirando al polo.
+  - 0,25 ms por fotograma.
+- **Visto y apuntado para el pulido**: en las llanuras (p. ej. Elysium
+  Planitia) a ×6 hay algo de grano. Son rayitas finas norte-sur, seguramente
+  las órbitas del MOLA, y puntitos sueltos. Es sutil. Si molesta: suavizar el
+  relieve del nivel 3 (derivada a 1,5 celdas) o el color.
+- **Falta**: que lo pruebe el usuario (trackpad y Zen) y el commit.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
