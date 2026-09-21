@@ -41,6 +41,9 @@
     ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
     <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
     <button data-z="1">zoom x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
+    sombra (luz del lado sin sol): <button data-noche="0.16">0,16 (la de antes)</button>
+    <button data-noche="0.22">0,22 (elegida)</button> <button data-noche="0.28">0,28</button>
+    <button data-noche="0.35">0,35</button><br>
     <span id="vista"></span> <span id="ms"></span>
   </div>
 </div>
@@ -74,6 +77,14 @@ if (!marte) {
     marte.ponVista(la, lo);
   }));
   document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
+  // Comparar la sombra (NOCHE) sin regenerar: se cambia en el shader.
+  const noches = document.querySelectorAll("[data-noche]");
+  const marcaNoche = (v) => noches.forEach((b) => { b.style.outline = Number(b.dataset.noche) === v ? "2px solid #fff" : ""; });
+  noches.forEach((b) => b.addEventListener("click", () => {
+    marte.ajustaLuz({ NOCHE: Number(b.dataset.noche) });
+    marcaNoche(Number(b.dataset.noche));
+  }));
+  marcaNoche(0.22);
   if (q.has("medir")) {
     marte.medir(10);
     const a = marte.medir(30);

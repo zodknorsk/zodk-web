@@ -29,7 +29,12 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 - **Chapas: aplazadas** (usuario, 21-sep-2026: "las chapas las
   implementaremos más tarde", cuando se empiecen a escribir las notas de las
   misiones).
-- **Siguiente paso**: por decidir con el usuario qué va ahora (ver "Plan").
+- **En marcha: pulido del pixel art.** Hecho: **la sombra menos oscura**
+  (`NOCHE` de 0,16 a **0,22**, elegido por el usuario el 21-sep-2026) y
+  commiteado. Ver "Pulido del pixel art" abajo.
+- **Siguiente paso**: el siguiente punto del pulido (llanuras de un solo tono,
+  zonas oscuras pardas, casquete norte, grano a ×6), por decidir con el
+  usuario.
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
@@ -51,7 +56,12 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
       cuando se empiecen a escribir las notas de las misiones.
 - [ ] Giro automático y botón, si se decide (ver pendientes).
 
-Después, sin orden cerrado: pixel art definitivo de Marte, las misiones
+- [ ] 5. **Pulido del pixel art** (en marcha desde el 21-sep-2026): sombra
+      menos oscura, llanuras de un solo tono, zonas oscuras pardas, casquete
+      norte pequeño a ×1, grano en las llanuras a ×6. **Sin pasarse de
+      realismo** (ver decisiones).
+
+Después, sin orden cerrado: las misiones
 (chapa, ficha y nota en la bóveda), página `/marte`, el Marte pequeño que se
 pulsa para viajar, y la publicación (merge en `main`).
 
@@ -67,6 +77,11 @@ pulsa para viajar, y la publicación (merge en `main`).
   viendo". Tras probarlo preguntó por ×5-×6 ("tal vez un x8 es demasiado"),
   y con la recomendación de hacerlo con un nivel nuevo, no agrandando el de
   ×4: "vamos con el x6".
+- **Pulido sin pasarse de realismo** (usuario, 21-sep-2026, al empezar el
+  pulido): "me gusta bastante como está el pixel art ahora, tal vez si
+  añadimos muchísimo realismo se pase de frenada (creo que en la luna se
+  cometió ese fallo)". Retoques contenidos sobre lo que hay, siempre con la
+  versión actual como referencia al comparar.
 - Criterio propio, propuesto al usuario y sin objeciones (se cambia si lo
   pide):
   - Giro **tipo globo terráqueo**: norte siempre arriba y sin ladear;
@@ -326,6 +341,28 @@ pulsa para viajar, y la publicación (merge en `main`).
   las órbitas del MOLA, y puntitos sueltos. Es sutil. Si molesta: suavizar el
   relieve del nivel 3 (derivada a 1,5 celdas) o el color.
 - **Falta**: que lo pruebe el usuario (trackpad y Zen) y el commit.
+
+## Pulido del pixel art (desde el 21-sep-2026)
+
+### 1. La sombra menos oscura
+
+- Es la zona sin sol (a la derecha) y el suelo de las sombras del relieve.
+  Lo controla `NOCHE` en `generar-marte.py`, que pasa a `marte-datos.json`
+  (hoy 0,16, el valor de la Luna). La LUT ya tiene esos tonos: cambiarlo no
+  toca los mapas ni las teselas, solo el JSON.
+- **Banco**: en `zoom.html`, fila "sombra": **0,16 (la de ahora)**, 0,22, 0,28
+  y 0,35. Cambian al momento (`marte.ajustaLuz({ NOCHE })` recompila el
+  shader).
+- Visto en Chrome: con 0,16 el lado oscuro es casi negro granate; con 0,28 se
+  lee el terreno y sigue pareciendo de noche; con 0,35 se ve bastante. El
+  relieve no se ve en la zona sin sol, porque no hay luz que lo dibuje.
+  Mejor compararlo a zoom ×1.
+- Se recomendó 0,28 y **el usuario eligió 0,22** (21-sep-2026). Aplicado:
+  `NOCHE` = 0,22 en el generador, base regenerada (`--canvas ../public/marte/
+  --niveles 0`, que reescribe el JSON; mapa y LUT salen idénticos) y
+  `MARTE_V` a 5. Los botones siguen en el banco para comparar.
+- Los PNG del paso 1 (`marte-tharsis.png`, `marte-syrtis.png`) se quedan con
+  0,16: son el registro del boceto provisional.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
