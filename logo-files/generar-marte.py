@@ -28,6 +28,8 @@ Uso:
 Datos del <canvas> (el Marte que se gira con la mano y el zoom):
     python3 generar-marte.py --canvas ../public/marte/   # base + teselas n1/, n2/ + LUT + datos (~3 min)
     python3 generar-marte.py --canvas ../public/marte/ --niveles 0   # solo la base
+    Color de las zonas oscuras (solo la LUT; en el banco con ?lut=):
+    python3 generar-marte.py --solo-lut prototipo-marte/oscuras/basalto.png --oscuras basalto
     Variantes del pulido, para comparar en el banco (solo la base, sin teselas):
     python3 generar-marte.py --canvas prototipo-marte/llanuras/bandas/ --niveles 0 --sin-teselas --variante bandas
     Necesita también el mosaico a 16 y 24 px/grado y el MOLA de 32:
@@ -131,10 +133,15 @@ SPACE = (0x05, 0x06, 0x0a)
 
 # Materiales: por brillo del mosaico (0-255) y, en los polos, hielo.
 # (hasta, color a plena luz); los umbrales salen de --histograma.
+# Los tres oscuros, en "chocolate suave" (pulido del 21-sep-2026): el pardo de
+# antes (#5c3c31, #724937, #8c563b) algo más hondo. Se compararon también
+# "basalto gris" y "gris azulado" (ver OSCURAS): el usuario los rechazó y
+# prefirió el pardo/chocolate, que es además lo más fiel al color real de las
+# zonas oscuras de Marte; pidió "un pelín menos de contraste que chocolate".
 MATERIALES = [
-    (None, (0x5c, 0x3c, 0x31)),   # basalto muy oscuro (el corazón de Syrtis Major)
-    (None, (0x72, 0x49, 0x37)),   # regiones oscuras (Acidalia, Mare Erythraeum…)
-    (None, (0x8c, 0x56, 0x3b)),   # transición
+    (None, (0x53, 0x34, 0x2b)),   # basalto muy oscuro (el corazón de Syrtis Major)
+    (None, (0x6a, 0x43, 0x31)),   # regiones oscuras (Acidalia, Mare Erythraeum…)
+    (None, (0x89, 0x55, 0x3a)),   # transición
     # Óxido medio, en DOS TONOS casi iguales (pulido del 21-sep-2026). Era uno
     # solo, #a66440, de 80 a 98: el pico del histograma entero en un material,
     # porque en la Luna partirlo salía a manchas. Pero así las llanuras
@@ -607,6 +614,48 @@ def _filas_mapa(altura, color, ppd, r0, r1):
         yield bytes(fila)
 
 
+def escribe_lut(ruta):
+    """Color de cada material (fila) por escalón de luz (columna). Devuelve
+    (columnas, filas)."""
+    kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
+    lut = []
+    # con "bandas", detrás van las variantes aclaradas de cada material
+    for extra in ((0, BANDA_LUZ) if LLANURAS == "bandas" else (0,)):
+        for col in [c for _, c in MATERIALES] + [HIELO]:
+            fila = bytearray(kn * 4)
+            for j in range(kn):
+                rgb = ramp(col, LUT_KMIN + (j + extra) / LIGHT_SUB)
+                fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
+            lut.append(bytes(fila))
+    os.makedirs(os.path.dirname(ruta) or ".", exist_ok=True)
+    write_rgba(ruta, kn, len(lut), lut)
+    return kn, len(lut)
+
+
+# ------------------------------------ pulido: zonas oscuras "algo pardas"
+# Variantes del color de los tres materiales oscuros (basalto muy oscuro,
+# regiones oscuras, transición), 21-sep-2026. Solo cambian la LUT: el mapa es
+# el mismo. `--solo-lut ruta --oscuras X` escribe solo esa LUT, para
+# compararla en el banco con todos los niveles de zoom (?lut=).
+OSCURAS = {
+    "antes": ((0x5c, 0x3c, 0x31), (0x72, 0x49, 0x37), (0x8c, 0x56, 0x3b)),
+    # A: el mismo marrón, menos saturado y algo más frío
+    "basalto": ((0x57, 0x44, 0x3f), (0x6c, 0x52, 0x47), (0x88, 0x5d, 0x46)),
+    # B: gris con un punto frío (contraste con el naranja)
+    "gris-azulado": ((0x4e, 0x47, 0x4c), (0x65, 0x56, 0x53), (0x84, 0x5d, 0x49)),
+    # C: marrón más hondo y oscuro, más contraste, igual de cálido
+    "chocolate": ((0x4f, 0x31, 0x29), (0x67, 0x40, 0x2f), (0x88, 0x54, 0x3a)),
+    # "un pelín menos de contraste que chocolate" (el usuario): 70 % del camino
+    # del pardo de antes al chocolate
+    "chocolate-suave": ((0x53, 0x34, 0x2b), (0x6a, 0x43, 0x31), (0x89, 0x55, 0x3a)),
+}
+
+
+def pon_oscuras(nombre):
+    global MATERIALES
+    MATERIALES = [(None, c) for c in OSCURAS[nombre]] + MATERIALES[3:]
+
+
 def export_canvas(outdir, cuales=None, sin_teselas=False):
     import json
     os.makedirs(outdir, exist_ok=True)
@@ -634,24 +683,14 @@ def export_canvas(outdir, cuales=None, sin_teselas=False):
                 a, b = tc * TESELA * 4, (tc + 1) * TESELA * 4
                 write_rgba(os.path.join(carpeta, f"{tf}-{tc}.png"), TESELA, TESELA, [f[a:b] for f in filas])
             print(f"  nivel {n}: banda {tf + 1}/{h // TESELA}", flush=True)
-    kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
-    lut = []
-    # con "bandas", detrás van las variantes aclaradas de cada material
-    for extra in ((0, BANDA_LUZ) if LLANURAS == "bandas" else (0,)):
-        for col in [c for _, c in MATERIALES] + [HIELO]:
-            fila = bytearray(kn * 4)
-            for j in range(kn):
-                rgb = ramp(col, LUT_KMIN + (j + extra) / LIGHT_SUB)
-                fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
-            lut.append(bytes(fila))
-    write_rgba(os.path.join(outdir, "marte-lut.png"), kn, len(lut), lut)
+    kn, nlut = escribe_lut(os.path.join(outdir, "marte-lut.png"))
     datos = {
         "RADIUS": RADIUS, "LIMB_AA": LIMB_AA, "FASE": FASE, "SOL_ARR": SOL_ARR, "LADO": LADO,
         "TERM_A": TERM_A, "TERM_B": TERM_B, "NOCHE": NOCHE, "LIMB_K": LIMB_K,
         "RELIEVE_K": RELIEVE_K, "RELIEVE_MIN": RELIEVE_MIN, "RELIEVE_MAX": RELIEVE_MAX,
         "RELIEVE_ELEV_MAX": RELIEVE_ELEV_MAX, "SOMBRA_K": SOMBRA_K,
         "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
-        "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "MATERIALES": len(lut),
+        "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "MATERIALES": nlut,
         "NORMAL_NIVELES": NORMAL_NIVELES, "TESELA": TESELA,
         # con --sin-teselas (variantes del banco) solo la base: no hay teselas
         "NIVELES": [{"ppd": ppd, "teselas": t} for ppd, _, _, t in NIVELES if not (sin_teselas and t)],
@@ -664,6 +703,11 @@ def export_canvas(outdir, cuales=None, sin_teselas=False):
 
 def main():
     os.makedirs(SALIDA, exist_ok=True)
+    if "--oscuras" in sys.argv:                 # pulido: color de las zonas oscuras
+        pon_oscuras(sys.argv[sys.argv.index("--oscuras") + 1])
+    if "--solo-lut" in sys.argv:                # solo la LUT (para ?lut= en el banco)
+        print("->", sys.argv[sys.argv.index("--solo-lut") + 1], escribe_lut(sys.argv[sys.argv.index("--solo-lut") + 1]))
+        return
     if "--canvas" in sys.argv:
         cuales = None
         if "--niveles" in sys.argv:             # p. ej. --niveles 0 (solo la base)
