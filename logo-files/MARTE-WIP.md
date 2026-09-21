@@ -40,8 +40,21 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   de `zoom.html`). **Rechazó A y B** (gris y gris azulado). **Hecho: el
   "chocolate suave"**, confirmado por el usuario ("sí, chocolate suave").
   Ver "Pulido del pixel art", punto 3.
-- **En marcha: el casquete norte pequeño a ×1** (el usuario: "pasa al
-  siguiente tema"). Ver "Pulido del pixel art", punto 4.
+- Chocolate suave: commit `105ff78`.
+- **Casquete norte: hecho y aprobado** ("está bien así"). El casquete se
+  queda como está (prefirió "el de verdad" al más amplio) y **la vista
+  inicial pasa a 12,5° al norte**. Se probó 25° y el usuario pidió "no tanta
+  inclinación, la mitad por lo menos de 25". Ver "Pulido del pixel art",
+  punto 4.
+- **Banco limpio** (el usuario: "limpia de opciones la página de prueba que
+  apenas veo Marte ya"): el panel de `zoom.html` es una línea (Tharsis,
+  Syrtis, polos, ×1, ×6 y la vista). Las comparaciones ya decididas siguen
+  funcionando por la URL (ver el comentario de la cabecera de `zoom.html`).
+- Sin commitear: la variante `casquete-amplio` de `generar-marte.py`,
+  `prototipo-marte/casquete/`, `lat0` = 12,5 en los dos motores, los dos bancos
+  y este documento.
+- **En marcha: el grano en las llanuras a ×6**, el último punto del pulido
+  apuntado.
   Sin commitear: `--solo-lut`/`--oscuras` en `generar-marte.py`,
   `prototipo-marte/oscuras/`, la opción `lut` de `marte-gl.js`, el banco y
   este documento.
@@ -103,6 +116,8 @@ pulsa para viajar, y la publicación (merge en `main`).
   - Las chapas no crecen con el zoom.
   - La luz se queda fija respecto a quien mira, como en la Tierra.
   - El planeta, a ~60 svh (la Luna está a 80): se confirma con un render.
+- **Vista inicial inclinada 12,5° al norte** (usuario, 21-sep-2026). Antes
+  era 10°. Se probó 25° y le pareció demasiado: "la mitad por lo menos".
 
 ## Decisiones pendientes
 
@@ -462,6 +477,45 @@ pulsa para viajar, y la publicación (merge en `main`).
   - Durante esta comparación la ventana de Chrome cambió de tamaño y las
     capturas del navegador fallaron. Para comparar colores sin navegador:
     la prueba en Node con otra LUT en la carpeta de datos.
+
+### 4. El casquete norte pequeño a ×1 (21-sep-2026)
+
+- **Cuánto hielo hay en el mapa** (base, % de celdas por banda de 2°):
+  entero hasta 84° N, a medias en ~83° N (57 % en 84-82°), y se acaba hacia
+  76° N. El casquete residual real llega más o menos a 80-81° N: el nuestro
+  es algo más pequeño, pero no mucho. El sur (pequeño y descentrado, 86-90°
+  S) cuadra con el real.
+- **Por qué se ve pequeño**: sobre todo por la vista. Con `lat0` = 10 el polo
+  cae al 98 % del radio, casi en el borde, y el casquete se ve de canto.
+- **Opciones**:
+  1. **Casquete más amplio** (`--variante casquete-amplio`: umbrales de hielo
+     `HIELO_R_MIN` 125, `HIELO_B_R` 0,72, `HIELO_T` 0,3; antes 150, 0,78,
+     0,5). A medias en ~82,7° N en vez de ~83,2°: apenas se nota.
+  2. **Vista inicial más inclinada al norte** (25° en vez de 10°). El
+     casquete se ve de frente, como un óvalo arriba, y encaja con la Tierra
+     de la portada (vista de horizonte inclinada, hemisferio norte). Es la
+     vista con la que arrancaría la página `/marte`.
+  3. Las dos.
+- Comparado sin navegador (prueba en Node, Tharsis, `lat0` 10 y 25, con y
+  sin casquete amplio): lo que cambia de verdad es la inclinación.
+- **Banco**: `zoom.html`, botón "inclinar 25° al norte" (fila "ir a") y fila
+  "casquete norte": "el de verdad" / "más amplio" (`?datos=casquete/amplio`,
+  solo la base).
+- Se recomendó la 3. **El usuario prefiere el casquete "de verdad"**
+  (21-sep-2026: "me gusta más el de 'verdad'"): los umbrales de hielo no
+  cambian. La variante `casquete-amplio` queda en el generador y en el banco
+  como descartada.
+- **Vista inicial más inclinada al norte** (opción 2):
+  - Primero a 25° (el usuario: "vale, dale, que quiero ver cómo queda").
+  - Al verlo: "no tanta inclinación, la mitad por lo menos de 25". Queda en
+    **12,5°**: `lat0` por defecto en `marte-gl.js` y `marte.js`, y los
+    botones Tharsis y Syrtis de los bancos. Aprobado: "está bien así".
+  - Si elige el amplio: dejar los umbrales en el generador, regenerar base
+    y teselas (unos 4 min) y subir `MARTE_V`.
+  - Si elige la vista: `lat0` inicial = 25 (en el banco y en `/marte`).
+- Una posible opción más, **no preparada**: un casquete "de invierno" más
+  grande (escarcha estacional hasta ~65° N). Es real en invierno, pero no
+  sale del mosaico: habría que inventar su borde.
 
 ## La idea (contada por el usuario, 21-sep-2026)
 

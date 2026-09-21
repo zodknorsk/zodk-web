@@ -122,7 +122,7 @@ export function cargarMarte(base = "/marte/") {
  */
 export async function montarMarte(canvas, {
   base = "/marte/",
-  lat0: lat0Ini = 10,
+  lat0: lat0Ini = 12.5,                          // inclinada al norte, como marte-gl.js
   lon0: lon0Ini = -80,
   disco = () => 0.6 * window.innerHeight,
   alPintar = () => {},

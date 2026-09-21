@@ -11,16 +11,21 @@
   Servir desde la raíz del repo:
     cd ~/Documents/zodk-web && python3 -m http.server 4400
   y abrir http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html
+
+  El panel se dejó mínimo el 21-sep-2026 (el usuario: "limpia de opciones la
+  página de prueba que apenas veo marte ya"). Las comparaciones del pulido ya
+  decididas se quitaron de los botones, pero siguen funcionando por la URL:
   ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x6 (para Zen).
-  ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12), para probar que
-  se vacía bien cuando no caben todas.
-  ?datos=llanuras/bandas: otros datos (variantes del pulido, de
-  generar-marte.py --variante); ?vista=lat0,lon0,zoom: vista al cargar.
+  ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12).
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  ?datos=llanuras/bandas (o casquete/amplio…): otros datos, solo la base
+    (variantes de generar-marte.py --variante, en prototipo-marte/).
   ?lut=oscuras/basalto.png: otra LUT (colores), con los datos de siempre.
+  ?noche=0.16: otra luz del lado sin sol (sin regenerar).
 -->
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden;
-    font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
   #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
   /* el lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se centra */
   #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
@@ -28,10 +33,10 @@
   #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
   .arrastrable { cursor: grab; }
   .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
-  #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
-    padding: 8px 10px; border-radius: 6px; line-height: 2; }
+  #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;
+    padding: 5px 8px; border-radius: 6px; line-height: 1.9; }
   button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px;
-    padding: 3px 8px; cursor: pointer; }
+    padding: 1px 6px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -39,23 +44,9 @@
   <canvas id="marte"></canvas>
   <div id="sonda"></div>
   <div id="panel" data-sin-arrastre>
-    <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x6.<br>
-    Arrastra con el ratón para girar.<br>
-    ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
-    <button data-v="30,115">Utopia</button> <button data-v="20,-155">Amazonis</button>
-    <button data-v="40,-25">Acidalia</button>
-    <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
-    <button data-z="1">zoom x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
-    sombra (luz del lado sin sol): <button data-noche="0.16">0,16 (la de antes)</button>
-    <button data-noche="0.22">0,22 (elegida)</button> <button data-noche="0.28">0,28</button>
-    <button data-noche="0.35">0,35</button><br>
-    llanuras (solo la base: comparar a x1): <button data-llanura="">la de verdad</button>
-    <button data-llanura="antes">antes (un tono)</button> <button data-llanura="dos-tonos">A · dos tonos (elegida)</button>
-    <button data-llanura="bandas">B · bandas de altura</button> <button data-llanura="relieve-llanos">C · más relieve en lo llano</button><br>
-    zonas oscuras (color): <button data-lut="">la de verdad (chocolate suave)</button> <button data-lut="antes">pardo (antes)</button>
-    <button data-lut="basalto">A · basalto gris</button>
-    <button data-lut="gris-azulado">B · gris azulado</button> <button data-lut="chocolate">C · chocolate</button>
-    <button data-lut="chocolate-suave">C2 · chocolate suave (elegida)</button><br>
+    <button data-v="12.5,-80">Tharsis</button> <button data-v="12.5,105">Syrtis</button>
+    <button data-v="90,-80">polo N</button> <button data-v="-90,-80">polo S</button>
+    · <button data-z="1">x1</button> <button data-z="6">x6</button><br>
     <span id="vista"></span> <span id="ms"></span>
   </div>
 </div>
@@ -69,8 +60,8 @@ const q = new URLSearchParams(location.search);
 const marte = await montarMarteGL($("marte"), {
   base: q.get("datos") ? `${q.get("datos")}/` : "../../public/marte/",
   disco: () => sonda.getBoundingClientRect().height,
-  ...(q.has("atlas") ? { ladoAtlas: Number(q.get("atlas")) } : {}),   // ?atlas=N: atlas de N x N teselas
-  ...(q.has("lut") ? { lut: q.get("lut") } : {}),                       // ?lut=...: otros colores
+  ...(q.has("atlas") ? { ladoAtlas: Number(q.get("atlas")) } : {}),
+  ...(q.has("lut") ? { lut: q.get("lut") } : {}),
 });
 if (!marte) {
   $("vista").textContent = "Este navegador no tiene WebGL2.";
@@ -80,8 +71,7 @@ if (!marte) {
   window.marte = marte;                 // para probar desde la consola
   const muestra = () => {
     const v = marte.vista();
-    $("vista").textContent = `zoom x${v.zoom.toFixed(2)} · lat0 ${v.lat0.toFixed(0)}° · lon0 ${v.lon0.toFixed(0)}° · `
-      + `teselas ${v.teselas.join(" + ")}`;
+    $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(0)}° ${v.lon0.toFixed(0)}°`;
     requestAnimationFrame(muestra);
   };
   muestra();
@@ -90,41 +80,12 @@ if (!marte) {
     marte.ponVista(la, lo);
   }));
   document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
-  // Vista al cargar (?vista=lat0,lon0,zoom) y variantes de las llanuras, que
-  // recargan la página con otros datos y la misma vista.
+  if (q.has("noche")) marte.ajustaLuz({ NOCHE: Number(q.get("noche")) });
   if (q.has("vista")) {
     const [la, lo, z] = q.get("vista").split(",").map(Number);
     marte.ponVista(la, lo);
     if (z) marte.ponZoom(z);
   }
-  document.querySelectorAll("[data-llanura]").forEach((b) => {
-    if ((q.get("datos") || "") === (b.dataset.llanura && `llanuras/${b.dataset.llanura}`)) b.style.outline = "2px solid #fff";
-    b.addEventListener("click", () => {
-      const v = marte.vista(), u = new URLSearchParams();
-      if (b.dataset.llanura) u.set("datos", `llanuras/${b.dataset.llanura}`);
-      u.set("vista", `${v.lat0.toFixed(2)},${v.lon0.toFixed(2)},${v.zoom.toFixed(2)}`);
-      location.search = u.toString();
-    });
-  });
-  // Colores de las zonas oscuras: recarga con otra LUT y la misma vista.
-  document.querySelectorAll("[data-lut]").forEach((b) => {
-    const ruta = b.dataset.lut && `oscuras/${b.dataset.lut}.png`;
-    if ((q.get("lut") || "") === ruta) b.style.outline = "2px solid #fff";
-    b.addEventListener("click", () => {
-      const v = marte.vista(), u = new URLSearchParams(location.search);
-      if (ruta) u.set("lut", ruta); else u.delete("lut");
-      u.set("vista", `${v.lat0.toFixed(2)},${v.lon0.toFixed(2)},${v.zoom.toFixed(2)}`);
-      location.search = u.toString();
-    });
-  });
-  // Comparar la sombra (NOCHE) sin regenerar: se cambia en el shader.
-  const noches = document.querySelectorAll("[data-noche]");
-  const marcaNoche = (v) => noches.forEach((b) => { b.style.outline = Number(b.dataset.noche) === v ? "2px solid #fff" : ""; });
-  noches.forEach((b) => b.addEventListener("click", () => {
-    marte.ajustaLuz({ NOCHE: Number(b.dataset.noche) });
-    marcaNoche(Number(b.dataset.noche));
-  }));
-  marcaNoche(0.22);
   if (q.has("medir")) {
     marte.medir(10);
     const a = marte.medir(30);
