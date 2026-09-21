@@ -25,6 +25,9 @@ Uso:
     python3 generar-marte.py --histograma # reparto de brillo del mosaico (para los umbrales)
     python3 generar-marte.py --recalc     # rehace la pasada lenta (geometría/luz)
 
+Datos del <canvas> (el Marte que se gira con la mano, src/scripts/marte.js):
+    python3 generar-marte.py --canvas ../public/marte/   # mapa + LUT + datos
+
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
 http://127.0.0.1:4400/logo-files/prototipo-marte/
 
@@ -193,7 +196,11 @@ def cargar():
         base = r * w
         B, G, R = f[0::3], f[1::3], f[2::3]
         for c in range(w):
-            rr, gg, bb = R[c], G[c], B[c]
+            # La columna 0 (180° O) sale oscura: sips la mezcla con negro al
+            # reducir (37 de brillo frente a 88 en sus vecinas). Se usa la de
+            # al lado; si no, en el giro sale una raya de un polo al otro.
+            cc = c if c else 1
+            rr, gg, bb = R[cc], G[cc], B[cc]
             brillo[base + c] = 0.30 * rr + 0.59 * gg + 0.11 * bb
             # hielo: claro y poco rojo (el polvo es naranja, el hielo casi gris)
             if polar and bb > 0.78 * rr and rr > 150:
@@ -478,6 +485,70 @@ def histograma(brillo, hielo):
             print(f"{v:3d}-{v + 3:3d} {s / total * 100:5.1f}% {acum / total * 100:5.1f}% " + "#" * int(s / total * 400))
 
 
+# ------------------------------------------------------ datos del <canvas>
+# Marte se pinta siempre en tiempo real (se gira con la mano y se hará zoom:
+# no hay caras fijas en PNG como en la Luna), desde un mapa en
+# latitud/longitud, con el mismo formato que el de la Luna:
+#   marte-mapa.png   MAPA_W x MAPA_H: R = material (0-6, el 6 es hielo), G/B =
+#                    normal del relieve (este, norte; ya exagerada) de -1..1 a
+#                    0..NORMAL_NIVELES-1
+#   marte-lut.png    color de cada material (fila) por escalón de luz (columna)
+#   marte-datos.json constantes de luz y geometría y las caras de prueba
+MAPA_W, MAPA_H = 1440, 720    # 4 px/grado: en el zoom x1 un píxel del disco son ~0,26°
+LUT_KMIN, LUT_KMAX = -16, 4   # escalones de rampa que caben (noche + relieve + limbo)
+NORMAL_NIVELES = 64           # niveles por componente de la normal (menos = PNG más ligero)
+
+
+def export_canvas(outdir, fuentes):
+    import json
+    os.makedirs(outdir, exist_ok=True)
+    altura, color = fuentes
+    q = NORMAL_NIVELES - 1
+    d_deg = 360.0 / MAPA_W                      # derivada al paso de una celda
+    d_m = math.radians(d_deg) * MARTE_R
+    filas = []
+    for r in range(MAPA_H):
+        lat = 90.0 - (r + 0.5) * 180.0 / MAPA_H
+        cl = max(0.02, math.cos(math.radians(lat)))
+        fila = bytearray(MAPA_W * 4)
+        for c in range(MAPA_W):
+            lon = (c + 0.5) * 360.0 / MAPA_W - 180.0
+            br, hi = color(lat, lon)
+            m = material(br, hi, UMBRALES)
+            he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
+            hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
+            ne, nn = -he * RELIEVE_EXAG, -hn * RELIEVE_EXAG
+            ln = math.sqrt(ne * ne + nn * nn + 1.0)
+            o = c * 4
+            fila[o:o + 4] = bytes((m, round((ne / ln + 1) / 2 * q), round((nn / ln + 1) / 2 * q), 255))
+        filas.append(bytes(fila))
+        if r % 90 == 0:
+            print(f"  mapa {r}/{MAPA_H}", flush=True)
+    write_rgba(os.path.join(outdir, "marte-mapa.png"), MAPA_W, MAPA_H, filas)
+    kn = (LUT_KMAX - LUT_KMIN) * LIGHT_SUB + 1
+    lut = []
+    for col in [c for _, c in MATERIALES] + [HIELO]:
+        fila = bytearray(kn * 4)
+        for j in range(kn):
+            rgb = ramp(col, LUT_KMIN + j / LIGHT_SUB)
+            fila[j * 4:j * 4 + 4] = bytes([max(0, min(255, round(v))) for v in rgb] + [255])
+        lut.append(bytes(fila))
+    write_rgba(os.path.join(outdir, "marte-lut.png"), kn, len(lut), lut)
+    datos = {
+        "RADIUS": RADIUS, "LIMB_AA": LIMB_AA, "FASE": FASE, "SOL_ARR": SOL_ARR, "LADO": LADO,
+        "TERM_A": TERM_A, "TERM_B": TERM_B, "NOCHE": NOCHE, "LIMB_K": LIMB_K,
+        "RELIEVE_K": RELIEVE_K, "RELIEVE_MIN": RELIEVE_MIN, "RELIEVE_MAX": RELIEVE_MAX,
+        "RELIEVE_ELEV_MAX": RELIEVE_ELEV_MAX, "SOMBRA_K": SOMBRA_K,
+        "LNSTEP": _LNSTEP, "LIGHT_SUB": LIGHT_SUB, "LUT_KMIN": LUT_KMIN, "LUT_KN": kn,
+        "MAPA_W": MAPA_W, "MAPA_H": MAPA_H, "SPACE": SPACE, "MATERIALES": len(lut),
+        "NORMAL_NIVELES": NORMAL_NIVELES,
+        "caras": {n: {"lat0": la, "lon0": lo} for n, (la, lo) in CARAS.items()},
+    }
+    with open(os.path.join(outdir, "marte-datos.json"), "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+    print("->", outdir)
+
+
 def main():
     os.makedirs(SALIDA, exist_ok=True)
     dem, brillo, hielo = cargar()
@@ -485,6 +556,9 @@ def main():
         histograma(brillo, hielo)
         return
     fuentes = hacer_muestreo(dem, brillo, hielo)
+    if "--canvas" in sys.argv:
+        export_canvas(sys.argv[sys.argv.index("--canvas") + 1], fuentes)
+        return
     nombres = [a for a in sys.argv[1:] if a in CARAS] or list(CARAS)
     for nombre in nombres:
         lat0, lon0 = CARAS[nombre]
