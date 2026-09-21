@@ -1,5 +1,5 @@
 // Marte en <canvas> (Proyecto Marte, rama mars-project): un planeta que se
-// gira con la mano (barra espaciadora + arrastrar, como la mano de Photoshop).
+// gira con la mano (clic y arrastrar, como Google Maps).
 //
 // Giro "tipo globo terráqueo": el norte siempre arriba y sin ladear. La
 // orientación son dos números, `lat0` (cuánto se inclina el norte hacia quien
@@ -402,87 +402,79 @@ export async function montarMarte(canvas, {
   };
 }
 
-// La mano: con la barra espaciadora pulsada el cursor es una mano abierta, y
-// espacio + clic y arrastrar gira el planeta con la mano cerrada (como la mano
-// de Photoshop). Soltar el clic o el espacio termina el arrastre, y el
-// planeta se queda donde se dejó.
+// La mano, a lo Google Maps: sobre `zona` el cursor es una mano abierta, y
+// clic y arrastrar gira el planeta con la mano cerrada. Al soltar se queda
+// donde se dejó. (Hasta el 21-sep-2026 era con la barra espaciadora pulsada,
+// como la mano de Photoshop; el usuario lo cambió por esto.)
+// - El giro no empieza hasta que el ratón se ha movido UMBRAL píxeles: un clic
+//   sin arrastrar sigue siendo un clic (lo necesitarán las chapas).
+// - Sobre botones, enlaces, campos y lo marcado con `data-sin-arrastre` no se
+//   agarra: siguen funcionando como siempre.
+// - Tras un arrastre de verdad se anula el clic que el navegador manda al
+//   soltar, para que no pulse nada de lo que quede debajo.
 // `zona` es el elemento donde se puede agarrar (el hero entero, no solo el
-// disco). Las clases `mano` y `agarrando` van en `zona`; el cursor lo pone el
-// CSS de la página. Devuelve la función que lo desmonta.
+// disco). Pone en `zona` la clase `arrastrable` siempre y `agarrando` mientras
+// se arrastra; el cursor lo pone el CSS de la página. Devuelve la función que
+// lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ mueve: (dx: number, dy: number) => void, suelta: () => void }} marte
  */
 export function montarMano(zona, marte) {
-  let espacio = false, arrastre = null;
-  const escribiendo = (el) => el instanceof HTMLElement
-    && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
-  const clases = () => {
-    zona.classList.toggle("mano", espacio && !arrastre);
-    zona.classList.toggle("agarrando", !!arrastre);
-  };
+  const UMBRAL = 4;                               // px CSS antes de que cuente como arrastre
+  const NO_AGARRA = "a, button, input, select, textarea, label, summary, [data-sin-arrastre]";
+  let pulsado = null, arrastrado = false;         // pulsado: { id, x0, y0, x, y, activo }
+  zona.classList.add("arrastrable");
   const terminar = () => {
-    if (!arrastre) return;
-    if (zona.hasPointerCapture(arrastre.id)) zona.releasePointerCapture(arrastre.id);
-    arrastre = null;
-    marte.suelta();
+    if (!pulsado) return;
+    if (pulsado.activo) {
+      if (zona.hasPointerCapture(pulsado.id)) zona.releasePointerCapture(pulsado.id);
+      zona.classList.remove("agarrando");
+      arrastrado = true;
+      marte.suelta();
+    }
+    pulsado = null;
   };
-  // La barra espaciadora, por defecto, hace scroll y pulsa el botón que tenga
-  // el foco (al soltarla): las dos cosas se anulan mientras sirve de mano.
-  // Salvo si se está navegando con el teclado (foco visible en un botón o
-  // enlace): ahí el espacio sigue pulsando lo que tiene el foco. Con el ratón
-  // el foco se queda en el último botón pulsado sin ser visible, y el espacio
-  // lo volvería a pulsar en vez de agarrar.
-  const teclado = (el) => el instanceof HTMLElement && el !== document.body && el.matches(":focus-visible");
-  const abajo = (e) => {
-    if (e.code !== "Space" || escribiendo(e.target) || (!espacio && teclado(e.target))) return;
-    e.preventDefault();
-    if (!espacio) { espacio = true; clases(); }
-  };
-  const arriba = (e) => {
-    if (e.code !== "Space" || !espacio) return;
-    e.preventDefault();
-    espacio = false;
-    terminar();
-    clases();
-  };
-  // Si la ventana pierde el foco con el espacio pulsado (Cmd+Tab), no llega el
-  // keyup: se da por soltado.
-  const fuera = () => { espacio = false; terminar(); clases(); };
   const empieza = (e) => {
-    if (!espacio || e.button !== 0 || arrastre) return;
-    e.preventDefault();                           // sin selección de texto ni foco
-    zona.setPointerCapture(e.pointerId);
-    arrastre = { id: e.pointerId, x: e.clientX, y: e.clientY };
-    clases();
+    if (e.button !== 0 || pulsado || (e.target instanceof Element && e.target.closest(NO_AGARRA))) return;
+    e.preventDefault();                           // sin selección de texto ni arrastrar imágenes
+    pulsado = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false };
+    arrastrado = false;
   };
   const mueve = (e) => {
-    if (!arrastre || e.pointerId !== arrastre.id) return;
-    const dx = e.clientX - arrastre.x, dy = e.clientY - arrastre.y;
-    arrastre.x = e.clientX;
-    arrastre.y = e.clientY;
+    if (!pulsado || e.pointerId !== pulsado.id) return;
+    if (!pulsado.activo) {
+      if (Math.hypot(e.clientX - pulsado.x0, e.clientY - pulsado.y0) < UMBRAL) return;
+      pulsado.activo = true;
+      zona.setPointerCapture(pulsado.id);
+      zona.classList.add("agarrando");
+    }
+    const dx = e.clientX - pulsado.x, dy = e.clientY - pulsado.y;
+    pulsado.x = e.clientX;
+    pulsado.y = e.clientY;
     if (dx || dy) marte.mueve(dx, dy);
   };
-  const acaba = (e) => {
-    if (!arrastre || e.pointerId !== arrastre.id) return;
-    terminar();
-    clases();
+  const acaba = (e) => { if (pulsado && e.pointerId === pulsado.id) terminar(); };
+  const clic = (e) => {
+    if (!arrastrado) return;
+    arrastrado = false;
+    e.stopPropagation();
+    e.preventDefault();
   };
-  window.addEventListener("keydown", abajo);
-  window.addEventListener("keyup", arriba);
-  window.addEventListener("blur", fuera);
   zona.addEventListener("pointerdown", empieza);
   zona.addEventListener("pointermove", mueve);
   zona.addEventListener("pointerup", acaba);
   zona.addEventListener("pointercancel", acaba);
+  zona.addEventListener("click", clic, true);
+  window.addEventListener("blur", terminar);
   return () => {
-    window.removeEventListener("keydown", abajo);
-    window.removeEventListener("keyup", arriba);
-    window.removeEventListener("blur", fuera);
     zona.removeEventListener("pointerdown", empieza);
     zona.removeEventListener("pointermove", mueve);
     zona.removeEventListener("pointerup", acaba);
     zona.removeEventListener("pointercancel", acaba);
-    fuera();
+    zona.removeEventListener("click", clic, true);
+    window.removeEventListener("blur", terminar);
+    terminar();
+    zona.classList.remove("arrastrable", "agarrando");
   };
 }

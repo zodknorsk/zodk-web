@@ -23,22 +23,21 @@
   #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
   /* diámetro del disco a zoom x1: el mismo tamaño de píxel que la Luna de /luna */
   #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
-  .mano, .mano * { cursor: grab !important; }
+  .arrastrable { cursor: grab; }
   .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
   #panel { position: fixed; left: 12px; top: 12px; z-index: 5; background: #000a;
     padding: 8px 10px; border-radius: 6px; line-height: 2; }
   button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px;
     padding: 3px 8px; cursor: pointer; }
-  kbd { border: 1px solid #9fb3c8; border-radius: 3px; padding: 0 4px; }
 </style>
 </head>
 <body>
 <div id="hero">
   <canvas id="marte"></canvas>
   <div id="sonda"></div>
-  <div id="panel">
+  <div id="panel" data-sin-arrastre>
     <b>Rueda</b> o <b>trackpad</b> (pellizco o dos dedos): zoom hacia el cursor, hasta x6.<br>
-    Mantén <kbd>espacio</kbd> y arrastra para girar.<br>
+    Arrastra con el ratón para girar.<br>
     ir a: <button data-v="10,-80">Tharsis</button> <button data-v="10,105">Syrtis</button>
     <button data-v="90,-80">polo norte</button> <button data-v="-90,-80">polo sur</button>
     <button data-z="1">zoom x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
