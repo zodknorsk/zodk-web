@@ -423,7 +423,11 @@ export async function montarMarteGL(canvas, {
     const d = disco();
     if (!(r.width > 0 && r.height > 0 && d > 0)) return false;
     px = d / (2 * R0);
-    const nW = Math.ceil(r.width / px), nH = Math.ceil(r.height / px);
+    // Lienzo de arte de lado PAR: el centro del disco cae entre dos píxeles,
+    // igual que en public/marte/marte-quieto.png (el vuelo desde la portada y el
+    // fondo mientras carga), así que al cambiar de la imagen al lienzo no salta.
+    const par = (n) => n + (n & 1);
+    const nW = par(Math.ceil(r.width / px)), nH = par(Math.ceil(r.height / px));
     const dpr = window.devicePixelRatio || 1;
     const k = Math.min(MULT_MAX, Math.floor(px * dpr));
     canvas.style.width = `${nW * px}px`;

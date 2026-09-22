@@ -3,6 +3,10 @@
 // queda atrás, hasta quedar como en /luna. Lo usan src/pages/index.astro
 // (luego cambia de página) y el banco de pruebas
 // logo-files/prototipo-vuelo/ (para comparar variantes).
+// El mismo vuelo lleva a Marte (Proyecto Marte, 21-sep-2026): el Marte
+// pequeño de arriba a la derecha crece hasta el disco de /marte. Cambian el
+// destino (`tam`, `dy`), el icono (`iconoDisco`, `claseIcono`) y la imagen
+// (`img`, `imgLado`, `imgDisco`); por defecto, los de la Luna.
 //
 // Se simula una cámara que viaja hasta la Luna y de ahí sale cómo se mueve la
 // luna (proyección en perspectiva, un bucle de rAF):
@@ -17,8 +21,8 @@
 // cómo va apareciendo el detalle de la luna, otra (`pixeles`). Detalle en
 // logo-files/LUNA-WIP.md.
 
-const ICONO_DISCO = 32 / 56;       // diámetro del disco en el icono (generar-astros.py: r = 16 en 56 px)
-const CARA_DISCO = 585 / 600;      // y en la cara de /luna (radio 292,5 en 600 px)
+const ICONO_N = 56;                // lado del icono en px de arte (la luna y Marte, generar-astros.py y generar-marte.py)
+const ICONO_DISCO = 32 / 56;       // diámetro del disco en el icono de la luna (r = 16 en 56 px)
 const GIRO_HASTA = 0.6;            // parte del vuelo en la que la cámara gira hacia la Luna
 const FUNDIDO_HASTA = 0.4;         // "directo": parte del vuelo en la que el icono pasa al dibujo (0,2 y 0,32: cortos)
 
@@ -77,22 +81,33 @@ export function faseLunaHoy() {
  * entonces la Luna se apaga en vez de fundirse con el icono.
  * Elegido por el usuario (17-sep-2026): tierra "encima", píxeles "directo"
  * (con el fundido del icono al dibujo algo más largo) y 6 s.
+ * Destino: `tam` es el lado de la caja de la imagen en la otra página y `dy`
+ * cuánto sube su centro respecto al de la ventana (CSS); `imgLado` e
+ * `imgDisco`, el lado de la imagen y el diámetro de su disco en px de arte;
+ * `iconoDisco`, el diámetro del disco en el icono (fracción de su lado), y
+ * `claseIcono`, la clase de su copia en la capa del vuelo.
  * @param {{ icono: HTMLElement, planeta: HTMLElement, estrellas: HTMLElement,
  *   apagar?: HTMLElement[], img: HTMLImageElement, duracion?: number,
  *   tierra?: keyof typeof TIERRAS, pixeles?: keyof typeof PIXELES,
- *   velocidad?: number, inverso?: boolean, iconoVisible?: boolean }} o
+ *   velocidad?: number, inverso?: boolean, iconoVisible?: boolean,
+ *   tam?: string, dy?: string, imgLado?: number, imgDisco?: number,
+ *   iconoDisco?: number, claseIcono?: string }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
 export function volarALuna({
   icono, planeta, estrellas, apagar = [], img,
   duracion = 6000, tierra = "encima", pixeles = "directo", velocidad = 1,
   inverso = false, iconoVisible = true,
+  tam = "var(--luna-tam)", dy = "var(--luna-dy)", imgLado = 600, imgDisco = 585,
+  iconoDisco = ICONO_DISCO, claseIcono = "viaje-icono",
 }) {
-  // Tamaño y sitio de la Luna en /luna: --luna-tam y --luna-dy (cuánto sube
-  // respecto al centro), medidos con una sonda. La cámara acaba mirando a ese
-  // punto, así que CY es el centro del disco, no el de la ventana.
+  const CARA_DISCO = imgDisco / imgLado;
+  // Tamaño y sitio del astro en la otra página (en /luna, --luna-tam y
+  // --luna-dy: cuánto sube respecto al centro), medidos con una sonda. La
+  // cámara acaba mirando a ese punto, así que CY es el centro del disco, no el
+  // de la ventana.
   const sonda = document.createElement("div");
-  sonda.style.cssText = "position:fixed;visibility:hidden;top:0;width:var(--luna-tam);margin-top:var(--luna-dy)";
+  sonda.style.cssText = `position:fixed;visibility:hidden;top:0;width:${tam};margin-top:${dy}`;
   document.body.append(sonda);
   const rs = sonda.getBoundingClientRect();
   sonda.remove();
@@ -100,7 +115,7 @@ export function volarALuna({
   const F = Math.max(W, H) * 0.9;                    // focal en px
   const ri = icono.getBoundingClientRect();
   const m0 = [ri.left + ri.width / 2, ri.top + ri.height / 2];
-  const dLuna0 = ri.width * ICONO_DISCO;
+  const dLuna0 = ri.width * iconoDisco;
   const dLuna1 = rs.width * CARA_DISCO;
 
   // --- Escena en 3D (x derecha, y abajo, z hacia dentro)
@@ -124,10 +139,10 @@ export function volarALuna({
   const capa = document.createElement("div");
   capa.className = "viaje-luna";
   const lado1 = dLuna1 / CARA_DISCO;
-  const ladoIcono = dLuna1 / ICONO_DISCO;
+  const ladoIcono = dLuna1 / iconoDisco;
   /** @type {{ el: HTMLElement, lado: number, res: number }[]} */
   const capas = [];
-  const pon = (el, lado, res = 585) => {
+  const pon = (el, lado, res = imgDisco) => {
     el.style.width = el.style.height = `${lado}px`;
     el.style.opacity = "0";
     capa.append(el);
@@ -135,9 +150,9 @@ export function volarALuna({
     return capas.length - 1;
   };
   const ic = document.createElement("div");
-  ic.className = "viaje-icono";
+  ic.className = claseIcono;
   ic.style.backgroundPosition = getComputedStyle(icono).backgroundPosition;
-  const iIcono = pon(ic, ladoIcono, 32);
+  const iIcono = pon(ic, ladoIcono, iconoDisco * ICONO_N);
   const reducida = (res) => {
     const cv = document.createElement("canvas");
     cv.width = cv.height = Math.max(1, Math.round(res / CARA_DISCO));
@@ -249,7 +264,7 @@ export function volarALuna({
     const k = d / dLuna1;
     if (vivo !== null) {
       // resolución para que cada píxel de arte mida ~3 px de pantalla, en pasos de 8
-      const res = Math.min(585, Math.max(16, Math.round(d / 3 / 8) * 8));
+      const res = Math.min(imgDisco, Math.max(16, Math.round(d / 3 / 8) * 8));
       if (res !== vivoRes) {
         vivoRes = res;
         const cv = /** @type {HTMLCanvasElement} */ (capas[vivo].el);

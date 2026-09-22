@@ -4,7 +4,7 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (21-sep-2026, noche: pausa de sesión)
+## Dónde estamos (22-sep-2026: `/marte`, Marte en la portada y el vuelo, commiteados; siguiente, el botón de volver)
 
 **Rama `mars-project`**, creada desde `main` el 21-sep-2026 y **subida a
 GitHub** el mismo día (`git push -u origin mars-project`). Nada fusionado ni
@@ -42,6 +42,23 @@ publicado: `main` y zodk.eu siguen como estaban.
    - `index.html`: los PNG del boceto.
    - `probar-en-node.mjs`: pruebas sin navegador.
 
+### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: página /marte, Marte en la portada y el vuelo"; el usuario pidió el commit)
+
+6. **Página `/marte`** (`src/pages/marte.astro` y el bloque "Proyecto Marte"
+   de `global.css`), pedida el 21-sep-2026. Marte a pantalla completa sobre
+   las estrellas, quieto, con la mano y el zoom de los bancos. **Sin
+   título**: el "mars project" animado se hizo, se pulió y el usuario lo
+   **quitó** el 22-sep-2026 (ver "El título: esquinas que se cierran",
+   registro). Ver "Página /marte" abajo.
+7. **Marte en la portada y el vuelo** (pedido el 21-sep-2026): Marte pequeño
+   arriba a la derecha (de día y de noche; algo más pegado al borde que la
+   luna, pedido el 22-sep-2026), enlace **`mars-project`** en la cabecera y
+   **vuelo Tierra → Marte** con el motor del de la Luna, aterrizando en el
+   disco de `/marte`. Ver "Marte en la portada y el vuelo" abajo.
+
+Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
+`mars-project`) o `http://localhost:4321/marte`.
+
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
 - **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
@@ -59,17 +76,26 @@ publicado: `main` y zodk.eu siguen como estaban.
 
 ### Pendiente (sin orden cerrado; lo decide el usuario)
 
-- **Página `/marte`** de verdad en Astro (como `/luna`: sin cabecera, menú
-  HUD), con el motor WebGL y la mano y el zoom de los bancos.
-- **El Marte pequeño que se pulsa para viajar** y la animación del viaje
-  (¿desde la portada, desde `/luna` o desde las dos?).
+- **Orden que marcó el usuario** (22-sep-2026): commit (hecho), **el botón
+  de volver** de `/marte` a la Tierra (siguiente), **un Marte pequeño en
+  `/luna`** con el vuelo Luna → Marte ("Vale. un marte pequeño si") y **el
+  móvil, lo último**.
+- **Duda abierta**: que Marte se vea de día y de noche se dio por bueno (era
+  la recomendación; no lo dijo expresamente).
+- **Volver de `/marte` a la Tierra**: no hay botón (solo el "atrás" del
+  navegador). Lo natural es el de `/luna` ("volver a la Tierra", abajo a la
+  derecha) con el mismo vuelo al revés. Propuesto, sin hacer.
+- **Luna → Marte**: un Marte también en el cielo de `/luna` con el mismo
+  vuelo. Propuesto para después del de la Tierra, sin hacer.
+- **`/marte`**: sin menú HUD (aún no hay notas que enlazar).
 - **Decisiones abiertas** (detalle en "Decisiones pendientes"):
   - ¿Marte gira solo? Se recomendó que empiece quieto con botón play/pausa.
   - Móvil y táctil.
 - **Chapas de las misiones**: aplazadas hasta que se escriban las notas en la
   bóveda.
-- **Sin WebGL2**: hoy el banco solo lo avisa. Para `/marte`, decidir si se
-  usa el motor de CPU (`marte.js`, sin zoom) o una imagen quieta.
+- **Sin WebGL2**: en `/marte` se queda Marte quieto (`marte-quieto.png`, el
+  fondo mientras carga), sin mano ni zoom. Salió de paso con el vuelo; si el
+  usuario prefiere el motor de CPU sin zoom, se cambia.
 - **Antes de publicar**: commitear las teselas (con el pixel art ya
   definitivo) y fusionar `mars-project` en `main` (explicando el merge al
   usuario antes).
@@ -93,6 +119,9 @@ publicado: `main` y zodk.eu siguen como estaban.
       Perseverance…). **Aplazado** por el usuario (21-sep-2026): se hará
       cuando se empiecen a escribir las notas de las misiones.
 - [ ] Giro automático y botón, si se decide (ver pendientes).
+- [x] 6. **Página `/marte`** con Marte, la mano, el zoom y el título "mars
+      project" animado. **Hecho el 21-sep-2026, sin commitear**: falta que la
+      vea el usuario. Ver "Página /marte" abajo.
 
 - [x] 5. **Pulido del pixel art** (21-sep-2026), **sin pasarse de realismo**
       (ver decisiones). Hecho: sombra menos oscura, llanuras en dos tonos,
@@ -100,8 +129,8 @@ publicado: `main` y zodk.eu siguen como estaban.
       el grano de las llanuras se quedan como estaban (decisión del usuario).
 
 Después, sin orden cerrado: las misiones
-(chapa, ficha y nota en la bóveda), página `/marte`, el Marte pequeño que se
-pulsa para viajar, y la publicación (merge en `main`).
+(chapa, ficha y nota en la bóveda), el Marte pequeño que se pulsa para
+viajar, y la publicación (merge en `main`).
 
 ## Decisiones tomadas
 
@@ -133,6 +162,18 @@ pulsa para viajar, y la publicación (merge en `main`).
   - El planeta, a ~60 svh (la Luna está a 80): se confirma con un render.
 - **Vista inicial inclinada 12,5° al norte** (usuario, 21-sep-2026). Antes
   era 10°. Se probó 25° y le pareció demasiado: "la mitad por lo menos".
+- **`/marte` sin título** (usuario, 22-sep-2026: "Quitamos el titulo mars
+  project con la animacion cuando llega al planeta"). Antes se había hecho
+  con las esquinas de visor del blog y cierre en dos puertas (opción C,
+  pulida); se quitó del código y queda descrito en "El título: esquinas que
+  se cierran".
+- **Marte más a la derecha en la portada** (usuario, 22-sep-2026: "un poco
+  más a la derecha"): `right: 3%` en vez del 5 % simétrico a la luna (solo
+  en escritorio; en el móvil ya estaba al 3 %).
+- **Marte en la portada** (usuario, 21-sep-2026): arriba a la derecha,
+  "un poco más pequeña que la luna" (opción B), enlace `mars-project` en la
+  cabecera y vuelo como el de la Luna. De día y de noche: la recomendación,
+  sin objeción expresa.
 
 ## Decisiones pendientes
 
@@ -154,6 +195,35 @@ pulsa para viajar, y la publicación (merge en `main`).
 2. **Móvil / táctil**: sin barra espaciadora, ¿cómo se gira y se hace zoom?
    (lo natural sería arrastrar con un dedo y pellizcar). El usuario lo deja
    por decidir (21-sep-2026).
+3. **El Marte de la portada**: **decidido** el 21-sep-2026 ("Si, opción B,
+   un poco más pequeña que la luna. Si, mars project en cabecera y que haga
+   el viaje") y hecho (ver "Marte en la portada y el vuelo"). Opciones que se
+   le dieron, con la recomendación:
+   - **Sitio**: arriba a la derecha, simétrico al sol y la luna (que están
+     arriba a la izquierda). Comprobado en capturas de día y de noche: esa
+     esquina está libre (la cabecera va más al centro y la nave
+     `fijo-arriba-der` queda debajo, en el 60 %). Recomendado.
+   - **Tamaño**: A, como el icono de la luna (se lee y se pulsa bien, pero
+     parece tan cerca como ella); **B, unos dos tercios (recomendado)**: más
+     lejano y aún se ven el casquete y las zonas oscuras; C, un punto rojizo
+     con brillo, como se ve de verdad a simple vista (difícil de ver, de
+     pulsar y de reconocer).
+   - **Cuándo se ve**: **de día y de noche (recomendado**: el fondo del hero
+     es siempre espacio negro y así siempre se puede ir), o solo de noche
+     como la luna.
+   - **Enlace `mars-project` en la cabecera**, junto a `moon-project`, que
+     hace el mismo vuelo (recomendado).
+   - **Vuelo**: el de la Luna (`viaje-luna.js`) hacia la derecha: la cámara
+     gira hacia Marte, la Tierra sale por la izquierda y Marte aterriza justo
+     en el disco de `/marte`; al aterrizar entra el título. En `/marte`, un
+     "volver a la Tierra" con el vuelo al revés, como en `/luna`.
+   - **Luna → Marte**: necesita un Marte también en el cielo de `/luna`
+     (arriba a la izquierda parece libre: el menú va a la derecha y la
+     columna de países, centrada a la izquierda). Recomendado hacerlo
+     después del de la Tierra, con el mismo vuelo.
+   - Pixel art del icono: sacado de los datos de Marte (misma paleta), para
+     que el vuelo aterrice en el mismo planeta. Antes de decidir tamaño, se
+     le enseña una captura de la portada con Marte puesto.
 
 ## Marte provisional (paso 1, 21-sep-2026)
 
@@ -568,6 +638,162 @@ pulsa para viajar, y la publicación (merge en `main`).
   nuevo con `--canvas prototipo-marte/grano/llanos/ --niveles 0,2,3 --zona
   -12,18,132,168 --variante grano-llanos` (y un enlace de `n1` a
   `public/marte/n1`).
+
+## Página /marte (21-sep-2026)
+
+- **Lo que pidió el usuario**: montar la página `/marte` y "una animación
+  parecida a la del blog 'el blog de hegoi marquez' que ponga mars project y
+  que esté un par de segundos y desaparezca".
+- **`src/pages/marte.astro`**, calcada de `/luna`: `PageLayout` con `hero` y
+  `cabecera={false}`, las estrellas de la portada (siempre las de noche, como
+  en `/luna`) y el lienzo de `marte-gl.js`. Se monta en cada llegada
+  (`astro:page-load`) y se desmonta al salir (`astro:before-swap`), porque la
+  web cambia de página sin recargar. La mano (`montarMano`) y el zoom
+  (`montarZoom`) se agarran en todo el hero, como en el banco. El disco a ×1
+  lo mide una sonda de 60 svh, también como en el banco.
+- **La página no hace scroll** (`html:has(.marte-hero) { overflow: hidden }`):
+  la rueda es el zoom. El pie de página existe pero no se ve.
+- **El título, primera versión** (sustituida por la de las esquinas, ver "El
+  título: esquinas que se cierran"; `.marte-titulo`, solo CSS): mismo tipo, contorno negro de
+  1 px, velo oscuro detrás y barra de censura que el título de la portada.
+  Centrado sobre Marte. Tiempos:
+  - 0-1,3 s tachado; en 0,5 s se destacha (la misma animación de la
+    portada, `hero-redact-in`).
+  - 2 s a la vista.
+  - Desde 3,8 s se vuelve a tachar en 0,5 s (como el de la portada al bajar)
+    y desde 4,6 s se funde en 0,5 s. A los 5,1 s ya no está.
+  - No estorba: el arrastre y el zoom funcionan por debajo desde el primer
+    momento. Con "reducir movimiento" no hay barra: se ve y se funde.
+- **Comprobado** (Chrome sin ventana desde la terminal, 1440 × 900; la
+  extensión de Chrome no estaba conectada): Marte a ×1 con Tharsis, el
+  título fotograma a fotograma (tachado, destachando, a la vista, tachando,
+  fundiéndose), un arrastre que gira y seis golpes de rueda que acercan sin
+  mover la página. `astro check` sin errores y lint limpio.
+- **No hecho, a propósito**: sin menú HUD (aún no hay notas de Marte), sin
+  botón de salir, nada enlaza a `/marte` (eso llegará con el Marte pequeño y
+  el viaje), sin respaldo si no hay WebGL2 (pantalla de estrellas vacía) y
+  sin nada para táctil (pendiente de decidir).
+
+## Marte en la portada y el vuelo (21/22-sep-2026)
+
+- **Lo que pidió el usuario**: "un 'marte' en pixel art … en la pagina
+  principal del blog, pero a la derecha, para que desde la tierra se viaje a
+  un lado o se viaje a otro … El vuelo seria similar al que se hace
+  tierra-luna". Eligió el tamaño B, "un poco más pequeña que la luna", el
+  enlace en la cabecera y "que haga el viaje".
+- **El Marte pequeño** (`public/zodk-marte.png`, de `generar-marte.py
+  --icono`):
+  - Mismo lienzo que la luna (56 px de arte, ×3; ×2 en móvil) con **radio
+    12 frente a 16** (tres cuartos).
+  - Sale de los datos de Marte con la misma cara y la misma luz que la
+    vista inicial de `/marte` (12,5° N, 80° O: Tharsis), para que el vuelo
+    acabe en el mismo planeta.
+  - Borde seco y halo cálido en tres escalones, como el de la luna.
+  - Se probaron radio 11 y 12 y otros ajustes del relieve; se quedó el de 12
+    con los ajustes del Marte grande.
+- **En la portada** (`index.astro`, `global.css`): `.hero-marte` arriba a la
+  derecha (`right: 3%`, `top: 5%`; primero al 5 %, simétrico al sol y la
+  luna, y el usuario lo quiso "un poco más a la derecha"), detrás del
+  planeta, de día y de noche. Encima, el enlace `.hero-marte-enlace` (círculo
+  de 168 px, como el de la luna).
+- **Cabecera** (`Header.astro`): `notas / eventos / moon-project /
+  mars-project`. En la portada, `mars-project` hace el mismo vuelo que pulsar
+  Marte (sin pasar a noche: Marte se ve siempre). En el resto de páginas es un
+  enlace normal a `/marte`.
+  - **Arreglo en el móvil**: con el enlace nuevo el menú no cabía; partía
+    "moon-" / "project" por el guion y en la portada se salía por la
+    izquierda (a 320 px). Ahora los enlaces no se cortan y la letra del menú
+    baja en pantallas estrechas (`clamp(0.72rem, 3.6vw, 1rem)`: 11,5 px a
+    320, 14 px a 390; desde ~440 px, los 16 de siempre). Comprobado a 320,
+    360, 390 y 430.
+- **El vuelo** (`viaje-luna.js`, generalizado): el mismo motor que el de la
+  Luna, con el destino, el icono y la imagen como parámetros (por defecto,
+  los de la Luna: su vuelo no cambia). Para Marte:
+  - Destino: la caja de `marte-quieto.png` en `/marte` (`--marte-caja`,
+    centrada, `dy` 0).
+  - La cámara gira hacia la derecha, Marte crece y se centra, la Tierra sale
+    por abajo ("encima", la variante elegida para la Luna) y las estrellas se
+    desplazan; en `/marte` quedan donde acabaron.
+  - Se apagan el título, las naves, las banderas y la cabecera, y también
+    el sol o la luna (no giran con la cámara). En el vuelo a la Luna, Marte
+    se apaga igual.
+  - En `index.astro`, `montarViaje` y `montarEnlaceCabecera` sirven para los
+    dos destinos (`LUNA` y `MARTE`); un solo vuelo a la vez.
+- **El aterrizaje sin saltos**:
+  - `public/marte/marte-quieto.png` (de `node
+    logo-files/generar-marte-quieto.mjs`) es la vista inicial pintada por
+    el propio motor (`marte.js` en Node), en píxeles de arte, 450 × 450.
+  - Es la imagen que crece en el vuelo y el fondo de `.marte-disco` en
+    `/marte` mientras carga el lienzo. Cuando el lienzo pinta, se oculta.
+  - Para que caigan en la misma rejilla, los dos motores usan ahora un lienzo
+    de arte de lado **par** (el centro del disco entre dos píxeles, como en
+    la imagen).
+  - Comprobado: el fotograma final del vuelo y `/marte` coinciden en sitio,
+    tamaño y estrellas. **Hay que rehacer `marte-quieto.png` si cambian los
+    datos de Marte** (y subir `MARTE_V`).
+- **Comprobado en Chrome sin ventana** (1440 × 900): vuelo pulsando Marte (de
+  noche) y con `mars-project` (de día), fotograma a fotograma; el vuelo a la
+  Luna sigue igual y llega a `/luna`. Sin errores en la consola. Móvil a 320
+  y 390. `astro check`, lint y `npm run build`, limpios; el panel del título
+  no llega a la web publicada.
+- **Sin hacer**: volver de `/marte` a la Tierra con el vuelo al revés, y
+  Luna → Marte.
+
+## El título: esquinas que se cierran (21-sep-2026) — QUITADO
+
+**Registro: el 22-sep-2026 el usuario pidió quitar el título ("Quitamos el
+titulo mars project con la animacion cuando llega al planeta").** Se borró
+todo del código (marcado, CSS y panel). Lo de abajo queda como historia.
+
+
+- **Lo que pidió el usuario** tras ver la primera versión: que al terminar el
+  vuelo Tierra-Marte o Luna-Marte salga el título "con los mismos o unos
+  recuadros similares a los que tiene 'el blog de hegoi marquez'", aguante
+  un par de segundos y se vaya, con "una animación en la que los cuadrados
+  se cierren, cerrando el título, dame opciones".
+- **Montado** (sustituye a la barra de censura sola de la primera versión):
+  - El título lleva las esquinas de `.hero-marco` de la portada (28 px,
+    1,5 px, blanco al 85 %). Texto y marco van en la misma caja, y el texto
+    se corta con el marco (`clip-path` con los mismos valores que el `inset`
+    del marco).
+  - Sin la sombra difusa del texto de la portada (el corte la dejaría en
+    seco); el velo oscuro de detrás entra y sale en 0,6 s.
+  - Entra cuando Marte ya está pintado (clase `.entra`, la pone
+    `marte.astro`). Cuando haya vuelo, entrará al aterrizar.
+  - La entrada es el mismo movimiento que la salida, al revés. A la vista,
+    2 s (2,1 en A-C).
+- **Opciones** (`data-cierre` en `.marte-titulo`; panel abajo a la izquierda
+  con A-D, que las cambia y las repite; solo sale con `npm run dev`):
+  - **A · al centro**: las cuatro esquinas se juntan en diagonal hasta un
+    cuadradito, como un blanco fijado, que se apaga. 3,6 s en total.
+  - **B · monitor viejo**: primero de arriba abajo hasta una raya y luego la
+    raya se cierra al centro. 3,6 s.
+  - **C · por los lados**: las esquinas izquierdas y derechas se juntan como
+    dos puertas. 3,6 s.
+  - **D · tachado y cierre**: se abre como A sobre el texto tachado y se
+    quita la barra (como en la portada); al irse, la barra tacha y las
+    esquinas se cierran sobre ella hasta un cuadradito negro. 4,5 s.
+- Comprobado fotograma a fotograma en Chrome sin ventana (las cuatro).
+  `astro check` y lint, limpios.
+- **Elegida la C** (usuario, 21-sep-2026): "me quedo con C aunque me
+  gustaría que lo pulieses un poco". Se quitaron A, B y D del código (quedan
+  descritas aquí).
+- **C pulida** (`data-cierre="c"`, 3,7 s), sin cambiar la idea:
+  - Antes, al cerrarse quedaban dos rayitas sueltas arriba y abajo (los
+    brazos de las esquinas) y se apagaban. Ahora, al juntarse las puertas,
+    sale una **costura** vertical entera (`.marte-titulo-costura`) que se
+    recoge hacia el centro.
+  - Al entrar, lo mismo al revés: la costura crece desde el centro y de ella
+    se abren las esquinas.
+  - Las puertas se cierran con arranque y frenada suaves (antes, acelerando
+    hasta el golpe). El velo entra y sale en 0,8 s, a la par que las puertas.
+  - Tiempos: costura 0,2 s; se abre en 0,6 s; 2,1 s abierto; se cierra en
+    0,55 s; la costura se recoge en 0,25 s.
+  - La C de antes sigue como `data-cierre="c0"` y en el panel ("C antes")
+    para comparar. Se quita con el visto bueno.
+- Comprobado fotograma a fotograma (las dos).
+- **Duda**: "mars project" (así está) o "mars-project" (como el enlace de
+  la cabecera).
 
 ## La idea (contada por el usuario, 21-sep-2026)
 
