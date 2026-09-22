@@ -4,7 +4,7 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (22-sep-2026: botón de volver commiteado; siguiente, el Marte pequeño de `/luna`)
+## Dónde estamos (22-sep-2026: Marte en `/luna`, vuelos Luna ↔ Marte y la Tierra pequeña de `/marte`, commiteados; siguiente, rehacer la Tierra pequeña)
 
 **Rama `mars-project`**, creada desde `main` el 21-sep-2026 y **subida a
 GitHub** el mismo día (`git push -u origin mars-project`). Nada fusionado ni
@@ -65,6 +65,25 @@ Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
    de volver"): el botón de `/luna`, abajo a la derecha, con el vuelo al
    revés. Ver "Volver a la Tierra" abajo.
 
+### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: Marte en /luna, vuelos Luna ↔ Marte y la Tierra pequeña de /marte"; el usuario: "commit hasta aqui")
+
+9. **Marte pequeño en `/luna` y vuelo Luna ↔ Marte** ("sí, monta el Marte de
+   /luna así", 22-sep-2026): arriba a la izquierda de `/luna`, con vuelo a
+   `/marte` y vuelta. Ver "Luna ↔ Marte" abajo.
+10. **Cómo se sale de `/marte`** (usuario, 22-sep-2026): una **Tierra pequeña
+    arriba a la derecha**, siempre, que se pulsa para ir a la Tierra con un
+    **vuelo hacia delante** (hacia ella); y **solo si se llegó desde la
+    Luna**, además el botón **"volver a la Luna"**. Sustituye al botón
+    "volver a la Tierra" del punto 8. Ver "La Tierra pequeña de /marte" abajo.
+11. **Cursor de `/marte`**: flecha normal todo el rato y mano cerrada solo al
+    pinchar para mover (usuario, 22-sep-2026: antes salía la mano abierta al
+    pasar por encima). `montarMano` pone `agarrando` desde que se pincha.
+12. **Arreglado: Marte en blanco al abrir `/marte` en segundo plano.** Quieto
+    no se repinta, y si la pestaña no se veía al pintar (p. ej. abierta en
+    otra pestaña), Chrome descartaba ese fotograma: no salía Marte hasta
+    tocarlo. Visto en el Chrome del usuario el 22-sep-2026. `marte-gl.js`
+    repinta al volver a verse (`visibilitychange`).
+
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
 - **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
@@ -82,14 +101,26 @@ Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
 
 ### Pendiente (sin orden cerrado; lo decide el usuario)
 
+- **Siguiente paso: rehacer la Tierra pequeña de `/marte`** (el usuario: "La
+  tierra se ve demasiado artificial (puede ser por la posicion? esta
+  demasiado escorada)"; aceptó la propuesta: "vamos con tu propuesta").
+  Diagnóstico, mirándola en su Chrome junto al Marte pequeño de la portada:
+  el halo es un aro gris azulado frío que sobre la Tierra oscura parece un
+  marco; no tiene luz ni sombra (es la Tierra de la portada reducida, plana);
+  está inclinada 20° al norte (la vista de la portada); y en su ventana (777
+  px de ancho) queda pegada al borde de Marte y metida en la esquina.
+  Propuesta: una Tierra pequeña propia, como el Marte pequeño: de pie, con la
+  luz de Marte (desde la izquierda, con su lado en sombra), halo azul más
+  suave y al 5 % en vez del 3 %; dos o tres variantes en la página para
+  comparar con la actual (una, con unas pocas luces de ciudades en el lado en
+  sombra, sin recomendarla).
 - **Orden que marcó el usuario** (22-sep-2026): commit (hecho, `1aa8175`),
-  **el botón de volver** de `/marte` a la Tierra (hecho y commiteado),
-  **un Marte pequeño en `/luna`** con el vuelo Luna → Marte
-  ("Vale. un marte pequeño si"; siguiente) y **el móvil, lo último**.
+  **el botón de volver** de `/marte` (hecho, `9db68d3`; luego cambiado por la
+  Tierra pequeña, sin commitear), **un Marte pequeño en `/luna`** con el
+  vuelo Luna → Marte (hecho, sin commitear) y **el móvil, lo último**
+  (siguiente).
 - **Duda abierta**: que Marte se vea de día y de noche se dio por bueno (era
   la recomendación; no lo dijo expresamente).
-- **Luna → Marte**: un Marte también en el cielo de `/luna` con el mismo
-  vuelo. Propuesto para después del de la Tierra, sin hacer.
 - **`/marte`**: sin menú HUD (aún no hay notas que enlazar).
 - **Decisiones abiertas** (detalle en "Decisiones pendientes"):
   - ¿Marte gira solo? Se recomendó que empiece quieto con botón play/pausa.
@@ -677,11 +708,93 @@ viajar, y la publicación (merge en `main`).
   el viaje), sin respaldo si no hay WebGL2 (pantalla de estrellas vacía) y
   sin nada para táctil (pendiente de decidir).
 
+## La Tierra pequeña de /marte (22-sep-2026)
+
+- **Lo que pidió el usuario**: "Si has ido desde la luna: aparece una
+  pequeña tierra y aparece el botón de volver a la luna. Si has ido desde la
+  tierra: aparece directamente una pequeña tierra y no hay botón ninguno."
+- **La Tierra pequeña** (`public/zodk-tierra.png` y `zodk-tierra-noche.png`,
+  de `node logo-files/generar-tierra-icono.mjs`): la Tierra de la portada
+  (`planeta-quieto*.png`) reducida al lienzo del Marte pequeño (56 px de
+  arte, ×3; radio 12), con halo azulado como el de la luna. Cada píxel es la
+  media de los de la Tierra grande. De día o de noche según el tema. Se
+  reconocen Europa y África.
+- **En `/marte`**: `.marte-tierra` y su enlace, **arriba a la derecha**
+  (`right: 3%`, `top: 5%`, como Marte en la portada; en el móvil top 6 %,
+  112 px), por encima de Marte (con zoom, Marte llena la pantalla). Aparece
+  con un fundido de 0,8 s al llegar, como el botón.
+  - Primero se puso abajo a la izquierda con el vuelo de vuelta al revés. El
+    usuario: "La tierra la quiero igual que el resto de esferas 'arriba a
+    derecha' por ejemplo y la animación sería ir hacia adelante, no hacia
+    detrás".
+- **Al pulsarla, vuelo hacia delante** (`irATierra` en `marte.astro`), como
+  los de ida:
+  - La cámara gira hacia la Tierra pequeña, que viene hacia el centro y
+    crece; Marte, tal como está, crece un poco y sale por abajo (el astro que
+    se deja atrás, como la Luna en el vuelo de `/luna` a Marte).
+  - La Tierra de la portada no es un disco centrado sino el horizonte de
+    abajo: `volarALuna` admite `destino` (un `.hero-planet` puesto en
+    `/marte` sin verse, para medir su caja) y, al final, mientras se acerca,
+    la cámara **sube la vista** lo justo (`inclina`) para que la Tierra baje
+    hasta su sitio. Una primera versión apuntaba la cámara desde el principio
+    a ese sitio (por debajo de la pantalla): la Tierra se iba pequeña hasta
+    el borde de abajo y crecía desde allí; no se leía como ir hacia ella.
+  - La imagen que vuela es `planeta-quieto*.png` (la del tema), que es el
+    fotograma con el que arranca la Tierra de la portada, puesta a ×2 en un
+    lienzo cuadrado de 1200 con el disco en medio (`VUELO_TIERRA`). Aterriza
+    encima de la de la portada.
+  - Si estaba acercado, antes Marte se aleja hasta ×1 sin girar
+    (`alejarAx1`, 1,6 s por cada e de zoom, curva de seno): el lienzo solo
+    pinta lo que cabe en la ventana y, con zoom, al salir por abajo asomaba
+    cortado en seco por arriba.
+- **El botón** solo dice ya "volver a la Luna" y solo sale si se llegó desde
+  `/luna` (`marte-desde`).
+- **Comprobado en Chrome sin ventana**: portada → Marte (Tierra pequeña, sin
+  botón) → Tierra; portada → Luna → Marte (Tierra pequeña y botón) → Luna;
+  Luna → Marte → Tierra pequeña → portada; y el vuelo a la Tierra fotograma
+  a fotograma sin zoom y desde ×3,5 girado. Sin errores.
+
+## Luna ↔ Marte (22-sep-2026)
+
+- **Marte en `/luna`**: el mismo Marte pequeño de la portada, arriba a la
+  izquierda (`.hero-marte--luna`: `left: 5%`, 3 % en el móvil), en el sitio
+  del sol y la luna de la portada; el menú de `/luna` va a la derecha y la
+  columna de países, a media altura a la izquierda. Detrás de la Luna.
+- **Vuelo Luna → Marte** (`volarAMarte` en `luna.astro`): `volarALuna` con
+  `VUELO_MARTE`, y como astro que se deja atrás, la Luna grande
+  (`.luna-disco`, con la cara que se esté viendo): crece un poco y sale por
+  abajo, como la Tierra en el vuelo a la Luna. Se apagan el mando, "volver a
+  la Tierra", las chapas, la columna, los relés, la Orion y el menú. La
+  selección de la Luna (países y cara) queda guardada.
+  - Para eso `viaje-luna.js` respeta ya la colocación del CSS del astro que se
+    deja atrás (antes, `translateX(-50%)` fijo, el de la Tierra).
+- **Vuelta a la Luna**: `/luna` deja `marte-desde = "luna"` en
+  `sessionStorage` justo antes de ir; `/marte` lo lee y lo borra al llegar.
+  Con él sale el botón "volver a la Luna" (con el icono de la cara visible):
+  el vuelo de vuelta acaba en `/luna`, Marte encoge hacia arriba a la
+  izquierda y la Luna vuelve desde abajo con la cara que se dejó (la lee de
+  `luna-estado`). Llegar de otro modo, o recargar `/marte`, no saca el botón.
+- En el vuelo de `/luna` a la Tierra, Marte se apaga (no gira con la cámara),
+  como el sol y la luna en la portada.
+- **Comprobado en Chrome sin ventana**: portada → Luna → cara oculta → Marte
+  → Luna (sigue en la cara oculta) → Tierra; fotograma a fotograma los dos
+  vuelos Luna ↔ Marte. Sin errores. El cursor de `/marte`: `auto` en
+  reposo, `grabbing` al pinchar, `auto` al soltar. `astro check` y lint
+  limpios.
+- **Visto de paso, sin tocar**: en el vuelo de `/luna` a la Tierra, el menú
+  de arriba a la derecha (alunizajes / relés / orion) no se apaga (ya pasaba
+  antes). En el de Marte sí se apaga.
+
 ## Volver a la Tierra (22-sep-2026)
 
-- **El botón**: el mismo de `/luna` (clase `luna-volver`: "volver a la
-  Tierra" con la Tierra pequeña y esquinas doradas, abajo a la derecha). Sale
-  cuando el script está listo, también sin WebGL2.
+**Ya no hay botón "volver a la Tierra" en `/marte`**: se vuelve pulsando la
+Tierra pequeña (ver arriba). El vuelo es el mismo que se describe aquí.
+
+
+- **El botón** (primera versión, commit `9db68d3`): el mismo de `/luna`
+  (clase `luna-volver`: "volver a la Tierra" con la Tierra pequeña y esquinas
+  doradas, abajo a la derecha). Hoy ese botón solo sale para volver a la
+  Luna.
 - **El vuelo**: el de la portada al revés (`volarALuna` con `inverso` y
   `VUELO_MARTE`), como el de `/luna`: se ponen en `/marte` un Marte pequeño y
   una Tierra con las clases de la portada para medir dónde acaban. Marte se

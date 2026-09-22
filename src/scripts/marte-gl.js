@@ -644,6 +644,11 @@ export async function montarMarteGL(canvas, {
   if (ajusta()) { pinta(); planifica(); }
   const perdido = (e) => { e.preventDefault(); vivo = false; };
   canvas.addEventListener("webglcontextlost", perdido);
+  // Quieto no se repinta, y si la pestaña está en segundo plano al pintar (p.
+  // ej. /marte abierta en otra pestaña), Chrome descarta ese fotograma: Marte
+  // no salía hasta tocarlo (22-sep-2026). Al volver a verse, se repinta.
+  const alVerse = () => { if (document.visibilityState === "visible") pide(); };
+  document.addEventListener("visibilitychange", alVerse);
 
   return {
     vista: () => {
@@ -698,6 +703,7 @@ export async function montarMarteGL(canvas, {
       if (raf) cancelAnimationFrame(raf);
       observa.disconnect();
       canvas.removeEventListener("webglcontextlost", perdido);
+      document.removeEventListener("visibilitychange", alVerse);
     },
   };
 }

@@ -417,9 +417,10 @@ export async function montarMarte(canvas, {
 // - Tras un arrastre de verdad se anula el clic que el navegador manda al
 //   soltar, para que no pulse nada de lo que quede debajo.
 // `zona` es el elemento donde se puede agarrar (el hero entero, no solo el
-// disco). Pone en `zona` la clase `arrastrable` siempre y `agarrando` mientras
-// se arrastra; el cursor lo pone el CSS de la página. Devuelve la función que
-// lo desmonta.
+// disco). Pone en `zona` la clase `arrastrable` siempre y `agarrando` desde
+// que se pincha hasta que se suelta; el cursor lo pone el CSS de la página. En
+// /marte, flecha normal y mano cerrada solo con el botón pulsado (usuario,
+// 22-sep-2026). Devuelve la función que lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ mueve: (dx: number, dy: number) => void, suelta: () => void }} marte
@@ -431,9 +432,9 @@ export function montarMano(zona, marte) {
   zona.classList.add("arrastrable");
   const terminar = () => {
     if (!pulsado) return;
+    zona.classList.remove("agarrando");
     if (pulsado.activo) {
       if (zona.hasPointerCapture(pulsado.id)) zona.releasePointerCapture(pulsado.id);
-      zona.classList.remove("agarrando");
       arrastrado = true;
       marte.suelta();
     }
@@ -444,6 +445,7 @@ export function montarMano(zona, marte) {
     e.preventDefault();                           // sin selección de texto ni arrastrar imágenes
     pulsado = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false };
     arrastrado = false;
+    zona.classList.add("agarrando");              // la mano cerrada, nada más pinchar
   };
   const mueve = (e) => {
     if (!pulsado || e.pointerId !== pulsado.id) return;

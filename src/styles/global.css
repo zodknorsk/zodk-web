@@ -324,6 +324,9 @@ html.dark .hero-luna-enlace { display: block; }
   cursor: pointer;
 }
 .hero-marte-enlace:focus-visible { outline: 2px dashed #ffb07a; outline-offset: -40px; }
+/* En /luna, Marte arriba a la izquierda (el menú va a la derecha), en el sitio
+   del sol y la luna de la portada: se pulsa para el vuelo Luna → Marte. */
+.hero-marte--luna { right: auto; left: 5%; }
 
 /* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
    resolución (index.astro), que crece desde la luna del hero hasta donde queda
@@ -347,8 +350,11 @@ html.dark .hero-luna-enlace { display: block; }
   background: url(/zodk-luna-fases.png) no-repeat;
   background-size: 3000% 100%;
 }
-/* y la de Marte, en el vuelo a /marte */
+/* y la de Marte, en el vuelo a /marte, y la de la Tierra, en el de /marte a
+   la Tierra */
 .viaje-icono-marte { background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%; }
+.viaje-icono-tierra { background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%; }
+html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
 
 /* --- La Luna (/luna) --------------------------------------------------------
    Mismo fondo que la portada. El disco, centrado; --luna-tam lo usa también el
@@ -946,6 +952,13 @@ html.dark .hero-luna-enlace { display: block; }
   background: url(/planeta/planeta-quieto-noche.png) center / contain no-repeat;
   image-rendering: pixelated;
 }
+/* En /marte, si se llegó desde /luna: "volver a la Luna", con la Luna. */
+.luna-volver-luna {
+  width: 26px;
+  height: 26px;
+  background: url(/luna/icono-cara-visible.png) center / contain no-repeat;
+  image-rendering: pixelated;
+}
 
 /* Menú del Proyecto Luna (arriba a la derecha): mismas esquinas doradas que
    "volver a la Tierra", en columna y más pequeño, para no competir con la
@@ -1031,8 +1044,38 @@ html:has(.marte-hero) { overflow: hidden; }
   height: var(--marte-disco);
   visibility: hidden;
 }
-/* La mano: se agarra en todo el hero (montarMano pone las clases). */
-.marte-hero.arrastrable { cursor: grab; }
+/* La Tierra pequeña de /marte (usuario, 22-sep-2026): se pulsa para ir a la
+   Tierra con un vuelo hacia delante, hacia ella. Pixel art de
+   generar-tierra-icono.mjs (la Tierra de la portada reducida, de día o de
+   noche según el tema), en el lienzo del Marte pequeño (56 px de arte, x3; x2
+   en el móvil). Arriba a la derecha, "igual que el resto de esferas" (como
+   Marte en la portada). Aparece con un fundido al llegar, como el botón de
+   volver a la Luna. */
+.marte-tierra, .marte-tierra-enlace {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+}
+.marte-tierra {
+  z-index: 2;                 /* delante de Marte: con zoom, Marte llena la pantalla */
+  pointer-events: none;
+  background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
+.marte-tierra-enlace { z-index: 3; border-radius: 50%; cursor: pointer; }
+.marte-tierra-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
+@keyframes marte-aparece { from { opacity: 0; } }
+.marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
+@media (max-width: 640px) {
+  .marte-tierra, .marte-tierra-enlace { top: 6%; width: 112px; height: 112px; }
+}
+
+/* La mano: se agarra en todo el hero (montarMano pone las clases). Flecha
+   normal todo el rato y mano cerrada solo al pinchar para mover (usuario,
+   22-sep-2026: antes salía la mano abierta al pasar por encima). */
 .marte-hero.agarrando, .marte-hero.agarrando * { cursor: grabbing !important; user-select: none; }
 
 
@@ -1639,6 +1682,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
   .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-marte, .hero-marte-enlace { right: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-marte--luna { left: 3%; }
   .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }

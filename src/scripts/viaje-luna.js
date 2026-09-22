@@ -49,6 +49,15 @@ export const VUELO_MARTE = {
   tam: "var(--marte-caja)", dy: "0px", imgLado: 450, imgDisco: 438.8,
   iconoDisco: 24 / 56, claseIcono: "viaje-icono-marte",
 };
+// El vuelo de /marte a la Tierra (hacia delante, desde la Tierra pequeña):
+// acaba en la Tierra de la portada, que no es un disco centrado sino el
+// horizonte de abajo; su caja se mide en un .hero-planet (`destino`). La
+// imagen es planeta-quieto*.png (600 x 585, el disco la llena de alto) puesta
+// en un lienzo cuadrado de 1200 con el disco en medio (ver /marte); el icono,
+// radio 12 en 56.
+export const VUELO_TIERRA = {
+  imgLado: 1200, imgDisco: 1170, iconoDisco: 24 / 56, claseIcono: "viaje-icono-tierra",
+};
 
 function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
 function suave(t) { return t * t * (3 - 2 * t); }
@@ -93,7 +102,9 @@ export function faseLunaHoy() {
  * cuánto sube su centro respecto al de la ventana (CSS); `imgLado` e
  * `imgDisco`, el lado de la imagen y el diámetro de su disco en px de arte;
  * `iconoDisco`, el diámetro del disco en el icono (fracción de su lado), y
- * `claseIcono`, la clase de su copia en la capa del vuelo.
+ * `claseIcono`, la clase de su copia en la capa del vuelo. `destino`, en vez
+ * de `tam` y `dy`: un elemento con la caja de la imagen en la otra página (su
+ * centro es el del disco); lo usa el vuelo a la Tierra de la portada.
  * `alejar` (solo la vuelta desde /marte, con `inverso`): Marte empieza con el
  * zoom `zoom` en su lienzo; primero se aleja en él (`ponZoom`) y al llegar a
  * x1 se le hace la foto (`foto`, que además esconde el lienzo) y sigue el
@@ -105,7 +116,7 @@ export function faseLunaHoy() {
  *   tierra?: keyof typeof TIERRAS, pixeles?: keyof typeof PIXELES,
  *   velocidad?: number, inverso?: boolean, iconoVisible?: boolean,
  *   tam?: string, dy?: string, imgLado?: number, imgDisco?: number,
- *   iconoDisco?: number, claseIcono?: string,
+ *   iconoDisco?: number, claseIcono?: string, destino?: HTMLElement | null,
  *   alejar?: { zoom: number, ponZoom: (z: number) => void, foto: () => HTMLCanvasElement } | null }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
@@ -114,19 +125,35 @@ export function volarALuna({
   duracion = 6000, tierra = "encima", pixeles = "directo", velocidad = 1,
   inverso = false, iconoVisible = true,
   tam = "var(--luna-tam)", dy = "var(--luna-dy)", imgLado = 600, imgDisco = 585,
-  iconoDisco = ICONO_DISCO, claseIcono = "viaje-icono", alejar = null,
+  iconoDisco = ICONO_DISCO, claseIcono = "viaje-icono", alejar = null, destino = null,
 }) {
   const CARA_DISCO = imgDisco / imgLado;
   // Tamaño y sitio del astro en la otra página (en /luna, --luna-tam y
   // --luna-dy: cuánto sube respecto al centro), medidos con una sonda. La
   // cámara acaba mirando a ese punto, así que CY es el centro del disco, no el
   // de la ventana.
-  const sonda = document.createElement("div");
-  sonda.style.cssText = `position:fixed;visibility:hidden;top:0;width:${tam};margin-top:${dy}`;
-  document.body.append(sonda);
-  const rs = sonda.getBoundingClientRect();
-  sonda.remove();
-  const W = innerWidth, H = innerHeight, CX = W / 2, CY = H / 2 + rs.top;
+  const W = innerWidth, H = innerHeight;
+  let rs, CX, CY, inclina = 0;
+  if (destino) {
+    // La Tierra de la portada acaba abajo (su centro, por debajo de la
+    // pantalla). La cámara llega mirándola de frente en el centro y, al final,
+    // mientras se acerca, sube la vista lo justo (`inclina`) para que la
+    // Tierra baje hasta su sitio: como quien llega y se queda viendo el
+    // horizonte. Si la cámara apuntara desde el principio a ese sitio, la
+    // Tierra se iría pequeña hasta el borde de abajo y crecería desde allí.
+    rs = destino.getBoundingClientRect();
+    CX = rs.left + rs.width / 2;
+    CY = H / 2;
+    inclina = Math.atan((rs.top + rs.height / 2 - CY) / (Math.max(W, H) * 0.9));
+  } else {
+    const sonda = document.createElement("div");
+    sonda.style.cssText = `position:fixed;visibility:hidden;top:0;width:${tam};margin-top:${dy}`;
+    document.body.append(sonda);
+    rs = sonda.getBoundingClientRect();
+    sonda.remove();
+    CX = W / 2;
+    CY = H / 2 + rs.top;
+  }
   const F = Math.max(W, H) * 0.9;                    // focal en px
   const ri = icono.getBoundingClientRect();
   const m0 = [ri.left + ri.width / 2, ri.top + ri.height / 2];
@@ -137,17 +164,19 @@ export function volarALuna({
   const zL = (2 * F) / dLuna0;
   const luna = [((m0[0] - CX) / F) * zL, ((m0[1] - CY) / F) * zL, zL];
   const dir = unit(luna);
-  const fin = resta(luna, escala(dir, (2 * F) / dLuna1));   // donde acaba la cámara
+  const fin = resta(luna, escala(dir, (2 * F) / (dLuna1 * Math.cos(inclina))));   // donde acaba la cámara
   const ejeGiro = unit([-dir[1], dir[0], 0]);             // z × dir
   const angGiro = Math.acos(clamp01(dir[2]));
   const camara = (t) => {
     const a = angGiro * inOutSine(clamp01(t / GIRO_HASTA));
-    return {
-      pos: escala(fin, inOutCubic(t)),
-      der: rota([1, 0, 0], ejeGiro, a),
-      aba: rota([0, 1, 0], ejeGiro, a),
-      del: rota([0, 0, 1], ejeGiro, a),
-    };
+    const der = rota([1, 0, 0], ejeGiro, a);
+    let aba = rota([0, 1, 0], ejeGiro, a), del = rota([0, 0, 1], ejeGiro, a);
+    if (inclina) {                                   // subir la vista, después del giro
+      const b = inclina * inOutSine(clamp01((t - GIRO_HASTA) / (1 - GIRO_HASTA)));
+      aba = rota(aba, der, b);
+      del = rota(del, der, b);
+    }
+    return { pos: escala(fin, inOutCubic(t)), der, aba, del };
   };
 
   // --- Capa con la luna
@@ -241,8 +270,12 @@ export function volarALuna({
   };
 
   // Tierra: transform y opacidad según la variante. `ix, iy`: desplazamiento
-  // de las estrellas por el giro.
-  const TIERRA_T0 = getComputedStyle(planeta).transform === "none" ? "" : "translateX(-50%)";
+  // de las estrellas por el giro. "La Tierra" es el astro que se deja atrás:
+  // la Tierra de la portada, o la Luna de /luna en el vuelo a Marte; se
+  // respeta la colocación de su CSS (translateX(-50%) la Tierra,
+  // translate(-50%, -50%) la Luna).
+  const T0 = getComputedStyle(planeta).transform;
+  const TIERRA_T0 = T0 === "none" ? "" : T0;
   const rp = planeta.getBoundingClientRect();
   // "encima": crece hasta ENCIMA_K y baja lo justo para que su borde de arriba
   // (con margen para la aurora) acabe por debajo de la pantalla.
