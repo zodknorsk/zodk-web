@@ -4,12 +4,30 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (22-sep-2026, fin de sesión: todo commiteado y subido)
+## Dónde estamos (22-sep-2026, fin de sesión: nombres de lugares, commiteado)
 
-**Rama `mars-project`** (creada desde `main` el 21-sep-2026), **commiteada y
-subida a GitHub** al cerrar la sesión del 22-sep-2026 (el usuario: "Queda
-perfecto. commit push aqui"). **Nada fusionado ni publicado**: `main` y
-zodk.eu siguen sin Marte.
+**Rama `mars-project`** (creada desde `main` el 21-sep-2026). Lo de la sesión
+anterior está **commiteado y subido** ("Queda perfecto. commit push aqui").
+**Nada fusionado ni publicado**: `main` y zodk.eu siguen sin Marte.
+
+**Nombres de lugares que salen al acercarse** (commiteado y subido al cerrar
+la sesión del 22-sep-2026, aquí en `mars-project` y en `main` de la bóveda),
+que
+el usuario ha puesto por delante de lo demás ("me gustaría darte prioridad a
+una … podemos empezar por el monte olympus? Dame ejemplos y opciones").
+Decidido cómo se ven y hecha la primera tanda de **49 nombres** en el banco
+`prototipo-marte/nombres.html`, con `logo-files/generar-nombres.py` →
+`public/marte/marte-nombres.json`, y en el motor `proyecta()` y `pxGrado()`
+(`marte-gl.js`). **Falta llevarlo a `/marte`.** La página no se ha tocado.
+
+**En la bóveda** (`boveda-osint`, repositorio aparte): creadas las notas de
+las misiones en `02 - Temas/mars-project/Soft Landings/` (13 notas y un
+índice, `publicar: false`), que el usuario irá completando, y
+`Hard Landings/` para las que no llegaron enteras (de momento, Mars 2). Son
+las que llevarán chapa con ficha en `/marte`.
+
+**Chapas de prueba en el banco**: Mars 3 (se posó) y Mars 2 (se estrelló),
+esta apagada. Solo esas dos, a petición del usuario.
 
 Verlo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte, arriba a
 la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
@@ -90,7 +108,15 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 
 ### Pendiente (por orden)
 
-1. **Móvil y táctil** (el usuario: "Móvil lo último"; es lo siguiente). Nada
+0. **Llevar los nombres a `/marte`** (lo siguiente; en el banco están hechos y
+   aprobados, ver "Nombres de lugares"). Es mover la capa de
+   `prototipo-marte/nombres.html` a la página: el marcado y el CSS a
+   `marte.astro` y `global.css`, y la colocación a un módulo (p. ej.
+   `src/scripts/marte-nombres.js`) con un `montarNombres(hero, marte)`. Con
+   ello: mirar el consumo en Zen (son ~50 elementos que se recolocan en cada
+   fotograma del zoom) y decidir qué pasa en táctil, donde no hay ratón que
+   pasar por encima de una chapa.
+1. **Móvil y táctil** (el usuario: "Móvil lo último"). Nada
    hecho aún en `/marte` para el dedo:
    - Girar con un dedo y hacer zoom pellizcando (hoy, en táctil, ni gira ni
      acerca).
@@ -100,9 +126,11 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
    - Probar los vuelos en un móvil de verdad (y el consumo).
 2. **Decisión abierta: ¿Marte gira solo?** Se recomendó que empiece quieto con
    un botón play/pausa como el de la Tierra (ver "Decisiones pendientes").
-3. **Chapas de las misiones** (Curiosity, Perseverance…): aplazadas hasta que
-   se escriban sus notas en la bóveda. Después, quizá un menú HUD en `/marte`
-   como el de `/luna`.
+3. **Chapas de las misiones de verdad**: en el banco solo están Mars 3 y Mars
+   2, de prueba. Cuando el usuario publique una nota (`publicar: true`), esa
+   misión pasa a un archivo de datos como `src/data/alunizajes.ts`, con su
+   sitio, su bandera, si llegó entera y el enlace a la nota. Después, quizá un
+   menú HUD en `/marte` como el de `/luna`.
 4. **Visto y sin tocar** (preguntar antes):
    - En el vuelo de `/luna` a la Tierra, el menú de arriba a la derecha
      (alunizajes / relés / orion) no se apaga (ya pasaba antes).
@@ -255,6 +283,268 @@ viajar, y la publicación (merge en `main`).
    - Pixel art del icono: sacado de los datos de Marte (misma paleta), para
      que el vuelo aterrice en el mismo planeta. Antes de decidir tamaño, se
      le enseña una captura de la portada con Marte puesto.
+
+## Nombres de lugares (22-sep-2026, en curso)
+
+- **Lo que pidió el usuario**: "según se va acercando (ampliando los x)
+  fuesen saliendo nombres de lugares, etc. por ejemplo, podemos empezar por
+  el monte olympus? Dame ejemplos y opciones de cómo montar esto".
+- **Datos**: los nombres oficiales de la UAI (Gazetteer of Planetary
+  Nomenclature, USGS; dominio público). Se bajan en un zip
+  (`https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MARS_nomenclature_center_pts.zip`,
+  5 MB; el `.dbf` trae nombre, centro, diámetro en km, caja lat/lon, tipo y
+  origen del nombre). **2052 nombres** en Marte: 1240 cráteres, 157 valles, 62
+  montes… Por tamaño: 83 de más de 1000 km (Arabia Terra, Valles Marineris,
+  Utopia Planitia…), 235 de 300-1000, 323 de 100-300, 482 de 30-100, 802 de
+  menos de 30 y 127 nombres clásicos de albedo sin tamaño (Tharsis, Ophir…).
+- **Para el ejemplo**, dos nombres:
+  - **Olympus Mons** (18,65° N, 226,20° E; 610 km), sale a **×2**.
+  - **Olympus Paterae**, su caldera (18,32° N, 226,81° E; 85 km; nombre
+    oficial desde 2017), sale a **×4,5**. Sirve para ver el "según acercas,
+    salen más nombres".
+  - Cerca, para más adelante: Olympus Rupes (el escarpe), Lycus Sulci (la
+    aureola del noroeste), los cráteres Karzok y Pangboche (15 y 10 km; de
+    ahí salieron meteoritos que han caído en la Tierra) y los tres Tharsis
+    Montes.
+- **Banco**: `prototipo-marte/nombres.html` (mismo servidor que `zoom.html`).
+  Botones de estilo (A, B, C) y de "Olympus Mons ×1/×2/×4/×6". Por la URL:
+  `?estilo=a|b|c`, `?vista=lat0,lon0,zoom` y `?ficha=N` (deja abierta la
+  ficha del nombre N, para capturas).
+- **Cómo funciona** (igual en los tres estilos):
+  - Una **capa HTML encima del lienzo**, con el origen en el centro del
+    disco. Tras cada fotograma del lienzo (`alPintar`) cada nombre se coloca
+    con `marte.proyecta(lat, lon)`, nuevo en `marte-gl.js`: píxeles CSS desde
+    el centro del disco y `z` (1 de frente, 0 en el borde). Quieto no se
+    repinta el lienzo y los nombres tampoco se mueven: no gasta nada.
+  - Cada nombre tiene su **zoom de aparición** (`desde`), con un 6 % de
+    margen al alejar para que no parpadee en el umbral. Entra y sale con un
+    fundido.
+  - Cerca del borde del disco se funde (`z` de 0,32 a 0,12) y por detrás
+    no está.
+  - El texto no crece con el zoom (como estaba decidido para las chapas).
+  - El texto es el del lema de la portada: IBM Plex Mono 600, mayúsculas
+    espaciadas, blanco con contorno negro de 1 px.
+- **Los tres estilos**:
+  - **A · rótulo de atlas**: solo el nombre, como en un mapa impreso. Los
+    lugares grandes, encima de su borde norte; los de dentro, a la derecha.
+    Lo más limpio y lo que mejor aguantará muchos nombres a la vez.
+  - **B · visor**: las cuatro esquinas del marco del título de la portada
+    alrededor del lugar, ceñidas a su caja real en pantalla (crecen al
+    acercarse), y el nombre bajo la esquina de abajo a la izquierda. Al
+    aparecer, las esquinas se cierran desde fuera, como al fijar un blanco.
+    La caldera sale con su marco pequeño dentro del grande.
+  - **C · chapa y ficha**: un punto dorado en el sitio, una línea y el nombre
+    en una chapa; al pasar el ratón, la ficha dorada de las naves y de
+    `/luna` (tipo, altura, diámetro, origen del nombre). Los grandes van
+    arriba a la izquierda y los de dentro abajo a la derecha, para no
+    pisarse.
+- **Comprobado en Chrome sin ventana** (1440 × 900): los tres estilos a ×2,
+  ×4 y ×6 sobre el Olympus Mons; desde ×1 con ocho golpes de rueda salen los
+  dos nombres a su zoom; la ficha de C. Sin errores en la consola.
+- **Decisiones pendientes** (del usuario):
+  1. **Estilo**: ya decidido (ver arriba: B para las formas claras, rótulo
+     para las regiones, chapa para lo que tenga entrada en el blog). Queda
+     **a qué zoom entran los rótulos de región**: el usuario preguntó si se
+     recomiendan ya a ×1. Recomendado: **a ×1 no** (el planeta limpio, que es
+     lo que quiere verse al llegar, y así los nombres "salen al acercarse",
+     que era la idea); que entren en cuanto se toca la rueda, hacia **×1,2**,
+     y se vayan hacia ×3,5. Es un número por nombre.
+  2. **Idioma** (el usuario, 22-sep-2026: "¿nombres en español, inglés o
+     unificamos?"). Recomendado: **unificar en los oficiales de la UAI**, que
+     no son ingleses sino latinos ("Olympus Mons", "Amazonis Planitia"): son
+     los de todos los mapas, y la mitad no tiene versión en castellano (Nili
+     Fossae, Syrtis Major, Tharsis), así que traducir solo unos pocos quedaría
+     a medias. El castellano y el significado, en la ficha ("Monte Olimpo";
+     "Nix Olympica, las nieves del Olimpo").
+  3. **Qué nombres**: los 2052 no (la mitad son cráteres pequeños). Propuesta:
+     una lista elegida a mano, por tamaño y por interés (montes, valles,
+     llanuras, cuencas, los sitios de las misiones), con el zoom de aparición
+     sacado del tamaño (que el lugar mida unos 90 px en pantalla) y
+     retocable uno a uno. Algo así como ×1: las regiones enormes (Tharsis,
+     Valles Marineris, Utopia, Hellas); ×2: los grandes volcanes y cañones;
+     ×4: cráteres de más de 100 km y los sitios de las misiones (Gale,
+     Jezero); ×6: calderas y detalles.
+- **El usuario, entre B y C** (22-sep-2026): "B me gusta mucho para cosas
+  como montañas y cráteres, pero por ejemplo para grandes planicies?".
+  - Añadida al banco **Amazonis Planitia** (25,75° N, 197,09° E; 2809 km),
+    al oeste del Olympus Mons: en el banco sale de **×1 a ×3,5** (`hasta`: al acercarse
+    mucho se va, como los nombres de región en los mapas).
+  - Fila "planicie" en el banco: **"rótulo de región"** (letras muy
+    espaciadas, más finas y algo transparentes, en dos líneas, en medio de la
+    región; igual en los tres estilos) y **"con marco (B)"**, para comparar
+    (`?planicie=marco`).
+  - Visto a ×2: con marco, las esquinas encierran media cara del planeta sin
+    señalar nada concreto y llegan hasta el Olympus; a más zoom la caja es más
+    grande que la pantalla. El rótulo de región se lee como "esto es una zona".
+  - Propuesta: **según el tipo de lugar**. Con forma clara (montes, cráteres,
+    calderas): el marco de B. Sin borde (planicies, tierras, mesetas,
+    nombres de albedo): el rótulo de región. Largos y estrechos (valles,
+    fosas): por ver cuando se llegue a Valles Marineris. **C, para las
+    misiones** (un punto exacto: Curiosity, Perseverance…), que ya estaban
+    pendientes como chapas, y su ficha podría abrirse también al pasar por
+    un marco de B.
+- **Decidido por el usuario (22-sep-2026), cada estilo en su sitio**:
+  - **Formas claras (montes, cráteres, calderas): el visor B**, "pero
+    ajustar bien, por ejemplo el monte olympus no está del todo ajustado".
+  - **Planicies, mesetas y demás: el rótulo de región.**
+  - **Chapa con ficha (C): los sitios que tengan una entrada en el blog.** Es
+    la misma regla que las chapas de bandera de la portada (solo países con
+    artículos) y las de `/luna`: la chapa quiere decir "aquí hay algo que
+    leer". Los demás lugares llevan solo el nombre. Las misiones tendrán
+    chapa cuando se escriban sus notas.
+- **El marco de B, ajustado** (22-sep-2026): antes era la caja exacta de
+  latitud y longitud del catálogo, que en el Olympus Mons abarca el volcán
+  entero (incluido el pie de las laderas) y es más ancha que alta, así que
+  cortaba el escudo y se veía torcida. Ahora el marco es **cuadrado** (el
+  lado mayor de la caja) con un **6 % de aire por fuera** (`MARGEN`),
+  centrado en el lugar: se lee como una mira puesta encima y no como un
+  recorte. Comprobado a ×4 y ×6. En el banco, `?cuadrado=0` enseña el de
+  antes y `?margen=N` cambia el aire. Si algún lugar no queda fino, su caja
+  son cuatro números a mano en los datos.
+- **Confirmado por el usuario (22-sep-2026)**: nombres latinos (los oficiales
+  de la UAI); los rótulos de región entran al empezar a acercarse, no a ×1
+  ("cuando haya bastantes nombres te iré diciendo"); chapa con ficha para lo
+  que tenga entrada en el blog ("de momento no he escrito nada, pero
+  llevarán ficha"). Sobre el marco cuadrado: "se ve mejor…, aunque parece
+  que por la derecha sigue teniendo más espacio. No me molesta, pero para
+  futuros sí que quiero que **sea ajustado a la geografía**".
+  - Cómo hacerlo bien (pendiente): la caja del catálogo es un rectángulo de
+    latitud y longitud, no la forma del lugar. Lo fino es **sacar el borde
+    del relieve MOLA que ya tenemos** (en el generador, al hacer las
+    teselas): para cada nombre, partir de su caja oficial y encogerla hasta
+    donde el relieve deja de subir, y guardar esa caja en el archivo de
+    nombres. Así el marco se ceñiría al volcán, al cráter o a la fosa de
+    verdad.
+- **Primera tanda de nombres: HECHA** (22-sep-2026; el usuario: "Ok me parece
+  bien, no conozco marte, me fío, si crees que hay que meter más, mete"). Son
+  **49**: 18 rótulos de región y 31 con visor.
+  - **`logo-files/generar-nombres.py`** lee el catálogo (el `.dbf` va en
+    `marte-fuentes/`, sin trackear; el `curl` está en su docstring) y escribe
+    **`public/marte/marte-nombres.json`** (14 KB, sí se commitea) con el
+    centro, el diámetro, la caja y, por nombre, `clase` (region o visor), `px`
+    y `menor`. La lista elegida a mano está arriba del script: para añadir o
+    quitar un nombre se toca ahí y se vuelve a lanzar.
+  - **Cuándo sale cada uno**: no por un zoom fijo, sino por **cuánto mide el
+    lugar en la pantalla** (`px`), que se calcula con su tamaño real, no con
+    la caja proyectada (cerca del borde la caja se aplasta y el nombre
+    parpadearía al girar). Por defecto 90 px; los pequeños pero interesantes
+    llevan menos: Gale y Gusev 55, la caldera del Olympus 34, Korolev 34,
+    Jezero 20. Así el mismo archivo vale para cualquier tamaño de ventana.
+  - **A ×1 no sale ningún nombre** (usuario, 22-sep-2026: "en x1 no me
+    gustaría que apareciese nada que en el futuro no sean misiones
+    marcianas"). Es una regla dura del banco: por debajo de ×1,2 no se pinta
+    ningún rótulo ni marco. Las chapas de las misiones sí se ven a ×1.
+  - **Las zonas** salen a partir de ×1,2 (las grandes) o de su umbral (las
+    medianas) y se van cuando ya no caben (más de 1,6 pantallas de ancho).
+  - **Las zonas grandes NO llevan visor** (usuario, 22-sep-2026: "grandes
+    áreas NO VAN con visor, por ejemplo noctis labyrinthus o kasei valles").
+    Pasaron de visor a rótulo, con umbral para que no salgan a ×1,2 como las
+    grandes: Kasei Valles (260 px), Noctis Labyrinthus (220), Coprates Chasma
+    (220), Ma'adim Vallis (220), Melas Chasma y Nili Fossae (200). El visor
+    queda para lo que tiene una forma clara que enmarcar: montes, cráteres y
+    calderas.
+  - **Los rótulos alargados van en una línea** (un valle, un cañón) y los de
+    zonas más o menos redondas, en dos, como en los mapas. Lo decide el
+    generador por la proporción de la caja (`linea`).
+  - **Los que se pisan**: el archivo va ordenado de mayor a menor y, si dos
+    rótulos se solapan en pantalla, se queda el del lugar más grande; el otro
+    vuelve en cuanto hay sitio. `?sin-orden` en el banco lo apaga para ver el
+    lío que sería sin eso.
+  - **Tharsis** no está en el catálogo como zona (es un nombre de albedo, un
+    punto suelto): su caja va a mano en el generador. **Vastitas Borealis** se
+    quitó: su centro es prácticamente el polo y el rótulo caía en el borde.
+  - **Comprobado en Chrome sin ventana**: a ×1,4 salen 12 nombres, a ×2 salen
+    13 con el Olympus Mons ya enmarcado, y a ×6 sobre Gale salen Gale, Aeolis
+    Mons (el monte Sharp, dentro), Herschel y Elysium Planitia.
+  - El banco ya no tiene los estilos A y C: la decisión está tomada. Quedan en
+    el historial de Git (y descritos aquí) por si hiciera falta.
+- **La tanda, por si hay que revisarla**: unos 30 eran la propuesta y se
+  quedaron 49, con el zoom de aparición sacado del tamaño en pantalla.
+  - **Rótulo de región** (entran hacia ×1,2): Tharsis, Valles Marineris,
+    Amazonis Planitia, Utopia Planitia, Elysium Planitia, Acidalia Planitia,
+    Chryse Planitia, Isidis Planitia, Hellas Planitia, Argyre Planitia,
+    Arabia Terra, Noachis Terra, Syrtis Major Planum, Vastitas Borealis y los
+    dos casquetes (Planum Boreum, Planum Australe).
+  - **Visor, hacia ×2**: Olympus Mons (610 km), Alba Mons (548), Arsia (470),
+    Ascraeus (456), Pavonis (367), Elysium Mons (401), Noctis Labyrinthus
+    (1190), Kasei Valles (1580), Melas Chasma (564), Chasma Boreale (460),
+    Schiaparelli (459), Huygens (467), Antoniadi (401), Cassini (408), Nili
+    Fossae (728).
+  - **Visor, hacia ×4**: Herschel (298), Newton (300), Apollinaris Mons
+    (275), Medusae Fossae (279), Lyot (222), Lowell (202), Ma'adim Vallis
+    (913, estrecho), Gale (154), Gusev (158), Holden (153).
+  - **Visor, hacia ×6** (los detalles dentro de otros): Olympus Paterae (85),
+    Aeolis Mons (89, el monte Sharp dentro de Gale), Jezero (48), Korolev
+    (81), Hecates Tholus (182), Pangboche y Karzok (10 y 15) en el Olympus.
+  - **Chapas con ficha**: las notas ya están creadas en la bóveda
+    (`02 - Temas/mars-project/Soft Landings/`, `publicar: false`, el usuario
+    las irá completando): Mars 3 (1971), Viking 1 y 2 (1976), Mars Pathfinder
+    (1997), Beagle 2 (2003), Spirit y Opportunity (2004), Phoenix (2008),
+    Curiosity (2012), InSight (2018), Perseverance, Ingenuity y Zhurong
+    (2021), más el índice "Amartizajes". Las chapas se harán cuando estén
+    publicadas.
+- **Sin hacer (a propósito)**: nada en `/marte`; los nombres no se pisan
+  entre ellos más que por su colocación (con muchos habrá que apartar o
+  esconder los que choquen); nada para táctil.
+
+## Chapas de las misiones: la prueba de Mars 3 y Mars 2 (22-sep-2026)
+
+- **Lo que pidió el usuario**: "Podemos crear en obsidian otro apartado para
+  las sondas que NO han llegado (cuando leo Mars 3 me pones el ejemplo de Mars
+  2, estas irían por ejemplo en blanco y negro o tachadas). Vamos a hacer la
+  prueba con Mars 3 y Mars 2, le creamos la chapa y le creamos la nota, el
+  resto no, estas solo de prueba."
+- **En la bóveda**: carpeta nueva `02 - Temas/mars-project/Hard Landings/`
+  (nombre a juego con `Soft Landings`; se puede cambiar) con
+  `🇷🇺 Mars 2 (1971)`. El índice "Amartizajes" la enlaza ya en su sección "Los
+  que no lo lograron". De paso se corrigió la nota de Mars 3: Mars 2 se
+  estrelló **cinco** días antes (27 de noviembre de 1971), no seis, y la
+  señal de Mars 3 duró unos veinte segundos, noventa segundos después de
+  posarse (fuentes: NASA NSSDC y Wikipedia).
+- **En el banco**: las dos chapas, con la bandera en pixel art de `/luna`
+  (11 × 7 celdas con contorno, `svgBandera` de `src/data/alunizajes.ts`;
+  se usa la rusa porque la de la URSS no se pinta en la mayoría de sistemas).
+  - Van en su **sitio exacto**, no crecen con el zoom y **se ven a cualquier
+    zoom**, también a ×1, donde son lo único que aparece.
+  - Sitios: Mars 3 en 45,04° S, 202,02° E (región del cráter Ptolemaeus) y
+    Mars 2 en 4° N, 47° O, que es aproximado (se estrelló y no hay imagen de
+    los restos; así lo dice su ficha).
+  - **La chapa es un enlace a su nota** (usuario, 22-sep-2026): cursor de
+    mano al pasar por encima, y mientras se arrastra el planeta, el de
+    agarrar. En la web irá a `/notas/<slug>`; en el banco, a "#".
+  - **La que no llegó, apagada**. Cuatro variantes en el panel: **aspa** (la
+    que está puesta), **una raya**, **blanco y negro** y **aspa + b/n**.
+    - El usuario descartó el blanco y negro él mismo: "puede que no se
+      diferencien los países". Es verdad: de las banderas que salen en Marte,
+      la rusa, la estadounidense y la británica son las tres de los mismos
+      colores y en gris se confunden.
+    - **Elegida: una raya** (usuario, 22-sep-2026: "Ok una raya"), que era la
+      recomendación: tacha igual de claro y deja ver los colores; el aspa, a
+      este tamaño (18 × 12 px), se come casi toda la bandera.
+    - **Arreglado de paso**: el aspa salía con una sola raya. La bandera es un
+      hijo del enlace y tapaba el `::before`; las rayas llevan ahora
+      `z-index`.
+  - **Ficha al pasar el ratón**, la dorada de las naves y de `/luna`: misión,
+    país y año, qué era, cuándo, dónde y qué pasó. De momento acaba en "nota
+    en la bóveda, sin publicar todavía"; cuando la nota se publique, ahí irá
+    el enlace, como en `/luna`.
+- **Comprobado en Chrome sin ventana**: a ×1 salen las dos chapas y ningún
+  nombre; las dos fichas; y la variante tachada.
+
+### Cuántos países han mandado algo a Marte (22-sep-2026)
+
+Lo preguntó el usuario al hablar del blanco y negro. Para el mapa importa el
+primer grupo, que es el que lleva chapa:
+
+- **Han intentado posar algo en el suelo: cuatro.** URSS (Mars 2, 3, 6 y 7),
+  EE. UU. (de las Viking a Perseverance), Europa —ESA con el Reino Unido—
+  (Beagle 2 y Schiaparelli) y China (Zhurong).
+- **Han llegado a Marte de alguna forma, contando orbitadores: siete.** Los
+  cuatro de arriba más la India (Mangalyaan, 2014), los Emiratos Árabes
+  Unidos (Hope, 2021) y Japón, que lo intentó y no lo logró (Nozomi, que no
+  llegó a entrar en órbita en 2003).
+- Para la URSS se usa la bandera rusa, como en `/luna`: Unicode no tiene una
+  soviética que se pinte en la mayoría de sistemas.
 
 ## Marte provisional (paso 1, 21-sep-2026)
 

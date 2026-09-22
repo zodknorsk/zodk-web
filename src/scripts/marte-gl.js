@@ -498,6 +498,17 @@ export async function montarMarteGL(canvas, {
     const B = M.map((f) => f[0] * U[0] + f[1] * U[1] + f[2] * U[2]);
     return { lat: Math.asin(Math.max(-1, Math.min(1, B[1]))), lon: Math.atan2(B[0], B[2]) };
   }
+  // Al revés: dónde cae en la pantalla el punto (lat, lon) de Marte, en
+  // grados. Píxeles CSS desde el centro del disco (y hacia abajo) y `z`, cuánto
+  // mira hacia quien mira (1 en el centro, 0 en el borde, negativo por
+  // detrás). Lo usan los nombres de lugares, en una capa HTML sobre el lienzo.
+  function proyecta(lat, lon) {
+    const la = lat * DEG, lo = lon * DEG, cl = Math.cos(la);
+    const B = [cl * Math.sin(lo), Math.sin(la), cl * Math.cos(lo)];
+    const M = filas(lat0, lon0), k = R0 * zoom * px;
+    const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
+    return { x: U[0] * k, y: -U[1] * k, z: U[2] };
+  }
   // De píxeles CSS de la ventana a radios del disco.
   function aDisco(clientX, clientY, R = R0 * zoom) {
     const r = canvas.getBoundingClientRect();
@@ -672,6 +683,9 @@ export async function montarMarteGL(canvas, {
       pide();
     },
     zoom: hazZoom,
+    proyecta,
+    // Píxeles CSS que mide un grado de Marte en el centro del disco.
+    pxGrado: () => R0 * zoom * px * DEG,
     mueve,
     suelta: () => { planifica(); },
     // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x

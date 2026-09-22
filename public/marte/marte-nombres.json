@@ -1,0 +1,834 @@
+[
+ {
+  "nombre": "Terra Cimmeria",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 5855.9,
+  "lat": -32.68,
+  "lon": 147.75,
+  "caja": [
+   -73.54,
+   12.13,
+   98.79,
+   179.66
+  ],
+  "tipo": "Terra",
+  "linea": false
+ },
+ {
+  "nombre": "Noachis Terra",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 5519.4,
+  "lat": -50.41,
+  "lon": -5.16,
+  "caja": [
+   -83.6,
+   -2.53,
+   -59.96,
+   74.61
+  ],
+  "tipo": "Terra",
+  "linea": false
+ },
+ {
+  "nombre": "Arabia Terra",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 4851.7,
+  "lat": 21.25,
+  "lon": 5.72,
+  "caja": [
+   -18.07,
+   45.36,
+   -29.69,
+   49.44
+  ],
+  "tipo": "Terra",
+  "linea": false
+ },
+ {
+  "nombre": "Tharsis",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 4000,
+  "lat": 5.0,
+  "lon": -105.0,
+  "caja": [
+   -25.0,
+   35.0,
+   -145.0,
+   -70.0
+  ],
+  "linea": false
+ },
+ {
+  "nombre": "Valles Marineris",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 3761.3,
+  "lat": -14.01,
+  "lon": -58.59,
+  "caja": [
+   -18.33,
+   -2.78,
+   -92.4,
+   -28.85
+  ],
+  "tipo": "Vallis",
+  "linea": true
+ },
+ {
+  "nombre": "Terra Sirenum",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 3635.2,
+  "lat": -39.49,
+  "lon": -154.15,
+  "caja": [
+   -67.57,
+   -11.4,
+   -179.93,
+   -110.32
+  ],
+  "tipo": "Terra",
+  "linea": false
+ },
+ {
+  "nombre": "Utopia Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 3560.4,
+  "lat": 46.74,
+  "lon": 117.52,
+  "caja": [
+   12.92,
+   73.17,
+   71.86,
+   164.89
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Acidalia Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 3505.0,
+  "lat": 49.76,
+  "lon": -20.74,
+  "caja": [
+   14.76,
+   68.67,
+   -55.55,
+   16.14
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Elysium Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 3000.8,
+  "lat": 2.98,
+  "lon": 154.74,
+  "caja": [
+   -7.77,
+   11.4,
+   128.26,
+   179.11
+  ],
+  "tipo": "Planitia",
+  "linea": true
+ },
+ {
+  "nombre": "Amazonis Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 2809.0,
+  "lat": 25.75,
+  "lon": -162.91,
+  "caja": [
+   2.14,
+   49.75,
+   -179.66,
+   -140.58
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Hellas Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 2299.2,
+  "lat": -42.43,
+  "lon": 70.5,
+  "caja": [
+   -55.42,
+   -27.86,
+   45.58,
+   96.12
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Kasei Valles",
+  "clase": "region",
+  "px": 260,
+  "menor": false,
+  "km": 1580.0,
+  "lat": 25.14,
+  "lon": -62.88,
+  "caja": [
+   16.28,
+   27.11,
+   -74.45,
+   -50.34
+  ],
+  "tipo": "Vallis",
+  "linea": true
+ },
+ {
+  "nombre": "Chryse Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 1542.4,
+  "lat": 28.43,
+  "lon": -40.31,
+  "caja": [
+   14.85,
+   39.61,
+   -54.77,
+   -26.07
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Planum Australe",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 1429.9,
+  "lat": -83.35,
+  "lon": 157.7,
+  "caja": [
+   -90.0,
+   -71.73,
+   -180.0,
+   180.0
+  ],
+  "tipo": "Planum",
+  "linea": true
+ },
+ {
+  "nombre": "Isidis Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 1224.6,
+  "lat": 13.94,
+  "lon": 88.38,
+  "caja": [
+   3.2,
+   22.59,
+   77.62,
+   98.91
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Syrtis Major Planum",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 1214.9,
+  "lat": 9.2,
+  "lon": 67.1,
+  "caja": [
+   -1.37,
+   19.41,
+   58.88,
+   76.64
+  ],
+  "tipo": "Planum",
+  "linea": false
+ },
+ {
+  "nombre": "Noctis Labyrinthus",
+  "clase": "region",
+  "px": 220,
+  "menor": false,
+  "km": 1190.3,
+  "lat": -6.36,
+  "lon": -101.19,
+  "caja": [
+   -13.62,
+   -2.79,
+   -111.58,
+   -91.31
+  ],
+  "tipo": "Labyrinthus",
+  "linea": false
+ },
+ {
+  "nombre": "Meridiani Planum",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 1058.5,
+  "lat": -0.04,
+  "lon": -3.14,
+  "caja": [
+   -4.0,
+   8.78,
+   -10.82,
+   7.04
+  ],
+  "tipo": "Planum",
+  "linea": false
+ },
+ {
+  "nombre": "Coprates Chasma",
+  "clase": "region",
+  "px": 220,
+  "menor": true,
+  "km": 958.3,
+  "lat": -13.37,
+  "lon": -60.74,
+  "caja": [
+   -16.26,
+   -10.32,
+   -68.96,
+   -52.56
+  ],
+  "tipo": "Chasma",
+  "linea": true
+ },
+ {
+  "nombre": "Ma'adim Vallis",
+  "clase": "region",
+  "px": 220,
+  "menor": false,
+  "km": 913.1,
+  "lat": -21.98,
+  "lon": 177.5,
+  "caja": [
+   -28.15,
+   -15.61,
+   175.65,
+   178.38
+  ],
+  "tipo": "Vallis",
+  "linea": true
+ },
+ {
+  "nombre": "Argyre Planitia",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 892.9,
+  "lat": -49.84,
+  "lon": -43.31,
+  "caja": [
+   -57.29,
+   -42.44,
+   -53.88,
+   -33.38
+  ],
+  "tipo": "Planitia",
+  "linea": false
+ },
+ {
+  "nombre": "Nili Fossae",
+  "clase": "region",
+  "px": 200,
+  "menor": false,
+  "km": 727.9,
+  "lat": 22.02,
+  "lon": 76.69,
+  "caja": [
+   16.97,
+   27.11,
+   72.14,
+   81.33
+  ],
+  "tipo": "Fossa",
+  "linea": false
+ },
+ {
+  "nombre": "Olympus Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 610.1,
+  "lat": 18.65,
+  "lon": -133.8,
+  "caja": [
+   13.48,
+   23.68,
+   -139.24,
+   -127.8
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Melas Chasma",
+  "clase": "region",
+  "px": 200,
+  "menor": true,
+  "km": 563.5,
+  "lat": -10.52,
+  "lon": -72.54,
+  "caja": [
+   -13.96,
+   -7.23,
+   -77.54,
+   -68.11
+  ],
+  "tipo": "Chasma",
+  "linea": false
+ },
+ {
+  "nombre": "Alba Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 548.0,
+  "lat": 41.08,
+  "lon": -110.71,
+  "caja": [
+   36.53,
+   45.63,
+   -116.29,
+   -104.79
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Arsia Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 470.0,
+  "lat": -8.26,
+  "lon": -120.09,
+  "caja": [
+   -11.57,
+   -4.72,
+   -123.73,
+   -116.18
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Huygens",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 467.3,
+  "lat": -13.88,
+  "lon": 55.58,
+  "caja": [
+   -17.82,
+   -9.94,
+   51.52,
+   59.64
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Chasma Boreale",
+  "clase": "visor",
+  "px": 90,
+  "menor": true,
+  "km": 459.9,
+  "lat": 82.54,
+  "lon": -47.64,
+  "caja": [
+   79.3,
+   85.07,
+   -59.38,
+   -16.2
+  ],
+  "tipo": "Chasma",
+  "linea": true
+ },
+ {
+  "nombre": "Schiaparelli",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 458.5,
+  "lat": -2.71,
+  "lon": 16.77,
+  "caja": [
+   -6.59,
+   1.15,
+   12.9,
+   20.65
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Ascraeus Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 456.4,
+  "lat": 11.92,
+  "lon": -104.08,
+  "caja": [
+   8.18,
+   15.66,
+   -107.51,
+   -101.0
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Cassini",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 408.2,
+  "lat": 23.35,
+  "lon": 32.11,
+  "caja": [
+   19.91,
+   26.8,
+   28.36,
+   35.86
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Elysium Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 401.0,
+  "lat": 25.02,
+  "lon": 147.21,
+  "caja": [
+   21.78,
+   28.26,
+   143.59,
+   150.82
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Antoniadi",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 400.9,
+  "lat": 21.38,
+  "lon": 60.83,
+  "caja": [
+   18.0,
+   24.76,
+   57.2,
+   64.47
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Pavonis Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 366.5,
+  "lat": 1.48,
+  "lon": -112.96,
+  "caja": [
+   -1.93,
+   4.21,
+   -116.05,
+   -109.87
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Planum Boreum",
+  "clase": "region",
+  "px": 0,
+  "menor": false,
+  "km": 354.6,
+  "lat": 87.32,
+  "lon": 54.96,
+  "caja": [
+   80.59,
+   90.0,
+   -180.0,
+   180.0
+  ],
+  "tipo": "Planum",
+  "linea": true
+ },
+ {
+  "nombre": "Newton",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 299.9,
+  "lat": -40.5,
+  "lon": -158.03,
+  "caja": [
+   -43.03,
+   -37.97,
+   -161.36,
+   -154.7
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Herschel",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 297.9,
+  "lat": -14.48,
+  "lon": 129.89,
+  "caja": [
+   -16.99,
+   -11.97,
+   127.3,
+   132.49
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Medusae Fossae",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 278.5,
+  "lat": -2.17,
+  "lon": -164.2,
+  "caja": [
+   -6.04,
+   -1.39,
+   -164.96,
+   -160.69
+  ],
+  "tipo": "Fossa",
+  "linea": false
+ },
+ {
+  "nombre": "Apollinaris Mons",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 275.4,
+  "lat": -9.17,
+  "lon": 174.79,
+  "caja": [
+   -11.47,
+   -6.88,
+   172.66,
+   176.4
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Lyot",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 221.5,
+  "lat": 50.47,
+  "lon": 29.34,
+  "caja": [
+   48.6,
+   52.34,
+   26.41,
+   32.28
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Lowell",
+  "clase": "visor",
+  "px": 90,
+  "menor": false,
+  "km": 202.2,
+  "lat": -51.96,
+  "lon": -81.5,
+  "caja": [
+   -53.69,
+   -50.28,
+   -84.25,
+   -78.71
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Hecates Tholus",
+  "clase": "visor",
+  "px": 80,
+  "menor": false,
+  "km": 181.6,
+  "lat": 32.12,
+  "lon": 150.24,
+  "caja": [
+   30.59,
+   33.65,
+   148.54,
+   151.89
+  ],
+  "tipo": "Tholus",
+  "linea": false
+ },
+ {
+  "nombre": "Gusev",
+  "clase": "visor",
+  "px": 55,
+  "menor": false,
+  "km": 158.1,
+  "lat": -14.53,
+  "lon": 175.52,
+  "caja": [
+   -15.86,
+   -13.2,
+   174.15,
+   176.91
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Gale",
+  "clase": "visor",
+  "px": 55,
+  "menor": false,
+  "km": 154.1,
+  "lat": -5.37,
+  "lon": 137.81,
+  "caja": [
+   -6.67,
+   -4.07,
+   136.51,
+   139.12
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Holden",
+  "clase": "visor",
+  "px": 60,
+  "menor": false,
+  "km": 152.7,
+  "lat": -26.04,
+  "lon": -34.02,
+  "caja": [
+   -27.33,
+   -24.75,
+   -35.45,
+   -32.58
+  ],
+  "tipo": "Crater",
+  "linea": false
+ },
+ {
+  "nombre": "Aeolis Mons",
+  "clase": "visor",
+  "px": 36,
+  "menor": true,
+  "km": 89.0,
+  "lat": -5.08,
+  "lon": 137.85,
+  "caja": [
+   -5.61,
+   -4.46,
+   137.11,
+   138.62
+  ],
+  "tipo": "Mons",
+  "linea": false
+ },
+ {
+  "nombre": "Olympus Paterae",
+  "clase": "visor",
+  "px": 34,
+  "menor": true,
+  "km": 85.0,
+  "lat": 18.32,
+  "lon": -133.19,
+  "caja": [
+   17.72,
+   18.92,
+   -133.87,
+   -132.54
+  ],
+  "tipo": "Patera",
+  "linea": false
+ },
+ {
+  "nombre": "Korolev",
+  "clase": "visor",
+  "px": 34,
+  "menor": false,
+  "km": 81.4,
+  "lat": 72.77,
+  "lon": 164.58,
+  "caja": [
+   72.08,
+   73.45,
+   162.27,
+   166.9
+  ],
+  "tipo": "Crater",
+  "linea": true
+ },
+ {
+  "nombre": "Jezero",
+  "clase": "visor",
+  "px": 20,
+  "menor": false,
+  "km": 47.5,
+  "lat": 18.41,
+  "lon": 77.69,
+  "caja": [
+   18.01,
+   18.81,
+   77.27,
+   78.11
+  ],
+  "tipo": "Crater",
+  "linea": false
+ }
+]
