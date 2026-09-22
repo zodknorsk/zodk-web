@@ -1,6 +1,7 @@
 // Marte quieto (public/marte/marte-quieto.png): la vista inicial de /marte
-// (lat0 12,5°, lon0 -80°, zoom x1) en píxeles de arte, 450 x 450 con el disco
-// centrado (radio RADIUS = 219,4) y transparente alrededor.
+// (VISTA_INICIAL de marte-gl.js: lat0 12,5°, lon0 -80°; zoom x1) en píxeles
+// de arte, 450 x 450 con el disco centrado (radio RADIUS = 219,4) y
+// transparente alrededor.
 // Lo usan el vuelo de la portada a /marte (la imagen que crece desde el Marte
 // pequeño) y /marte mientras carga el lienzo (fondo de .marte-disco), así que
 // tiene que ser exactamente lo que pinta el motor: se ejecuta
@@ -88,11 +89,12 @@ globalThis.fetch = async (url) => {
 };
 
 const { montarMarte } = await import(path.join(REPO, "src/scripts/marte.js"));
+const { VISTA_INICIAL } = await import(path.join(REPO, "src/scripts/marte-gl.js"));
 const D = JSON.parse(fs.readFileSync(path.join(REPO, "public/marte/marte-datos.json")));
 const cv = new Canvas();
 cv.parentElement = { getBoundingClientRect: () => ({ width: LADO, height: LADO }) };
 // disco = 2·RADIUS: un píxel de arte por píxel de imagen
-const m = await montarMarte(cv, { base: "/marte/", lat0: 12.5, lon0: -80, disco: () => 2 * D.RADIUS });
+const m = await montarMarte(cv, { base: "/marte/", ...VISTA_INICIAL, disco: () => 2 * D.RADIUS });
 await new Promise((r) => setTimeout(r, 50));
 const img = lienzos.find((c) => c !== cv && c.puesto).puesto;
 if (img.width !== LADO || img.height !== LADO) throw new Error(`lienzo de ${img.width} x ${img.height}`);

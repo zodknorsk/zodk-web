@@ -2,7 +2,9 @@
 // Marte (ruta "/marte"): la tercera "portada", la del Proyecto Marte (rama
 // mars-project). Como /luna, sin cabecera y a pantalla completa. Marte está
 // quieto y se gira con clic y arrastrar (como Google Maps) y se acerca con la
-// rueda o el trackpad, hasta x6, ganando detalle.
+// rueda o el trackpad, hasta x6, ganando detalle. Se llega desde la portada
+// (Marte de arriba a la derecha o "mars-project") con un vuelo, y "volver a la
+// Tierra" (abajo a la derecha, el botón de /luna) hace el mismo vuelo al revés.
 // Motor: src/scripts/marte-gl.js (WebGL) y la mano de src/scripts/marte.js;
 // datos en public/marte/, de logo-files/generar-marte.py. Detalle y
 // decisiones en logo-files/MARTE-WIP.md.
@@ -21,6 +23,12 @@ import PageLayout from "@layouts/PageLayout.astro";
          el píxel de la Luna de /luna. -->
     <canvas class="marte-canvas" role="img" aria-label="Marte"></canvas>
     <div class="marte-sonda" aria-hidden="true"></div>
+    <!-- Volver a la Tierra: el mismo botón que en /luna (esquinas doradas,
+         abajo a la derecha). Sale cuando el script está listo. -->
+    <button class="luna-volver" type="button" aria-label="Volver a la Tierra" hidden>
+      <span>volver a la Tierra</span>
+      <span class="luna-volver-tierra" aria-hidden="true"></span>
+    </button>
   </section>
   <div id="hero-sentinel" aria-hidden="true"></div>
 </PageLayout>
@@ -28,26 +36,102 @@ import PageLayout from "@layouts/PageLayout.astro";
 <script>
   // Como /luna: la web cambia de página sin recargar (ClientRouter), así que
   // Marte se monta en cada llegada y se desmonta al salir.
-  import { montarMano } from "../scripts/marte.js";
+  import { navigate } from "astro:transitions/client";
+  import { MARTE_V, montarMano } from "../scripts/marte.js";
   import { montarMarteGL, montarZoom } from "../scripts/marte-gl.js";
+  import { volarALuna, VUELO_MARTE } from "../scripts/viaje-luna.js";
 
+  type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;
   let quitar: (() => void)[] = [];
+  let estrellasTierra: string | null = null;   // posición de las estrellas al aterrizar en la portada
+
+  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (viaje-luna.js),
+  // desde Marte tal como se ha dejado (usuario, 22-sep-2026: "que el vuelo de
+  // regreso empiece desde donde esté el planeta en este momento"). Si estaba
+  // acercado, primero se aleja en el lienzo hasta x1, sin girar (con zoom el
+  // disco no cabe entero); ahí se le hace una foto, con el giro de ese
+  // momento, y vuela ella, que al final, ya pequeña, se funde con el Marte de
+  // la portada (con su cara de siempre). Alejarse y volar son un solo
+  // movimiento, sin pararse (`alejar` en volarALuna).
+  // Para saber dónde acaban Marte y la Tierra se ponen aquí un Marte pequeño y
+  // una Tierra con las clases de la portada (mismo sitio y tamaño, y la Tierra
+  // del tema que toque); se van con la página al aterrizar. Como en /luna.
+  // Sin WebGL2 vuela Marte quieto (marte-quieto.png).
+  async function volverATierra(hero: HTMLElement, m: Marte | null, ocultar: HTMLElement[], apagar: HTMLElement[]) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/");
+    let img: HTMLImageElement | null = null;
+    if (m) {
+      for (const f of quitar.slice(1)) f();   // sin mano ni zoom mientras se aleja y vuela
+      quitar = quitar.slice(0, 1);
+    } else {
+      img = new Image();
+      img.src = `/marte/marte-quieto.png?v=${MARTE_V}`;
+      await img.decode().catch(() => {});
+    }
+    const icono = document.createElement("div");
+    icono.className = "hero-marte";
+    icono.setAttribute("aria-hidden", "true");
+    const planeta = document.createElement("div");
+    planeta.className = "hero-planet";
+    planeta.setAttribute("aria-hidden", "true");
+    hero.append(icono, planeta);
+    const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
+    // Con el lienzo: la foto al llegar a x1, y entonces fuera el lienzo (lo
+    // sustituye la capa del vuelo, en el mismo sitio). Sin él, fuera ya.
+    const esconder = () => {
+      for (const el of ocultar) el.style.visibility = "hidden";
+      for (const f of quitar) f();
+      quitar = [];
+    };
+    const alejar = m && {
+      zoom: m.vista().zoom,
+      ponZoom: (z: number) => m.ponZoom(z, true),
+      foto: () => {
+        const foto = m.instantanea(VUELO_MARTE.imgLado);
+        esconder();
+        return foto;
+      },
+    };
+    const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img, inverso: true, alejar, ...VUELO_MARTE });
+    if (!alejar) esconder();
+    estrellasTierra = await vuelo.fin;
+    navigate("/");
+  }
+
+  // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo, y
+  // la cabecera (que /marte no tiene) entra con un fundido en vez de de golpe.
+  document.addEventListener("astro:after-swap", () => {
+    if (estrellasTierra === null) return;
+    document.querySelector<HTMLElement>(".hero:not(.marte-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasTierra);
+    document.querySelector<HTMLElement>("body > header")?.animate(
+      [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out" },
+    );
+    estrellasTierra = null;
+  });
 
   document.addEventListener("astro:page-load", async () => {
     const cv = document.querySelector<HTMLCanvasElement>(".marte-canvas");
     const hero = document.querySelector<HTMLElement>(".marte-hero");
     const sonda = document.querySelector<HTMLElement>(".marte-sonda");
-    if (!cv || !hero || !sonda) return;
+    const volver = document.querySelector<HTMLButtonElement>(".marte-hero .luna-volver");
+    const disco = document.querySelector<HTMLElement>(".marte-disco");
+    if (!cv || !hero || !sonda || !volver || !disco) return;
     const marte = await montarMarteGL(cv, { disco: () => sonda.getBoundingClientRect().height });
     if (!cv.isConnected) return marte?.desmontar();   // se salió de la página mientras cargaba
     // Sin WebGL2 se queda Marte quieto (el PNG de .marte-disco), sin mano ni
-    // zoom.
-    if (!marte) return;
-    // El lienzo ya ha pintado la vista inicial encima (los mismos píxeles):
-    // fuera la imagen, que asomaría al girar o al hacer zoom.
-    const disco = hero.querySelector<HTMLElement>(".marte-disco");
-    if (disco) disco.hidden = true;
-    quitar = [marte.desmontar, montarMano(hero, marte), montarZoom(hero, marte)];
+    // zoom; volver funciona igual.
+    if (marte) {
+      // El lienzo ya ha pintado la vista inicial encima (los mismos píxeles):
+      // fuera la imagen, que asomaría al girar o al hacer zoom.
+      disco.hidden = true;
+      quitar = [marte.desmontar, montarMano(hero, marte), montarZoom(hero, marte)];
+    }
+    volver.hidden = false;
+    volver.addEventListener("click", () => {
+      if (volver.disabled) return;
+      volver.disabled = true;
+      volverATierra(hero, marte, [cv, disco], [volver]);
+    });
   });
 
   document.addEventListener("astro:before-swap", () => {

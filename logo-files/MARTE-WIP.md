@@ -4,7 +4,7 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (22-sep-2026: `/marte`, Marte en la portada y el vuelo, commiteados; siguiente, el botón de volver)
+## Dónde estamos (22-sep-2026: botón de volver commiteado; siguiente, el Marte pequeño de `/luna`)
 
 **Rama `mars-project`**, creada desde `main` el 21-sep-2026 y **subida a
 GitHub** el mismo día (`git push -u origin mars-project`). Nada fusionado ni
@@ -59,6 +59,12 @@ publicado: `main` y zodk.eu siguen como estaban.
 Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
 `mars-project`) o `http://localhost:4321/marte`.
 
+### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: volver a la Tierra desde /marte"; aprobado por el usuario: "perfecto. commit.")
+
+8. **Volver de `/marte` a la Tierra** (pedido el 22-sep-2026: "Pon el boton
+   de volver"): el botón de `/luna`, abajo a la derecha, con el vuelo al
+   revés. Ver "Volver a la Tierra" abajo.
+
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
 - **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
@@ -76,15 +82,12 @@ Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
 
 ### Pendiente (sin orden cerrado; lo decide el usuario)
 
-- **Orden que marcó el usuario** (22-sep-2026): commit (hecho), **el botón
-  de volver** de `/marte` a la Tierra (siguiente), **un Marte pequeño en
-  `/luna`** con el vuelo Luna → Marte ("Vale. un marte pequeño si") y **el
-  móvil, lo último**.
+- **Orden que marcó el usuario** (22-sep-2026): commit (hecho, `1aa8175`),
+  **el botón de volver** de `/marte` a la Tierra (hecho y commiteado),
+  **un Marte pequeño en `/luna`** con el vuelo Luna → Marte
+  ("Vale. un marte pequeño si"; siguiente) y **el móvil, lo último**.
 - **Duda abierta**: que Marte se vea de día y de noche se dio por bueno (era
   la recomendación; no lo dijo expresamente).
-- **Volver de `/marte` a la Tierra**: no hay botón (solo el "atrás" del
-  navegador). Lo natural es el de `/luna` ("volver a la Tierra", abajo a la
-  derecha) con el mismo vuelo al revés. Propuesto, sin hacer.
 - **Luna → Marte**: un Marte también en el cielo de `/luna` con el mismo
   vuelo. Propuesto para después del de la Tierra, sin hacer.
 - **`/marte`**: sin menú HUD (aún no hay notas que enlazar).
@@ -673,6 +676,65 @@ viajar, y la publicación (merge en `main`).
   botón de salir, nada enlaza a `/marte` (eso llegará con el Marte pequeño y
   el viaje), sin respaldo si no hay WebGL2 (pantalla de estrellas vacía) y
   sin nada para táctil (pendiente de decidir).
+
+## Volver a la Tierra (22-sep-2026)
+
+- **El botón**: el mismo de `/luna` (clase `luna-volver`: "volver a la
+  Tierra" con la Tierra pequeña y esquinas doradas, abajo a la derecha). Sale
+  cuando el script está listo, también sin WebGL2.
+- **El vuelo**: el de la portada al revés (`volarALuna` con `inverso` y
+  `VUELO_MARTE`), como el de `/luna`: se ponen en `/marte` un Marte pequeño y
+  una Tierra con las clases de la portada para medir dónde acaban. Marte se
+  aleja hacia arriba a la derecha y la Tierra sube; en la portada, las
+  estrellas quedan donde acabaron y la cabecera entra con un fundido.
+- **Sale de Marte tal como se ha dejado** (usuario, 22-sep-2026: "No se
+  podría hacer que el vuelo de regreso empiece desde donde esté el planeta en
+  este momento?"):
+  - Si se había acercado, primero se aleja hasta ×1 **sin girar**: con zoom
+    el disco no cabe entero y no se le puede hacer la foto.
+  - **Alejarse y volar son un solo movimiento** (opción `alejar` de
+    `volarALuna`). El usuario pidió primero el alejamiento "algo más lento?
+    se ve como forzada" y luego "a la misma velocidad más o menos que la
+    vuelta a la tierra … que sea practicamente fluido". Cómo va:
+    - El logaritmo del tamaño aparente de Marte (1 = ×1) baja de log(zoom)
+      al del icono siguiendo UNA curva, E(x) = 6x² − 8x³ + 3x⁴: arranca desde
+      parado, va más rápido hacia un tercio y frena despacio hasta el final.
+    - Mientras el tamaño es mayor que 1, se aleja el lienzo (`ponZoom(z,
+      true)`, sin el suavizado de la rueda). Al llegar a 1, la foto
+      (`instantanea`) y sigue el vuelo sin pararse: del tamaño se saca la
+      distancia de la cámara y de ahí el instante del vuelo, así que el giro,
+      la Tierra y el fundido con el icono llegan donde siempre.
+    - Duración: 6 s + 1,6 s por cada e de zoom (8 s desde ×3,5; 8,9 s desde
+      ×6), para que la velocidad máxima sea la del vuelo de siempre.
+    - Simulado con la geometría real (1440 × 900): desde ×3,5 pasa al vuelo
+      a los 2,5 s yendo a su velocidad máxima (0,75 por segundo en
+      logaritmo del tamaño; el vuelo de siempre llega a 0,82). Sin zoom, el
+      vuelo empieza algo antes a moverse que el de la Luna.
+    - Historia: primero se alejaba aparte en 0,3-1 s con curva cúbica y
+      luego en 0,8-1,8 s con curva de seno; entre alejarse y volar quedaba
+      casi un segundo parado. Se quitó (`alejarAx1`).
+  - Luego vuela una **foto del lienzo** con el giro de ese momento
+    (`instantanea(450)` de `marte-gl.js`: pinta y copia en el mismo paso,
+    porque el lienzo WebGL no guarda lo pintado). `volarALuna` acepta ya un
+    lienzo como imagen.
+  - Al final, ya pequeño, se funde con el Marte de la portada, que tiene su
+    cara de siempre (la vista inicial): a ese tamaño apenas se nota.
+  - Mientras se aleja y vuela no hay mano ni zoom.
+  - Primero se hizo al revés: Marte volvía a su vista inicial (giro y zoom)
+    antes de despegar. El usuario prefirió que saliera tal cual.
+  - Sin WebGL2 vuela Marte quieto (`marte-quieto.png`).
+- `VISTA_INICIAL` (12,5° N, 80° O) vive ahora en `marte-gl.js` y la usan el
+  motor y `generar-marte-quieto.mjs`; `VUELO_MARTE` (destino, icono e imagen
+  del vuelo), en `viaje-luna.js`, y la usan la portada y `/marte`.
+- **Comprobado en Chrome sin ventana**: portada → Marte, girar hasta ver el
+  polo norte y acercar a ×3,5, volver (se aleja mirando al polo y encoge sin
+  pararse hasta el icono, aterriza en la portada con las estrellas en su
+  sitio) y otra vez a Marte. Sin errores. `astro check` y lint limpios. El
+  vuelo a la Luna y el de ida a Marte no cambian (sin `alejar`, el motor
+  hace lo de siempre).
+- **En el Chrome del usuario no se pudo mirar**: la pestaña que abre la
+  extensión queda en segundo plano (`visibilityState` "hidden") y Chrome
+  congela las animaciones. Para usarlo, esa pestaña tiene que estar delante.
 
 ## Marte en la portada y el vuelo (21/22-sep-2026)
 
