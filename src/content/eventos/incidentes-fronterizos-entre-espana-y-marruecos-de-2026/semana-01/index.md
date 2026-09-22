@@ -435,7 +435,7 @@ El presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique<b
   <div class="tweet-text">Hay una estructura promarroqui en España disfrazada de izquierda o movimientos antirracistas completamente  infiltrada por los servicios de inteligencia marroquíes empezando por el PSOE y terminando por Sumar, y otros movimientos que no nombraré por decoro. <br>
 <br>
 ¡CUIDADO!</div>
-  <a class="tweet-date" href="https://x.com/TalebSahara/status/2083681830767575327" target="_blank" rel="noopener">1 de agosto de 2026</a>
+  <a class="tweet-date" href="https://x.com/TalebSahara/status/2083681830767575327" target="_blank" rel="noopener">2 de agosto de 2026</a>
 </blockquote>
 
 
@@ -552,7 +552,7 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
   <div class="tweet-text">Acabamos de llegar a Brindisi. Como para el gobierno Meloni ya no somos Schengen, la policía controla uno a uno nuestros documentos. <br>
 VERGÜENZA de gobierno italiano.</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-1tt1dsc4nbdk-3pj.jpg"><source src="https://video.twimg.com/amplify_video/2084409178269876224/vid/avc1/1080x1920/hzDuinMSKw9tDylP.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener">3 de agosto de 2026</a>
+  <a class="tweet-date" href="https://x.com/EuprepioPadula/status/2084409224805732825" target="_blank" rel="noopener">4 de agosto de 2026</a>
 </blockquote>
 
 
