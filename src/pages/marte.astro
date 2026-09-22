@@ -1,0 +1,57 @@
+---
+// Marte (ruta "/marte"): la tercera "portada", la del Proyecto Marte (rama
+// mars-project). Como /luna, sin cabecera y a pantalla completa. Marte está
+// quieto y se gira con clic y arrastrar (como Google Maps) y se acerca con la
+// rueda o el trackpad, hasta x6, ganando detalle.
+// Motor: src/scripts/marte-gl.js (WebGL) y la mano de src/scripts/marte.js;
+// datos en public/marte/, de logo-files/generar-marte.py. Detalle y
+// decisiones en logo-files/MARTE-WIP.md.
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout title="Marte" description="Marte en pixel art: se gira arrastrando y se acerca con la rueda o el trackpad." hero cabecera={false}>
+  <section slot="hero" class="hero marte-hero" aria-label="Marte">
+    <div class="hero-stars" aria-hidden="true"></div>
+    <!-- Marte quieto (la vista inicial en PNG): es donde aterriza el vuelo
+         desde la portada y se ve mientras carga el lienzo; si no hay WebGL2,
+         se queda. -->
+    <div class="marte-disco" aria-hidden="true"></div>
+    <!-- El lienzo lo dimensiona marte-gl.js (píxeles de arte enteros); el CSS
+         solo lo centra. La sonda mide el diámetro del disco a zoom x1: 60svh,
+         el píxel de la Luna de /luna. -->
+    <canvas class="marte-canvas" role="img" aria-label="Marte"></canvas>
+    <div class="marte-sonda" aria-hidden="true"></div>
+  </section>
+  <div id="hero-sentinel" aria-hidden="true"></div>
+</PageLayout>
+
+<script>
+  // Como /luna: la web cambia de página sin recargar (ClientRouter), así que
+  // Marte se monta en cada llegada y se desmonta al salir.
+  import { montarMano } from "../scripts/marte.js";
+  import { montarMarteGL, montarZoom } from "../scripts/marte-gl.js";
+
+  let quitar: (() => void)[] = [];
+
+  document.addEventListener("astro:page-load", async () => {
+    const cv = document.querySelector<HTMLCanvasElement>(".marte-canvas");
+    const hero = document.querySelector<HTMLElement>(".marte-hero");
+    const sonda = document.querySelector<HTMLElement>(".marte-sonda");
+    if (!cv || !hero || !sonda) return;
+    const marte = await montarMarteGL(cv, { disco: () => sonda.getBoundingClientRect().height });
+    if (!cv.isConnected) return marte?.desmontar();   // se salió de la página mientras cargaba
+    // Sin WebGL2 se queda Marte quieto (el PNG de .marte-disco), sin mano ni
+    // zoom.
+    if (!marte) return;
+    // El lienzo ya ha pintado la vista inicial encima (los mismos píxeles):
+    // fuera la imagen, que asomaría al girar o al hacer zoom.
+    const disco = hero.querySelector<HTMLElement>(".marte-disco");
+    if (disco) disco.hidden = true;
+    quitar = [marte.desmontar, montarMano(hero, marte), montarZoom(hero, marte)];
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    for (const f of quitar) f();
+    quitar = [];
+  });
+</script>

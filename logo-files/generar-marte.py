@@ -37,6 +37,10 @@ Datos del <canvas> (el Marte que se gira con la mano y el zoom):
       sips -s format bmp -z 4320 8640 Mars_Viking_ClrMosaic_global_925m.tif --out viking_24.bmp
       curl -sSLO https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg032/megt90n000fb.img
 
+Marte pequeño de la portada (arriba a la derecha; se pulsa para viajar a
+/marte), con la misma cara y la misma luz que la vista inicial de /marte:
+    python3 generar-marte.py --icono ../public/zodk-marte.png
+
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
 http://127.0.0.1:4400/logo-files/prototipo-marte/
 
@@ -703,6 +707,42 @@ def pon_oscuras(nombre):
     MATERIALES = [(None, c) for c in OSCURAS[nombre]] + MATERIALES[3:]
 
 
+# ------------------------------------------------ Marte pequeño de la portada
+# Arriba a la derecha de la portada, simétrico a la luna (arriba a la
+# izquierda), en un lienzo igual que el suyo (56 px de arte, que el CSS amplía
+# x3) y "un poco más pequeño que la luna" (el usuario, 21-sep-2026): radio 12
+# frente a 16. Misma cara que la vista inicial de /marte (marte-gl.js), para
+# que el vuelo acabe en el mismo planeta. Borde seco y halo en tres escalones,
+# como la luna de generar-astros.py, en un tono cálido.
+ICONO_N, ICONO_R = 56, 12
+ICONO_VISTA = (12.5, -80.0)
+ICONO_HALO = (0xff, 0xb0, 0x7a)
+
+
+def export_icono(ruta):
+    global SIZE, RADIUS
+    SIZE, RADIUS = ICONO_N, ICONO_R
+    dem, brillo, hielo = cargar()
+    datos = pasada_lenta(hacer_muestreo(dem, brillo, hielo), *ICONO_VISTA)
+    filas = colorear(datos, UMBRALES)
+    c = ICONO_N / 2
+    out = []
+    for y in range(ICONO_N):
+        row = bytearray(ICONO_N * 4)
+        for x in range(ICONO_N):
+            d = math.hypot(x + 0.5 - c, y + 0.5 - c)
+            j = x * 4
+            if d <= ICONO_R:
+                row[j:j + 4] = filas[y][j:j + 3] + b"\xff"
+            else:
+                a = 60 if d <= ICONO_R + 2 else 26 if d <= ICONO_R + 4 else 10 if d <= ICONO_R + 7 else 0
+                if a:
+                    row[j:j + 4] = bytes(ICONO_HALO + (a,))
+        out.append(bytes(row))
+    write_rgba(ruta, ICONO_N, ICONO_N, out)
+    print("->", ruta)
+
+
 def export_canvas(outdir, cuales=None, sin_teselas=False, zona=None):
     """`zona` = (lat sur, lat norte, lon oeste, lon este): en los niveles en
     teselas, solo las que la tocan (para comparar variantes sin rehacer el
@@ -768,6 +808,9 @@ def main():
         pon_oscuras(sys.argv[sys.argv.index("--oscuras") + 1])
     if "--solo-lut" in sys.argv:                # solo la LUT (para ?lut= en el banco)
         print("->", sys.argv[sys.argv.index("--solo-lut") + 1], escribe_lut(sys.argv[sys.argv.index("--solo-lut") + 1]))
+        return
+    if "--icono" in sys.argv:
+        export_icono(sys.argv[sys.argv.index("--icono") + 1])
         return
     if "--canvas" in sys.argv:
         cuales = None

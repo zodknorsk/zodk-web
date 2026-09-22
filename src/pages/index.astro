@@ -99,6 +99,10 @@ const eventos = todosEventos
     <!-- Proyecto Luna: la luna (solo de noche) lleva a /luna con un vuelo
          (montarViaje() más abajo). -->
     <a class="hero-luna-enlace" href="/luna" aria-label="Viajar a la Luna" title="Viajar a la Luna"></a>
+    <!-- Proyecto Marte: Marte, arriba a la derecha (de día y de noche), lleva
+         a /marte con el mismo vuelo. -->
+    <div class="hero-marte" aria-hidden="true"></div>
+    <a class="hero-marte-enlace" href="/marte" aria-label="Viajar a Marte" title="Viajar a Marte"></a>
     <div
       class="hero-planet"
       role="img"
@@ -350,6 +354,7 @@ const eventos = todosEventos
   import { montarPlaneta } from "../scripts/planeta.js";
   import { mgrs } from "../scripts/mgrs.js";
   import { LUNA_V } from "../scripts/luna.js";
+  import { MARTE_V } from "../scripts/marte.js";
   import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
 
   let planeta: { desmontar(): void; setParado(b: boolean): void } | null = null;
@@ -480,81 +485,107 @@ const eventos = todosEventos
     return () => { mo.disconnect(); clearTimeout(t); };
   }
 
-  // Vuelo a la Luna (src/scripts/viaje-luna.js): al pulsar la luna del hero
-  // (solo de noche), la luna se amplía hasta quedar como en /luna y entonces se
-  // cambia de página; las estrellas de /luna se colocan donde quedaron
-  // (astro:after-swap). Con reduced-motion, directo.
-  const LUNA_IMG = `/luna/luna-visible.png?v=${LUNA_V}`;
-  let estrellasLuna: string | null = null;   // posición de las estrellas al aterrizar, para /luna
+  // Vuelos a la Luna y a Marte (src/scripts/viaje-luna.js): al pulsar la luna
+  // del hero (solo de noche) o Marte (arriba a la derecha), el astro se amplía
+  // hasta quedar como en su página y entonces se cambia de página; las
+  // estrellas de allí se colocan donde quedaron (astro:after-swap). Con
+  // reduced-motion, directo.
+  type Destino = {
+    ruta: string;
+    enlace: string;              // el enlace del hero que se pulsa
+    icono: string;               // el astro del hero que crece
+    img: string;                 // la imagen que crece (la de la otra página)
+    heroDestino: string;         // el hero de la otra página (para las estrellas)
+    apagarTambien: string;       // lo del cielo que no va con el vuelo (se apaga)
+    opciones?: { tam?: string; dy?: string; imgLado?: number; imgDisco?: number; iconoDisco?: number; claseIcono?: string };
+  };
+  const LUNA: Destino = {
+    ruta: "/luna", enlace: ".hero-luna-enlace", icono: ".astro-luna",
+    img: `/luna/luna-visible.png?v=${LUNA_V}`, heroDestino: ".luna-hero", apagarTambien: ".hero-marte",
+  };
+  // Marte acaba en el disco de /marte (--marte-caja, centrado): la imagen es
+  // marte-quieto.png, 450 px de arte con un disco de 2 x 219,4 (RADIUS de
+  // generar-marte.py); en el icono, radio 12 en 56.
+  const MARTE: Destino = {
+    ruta: "/marte", enlace: ".hero-marte-enlace", icono: ".hero-marte",
+    img: `/marte/marte-quieto.png?v=${MARTE_V}`, heroDestino: ".marte-hero", apagarTambien: ".hero-astro",
+    opciones: { tam: "var(--marte-caja)", dy: "0px", imgLado: 450, imgDisco: 438.8, iconoDisco: 24 / 56, claseIcono: "viaje-icono-marte" },
+  };
+  // Al aterrizar: en qué hero y dónde van las estrellas.
+  let llegada: { hero: string; pos: string } | null = null;
 
-  // Enlace "luna" de la cabecera (Header.astro): en la portada se comporta
-  // como la luna del hero. De noche, exactamente igual que pulsarla (dispara
-  // un clic real sobre .hero-luna-enlace, así que reutiliza montarViaje sin
-  // duplicar nada). De día, primero cambia a modo noche pulsando el propio
-  // botón de tema (mismo camino que si lo pulsara el usuario) y espera a que
-  // se vea la luna antes de volar.
-  let quitaCabeceraLuna: (() => void) | null = null;
-  function montarEnlaceCabecera(lunaHero: HTMLAnchorElement) {
-    const enlace = document.querySelector<HTMLAnchorElement>("header nav a[href='/luna']");
-    if (!enlace) return () => {};
+  // Enlaces "moon-project" y "mars-project" de la cabecera (Header.astro): en
+  // la portada se comportan como la luna y Marte del hero (disparan un clic
+  // real sobre su enlace, así que reutilizan montarViaje sin duplicar nada).
+  // La luna solo se ve de noche: de día, primero cambia a modo noche pulsando
+  // el propio botón de tema (mismo camino que si lo pulsara el usuario) y
+  // espera a que se vea la luna antes de volar. Marte se ve siempre.
+  function montarEnlaceCabecera(d: Destino, deNoche: boolean) {
+    const enlace = document.querySelector<HTMLAnchorElement>(`header nav a[href='${d.ruta}']`);
+    const hero = document.querySelector<HTMLAnchorElement>(`.hero ${d.enlace}`);
+    if (!enlace || !hero) return () => {};
     const clic = (e: MouseEvent) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
-      if (document.documentElement.classList.contains("dark")) {
-        lunaHero.click();
+      if (!deNoche || document.documentElement.classList.contains("dark")) {
+        hero.click();
         return;
       }
       document.getElementById("theme-button")?.click();
       const espera = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
-      setTimeout(() => lunaHero.click(), espera);
+      setTimeout(() => hero.click(), espera);
     };
     enlace.addEventListener("click", clic);
     return () => enlace.removeEventListener("click", clic);
   }
 
-  let quitaViaje: (() => void) | null = null;
-  function montarViaje(hero: HTMLElement) {
-    const enlace = hero.querySelector<HTMLAnchorElement>(".hero-luna-enlace");
-    const icono = hero.querySelector<HTMLElement>(".astro-luna");
+  // Un solo vuelo a la vez, vaya a donde vaya.
+  let enVuelo = false;
+  let quitaViajes: (() => void)[] = [];
+  function montarViaje(hero: HTMLElement, d: Destino) {
+    const enlace = hero.querySelector<HTMLAnchorElement>(d.enlace);
+    const icono = hero.querySelector<HTMLElement>(d.icono);
     const planeta = hero.querySelector<HTMLElement>(".hero-planet");
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars");
     if (!enlace || !icono || !planeta || !estrellas) return () => {};
     let img: HTMLImageElement | null = null;
-    let enVuelo = false, cancela = () => {};
+    let mio = false, cancela = () => {};
     const precarga = () => {
       if (img) return;
       img = new Image();
-      img.src = LUNA_IMG;
+      img.src = d.img;
       img.decode().catch(() => {});
     };
     const clic = async (e: MouseEvent) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
       e.preventDefault();
       if (enVuelo) return;
-      enVuelo = true;
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/luna");
+      enVuelo = mio = true;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate(d.ruta);
       precarga();
       await img!.decode().catch(() => {});
-      // La cabecera también: /luna no la tiene y así no desaparece de golpe.
-      const SEL_APAGAR = ".hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira";
+      // La cabecera también: /luna y /marte no la tienen y así no desaparece
+      // de golpe. Y el otro astro del cielo: no gira con la cámara.
+      const SEL_APAGAR = `.hero-titulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
       const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
       // El planeta deja de girar mientras dura el vuelo: se va encogiendo y el
       // giro no se aprecia, pero cada repintado cuesta un volcado entero del
       // lienzo justo en el momento de más trabajo de toda la web (20-sep-2026,
       // ver temperatura-zen.md).
       giroPlaneta(false);
-      const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img! });
+      const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img!, ...d.opciones });
       cancela = vuelo.limpiar;
-      estrellasLuna = await vuelo.fin;
+      llegada = { hero: d.heroDestino, pos: await vuelo.fin };
       // La capa se va con la página vieja al cambiar (ClientRouter sustituye el <body>).
-      navigate("/luna");
+      navigate(d.ruta);
     };
     enlace.addEventListener("pointerenter", precarga);
     enlace.addEventListener("focus", precarga);
     enlace.addEventListener("touchstart", precarga, { passive: true });
     enlace.addEventListener("click", clic);
     return () => {
-      if (enVuelo && estrellasLuna === null) { cancela(); giroPlaneta(true); }   // se sale a mitad de vuelo
+      if (mio && llegada === null) { cancela(); giroPlaneta(true); }   // se sale a mitad de vuelo
+      if (mio) enVuelo = false;
       enlace.removeEventListener("pointerenter", precarga);
       enlace.removeEventListener("focus", precarga);
       enlace.removeEventListener("touchstart", precarga);
@@ -562,27 +593,26 @@ const eventos = todosEventos
     };
   }
 
-  // Al aterrizar en /luna, sus estrellas donde quedaron las del vuelo (antes de
-  // que se pinte la página nueva).
+  // Al aterrizar en /luna o /marte, sus estrellas donde quedaron las del vuelo
+  // (antes de que se pinte la página nueva).
   document.addEventListener("astro:after-swap", () => {
-    if (estrellasLuna === null) return;
-    document.querySelector<HTMLElement>(".luna-hero .hero-stars")?.style.setProperty("--estrellas-pos", estrellasLuna);
-    estrellasLuna = null;
+    if (llegada === null) return;
+    document.querySelector<HTMLElement>(`${llegada.hero} .hero-stars`)?.style.setProperty("--estrellas-pos", llegada.pos);
+    llegada = null;
   });
 
   document.addEventListener("astro:page-load", async () => {
     faseLuna();
     quitaAstro?.();
     quitaAstro = montarAstro();
-    quitaViaje?.();
-    quitaViaje = null;
-    quitaCabeceraLuna?.();
-    quitaCabeceraLuna = null;
+    for (const q of quitaViajes) q();
+    quitaViajes = [];
     const heroViaje = document.querySelector<HTMLElement>(".hero");
-    const lunaHero = heroViaje?.querySelector<HTMLAnchorElement>(".hero-luna-enlace") ?? null;
-    if (heroViaje && lunaHero) {
-      quitaViaje = montarViaje(heroViaje);
-      quitaCabeceraLuna = montarEnlaceCabecera(lunaHero);
+    if (heroViaje?.querySelector(".hero-planet")) {
+      quitaViajes = [
+        montarViaje(heroViaje, LUNA), montarEnlaceCabecera(LUNA, true),
+        montarViaje(heroViaje, MARTE), montarEnlaceCabecera(MARTE, false),
+      ];
     }
     const cv = document.querySelector<HTMLCanvasElement>(".hero-planet-canvas");
     if (!cv) return;
@@ -637,10 +667,8 @@ const eventos = todosEventos
   document.addEventListener("astro:before-swap", () => {
     quitaAstro?.();
     quitaAstro = null;
-    quitaViaje?.();
-    quitaViaje = null;
-    quitaCabeceraLuna?.();
-    quitaCabeceraLuna = null;
+    for (const q of quitaViajes) q();
+    quitaViajes = [];
     planeta?.desmontar();
     quitaMira?.();
     planeta = null;

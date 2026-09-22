@@ -296,6 +296,35 @@ html.dark .astro-luna { opacity: 1; }
 html.dark .hero-luna-enlace { display: block; }
 .hero-luna-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
 
+/* Proyecto Marte: Marte arriba a la derecha, frente al sol y la luna (21-sep-
+   2026: "a la derecha, para que desde la tierra se viaje a un lado o se viaje
+   a otro"). Se ve de día y de noche. Pixel art de generar-marte.py --icono,
+   en el mismo lienzo que la luna (56 px de arte, x3; x2 en móvil) y algo más
+   pequeño que ella (radio 12 frente a 16). Detrás del planeta, como el sol y
+   la luna. Al pulsarlo, vuelo a /marte (index.astro). */
+.hero-marte {
+  position: absolute;
+  right: 3%;   /* "un poco más a la derecha" que el 5 % de la luna (usuario, 22-sep-2026) */
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  z-index: 0;
+  pointer-events: none;
+  background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+.hero-marte-enlace {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  width: 168px;
+  height: 168px;
+  z-index: 2;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.hero-marte-enlace:focus-visible { outline: 2px dashed #ffb07a; outline-offset: -40px; }
+
 /* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
    resolución (index.astro), que crece desde la luna del hero hasta donde queda
    en /luna (.luna-disco). */
@@ -318,6 +347,8 @@ html.dark .hero-luna-enlace { display: block; }
   background: url(/zodk-luna-fases.png) no-repeat;
   background-size: 3000% 100%;
 }
+/* y la de Marte, en el vuelo a /marte */
+.viaje-icono-marte { background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%; }
 
 /* --- La Luna (/luna) --------------------------------------------------------
    Mismo fondo que la portada. El disco, centrado; --luna-tam lo usa también el
@@ -957,6 +988,54 @@ html.dark .hero-luna-enlace { display: block; }
 .luna-menu a:is(:hover, :focus-visible)::before,
 .luna-menu a:is(:hover, :focus-visible)::after { width: calc(100% - 2px); height: calc(100% - 2px); opacity: 1; }
 
+/* --- Proyecto Marte (/marte) -------------------------------------------------
+   Marte en WebGL (src/scripts/marte-gl.js), quieto: se gira con clic y
+   arrastrar y se acerca con la rueda o el trackpad. La rueda es el zoom, así
+   que la página no hace scroll: es una escena a pantalla completa. */
+html:has(.marte-hero) { overflow: hidden; }
+/* Diámetro del disco a zoom x1 (60 svh: el mismo tamaño de píxel que la Luna
+   de /luna) y lado de la caja de marte-quieto.png (450 px de arte con el disco
+   de 2 x 219,4 = 438,8 en medio). El vuelo desde la portada acaba en esa caja
+   (viaje-luna.js). */
+:root { --marte-disco: 60vh; }
+@supports (height: 1svh) { :root { --marte-disco: 60svh; } }
+:root { --marte-caja: calc(var(--marte-disco) * 450 / 438.8); }
+/* Marte quieto (public/marte/marte-quieto.png, de generar-marte-quieto.mjs):
+   la vista inicial tal cual la pinta el motor. Se ve al aterrizar del vuelo
+   mientras carga el lienzo, y si no hay WebGL2 se queda. El ?v= va con
+   MARTE_V de marte.js. */
+.marte-disco {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--marte-caja);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: url(/marte/marte-quieto.png?v=7) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+/* El lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se
+   centra. */
+.marte-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  z-index: 1;
+}
+/* Mide el diámetro del disco a zoom x1 para marte-gl.js. */
+.marte-sonda {
+  position: absolute;
+  width: 0;
+  height: var(--marte-disco);
+  visibility: hidden;
+}
+/* La mano: se agarra en todo el hero (montarMano pone las clases). */
+.marte-hero.arrastrable { cursor: grab; }
+.marte-hero.agarrando, .marte-hero.agarrando * { cursor: grabbing !important; user-select: none; }
+
+
 /* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
    negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
    (::before) para despegarlo del pixel art.
@@ -1559,6 +1638,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
   .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
   .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-marte, .hero-marte-enlace { right: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
@@ -1601,16 +1681,17 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 
 html.dark .hero-stars { opacity: 0.9; }
 html.dark .hero-stars::after { display: block; }
-/* En /luna siempre es de noche: las estrellas de más, también en tema claro. */
-.luna-hero .hero-stars { opacity: 0.9; }
-.luna-hero .hero-stars::after { display: block; }
+/* En /luna y /marte siempre es de noche: las estrellas de más, también en
+   tema claro. */
+:is(.luna-hero, .marte-hero) .hero-stars { opacity: 0.9; }
+:is(.luna-hero, .marte-hero) .hero-stars::after { display: block; }
 /* Al pasar a noche (no al cargar), las estrellas de más se encienden poco a
    poco: Head.astro pone html.estrellas-entrando mientras dura. Animación y no
    transición porque el botón de tema anula las transiciones al cambiar. */
 @keyframes estrellas-entran { from { opacity: 0; } }
 @keyframes estrellas-suben { from { opacity: 0.7; } }
-html.estrellas-entrando .hero:not(.luna-hero) .hero-stars { animation: estrellas-suben 3s ease-in-out both; }
-html.estrellas-entrando .hero:not(.luna-hero) .hero-stars::after { animation: estrellas-entran 3s ease-in-out both; }
+html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars { animation: estrellas-suben 3s ease-in-out both; }
+html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars::after { animation: estrellas-entran 3s ease-in-out both; }
 
 .hero-sparkle {
   position: absolute;
