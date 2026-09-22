@@ -805,7 +805,7 @@ La Hora de La 1 ha borrado de la red social X el corte donde exponía las contra
   </a>
   <div class="tweet-text">Pedro Sánchez se vuelve a ir de vacaciones a Andorra horas después de presidir el consejo de seguridad nacional.</div>
   <img class="tweet-media" src="/tweets/media-hqmbo2jxwaayfzg.jpg" alt="Imagen del tweet" loading="lazy" />
-  <a class="tweet-date" href="https://x.com/wallstwolverine/status/2092374635488670014" target="_blank" rel="noopener">25 de agosto de 2026</a>
+  <a class="tweet-date" href="https://x.com/wallstwolverine/status/2092374635488670014" target="_blank" rel="noopener">26 de agosto de 2026</a>
 </blockquote>
 
 **NOTICIAS DEL DÍA**
