@@ -4,135 +4,132 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (22-sep-2026: Marte en `/luna`, vuelos Luna ↔ Marte y la Tierra pequeña de `/marte`, commiteados; siguiente, rehacer la Tierra pequeña)
+## Dónde estamos (22-sep-2026, fin de sesión: todo commiteado y subido)
 
-**Rama `mars-project`**, creada desde `main` el 21-sep-2026 y **subida a
-GitHub** el mismo día (`git push -u origin mars-project`). Nada fusionado ni
-publicado: `main` y zodk.eu siguen como estaban.
+**Rama `mars-project`** (creada desde `main` el 21-sep-2026), **commiteada y
+subida a GitHub** al cerrar la sesión del 22-sep-2026 (el usuario: "Queda
+perfecto. commit push aqui"). **Nada fusionado ni publicado**: `main` y
+zodk.eu siguen sin Marte.
 
-### Hecho (todo commiteado y aprobado por el usuario)
+Verlo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte, arriba a
+la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
+(Marte arriba a la izquierda) o `http://localhost:4321/marte`. En otro
+ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
+
+### Qué hay hoy
+
+- **`/marte`** (`src/pages/marte.astro`, motor `src/scripts/marte-gl.js`):
+  Marte en pixel art a pantalla completa (60 svh a ×1), quieto; se gira con
+  clic y arrastrar (flecha normal y mano cerrada solo al pinchar) y se acerca
+  con la rueda o el trackpad hasta ×6, con más detalle según se acerca
+  (teselas). Sin cabecera ni scroll. Sin título.
+  - **Tierra pequeña** arriba a la derecha de Marte (a 1,6 radios a la
+    derecha y 0,85 por encima), de día o de noche según el tema: se pulsa y
+    hay un **vuelo hacia delante** a la portada.
+  - **"volver a la Luna"** (abajo a la derecha) solo si se llegó desde
+    `/luna`: deshace ese vuelo.
+- **Portada**: **Marte pequeño** arriba a la derecha (de día y de noche) y
+  **`mars-project`** en la cabecera; los dos hacen el **vuelo a `/marte`**.
+- **`/luna`**: **Marte pequeño** arriba a la izquierda, con **vuelo a
+  `/marte`** (la Luna grande sale por abajo).
+- **Vuelos** (`src/scripts/viaje-luna.js`, el motor del de la Luna,
+  generalizado): Tierra → Marte, Luna → Marte, Marte → Tierra (hacia delante;
+  aterriza en el horizonte de la portada) y Marte → Luna (al revés, desde
+  Marte tal como se dejó y sin pararse si estaba acercado). Los de la Luna no
+  cambian.
+
+### Hecho (todo commiteado y subido)
 
 1. **Estudio y Marte provisional** (`generar-marte.py`, relieve MOLA + color
-   Viking, pixel art con el recorrido de la Luna), a 60 svh con el píxel de la
-   Luna. Commit `5a99c5c`.
-2. **Giro con la mano**, tipo globo (norte arriba). Primero con la barra
-   espaciadora (`eafc8b6`); el usuario lo cambió a **clic y arrastrar, como
-   Google Maps** (`de62b88`). Quieto no se repinta.
-3. **Zoom con rueda y trackpad**, hacia el cursor al acercarse y hacia el
-   centro al alejarse, **hasta ×6**, con el detalle creciendo:
-   - Motor en **WebGL** (`src/scripts/marte-gl.js`): 0,3-0,6 ms por
-     fotograma en Chrome. Zen y trackpad, probados por el usuario.
-   - Pirámide de mapas: base de 4 px/grado + teselas de 8, 16 y 24 px/grado
-     (`public/marte/n1..n3`), en un atlas de tamaño fijo en la GPU.
-   - Commits `c8bc302` (×4) y `21d404b` (×6).
-4. **Pulido del pixel art** (sin pasarse de realismo, pidió el usuario):
-   - **Sombra menos oscura**: `NOCHE` 0,16 → 0,22 (`1e4641b`).
-   - **Llanuras en dos tonos**: el pico de brillo partido en dos tonos casi
-     iguales (`a907648`).
-   - **Zonas oscuras en "chocolate suave"**: rechazó gris y gris azulado;
-     prefiere los tonos reales (`105ff78`).
-   - **Casquete norte**: se queda como estaba y la **vista inicial se inclina
-     12,5° al norte** (se probó 25°: demasiado) (`3b31e39`).
-   - **Grano en las llanuras a ×6**: se probaron tres arreglos y el usuario
-     dijo "**No. Déjalo como estaba**". Sin cambios (ver punto 5 del pulido).
-5. **Bancos de prueba** en `logo-files/prototipo-marte/`:
-   - `zoom.html`: el de ahora, WebGL. Panel mínimo; las comparaciones, por la
-     URL.
-   - `canvas.html`: el motor de CPU.
-   - `index.html`: los PNG del boceto.
-   - `probar-en-node.mjs`: pruebas sin navegador.
-
-### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: página /marte, Marte en la portada y el vuelo"; el usuario pidió el commit)
-
-6. **Página `/marte`** (`src/pages/marte.astro` y el bloque "Proyecto Marte"
-   de `global.css`), pedida el 21-sep-2026. Marte a pantalla completa sobre
-   las estrellas, quieto, con la mano y el zoom de los bancos. **Sin
-   título**: el "mars project" animado se hizo, se pulió y el usuario lo
-   **quitó** el 22-sep-2026 (ver "El título: esquinas que se cierran",
-   registro). Ver "Página /marte" abajo.
-7. **Marte en la portada y el vuelo** (pedido el 21-sep-2026): Marte pequeño
-   arriba a la derecha (de día y de noche; algo más pegado al borde que la
-   luna, pedido el 22-sep-2026), enlace **`mars-project`** en la cabecera y
-   **vuelo Tierra → Marte** con el motor del de la Luna, aterrizando en el
-   disco de `/marte`. Ver "Marte en la portada y el vuelo" abajo.
-
-Verlo todo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte o
-`mars-project`) o `http://localhost:4321/marte`.
-
-### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: volver a la Tierra desde /marte"; aprobado por el usuario: "perfecto. commit.")
-
-8. **Volver de `/marte` a la Tierra** (pedido el 22-sep-2026: "Pon el boton
-   de volver"): el botón de `/luna`, abajo a la derecha, con el vuelo al
-   revés. Ver "Volver a la Tierra" abajo.
-
-### Hecho y commiteado el 22-sep-2026 (commit "Proyecto Marte: Marte en /luna, vuelos Luna ↔ Marte y la Tierra pequeña de /marte"; el usuario: "commit hasta aqui")
-
-9. **Marte pequeño en `/luna` y vuelo Luna ↔ Marte** ("sí, monta el Marte de
-   /luna así", 22-sep-2026): arriba a la izquierda de `/luna`, con vuelo a
-   `/marte` y vuelta. Ver "Luna ↔ Marte" abajo.
-10. **Cómo se sale de `/marte`** (usuario, 22-sep-2026): una **Tierra pequeña
-    arriba a la derecha**, siempre, que se pulsa para ir a la Tierra con un
-    **vuelo hacia delante** (hacia ella); y **solo si se llegó desde la
-    Luna**, además el botón **"volver a la Luna"**. Sustituye al botón
-    "volver a la Tierra" del punto 8. Ver "La Tierra pequeña de /marte" abajo.
-11. **Cursor de `/marte`**: flecha normal todo el rato y mano cerrada solo al
-    pinchar para mover (usuario, 22-sep-2026: antes salía la mano abierta al
-    pasar por encima). `montarMano` pone `agarrando` desde que se pincha.
-12. **Arreglado: Marte en blanco al abrir `/marte` en segundo plano.** Quieto
-    no se repinta, y si la pestaña no se veía al pintar (p. ej. abierta en
-    otra pestaña), Chrome descartaba ese fotograma: no salía Marte hasta
-    tocarlo. Visto en el Chrome del usuario el 22-sep-2026. `marte-gl.js`
-    repinta al volver a verse (`visibilitychange`).
+   Viking, pixel art con el recorrido de la Luna). `5a99c5c`.
+2. **Giro con la mano**, tipo globo: primero con la barra espaciadora
+   (`eafc8b6`), luego **clic y arrastrar, como Google Maps** (`de62b88`).
+3. **Zoom con rueda y trackpad hasta ×6**, en **WebGL**, con pirámide de
+   mapas y teselas. `c8bc302` (×4) y `21d404b` (×6). Zen y trackpad,
+   probados por el usuario.
+4. **Pulido del pixel art** (sin pasarse de realismo): sombra menos oscura
+   (`1e4641b`), llanuras en dos tonos (`a907648`), zonas oscuras en
+   "chocolate suave" (`105ff78`), vista inicial a 12,5° al norte (`3b31e39`);
+   casquete y grano, como estaban.
+5. **Bancos de prueba** en `logo-files/prototipo-marte/` (`zoom.html` es el de
+   ahora).
+6. **Página `/marte`** (`1aa8175`). El título "mars project" animado se hizo,
+   se pulió y **se quitó** (registro en "El título: esquinas que se cierran").
+7. **Marte en la portada, `mars-project` en la cabecera y vuelo Tierra →
+   Marte** (`1aa8175`). La cabecera, en el móvil, ya no parte "moon-project".
+8. **Volver a la Tierra desde `/marte`** (`9db68d3`): primero un botón con el
+   vuelo al revés; luego sustituido por la Tierra pequeña (punto 10).
+9. **Marte en `/luna` y vuelos Luna ↔ Marte** (`18256e6`).
+10. **Tierra pequeña de `/marte` con vuelo hacia delante** y botón "volver a
+    la Luna" solo si se vino de allí (`18256e6`).
+11. **Cursor de `/marte`**: flecha normal, mano cerrada al pinchar
+    (`18256e6`).
+12. **Arreglado Marte en blanco** al abrir `/marte` en segundo plano: se
+    repinta al volver a verse la pestaña (`18256e6`).
+13. **Tierra pequeña rehecha** (último commit de la sesión, "Proyecto Marte:
+    la Tierra pequeña de /marte, de pie y con la luz de Marte"): la variante
+    C elegida por el usuario, de día y de noche (el vuelo va de noche a noche
+    en modo oscuro), y colocada respecto a Marte. Ver "La Tierra pequeña de
+    /marte".
 
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
 - **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
   hasta que el pixel art sea definitivo (decisión del usuario). Solo están en
-  el Mac.
+  el Mac. Sin ellas, `/marte` funciona pero el zoom no gana detalle.
 - **Las fuentes** (`logo-files/marte-fuentes/`, ~1 GB: MOLA de 16 y 32
   px/grado y el mosaico Viking con sus reducciones a 8, 16 y 24).
-- En otro ordenador hay que bajar las fuentes (los `curl`/`sips` están en el
+- En otro ordenador: bajar las fuentes (los `curl`/`sips` están en el
   docstring de `generar-marte.py`) y regenerar: `cd logo-files && python3
   generar-marte.py --canvas ../public/marte/` (unos 4 min).
-- Verlo: `python3 -m http.server 4400` en la raíz del repo y abrir
-  `http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html`. Tras tocar
-  `marte-gl.js`, recargar a fondo (Cmd+Mayús+R): Chrome guarda en caché el
-  módulo.
+- Lo que se genera y **sí** está en Git: `public/zodk-marte.png`
+  (`generar-marte.py --icono`), `public/marte/marte-quieto.png` (`node
+  logo-files/generar-marte-quieto.mjs`) y `public/zodk-tierra*.png` (`node
+  logo-files/generar-tierra-icono.mjs`). Si cambian los datos de Marte o la
+  Tierra de la portada, rehacerlos (y subir `MARTE_V` en `marte.js`).
 
-### Pendiente (sin orden cerrado; lo decide el usuario)
+### Pendiente (por orden)
 
-- **Siguiente paso: rehacer la Tierra pequeña de `/marte`** (el usuario: "La
-  tierra se ve demasiado artificial (puede ser por la posicion? esta
-  demasiado escorada)"; aceptó la propuesta: "vamos con tu propuesta").
-  Diagnóstico, mirándola en su Chrome junto al Marte pequeño de la portada:
-  el halo es un aro gris azulado frío que sobre la Tierra oscura parece un
-  marco; no tiene luz ni sombra (es la Tierra de la portada reducida, plana);
-  está inclinada 20° al norte (la vista de la portada); y en su ventana (777
-  px de ancho) queda pegada al borde de Marte y metida en la esquina.
-  Propuesta: una Tierra pequeña propia, como el Marte pequeño: de pie, con la
-  luz de Marte (desde la izquierda, con su lado en sombra), halo azul más
-  suave y al 5 % en vez del 3 %; dos o tres variantes en la página para
-  comparar con la actual (una, con unas pocas luces de ciudades en el lado en
-  sombra, sin recomendarla).
-- **Orden que marcó el usuario** (22-sep-2026): commit (hecho, `1aa8175`),
-  **el botón de volver** de `/marte` (hecho, `9db68d3`; luego cambiado por la
-  Tierra pequeña, sin commitear), **un Marte pequeño en `/luna`** con el
-  vuelo Luna → Marte (hecho, sin commitear) y **el móvil, lo último**
-  (siguiente).
-- **Duda abierta**: que Marte se vea de día y de noche se dio por bueno (era
-  la recomendación; no lo dijo expresamente).
-- **`/marte`**: sin menú HUD (aún no hay notas que enlazar).
-- **Decisiones abiertas** (detalle en "Decisiones pendientes"):
-  - ¿Marte gira solo? Se recomendó que empiece quieto con botón play/pausa.
-  - Móvil y táctil.
-- **Chapas de las misiones**: aplazadas hasta que se escriban las notas en la
-  bóveda.
-- **Sin WebGL2**: en `/marte` se queda Marte quieto (`marte-quieto.png`, el
-  fondo mientras carga), sin mano ni zoom. Salió de paso con el vuelo; si el
-  usuario prefiere el motor de CPU sin zoom, se cambia.
-- **Antes de publicar**: commitear las teselas (con el pixel art ya
-  definitivo) y fusionar `mars-project` en `main` (explicando el merge al
-  usuario antes).
+1. **Móvil y táctil** (el usuario: "Móvil lo último"; es lo siguiente). Nada
+   hecho aún en `/marte` para el dedo:
+   - Girar con un dedo y hacer zoom pellizcando (hoy, en táctil, ni gira ni
+     acerca).
+   - En un móvil en vertical, el disco de 60 svh es más ancho que la pantalla:
+     decidir el tamaño.
+   - Mirar dónde cae la Tierra pequeña (en el móvil, 112 px) y el botón.
+   - Probar los vuelos en un móvil de verdad (y el consumo).
+2. **Decisión abierta: ¿Marte gira solo?** Se recomendó que empiece quieto con
+   un botón play/pausa como el de la Tierra (ver "Decisiones pendientes").
+3. **Chapas de las misiones** (Curiosity, Perseverance…): aplazadas hasta que
+   se escriban sus notas en la bóveda. Después, quizá un menú HUD en `/marte`
+   como el de `/luna`.
+4. **Visto y sin tocar** (preguntar antes):
+   - En el vuelo de `/luna` a la Tierra, el menú de arriba a la derecha
+     (alunizajes / relés / orion) no se apaga (ya pasaba antes).
+   - Safari: el pellizco del trackpad (`gesture*`) está previsto pero sin
+     probar.
+   - Al pasar de un nivel de teselas a otro durante el zoom, el detalle
+     "salta" (normal en mapas por niveles).
+   - Que Marte se vea de día y de noche en la portada se dio por bueno (era
+     la recomendación; no lo dijo expresamente).
+5. **Antes de publicar**: pixel art definitivo → commitear las teselas;
+   probar en el móvil; fusionar `mars-project` en `main` explicándole antes
+   el merge al usuario (el push a `main` publica zodk.eu); poner al día
+   `CLAUDE.md` (sección del Proyecto Marte) y `LUNA-WIP.md`.
+
+### Para la próxima sesión
+
+- Leer esto primero. La memoria del asistente no está en el PC con Linux:
+  aquí está todo.
+- Estilo de trabajo que ha pedido el usuario en este proyecto: pasos cortos y
+  enseñar el resultado antes de seguir; los astros pequeños van en las
+  esquinas de arriba y pulsarlos hace un vuelo **hacia delante** (el vuelo al
+  revés, solo para un "volver" explícito); animaciones fluidas, sin parones
+  entre fases; colores reales, sin pasarse de realismo en el detalle.
+- Para mirarlo en el Chrome del usuario con la extensión: la pestaña que abre
+  puede quedar en segundo plano y Chrome congela ahí las animaciones (y el
+  lienzo WebGL); tiene que estar delante. Las pruebas de vuelos se hicieron
+  con Chrome sin ventana (`--headless=new` + CDP) y fotogramas.
 
 ## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
 
