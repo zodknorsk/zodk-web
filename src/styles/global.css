@@ -1046,17 +1046,22 @@ html:has(.marte-hero) { overflow: hidden; }
 }
 /* La Tierra pequeña de /marte (usuario, 22-sep-2026): se pulsa para ir a la
    Tierra con un vuelo hacia delante, hacia ella. Pixel art de
-   generar-tierra-icono.mjs (la Tierra de la portada reducida, de día o de
-   noche según el tema), en el lienzo del Marte pequeño (56 px de arte, x3; x2
-   en el móvil). Arriba a la derecha, "igual que el resto de esferas" (como
-   Marte en la portada). Aparece con un fundido al llegar, como el botón de
-   volver a la Luna. */
+   generar-tierra-icono.mjs (la Tierra de la portada, de pie y con la luz de
+   Marte; de día o de noche según el tema), en el lienzo del Marte pequeño
+   (56 px de arte, x3; x2 en el móvil). Aparece con un fundido al llegar, como
+   el botón de volver a la Luna.
+   Sitio: arriba a la derecha de Marte, y colocada respecto a Marte, no a la
+   esquina de la pantalla: al 3 % de la esquina, en pantalla completa quedaba
+   "muy alejada de Marte". Su centro va a 1,6 radios de Marte a la derecha y
+   0,85 por encima (en /luna, Marte queda de la Luna a 1,6-1,9 y 0,85, y así
+   "se ve algo mejor"); en ventanas estrechas, sin salirse de la pantalla. */
 .marte-tierra, .marte-tierra-enlace {
+  --lado: 168px;
   position: absolute;
-  right: 3%;
-  top: 5%;
-  width: 168px;
-  height: 168px;
+  left: min(calc(50% + var(--marte-disco) * 0.8 - var(--lado) / 2), calc(97% - var(--lado)));
+  top: max(calc(50% - var(--marte-disco) * 0.425 - var(--lado) / 2), 3%);
+  width: var(--lado);
+  height: var(--lado);
 }
 .marte-tierra {
   z-index: 2;                 /* delante de Marte: con zoom, Marte llena la pantalla */
@@ -1070,7 +1075,7 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 @keyframes marte-aparece { from { opacity: 0; } }
 .marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
 @media (max-width: 640px) {
-  .marte-tierra, .marte-tierra-enlace { top: 6%; width: 112px; height: 112px; }
+  .marte-tierra, .marte-tierra-enlace { --lado: 112px; }
 }
 
 /* La mano: se agarra en todo el hero (montarMano pone las clases). Flecha
