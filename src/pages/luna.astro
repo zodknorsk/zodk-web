@@ -3,7 +3,8 @@
 // desde la Tierra de la portada pulsando la luna de arriba a la izquierda
 // (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón
 // de abajo a la derecha da media vuelta a la cara oculta y vuelve; el de abajo
-// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás.
+// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás. Marte,
+// arriba a la izquierda, lleva a /marte con el mismo vuelo (Proyecto Marte).
 // Motor: src/scripts/luna.js (datos en public/luna/, de
 // logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
@@ -23,6 +24,11 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero cabecera={false}>
   <section slot="hero" class="hero luna-hero" aria-label="La Luna">
     <div class="hero-stars" aria-hidden="true"></div>
+    <!-- Proyecto Marte: Marte pequeño arriba a la izquierda (el de la portada,
+         en el sitio del sol y la luna de allí); lleva a /marte con el mismo
+         vuelo. Detrás de la Luna, que está más cerca. -->
+    <div class="hero-marte hero-marte--luna" aria-hidden="true"></div>
+    <a class="hero-marte-enlace hero-marte--luna" href="/marte" aria-label="Viajar a Marte" title="Viajar a Marte"></a>
     <!-- Mismo tamaño y sitio que donde termina el vuelo desde la Tierra
          (.luna-disco en global.css). El fondo es la cara visible: se ve sin JS
          y mientras carga el canvas. -->
@@ -194,12 +200,14 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
   // (ClientRouter), así que se monta en cada llegada y se desmonta al salir.
   import { navigate } from "astro:transitions/client";
   import { montarLuna, LUNA_V } from "../scripts/luna.js";
-  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
+  import { MARTE_V } from "../scripts/marte.js";
+  import { volarALuna, faseLunaHoy, VUELO_MARTE } from "../scripts/viaje-luna.js";
 
   type Luna = { girar(): void; cara(): string; girando(): boolean; desmontar(): void };
   let luna: Luna | null = null;
   let quitaBoton: (() => void) | null = null;
   let estrellasTierra: string | null = null;   // posición de las estrellas al aterrizar en la portada
+  let estrellasMarte: string | null = null;    // y al aterrizar en /marte
 
   // Selección de países/chapas y cara: se guarda en sessionStorage para que
   // "Leer la nota" y volver con "Volver a la Luna" (dos navegaciones sueltas,
@@ -251,9 +259,35 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     navigate("/");
   }
 
+  // Vuelo a Marte (Proyecto Marte): el de la portada, desde Marte arriba a la
+  // izquierda. La Luna grande es aquí lo que se deja atrás: sale por abajo
+  // como la Tierra en el vuelo a la Luna. En /marte, el botón dirá "volver a
+  // la Luna": se le avisa con sessionStorage ("marte-desde"), que /marte lee y
+  // borra al llegar. La selección de la Luna (países, cara) queda guardada,
+  // así que al volver sigue igual.
+  async function volarAMarte(hero: HTMLElement, l: Luna, disco: HTMLElement, apagar: HTMLElement[]) {
+    const avisa = () => { try { sessionStorage.setItem("marte-desde", "luna"); } catch { /* sessionStorage no disponible */ } };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { avisa(); return navigate("/marte"); }
+    const img = new Image();
+    img.src = `/marte/marte-quieto.png?v=${MARTE_V}`;
+    await img.decode().catch(() => {});
+    const icono = hero.querySelector<HTMLElement>(".hero-marte")!;
+    const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
+    l.desmontar();                              // quieta: la Luna se va tal cual se ve
+    const vuelo = volarALuna({ icono, planeta: disco, estrellas, apagar, img, ...VUELO_MARTE });
+    estrellasMarte = await vuelo.fin;
+    avisa();
+    navigate("/marte");
+  }
+
   // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo, y
   // la cabecera (que /luna no tiene) entra con un fundido en vez de de golpe.
+  // En /marte, solo las estrellas.
   document.addEventListener("astro:after-swap", () => {
+    if (estrellasMarte !== null) {
+      document.querySelector<HTMLElement>(".marte-hero .hero-stars")?.style.setProperty("--estrellas-pos", estrellasMarte);
+      estrellasMarte = null;
+    }
     if (estrellasTierra === null) return;
     document.querySelector<HTMLElement>(".hero:not(.luna-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasTierra);
     document.querySelector<HTMLElement>("body > header")?.animate(
@@ -465,13 +499,28 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
       // flotando mientras la Luna se aleja hacia el icono.
-      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas")]);
+      // Marte (arriba a la izquierda) también: no gira con la cámara.
+      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-hero .hero-marte")]);
+    };
+    // Marte (arriba a la izquierda): vuelo a /marte. Como volver a la Tierra,
+    // se apaga todo lo de la Luna menos el disco, que es el que se va.
+    const enlaceMarte = hero.querySelector<HTMLAnchorElement>(".hero-marte-enlace");
+    const clicMarte = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
+      e.preventDefault();
+      if (enVuelo || l.girando()) return;
+      enVuelo = true;
+      guardarSeleccion();
+      boton.disabled = volver.disabled = true;
+      volarAMarte(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-menu")]);
     };
     boton.addEventListener("click", clic);
     volver.addEventListener("click", clicVolver);
+    enlaceMarte?.addEventListener("click", clicMarte);
     quitaBoton = () => {
       boton.removeEventListener("click", clic);
       volver.removeEventListener("click", clicVolver);
+      enlaceMarte?.removeEventListener("click", clicMarte);
     };
   });
 

@@ -7,6 +7,15 @@ tocando va sobre `main` o en rama nueva. **Leer esto primero** al volver, antes
 de tocar nada: la parte de abajo es el registro de sesión a sesión, con lo que
 se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 
+> **Cambios desde el Proyecto Marte (rama `mars-project`, 22-sep-2026, sin
+> publicar)**: `/luna` tiene un **Marte pequeño arriba a la izquierda** que
+> lleva a `/marte` con el mismo vuelo (la Luna grande sale por abajo, como la
+> Tierra en el vuelo a la Luna); desde `/marte`, "volver a la Luna" deshace
+> el vuelo y la Luna vuelve con la cara que se dejó. En el vuelo a la Tierra,
+> Marte se apaga como el sol y la luna en la portada. `viaje-luna.js` se
+> generalizó (destino, icono, imagen y astro que se deja atrás por
+> parámetros); el vuelo a la Luna no cambia. Detalle en `MARTE-WIP.md`.
+
 ## Resumen del estado (20-sep-2026)
 
 Qué hay en `/luna`:
