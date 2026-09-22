@@ -355,7 +355,7 @@ const eventos = todosEventos
   import { mgrs } from "../scripts/mgrs.js";
   import { LUNA_V } from "../scripts/luna.js";
   import { MARTE_V } from "../scripts/marte.js";
-  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
+  import { volarALuna, faseLunaHoy, VUELO_MARTE } from "../scripts/viaje-luna.js";
 
   let planeta: { desmontar(): void; setParado(b: boolean): void } | null = null;
   let quitaMira: (() => void) | null = null;
@@ -503,13 +503,11 @@ const eventos = todosEventos
     ruta: "/luna", enlace: ".hero-luna-enlace", icono: ".astro-luna",
     img: `/luna/luna-visible.png?v=${LUNA_V}`, heroDestino: ".luna-hero", apagarTambien: ".hero-marte",
   };
-  // Marte acaba en el disco de /marte (--marte-caja, centrado): la imagen es
-  // marte-quieto.png, 450 px de arte con un disco de 2 x 219,4 (RADIUS de
-  // generar-marte.py); en el icono, radio 12 en 56.
+  // Marte acaba en el disco de /marte (VUELO_MARTE en viaje-luna.js).
   const MARTE: Destino = {
     ruta: "/marte", enlace: ".hero-marte-enlace", icono: ".hero-marte",
     img: `/marte/marte-quieto.png?v=${MARTE_V}`, heroDestino: ".marte-hero", apagarTambien: ".hero-astro",
-    opciones: { tam: "var(--marte-caja)", dy: "0px", imgLado: 450, imgDisco: 438.8, iconoDisco: 24 / 56, claseIcono: "viaje-icono-marte" },
+    opciones: VUELO_MARTE,
   };
   // Al aterrizar: en qué hero y dónde van las estrellas.
   let llegada: { hero: string; pos: string } | null = null;

@@ -42,10 +42,18 @@ export const PIXELES = {
   constante: "píxeles siempre del mismo tamaño: el detalle crece poco a poco",
 };
 
+// El vuelo a Marte (y de vuelta): acaba en la caja de marte-quieto.png en
+// /marte (--marte-caja, centrada). La imagen es de 450 px de arte con un disco
+// de 2 x 219,4 (RADIUS de generar-marte.py); el icono, radio 12 en 56.
+export const VUELO_MARTE = {
+  tam: "var(--marte-caja)", dy: "0px", imgLado: 450, imgDisco: 438.8,
+  iconoDisco: 24 / 56, claseIcono: "viaje-icono-marte",
+};
+
 function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
 function suave(t) { return t * t * (3 - 2 * t); }
 const inOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
-const inOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
+export const inOutSine = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
 const resta = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const punto = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const escala = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
@@ -86,20 +94,27 @@ export function faseLunaHoy() {
  * `imgDisco`, el lado de la imagen y el diámetro de su disco en px de arte;
  * `iconoDisco`, el diámetro del disco en el icono (fracción de su lado), y
  * `claseIcono`, la clase de su copia en la capa del vuelo.
+ * `alejar` (solo la vuelta desde /marte, con `inverso`): Marte empieza con el
+ * zoom `zoom` en su lienzo; primero se aleja en él (`ponZoom`) y al llegar a
+ * x1 se le hace la foto (`foto`, que además esconde el lienzo) y sigue el
+ * vuelo con ella. Alejarse y volar van en una sola curva del tamaño aparente,
+ * sin pararse entre medias: el usuario lo quería "practicamente fluido" y a
+ * la misma velocidad (22-sep-2026). `img` puede faltar: la pone `foto`.
  * @param {{ icono: HTMLElement, planeta: HTMLElement, estrellas: HTMLElement,
- *   apagar?: HTMLElement[], img: HTMLImageElement, duracion?: number,
+ *   apagar?: HTMLElement[], img?: HTMLImageElement | HTMLCanvasElement | null, duracion?: number,
  *   tierra?: keyof typeof TIERRAS, pixeles?: keyof typeof PIXELES,
  *   velocidad?: number, inverso?: boolean, iconoVisible?: boolean,
  *   tam?: string, dy?: string, imgLado?: number, imgDisco?: number,
- *   iconoDisco?: number, claseIcono?: string }} o
+ *   iconoDisco?: number, claseIcono?: string,
+ *   alejar?: { zoom: number, ponZoom: (z: number) => void, foto: () => HTMLCanvasElement } | null }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
 export function volarALuna({
-  icono, planeta, estrellas, apagar = [], img,
+  icono, planeta, estrellas, apagar = [], img = null,
   duracion = 6000, tierra = "encima", pixeles = "directo", velocidad = 1,
   inverso = false, iconoVisible = true,
   tam = "var(--luna-tam)", dy = "var(--luna-dy)", imgLado = 600, imgDisco = 585,
-  iconoDisco = ICONO_DISCO, claseIcono = "viaje-icono",
+  iconoDisco = ICONO_DISCO, claseIcono = "viaje-icono", alejar = null,
 }) {
   const CARA_DISCO = imgDisco / imgLado;
   // Tamaño y sitio del astro en la otra página (en /luna, --luna-tam y
@@ -149,27 +164,41 @@ export function volarALuna({
     capas.push({ el, lado, res });
     return capas.length - 1;
   };
-  const ic = document.createElement("div");
-  ic.className = claseIcono;
-  ic.style.backgroundPosition = getComputedStyle(icono).backgroundPosition;
-  const iIcono = pon(ic, ladoIcono, iconoDisco * ICONO_N);
+  let imagen = img;                                   // con `alejar`, la pone la foto al llegar a x1
   const reducida = (res) => {
     const cv = document.createElement("canvas");
     cv.width = cv.height = Math.max(1, Math.round(res / CARA_DISCO));
     const x = cv.getContext("2d");
     x.imageSmoothingEnabled = true;
     x.imageSmoothingQuality = "high";
-    x.drawImage(img, 0, 0, cv.width, cv.height);
+    x.drawImage(imagen, 0, 0, cv.width, cv.height);
     return cv;
   };
   const NIVELES = [64, 128, 256];
-  const iNiveles = pixeles === "etapas" ? NIVELES.map((res) => pon(reducida(res), lado1, res)) : [];
+  /** @type {HTMLElement | null} */
+  let ic = null;
+  let iIcono = -1, iOriginal = -1, iNiveles = [];
   // "constante": un canvas que se redibuja a la resolución que toque
   let vivo = null, vivoRes = 0;
-  if (pixeles === "constante") vivo = pon(document.createElement("canvas"), lado1);
-  const original = /** @type {HTMLImageElement} */ (img.cloneNode());
-  original.alt = "";
-  const iOriginal = pon(original, lado1);
+  const montarCapas = () => {
+    ic = document.createElement("div");
+    ic.className = claseIcono;
+    ic.style.backgroundPosition = getComputedStyle(icono).backgroundPosition;
+    iIcono = pon(ic, ladoIcono, iconoDisco * ICONO_N);
+    iNiveles = pixeles === "etapas" ? NIVELES.map((res) => pon(reducida(res), lado1, res)) : [];
+    if (pixeles === "constante") vivo = pon(document.createElement("canvas"), lado1);
+    // La imagen puede ser un lienzo (la vuelta desde /marte vuela con una foto
+    // de Marte tal como se ha dejado): ese se usa tal cual, que al clonarlo
+    // saldría vacío.
+    let original;
+    if (imagen instanceof HTMLCanvasElement) original = imagen;
+    else {
+      original = /** @type {HTMLImageElement} */ (imagen.cloneNode());
+      original.alt = "";
+    }
+    iOriginal = pon(original, lado1);
+  };
+  if (!alejar) montarCapas();
   // La capa va DETRÁS de la Tierra (dentro del hero, justo antes que ella):
   // la Tierra está más cerca, así que si se cruzan la Luna pasa por detrás.
   capa.style.zIndex = "0";
@@ -254,9 +283,10 @@ export function volarALuna({
   const desplaza = (c) => [(F * c.der[2]) / c.del[2], (F * c.aba[2]) / c.del[2]];
   const [ix0, iy0] = desplaza(camara(inverso ? 1 : 0));
 
-  // Pinta el vuelo con avance p (0..1).
-  const pinta = (p) => {
-    const t = inverso ? 1 - p : p;
+  // Pinta el vuelo en el instante t de la escena (0 = en el icono, 1 = en la
+  // otra página). Sin capas aún (con `alejar`, antes de la foto), solo
+  // estrellas y Tierra.
+  const pintaT = (t) => {
     const c = camara(t);
     const r = resta(luna, c.pos), z = punto(r, c.del);
     const lx = CX + (F * punto(r, c.der)) / z, ly = CY + (F * punto(r, c.aba)) / z;
@@ -272,10 +302,10 @@ export function volarALuna({
         const x = cv.getContext("2d");
         x.imageSmoothingEnabled = true;
         x.imageSmoothingQuality = "high";
-        x.drawImage(img, 0, 0, cv.width, cv.height);
+        x.drawImage(imagen, 0, 0, cv.width, cv.height);
       }
     }
-    const ops = opacidades(t, d);
+    const ops = capas.length ? opacidades(t, d) : [];
     capas.forEach(({ el, lado, res }, i) => {
       el.style.opacity = String(ops[i]);
       if (ops[i] === 0) return;
@@ -290,12 +320,51 @@ export function volarALuna({
     return pos;
   };
 
+  // Ritmo. Por defecto, el de siempre: t lineal en el tiempo (la cámara ya
+  // lleva sus curvas). Con `alejar`, por tamaño: el logaritmo del tamaño
+  // aparente de Marte (1 = x1 en /marte) baja desde log(zoom) hasta el del
+  // icono siguiendo una sola curva E, que arranca desde parado, tiene la
+  // velocidad máxima hacia un tercio y frena despacio hasta el final
+  // (E' = 12x(1-x)²). Mientras el tamaño es mayor que 1 se aleja el lienzo;
+  // después, el vuelo: del tamaño se saca la distancia de la cámara (mirando
+  // a Marte de frente, que es como empieza la vuelta) y de ahí el instante t,
+  // así que el giro, la Tierra y el fundido con el icono llegan donde
+  // siempre. La duración crece con el zoom (1,6 s por cada e de zoom), para
+  // que la velocidad máxima sea la misma que sin zoom.
+  const E = (x) => x * x * (6 - 8 * x + 3 * x * x);
+  const invInOutCubic = (u) => (u < 0.5 ? Math.cbrt(u / 4) : 1 - Math.cbrt(2 * (1 - u)) / 2);
+  const Lmag = Math.hypot(luna[0], luna[1], luna[2]), D1 = (2 * F) / dLuna1;
+  const logZ0 = alejar ? Math.log(Math.max(1, alejar.zoom)) : 0;
+  const recorrido = logZ0 + Math.log(Lmag / D1);
+  const total = duracion + (alejar ? 1600 * logZ0 : 0);
+  // Instante t de la escena para el avance p (0..1), o null mientras se aleja
+  // el lienzo (ya con su zoom puesto).
+  const instante = (p) => {
+    if (!alejar) return inverso ? 1 - p : p;
+    const L = logZ0 - recorrido * E(p);
+    if (L > 0) {
+      alejar.ponZoom(Math.exp(L));
+      return null;
+    }
+    if (!capas.length) {                               // llega a x1: la foto, y a volar con ella
+      alejar.ponZoom(1);
+      imagen = alejar.foto();
+      montarCapas();
+    }
+    const u = clamp01((Lmag - D1 * Math.exp(-L)) / (Lmag - D1));
+    return invInOutCubic(u);
+  };
+  const pinta = (p) => {
+    const t = instante(p);
+    return pintaT(t === null ? (inverso ? 1 : 0) : t);
+  };
+
   let raf = 0;
   pinta(0);                                          // ya, antes de que el navegador pinte nada
   const fin$ = new Promise((resolve) => {
     const t0 = performance.now();
     const frame = (ahora) => {
-      const p = Math.min(1, ((ahora - t0) * velocidad) / duracion);
+      const p = Math.min(1, ((ahora - t0) * velocidad) / total);
       const pos = pinta(p);
       if (p < 1) {
         raf = requestAnimationFrame(frame);

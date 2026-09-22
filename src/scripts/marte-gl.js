@@ -31,6 +31,11 @@
 import { MARTE_V } from "./marte.js";
 
 const DEG = Math.PI / 180;
+// Vista inicial de /marte: inclinada 12,5° al norte (21-sep-2026; era 10° y
+// se probó 25°: el usuario la quiso con "no tanta inclinación, la mitad por lo
+// menos") y con Tharsis en el centro. Es también la de marte-quieto.png y la
+// del Marte pequeño de la portada (el vuelo empieza y acaba en ella).
+export const VISTA_INICIAL = { lat0: 12.5, lon0: -80 };
 // Decidido por el usuario: x4 "y vamos viendo" y luego x6 (21-sep-2026). El
 // nivel más fino (24 px/grado) está hecho para x6: más allá solo se agrandaría.
 const ZOOM_MAX = 6;
@@ -288,11 +293,8 @@ function filas(lat0, lon0) {
  */
 export async function montarMarteGL(canvas, {
   base = "/marte/",
-  // Vista inicial inclinada 12,5° al norte (21-sep-2026). Era 10°, con el
-  // casquete norte casi en el borde; se probó 25° y el usuario lo quiso con
-  // "no tanta inclinación, la mitad por lo menos".
-  lat0: lat0Ini = 12.5,
-  lon0: lon0Ini = -80,
+  lat0: lat0Ini = VISTA_INICIAL.lat0,
+  lon0: lon0Ini = VISTA_INICIAL.lon0,
   disco = () => 0.6 * window.innerHeight,
   alPintar = () => {},
   ladoAtlas = 12,                                // huecos por lado del atlas (menos, para probar que se vacía bien)
@@ -649,7 +651,14 @@ export async function montarMarteGL(canvas, {
       return { lat0, lon0: ((lon0 + 540) % 360 + 360) % 360 - 180, zoom, teselas: n, huecos: A * A };
     },
     ponVista(la, lo) { lat0 = Math.max(-90, Math.min(90, la)); lon0 = lo; ancla = null; pide(); },
-    ponZoom(z) { zoomObj = Math.max(1, Math.min(ZOOM_MAX, z)); ancla = null; pide(); },
+    // `ya`: sin el suavizado de la rueda (lo lleva quien llama, fotograma a
+    // fotograma: el vuelo de vuelta a la Tierra).
+    ponZoom(z, ya = false) {
+      zoomObj = Math.max(1, Math.min(ZOOM_MAX, z));
+      if (ya) zoom = zoomObj;
+      ancla = null;
+      pide();
+    },
     // Banco de pruebas: cambia constantes de luz de marte-datos.json (p. ej.
     // { NOCHE: 0.28 }) sin regenerar nada; van en el shader, que se recompila.
     ajustaLuz(cambios) {
@@ -660,6 +669,21 @@ export async function montarMarteGL(canvas, {
     zoom: hazZoom,
     mueve,
     suelta: () => { planifica(); },
+    // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x
+    // `lado` centrado en el disco (el de marte-quieto.png es de 450). La usa
+    // el vuelo de vuelta a la Tierra, que así sale de Marte tal como se ha
+    // dejado. Se pinta y se copia en el mismo paso: el lienzo WebGL no guarda
+    // lo pintado una vez en pantalla (preserveDrawingBuffer: false).
+    instantanea(lado) {
+      pinta();
+      const c = document.createElement("canvas");
+      c.width = c.height = lado;
+      const x = c.getContext("2d");
+      x.imageSmoothingEnabled = false;
+      const e = canvas.width / W;                  // px del lienzo por px de arte
+      x.drawImage(canvas, (canvas.width - lado * e) / 2, (canvas.height - lado * e) / 2, lado * e, lado * e, 0, 0, lado, lado);
+      return c;
+    },
     // Banco de pruebas: ms de `n` fotogramas completos esperando a la GPU.
     medir(n = 20) {
       const t0 = performance.now();
