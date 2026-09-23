@@ -83,7 +83,57 @@ se note.
   en su iPhone con Safari, "ya funciona … al pulsar sobre la Tierra viaja (y
   al resto de astros)".
 
-**Siguiente paso**: por decidir con el usuario (ver "Pendiente").
+**Chapas de todas las misiones (23-sep-2026, EN CURSO)**. Decidido por el
+usuario ("Vale, vamos con las chapas"):
+- **Las fallidas, en blanco y negro** ("finalmente en blanco y negro. Vamos a
+  ver cómo queda con muchos países"). Cambia la decisión del 22-sep (una
+  raya): hay que quitar la raya, poner el gris y verlo con todas las chapas
+  puestas. La nota "Amartizajes" de la bóveda dice ahora "en color, tachada
+  con una raya": habrá que corregirla otra vez.
+- **Perseverance e Ingenuity**: a ×1, pegadas una a la otra, y que se vayan
+  separando según se acerca.
+- **Beagle 2, en color** (se posó, aunque no llegó a transmitir).
+- **Mars Polar Lander**: en la zona a la que iba y, en la ficha, que el sitio
+  es aproximado.
+- Las fallidas sin nota (Mars 6, Mars Polar Lander, Schiaparelli): notas
+  nuevas en `Hard Landings`, que se le enseñan antes de crearlas.
+- **La ficha** (usuario, 23-sep-2026): se le propusieron filas "dónde /
+  cuándo / duró" y no le gustaron ("no me termina de gustar"); propuso él
+  **Lugar, Fecha, Estado**, "y además una breve descripción debajo. Después
+  foto como en la Luna". Cuánto duró va dentro de Estado ("fin en 2018 (14
+  años)"). La Luna se deja como está ("dejamos la Luna"): sus fichas no
+  tenían esas filas.
+- **Banderas**: las mismas que ya hay en la web para EE. UU., URSS (la rusa)
+  y China (usuario: "utilizamos las mismas"); nuevas solo Reino Unido
+  (Beagle 2) y Europa (ESA, Schiaparelli), en `PAISES_MARTE`
+  (`amartizajes.ts`), aparte de `PAISES_LUNA` para no salir en la columna
+  de países de `/luna`.
+- **HECHO, SIN COMMITEAR**: las 17 chapas en `src/data/amartizajes.ts`
+  (URSS: Mars 2, 3 y 6; EE. UU.: Viking 1 y 2, Pathfinder, Polar Lander,
+  Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance, Ingenuity;
+  Reino Unido: Beagle 2; ESA: Schiaparelli; China: Zhurong). Las
+  descripciones salen de la entradilla de cada nota de la bóveda; las de
+  Mars 6, Polar Lander y Schiaparelli (sin nota todavía) las escribió el
+  asistente.
+  - Fallidas (Mars 2, Mars 6, Polar Lander, Schiaparelli) en blanco y negro;
+    Beagle 2 en color.
+  - Perseverance e Ingenuity: `separa: 20` (px a x1, que crecen con el
+    zoom): pegadas a x1 (20 px), 89 px hacia ×2,5 y 120 px a ×6.
+  - **Chapas que se pisan**: a x1, Opportunity y Schiaparelli (a 40 km)
+    caían una encima de otra. Regla general: la segunda se aparta lo justo
+    para quedar pegada, hacia su lado; en cuanto la distancia real basta,
+    cada una vuelve a su sitio.
+  - La ficha se corre para no salirse por los lados y **se abre hacia
+    arriba** si no cabe por debajo.
+  - Comprobado en Chrome sin ventana (escritorio y móvil 390 × 844).
+- La nota "Amartizajes" de la bóveda dice ya "en blanco y negro" (sin
+  commitear allí).
+- **Falta**: que el usuario lo vea; las **fotos** (el paso siguiente, como en
+  `/luna`); las notas de Mars 6, Polar Lander y Schiaparelli en `Hard
+  Landings` (enseñárselas antes de crearlas).
+
+**Siguiente paso**: que el usuario vea las chapas y las fichas; luego, las
+fotos.
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el

@@ -2019,20 +2019,9 @@ a.marte-chapa { cursor: pointer; }
 .marte-chapa[hidden] { display: none; }
 .marte-chapa:hover { z-index: 1; }
 .marte-chapa svg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; overflow: visible; }
-/* La que no llegó entera: en color y con una raya (usuario, 22-sep-2026).
-   z-index: por encima de la bandera, que es un hijo. */
-.marte-chapa.perdida::before {
-  content: "";
-  position: absolute;
-  left: -3px;
-  top: 50%;
-  width: calc(100% + 6px);
-  height: 1.5px;
-  z-index: 1;
-  background: #10131c;
-  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.55);
-  transform: rotate(33deg);
-}
+/* La que no llegó entera: en blanco y negro (usuario, 23-sep-2026, "vamos a
+   ver cómo queda con muchos países"; antes, una raya). */
+.marte-chapa.perdida svg { filter: grayscale(1) brightness(1.15) contrast(0.85); }
 /* La ficha al pasar el ratón: la dorada de las naves y de /luna. */
 .marte-ficha {
   position: absolute;
@@ -2053,6 +2042,8 @@ a.marte-chapa { cursor: pointer; }
 }
 .marte-chapa:is(:hover, :focus-visible, .abierta) .marte-ficha { opacity: 1; transform: translate(calc(-50% + var(--corre, 0px)), 0); }
 .marte-chapa.abierta { z-index: 1; }
+/* Sin sitio por debajo: la ficha se abre encima de la chapa. */
+.marte-chapa.ficha-arriba .marte-ficha { top: auto; bottom: calc(100% + 8px); }
 /* Más sitio para el dedo que los 18 x 12 px de la bandera. */
 .marte-chapa::after { content: ""; position: absolute; inset: -12px; }
 .agarrando .marte-ficha { opacity: 0 !important; }
@@ -2069,4 +2060,5 @@ a.marte-chapa { cursor: pointer; }
 .marte-ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.16rem 0.8rem; font-size: 0.68rem; }
 .marte-ficha dt { color: #8b93a0; }
 .marte-ficha dd { margin: 0; color: #dfe4ea; }
+.marte-ficha-texto { margin: 0.55rem 0 0; font-size: 0.66rem; line-height: 1.45; color: #b8bfca; }
 .marte-ficha-nota { margin: 0.5rem 0 0; font-size: 0.6rem; color: #e6c078; }
