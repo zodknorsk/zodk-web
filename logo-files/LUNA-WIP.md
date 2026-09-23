@@ -189,8 +189,29 @@ commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
     Tierra, a la derecha del mando.
   - Comprobado en la simulación de móvil (390 × 844): fila, EE. UU. → Apolo
     (6 chapas), ficha del Apolo 11 en el panel y cierre tocando fuera; y en
-    escritorio, columna y fichas como siempre. Falta la prueba del usuario
-    en su iPhone.
+    escritorio, columna y fichas como siempre. **Probado por el usuario en
+    su iPhone: "se ve bien"** (commiteado y subido, `54cf2a9`).
+- **El mando en directo (23-sep-2026, SIN COMMITEAR)**. El usuario: "¿se
+  podría hacer que según giras la Luna el slider de cara oculta / cara
+  visible [se mueva] en tiempo real?". La píldora ya no hace su viaje propio
+  de 2,8 s: en cada fotograma se pone donde toca según cuánto de cara oculta
+  se ve (`--lado` = `l.oculta()`, clase `en-directo`), así que sigue al dedo y
+  al giro del mando. El texto y los iconos cambian al cruzar la mitad (0,35
+  s). Comprobado: 0 → 0,28 → 0,61 (cambia a "cara oculta") arrastrando, y de
+  vuelta con el mando pasando por 0,31.
+- **Relieve fino también a x3-x5 (23-sep-2026, SIN COMMITEAR)**. El usuario:
+  "la Luna se ve como pixelada hasta que haces un zoom casi máximo… en Marte
+  parece que va más progresivo". Causa: los niveles de 16 y 24 px/grado
+  (n2, n3) sacaban el relieve del LDEM de 16, y a x3-x5 salía en bloques de
+  1/16° (solo n4, del de 64, era nítido: el salto al final). Se probó en una
+  zona (Ptolemaeus) y el usuario dijo "regenera la Luna entera con el relieve
+  fino": `DEM_FINO = {16: 64, 24: 64, 32: 64}` en `generar-luna.py` (ya es lo
+  normal) y n2-n3 regenerados (24 y 54 MB; antes 23 y 45). `LUNA_V` a 5 y el
+  `?v=` de `luna-visible.png` a 5.
+  - Visto de paso: con la regla de cortes del motor (a mitad de camino, en
+    escala logarítmica, entre un nivel y el siguiente), Marte y la Luna
+    tienen el mismo peor caso (1,41 px de arte por celda, justo en cada
+    corte), así que el reparto de niveles no era lo que se notaba.
 - **Visto en capturas**: la cara visible, casi idéntica al PNG (faltan las
   sombras proyectadas cerca del terminador); la oculta, igual pero con los
   brillos algo más marcados (sin la pasada de supermuestreo del PNG); a
