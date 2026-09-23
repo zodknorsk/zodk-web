@@ -166,7 +166,46 @@ desde órbita, una maqueta o un dibujo.
   `publicar: false`, y enlazadas en el índice "Amartizajes". Ya hay nota para
   las 17 chapas.
 
-**Siguiente paso**: por decidir con el usuario (ver "Pendiente").
+**Tanda del 23-sep-2026 (tarde)**, lo que pidió el usuario: "Pixel art está
+ok. Hay que subirlas [las teselas] si son necesarias. Fusionar todavía no.
+[Documentación] eso sí. Ceñir el visor sí: hazlo. No menú. Cosas sueltas
+míralas".
+- **Pixel art de Marte: definitivo** (usuario).
+- **Teselas en Git**: regeneradas con el generador actual (las del disco eran
+  de antes de los últimos retoques del 21-sep por la tarde; el mapa base, la
+  LUT y los datos salieron idénticos a los commiteados) y fuera de
+  `.gitignore`: `public/marte/n1`-`n3`, 448 archivos, 38 MB.
+- **Visor ceñido a la geografía** (`generar-nombres.py`, con el MOLA de 32):
+  solo en los montes (Mons, Tholus), buscando el pie de la ladera en 36
+  direcciones; nunca agranda el marco más de un 10 % sobre el del catálogo.
+  Ceñidos: Olympus Mons (se estrecha y se corre ~30 km al oeste: ya no sobra
+  por la derecha), Ascraeus, Elysium, Pavonis, Apollinaris, Hecates Tholus y
+  Aeolis Mons. **Probado y descartado para cráteres y calderas**: su
+  diámetro del catálogo ya es de borde a borde y buscar el borde en el
+  relieve agrandaba el marco donde el terreno de fuera es más alto (Newton,
+  Gusev). Alba Mons, casi plano, se queda con el del catálogo (el pie se iba
+  lejísimos). Comprobado con capturas del Olympus antes y después.
+- **Fusionar**: todavía no (usuario). **Menú en `/marte`**: no (usuario).
+- **Documentación**: sección del Proyecto Marte en `CLAUDE.md`. `LUNA-WIP.md`
+  ya recogía lo de Marte en `/luna`.
+- **Cosas sueltas**:
+  - Arreglado: en el vuelo de `/luna` a la Tierra, el menú de arriba a la
+    derecha se quedaba flotando; ahora se apaga como en el vuelo a Marte.
+  - Safari en el Mac (pellizco del trackpad, `gesture*`): no se puede probar
+    desde aquí; lo prueba el usuario si usa Safari.
+  - El "salto" de detalle al cambiar de nivel de teselas: normal en mapas
+    por niveles; suavizarlo pediría mezclar dos niveles en el shader. Se
+    deja como está salvo que al usuario le moleste.
+  - Marte de día y de noche en la portada: pendiente de que el usuario lo
+    confirme.
+- **Ojo para cuando se publiquen notas de Marte**: las de la Luna tienen
+  filtros para no salir en `/notas`, la portada ni el RSS; las de Marte aún
+  no (anotado en `CLAUDE.md`).
+
+**Siguiente paso** (usuario): la Luna, "que sea capaz de moverse al hacer
+clic, exactamente igual que Marte, manteniendo el botón cara oculta / cara
+visible para centrar en las caras. Y los accidentes geográficos de la Luna
+igual". Va en `LUNA-WIP.md` cuando se empiece.
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
@@ -268,37 +307,25 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 
 ### Pendiente (por orden)
 
-0. ~~Probar en Zen~~: hecho, ~13 W al girar (usuario, 23-sep-2026).
-1. **Móvil y táctil**: **hecho y probado en el iPhone del usuario** (ver
-   "Dónde estamos"). Lo que se planteó:
-   - **Girar con un dedo y hacer zoom pellizcando: decidido que sí**
-     (usuario, 23-sep-2026). Hoy, en táctil, ni gira ni acerca.
-   - Qué pasa con las fichas de las chapas en táctil, donde no hay ratón que
-     pasar por encima.
-   - En un móvil en vertical, el disco de 60 svh es más ancho que la pantalla:
-     decidir el tamaño.
-   - Mirar dónde cae la Tierra pequeña (en el móvil, 112 px) y el botón.
-   - Probar los vuelos en un móvil de verdad (y el consumo).
-2. ~~¿Marte gira solo?~~ **Decidido: no** (usuario, 23-sep-2026). Quieto, sin
-   botón play/pausa.
-3. **Chapas del resto de misiones**: hoy solo Mars 3 y Mars 2 (en `/marte`,
-   datos en `src/data/amartizajes.ts`); los accidentes de todas ya están. Cuando el usuario publique una nota (`publicar: true`), esa
-   misión pasa a un archivo de datos como `src/data/alunizajes.ts`, con su
-   sitio, su bandera, si llegó entera y el enlace a la nota. Después, quizá un
-   menú HUD en `/marte` como el de `/luna`.
-4. **Visto y sin tocar** (preguntar antes):
-   - En el vuelo de `/luna` a la Tierra, el menú de arriba a la derecha
-     (alunizajes / relés / orion) no se apaga (ya pasaba antes).
+Hecho y fuera de la lista (23-sep-2026): Zen, móvil y táctil (probado en el
+iPhone del usuario), "Marte no gira solo", las 17 chapas con ficha y foto y
+sus notas en la bóveda.
+
+1. ~~El visor ceñido a la geografía~~: hecho en los montes (23-sep-2026).
+2. ~~Menú en `/marte`~~: el usuario no lo quiere (23-sep-2026).
+3. **Visto** (23-sep-2026, ver arriba):
+   - ~~En el vuelo de `/luna` a la Tierra, el menú no se apaga~~: arreglado.
    - Safari: el pellizco del trackpad (`gesture*`) está previsto pero sin
-     probar.
+     probar (en el iPhone, el pellizco táctil sí funciona).
    - Al pasar de un nivel de teselas a otro durante el zoom, el detalle
      "salta" (normal en mapas por niveles).
    - Que Marte se vea de día y de noche en la portada se dio por bueno (era
      la recomendación; no lo dijo expresamente).
-5. **Antes de publicar**: pixel art definitivo → commitear las teselas;
-   probar en el móvil; fusionar `mars-project` en `main` explicándole antes
-   el merge al usuario (el push a `main` publica zodk.eu); poner al día
-   `CLAUDE.md` (sección del Proyecto Marte) y `LUNA-WIP.md`.
+4. **Antes de publicar**: ~~pixel art definitivo → commitear las teselas~~
+   (hecho, 23-sep-2026); filtros de las notas de Marte como los de la Luna;
+   fusionar `mars-project` en `main` explicándole
+   antes el merge al usuario (el push a `main` publica zodk.eu); poner al
+   día `CLAUDE.md` (hecho) y `LUNA-WIP.md`.
 
 ### Para la próxima sesión
 
