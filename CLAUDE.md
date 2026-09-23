@@ -82,7 +82,7 @@ Qué hay hoy en `/luna`:
   caras aprobadas (`luna-visible.png`, `luna-oculta.png`) quedan para el
   aterrizaje del vuelo, sin WebGL2 y mientras carga. Al regenerar: subir
   `LUNA_V` en `luna.js` y el `?v=` de `luna-visible.png` en `global.css` (van
-  por 4). Ojo al probar: el servidor de pruebas no manda cabeceras de caché
+  por 5). Ojo al probar: el servidor de pruebas no manda cabeceras de caché
   y el navegador puede seguir con datos viejos (Cmd+Mayús+R).
 - **28 alunizajes** con chapa de bandera, ficha con foto y enlace "Leer la
   nota"; salen los de la zona que se ve, y al adentrarse en la cara oculta se

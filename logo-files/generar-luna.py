@@ -587,7 +587,11 @@ def export_canvas(outdir):
 # el de 32, 0,96, como Marte a x6.
 TESELA = 360
 NIVELES_ZOOM = [4, 8, 16, 24, 32]             # px/grado; el 4 es luna-mapa.png
-DEM_FINO = {32: 64}                           # nivel -> LDEM del que sale (si no, el de 16)
+# Nivel -> LDEM del que sale (si no, el de 16). Los de 16, 24 y 32, del de 64
+# (23-sep-2026): del de 16, a x3-x5 el relieve salía en bloques de 1/16° y la
+# Luna "se ve como pixelada hasta que haces un zoom casi máximo" (usuario);
+# con el de 64 sale nítida desde x3, como Marte.
+DEM_FINO = {16: 64, 24: 64, 32: 64}
 TESELA_DERIV = 1.0
 
 
