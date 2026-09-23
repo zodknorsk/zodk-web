@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: Marte con zoom</title>
+<!--
+  Banco de pruebas del zoom y del giro con la mano en WebGL
+  (src/scripts/marte-gl.js), con los datos de
+  python3 logo-files/generar-marte.py --canvas public/marte/
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-marte/zoom.html
+
+  El panel se dejó mínimo el 21-sep-2026 (el usuario: "limpia de opciones la
+  página de prueba que apenas veo marte ya"). Las comparaciones del pulido ya
+  decididas se quitaron de los botones, pero siguen funcionando por la URL:
+  ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x6 (para Zen).
+  ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12).
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  ?datos=llanuras/bandas (o casquete/amplio…): otros datos, solo la base
+    (variantes de generar-marte.py --variante, en prototipo-marte/).
+  ?lut=oscuras/basalto.png: otra LUT (colores), con los datos de siempre.
+  ?noche=0.16: otra luz del lado sin sol (sin regenerar).
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  /* el lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se centra */
+  #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  /* diámetro del disco a zoom x1: el mismo tamaño de píxel que la Luna de /luna */
+  #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
+  .arrastrable { cursor: grab; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;
+    padding: 5px 8px; border-radius: 6px; line-height: 1.9; }
+  button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px;
+    padding: 1px 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="marte"></canvas>
+  <div id="sonda"></div>
+  <div id="panel" data-sin-arrastre>
+    <button data-v="12.5,-80">Tharsis</button> <button data-v="12.5,105">Syrtis</button>
+    <button data-v="90,-80">polo N</button> <button data-v="-90,-80">polo S</button>
+    · <button data-z="1">x1</button> <button data-z="6">x6</button><br>
+    <span id="vista"></span> <span id="ms"></span>
+  </div>
+</div>
+<script type="module">
+import { montarMano } from "../../src/scripts/marte.js";
+import { montarMarteGL, montarZoom } from "../../src/scripts/marte-gl.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda");
+const q = new URLSearchParams(location.search);
+const marte = await montarMarteGL($("marte"), {
+  base: q.get("datos") ? `${q.get("datos")}/` : "../../public/marte/",
+  disco: () => sonda.getBoundingClientRect().height,
+  ...(q.has("atlas") ? { ladoAtlas: Number(q.get("atlas")) } : {}),
+  ...(q.has("lut") ? { lut: q.get("lut") } : {}),
+});
+if (!marte) {
+  $("vista").textContent = "Este navegador no tiene WebGL2.";
+} else {
+  montarMano($("hero"), marte);
+  montarZoom($("hero"), marte);
+  window.marte = marte;                 // para probar desde la consola
+  const muestra = () => {
+    const v = marte.vista();
+    $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(0)}° ${v.lon0.toFixed(0)}°`;
+    requestAnimationFrame(muestra);
+  };
+  muestra();
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    const [la, lo] = b.dataset.v.split(",").map(Number);
+    marte.ponVista(la, lo);
+  }));
+  document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
+  if (q.has("noche")) marte.ajustaLuz({ NOCHE: Number(q.get("noche")) });
+  if (q.has("vista")) {
+    const [la, lo, z] = q.get("vista").split(",").map(Number);
+    marte.ponVista(la, lo);
+    if (z) marte.ponZoom(z);
+  }
+  if (q.has("medir")) {
+    marte.medir(10);
+    const a = marte.medir(30);
+    marte.ponZoom(6);
+    await new Promise((r) => setTimeout(r, 1500));
+    marte.medir(10);
+    const b = marte.medir(30);
+    $("ms").textContent = `· ${navigator.userAgent.includes("Firefox") ? "Firefox/Zen" : "Chrome"}: `
+      + `${a.toFixed(1)} ms por fotograma a x1, ${b.toFixed(1)} a x6`;
+  }
+}
+</script>
+</body>
+</html>

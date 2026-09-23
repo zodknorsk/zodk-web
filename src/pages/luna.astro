@@ -3,9 +3,16 @@
 // desde la Tierra de la portada pulsando la luna de arriba a la izquierda
 // (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón
 // de abajo a la derecha da media vuelta a la cara oculta y vuelve; el de abajo
-// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás.
-// Motor: src/scripts/luna.js (datos en public/luna/, de
-// logo-files/generar-luna.py). Detalle y decisiones en logo-files/LUNA-WIP.md.
+// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás. Marte,
+// arriba a la izquierda, lleva a /marte con el mismo vuelo (Proyecto Marte).
+// Desde el 23-sep-2026 la Luna gira y se acerca como Marte (usuario: "que la
+// luna sea capaz de moverse al hacer click, exactamente igual que Marte,
+// manteniendo el botón cara oculta / cara visible para centrar en las
+// caras"): motor src/scripts/luna-gl.js (el WebGL de Marte con los datos de
+// public/luna/, de logo-files/generar-luna.py --canvas y --teselas). El mando
+// lleva a cada cara con un giro; las chapas salen según la zona que se ve, y
+// al adentrarse en la cara oculta se enciende China y salen los relés.
+// Detalle y decisiones en logo-files/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection } from "astro:content";
 import { ALUNIZAJES, PAISES_LUNA, RELES, ORION_NOTA, svgBandera } from "../data/alunizajes";
@@ -23,11 +30,22 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero cabecera={false}>
   <section slot="hero" class="hero luna-hero" aria-label="La Luna">
     <div class="hero-stars" aria-hidden="true"></div>
+    <!-- Proyecto Marte: Marte pequeño arriba a la izquierda (el de la portada,
+         en el sitio del sol y la luna de allí); lleva a /marte con el mismo
+         vuelo. Detrás de la Luna, que está más cerca. -->
+    <div class="hero-marte hero-marte--luna" aria-hidden="true"></div>
+    <a class="hero-marte-enlace hero-marte--luna" href="/marte" aria-label="Viajar a Marte" title="Viajar a Marte"></a>
     <!-- Mismo tamaño y sitio que donde termina el vuelo desde la Tierra
-         (.luna-disco en global.css). El fondo es la cara visible: se ve sin JS
-         y mientras carga el canvas. -->
-    <div class="luna-disco" role="img" aria-label="La Luna, cara visible">
-      <canvas class="luna-canvas" aria-hidden="true"></canvas>
+         (.luna-disco en global.css). El fondo es la cara visible: se ve sin JS,
+         sin WebGL2 y mientras carga el lienzo. -->
+    <div class="luna-disco" role="img" aria-label="La Luna, cara visible"></div>
+    <!-- La Luna que gira y se acerca (luna-gl.js): el lienzo, centrado en el
+         disco de .luna-disco; la sonda mide su diámetro a x1, y encima, los
+         nombres de accidentes que salen al acercarse (marte-nombres.js). -->
+    <div class="luna-gl" aria-hidden="true">
+      <canvas class="luna-canvas"></canvas>
+      <div class="luna-sonda"></div>
+      <div class="marte-nombres luna-nombres"></div>
     </div>
     <!-- Chapas de alunizaje: una por misión, encima del disco. El script las
          coloca (y esconde las de la otra cara) según la cara que se vea. -->
@@ -190,45 +208,75 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
 </PageLayout>
 
 <script>
-  // Como el planeta de la portada: la web cambia de página sin recargar
-  // (ClientRouter), así que se monta en cada llegada y se desmonta al salir.
+  // La web cambia de página sin recargar (ClientRouter), así que la Luna se
+  // monta en cada llegada y se desmonta al salir.
   import { navigate } from "astro:transitions/client";
-  import { montarLuna, LUNA_V } from "../scripts/luna.js";
-  import { volarALuna, faseLunaHoy } from "../scripts/viaje-luna.js";
+  import { LUNA_V } from "../scripts/luna.js";
+  import { montarLunaGL } from "../scripts/luna-gl.js";
+  import { MARTE_V, montarMano } from "../scripts/marte.js";
+  import { montarZoom } from "../scripts/marte-gl.js";
+  import { montarNombres } from "../scripts/marte-nombres.js";
+  import { volarALuna, faseLunaHoy, inOutSine, VUELO_MARTE } from "../scripts/viaje-luna.js";
 
-  type Luna = { girar(): void; cara(): string; girando(): boolean; desmontar(): void };
-  let luna: Luna | null = null;
+  type Luna = NonNullable<Awaited<ReturnType<typeof montarLunaGL>>>;
+  // Lo que se quita al salir: el motor el primero (quitar[0]), luego la mano,
+  // el zoom y los nombres.
+  let quitar: (() => void)[] = [];
   let quitaBoton: (() => void) | null = null;
+  let guardarAlSalir: (() => void) | null = null;
   let estrellasTierra: string | null = null;   // posición de las estrellas al aterrizar en la portada
+  let estrellasMarte: string | null = null;    // y al aterrizar en /marte
 
-  // Selección de países/chapas y cara: se guarda en sessionStorage para que
-  // "Leer la nota" y volver con "Volver a la Luna" (dos navegaciones sueltas,
-  // no un atrás/adelante del navegador) la dejen tal cual estaba. Al volver a
-  // la Tierra de verdad se borra, para que una llegada nueva desde el hero
-  // empiece siempre limpia (como hasta ahora).
+  // Selección de países/chapas y vista (y la cara que domina, que usa /marte
+  // para su vuelo de vuelta): se guarda en sessionStorage para que "Leer la
+  // nota" y volver con "Volver a la Luna" (dos navegaciones sueltas, no un
+  // atrás/adelante del navegador) la dejen tal cual estaba. Al volver a la
+  // Tierra de verdad se borra, para que una llegada nueva desde el hero
+  // empiece siempre limpia.
   const CLAVE_ESTADO = "luna-estado";
-  type EstadoLuna = { encendidos: string[]; cara: string };
+  type Vista = { lat0: number, lon0: number, zoom: number };
+  type EstadoLuna = { encendidos: string[]; cara: string; vista?: Vista };
   function leerEstadoLuna(): EstadoLuna | null {
     try { return JSON.parse(sessionStorage.getItem(CLAVE_ESTADO) ?? "null"); }
     catch { return null; }
   }
-  function guardarEstadoLuna(encendidos: Iterable<string>, cara: string) {
-    try { sessionStorage.setItem(CLAVE_ESTADO, JSON.stringify({ encendidos: [...encendidos], cara })); }
+  function guardarEstadoLuna(estado: EstadoLuna) {
+    try { sessionStorage.setItem(CLAVE_ESTADO, JSON.stringify(estado)); }
     catch { /* sessionStorage no disponible */ }
   }
   function borrarEstadoLuna() {
     try { sessionStorage.removeItem(CLAVE_ESTADO); } catch { /* sessionStorage no disponible */ }
   }
 
-  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (src/scripts/viaje-luna.js).
-  // Para saber dónde acaban la luna del hero y la Tierra se ponen aquí un icono
-  // y una Tierra con las clases de la portada (mismo sitio y tamaño, y la
-  // Tierra del tema que toque); se van con la página al aterrizar.
-  async function volverATierra(hero: HTMLElement, l: Luna, disco: HTMLElement, apagar: HTMLElement[]) {
+  // Si estaba acercada, antes de volar a Marte la Luna se aleja hasta x1 sin
+  // girar (como Marte antes de ir a la Tierra, en /marte): con zoom no cabe
+  // entera y al salir asomaría cortada.
+  function alejarAx1(l: Luna): Promise<void> {
+    const z0 = l.vista().zoom;
+    if (z0 <= 1) return Promise.resolve();
+    const ms = 1600 * Math.log(z0);
+    return new Promise((listo) => {
+      const t0 = performance.now();
+      const paso = (ahora: number) => {
+        const p = Math.min(1, (ahora - t0) / ms);
+        l.ponZoom(z0 ** (1 - inOutSine(p)), true);
+        if (p < 1) requestAnimationFrame(paso);
+        else requestAnimationFrame(() => listo());
+      };
+      requestAnimationFrame(paso);
+    });
+  }
+
+  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (viaje-luna.js),
+  // desde la Luna tal como se ha dejado. Si estaba acercada, primero se aleja
+  // en el lienzo hasta x1 y ahí se le hace una foto, que es la que vuela (como
+  // la vuelta de /marte a la Luna). Para saber dónde acaban la luna del hero
+  // y la Tierra se ponen aquí un icono y una Tierra con las clases de la
+  // portada; se van con la página al aterrizar.
+  async function volverATierra(hero: HTMLElement, l: Luna, ocultar: HTMLElement[], apagar: HTMLElement[]) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/");
-    const img = new Image();
-    img.src = `/luna/luna-${l.cara()}.png?v=${LUNA_V}`;
-    await img.decode().catch(() => {});
+    for (const f of quitar.slice(1)) f();       // sin mano, zoom ni nombres mientras se va
+    quitar = quitar.slice(0, 1);
     const astro = document.createElement("div");
     astro.className = "hero-astro";
     astro.setAttribute("aria-hidden", "true");
@@ -241,19 +289,59 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     planeta.setAttribute("aria-hidden", "true");
     hero.append(astro, planeta);
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
+    const alejar = {
+      zoom: l.vista().zoom,
+      ponZoom: (z: number) => l.ponZoom(z, true),
+      foto: () => {
+        const foto = l.instantanea(600);        // la caja de luna-visible.png: 600 px de arte
+        for (const el of ocultar) el.style.visibility = "hidden";
+        for (const f of quitar) f();
+        quitar = [];
+        return foto;
+      },
+    };
     const vuelo = volarALuna({
-      icono, planeta, estrellas, apagar, img, inverso: true,
+      icono, planeta, estrellas, apagar, inverso: true, alejar,
       iconoVisible: document.documentElement.classList.contains("dark"),
     });
-    disco.style.visibility = "hidden";          // la sustituye la capa del vuelo, en el mismo sitio
-    l.desmontar();
     estrellasTierra = await vuelo.fin;
     navigate("/");
   }
 
+  // Vuelo a Marte (Proyecto Marte): el de la portada, desde Marte arriba a la
+  // izquierda. La Luna es aquí lo que se deja atrás: sale por abajo tal como
+  // se ve (el lienzo), como la Tierra en el vuelo a la Luna. En /marte, el
+  // botón dirá "volver a la Luna": se le avisa con sessionStorage
+  // ("marte-desde"), que /marte lee y borra al llegar. La selección y la
+  // vista de la Luna quedan guardadas, así que al volver sigue igual.
+  async function volarAMarte(hero: HTMLElement, l: Luna, lienzo: HTMLElement, apagar: HTMLElement[]) {
+    const avisa = () => { try { sessionStorage.setItem("marte-desde", "luna"); } catch { /* sessionStorage no disponible */ } };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { avisa(); return navigate("/marte"); }
+    const img = new Image();
+    img.src = `/marte/marte-quieto.png?v=${MARTE_V}`;
+    const cargada = img.decode().catch(() => {});
+    for (const f of quitar.slice(1)) f();
+    quitar = quitar.slice(0, 1);
+    await alejarAx1(l);
+    await cargada;
+    const icono = hero.querySelector<HTMLElement>(".hero-marte")!;
+    const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
+    const vuelo = volarALuna({ icono, planeta: lienzo, estrellas, apagar, img, ...VUELO_MARTE });
+    for (const f of quitar) f();                // el lienzo se queda con lo último que pintó
+    quitar = [];
+    estrellasMarte = await vuelo.fin;
+    avisa();
+    navigate("/marte");
+  }
+
   // Al aterrizar en la portada, sus estrellas donde quedaron las del vuelo, y
   // la cabecera (que /luna no tiene) entra con un fundido en vez de de golpe.
+  // En /marte, solo las estrellas.
   document.addEventListener("astro:after-swap", () => {
+    if (estrellasMarte !== null) {
+      document.querySelector<HTMLElement>(".marte-hero .hero-stars")?.style.setProperty("--estrellas-pos", estrellasMarte);
+      estrellasMarte = null;
+    }
     if (estrellasTierra === null) return;
     document.querySelector<HTMLElement>(".hero:not(.luna-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasTierra);
     document.querySelector<HTMLElement>("body > header")?.animate(
@@ -262,81 +350,125 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     estrellasTierra = null;
   });
 
-  const TEXTO: Record<string, string> = {   // aria-label del mando según la cara que se ve
+  const TEXTO: Record<string, string> = {   // aria-label del mando según la cara que domina
     visible: "Cara visible. Girar la Luna a la cara oculta",
     oculta: "Cara oculta. Girar la Luna a la cara visible",
   };
 
+  // Dónde cae el punto (lat, lon) de la Luna con la vista (lat0, lon0), en
+  // radios del disco desde su centro (y hacia abajo): la misma cuenta que
+  // proyecta() de marte-gl.js, para una vista que no es la de ahora.
+  const DEG = Math.PI / 180;
+  function proyectaEn(lat: number, lon: number, lat0: number, lon0: number) {
+    const la = lat * DEG, lo = lon * DEG, cl = Math.cos(la);
+    const B = [cl * Math.sin(lo), Math.sin(la), cl * Math.cos(lo)];
+    const a = lat0 * DEG, b = lon0 * DEG;
+    // M = Ry(lon0)·Rx(lat0); U = Mᵀ·B
+    const ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
+    const M = [[cb, -sb * sa, sb * ca], [0, ca, sa], [-sb, -cb * sa, cb * ca]];   // filas() de marte-gl.js
+    const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
+    return { x: U[0], y: -U[1], z: U[2] };
+  }
+  // Los relés Queqiao flotan sobre la cuenca Polo Sur-Aitken, bajo Chang'e 4
+  // y 6 (usuario, 23-sep-2026: "los satélites igual, estarían flotando por
+  // esa zona"): su capa se desplaza con este punto.
+  const ANCLA_RELES = { lat: -44, lon: 191 };
+
   document.addEventListener("astro:page-load", async () => {
     const cv = document.querySelector<HTMLCanvasElement>(".luna-canvas");
+    const sonda = document.querySelector<HTMLElement>(".luna-sonda");
+    const capaNombres = document.querySelector<HTMLElement>(".luna-nombres");
+    const disco = document.querySelector<HTMLElement>(".luna-disco");
     const boton = document.querySelector<HTMLButtonElement>(".luna-cambio");
     const volver = document.querySelector<HTMLButtonElement>(".luna-volver");
     const hero = document.querySelector<HTMLElement>(".luna-hero");
-    if (!cv || !boton || !volver || !hero) return;
+    if (!cv || !sonda || !capaNombres || !disco || !boton || !volver || !hero) return;
     // Banco de pruebas de consumo de la Orion (?orion=quieta / sin-z / capa),
     // igual que el ?medir de la portada: las reglas están en global.css, junto
     // a la nave. Solo hace algo con el parámetro puesto.
     const orion = new URLSearchParams(location.search).get("orion");
     if (orion) hero.classList.add(`prueba-orion-${orion}`);
     const estadoGuardado = leerEstadoLuna();
-    const disco = cv.parentElement as HTMLElement;
+    // Mientras carga el lienzo se ve el PNG de la cara que se dejó.
+    if (estadoGuardado?.cara === "oculta") disco.style.backgroundImage = `url(/luna/luna-oculta.png?v=${LUNA_V})`;
     const pon = (cara: string) => {
       boton.dataset.cara = cara;
       boton.setAttribute("aria-label", TEXTO[cara]);
       disco.setAttribute("aria-label", `La Luna, cara ${cara}`);
     };
-    // Chapas: mientras gira se esconden todas y al acabar se recolocan en la
-    // cara nueva (las de la otra cara se quedan fuera).
-    let esconderChapas = () => {};
-    let colocarChapas = () => {};
-    let soloChina = () => {};
-    let guardarSeleccion = () => {};
-    const sats = document.querySelector<HTMLElement>(".luna-sats");
-    const l = await montarLuna(cv, {
-      cara: estadoGuardado?.cara === "oculta" ? "oculta" : "visible",
-      alEmpezar: (destino: string) => {
-        boton.dataset.cara = destino;   // la píldora se desliza mientras gira
-        boton.disabled = volver.disabled = true;
-        esconderChapas();
-        sats?.classList.remove("en-vista");
-      },
-      alTerminar: (cara: string) => {
-        boton.disabled = volver.disabled = false;
-        guardarSeleccion();
-        sats?.classList.toggle("en-vista", cara === "oculta");
-        hero.classList.toggle("cara-oculta", cara === "oculta");
-        pon(cara);
-        colocarChapas();
-      },
+
+    let cadaFotograma = () => {};
+    const l = await montarLunaGL(cv, {
+      disco: () => sonda.getBoundingClientRect().height,
+      alPintar: () => cadaFotograma(),
+      vista: estadoGuardado?.vista ?? null,
     });
-    if (!cv.isConnected) return l.desmontar();   // se salió de la página mientras cargaba
+    if (!cv.isConnected) return l?.desmontar();   // se salió de la página mientras cargaba
+    let enVuelo = false;
+    if (!l) {
+      // Sin WebGL2: la Luna quieta (el PNG) y "volver a la Tierra" sin vuelo.
+      volver.hidden = false;
+      const sinVuelo = () => navigate("/");
+      volver.addEventListener("click", sinVuelo);
+      quitaBoton = () => volver.removeEventListener("click", sinVuelo);
+      return;
+    }
     disco.classList.add("luna-lista");
-    luna = l;
-    pon(l.cara());
+    disco.style.backgroundImage = "";
+    quitar = [l.desmontar, montarMano(hero, l), montarZoom(hero, l)];
+    let colocaNombres: (() => void) | null = null;
+    montarNombres(capaNombres, l, [], { url: `/luna/luna-nombres.json?v=${LUNA_V}`, radioKm: 1737.4 }).then((n) => {
+      if (!capaNombres.isConnected || enVuelo) return n.desmontar();
+      colocaNombres = n.coloca;
+      quitar.push(() => { colocaNombres = null; n.desmontar(); });
+      n.coloca();
+    }).catch(() => {});
+    let caraAhora = l.cara();
+    pon(caraAhora);
+    hero.classList.toggle("cara-oculta", caraAhora === "oculta");
     boton.hidden = volver.hidden = false;
 
     // --- Chapas de alunizaje y columna de países --------------------------
     const capa = document.querySelector<HTMLElement>(".luna-chapas");
     const columna = document.querySelector<HTMLElement>(".luna-paises");
+    const sats = document.querySelector<HTMLElement>(".luna-sats");
+    const orbitas = document.querySelector<HTMLElement>(".luna-orbitas");
     const chapas = [...document.querySelectorAll<HTMLElement>(".luna-chapa")];
     const encendidos = new Set<string>(estadoGuardado?.encendidos ?? []);
+    const guardarSeleccion = () => {
+      const v = l.vista();
+      guardarEstadoLuna({ encendidos: [...encendidos], cara: l.cara(), vista: { lat0: v.lat0, lon0: v.lon0, zoom: v.zoom } });
+    };
+    guardarAlSalir = guardarSeleccion;
+    let colocarChapas = () => {};
+    let soloChina = () => {};
+    // Las chapas van en la capa del tamaño del disco (--luna-tam, los 600 px
+    // de arte del PNG): su sitio, en píxeles de ese lienzo de 600.
+    let pxArte = 1;                               // px de pantalla por px del lienzo de 600
+    const mide = () => { pxArte = sonda.getBoundingClientRect().height / 585; };
+    mide();
+    window.addEventListener("resize", mide);
+    quitar.push(() => window.removeEventListener("resize", mide));
     if (capa && columna) {
       // La chapa mide 13x9 del lienzo de 600: se resta medio ancho/alto en %
       // (no en px) para que siga centrada al ampliarse el disco.
       const DX = (13 / 600 / 2) * 100, DY = (9 / 600 / 2) * 100;
-      // Chapas encendidas a menos de una chapa de distancia (Apolo 12 y
-      // Surveyor 3 cayeron a 180 m; Apolo 11 y Surveyor 5, a 4 px) se ponen
-      // lado a lado, pegadas y centradas en su punto medio, la más al oeste a
-      // la izquierda. Cuentas en píxeles del lienzo de 600.
+      // Chapas encendidas a menos de una chapa de distancia en pantalla
+      // (Apolo 12 y Surveyor 3 cayeron a 180 m; Apolo 11 y Surveyor 5, a 4 px)
+      // se ponen lado a lado, pegadas y centradas en su punto medio, la más al
+      // oeste a la izquierda. Al acercarse, en cuanto caben, cada una en su
+      // sitio. Cuentas en píxeles del lienzo de 600.
+      // Salen las de la zona que se ve (usuario, 23-sep-2026: "las chapas
+      // salen según yo veo la zona del planeta"): delante, y no pegadas al
+      // borde del disco.
       const PASO = 14;
       colocarChapas = () => {
         const grupos: { u: number; v: number; els: { el: HTMLElement; u: number }[] }[] = [];
         for (const el of chapas) {
-          const p = l.sitio(Number(el.dataset.lat), Number(el.dataset.lon));
-          const otraCara = el.dataset.cara && el.dataset.cara !== l.cara();
-          el.hidden = !encendidos.has(el.dataset.clave!) || !p.vis || !!otraCara;
+          const p = l.proyecta(Number(el.dataset.lat), Number(el.dataset.lon));
+          el.hidden = !encendidos.has(el.dataset.clave!) || p.z < 0.12;
           if (el.hidden) continue;
-          const u = p.u * 600, v = p.v * 600;
+          const u = 300 + p.x / pxArte, v = 300 + p.y / pxArte;
           const g = grupos.find((g) => Math.hypot(g.u - u, g.v - v) < 13);
           if (!g) { grupos.push({ u, v, els: [{ el, u }] }); continue; }
           g.els.push({ el, u });
@@ -352,7 +484,6 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
           });
         }
       };
-      esconderChapas = () => { for (const el of chapas) el.hidden = true; };
       // Dónde cabe la ficha: al lado que quede sitio, y anclada por su borde si
       // centrada se saldría por arriba o por abajo.
       for (const el of [...chapas, ...document.querySelectorAll<HTMLElement>(".luna-sat, .luna-nave")]) {
@@ -383,14 +514,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         sats?.classList.toggle("sin-ondas", !encendidos.has("CN"));
       };
       const pinta = () => { pintaBotones(); colocarChapas(); guardarSeleccion(); };
-      guardarSeleccion = () => guardarEstadoLuna(encendidos, l.cara());
-      // Al ir a la cara oculta se apaga todo y se enciende China, para que
-      // Chang'e 4 y 6 salgan al llegar sin activarlas a mano. Solo botones:
-      // las chapas las coloca alTerminar al acabar el giro.
       pintaBotones();
-      // Si se vuelve con una selección guardada, sus chapas se pintan ya al
-      // montar (si no, solo se colocan tras un clic o un giro).
-      if (estadoGuardado?.encendidos.length) colocarChapas();
       // Si se vuelve con algún subgrupo de EE. UU. ya encendido (p. ej. tras
       // leer una nota de Apolo), se despliegan sus casillas de entrada: si no,
       // se verían encendidas pero recogidas, como si no hubiera nada activo.
@@ -404,6 +528,10 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         b.setAttribute("aria-expanded", "true");
         cajas.inert = false;
       }
+      // Al adentrarse en la cara oculta se apaga todo y se enciende China,
+      // para que Chang'e 4 y 6 salgan sin activarlas a mano (usuario,
+      // 23-sep-2026: "según se oscurece la Luna por la cara oculta, aparecen
+      // las chinas"). Lo hace cadaFotograma al pasar la cara oculta a dominar.
       soloChina = () => {
         encendidos.clear();
         for (const b of subs) if (b.dataset.pais === "CN") encendidos.add(b.dataset.clave!);
@@ -449,36 +577,144 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         columna.style.top = `${columna.offsetTop - columna.offsetHeight / 2}px`;
         columna.style.transform = "none";
       };
-      fija();
-      new ResizeObserver(() => { if (!columna.querySelector(".abierto")) fija(); }).observe(hero);
+      // En el móvil los países van en fila abajo (CSS): nada que fijar.
+      const enFila = matchMedia("(max-width: 640px)");
+      const fijaSiColumna = () => {
+        if (enFila.matches) { columna.style.top = columna.style.transform = ""; return; }
+        if (!columna.querySelector(".abierto")) fija();
+      };
+      if (!enFila.matches) fija();
+      new ResizeObserver(fijaSiColumna).observe(hero);
     }
 
-    const clic = () => {
-      if (!l.girando() && l.cara() === "visible") soloChina();
-      l.girar();
+    // --- En táctil, la ficha de una chapa, un relé o la Orion sale con un
+    // toque en un panel arriba (no hay ratón que pasar por encima, y junto a
+    // la chapa no cabía en un móvil); otro toque en la misma, o fuera, lo
+    // cierra. Es una copia de su ficha (.craft-specs), enlace incluido.
+    const tactil = matchMedia("(hover: none)");
+    const panel = document.createElement("div");
+    panel.className = "craft-specs luna-ficha-movil";
+    panel.hidden = true;
+    hero.append(panel);
+    let abierta: HTMLElement | null = null;
+    const toca = (e: Event) => {
+      if (!tactil.matches || !(e.target instanceof Element)) return;
+      if (e.target.closest(".luna-ficha-movil")) return;   // dentro del panel (su enlace)
+      const el = e.target.closest<HTMLElement>(".luna-chapa, .luna-sat, .luna-nave");
+      if (!el || el === abierta) { panel.hidden = true; abierta = null; return; }
+      const specs = el.querySelector(".craft-specs");
+      if (!specs) return;
+      panel.innerHTML = specs.innerHTML;
+      panel.hidden = false;
+      abierta = el;
     };
-    let enVuelo = false;
+    document.addEventListener("click", toca);
+    quitar.push(() => { document.removeEventListener("click", toca); panel.remove(); });
+
+    // --- Tras cada fotograma del lienzo: nombres, chapas, relés, Orion y la
+    // cara que domina (el mando, el tono de noche de la Orion, China).
+    const R_OCULTA = proyectaEn(ANCLA_RELES.lat, ANCLA_RELES.lon, l.CARAS.oculta.lat0, l.CARAS.oculta.lon0);
+    // Marte pequeño (arriba a la izquierda) va detrás de la Luna: al
+    // acercarse, la Luna lo tapa, y mientras su centro cae dentro del disco su
+    // enlace no se lleva el clic (se pulsaría la Luna y se iría a Marte). Lo
+    // mismo que la Tierra pequeña de /marte. Su sitio respecto al centro del
+    // disco se mide al montar y al cambiar la ventana.
+    const iconoMarte = hero.querySelector<HTMLElement>(".luna-hero .hero-marte");
+    const enlaceMarteEl = hero.querySelector<HTMLElement>(".hero-marte-enlace");
+    let marteDx = 0, marteDy = 0;
+    const mideMarte = () => {
+      if (!iconoMarte) return;
+      const a = iconoMarte.getBoundingClientRect(), c = cv.getBoundingClientRect();
+      marteDx = a.left + a.width / 2 - (c.left + c.width / 2);
+      marteDy = a.top + a.height / 2 - (c.top + c.height / 2);
+    };
+    mideMarte();
+    window.addEventListener("resize", mideMarte);
+    quitar.push(() => window.removeEventListener("resize", mideMarte));
+    // El mando, en directo: la píldora sigue a la Luna (usuario, 23-sep-2026:
+    // "según giras la Luna, el slider de cara visible / cara oculta en tiempo
+    // real").
+    boton.classList.add("en-directo");
+    cadaFotograma = () => {
+      colocaNombres?.();
+      colocarChapas();
+      const v = l.vista(), t = l.oculta();
+      boton.style.setProperty("--lado", t.toFixed(3));
+      const cara = t >= 0.5 ? "oculta" : "visible";
+      if (cara !== caraAhora) {
+        if (cara === "oculta") soloChina();
+        caraAhora = cara;
+        pon(cara);
+        hero.classList.toggle("cara-oculta", cara === "oculta");
+        guardarSeleccion();
+      }
+      // Los relés: a la vista con la cara oculta delante y sin zoom; su capa
+      // se desplaza con la cuenca, desde donde estaba en la cara oculta.
+      if (sats) {
+        const p = l.proyecta(ANCLA_RELES.lat, ANCLA_RELES.lon), R = l.pxGrado() / DEG;
+        sats.classList.toggle("en-vista", cara === "oculta" && v.zoom < 1.15 && p.z > 0.2);
+        sats.style.translate = `${(p.x - R_OCULTA.x * R).toFixed(1)}px ${(p.y - R_OCULTA.y * R).toFixed(1)}px`;
+      }
+      orbitas?.classList.toggle("lejos", v.zoom > 1.05);
+      enlaceMarteEl?.classList.toggle("tapada", Math.hypot(marteDx, marteDy) < l.pxGrado() / DEG);
+    };
+    cadaFotograma();
+
+    // El mando: lleva a la otra cara con un giro (y, si estaba acercada, de
+    // vuelta a x1). La píldora se desliza a la cara nueva mientras gira.
+    const clic = async () => {
+      if (l.girando() || enVuelo) return;
+      const destino = l.cara() === "visible" ? "oculta" : "visible";
+      boton.disabled = true;
+      await l.aCara(destino);
+      boton.disabled = false;
+      pon(l.cara());
+      guardarSeleccion();
+    };
     const clicVolver = () => {
-      if (enVuelo || l.girando()) return;
+      if (enVuelo) return;
       enVuelo = true;
       borrarEstadoLuna();   // una llegada nueva desde el hero empieza limpia
+      guardarAlSalir = null;
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
-      // flotando mientras la Luna se aleja hacia el icono.
-      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas")]);
+      // flotando mientras la Luna se aleja hacia el icono. Marte (arriba a la
+      // izquierda) y el menú de arriba a la derecha, también.
+      volverATierra(hero, l, [cv], [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-hero .hero-marte, .luna-menu, .luna-nombres")]);
+    };
+    // Marte (arriba a la izquierda): vuelo a /marte. Como volver a la Tierra,
+    // se apaga todo lo de la Luna menos el lienzo, que es el que se va.
+    const enlaceMarte = hero.querySelector<HTMLAnchorElement>(".hero-marte-enlace");
+    const clicMarte = (e: MouseEvent) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
+      e.preventDefault();
+      if (enVuelo) return;
+      enVuelo = true;
+      // Se guarda la cara que domina, centrada y a x1, no la vista exacta: la
+      // vuelta desde /marte aterriza con la imagen de esa cara (A_LA_LUNA en
+      // marte.astro), y con la vista exacta la Luna saltaba al llegar.
+      const cara = l.cara();
+      guardarEstadoLuna({ encendidos: [...encendidos], cara, vista: { lat0: l.CARAS[cara].lat0, lon0: l.CARAS[cara].lon0, zoom: 1 } });
+      guardarAlSalir = null;
+      boton.disabled = volver.disabled = true;
+      volarAMarte(hero, l, cv, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-menu, .luna-nombres")]);
     };
     boton.addEventListener("click", clic);
     volver.addEventListener("click", clicVolver);
+    enlaceMarte?.addEventListener("click", clicMarte);
     quitaBoton = () => {
       boton.removeEventListener("click", clic);
       volver.removeEventListener("click", clicVolver);
+      enlaceMarte?.removeEventListener("click", clicMarte);
     };
   });
 
   document.addEventListener("astro:before-swap", () => {
-    luna?.desmontar();
+    guardarAlSalir?.();    // a una nota: la selección y la vista, para volver igual
+    guardarAlSalir = null;
+    for (const f of quitar) f();
+    quitar = [];
     quitaBoton?.();
-    luna = null;
     quitaBoton = null;
   });
 </script>

@@ -44,3 +44,18 @@ logo-files/luna-fuentes/
 
 # Caché de Python al importar los módulos de logo-files/ (png8, etc.)
 __pycache__/
+
+# Proyecto Marte: fuentes de la NASA/USGS (~800 MB, se re-descargan con los
+# curl de logo-files/generar-marte.py) y la caché de su pasada lenta.
+logo-files/marte-fuentes/
+
+# Proyecto Marte: las teselas del zoom (public/marte/n1-n3, 38 MB) SÍ van en
+# Git desde el 23-sep-2026, cuando el usuario dio el pixel art por definitivo
+# (hasta entonces se dejaban fuera para no sumar MB al historial en cada
+# prueba). Si se vuelven a regenerar, cada versión suma lo que cambie.
+
+# Proyecto Luna (la que gira y se acerca): las teselas del zoom
+# (public/luna/n1-n4, ~167 MB) SÍ van en Git desde el 23-sep-2026, cuando el
+# usuario dio el aspecto por bueno. Se sacan con:
+#   cd logo-files && python3 generar-luna.py --teselas ../public/luna/
+# Cada regeneración commiteada suma su peso entero al historial.
