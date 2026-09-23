@@ -324,6 +324,8 @@ html.dark .hero-luna-enlace { display: block; }
   cursor: pointer;
 }
 .hero-marte-enlace:focus-visible { outline: 2px dashed #ffb07a; outline-offset: -40px; }
+/* En /luna, tapado por la Luna acercada: el enlace no se lleva el clic. */
+.hero-marte-enlace.tapada { pointer-events: none; visibility: hidden; }
 /* En /luna, Marte arriba a la izquierda (el menú va a la derecha), en el sitio
    del sol y la luna de la portada: se pulsa para el vuelo Luna → Marte. */
 .hero-marte--luna { right: auto; left: 5%; }
@@ -377,13 +379,39 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
   z-index: 1;
 }
 .luna-disco.luna-lista { background-image: none; }
+/* La Luna que gira y se acerca (luna-gl.js, 23-sep-2026). La capa cubre la
+   pantalla con el centro en el del disco (sube --luna-dy): va de 2·dy por
+   arriba hasta abajo del todo, así que con zoom no queda franja sin pintar. El
+   lienzo lo dimensiona el motor (píxeles de arte enteros); aquí solo se
+   centra. La sonda mide el diámetro del disco a x1: 585 de los 600 px de arte
+   de luna-visible.png. */
+.luna-gl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(2 * var(--luna-dy));
+  bottom: 0;
+  z-index: 1;
+}
 .luna-canvas {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   image-rendering: pixelated;
 }
+.luna-sonda {
+  position: absolute;
+  width: 0;
+  height: calc(var(--luna-tam) * 585 / 600);
+  visibility: hidden;
+}
+/* Los gestos del dedo son de la Luna (girar con uno, pellizco con dos). */
+.luna-hero { touch-action: none; }
+.luna-hero.agarrando, .luna-hero.agarrando * { cursor: grabbing !important; user-select: none; }
+/* Con zoom, la Orion se aparta: su órbita es la del disco a x1. */
+.luna-orbitas { transition: opacity 0.5s ease; }
+.luna-orbitas.lejos { opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0s linear 0.5s; }
 
 /* --- Chapas de alunizaje ----------------------------------------------------
    Una chapa (bandera del país en pixel art, 11x7 + contorno, como las de la

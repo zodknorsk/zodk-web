@@ -21,8 +21,8 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 **Dónde estamos** (23-sep-2026): **pasos 1, 2 y 3 hechos y el aspecto con
 zoom aprobado por el usuario; SIN COMMITEAR** (banco de pruebas, teselas
 n1-n4 y nombres; ver abajo). `/luna` sin tocar. Las teselas, fuera de Git
-hasta que todo sea definitivo. Siguiente: las rayas del polo sur y el paso 4,
-llevarlo a `/luna`.
+hasta que todo sea definitivo. Código de los pasos 1-3 commiteado (`5635f7b`). **Paso 4 hecho, sin
+commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
 - `src/scripts/marte-gl.js` ya pinta también la Luna: opciones `prefijo`
   ("luna-"), `version`, `zoomMax` y `luz(lat0, lon0)` (fase y lado del sol,
   exposición en escalones, suelo de la noche y bloque de la LUT del tono
@@ -114,15 +114,61 @@ llevarlo a `/luna`.
   (~1,3 km por píxel, Marte ~2,6). La otra opción, un nivel de 32 px/grado
   (+~80 MB, y sin relieve nuevo salvo bajar el LDEM de 64, 530 MB), no se
   hizo. En el banco, `?zoommax=6` para comparar.
-- **Visto, pendiente**: cerca del polo sur, a ×3 o más, salen **rayas**:
+- **Las "rayas" del polo sur: descartado, no existen** (23-sep-2026). Eran,
+  como los bloques, el mapa base estirado por la caché (ver arriba). Con las
+  teselas cargadas, los dos polos a ×6 se ven bien. Lo de abajo queda como
+  registro de lo que se creyó:
+- (histórico) cerca del polo sur, a ×3 o más, salen **rayas**:
   en los niveles de teselas, hacia los polos el motor agrupa columnas de la
   longitud cogiendo una sola (la base sí hace la media). En Marte no se
   notaba (el casquete es liso); en la Luna el polo es muy abrupto. Arreglo
   posible: suavizar en longitud esas teselas en el generador, o que el motor
   haga la media también en los niveles finos.
-- **Siguiente (paso 4)**: llevarlo a `/luna` (chapas, relés y Orion encima;
-  el mando centra cada cara con un giro), con las chapas que salen según la
-  zona que se ve (usuario).
+- **Paso 4 HECHO (sin commitear): `/luna` con la Luna nueva** (23-sep-2026).
+  - Motor `src/scripts/luna-gl.js` (`montarLunaGL`): el WebGL de Marte con la
+    luz según la vista, `oculta()` (0..1), `cara()` (la que domina) y
+    `aCara(nombre)` (giro de 2,8 s y, si estaba acercada, de vuelta a x1).
+    `luna.js` ya no lo usa `/luna` (sigue para `LUNA_V` y el banco
+    `canvas.html`).
+  - Marcado: `.luna-disco` se queda con el PNG (aterrizaje del vuelo, sin
+    WebGL2 y mientras carga); encima `.luna-gl` (lienzo, sonda y capa de
+    nombres), centrado en el disco (sube `--luna-dy`).
+  - Chapas: se colocan con `proyecta()` en cada fotograma, en la misma capa
+    del tamaño del disco de antes; salen las encendidas que miran hacia quien
+    mira (`z` > 0,12), con el mismo "lado a lado" para las que se pisan. Ya
+    no hay `data-cara`: sale lo que se ve.
+  - Al pasar la cara oculta a dominar (más del 50 %), se apaga todo y se
+    enciende China, como hacía antes el mando. El mando refleja la cara que
+    domina y, pulsado, gira a la otra.
+  - Relés: a la vista con la cara oculta delante y sin zoom; su capa se
+    desplaza con la cuenca Polo Sur-Aitken (ancla 44° S, 191° E), desde donde
+    estaba en la cara oculta.
+  - Orion: se aparta con zoom (> ×1,05); tono de noche con la cara oculta
+    dominando.
+  - Marte pequeño: tapado por la Luna acercada, su enlace no se lleva el clic
+    (como la Tierra de `/marte`).
+  - Vuelos: a la Tierra, alejándose y con foto del lienzo (como la vuelta de
+    `/marte` a la Luna); a Marte, primero a x1 y vuela el lienzo. Al irse a
+    Marte se guarda la cara que domina, centrada y a x1 (así la vuelta desde
+    `/marte`, que aterriza con el PNG de esa cara, no salta). A una nota, se
+    guarda la vista exacta.
+  - Móvil: un dedo gira y dos pellizcan (`touch-action: none`); chapas y
+    columna siguen ocultas en táctil, como antes.
+  - Comprobado en Chrome sin ventana: llegada, mando a la oculta (China y
+    relés en su sitio), Apolo encendido, zoom con nombres, vuelos a la Tierra
+    y a Marte acercada, y la vuelta de Marte. Sin errores.
+  - **Consumo en Zen** (usuario, 23-sep-2026, en la versión de producción
+    local, `npm run build` + `astro preview`, frente a la publicada en
+    zodk.eu): "unos 13 W en la animación [el vuelo], después en estático 8-9
+    W; al girar 10-12 W. Números similares; diría que en la de ahora
+    [zodk.eu] se calienta un poco más". Antes había notado un pico al cargar
+    con `npm run dev`: en Chrome el arranque de `/luna` es de ~40-60 ms de JS
+    (sobre todo preparar el mapa base, 13 ms) y el lienzo no se repinta
+    quieto; en el servidor de pruebas, la barra de Astro audita cada página
+    al cargar (en producción no está).
+  - `CLAUDE.md`: sección de `/luna` al día.
+  - **Falta**: el visto bueno final y commitear código y teselas (~167 MB,
+    fuera de Git ahora).
 - **Visto en capturas**: la cara visible, casi idéntica al PNG (faltan las
   sombras proyectadas cerca del terminador); la oculta, igual pero con los
   brillos algo más marcados (sin la pasada de supermuestreo del PNG); a
