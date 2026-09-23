@@ -67,6 +67,13 @@ LISTA = {
     "Melas Chasma": ("region", 200, True),
     "Ma'adim Vallis": ("region", 220, False),
     "Nili Fossae": ("region", 200, False),
+    # Los sitios de los amartizajes (usuario, 23-sep-2026: cada uno, bueno o
+    # fallido, tiene que tener cerca un accidente con nombre). Zonas:
+    "Ares Vallis": ("region", 220, False),        # Mars Pathfinder
+    "Scandia Colles": ("region", 200, False),     # Phoenix
+    "Samara Valles": ("region", 200, False),      # Mars 6
+    "Ultimi Scopuli": ("region", 200, False),     # Mars Polar Lander
+    "Nanedi Valles": ("region", 200, False),      # Mars 2
     # --- Formas claras: visor --------------------------------------------
     # Hacia x2 (miden 90 px o más)
     "Olympus Mons": ("visor", 90, False),
@@ -96,6 +103,12 @@ LISTA = {
     "Hecates Tholus": ("visor", 80, False),
     "Korolev": ("visor", 34, False),              # el cráter lleno de hielo
     "Jezero": ("visor", 20, False),               # Perseverance
+    # Los cráteres de los amartizajes (ver arriba), con el umbral bajado para
+    # que salgan a x4-x6
+    "Ptolemaeus": ("visor", 55, False),           # Mars 3
+    "Miyamoto": ("visor", 55, False),             # Schiaparelli
+    "Mie": ("visor", 45, False),                  # Viking 2
+    "Endeavour": ("visor", 9, True),              # Opportunity (22 km: sale a x6)
 }
 
 # Tharsis no está en el catálogo como zona (es un nombre de albedo, un punto

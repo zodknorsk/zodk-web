@@ -12,7 +12,13 @@
 // Motor: src/scripts/marte-gl.js (WebGL) y la mano de src/scripts/marte.js;
 // datos en public/marte/, de logo-files/generar-marte.py. Detalle y
 // decisiones en logo-files/MARTE-WIP.md.
+import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
+import { AMARTIZAJES } from "../data/amartizajes";
+
+// Las chapas enlazan a su nota solo si está publicada.
+const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
+const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a) => a.nota);
 ---
 
 <PageLayout title="Marte" description="Marte en pixel art: se gira arrastrando y se acerca con la rueda o el trackpad." hero cabecera={false}>
@@ -27,6 +33,11 @@ import PageLayout from "@layouts/PageLayout.astro";
          el píxel de la Luna de /luna. -->
     <canvas class="marte-canvas" role="img" aria-label="Marte"></canvas>
     <div class="marte-sonda" aria-hidden="true"></div>
+    <!-- Nombres de lugares, que salen al acercarse, y chapas de los
+         amartizajes (marte-nombres.js): encima del lienzo, con el origen en el
+         centro del disco. data-publicadas: las notas de amartizajes que ya
+         están en el blog. -->
+    <div class="marte-nombres" data-publicadas={JSON.stringify(notasPublicadas)}></div>
     <!-- La Tierra pequeña (arriba a la derecha): se pulsa para ir a la
          Tierra. Sale cuando el script está listo, con un fundido. -->
     <div class="marte-tierra" aria-hidden="true" hidden></div>
@@ -48,6 +59,9 @@ import PageLayout from "@layouts/PageLayout.astro";
   import { LUNA_V } from "../scripts/luna.js";
   import { MARTE_V, montarMano } from "../scripts/marte.js";
   import { montarMarteGL, montarZoom } from "../scripts/marte-gl.js";
+  import { montarNombres } from "../scripts/marte-nombres.js";
+  import { AMARTIZAJES } from "../data/amartizajes";
+  import { PAISES_LUNA, svgBandera } from "../data/alunizajes";
   import { PLANETA_V } from "../scripts/planeta.js";
   import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/viaje-luna.js";
 
@@ -201,15 +215,38 @@ import PageLayout from "@layouts/PageLayout.astro";
     const tierra = document.querySelector<HTMLElement>(".marte-tierra");
     const enlaceTierra = document.querySelector<HTMLAnchorElement>(".marte-tierra-enlace");
     const disco = document.querySelector<HTMLElement>(".marte-disco");
-    if (!cv || !hero || !sonda || !boton || !tierra || !enlaceTierra || !disco) return;
+    const capa = document.querySelector<HTMLElement>(".marte-nombres");
+    if (!cv || !hero || !sonda || !boton || !tierra || !enlaceTierra || !disco || !capa) return;
     // ¿Se llegó desde /luna? Lo avisa /luna justo antes de venir; se lee una
     // vez y se borra, así que llegar de otro modo (o recargar) no saca el
     // botón de la Luna.
     let desde = null;
     try { desde = sessionStorage.getItem("marte-desde"); sessionStorage.removeItem("marte-desde"); }
     catch { /* sessionStorage no disponible */ }
-    const marte = await montarMarteGL(cv, { disco: () => sonda.getBoundingClientRect().height });
+    // Los nombres se recolocan tras cada fotograma del lienzo (cuando estén).
+    let colocaNombres: (() => void) | null = null;
+    // La Tierra pequeña va detrás de Marte: al acercarse, Marte la tapa. Si
+    // su centro queda dentro del disco, su enlace no se lleva el clic (se
+    // pulsaría Marte y se iría a la Tierra). Su sitio, respecto al centro del
+    // disco (el de la ventana), se mide al montar y al cambiar la ventana.
+    let tierraDx = 0, tierraDy = 0;
+    const midoTierra = () => {
+      const t = tierra.getBoundingClientRect();
+      tierraDx = t.left + t.width / 2 - window.innerWidth / 2;
+      tierraDy = t.top + t.height / 2 - window.innerHeight / 2;
+    };
+    let motor: Marte | null = null;   // `marte`, cuando ya está (el primer fotograma se pinta antes)
+    const tapaTierra = () => {
+      if (!motor) return;
+      const radio = motor.pxGrado() * 180 / Math.PI;     // radio del disco en pantalla
+      enlaceTierra.classList.toggle("tapada", Math.hypot(tierraDx, tierraDy) < radio);
+    };
+    const marte = await montarMarteGL(cv, {
+      disco: () => sonda.getBoundingClientRect().height,
+      alPintar: () => { tapaTierra(); colocaNombres?.(); },
+    });
     if (!cv.isConnected) return marte?.desmontar();   // se salió de la página mientras cargaba
+    motor = marte;
     // Sin WebGL2 se queda Marte quieto (el PNG de .marte-disco), sin mano ni
     // zoom; volver funciona igual.
     if (marte) {
@@ -217,9 +254,28 @@ import PageLayout from "@layouts/PageLayout.astro";
       // fuera la imagen, que asomaría al girar o al hacer zoom.
       disco.hidden = true;
       quitar = [marte.desmontar, montarMano(hero, marte), montarZoom(hero, marte)];
+      // Los nombres, sin esperar por ellos (el archivo y la letra). Al irse
+      // (a la Tierra o a la Luna) se quitan con la mano y el zoom.
+      const publicadas: string[] = JSON.parse(capa.dataset.publicadas ?? "[]");
+      const chapas = AMARTIZAJES.map((a) => ({
+        lat: a.lat, lon: a.lon, llego: a.llego, titulo: a.nombre, datos: a.datos,
+        clase: `${a.quien}, ${a.anio} · ${a.clase}`,
+        bandera: svgBandera(PAISES_LUNA.find((p) => p.codigo === a.pais)!),
+        enlace: publicadas.includes(a.nota) ? `/notas/${a.nota}` : null,
+      }));
+      montarNombres(capa, marte, chapas).then((nombres) => {
+        if (!capa.isConnected || enVuelo) return nombres.desmontar();   // ya se estaba yendo
+        colocaNombres = nombres.coloca;
+        quitar.push(() => { colocaNombres = null; nombres.desmontar(); });
+        nombres.coloca();
+      }).catch(() => {});
     }
     let enVuelo = false;
     tierra.hidden = enlaceTierra.hidden = false;
+    midoTierra();
+    tapaTierra();
+    window.addEventListener("resize", midoTierra);
+    quitar.push(() => window.removeEventListener("resize", midoTierra));
     enlaceTierra.addEventListener("click", (e) => {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // nueva pestaña, etc.
       e.preventDefault();
