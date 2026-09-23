@@ -33,7 +33,7 @@
 
 // Subir al regenerar public/luna/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const LUNA_V = 3;
+export const LUNA_V = 4;
 
 const DEG = Math.PI / 180;
 // Sentido del giro, el mismo a la ida y a la vuelta: 1 = la superficie se

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: la Luna que gira y se acerca</title>
+<!--
+  Banco de pruebas del paso 1 de "la Luna que gira y se acerca" (23-sep-2026,
+  ver logo-files/LUNA-WIP.md): la Luna en el motor WebGL de Marte
+  (src/scripts/marte-gl.js con prefijo "luna-"), al lado de la Luna de ahora
+  (los PNG aprobados de cada cara), para comparar.
+
+  Derecha: clic y arrastrar gira; rueda o trackpad, zoom. La luz va con la
+  vista: según gana terreno la cara oculta, la fase del sol, la exposición y
+  el tono frío pasan de los de la cara visible a los de la oculta (como en la
+  media vuelta de /luna; usuario, 23-sep-2026).
+  Los botones de cara llevan las dos Lunas a esa cara (la nueva, girando).
+
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-luna/giro-libre.html
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  Con los nombres de accidentes de public/luna/luna-nombres.json.
+  ?base=carpeta: los datos de otra carpeta de este banco (variantes del zoom:
+  zoom-d1, zoom-d2, con teselas de una zona; ver generar-luna.py --teselas).
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png);
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  main { position: fixed; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
+  .panel { position: relative; overflow: hidden; }
+  .panel h2 { position: absolute; left: 12px; top: 8px; margin: 0; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #e6c078; z-index: 3; }
+  #ahora { position: absolute; left: 50%; top: 50%; width: 70svh; aspect-ratio: 1; transform: translate(-50%, -50%);
+    background: no-repeat center / 100% 100%; image-rendering: pixelated; }
+  #lienzo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  /* la sonda mide el diámetro del disco a x1: el mismo que el PNG de la izquierda
+     (600 px de arte con el disco de 2 x 292,5) */
+  #sonda { position: absolute; height: calc(70svh * 585 / 600); width: 0; visibility: hidden; }
+  .arrastrable { cursor: default; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 5; background: #0009;
+    padding: 6px 10px; border-radius: 6px; display: flex; gap: 6px; align-items: center; }
+  button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px; padding: 2px 8px; cursor: pointer; }
+  /* La capa de nombres: copiada de src/styles/global.css (las mismas clases que /marte). */
+/* Nombres de lugares de /marte (src/scripts/marte-nombres.js; decididos en
+   el banco logo-files/prototipo-marte/nombres.html, 22-sep-2026). Capa
+   encima del lienzo, con el origen en el centro del disco: el script coloca
+   cada nombre con transform. No se lleva el ratón: se sigue arrastrando
+   Marte por encima. Por debajo de la Tierra pequeña. */
+.marte-nombres { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
+.marte-nombre { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.35s ease; }
+.marte-nombre.visto { opacity: var(--borde, 1); }
+.marte-nombre[hidden] { display: none; }
+/* el texto lleva el contorno negro de 1 px del título de la portada */
+.marte-nombre .texto {
+  position: absolute;
+  font: 600 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #eef1f4;
+  text-shadow: 1px 0 0 #05060a, -1px 0 0 #05060a, 0 1px 0 #05060a, 0 -1px 0 #05060a,
+    1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a;
+}
+.marte-nombre.menor .texto { font-weight: 500; font-size: 10px; letter-spacing: 0.16em; color: #dfe4ea; }
+/* Visor: las cuatro esquinas del marco del título de la portada, ceñidas al
+   lugar, y el nombre bajo la esquina de abajo a la izquierda. Al aparecer,
+   las esquinas se cierran desde fuera. */
+.marte-nombre .marco {
+  position: absolute;
+  left: 0;
+  top: 0;
+  --c: rgba(255, 255, 255, 0.85);
+  --l: 12px;
+  --g: 1.5px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+.marte-nombre.menor .marco { --l: 7px; --c: rgba(255, 255, 255, 0.7); }
+.marte-nombre.visor .marco-fuera { background: none; }   /* solo sitúa */
+.marte-nombre .marco-dentro { position: absolute; inset: 0; }
+.marte-nombre.visor.visto .marco-dentro { animation: marte-cierra 0.4s cubic-bezier(0.3, 0, 0.2, 1) both; }
+@keyframes marte-cierra { from { transform: scale(1.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.marte-nombre.visor .texto { left: 0; top: calc(100% + 6px); }
+.marte-nombre.visor.visto .texto { animation: marte-entra 0.3s ease 0.25s both; }
+@keyframes marte-entra { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+/* Regiones: sin borde claro que enmarcar. Rótulo de mapa: letras muy
+   espaciadas, más finas y algo transparentes, en medio de la zona. */
+.marte-nombre.region .texto {
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  color: rgba(238, 241, 244, 0.75);
+  text-shadow: 1px 0 0 rgba(5, 6, 10, 0.75), -1px 0 0 rgba(5, 6, 10, 0.75), 0 1px 0 rgba(5, 6, 10, 0.75), 0 -1px 0 rgba(5, 6, 10, 0.75);
+}
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500; src: url(../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 600; src: url(../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2) format("woff2"); }
+</style>
+</head>
+<body>
+<main>
+  <section class="panel"><h2>ahora (PNG por cara)</h2><div id="ahora"></div></section>
+  <section class="panel" id="zona"><h2>nueva (gira y se acerca)</h2><canvas id="lienzo"></canvas><div id="sonda"></div><div class="marte-nombres" id="nombres"></div></section>
+</main>
+<div id="panel" data-sin-arrastre>
+  <button data-cara="visible">cara visible</button>
+  <button data-cara="oculta">cara oculta</button>
+  <span id="vista"></span>
+</div>
+<script type="module">
+import { LUNA_V } from "../../src/scripts/luna.js";
+import { montarMano } from "../../src/scripts/marte.js";
+import { montarMarteGL, montarZoom } from "../../src/scripts/marte-gl.js";
+import { montarNombres } from "../../src/scripts/marte-nombres.js";
+
+const $ = (id) => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+const BASE = q.has("base") ? `./${q.get("base")}/` : "../../public/luna/";
+const D = await fetch(`../../public/luna/luna-datos.json?v=${LUNA_V}`).then((r) => r.json());
+const CARAS = D.caras;
+const DEG = Math.PI / 180;
+const dir = (lat, lon) => [Math.cos(lat * DEG) * Math.sin(lon * DEG), Math.sin(lat * DEG), Math.cos(lat * DEG) * Math.cos(lon * DEG)];
+const angulo = (a, b) => Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])));
+const V = dir(CARAS.visible.lat0, CARAS.visible.lon0), O = dir(CARAS.oculta.lat0, CARAS.oculta.lon0);
+const ENTRE = angulo(V, O);
+const lerp = (a, b, t) => a + (b - a) * t;
+
+// Cuánto de cara oculta se ve (0 visible, 1 oculta): el ángulo de la vista a
+// la cara visible, en proporción al que hay entre las dos caras.
+function oculta(lat0, lon0) {
+  return Math.max(0, Math.min(1, angulo(dir(lat0, lon0), V) / ENTRE));
+}
+// La luz de cada vista, entre la de una cara y la de la otra.
+function luz(lat0, lon0) {
+  const t = oculta(lat0, lon0), A = CARAS.visible, B = CARAS.oculta;
+  return { fase: lerp(A.fase, B.fase, t), lado: A.lado, expo: lerp(A.exposicion, B.exposicion, t), frio: lerp(A.frio, B.frio, t) };
+}
+
+$("ahora").style.backgroundImage = `url(../../public/luna/luna-visible.png?v=${LUNA_V})`;
+let coloca = null;   // los nombres, cuando estén
+const luna = await montarMarteGL($("lienzo"), {
+  base: BASE, prefijo: "luna-", version: LUNA_V,
+  lat0: CARAS.visible.lat0, lon0: CARAS.visible.lon0,
+  disco: () => $("sonda").getBoundingClientRect().height,
+  luz,
+  // x6, como Marte, con el nivel de 32 px/grado (n4, del LDEM de 64): la
+  // Luna se dibuja más grande que Marte (292,5 px de arte de radio, Marte
+  // 219,4) y con el de 24 cada celda ocupaba 1,28 px de arte a x6 ("se ven
+  // demasiado los píxeles"; se probó a limitarlo a x4,5). ?zoommax=N para
+  // probar otro.
+  zoomMax: Number(q.get("zoommax") ?? 6),
+  alPintar: () => coloca?.(),
+});
+if (!luna) { $("vista").textContent = "Este navegador no tiene WebGL2."; throw new Error("sin WebGL2"); }
+montarMano($("zona"), luna);
+montarZoom($("zona"), luna);
+window.luna = luna;
+// Nombres de accidentes (generar-nombres.py --luna), como en /marte.
+montarNombres($("nombres"), luna, [], { url: `../../public/luna/luna-nombres.json?v=${Date.now()}`, radioKm: 1737.4 })
+  .then((n) => { coloca = n.coloca; coloca(); });
+
+// Ir a una cara: un giro suave (la longitud por el camino corto), como el
+// mando de /luna.
+let anim = 0;
+function aCara(nombre) {
+  $("ahora").style.backgroundImage = `url(../../public/luna/luna-${nombre}.png?v=${LUNA_V})`;
+  const c = CARAS[nombre], v0 = luna.vista();
+  const dl = ((c.lon0 - v0.lon0 + 540) % 360) - 180;
+  const t0 = performance.now(), ms = 2800;
+  cancelAnimationFrame(anim);
+  const paso = (ahora) => {
+    const p = Math.min(1, (ahora - t0) / ms), e = (1 - Math.cos(Math.PI * p)) / 2;
+    luna.ponVista(lerp(v0.lat0, c.lat0, e), v0.lon0 + dl * e);
+    if (p < 1) anim = requestAnimationFrame(paso);
+  };
+  anim = requestAnimationFrame(paso);
+}
+document.querySelectorAll("[data-cara]").forEach((b) => b.addEventListener("click", () => aCara(b.dataset.cara)));
+
+if (q.has("vista")) {
+  const [la, lo, z] = q.get("vista").split(",").map(Number);
+  luna.ponVista(la, lo);
+  if (z) luna.ponZoom(z, true);
+}
+const muestra = () => {
+  const v = luna.vista();
+  $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(1)}° ${v.lon0.toFixed(1)}° · oculta ${(oculta(v.lat0, v.lon0) * 100).toFixed(0)} %`;
+  requestAnimationFrame(muestra);
+};
+muestra();
+</script>
+</body>
+</html>

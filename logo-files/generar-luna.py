@@ -220,11 +220,23 @@ DEM_W, DEM_H, DEM_PPD = 5760, 2880, 16
 ALB_W, ALB_H = 4096, 2048
 
 
-def hacer_muestreo(dem, alb):
+def cargar_dem(ppd):
+    """El LDEM de `ppd` px/grado (16 o 64; mismo formato)."""
+    dem = array.array("h")
+    with open(os.path.join(FUENTES, f"ldem_{ppd}.img"), "rb") as fh:
+        dem.frombytes(fh.read())
+    if sys.byteorder != "little":
+        dem.byteswap()
+    return dem
+
+
+def hacer_muestreo(dem, alb, dem_ppd=DEM_PPD):
+    DEM_W, DEM_H = 360 * dem_ppd, 180 * dem_ppd
+
     def altura(lat, lon):
         """Metros sobre la esfera de referencia (bilineal). lon en grados, cualquier rango."""
-        fr = (90.0 - lat) * DEM_PPD - 0.5
-        fc = (lon % 360.0) * DEM_PPD - 0.5
+        fr = (90.0 - lat) * dem_ppd - 0.5
+        fc = (lon % 360.0) * dem_ppd - 0.5
         r0 = math.floor(fr); c0 = math.floor(fc)
         tr = fr - r0; tc = fc - c0
         r0 = 0 if r0 < 0 else DEM_H - 1 if r0 >= DEM_H else r0
@@ -555,7 +567,100 @@ def export_canvas(outdir):
         json.dump(datos, fh, separators=(",", ":"))
 
 
+# ------------------------------------------------ teselas del zoom (/luna)
+# La Luna que gira y se acerca (23-sep-2026, ver LUNA-WIP.md): como Marte
+# (generar-marte.py), tres niveles finos en teselas de 360 x 360 celdas para
+# el motor WebGL (src/scripts/marte-gl.js): 8, 16 y 24 px/grado. El mapa base
+# (luna-mapa.png, 4 px/grado) y las dos caras aprobadas no se tocan.
+# Pixel art contenido (usuario, 23-sep-2026: "demasiado detalle hace que
+# parezca menos pixel art… lo que no quiero es que se convierta en algo súper
+# realista"): los materiales (mares y tierras altas) salen del mismo mosaico
+# de 4k y con el mismo suavizado que la base, así que el zoom no añade
+# manchas nuevas, solo afina los bordes; el detalle nuevo es solo el relieve,
+# del LDEM de 16 px/grado (el de 32 no existe), con la derivada a
+# TESELA_DERIV celdas del nivel (1 = lo más fino que da el dato; el usuario
+# eligió esta, la "d1", frente a una más suavizada).
+# El nivel de 32 px/grado (n4) sale del LDEM de 64 (530 MB) (usuario,
+# 23-sep-2026: "¿no se puede sacar un pelín más de resolución?"): la Luna se
+# dibuja con 292,5 px de arte de radio, así que a x6 son 30,6 px de arte por
+# grado; con el de 24 cada celda ocupaba 1,28 px (bloques de 1 y 2 px), con
+# el de 32, 0,96, como Marte a x6.
+TESELA = 360
+NIVELES_ZOOM = [4, 8, 16, 24, 32]             # px/grado; el 4 es luna-mapa.png
+DEM_FINO = {32: 64}                           # nivel -> LDEM del que sale (si no, el de 16)
+TESELA_DERIV = 1.0
+
+
+def export_teselas(outdir, zona=None, deriv=TESELA_DERIV, solo=None):
+    """`zona` = (lat sur, lat norte, lon oeste, lon este): solo las teselas
+    que la tocan (para comparar variantes sin hacer la Luna entera). `solo`:
+    los niveles que se hacen (los demás se dejan como estén)."""
+    import json
+    global ALBEDO, RELIEVE_MARES
+    ALBEDO = [(u, col) for u, (_, col) in zip(ALBEDO_VALLE, ALBEDO)]   # como export_canvas
+    RELIEVE_MARES = 2.5
+    q = NORMAL_NIVELES - 1
+    dem16, alb = cargar()
+    for n, ppd in enumerate(NIVELES_ZOOM):
+        if n == 0 or (solo and n not in solo):
+            continue
+        dppd = DEM_FINO.get(ppd, DEM_PPD)
+        altura, albedo = hacer_muestreo(dem16 if dppd == DEM_PPD else cargar_dem(dppd), alb, dppd)
+        carpeta = os.path.join(outdir, f"n{n}")
+        os.makedirs(carpeta, exist_ok=True)
+        d_deg = max(deriv / ppd, 1.0 / dppd)        # la derivada, nunca más fina que el dato
+        d_m = math.radians(d_deg) * LUNA_R
+        w, h = 360 * ppd, 180 * ppd
+        grados = TESELA / ppd
+        for tf in range(h // TESELA):
+            cols = list(range(w // TESELA))
+            if zona:
+                norte, sur = 90.0 - tf * grados, 90.0 - (tf + 1) * grados
+                if sur >= zona[1] or norte <= zona[0]:
+                    continue
+                cols = [tc for tc in cols
+                        if -180.0 + tc * grados < zona[3] and -180.0 + (tc + 1) * grados > zona[2]]
+            for tc in cols:
+                filas = []
+                for r in range(tf * TESELA, (tf + 1) * TESELA):
+                    lat = 90.0 - (r + 0.5) / ppd
+                    cl = max(0.02, math.cos(math.radians(lat)))
+                    fila = bytearray(TESELA * 4)
+                    for i, c in enumerate(range(tc * TESELA, (tc + 1) * TESELA)):
+                        lon = (c + 0.5) / ppd - 180.0
+                        A = albedo(lat, lon)
+                        m = 0
+                        while m < len(ALBEDO) - 1 and A >= ALBEDO[m][0]:
+                            m += 1
+                        he = (altura(lat, lon + d_deg / cl) - altura(lat, lon - d_deg / cl)) / (2 * d_m)
+                        hn = (altura(lat + d_deg, lon) - altura(lat - d_deg, lon)) / (2 * d_m)
+                        exag = RELIEVE_EXAG * (1.0 + (RELIEVE_MARES - 1.0) * (1.0 - smooth(MARES_A, MARES_B, A)))
+                        ne, nn = -he * exag, -hn * exag
+                        ln = math.sqrt(ne * ne + nn * nn + 1.0)
+                        fila[i * 4:i * 4 + 4] = bytes((m, round((ne / ln + 1) / 2 * q), round((nn / ln + 1) / 2 * q), 255))
+                    filas.append(bytes(fila))
+                write_rgba(os.path.join(carpeta, f"{tf}-{tc}.png"), TESELA, TESELA, filas)
+            print(f"  nivel {n}: banda {tf + 1}/{h // TESELA}", flush=True)
+    # los niveles, en luna-datos.json (el resto, como lo dejó --canvas)
+    ruta = os.path.join(outdir, "luna-datos.json")
+    with open(ruta) as fh:
+        datos = json.load(fh)
+    datos["TESELA"] = TESELA
+    datos["NIVELES"] = [{"ppd": p, "teselas": i > 0} for i, p in enumerate(NIVELES_ZOOM)]
+    with open(ruta, "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+
+
 def main():
+    if len(sys.argv) >= 3 and sys.argv[1] == "--teselas":
+        # python3 generar-luna.py --teselas carpeta/ [--zona S,N,O,E] [--deriv 1.5] [--solo 4]
+        zona = tuple(map(float, sys.argv[sys.argv.index("--zona") + 1].split(","))) if "--zona" in sys.argv else None
+        deriv = float(sys.argv[sys.argv.index("--deriv") + 1]) if "--deriv" in sys.argv else TESELA_DERIV
+        # --solo 4: solo el nivel n4 (los demás, como estén)
+        solo = set(map(int, sys.argv[sys.argv.index("--solo") + 1].split(","))) if "--solo" in sys.argv else None
+        export_teselas(sys.argv[2], zona, deriv, solo)
+        print("->", sys.argv[2])
+        return
     if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
         export_canvas(sys.argv[2])
         print("->", sys.argv[2])

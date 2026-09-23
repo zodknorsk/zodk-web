@@ -19,7 +19,6 @@
 
 import { MARTE_V } from "./marte.js";
 
-const KM_GRADO = Math.PI * 3389.5 / 180;     // un grado de Marte, en km
 const MARGEN = 0.06;                         // aire del visor por fuera del lugar
 const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de aire
 
@@ -30,10 +29,16 @@ const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de air
  * @param {{ lat: number, lon: number, llego: boolean, separa: number, bandera: string,
  *   titulo: string, clase: string, datos: [string, string][], texto: string,
  *   foto: string, fotoPos: string, credito: string | null, enlace: string | null }[]} [chapas]
+ * @param {{ url?: string, radioKm?: number }} [astro]  otro astro (la Luna:
+ *   /luna/luna-nombres.json y 1737,4 km); por defecto, Marte
  * @returns {Promise<{ coloca: () => void, desmontar: () => void }>}
  */
-export async function montarNombres(capa, marte, chapas = []) {
-  const NOMBRES = await fetch(`/marte/marte-nombres.json?v=${MARTE_V}`).then((r) => r.json());
+export async function montarNombres(capa, marte, chapas = [], {
+  url = `/marte/marte-nombres.json?v=${MARTE_V}`,
+  radioKm = 3389.5,
+} = {}) {
+  const KM_GRADO = Math.PI * radioKm / 180;    // un grado del astro, en km
+  const NOMBRES = await fetch(url).then((r) => r.json());
 
   // Un elemento por nombre.
   const els = NOMBRES.map((n) => {

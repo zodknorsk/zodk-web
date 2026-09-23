@@ -27,6 +27,13 @@
 // CSS (el arreglo de la Luna y la Tierra para Zen, ver temperatura-zen.md).
 //
 // Lo usa logo-files/prototipo-marte/zoom.html. Detalle en logo-files/MARTE-WIP.md.
+//
+// También pinta la Luna (23-sep-2026, logo-files/LUNA-WIP.md): sus datos de
+// generar-luna.py tienen el mismo formato (mapa de 1440 x 720 con material y
+// normal, LUT por material y escalón de luz). Con `prefijo: "luna-"` se leen
+// esos, y `luz(lat0, lon0)` da la luz de cada vista: fase y lado del sol,
+// exposición (sube o baja todos los escalones) y tono frío (el bloque de la
+// LUT: la Luna tiene FRIO_PASOS + 1 paletas, una debajo de otra).
 
 import { MARTE_V } from "./marte.js";
 
@@ -91,6 +98,9 @@ uniform vec2 uTam;          // ancho y alto del arte
 uniform float uR;           // radio del disco en píxeles de arte
 uniform vec3 uM0, uM1, uM2; // vista -> Marte (filas de Ry(lon0)·Rx(lat0))
 uniform vec3 uS;            // sol en vista
+uniform float uExpoJ;       // exposición, en 1/LS de escalón (0 en Marte)
+uniform int uJNoche;        // la sombra no pasa de la luz de noche (por la exposición)
+uniform int uMatBase;       // fila de la LUT donde empieza la paleta (tono frío de la Luna)
 uniform usampler2D uBase;   // nivel 0 y sus mipmaps en longitud, uno al lado del otro
 uniform usampler2D uAtlas;  // teselas de los niveles finos que han llegado (A x A huecos)
 uniform usampler2D uInd;    // por nivel fino y tesela: hueco del atlas + 1 (0 = no está)
@@ -102,7 +112,7 @@ const float NOCHE = ${f(D.NOCHE)}, TERM_A = ${f(D.TERM_A)}, TERM_B = ${f(D.TERM_
 const float INV_LN_LS = ${f(D.LIGHT_SUB / D.LNSTEP)}, REL_K = ${f(D.RELIEVE_K / D.LNSTEP)};
 const float SIN_EM = ${f(Math.sin(D.RELIEVE_ELEV_MAX * DEG))}, COS_EM = ${f(Math.cos(D.RELIEVE_ELEV_MAX * DEG))};
 const int REL_MIN = ${D.RELIEVE_MIN}, REL_MAX = ${D.RELIEVE_MAX}, SOMBRA_K = ${D.SOMBRA_K}, LS = ${D.LIGHT_SUB};
-const int KMIN = ${D.LUT_KMIN * D.LIGHT_SUB}, KN = ${D.LUT_KN}, J_NOCHE = ${Math.round(Math.log(D.NOCHE) / D.LNSTEP * D.LIGHT_SUB)};
+const int KMIN = ${D.LUT_KMIN * D.LIGHT_SUB}, KN = ${D.LUT_KN};
 const int T = ${D.TESELA};
 const int OFF[6] = int[6](${off.join(", ")});
 const int NF = ${NF}, A = ${A};
@@ -174,7 +184,7 @@ void main() {
   float lamS = dot(U, uS);
   float bright = NOCHE + (1.0 - NOCHE) * smoothstep(TERM_A, TERM_B, lamS);
   float limb = 1.0 - LIMB_K * smoothstep(0.75, 1.0, dc);
-  int j = int(floor(log(max(bright, 1e-3)) * INV_LN_LS + log(limb) * INV_LN_LS + 0.5));
+  int j = int(floor(log(max(bright, 1e-3)) * INV_LN_LS + log(limb) * INV_LN_LS + uExpoJ + 0.5));
   if (lamS > 0.0) {
     vec3 ax = uM1;                                      // norte de Marte en vista
     float cl = sqrt(max(0.0, 1.0 - B.y * B.y));
@@ -193,11 +203,11 @@ void main() {
       kRel = clamp(int(floor(log(ratio) * REL_K + 0.5)), REL_MIN, REL_MAX);
     }
     j += kRel * LS;
-    j = max(j, J_NOCHE);
+    j = max(j, uJNoche);
   }
   j = clamp(j - KMIN, 0, KN - 1);
   float cov = dc > rin ? 1.0 - smoothstep(rin, rout, dc) : 1.0;
-  o = vec4(float(m) / 255.0, float(j) / 255.0, cov, 1.0);
+  o = vec4(float(m + uMatBase) / 255.0, float(j) / 255.0, cov, 1.0);
 }`;
 }
 
@@ -288,8 +298,10 @@ function filas(lat0, lon0) {
 // si el navegador no tiene WebGL2.
 /**
  * @param {HTMLCanvasElement} canvas
- * @param {{ base?: string, lat0?: number, lon0?: number, disco?: () => number,
- *   alPintar?: () => void, ladoAtlas?: number, lut?: string | null }} [opciones]
+ * @param {{ base?: string, prefijo?: string, version?: number, lat0?: number, lon0?: number,
+ *   disco?: () => number, alPintar?: () => void, ladoAtlas?: number, lut?: string | null,
+ *   luz?: ((lat0: number, lon0: number) => { fase: number, lado: number, expo: number, frio: number }) | null,
+ *   zoomMax?: number }} [opciones]
  */
 export async function montarMarteGL(canvas, {
   base = "/marte/",
@@ -299,18 +311,25 @@ export async function montarMarteGL(canvas, {
   alPintar = () => {},
   ladoAtlas = 12,                                // huecos por lado del atlas (menos, para probar que se vacía bien)
   lut = null,                                    // otra LUT (URL), para comparar colores en el banco
+  prefijo = "marte-",                            // "luna-" para la Luna
+  version = MARTE_V,
+  luz = null,                                    // la luz según la vista (la Luna); null: la fija de los datos
+  zoomMax = ZOOM_MAX,
 } = {}) {
   const gl = canvas.getContext("webgl2", {
     alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false,
     preserveDrawingBuffer: false, powerPreference: "low-power",
   });
   if (!gl) return null;
-  const v = `?v=${MARTE_V}`;
+  const v = `?v=${version}`;
   const [D, baseBm, lutBm] = await Promise.all([
-    fetch(`${base}marte-datos.json${v}`).then((r) => r.json()),
-    bitmap(`${base}marte-mapa.png${v}`),
-    bitmap(lut ?? `${base}marte-lut.png${v}`),
+    fetch(`${base}${prefijo}datos.json${v}`).then((r) => r.json()),
+    bitmap(`${base}${prefijo}mapa.png${v}`),
+    bitmap(lut ?? `${base}${prefijo}lut.png${v}`),
   ]);
+  // La Luna no trae niveles finos (de momento) ni una luz fija.
+  D.NIVELES ??= [{ ppd: 4, teselas: false }];
+  D.TESELA ??= 360;
   const MW = D.MAPA_W, MH = D.MAPA_H, R0 = D.RADIUS, T = D.TESELA;
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 
@@ -400,11 +419,21 @@ export async function montarMarteGL(canvas, {
   const progColor = programa(gl, FRAG_COLOR);
   const vao = gl.createVertexArray();
 
-  // Sol en vista (x derecha, y arriba, z hacia quien mira).
-  const fa = D.FASE * DEG, sa = D.SOL_ARR * DEG;
-  const S = [D.LADO * Math.sin(fa) * Math.cos(sa), Math.sin(fa) * Math.sin(sa), Math.cos(fa)];
-  const sn = Math.hypot(...S);
-  S.forEach((x, i) => { S[i] = x / sn; });
+  // Luz de una vista: el sol en vista (x derecha, y arriba, z hacia quien
+  // mira), la exposición en escalones, el suelo de la noche y la paleta.
+  function luzDe(lat0v, lon0v) {
+    const l = luz ? luz(lat0v, lon0v) : { fase: D.FASE, lado: D.LADO, expo: 1, frio: 0 };
+    const fa = l.fase * DEG, sa = D.SOL_ARR * DEG;
+    const S = [l.lado * Math.sin(fa) * Math.cos(sa), Math.sin(fa) * Math.sin(sa), Math.cos(fa)];
+    const sn = Math.hypot(...S);
+    const paso = D.FRIO_MAX > 0 ? Math.round(l.frio / D.FRIO_MAX * D.FRIO_PASOS) : 0;
+    return {
+      S: S.map((x) => x / sn),
+      expoJ: Math.log(l.expo) * D.LIGHT_SUB / D.LNSTEP,
+      jNoche: Math.round(Math.log(D.NOCHE * l.expo) / D.LNSTEP * D.LIGHT_SUB),
+      matBase: paso * (D.MATERIALES ?? 0),
+    };
+  }
 
   let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
 
@@ -462,7 +491,11 @@ export async function montarMarteGL(canvas, {
     gl.uniform3fv(u.uM0, M[0]);
     gl.uniform3fv(u.uM1, M[1]);
     gl.uniform3fv(u.uM2, M[2]);
-    gl.uniform3fv(u.uS, S);
+    const L = luzDe(lat0, lon0);
+    gl.uniform3fv(u.uS, L.S);
+    gl.uniform1f(u.uExpoJ, L.expoJ);
+    gl.uniform1i(u.uJNoche, L.jNoche);
+    gl.uniform1i(u.uMatBase, L.matBase);
     const unidad = (i, tex, loc) => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(loc, i); };
     unidad(0, texBase, u.uBase);
     unidad(1, texAtlas || vacia, u.uAtlas);
@@ -638,7 +671,7 @@ export async function montarMarteGL(canvas, {
   // encoge, y con el ratón en una esquina acababa mirando al polo (probado el
   // 21-sep-2026: de lat0 29° a 83° en un solo alejamiento).
   function hazZoom(factor, clientX, clientY) {
-    const nuevo = Math.max(1, Math.min(ZOOM_MAX, zoomObj * factor));
+    const nuevo = Math.max(1, Math.min(zoomMax, zoomObj * factor));
     if (nuevo === zoomObj) return;
     if (nuevo < zoomObj) ancla = null;
     else {
@@ -670,7 +703,7 @@ export async function montarMarteGL(canvas, {
     // `ya`: sin el suavizado de la rueda (lo lleva quien llama, fotograma a
     // fotograma: el vuelo de vuelta a la Tierra).
     ponZoom(z, ya = false) {
-      zoomObj = Math.max(1, Math.min(ZOOM_MAX, z));
+      zoomObj = Math.max(1, Math.min(zoomMax, z));
       if (ya) zoom = zoomObj;
       ancla = null;
       pide();

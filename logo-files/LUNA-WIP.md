@@ -16,6 +16,148 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 > generalizó (destino, icono, imagen y astro que se deja atrás por
 > parámetros); el vuelo a la Luna no cambia. Detalle en `MARTE-WIP.md`.
 
+## Luna que gira y se acerca (desde el 23-sep-2026, EN CURSO, rama `mars-project`)
+
+**Dónde estamos** (23-sep-2026): **pasos 1, 2 y 3 hechos y el aspecto con
+zoom aprobado por el usuario; SIN COMMITEAR** (banco de pruebas, teselas
+n1-n4 y nombres; ver abajo). `/luna` sin tocar. Las teselas, fuera de Git
+hasta que todo sea definitivo. Siguiente: las rayas del polo sur y el paso 4,
+llevarlo a `/luna`.
+- `src/scripts/marte-gl.js` ya pinta también la Luna: opciones `prefijo`
+  ("luna-"), `version`, `zoomMax` y `luz(lat0, lon0)` (fase y lado del sol,
+  exposición en escalones, suelo de la noche y bloque de la LUT del tono
+  frío). Con Marte no cambia nada (exposición 1, sin tono frío).
+- Banco `logo-files/prototipo-luna/giro-libre.html` (servir la raíz con
+  `python3 -m http.server 4400`): a la izquierda los PNG aprobados de cada
+  cara, a la derecha la Luna nueva (arrastrar y rueda); los botones de cara
+  llevan las dos a esa cara (la nueva, girando 2,8 s, como el mando).
+- La luz según la vista: "cuánto de cara oculta se ve" = el ángulo de la
+  vista a la cara visible entre el que hay de una cara a la otra (150°), y
+  fase, exposición y tono frío van de los de una cara a los de la otra.
+- **El usuario, paso 1** (23-sep-2026): "se ve bastante bien, gira etc.
+  Vamos con los datos de la NASA… Recuerda: demasiado detalle hace que
+  parezca menos pixel art, en la Luna se nota más que en Marte… lo que no
+  quiero es que se convierta en algo súper realista".
+- **Paso 2, EN CURSO (sin commitear)**: `generar-luna.py --teselas carpeta/
+  [--zona S,N,O,E] [--deriv N]` hace los niveles de 8, 16 y 24 px/grado
+  (`n1`-`n3`) y añade `NIVELES` y `TESELA` a `luna-datos.json`; el mapa base
+  y las caras aprobadas no se tocan. Contención: los materiales salen del
+  mismo mosaico de 4k con el mismo suavizado que la base (el zoom no añade
+  manchas, solo afina bordes); el detalle nuevo es solo relieve, del LDEM de
+  16 px/grado (el de 32 no existe en la NASA; el de 64 pesa 530 MB y no se
+  ha bajado). Bajado el mosaico LROC de 8k (`luna-fuentes/`), sin usar.
+  - Variantes en el banco, solo en la zona de Copérnico (5° S-25° N, 40°
+    O-0°): `?base=zoom-d1` (derivada a 1 celda: cráteres nítidos) y
+    `?base=zoom-d4` (a 4: relieve suavizado, más de dibujo pero borroso a
+    ×6). Una `d2` salió casi igual que la `d1` (el dato ya limita) y se
+    borró. **Pendiente: que el usuario elija.**
+- **Paso 2 HECHO (sin commitear)**: el usuario eligió la **d1** ("d1, genera
+  la Luna entera y vamos con los nombres"). Teselas de toda la Luna en
+  `public/luna/n1`-`n3` (`generar-luna.py --teselas ../public/luna/`) y
+  `NIVELES`/`TESELA` en `luna-datos.json` (el motor de `/luna` de ahora no
+  los usa: no cambia nada allí). 448 archivos, **74 MB** (Marte, 38: la
+  Luna tiene más relieve y los PNG comprimen peor). Las variantes del banco
+  (`zoom-d1`, `zoom-d4`) se borraron.
+- **Paso 3 HECHO (sin commitear)**: nombres de la Luna.
+  - `generar-nombres.py --luna` → `public/luna/luna-nombres.json`, 81
+    nombres (catálogo de la UAI de la Luna, en `luna-fuentes/`): mares,
+    océano, bahías, cordilleras, valles y grietas con rótulo; cráteres y
+    montes con visor; los montes, ceñidos con el LOLA de 16. La lista está
+    en `LISTA_LUNA`.
+  - **El usuario** (23-sep-2026): "Cada alunizaje NECESITA un nombre cerca,
+    ya sea cráter, planicies, etc., pero aparte, genera los nombres de
+    accidentes geográficos característicos aunque no haya alunizajes cerca,
+    como en Marte". Comprobado con los 28 alunizajes de `alunizajes.ts`: todos
+    caen dentro de un nombre o a menos de ~100 km de uno que se ve con zoom
+    (Apolo 12 y Surveyor 3: Montes Riphaeus y Mare Cognitum; Apolo 14: Fra
+    Mauro; Apolo 15: Rima Hadley y Mons Hadley; Apolo 16: Descartes; Apolo
+    17: Littrow; Luna 9: Cavalerius; Luna 13: Seleucus; Luna 17:
+    Promontorium Heraclides; Luna 21: Le Monnier; Chang'e 4: Von Kármán;
+    Chang'e 5: Mons Rümker; Chang'e 6: Apollo y Chaffee; SLIM: Cyrillus;
+    IM-1: Malapert A; IM-2: Mons Mouton; Chandrayaan-3: Manzinus; los demás,
+    su mar).
+  - Umbrales: los de Marte × `ESCALA_PX` 0,45 (en la Luna un cráter del mismo
+    tamaño ocupa menos pantalla al mismo zoom): Copérnico sale hacia ×2,5,
+    Tycho a ×3, los pequeños (Kepler, Malapert A) hacia ×5-6. A ×1, nada.
+  - `marte-nombres.js`: `montarNombres(capa, astro, chapas, { url, radioKm })`
+    (por defecto, Marte).
+  - En el banco `giro-libre.html`, con la capa de nombres encima.
+- **Zoom máximo: ×6 con un nivel más, `n4` de 32 px/grado** (23-sep-2026).
+  Se probó a limitar a ×4,5 ("x4,5 está bien, pero ¿no se puede sacar un
+  pelín más de resolución?") y el usuario eligió la opción de un nivel nuevo
+  con el relieve fino (LDEM de 64, 530 MB, en `luna-fuentes/`, fuera de Git),
+  tras preguntar si era viable en la web: sí (la web publicada pasaría de
+  ~164 a ~350 MB, el límite de GitHub Pages es 1 GB; cada visitante solo
+  baja las teselas que ve, 3-6 MB a zoom máximo). `generar-luna.py
+  --teselas ../public/luna/ --solo 4` hace solo ese nivel.
+  **Teselas de la Luna fuera de Git** (`.gitignore`) hasta que el aspecto sea
+  definitivo, como las de Marte (se le explicó por qué: cada regeneración
+  commiteada suma su peso entero al historial).
+  **Ojo, corrección (23-sep-2026)**: todo lo que el usuario vio de la Luna
+  entera con zoom antes de esto era **el mapa base estirado**, no las
+  teselas: el navegador tenía en caché `luna-datos.json?v=3` de antes de
+  añadir los niveles (el servidor de pruebas no manda cabeceras de caché) y
+  el motor no veía ningún nivel fino. De ahí los bloques ("se ven demasiado
+  los píxeles") y que la prueba de Copérnico (`zoom-d1`, otra carpeta) se
+  viera mejor. Arreglo: **`LUNA_V` a 4** (`luna.js`) y el `?v=` de
+  `luna-visible.png` en `global.css` a 4, como toca al cambiar los datos.
+  En el Chrome del usuario hace falta recargar forzando (Cmd+Mayús+R). Con
+  las teselas de verdad, a ×6 con `n4`: Copérnico con terrazas, pico central
+  y surcos; Tycho con su borde y su fondo. **Aprobado por el usuario**
+  (23-sep-2026, tras recargar): "ahora sí se ve de puta madre".
+- Antes (histórico): **Zoom máximo de la Luna: ×4,5** (propuesto; la causa
+  de lo que vio el usuario era sobre todo la caché de arriba). El usuario: "se ven demasiado los píxeles a x6, en Marte se
+  veían algo mejor". Causa: la Luna se dibuja con 292,5 px de arte de radio
+  (Marte, 219,4), así que a ×6 son 30,6 px de arte por grado y el nivel de
+  24 px/grado da 1,28 px por celda (bloques de 1 y 2 px); Marte a ×6, 0,96.
+  A ×4,5, la Luna también 0,96, y con más detalle de suelo que Marte a ×6
+  (~1,3 km por píxel, Marte ~2,6). La otra opción, un nivel de 32 px/grado
+  (+~80 MB, y sin relieve nuevo salvo bajar el LDEM de 64, 530 MB), no se
+  hizo. En el banco, `?zoommax=6` para comparar.
+- **Visto, pendiente**: cerca del polo sur, a ×3 o más, salen **rayas**:
+  en los niveles de teselas, hacia los polos el motor agrupa columnas de la
+  longitud cogiendo una sola (la base sí hace la media). En Marte no se
+  notaba (el casquete es liso); en la Luna el polo es muy abrupto. Arreglo
+  posible: suavizar en longitud esas teselas en el generador, o que el motor
+  haga la media también en los niveles finos.
+- **Siguiente (paso 4)**: llevarlo a `/luna` (chapas, relés y Orion encima;
+  el mando centra cada cara con un giro), con las chapas que salen según la
+  zona que se ve (usuario).
+- **Visto en capturas**: la cara visible, casi idéntica al PNG (faltan las
+  sombras proyectadas cerca del terminador); la oculta, igual pero con los
+  brillos algo más marcados (sin la pasada de supermuestreo del PNG); a
+  medio camino, bien. A ×4 se ven bloques: solo hay el mapa base de 4
+  px/grado (lo resuelve el paso 2, las teselas).
+
+**Lo que pidió el usuario** (23-sep-2026): "que la luna sea capaz de moverse
+al hacer click, exactamente igual que Marte. Manteniendo el botón cara oculta
+/ cara visible para centrar en las caras. Y los accidentes geográficos de la
+Luna igual."
+
+**Decidido por el usuario** (23-sep-2026):
+1. **También zoom**, "como en Marte en principio" (hasta ×6, ganando detalle,
+   con teselas).
+2. **La luz al girar**: la Luna se va oscureciendo y enfriando según gana
+   terreno la cara oculta (como ya pasa en la media vuelta).
+3. **Las chapas salen según la zona que se ve**: "si giro y me voy adentrando
+   en la cara oculta, según se oscurece la Luna por la cara oculta, aparecen
+   las chinas; los satélites igual, estarían flotando por esa zona".
+4. Rama: se sigue en `mars-project` (propuesta sin objeción): nada de esto
+   está publicado, `/luna` ya tiene cambios de Marte ahí, y se publica todo
+   junto.
+
+**Plan (pasos cortos, en un banco de pruebas; `/luna` no se toca hasta que
+el usuario apruebe el aspecto)**:
+1. La Luna en el motor WebGL de Marte (`marte-gl.js`), con la paleta y la luz
+   de la Luna (fase, exposición y tono frío según la cara que se ve), junto
+   a la Luna de ahora para comparar. Lo delicado: sin los PNG aprobados se
+   pierden las sombras proyectadas.
+2. Zoom con detalle: datos de la NASA en alta resolución (relieve LOLA,
+   color/albedo) y teselas, como en Marte.
+3. Nombres de accidentes (catálogo de la UAI de la Luna), visor y rótulo.
+4. Llevarlo a `/luna`: chapas, relés y Orion encima; mando de caras que
+   centra con un giro suave.
+
 ## Resumen del estado (20-sep-2026)
 
 Qué hay en `/luna`:
