@@ -132,8 +132,36 @@ usuario ("Vale, vamos con las chapas"):
   `/luna`); las notas de Mars 6, Polar Lander y Schiaparelli en `Hard
   Landings` (enseñárselas antes de crearlas).
 
-**Siguiente paso**: que el usuario vea las chapas y las fichas; luego, las
-fotos.
+Chapas y fichas **commiteadas** (`0c1b504`).
+
+**Fotos de las fichas (23-sep-2026, SIN COMMITEAR)**. El usuario: "Ok a la
+prioridad. Si las fotos son buenas, aunque pidan citar, ponlas". Criterio:
+la nave en Marte si hay foto; si no, lo que vio al llegar; si no, la nave
+desde órbita, una maqueta o un dibujo.
+- De Wikimedia Commons, las 17 en `public/amartizajes/<nota>.jpg` (JPEG de
+  800 px; Mars 6 se queda en sus 250 px para no ampliarla). Campo `foto`
+  en `amartizajes.ts`; `fotoPos` para recortar hacia un lado (Perseverance,
+  Viking 1) y `credito` para las que piden citar (Mars 2, Beagle 2,
+  Schiaparelli: CC BY-SA 4.0; Zhurong: CC BY 4.0), que sale en pequeño al
+  pie de la ficha.
+- Cuáles: Mars 2, maqueta del módulo (igual que el de Mars 3) en la VDNKh;
+  Mars 3, sello soviético de 1972; Mars 6, foto de la NASA de la sonda;
+  Viking 1, la primera foto desde la superficie; Viking 2, la escarcha de
+  Utopia; Pathfinder, Sojourner sobre el módulo; Polar Lander, dibujo de la
+  NASA; Beagle 2, réplica; Spirit, Opportunity (PIA18079), Curiosity (Mont
+  Mercou), InSight (el primero), Perseverance, autorretratos; Ingenuity,
+  recortado del de Perseverance; Phoenix, su cubierta y el brazo; Zhurong,
+  con su módulo; Schiaparelli, maqueta en el ESOC.
+- Descartadas al verlas: un sello que ponía "Марс-3" iba a ir en Mars 2 (se
+  pasó a Mars 3); la primera de Opportunity era una imagen gris sin
+  interés.
+- La ficha, con la foto, mide ~450 px: si no cabe ni arriba ni abajo (el
+  móvil), se corre en vertical hasta quedar dentro (`--sube`).
+- **Falta**: que el usuario las vea; y ponerlas en las notas de la bóveda
+  como las de la Luna (`Adjuntos/amartizaje-<nota>.jpg`, bajo el titular,
+  con un pie en cursiva): propuesta hecha, pendiente de su visto bueno.
+
+**Siguiente paso**: el visto bueno a las fotos y a ponerlas en las notas.
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
