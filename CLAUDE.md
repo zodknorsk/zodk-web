@@ -122,11 +122,11 @@ Pendiente (sin orden, lo decide él):
 - Polo sur: **descartado**, Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al
   borde de abajo.
 
-## Proyecto Marte (`/marte`) — en la rama `mars-project`, sin publicar
+## Proyecto Marte (`/marte`) — publicado el 23-sep-2026
 
-Tercera "portada": Marte en pixel art con los amartizajes. **Se trabaja en la
-rama `mars-project`**; el usuario decide cuándo fusionar en `main` (explicarle
-antes el merge: el push a `main` publica). **Antes de tocarlo, leer
+Tercera "portada": Marte en pixel art con los amartizajes. Se hizo en la rama
+`mars-project`, fusionada en `main` el 23-sep-2026 (`b0ada47`); lo que se
+siga tocando va sobre `main` o en rama nueva (el push a `main` publica). **Antes de tocarlo, leer
 `logo-files/MARTE-WIP.md`**: arriba dice en qué punto está, y se actualiza en
 cada paso (lo pidió el usuario).
 
