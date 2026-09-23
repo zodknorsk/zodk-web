@@ -30,6 +30,12 @@ Labyrinthus…) llevan rótulo pero con umbral, para que no salgan tan pronto.
 
 Los nombres van en latín, que es como están en el catálogo y en los mapas
 (decisión del usuario, 22-sep-2026). El castellano, en la ficha.
+
+Con --luna, lo mismo para la Luna (23-sep-2026, ver LUNA-WIP.md): catálogo
+de la Luna (luna-fuentes/MOON_nomenclature_center_pts.dbf, del zip
+https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MOON_nomenclature_center_pts.zip),
+la lista LISTA_LUNA y el relieve LOLA (luna-fuentes/ldem_16.img) para ceñir
+los montes -> public/luna/luna-nombres.json.
 """
 import array
 import json
@@ -44,6 +50,11 @@ SALIDA = Path(__file__).parent.parent / "public" / "marte" / "marte-nombres.json
 # docstring): de él sale el marco ceñido de los montes y los cráteres.
 MOLA = Path(__file__).parent / "marte-fuentes" / "megt90n000fb.img"
 MOLA_PPD = 32
+MOLA_BIG_ENDIAN = True                          # el MEGDR va en MSB; el LDEM de la Luna, en LSB
+# Los umbrales `px` de las listas se multiplican por esto. En la Luna, 0,45: un
+# cráter del mismo tamaño ocupa menos pantalla que en Marte al mismo zoom (con
+# los de Marte, Copérnico no salía ni a x4; 23-sep-2026).
+ESCALA_PX = 1.0
 
 # nombre del catálogo -> (clase, px, menor)
 LISTA = {
@@ -145,6 +156,114 @@ def dbf(ruta):
     return filas
 
 
+# --- La Luna (--luna, 23-sep-2026): misma idea que en Marte. Zonas (mares,
+# océano, bahías, cordilleras, valles y grietas largas): rótulo de región;
+# formas claras (cráteres y montes): visor. A x1, nada. Cada alunizaje de
+# /luna (src/data/alunizajes.ts) tiene cerca un nombre de la lista, como
+# pidió el usuario para Marte (los "Statio" oficiales de algunos sitios de
+# aterrizaje son un punto, sin tamaño: ahí ya está la chapa).
+LISTA_LUNA = {
+    # --- Grandes zonas: rótulo de región -----------------------------------
+    "Oceanus Procellarum": ("region", 0, False),
+    "Mare Imbrium": ("region", 0, False),
+    "Mare Serenitatis": ("region", 0, False),
+    "Mare Tranquillitatis": ("region", 0, False),   # Apolo 11, Surveyor 5
+    "Mare Crisium": ("region", 0, False),           # Luna 23 y 24, Blue Ghost
+    "Mare Fecunditatis": ("region", 0, False),      # Luna 16 y 20
+    "Mare Nectaris": ("region", 0, False),
+    "Mare Nubium": ("region", 0, False),
+    "Mare Frigoris": ("region", 0, False),
+    "Mare Orientale": ("region", 0, False),
+    "Mare Australe": ("region", 0, False),
+    "Mare Smythii": ("region", 0, False),
+    "Mare Marginis": ("region", 0, False),
+    # Zonas medianas: rótulo, pero más adelante
+    "Mare Humorum": ("region", 200, False),
+    "Mare Cognitum": ("region", 200, False),        # Apolo 12, Surveyor 3
+    "Mare Vaporum": ("region", 200, False),
+    "Mare Moscoviense": ("region", 200, False),
+    "Mare Ingenii": ("region", 200, False),
+    "Sinus Iridum": ("region", 200, False),         # Luna 17 (Lunojod 1)
+    "Sinus Medii": ("region", 200, False),          # Surveyor 6
+    "Montes Apenninus": ("region", 200, False),
+    "Montes Caucasus": ("region", 200, False),
+    "Montes Alpes": ("region", 200, False),
+    "Montes Carpatus": ("region", 200, False),
+    "Vallis Alpes": ("region", 160, True),
+    "Rupes Recta": ("region", 140, True),
+    "Rima Hadley": ("region", 120, True),           # Apolo 15
+    "Promontorium Laplace": ("region", 90, True),   # Chang'e 3
+    "Promontorium Heraclides": ("region", 90, True),  # Luna 17 (Lunojod 1)
+    "Montes Riphaeus": ("region", 150, True),       # Apolo 12, Surveyor 3
+    # --- Formas claras: visor ----------------------------------------------
+    # Cuencas y cráteres grandes de la cara oculta
+    "Hertzsprung": ("visor", 90, False),
+    "Apollo": ("visor", 90, False),                 # Chang'e 6
+    "Korolev": ("visor", 90, False),
+    "Mendeleev": ("visor", 90, False),
+    "Poincaré": ("visor", 90, False),
+    "Planck": ("visor", 90, False),
+    "Schrödinger": ("visor", 90, False),
+    "Bailly": ("visor", 90, False),
+    "Clavius": ("visor", 90, False),
+    "Schickard": ("visor", 90, False),
+    "Oppenheimer": ("visor", 90, False),
+    "Von Kármán": ("visor", 90, False),             # Chang'e 4
+    "Tsiolkovskiy": ("visor", 90, False),
+    "Petavius": ("visor", 90, False),
+    "Grimaldi": ("visor", 90, False),
+    "Ptolemaeus": ("visor", 90, False),
+    "Aitken": ("visor", 90, False),
+    "Langrenus": ("visor", 90, False),
+    "Alphonsus": ("visor", 90, True),               # junto a Ptolemaeus
+    "Gassendi": ("visor", 90, False),
+    "Plato": ("visor", 90, False),
+    "Theophilus": ("visor", 90, False),
+    "Cyrillus": ("visor", 90, False),               # SLIM
+    "Catharina": ("visor", 90, False),
+    "Arzachel": ("visor", 90, True),
+    "Copernicus": ("visor", 90, False),
+    "Fra Mauro": ("visor", 70, False),              # Apolo 14
+    "Posidonius": ("visor", 90, False),
+    "Daedalus": ("visor", 90, False),
+    "Tycho": ("visor", 80, False),                  # Surveyor 7
+    "Archimedes": ("visor", 80, False),
+    "Manzinus": ("visor", 70, False),               # Chandrayaan-3
+    "Malapert": ("visor", 50, False),
+    "Malapert A": ("visor", 30, True),              # IM-1 (su sitio de aterrizaje)
+    "Le Monnier": ("visor", 50, False),             # Luna 21 (Lunojod 2)
+    "Eratosthenes": ("visor", 60, False),
+    "Cavalerius": ("visor", 45, False),             # Luna 9
+    "Chaffee": ("visor", 40, True),                 # Chang'e 6, dentro de Apollo
+    "Apollonius": ("visor", 40, False),             # Luna 20
+    "Descartes": ("visor", 40, False),              # Apolo 16
+    "Seleucus": ("visor", 40, False),               # Luna 13
+    "Aristarchus": ("visor", 45, False),
+    "Kepler": ("visor", 30, False),
+    "Littrow": ("visor", 30, False),                # Apolo 17
+    "Shackleton": ("visor", 16, False),             # en el polo sur
+    "Flamsteed P": ("visor", 70, False),            # Surveyor 1 (un cráter fantasma)
+    # Montes
+    "Mons Mouton": ("visor", 60, False),            # IM-2
+    "Mons Rümker": ("visor", 50, False),            # Chang'e 5
+    "Mons Pico": ("visor", 25, True),
+    "Mons Piton": ("visor", 25, True),
+    "Mons Hadley": ("visor", 25, True),             # Apolo 15
+}
+
+
+def usar_luna():
+    """Cambia de Marte a la Luna: catálogo, salida, lista, relieve y radio."""
+    global FUENTE, SALIDA, MOLA, MOLA_PPD, MOLA_BIG_ENDIAN, LISTA, A_MANO, KM_GRADO, ESCALA_PX
+    aqui = Path(__file__).parent
+    FUENTE = aqui / "luna-fuentes" / "MOON_nomenclature_center_pts.dbf"
+    SALIDA = aqui.parent / "public" / "luna" / "luna-nombres.json"
+    MOLA, MOLA_PPD, MOLA_BIG_ENDIAN = aqui / "luna-fuentes" / "ldem_16.img", 16, False
+    LISTA, A_MANO = LISTA_LUNA, []
+    KM_GRADO = math.pi * 1737.4 / 180
+    ESCALA_PX = 0.45
+
+
 # --- El visor ceñido a la geografía (usuario, 22-sep-2026: "para futuros sí
 # que quiero que sea ajustado a la geografía"). La caja del catálogo es un
 # rectángulo de latitud y longitud que abarca el lugar con holgura (en el
@@ -165,8 +284,8 @@ KM_GRADO = math.pi * 3389.5 / 180
 def cargar_mola():
     dem = array.array("h")
     dem.frombytes(MOLA.read_bytes())
-    if sys.byteorder == "little":
-        dem.byteswap()                              # MSB_INTEGER
+    if (sys.byteorder == "little") == MOLA_BIG_ENDIAN:
+        dem.byteswap()
     return dem
 
 
@@ -219,6 +338,8 @@ def ceñir(dem, n, forma):
 
 
 def main():
+    if "--luna" in sys.argv:
+        usar_luna()
     filas = {r["name"]: r for r in dbf(FUENTE) if r["approval"].startswith("Adopted")}
     fuera = [n for n in LISTA if n not in filas]
     if fuera:
@@ -235,7 +356,7 @@ def main():
         if e < o:                                  # la caja cruza los 180°
             e += 360
         nombres.append({
-            "nombre": nombre, "clase": clase, "px": px, "menor": menor,
+            "nombre": nombre, "clase": clase, "px": round(px * ESCALA_PX), "menor": menor,
             "km": round(float(r["diameter"]), 1),
             "lat": round(float(r["center_lat"]), 2), "lon": round(lon(r["center_lon"]), 2),
             "caja": [round(float(r["min_lat"]), 2), round(float(r["max_lat"]), 2),

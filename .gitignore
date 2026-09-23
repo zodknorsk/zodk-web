@@ -53,3 +53,10 @@ logo-files/marte-fuentes/
 # Git desde el 23-sep-2026, cuando el usuario dio el pixel art por definitivo
 # (hasta entonces se dejaban fuera para no sumar MB al historial en cada
 # prueba). Si se vuelven a regenerar, cada versión suma lo que cambie.
+
+# Proyecto Luna (la que gira y se acerca): teselas del zoom (public/luna/n1-n4,
+# ~155 MB). Fuera de Git hasta que el usuario dé el aspecto por definitivo,
+# como se hizo con las de Marte: cada regeneración commiteada suma su peso
+# entero al historial. Se sacan con:
+#   cd logo-files && python3 generar-luna.py --teselas ../public/luna/
+public/luna/n*/
