@@ -1006,12 +1006,18 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
    arrastrar y se acerca con la rueda o el trackpad. La rueda es el zoom, así
    que la página no hace scroll: es una escena a pantalla completa. */
 html:has(.marte-hero) { overflow: hidden; }
+/* Los gestos del dedo son de Marte (girar con uno, pellizco con dos): el
+   navegador no hace scroll ni zoom de la página. */
+.marte-hero { touch-action: none; }
 /* Diámetro del disco a zoom x1 (60 svh: el mismo tamaño de píxel que la Luna
    de /luna) y lado de la caja de marte-quieto.png (450 px de arte con el disco
    de 2 x 219,4 = 438,8 en medio). El vuelo desde la portada acaba en esa caja
    (viaje-luna.js). */
-:root { --marte-disco: 60vh; }
-@supports (height: 1svh) { :root { --marte-disco: 60svh; } }
+/* En vertical (el móvil), 60 svh es más ancho que la pantalla: el disco se
+   ciñe entonces al 88 % del ancho (usuario, 23-sep-2026). En horizontal no
+   cambia nada: 60 svh es siempre menos. */
+:root { --marte-disco: min(60vh, 88vw); }
+@supports (height: 1svh) { :root { --marte-disco: min(60svh, 88vw); } }
 :root { --marte-caja: calc(var(--marte-disco) * 450 / 438.8); }
 /* Marte quieto (public/marte/marte-quieto.png, de generar-marte-quieto.mjs):
    la vista inicial tal cual la pinta el motor. Se ve al aterrizar del vuelo
@@ -1081,6 +1087,14 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 .marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
 @media (max-width: 640px) {
   .marte-tierra, .marte-tierra-enlace { --lado: 112px; }
+}
+/* En vertical no cabe a la derecha de Marte: va encima, pegada a la derecha
+   (sin tapar el disco, que va del 6 al 94 % del ancho). */
+@media (max-aspect-ratio: 1/1) {
+  .marte-tierra, .marte-tierra-enlace {
+    left: calc(97% - var(--lado));
+    top: max(calc(50% - var(--marte-disco) / 2 - var(--lado) - 8px), 3%);
+  }
 }
 
 /* La mano: se agarra en todo el hero (montarMano pone las clases). Flecha
@@ -2032,11 +2046,15 @@ a.marte-chapa { cursor: pointer; }
   box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   opacity: 0;
-  transform: translate(-50%, -4px);
+  /* --corre: lo que se desplaza para no salirse de la pantalla (marte-nombres.js) */
+  transform: translate(calc(-50% + var(--corre, 0px)), -4px);
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
-.marte-chapa:is(:hover, :focus-visible) .marte-ficha { opacity: 1; transform: translate(-50%, 0); }
+.marte-chapa:is(:hover, :focus-visible, .abierta) .marte-ficha { opacity: 1; transform: translate(calc(-50% + var(--corre, 0px)), 0); }
+.marte-chapa.abierta { z-index: 1; }
+/* Más sitio para el dedo que los 18 x 12 px de la bandera. */
+.marte-chapa::after { content: ""; position: absolute; inset: -12px; }
 .agarrando .marte-ficha { opacity: 0 !important; }
 .marte-ficha-titulo { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c078; }
 .marte-ficha-clase {

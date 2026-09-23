@@ -726,8 +726,12 @@ export async function montarMarteGL(canvas, {
 // el pellizco del trackpad llega como rueda con ctrlKey (y más fino: pasos
 // pequeños), y el arrastre con dos dedos, como rueda normal. Safari manda el
 // pellizco como eventos gesture*. En todos se anula lo que harían por
-// defecto (scroll o el zoom de la página). Devuelve la función que lo
-// desmonta.
+// defecto (scroll o el zoom de la página).
+// En táctil (móvil, tableta), el pellizco con dos dedos: la distancia entre
+// ellos es el zoom, hacia su punto medio. Mientras dura, `zona` lleva la
+// clase `pellizcando` (la mano no gira con el primer dedo). En iOS llegan
+// además gesture* con el mismo pellizco: se ignoran si hay dedos (si no, el
+// zoom iría doble). Devuelve la función que lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ zoom: (factor: number, clientX?: number, clientY?: number) => void }} marte
@@ -742,19 +746,58 @@ export function montarZoom(zona, marte) {
     const k = e.ctrlKey ? 0.012 : 0.0025;
     marte.zoom(Math.exp(-Math.max(-300, Math.min(300, d)) * k), e.clientX, e.clientY);
   };
+  const dedos = new Map();                         // pointerId -> { x, y }, solo táctiles
+  let separacion = 0;                              // entre los dos dedos, en px CSS
+  const medida = () => {
+    const [a, b] = [...dedos.values()];
+    return [Math.hypot(a.x - b.x, a.y - b.y), (a.x + b.x) / 2, (a.y + b.y) / 2];
+  };
+  const dedo = (e) => {
+    if (e.pointerType !== "touch") return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (dedos.size === 2) {
+      zona.classList.add("pellizcando");
+      separacion = medida()[0];
+    }
+  };
+  const dedoMueve = (e) => {
+    if (!dedos.has(e.pointerId)) return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (dedos.size !== 2) return;
+    const [d, x, y] = medida();
+    if (separacion > 0 && d > 0) marte.zoom(d / separacion, x, y);
+    separacion = d;
+  };
+  const dedoFuera = (e) => {
+    if (!dedos.delete(e.pointerId)) return;
+    if (dedos.size < 2) {
+      zona.classList.remove("pellizcando");
+      separacion = 0;
+    }
+  };
   let escala = 1;
   const gesto0 = (e) => { e.preventDefault(); escala = 1; };
   const gesto = (e) => {
     e.preventDefault();
+    if (dedos.size) return;                        // iOS: ya lo lleva el pellizco táctil
     marte.zoom(e.scale / escala, e.clientX, e.clientY);
     escala = e.scale;
   };
   zona.addEventListener("wheel", rueda, { passive: false });
+  zona.addEventListener("pointerdown", dedo);
+  zona.addEventListener("pointermove", dedoMueve);
+  zona.addEventListener("pointerup", dedoFuera);
+  zona.addEventListener("pointercancel", dedoFuera);
   zona.addEventListener("gesturestart", gesto0);
   zona.addEventListener("gesturechange", gesto);
   return () => {
     zona.removeEventListener("wheel", rueda);
+    zona.removeEventListener("pointerdown", dedo);
+    zona.removeEventListener("pointermove", dedoMueve);
+    zona.removeEventListener("pointerup", dedoFuera);
+    zona.removeEventListener("pointercancel", dedoFuera);
     zona.removeEventListener("gesturestart", gesto0);
     zona.removeEventListener("gesturechange", gesto);
+    zona.classList.remove("pellizcando");
   };
 }

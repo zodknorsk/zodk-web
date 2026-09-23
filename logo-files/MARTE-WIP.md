@@ -47,8 +47,43 @@ se note.
   quedaron en el banco de pruebas, también"), y la de los fallidos **en color
   con una raya**.
 
-**Siguiente paso**: el móvil, girar con un dedo y zoom pellizcando (punto 1
-de "Pendiente").
+**Móvil y táctil (23-sep-2026, commiteado, sin subir)**, lo que el usuario aprobó
+("commit push y vamos con el móvil"):
+- **Un dedo gira, dos dedos pellizcan para el zoom** (hacia el punto medio).
+  `touch-action: none` en `.marte-hero` (antes el navegador se quedaba el
+  gesto: por eso en táctil no giraba), el pellizco en `montarZoom`
+  (`marte-gl.js`, con eventos de puntero) y la mano deja de girar mientras
+  se pellizca (clase `pellizcando`). En iOS se ignoran los `gesture*` si hay
+  dedos, para que el zoom no vaya doble.
+- **En vertical, Marte se ciñe al ancho**: `--marte-disco: min(60svh, 88vw)`
+  (en horizontal no cambia nada). Los vuelos lo toman de ahí.
+- **La Tierra pequeña, en vertical, va encima de Marte** pegada a la derecha
+  (no cabe a su derecha).
+- **Chapas en táctil**: un toque abre la ficha, tocar fuera la cierra (con la
+  nota publicada, el segundo toque llevará a ella). Zona de toque de 12 px
+  más por cada lado. La ficha se corre hacia dentro si se saldría de la
+  pantalla, también mientras se gira con ella abierta.
+- Comprobado en Chrome sin ventana haciéndose pasar por un móvil (390 × 844,
+  toques de verdad): giro con un dedo, pellizco (salen los nombres y la
+  Tierra queda tapada), ficha de Mars 2, vuelo portada → `/marte` (aterriza
+  en el disco del móvil) y toque en la Tierra → portada. En escritorio,
+  todo igual que antes. Sin errores.
+- **Probado por el usuario en su móvil** (23-sep-2026): "no se calienta",
+  "gira con un dedo y hace zoom pellizcando", "la ficha se abre bien", "el
+  tamaño de Marte es correcto".
+- **Arreglado tras su prueba**: los nombres pequeños no salían en el móvil ni
+  a ×6 ("Olympus Paterae … en móvil no lo llego a ver"). Los umbrales `px`
+  eran píxeles de pantalla, ajustados con el disco de 540 px de un portátil;
+  con el disco del móvil (~340 px) no se llegaba. Ahora el umbral encoge con
+  el disco (`escala` en `marte-nombres.js`; nunca crece), y salen al mismo
+  zoom que en el portátil. Comprobado: Olympus Paterae y Korolev a ×6 en
+  390 × 844.
+- **Los astros en el móvil**: el usuario pidió que al pulsar la Tierra (y
+  cualquier astro) se hiciera el vuelo. No se cambió nada: vuelto a probar
+  en su iPhone con Safari, "ya funciona … al pulsar sobre la Tierra viaja (y
+  al resto de astros)".
+
+**Siguiente paso**: por decidir con el usuario (ver "Pendiente").
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
@@ -151,8 +186,8 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 ### Pendiente (por orden)
 
 0. ~~Probar en Zen~~: hecho, ~13 W al girar (usuario, 23-sep-2026).
-1. **Móvil y táctil** (el usuario: "Móvil lo último"). Nada
-   hecho aún en `/marte` para el dedo:
+1. **Móvil y táctil**: **hecho y probado en el iPhone del usuario** (ver
+   "Dónde estamos"). Lo que se planteó:
    - **Girar con un dedo y hacer zoom pellizcando: decidido que sí**
      (usuario, 23-sep-2026). Hoy, en táctil, ni gira ni acerca.
    - Qué pasa con las fichas de las chapas en táctil, donde no hay ratón que

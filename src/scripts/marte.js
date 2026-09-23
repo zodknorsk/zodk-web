@@ -416,6 +416,9 @@ export async function montarMarte(canvas, {
 //   agarra: siguen funcionando como siempre.
 // - Tras un arrastre de verdad se anula el clic que el navegador manda al
 //   soltar, para que no pulse nada de lo que quede debajo.
+// - En táctil, un dedo gira. Con dos es el pellizco del zoom (montarZoom, en
+//   marte-gl.js, pone `pellizcando` en `zona`): mientras dura no se gira, y
+//   al levantar uno se sigue girando con el otro desde donde esté, sin salto.
 // `zona` es el elemento donde se puede agarrar (el hero entero, no solo el
 // disco). Pone en `zona` la clase `arrastrable` siempre y `agarrando` desde
 // que se pincha hasta que se suelta; el cursor lo pone el CSS de la página. En
@@ -449,6 +452,12 @@ export function montarMano(zona, marte) {
   };
   const mueve = (e) => {
     if (!pulsado || e.pointerId !== pulsado.id) return;
+    if (zona.classList.contains("pellizcando")) {
+      pulsado.x = e.clientX;
+      pulsado.y = e.clientY;
+      pulsado.activo = true;                      // cuenta como arrastre: sin clic al soltar
+      return;
+    }
     if (!pulsado.activo) {
       if (Math.hypot(e.clientX - pulsado.x0, e.clientY - pulsado.y0) < UMBRAL) return;
       pulsado.activo = true;
