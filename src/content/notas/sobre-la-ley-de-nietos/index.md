@@ -4,7 +4,7 @@ date: '2026-09-03'
 description: >-
   Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la Ley de
   Memoria Democrática (LMD) aprobada en España en octubre de 2022. Permite a…
-updated: '2026-09-13'
+updated: '2026-09-22'
 tags:
   - españa
 ---
@@ -213,6 +213,36 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
 
 
 
+<blockquote class="tweet" data-tweet-id="2101925644485460368">
+  <a class="tweet-author" href="https://x.com/eldebate_com/status/2101925644485460368" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1442418106752802819-jfs68qcx_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Debate</span>
+    <span class="tweet-handle">@eldebate_com</span>
+  </a>
+  <div class="tweet-text">El Gobierno y Ferraz niegan cualquier vinculación entre la ley de nietos y un interés electoral del PSOE<br>
+<br>
+📰❌ El Debate revela documentos de la dirección socialista para «recuperar el espacio político perdido» y su «expansión política» en el exterior</div>
+  <img class="tweet-media" src="/tweets/media-hsuglmrwaaaizjc.jpg" alt="Imagen del tweet" loading="lazy" />
+  <img class="tweet-media" src="/tweets/media-hsuglzpxsaamxse.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/eldebate_com/status/2101925644485460368" target="_blank" rel="noopener">21 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102266944124817773">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2102266944124817773" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴El Gobierno avisa al Supremo de que los cónsules no tendrán tiempo de certificar qué 'nietos' han probado su derecho al voto<br>
+<br>
+✍️ Por <a href="https://x.com/Maria_peral" target="_blank" rel="noopener">@Maria_peral</a></div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2102266944124817773" target="_blank" rel="noopener">22 de septiembre de 2026</a>
+</blockquote>
+
+
+
 ## Multimedia y noticias relacionadas
 
 
@@ -248,6 +278,37 @@ Escucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (
   <a class="tweet-date" href="https://x.com/GabrielAraujoES/status/2094705556757848484" target="_blank" rel="noopener">1 de septiembre de 2026</a>
 </blockquote>
 
+
+
+<blockquote class="tweet" data-tweet-id="2101917598493417706">
+  <a class="tweet-author" href="https://x.com/GuillermoRocaf1/status/2101917598493417706" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1248224421094912002-bmxypdm1_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Guillermo Rocafort</span>
+    <span class="tweet-handle">@GuillermoRocaf1</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/PUCHERAZO" target="_blank" rel="noopener">#PUCHERAZO</a> BRUTAL: Pablo Platas, CÓNSUL de España en Rosario (Argentina) DESCOJONADO, CONFESANDO que han regalado al día más de 1.000 NACIONALIZACIONES EXPRESS en su Consulado al margen del EXILIO exigido por la Ley de Memoria Democrática 😱👇🎯<br>
+<br>
+La máquina del PUCHERAZO al […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-0wet30oyb4idyvuf.jpg"><source src="https://video.twimg.com/amplify_video/2101914833369096192/vid/avc1/640x360/GouJtkojxbfenSky.mp4" type="video/mp4" /><source src="/tweets/640x360-goujtkojxbfensky.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/GuillermoRocaf1/status/2101917598493417706" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/GuillermoRocaf1/status/2101917598493417706" target="_blank" rel="noopener">21 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102278950781128714">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2102278950781128714" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🗞️ La portada del 22 de septiembre.<br>
+<br>
+El audio de la líder del PSOE en Argentina pidiendo pasaportes de muertos para votar a Sánchez por correo en 2023.<br>
+<br>
+📲 Noticia completa</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-vrx-ymw7y6ov58nl.jpg"><source src="https://video.twimg.com/ext_tw_video/2102278919126745088/pu/vid/avc1/1280x720/U9n0e4zBk_v2Fvd4.mp4?tag=12" type="video/mp4" /><source src="/tweets/1280x720-u9n0e4zbk_v2fvd4.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2102278950781128714" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2102278950781128714" target="_blank" rel="noopener">22 de septiembre de 2026</a>
+</blockquote>
 
 
 **NOTICIAS RELACIONADAS**

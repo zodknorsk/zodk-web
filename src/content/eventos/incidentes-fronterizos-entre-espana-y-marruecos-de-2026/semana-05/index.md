@@ -42,7 +42,7 @@ The Spanish police have opened fire on crowds in Ceuta tonight. They are shootin
 <br>
 They are shooting at Spaniards protesting against illegal migration. They didn’t fire rubber bullets at the 70 000 illegal migrants when they stormed Ceuta in July.</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-xmpohf0wpgfsy_uj.jpg"><source src="https://video.twimg.com/amplify_video/2092743743157776384/vid/avc1/1290x2142/jWFjPw9Xk-_3WyaG.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/visegrad24/status/2092743838708203669" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/visegrad24/status/2092743838708203669" target="_blank" rel="noopener">26 de agosto de 2026</a>
+  <a class="tweet-date" href="https://x.com/visegrad24/status/2092743838708203669" target="_blank" rel="noopener">27 de agosto de 2026</a>
 </blockquote>
 
 
@@ -680,7 +680,7 @@ No te quedes en X, ayuda a […]</div>
 
 <blockquote class="tweet" data-tweet-id="2094915646958051704">
   <a class="tweet-author" href="https://x.com/o_deconstruido/status/2094915646958051704" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2096989876696788992--nyg1ksn_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2101393038102716416-5ddg7azh_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Onvre Deconstruido</span>
     <span class="tweet-handle">@o_deconstruido</span>
   </a>
@@ -688,7 +688,7 @@ No te quedes en X, ayuda a […]</div>
 <br>
 &quot;Ataque híbrido algorítmico&quot;. No es coña […]</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-addlbrnuxo9i_w8t.jpg"><source src="https://video.twimg.com/amplify_video/2094915614510907392/vid/avc1/1920x1080/bdsnvI4kx-K9KXlm.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/o_deconstruido/status/2094915646958051704" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/o_deconstruido/status/2094915646958051704" target="_blank" rel="noopener">1 de septiembre de 2026</a>
+  <a class="tweet-date" href="https://x.com/o_deconstruido/status/2094915646958051704" target="_blank" rel="noopener">2 de septiembre de 2026</a>
 </blockquote>
 
 
@@ -794,7 +794,7 @@ Como ya sabéis, lo firma el CENIF, la unidad de inteligencia de la Comisaría G
 <br>
 Lo que […]</div>
   <img class="tweet-media" src="/tweets/media-hrpq92kaiaag2zb.jpg" alt="Imagen del tweet" loading="lazy" />
-  <a class="tweet-date" href="https://x.com/elequidistante/status/2095276687407693906" target="_blank" rel="noopener">2 de septiembre de 2026</a>
+  <a class="tweet-date" href="https://x.com/elequidistante/status/2095276687407693906" target="_blank" rel="noopener">3 de septiembre de 2026</a>
 </blockquote>
 
 
