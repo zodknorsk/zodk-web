@@ -869,8 +869,25 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
 
 /* En táctil no hay "pasar el ratón" y la ficha no se puede abrir: fuera chapas
    y columna, igual que las banderas de país de la portada. */
+/* En táctil (23-sep-2026, antes se ocultaban chapas y columna): las chapas
+   y los países se ven, las chapas con más sitio para el dedo, y la ficha sale
+   con un toque en un panel (.luna-ficha-movil), no junto a la chapa: al lado
+   de la chapa, con 16rem, se salía casi siempre de un móvil. */
 @media (hover: none) {
-  .luna-chapas, .luna-paises { display: none; }
+  .luna-chapa::after { content: ""; position: absolute; inset: -12px; }
+}
+.luna-ficha-movil[hidden] { display: none; }
+.luna-ficha-movil.craft-specs {
+  position: absolute;
+  left: 50%;
+  top: max(4.5rem, 9svh);
+  width: min(16rem, calc(100vw - 2rem));
+  max-height: 62svh;
+  overflow: auto;
+  transform: translateX(-50%);
+  opacity: 1;
+  z-index: 6;
+  pointer-events: auto;
 }
 /* Botones de /luna (elegidos el 18-sep-2026 entre cinco bocetos; ver
    logo-files/LUNA-WIP.md, "Detalles y botones").
@@ -1115,6 +1132,35 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 .marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
 @media (max-width: 640px) {
   .marte-tierra, .marte-tierra-enlace { --lado: 112px; }
+}
+/* /luna en el móvil (23-sep-2026): los países, en una fila de banderas encima
+   del mando (la columna no cabía: tapaba el Marte pequeño y la Luna); los
+   subgrupos de EE. UU., en otra fila encima. "Volver a la Tierra" se queda en
+   el icono (con el texto se montaba sobre el mando). */
+@media (max-width: 640px) {
+  .luna-paises {
+    left: 50%;
+    top: auto;
+    bottom: calc(max(1.5rem, 5svh) + 3.2rem);
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: 0.4rem;
+  }
+  .luna-pais { padding: 6px 8px; }
+  .luna-pais-nombre { display: none; }
+  .luna-pais-grupo { position: static; }
+  .luna-pais-grupo.abierto .luna-pais { transform: none; }
+  .luna-subgrupos {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.4rem);
+    width: max-content;
+    transform: translateX(-50%);
+  }
+  .luna-subgrupos-dentro { flex-direction: row; padding-left: 0; }
+  .luna-subgrupo:first-child { margin-top: 0; }
+  .luna-volver > span:first-child { display: none; }
+  .luna-volver { right: 3%; padding: 8px; }
 }
 /* En vertical no cabe a la derecha de Marte: va encima, pegada a la derecha
    (sin tapar el disco, que va del 6 al 94 % del ancho). */
