@@ -577,9 +577,39 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         columna.style.top = `${columna.offsetTop - columna.offsetHeight / 2}px`;
         columna.style.transform = "none";
       };
-      fija();
-      new ResizeObserver(() => { if (!columna.querySelector(".abierto")) fija(); }).observe(hero);
+      // En el móvil los países van en fila abajo (CSS): nada que fijar.
+      const enFila = matchMedia("(max-width: 640px)");
+      const fijaSiColumna = () => {
+        if (enFila.matches) { columna.style.top = columna.style.transform = ""; return; }
+        if (!columna.querySelector(".abierto")) fija();
+      };
+      if (!enFila.matches) fija();
+      new ResizeObserver(fijaSiColumna).observe(hero);
     }
+
+    // --- En táctil, la ficha de una chapa, un relé o la Orion sale con un
+    // toque en un panel arriba (no hay ratón que pasar por encima, y junto a
+    // la chapa no cabía en un móvil); otro toque en la misma, o fuera, lo
+    // cierra. Es una copia de su ficha (.craft-specs), enlace incluido.
+    const tactil = matchMedia("(hover: none)");
+    const panel = document.createElement("div");
+    panel.className = "craft-specs luna-ficha-movil";
+    panel.hidden = true;
+    hero.append(panel);
+    let abierta: HTMLElement | null = null;
+    const toca = (e: Event) => {
+      if (!tactil.matches || !(e.target instanceof Element)) return;
+      if (e.target.closest(".luna-ficha-movil")) return;   // dentro del panel (su enlace)
+      const el = e.target.closest<HTMLElement>(".luna-chapa, .luna-sat, .luna-nave");
+      if (!el || el === abierta) { panel.hidden = true; abierta = null; return; }
+      const specs = el.querySelector(".craft-specs");
+      if (!specs) return;
+      panel.innerHTML = specs.innerHTML;
+      panel.hidden = false;
+      abierta = el;
+    };
+    document.addEventListener("click", toca);
+    quitar.push(() => { document.removeEventListener("click", toca); panel.remove(); });
 
     // --- Tras cada fotograma del lienzo: nombres, chapas, relés, Orion y la
     // cara que domina (el mando, el tono de noche de la Orion, China).

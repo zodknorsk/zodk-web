@@ -16,6 +16,11 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 > generalizó (destino, icono, imagen y astro que se deja atrás por
 > parámetros); el vuelo a la Luna no cambia. Detalle en `MARTE-WIP.md`.
 
+> **Decidido por el usuario (23-sep-2026): las fichas de `/luna` se quedan
+> como están** (foto, título, país y año, y el texto), sin las filas Lugar /
+> Fecha / Estado de las de Marte: "me gusta más como está ahora porque en la
+> propia descripción ya habla de eso". Se le había propuesto al acabar Marte.
+
 ## Luna que gira y se acerca (desde el 23-sep-2026, EN CURSO, rama `mars-project`)
 
 **Dónde estamos** (23-sep-2026): **pasos 1, 2 y 3 hechos y el aspecto con
@@ -167,8 +172,25 @@ commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
     quieto; en el servidor de pruebas, la barra de Astro audita cada página
     al cargar (en producción no está).
   - `CLAUDE.md`: sección de `/luna` al día.
-  - **Falta**: el visto bueno final y commitear código y teselas (~167 MB,
-    fuera de Git ahora).
+  - Código y teselas **commiteados y subidos** (`2f58e6c`, `bc34a0a`).
+- **`/luna` en el móvil (23-sep-2026, SIN COMMITEAR)**. El usuario eligió
+  "la fila de banderas". Antes, en táctil, chapas y columna se ocultaban.
+  - Países: en pantallas de 640 px o menos, una fila de banderas encima del
+    mando (sin nombres); los subgrupos de EE. UU., en otra fila encima
+    (`.luna-subgrupos` con `width: max-content`). En el ordenador, la columna
+    de siempre (`fija()` solo con columna).
+  - Chapas con 12 px más de zona de toque por lado (`::after`).
+  - Fichas en táctil: un toque en una chapa, un relé o la Orion copia su
+    ficha (`.craft-specs`) a un panel centrado arriba (`.luna-ficha-movil`),
+    enlace incluido; otro toque en la misma o fuera la cierra. Junto a la
+    chapa, con 16rem, se salía casi siempre de un móvil.
+  - Arreglado de paso (ya pasaba en la publicada): en el móvil, "volver a la
+    Tierra" se montaba sobre el mando; ahora se queda en el icono de la
+    Tierra, a la derecha del mando.
+  - Comprobado en la simulación de móvil (390 × 844): fila, EE. UU. → Apolo
+    (6 chapas), ficha del Apolo 11 en el panel y cierre tocando fuera; y en
+    escritorio, columna y fichas como siempre. Falta la prueba del usuario
+    en su iPhone.
 - **Visto en capturas**: la cara visible, casi idéntica al PNG (faltan las
   sombras proyectadas cerca del terminador); la oculta, igual pero con los
   brillos algo más marcados (sin la pasada de supermuestreo del PNG); a
