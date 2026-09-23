@@ -71,13 +71,22 @@ deja en GitHub como registro). **Antes de tocarlo, leer
 se probó y RECHAZÓ.
 
 Qué hay hoy en `/luna`:
-- **Dos caras fijas** (visible luminosa / oculta más oscura y fría) y media
-  vuelta de verdad en `<canvas>` (2,8 s) con el mando de abajo en el centro.
-  Motor `src/scripts/luna.js`, datos en `public/luna/` que genera
-  `logo-files/generar-luna.py`. Al regenerar: subir `LUNA_V` en `luna.js` y el
-  `?v=` de `luna-visible.png` en `global.css` (van por 3).
+- **La Luna gira y se acerca como Marte** (desde el 23-sep-2026, en la rama
+  `mars-project`): clic y arrastrar (un dedo en el móvil), rueda, trackpad o
+  pellizco hasta ×6, con teselas `n1`-`n4` y nombres de accidentes que salen
+  al acercarse. La luz va con la vista: más oscura y fría según domina la
+  cara oculta. El mando de abajo en el centro lleva a cada cara con un giro
+  de 2,8 s. Motor `src/scripts/luna-gl.js` (el WebGL de Marte,
+  `marte-gl.js`); datos en `public/luna/` de `logo-files/generar-luna.py
+  --canvas` y `--teselas`; nombres de `generar-nombres.py --luna`. Las dos
+  caras aprobadas (`luna-visible.png`, `luna-oculta.png`) quedan para el
+  aterrizaje del vuelo, sin WebGL2 y mientras carga. Al regenerar: subir
+  `LUNA_V` en `luna.js` y el `?v=` de `luna-visible.png` en `global.css` (van
+  por 5). Ojo al probar: el servidor de pruebas no manda cabeceras de caché
+  y el navegador puede seguir con datos viejos (Cmd+Mayús+R).
 - **28 alunizajes** con chapa de bandera, ficha con foto y enlace "Leer la
-  nota". Columna de países a la izquierda (EE. UU. con casillas Surveyor /
+  nota"; salen los de la zona que se ve, y al adentrarse en la cara oculta se
+  enciende China y aparecen los relés. Columna de países a la izquierda (EE. UU. con casillas Surveyor /
   Apolo / privadas). Datos en `src/data/alunizajes.ts`: añadir una misión =
   una línea ahí y su foto en `public/alunizajes/`.
 - **Relés Queqiao y Queqiao-2** en la cara oculta, con ficha y ondas
@@ -112,6 +121,41 @@ Pendiente (sin orden, lo decide él):
 - El mapa del giro de la Luna pesa 1,5 MB.
 - Polo sur: **descartado**, Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al
   borde de abajo.
+
+## Proyecto Marte (`/marte`) — en la rama `mars-project`, sin publicar
+
+Tercera "portada": Marte en pixel art con los amartizajes. **Se trabaja en la
+rama `mars-project`**; el usuario decide cuándo fusionar en `main` (explicarle
+antes el merge: el push a `main` publica). **Antes de tocarlo, leer
+`logo-files/MARTE-WIP.md`**: arriba dice en qué punto está, y se actualiza en
+cada paso (lo pidió el usuario).
+
+Qué hay hoy en `/marte`:
+- **Marte quieto** (no gira solo: decisión del usuario) que se **gira con
+  clic y arrastrar** (un dedo en el móvil) y se **acerca con la rueda, el
+  trackpad o pellizcando** hasta ×6, ganando detalle. Motor WebGL
+  `src/scripts/marte-gl.js` y la mano en `src/scripts/marte.js`; datos en
+  `public/marte/` de `logo-files/generar-marte.py` (las teselas `n1`-`n3`,
+  38 MB, van en Git desde que el pixel art es definitivo, 23-sep-2026). Al
+  regenerar: subir `MARTE_V` en `marte.js` y el `?v=` de `marte-quieto.png`
+  en `global.css`.
+- **Nombres de lugares** que salen al acercarse (a ×1, ninguno): visor de
+  esquinas para montes y cráteres, rótulo de región para llanuras y zonas.
+  Lista elegida a mano en `logo-files/generar-nombres.py` →
+  `public/marte/marte-nombres.json`; la capa, `src/scripts/marte-nombres.js`.
+- **17 chapas de amartizajes** (bandera en pixel art; las fallidas en blanco
+  y negro) con ficha: foto, Lugar / Fecha / Estado y una frase. Datos en
+  `src/data/amartizajes.ts`, fotos en `public/amartizajes/` (las mismas que
+  en las notas de la bóveda, `02 - Temas/mars-project`). La chapa enlaza a su
+  nota solo si está publicada.
+- **Se llega** con un vuelo desde el Marte pequeño de la portada (o
+  `mars-project` en la cabecera) y desde el de `/luna`; **se va** pulsando la
+  Tierra pequeña (vuelo hacia delante) o "volver a la Luna" si se vino de
+  allí. Vuelos: `src/scripts/viaje-luna.js`.
+
+Pendiente: ver "Dónde estamos" en `MARTE-WIP.md`. Las notas de Marte
+(etiqueta `marte`) tienen los mismos filtros que las de la Luna: no salen en
+`/notas`, la portada ni el RSS, y su "volver" lleva a `/marte`.
 
 ## Pendiente del planeta de la Tierra
 

@@ -14,15 +14,22 @@ import { SITE } from "@consts";
            html.dark en global.css (.logo-home). -->
       <a href="/" aria-label={SITE.NAME} class="logo-home"></a>
       <div class="flex items-center gap-2">
-        <nav class="flex gap-1">
+        <!-- Con "mars-project" el menú ya no cabía en el móvil: partía "moon-" /
+             "project" por el guion y en la portada se salía por la izquierda.
+             Sin cortes dentro de los enlaces, y en pantallas estrechas la letra
+             baja un poco (desde ~440 px, los 16 px de siempre). -->
+        <nav class="flex gap-1 whitespace-nowrap text-[clamp(0.72rem,3.6vw,1rem)]">
           <Link href="/notas" underline={false}>notas</Link>
           <span>{`/`}</span>
           <Link href="/eventos" underline={false}>eventos</Link>
           <span>{`/`}</span>
-          <!-- En la portada, el script de index.astro engancha este enlace (por
-               href, "nav a[href='/luna']") para que se comporte como la luna del
-               hero (mismo vuelo); en el resto de páginas es una navegación normal. -->
+          <!-- En la portada, el script de index.astro engancha estos dos enlaces
+               (por href, "nav a[href='/luna']" y "nav a[href='/marte']") para
+               que se comporten como la luna y Marte del hero (mismo vuelo); en el
+               resto de páginas son una navegación normal. -->
           <Link href="/luna" underline={false}>moon-project</Link>
+          <span>{`/`}</span>
+          <Link href="/marte" underline={false}>mars-project</Link>
         </nav>
         <ThemeToggle />
       </div>
