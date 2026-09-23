@@ -19,7 +19,9 @@ finalmente hacer merge con main cuando esté listo".
   de la Luna (`public/luna/n1`-`n4`) en Git.
 - Las 17 chapas de amartizaje con ficha (Lugar, Fecha, Estado, descripción y
   foto), y sus notas en la bóveda (`publicar: false`).
-- Probado por el usuario en Zen y en su iPhone.
+- Probado por el usuario en Zen y en su iPhone. Vuelto a probar en el Mac
+  (23-sep-2026, noche, `npm run dev`): "se amplía bien con los dedos en el
+  Mac. No parece que se caliente en exceso".
 - **Filtros de las notas de Marte** (23-sep-2026, noche): las notas con
   etiqueta `marte` no salen en `/notas`, la portada (lista y banderas) ni el
   RSS, como las de `luna`; y en su página, "volver" lleva a `/marte` ("Volver
@@ -28,9 +30,13 @@ finalmente hacer merge con main cuando esté listo".
 
 **Falta para fusionar**:
 1. Lo que el usuario quiera agregar o corregir tras repasarlo.
-2. Traer a la rama lo nuevo de `main` (el 23-sep-2026 eran 2 commits de
-   notas: "Ley de nietos" y eventos fronterizos), `npm run build` y
-   comprobar.
+2. ~~Traer a la rama lo nuevo de `main`~~: hecho el 23-sep-2026, noche
+   (merge `b4129f9`, sin conflictos: 2 commits de notas, "Ley de nietos" y
+   eventos fronterizos; sin subir). `npm run build` sin errores (`dist`,
+   403 MB: Luna 211, tweets 76, Marte 46) y capturas de la versión de
+   producción: portada, `/notas` (sin notas de Marte ni de la Luna), `/luna`,
+   `/marte`, "Ley de nietos" y la semana 9, bien. Si `main` recibe más notas
+   antes de fusionar, repetir.
 3. Explicarle el merge al usuario antes de hacerlo (el push a `main` publica
    zodk.eu; la web crece ~200 MB por las teselas, aunque cada visitante solo
    baja las que ve) y fusionar con `--no-ff`, como la Luna.
