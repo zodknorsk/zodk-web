@@ -71,13 +71,22 @@ deja en GitHub como registro). **Antes de tocarlo, leer
 se probó y RECHAZÓ.
 
 Qué hay hoy en `/luna`:
-- **Dos caras fijas** (visible luminosa / oculta más oscura y fría) y media
-  vuelta de verdad en `<canvas>` (2,8 s) con el mando de abajo en el centro.
-  Motor `src/scripts/luna.js`, datos en `public/luna/` que genera
-  `logo-files/generar-luna.py`. Al regenerar: subir `LUNA_V` en `luna.js` y el
-  `?v=` de `luna-visible.png` en `global.css` (van por 3).
+- **La Luna gira y se acerca como Marte** (desde el 23-sep-2026, en la rama
+  `mars-project`): clic y arrastrar (un dedo en el móvil), rueda, trackpad o
+  pellizco hasta ×6, con teselas `n1`-`n4` y nombres de accidentes que salen
+  al acercarse. La luz va con la vista: más oscura y fría según domina la
+  cara oculta. El mando de abajo en el centro lleva a cada cara con un giro
+  de 2,8 s. Motor `src/scripts/luna-gl.js` (el WebGL de Marte,
+  `marte-gl.js`); datos en `public/luna/` de `logo-files/generar-luna.py
+  --canvas` y `--teselas`; nombres de `generar-nombres.py --luna`. Las dos
+  caras aprobadas (`luna-visible.png`, `luna-oculta.png`) quedan para el
+  aterrizaje del vuelo, sin WebGL2 y mientras carga. Al regenerar: subir
+  `LUNA_V` en `luna.js` y el `?v=` de `luna-visible.png` en `global.css` (van
+  por 4). Ojo al probar: el servidor de pruebas no manda cabeceras de caché
+  y el navegador puede seguir con datos viejos (Cmd+Mayús+R).
 - **28 alunizajes** con chapa de bandera, ficha con foto y enlace "Leer la
-  nota". Columna de países a la izquierda (EE. UU. con casillas Surveyor /
+  nota"; salen los de la zona que se ve, y al adentrarse en la cara oculta se
+  enciende China y aparecen los relés. Columna de países a la izquierda (EE. UU. con casillas Surveyor /
   Apolo / privadas). Datos en `src/data/alunizajes.ts`: añadir una misión =
   una línea ahí y su foto en `public/alunizajes/`.
 - **Relés Queqiao y Queqiao-2** en la cara oculta, con ficha y ondas
