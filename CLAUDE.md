@@ -153,9 +153,9 @@ Qué hay hoy en `/marte`:
   Tierra pequeña (vuelo hacia delante) o "volver a la Luna" si se vino de
   allí. Vuelos: `src/scripts/viaje-luna.js`.
 
-Pendiente: ver "Pendiente" en `MARTE-WIP.md`. Ojo antes de publicar notas de
-Marte: las de la Luna tienen filtros para no salir en `/notas`, la portada ni
-el RSS (ver arriba); las de Marte (etiqueta `marte`) aún no.
+Pendiente: ver "Dónde estamos" en `MARTE-WIP.md`. Las notas de Marte
+(etiqueta `marte`) tienen los mismos filtros que las de la Luna: no salen en
+`/notas`, la portada ni el RSS, y su "volver" lleva a `/marte`.
 
 ## Pendiente del planeta de la Tierra
 

@@ -23,10 +23,11 @@ type Props = CollectionEntry<"notas">;
 const nota = Astro.props;
 const { Content } = await render(nota);
 
-// Las notas del Proyecto Luna (etiqueta "luna") no salen en /notas: solo se
-// llega a ellas desde /luna, así que "volver" lleva allí en vez de a un
-// listado que no las tiene.
+// Las notas de los proyectos Luna y Marte (etiquetas "luna" y "marte") no
+// salen en /notas: solo se llega a ellas desde /luna o /marte, así que
+// "volver" lleva allí en vez de a un listado que no las tiene.
 const esLuna = nota.data.tags.some((t) => t.toLowerCase() === "luna");
+const esMarte = nota.data.tags.some((t) => t.toLowerCase() === "marte");
 ---
 
 <PageLayout title={nota.data.title} description={nota.data.description ?? ""}>
@@ -34,7 +35,9 @@ const esLuna = nota.data.tags.some((t) => t.toLowerCase() === "luna");
     <div class="animate">
       {esLuna
         ? <BackToPrev href="/luna">Volver a la Luna</BackToPrev>
-        : <BackToPrev href="/notas">Volver a notas</BackToPrev>}
+        : esMarte
+          ? <BackToPrev href="/marte">Volver a Marte</BackToPrev>
+          : <BackToPrev href="/notas">Volver a notas</BackToPrev>}
     </div>
     <div class="space-y-1 my-10">
       <div class="animate flex items-center gap-1.5 font-mono">

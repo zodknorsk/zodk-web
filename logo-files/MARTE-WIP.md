@@ -4,13 +4,48 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (23-sep-2026: nombres, chapas y accidentes en /marte, commiteado)
+## Dónde estamos (23-sep-2026, noche: preparando la fusión en `main`)
 
-**Rama `mars-project`** (creada desde `main` el 21-sep-2026). Lo de hoy está
-**commiteado, sin subir** ("Cuando esté, commit y lo pruebo en Zen").
-**Nada fusionado ni publicado**: `main` y zodk.eu siguen sin Marte.
+**Rama `mars-project`** (creada desde `main` el 21-sep-2026), **todo
+commiteado y subido**. **Nada fusionado ni publicado**: `main` y zodk.eu
+siguen sin Marte y sin la Luna nueva (la que gira y se acerca, ver
+`LUNA-WIP.md`), que va en esta misma rama y se publica a la vez.
 
-**Hecho hoy** (23-sep-2026):
+**Plan del usuario** (23-sep-2026): "terminar de agregar / corregir cosas y
+finalmente hacer merge con main cuando esté listo".
+
+**Hecho para publicar**:
+- Pixel art de Marte definitivo; teselas de Marte (`public/marte/n1`-`n3`) y
+  de la Luna (`public/luna/n1`-`n4`) en Git.
+- Las 17 chapas de amartizaje con ficha (Lugar, Fecha, Estado, descripción y
+  foto), y sus notas en la bóveda (`publicar: false`).
+- Probado por el usuario en Zen y en su iPhone.
+- **Filtros de las notas de Marte** (23-sep-2026, noche): las notas con
+  etiqueta `marte` no salen en `/notas`, la portada (lista y banderas) ni el
+  RSS, como las de `luna`; y en su página, "volver" lleva a `/marte` ("Volver
+  a Marte"). Las 17 notas de misiones de la bóveda llevan esa etiqueta, y
+  ninguna otra nota la usa. `npm run build` sin errores.
+
+**Falta para fusionar**:
+1. Lo que el usuario quiera agregar o corregir tras repasarlo.
+2. Traer a la rama lo nuevo de `main` (el 23-sep-2026 eran 2 commits de
+   notas: "Ley de nietos" y eventos fronterizos), `npm run build` y
+   comprobar.
+3. Explicarle el merge al usuario antes de hacerlo (el push a `main` publica
+   zodk.eu; la web crece ~200 MB por las teselas, aunque cada visitante solo
+   baja las que ve) y fusionar con `--no-ff`, como la Luna.
+
+**Abierto, sin bloquear la fusión**: el pellizco del trackpad en Safari del
+Mac (sin probar); el "salto" de detalle al cambiar de nivel de teselas (se
+deja salvo que moleste); Marte de día y de noche en la portada (era la
+recomendación, sin confirmación expresa); las chapas enlazan a su nota solo
+cuando esté publicada (hoy, ninguna).
+
+Lo de abajo es el registro de lo hecho, sesión a sesión.
+
+## Registro del 23-sep-2026
+
+**Hecho** (23-sep-2026, primera tanda):
 - **Los nombres de lugares salen en `/marte`** (antes solo estaban en el
   banco): `src/scripts/marte-nombres.js`, `marte.astro`, `global.css` y la
   letra IBM Plex Mono 500 en `Head.astro`.
@@ -47,7 +82,7 @@ se note.
   quedaron en el banco de pruebas, también"), y la de los fallidos **en color
   con una raya**.
 
-**Móvil y táctil (23-sep-2026, commiteado, sin subir)**, lo que el usuario aprobó
+**Móvil y táctil (23-sep-2026, commiteado y subido)**, lo que el usuario aprobó
 ("commit push y vamos con el móvil"):
 - **Un dedo gira, dos dedos pellizcan para el zoom** (hacia el punto medio).
   `touch-action: none` en `.marte-hero` (antes el navegador se quedaba el
@@ -108,7 +143,7 @@ usuario ("Vale, vamos con las chapas"):
   (Beagle 2) y Europa (ESA, Schiaparelli), en `PAISES_MARTE`
   (`amartizajes.ts`), aparte de `PAISES_LUNA` para no salir en la columna
   de países de `/luna`.
-- **HECHO, SIN COMMITEAR**: las 17 chapas en `src/data/amartizajes.ts`
+- **HECHO** (commiteado después, `0c1b504`): las 17 chapas en `src/data/amartizajes.ts`
   (URSS: Mars 2, 3 y 6; EE. UU.: Viking 1 y 2, Pathfinder, Polar Lander,
   Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance, Ingenuity;
   Reino Unido: Beagle 2; ESA: Schiaparelli; China: Zhurong). Las
@@ -128,9 +163,8 @@ usuario ("Vale, vamos con las chapas"):
   - Comprobado en Chrome sin ventana (escritorio y móvil 390 × 844).
 - La nota "Amartizajes" de la bóveda dice ya "en blanco y negro" (sin
   commitear allí).
-- **Falta**: que el usuario lo vea; las **fotos** (el paso siguiente, como en
-  `/luna`); las notas de Mars 6, Polar Lander y Schiaparelli en `Hard
-  Landings` (enseñárselas antes de crearlas).
+- Lo que faltaba entonces (que el usuario lo viera, las fotos y las notas
+  de Mars 6, Polar Lander y Schiaparelli) se hizo después: ver abajo.
 
 Chapas y fichas **commiteadas** (`0c1b504`).
 
@@ -208,19 +242,16 @@ visible para centrar en las caras. Y los accidentes geográficos de la Luna
 igual". Va en `LUNA-WIP.md` cuando se empiece.
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
-misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
-índice "Amartizajes", `publicar: false`) y `Hard Landings/` (Mars 2). Son las
-que llevarán chapa con ficha en `/marte`. El índice decía que la chapa de los fallidos
-sale "en blanco y negro"; corregido el 23-sep-2026 a "en color, tachada con
-una raya" (a petición del usuario; cambio en la bóveda, sin commitear allí).
-
-**Chapas**: Mars 3 y Mars 2, en el banco y en `/marte`. Las demás misiones,
-cuando el usuario lo diga (sus notas están en la bóveda).
+misiones están en `02 - Temas/mars-project/Soft Landings/` (el índice
+"Amartizajes" y las que se posaron) y `Hard Landings/` (Mars 2, Mars 6, Mars
+Polar Lander y Schiaparelli), todas con `publicar: false` y etiqueta `marte`.
+Hay nota para las 17 chapas de `/marte`. El índice dice que la chapa de los
+fallidos sale "en blanco y negro" (lo último que decidió el usuario;
+commiteado en la bóveda).
 
 Verlo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte, arriba a
 la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
-(Marte arriba a la izquierda) o `http://localhost:4321/marte`. En otro
-ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
+(Marte arriba a la izquierda) o `http://localhost:4321/marte`.
 
 ### Qué hay hoy
 
@@ -229,7 +260,8 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
   clic y arrastrar (flecha normal y mano cerrada solo al pinchar) y se acerca
   con la rueda o el trackpad hasta ×6, con más detalle según se acerca
   (teselas). Sin cabecera ni scroll. Sin título. **Al acercarse salen los
-  nombres de lugares** (desde ×1,2) y las chapas de Mars 3 y Mars 2.
+  nombres de lugares** (desde ×1,2). Las **17 chapas** de amartizaje, con
+  ficha (y foto); las fallidas, en blanco y negro.
   - **Tierra pequeña** arriba a la derecha de Marte (a 1,6 radios a la
     derecha y 0,85 por encima), de día o de noche según el tema: se pulsa y
     hay un **vuelo hacia delante** a la portada. Va **detrás** de Marte: al
@@ -246,7 +278,7 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
   Marte tal como se dejó y sin pararse si estaba acercado). Los de la Luna no
   cambian.
 
-### Hecho (commiteado; del 14 al 17, sin subir)
+### Hecho (todo commiteado y subido)
 
 1. **Estudio y Marte provisional** (`generar-marte.py`, relieve MOLA + color
    Viking, pixel art con el recorrido de la Luna). `5a99c5c`.
@@ -285,19 +317,19 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 15. **Un accidente con nombre junto a cada amartizaje** (23-sep-2026): 9
     nombres más en `generar-nombres.py`.
 16. **Chapas de Mars 3 y Mars 2 en `/marte`** (23-sep-2026), datos en
-    `src/data/amartizajes.ts`.
+    `src/data/amartizajes.ts`; después, las 17 con foto (`0c1b504`,
+    `f7a3a4f`).
 17. **La Tierra pequeña, detrás de Marte** (23-sep-2026): arreglado que se
     viera encima al acercarse.
 
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
-- **Las teselas** (`public/marte/n1/`, `n2/`, `n3/`, 38 MB): en `.gitignore`
-  hasta que el pixel art sea definitivo (decisión del usuario). Solo están en
-  el Mac. Sin ellas, `/marte` funciona pero el zoom no gana detalle.
+- Las teselas (`public/marte/n1/`-`n3/`, 38 MB) **sí están en Git** desde
+  el 23-sep-2026 (pixel art definitivo). Antes solo estaban en el Mac.
 - **Las fuentes** (`logo-files/marte-fuentes/`, ~1 GB: MOLA de 16 y 32
   px/grado y el mosaico Viking con sus reducciones a 8, 16 y 24).
-- En otro ordenador: bajar las fuentes (los `curl`/`sips` están en el
-  docstring de `generar-marte.py`) y regenerar: `cd logo-files && python3
+- Solo hacen falta para regenerar: bajar las fuentes (los `curl`/`sips`
+  están en el docstring de `generar-marte.py`) y `cd logo-files && python3
   generar-marte.py --canvas ../public/marte/` (unos 4 min).
 - Lo que se genera y **sí** está en Git: `public/zodk-marte.png`
   (`generar-marte.py --icono`), `public/marte/marte-quieto.png` (`node
@@ -322,10 +354,10 @@ sus notas en la bóveda.
    - Que Marte se vea de día y de noche en la portada se dio por bueno (era
      la recomendación; no lo dijo expresamente).
 4. **Antes de publicar**: ~~pixel art definitivo → commitear las teselas~~
-   (hecho, 23-sep-2026); filtros de las notas de Marte como los de la Luna;
-   fusionar `mars-project` en `main` explicándole
-   antes el merge al usuario (el push a `main` publica zodk.eu); poner al
-   día `CLAUDE.md` (hecho) y `LUNA-WIP.md`.
+   (hecho); ~~filtros de las notas de Marte como los de la Luna~~ (hecho,
+   23-sep-2026, noche); ~~poner al día `CLAUDE.md` y `LUNA-WIP.md`~~ (hecho);
+   fusionar `mars-project` en `main` explicándole antes el merge al usuario
+   (el push a `main` publica zodk.eu). Ver "Falta para fusionar" arriba.
 
 ### Para la próxima sesión
 
@@ -356,13 +388,12 @@ sus notas en la bóveda.
       bien). Ver "Zoom" abajo.
 - [x] 3b. **Zoom hasta ×6** (pedido por el usuario tras probar el ×4). **Hecho
       el 21-sep-2026.** Ver "Zoom ×6" abajo.
-- [ ] 4. Dos o tres **chapas de prueba** pegadas al terreno (Curiosity,
-      Perseverance…). **Aplazado** por el usuario (21-sep-2026): se hará
-      cuando se empiecen a escribir las notas de las misiones.
-- [ ] Giro automático y botón, si se decide (ver pendientes).
+- [x] 4. **Chapas** pegadas al terreno: aplazado el 21-sep-2026 y hecho el
+      23-sep-2026 con las 17 misiones.
+- [x] ~~Giro automático y botón~~: el usuario decidió que no (23-sep-2026).
 - [x] 6. **Página `/marte`** con Marte, la mano, el zoom y el título "mars
-      project" animado. **Hecho el 21-sep-2026, sin commitear**: falta que la
-      vea el usuario. Ver "Página /marte" abajo.
+      project" animado (21-sep-2026; el título se quitó después). Ver "Página
+      /marte" abajo.
 
 - [x] 5. **Pulido del pixel art** (21-sep-2026), **sin pasarse de realismo**
       (ver decisiones). Hecho: sombra menos oscura, llanuras en dos tonos,
