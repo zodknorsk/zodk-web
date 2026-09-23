@@ -31,12 +31,19 @@ Labyrinthus…) llevan rótulo pero con umbral, para que no salgan tan pronto.
 Los nombres van en latín, que es como están en el catálogo y en los mapas
 (decisión del usuario, 22-sep-2026). El castellano, en la ficha.
 """
+import array
 import json
+import math
 import struct
+import sys
 from pathlib import Path
 
 FUENTE = Path(__file__).parent / "marte-fuentes" / "MARS_nomenclature_center_pts.dbf"
 SALIDA = Path(__file__).parent.parent / "public" / "marte" / "marte-nombres.json"
+# Relieve MOLA de 32 px/grado (el de generar-marte.py; el curl está en su
+# docstring): de él sale el marco ceñido de los montes y los cráteres.
+MOLA = Path(__file__).parent / "marte-fuentes" / "megt90n000fb.img"
+MOLA_PPD = 32
 
 # nombre del catálogo -> (clase, px, menor)
 LISTA = {
@@ -138,6 +145,79 @@ def dbf(ruta):
     return filas
 
 
+# --- El visor ceñido a la geografía (usuario, 22-sep-2026: "para futuros sí
+# que quiero que sea ajustado a la geografía"). La caja del catálogo es un
+# rectángulo de latitud y longitud que abarca el lugar con holgura (en el
+# Olympus Mons sobraba por la derecha). Para los montes se saca del relieve:
+# desde el centro, rayos en 36 direcciones, y en cada una el pie, donde la
+# ladera baja hasta casi la llanura de alrededor (a un 12 % de la altura
+# sobre ella), sin pasar de 1,3 veces su radio (Alba Mons, tan plano, se iba
+# lejísimos). La caja nueva abarca esos 36 puntos (sin los que se salen mucho
+# de la mediana). Ceñir es estrechar o recolocar, no agrandar: si sale más de
+# un 10 % mayor que la del catálogo (Alba Mons, casi plano), se queda esa. Los cráteres y las calderas se quedan con la del catálogo:
+# su diámetro ya se mide de borde a borde, y buscar el borde en el relieve
+# (probado el 23-sep-2026) lo agrandaba cuando el terreno de fuera es más
+# alto. Las fosas y los cañones, también con la del catálogo.
+CENIR = {"Mons": "pie", "Tholus": "pie"}
+KM_GRADO = math.pi * 3389.5 / 180
+
+
+def cargar_mola():
+    dem = array.array("h")
+    dem.frombytes(MOLA.read_bytes())
+    if sys.byteorder == "little":
+        dem.byteswap()                              # MSB_INTEGER
+    return dem
+
+
+def altura(dem, lat, lon):
+    """Altura MOLA (m) en (lat, lon), bilineal. Filas desde 90° N, columnas
+    desde 0° E."""
+    w, h = 360 * MOLA_PPD, 180 * MOLA_PPD
+    y = (90 - lat) * MOLA_PPD - 0.5
+    x = (lon % 360) * MOLA_PPD - 0.5
+    y0, x0 = math.floor(y), math.floor(x)
+    fy, fx = y - y0, x - x0
+    def v(yy, xx):
+        return dem[min(h - 1, max(0, yy)) * w + (xx % w)]
+    return ((v(y0, x0) * (1 - fx) + v(y0, x0 + 1) * fx) * (1 - fy)
+            + (v(y0 + 1, x0) * (1 - fx) + v(y0 + 1, x0 + 1) * fx) * fy)
+
+
+def punto(lat, lon, az, km):
+    """El punto a `km` de (lat, lon) hacia el acimut `az` (radianes), en plano
+    local (vale para lo que mide un lugar)."""
+    dlat = km * math.cos(az) / KM_GRADO
+    dlon = km * math.sin(az) / (KM_GRADO * max(0.05, math.cos(math.radians(lat))))
+    return lat + dlat, lon + dlon
+
+
+def ceñir(dem, n, forma):
+    r = n["km"] / 2
+    paso = max(0.4, r / 120)                        # km entre muestras
+    puntos = []
+    for i in range(36):
+        az = 2 * math.pi * i / 36
+        ds = [k * paso for k in range(int(1.3 * r / paso) + 1)]
+        hs = [altura(dem, *punto(n["lat"], n["lon"], az, d)) for d in ds]
+        if forma == "borde":
+            cand = [(hh, d) for hh, d in zip(hs, ds) if 0.5 * r <= d <= 1.4 * r]
+            puntos.append(max(cand)[1])
+        else:
+            cima = max(hh for hh, d in zip(hs, ds) if d <= 0.3 * r)
+            base = min(hs)
+            corte = base + 0.12 * (cima - base)
+            puntos.append(next((d for hh, d in zip(hs, ds) if d >= 0.3 * r and hh <= corte), ds[-1]))
+    m = sorted(puntos)[len(puntos) // 2]
+    lats, lons = [], []
+    for i, d in enumerate(puntos):
+        d = max(0.6 * m, min(1.4 * m, d))
+        la, lo = punto(n["lat"], n["lon"], 2 * math.pi * i / 36, d)
+        lats.append(la)
+        lons.append(lo)
+    return [round(min(lats), 2), round(max(lats), 2), round(min(lons), 2), round(max(lons), 2)]
+
+
 def main():
     filas = {r["name"]: r for r in dbf(FUENTE) if r["approval"].startswith("Adopted")}
     fuera = [n for n in LISTA if n not in filas]
@@ -167,6 +247,18 @@ def main():
         c = nombres[-1]["caja"]
         ancho, alto = (c[3] - c[2]) * 0.94, c[1] - c[0]     # 0,94: el coseno medio
         nombres[-1]["linea"] = max(ancho, alto) / max(1e-6, min(ancho, alto)) >= 1.8
+    # El marco de los montes y los cráteres, ceñido al relieve.
+    if MOLA.exists():
+        dem = cargar_mola()
+        for n in nombres:
+            forma = CENIR.get(n.get("tipo"))
+            if n["clase"] == "visor" and forma:
+                nueva = ceñir(dem, n, forma)
+                area = lambda c: (c[1] - c[0]) * (c[3] - c[2])
+                if area(nueva) <= 1.1 * area(n["caja"]):
+                    n["caja"] = nueva
+    else:
+        print(f"Sin {MOLA.name}: los marcos van con la caja del catálogo.")
     # Los grandes primero: si dos rótulos se pisan en la pantalla, se queda el
     # del lugar más grande.
     nombres.sort(key=lambda n: -n["km"])
