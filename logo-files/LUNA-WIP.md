@@ -1,15 +1,13 @@
 # Proyecto Luna — documento de traspaso
 
-> **Estado al 23-sep-2026 (noche)**: la `/luna` publicada en zodk.eu es la
-> del 20-sep. En la rama **`mars-project`** (commiteado y subido, **sin
-> fusionar**) hay una `/luna` nueva: la Luna gira con clic y arrastrar, se
-> acerca hasta ×6 con teselas (`public/luna/n1`-`n4`, en Git) y nombres de
-> lugares, móvil con fila de banderas y mando en directo (ver "Luna que gira
-> y se acerca"), además del Marte pequeño. Se publica junto con Marte al
-> fusionar `mars-project` en `main`; lo que falta para eso está en
-> `MARTE-WIP.md` ("Falta para fusionar").
+> **Estado al 23-sep-2026 (noche)**: **la Luna nueva está publicada**. Se
+> hizo en la rama `mars-project` (la Luna gira con clic y arrastrar, se
+> acerca hasta ×6 con teselas `public/luna/n1`-`n4` y nombres de lugares,
+> móvil con fila de banderas y mando en directo; ver "Luna que gira y se
+> acerca") y se fusionó en `main` con Marte el 23-sep-2026 (merge
+> `b0ada47`). Detalle de la fusión en `MARTE-WIP.md`.
 
-**PUBLICADO (lo del 20-sep).** La rama `moon-project` (creada desde `main` el 16-sep-2026) se
+**Primera publicación (20-sep).** La rama `moon-project` (creada desde `main` el 16-sep-2026) se
 fusionó en `main` el **20-sep-2026** (merge `9f5d1e2`, con `--no-ff`) y zodk.eu
 ya sirve todo esto; la rama se deja en GitHub como registro. Lo que se siga
 tocando va sobre `main` o en rama nueva. **Leer esto primero** al volver, antes
@@ -35,7 +33,8 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 **Dónde estamos** (23-sep-2026, fin de sesión): **todo hecho, commiteado y
 subido en `mars-project`**: la Luna gira y se acerca en `/luna`, con móvil,
 mando en directo y relieve fino, probada por el usuario en Zen y en su
-iPhone. Teselas `n1`-`n4` en Git. Sin fusionar en `main`. Lo de abajo es el
+iPhone. Teselas `n1`-`n4` en Git. Fusionado en `main` y publicado el
+23-sep-2026 (`b0ada47`). Lo de abajo es el
 detalle por pasos, en el orden en que se hicieron (las marcas "sin
 commitear" de cada paso son de entonces: ya está todo commiteado).
 - `src/scripts/marte-gl.js` ya pinta también la Luna: opciones `prefijo`

@@ -4,12 +4,14 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (23-sep-2026, noche: preparando la fusión en `main`)
+## Dónde estamos (23-sep-2026, noche: PUBLICADO)
 
-**Rama `mars-project`** (creada desde `main` el 21-sep-2026), **todo
-commiteado y subido**. **Nada fusionado ni publicado**: `main` y zodk.eu
-siguen sin Marte y sin la Luna nueva (la que gira y se acerca, ver
-`LUNA-WIP.md`), que va en esta misma rama y se publica a la vez.
+**PUBLICADO.** La rama `mars-project` se fusionó en `main` el **23-sep-2026**
+(merge `b0ada47`, con `--no-ff`, a petición del usuario: "ok go") y zodk.eu
+ya sirve Marte y la Luna nueva (la que gira y se acerca, ver `LUNA-WIP.md`).
+Comprobado tras el despliegue: `/`, `/luna` y `/marte` responden, las
+teselas se sirven y la cabecera lleva `mars-project`. La rama se deja en
+GitHub como registro; lo que se siga tocando va sobre `main` o en rama nueva.
 
 **Plan del usuario** (23-sep-2026): "terminar de agregar / corregir cosas y
 finalmente hacer merge con main cuando esté listo".
@@ -28,7 +30,7 @@ finalmente hacer merge con main cuando esté listo".
   a Marte"). Las 17 notas de misiones de la bóveda llevan esa etiqueta, y
   ninguna otra nota la usa. `npm run build` sin errores.
 
-**Falta para fusionar**:
+**Lo que faltaba para fusionar** (todo hecho):
 1. Lo que el usuario quiera agregar o corregir tras repasarlo.
 2. ~~Traer a la rama lo nuevo de `main`~~: hecho el 23-sep-2026, noche
    (merge `b4129f9`, sin conflictos: 2 commits de notas, "Ley de nietos" y
@@ -37,9 +39,7 @@ finalmente hacer merge con main cuando esté listo".
    producción: portada, `/notas` (sin notas de Marte ni de la Luna), `/luna`,
    `/marte`, "Ley de nietos" y la semana 9, bien. Si `main` recibe más notas
    antes de fusionar, repetir.
-3. Explicarle el merge al usuario antes de hacerlo (el push a `main` publica
-   zodk.eu; la web crece ~200 MB por las teselas, aunque cada visitante solo
-   baja las que ve) y fusionar con `--no-ff`, como la Luna.
+3. ~~Explicarle el merge y fusionar con `--no-ff`~~: hecho (`b0ada47`).
 
 **Abierto, sin bloquear la fusión**: el pellizco del trackpad en Safari del
 Mac (sin probar); el "salto" de detalle al cambiar de nivel de teselas (se
