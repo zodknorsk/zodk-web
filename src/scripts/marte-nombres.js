@@ -14,20 +14,22 @@
 // En la misma capa, las chapas de los amartizajes (src/data/amartizajes.ts):
 // la bandera en su sitio exacto, a cualquier zoom (a x1 son lo único que
 // sale), con su ficha al pasar el ratón; la de una misión que no llegó
-// entera, en color y con una raya.
+// entera, en blanco y negro.
 // Detalle y decisiones en logo-files/MARTE-WIP.md.
 
 import { MARTE_V } from "./marte.js";
 
 const KM_GRADO = Math.PI * 3389.5 / 180;     // un grado de Marte, en km
 const MARGEN = 0.06;                         // aire del visor por fuera del lugar
+const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de aire
 
 /**
  * @param {HTMLElement} capa  la capa de nombres (centrada en el disco)
  * @param {{ proyecta: (lat: number, lon: number) => { x: number, y: number, z: number },
  *   pxGrado: () => number, vista: () => { zoom: number } }} marte
- * @param {{ lat: number, lon: number, llego: boolean, bandera: string, titulo: string,
- *   clase: string, datos: [string, string][], enlace: string | null }[]} [chapas]
+ * @param {{ lat: number, lon: number, llego: boolean, separa: number, bandera: string,
+ *   titulo: string, clase: string, datos: [string, string][], texto: string,
+ *   enlace: string | null }[]} [chapas]
  * @returns {Promise<{ coloca: () => void, desmontar: () => void }>}
  */
 export async function montarNombres(capa, marte, chapas = []) {
@@ -59,15 +61,17 @@ export async function montarNombres(capa, marte, chapas = []) {
       + `<div class="marte-ficha"><div class="marte-ficha-titulo">${c.titulo}</div>`
       + `<div class="marte-ficha-clase">${c.clase}</div>`
       + `<dl>${c.datos.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`
+      + `<p class="marte-ficha-texto">${c.texto}</p>`
       + (c.enlace ? '<p class="marte-ficha-nota">leer la nota →</p>' : "")
       + "</div>";
     capa.append(el);
-    const e = { c, el, ficha: el.querySelector(".marte-ficha"), x: 0, visto: false };
+    const e = { c, el, ficha: el.querySelector(".marte-ficha"), x: 0, y: 0, visto: false };
     el.addEventListener("pointerenter", () => ajustaFicha(e));
     return e;
   });
   // La ficha va centrada bajo la chapa; si así se sale de la pantalla (en el
-  // móvil, con la chapa cerca del borde), se corre hacia dentro. Con cuentas
+  // móvil, con la chapa cerca del borde), se corre hacia dentro, y si no cabe
+  // por debajo, se abre hacia arriba. Con cuentas
   // (dónde está la chapa y cuánto mide la ficha): leer su caja en pantalla no
   // vale, porque se mueve con la transición al abrirse.
   function ajustaFicha(e) {
@@ -75,6 +79,8 @@ export async function montarNombres(capa, marte, chapas = []) {
     const izq = window.innerWidth / 2 + e.x - w / 2;    // la capa está en el centro de la ventana
     const corre = Math.max(m - izq, Math.min(0, window.innerWidth - m - (izq + w)));
     e.ficha.style.setProperty("--corre", `${Math.round(corre)}px`);
+    const abajo = window.innerHeight / 2 + e.y + 6 + 8 + e.ficha.offsetHeight;   // bajo la chapa
+    e.el.classList.toggle("ficha-arriba", abajo > window.innerHeight - m);
   }
 
   // En táctil no hay ratón que pasar por encima: un toque abre la ficha y
@@ -172,19 +178,33 @@ export async function montarNombres(capa, marte, chapas = []) {
       }
     }
     // Las chapas: en su sitio exacto y a cualquier zoom. No entran en el
-    // reparto de sitio de los nombres: son pequeñas.
+    // reparto de sitio de los nombres: son pequeñas. Si dos se pisan (a x1,
+    // Opportunity y Schiaparelli, a 40 km), la segunda se aparta lo justo
+    // para quedar pegada a la otra, hacia su lado; al acercar, en cuanto su
+    // distancia real basta, cada una vuelve a su sitio.
+    const puestas = [];
     for (const e of chs) {
       const c = marte.proyecta(e.c.lat, e.c.lon);
+      // Dos chapas en el mismo sitio (Perseverance e Ingenuity): la segunda,
+      // pegada a la derecha a x1 y cada vez más lejos al acercar.
+      c.x += e.c.separa * z;
       const borde = Math.max(0, Math.min(1, (c.z - 0.12) / 0.2));
       if (borde <= 0) {
         if (e.visto) { e.visto = false; e.el.classList.remove("visto"); }
         e.el.hidden = true;
         continue;
       }
+      for (const p of puestas) {
+        if (Math.abs(c.x - p.x) < CHAPA_W && Math.abs(c.y - p.y) < CHAPA_H) {
+          c.x = p.x + (c.x < p.x ? -CHAPA_W : CHAPA_W);
+        }
+      }
+      puestas.push(c);
       e.el.hidden = false;
       e.el.style.setProperty("--borde", borde.toFixed(2));
       e.el.style.transform = `translate(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px)`;
       e.x = c.x;
+      e.y = c.y;
       if (e.el.classList.contains("abierta")) ajustaFicha(e);   // abierta en táctil y girando
       if (!e.visto) {
         e.visto = true;

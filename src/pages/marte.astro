@@ -61,7 +61,8 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { montarMarteGL, montarZoom } from "../scripts/marte-gl.js";
   import { montarNombres } from "../scripts/marte-nombres.js";
   import { AMARTIZAJES } from "../data/amartizajes";
-  import { PAISES_LUNA, svgBandera } from "../data/alunizajes";
+  import { PAISES_MARTE } from "../data/amartizajes";
+  import { svgBandera } from "../data/alunizajes";
   import { PLANETA_V } from "../scripts/planeta.js";
   import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/viaje-luna.js";
 
@@ -257,12 +258,17 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
       // Los nombres, sin esperar por ellos (el archivo y la letra). Al irse
       // (a la Tierra o a la Luna) se quitan con la mano y el zoom.
       const publicadas: string[] = JSON.parse(capa.dataset.publicadas ?? "[]");
-      const chapas = AMARTIZAJES.map((a) => ({
-        lat: a.lat, lon: a.lon, llego: a.llego, titulo: a.nombre, datos: a.datos,
-        clase: `${a.quien}, ${a.anio} · ${a.clase}`,
-        bandera: svgBandera(PAISES_LUNA.find((p) => p.codigo === a.pais)!),
-        enlace: publicadas.includes(a.nota) ? `/notas/${a.nota}` : null,
-      }));
+      const chapas = AMARTIZAJES.map((a) => {
+        const pais = PAISES_MARTE.find((p) => p.codigo === a.pais)!;
+        return {
+          lat: a.lat, lon: a.lon, llego: a.llego, separa: a.separa ?? 0, titulo: a.nombre,
+          clase: `${pais.bandera} ${a.quien} · ${a.anio} · ${a.tipo}`,
+          datos: [["Lugar", a.lugar], ["Fecha", a.fecha], ["Estado", a.estado]] as [string, string][],
+          texto: a.texto,
+          bandera: svgBandera(pais),
+          enlace: publicadas.includes(a.nota) ? `/notas/${a.nota}` : null,
+        };
+      });
       montarNombres(capa, marte, chapas).then((nombres) => {
         if (!capa.isConnected || enVuelo) return nombres.desmontar();   // ya se estaba yendo
         colocaNombres = nombres.coloca;
