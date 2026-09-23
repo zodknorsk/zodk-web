@@ -1,6 +1,15 @@
 # Proyecto Luna — documento de traspaso
 
-**PUBLICADO.** La rama `moon-project` (creada desde `main` el 16-sep-2026) se
+> **Estado al 23-sep-2026 (noche)**: la `/luna` publicada en zodk.eu es la
+> del 20-sep. En la rama **`mars-project`** (commiteado y subido, **sin
+> fusionar**) hay una `/luna` nueva: la Luna gira con clic y arrastrar, se
+> acerca hasta ×6 con teselas (`public/luna/n1`-`n4`, en Git) y nombres de
+> lugares, móvil con fila de banderas y mando en directo (ver "Luna que gira
+> y se acerca"), además del Marte pequeño. Se publica junto con Marte al
+> fusionar `mars-project` en `main`; lo que falta para eso está en
+> `MARTE-WIP.md` ("Falta para fusionar").
+
+**PUBLICADO (lo del 20-sep).** La rama `moon-project` (creada desde `main` el 16-sep-2026) se
 fusionó en `main` el **20-sep-2026** (merge `9f5d1e2`, con `--no-ff`) y zodk.eu
 ya sirve todo esto; la rama se deja en GitHub como registro. Lo que se siga
 tocando va sobre `main` o en rama nueva. **Leer esto primero** al volver, antes
@@ -25,12 +34,10 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 
 **Dónde estamos** (23-sep-2026, fin de sesión): **todo hecho, commiteado y
 subido en `mars-project`**: la Luna gira y se acerca en `/luna`, con móvil,
-mando en directo y relieve fino. Sin fusionar en `main`. Lo de abajo es el
-detalle por pasos. (Antes: pasos 1, 2 y 3 hechos y el aspecto con
-zoom aprobado por el usuario; SIN COMMITEAR) (banco de pruebas, teselas
-n1-n4 y nombres; ver abajo). `/luna` sin tocar. Las teselas, fuera de Git
-hasta que todo sea definitivo. Código de los pasos 1-3 commiteado (`5635f7b`). **Paso 4 hecho, sin
-commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
+mando en directo y relieve fino, probada por el usuario en Zen y en su
+iPhone. Teselas `n1`-`n4` en Git. Sin fusionar en `main`. Lo de abajo es el
+detalle por pasos, en el orden en que se hicieron (las marcas "sin
+commitear" de cada paso son de entonces: ya está todo commiteado).
 - `src/scripts/marte-gl.js` ya pinta también la Luna: opciones `prefijo`
   ("luna-"), `version`, `zoomMax` y `luz(lat0, lon0)` (fase y lado del sol,
   exposición en escalones, suelo de la noche y bloque de la LUT del tono
@@ -951,11 +958,10 @@ enlazan. `Alunizajes.md` ya no dice "20". El polo sur queda **descartado**
 (Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al borde de abajo: "creo que se
 va a quedar así").
 
-### PENDIENTE (actualizado 20-sep-2026)
+### PENDIENTE (actualizado 23-sep-2026)
 
-1. **Probar `/luna` en Zen y en el móvil**: solo se ha visto en Chrome. En
-   táctil no hay fichas (sin ratón): se ven Luna, relés y Orion, pero las
-   chapas y la columna se ocultan.
+1. ~~Probar `/luna` en Zen y en el móvil~~: hecho con la Luna nueva
+   (23-sep-2026); en el móvil ya hay fila de banderas y fichas con un toque.
 2. Con la ventana estrecha, la Orion pasa por detrás de la columna de países
    en el borde izquierdo.
 3. Fotos poco vistosas (vistas del LRO desde órbita): soviéticas, SLIM, IM-1,

@@ -7,10 +7,11 @@ type Context = {
 };
 
 export async function GET(context: Context) {
-  // Las notas del Proyecto Luna (etiqueta "luna") no salen aquí: se quedan en
-  // /luna, y solo se llega a ellas desde allí o desde "moon-project".
+  // Las notas del Proyecto Luna (etiqueta "luna") y del Proyecto Marte ("marte")
+  // no salen aquí: se quedan en /luna y /marte, y solo se llega a ellas desde
+  // allí o desde "moon-project" / "mars-project".
   const notas = (await getCollection("notas"))
-    .filter((nota) => !nota.data.draft && !nota.data.tags.some((t) => t.toLowerCase() === "luna"))
+    .filter((nota) => !nota.data.draft && !nota.data.tags.some((t) => ["luna", "marte"].includes(t.toLowerCase())))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
