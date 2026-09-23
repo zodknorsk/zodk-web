@@ -62,8 +62,35 @@ export async function montarNombres(capa, marte, chapas = []) {
       + (c.enlace ? '<p class="marte-ficha-nota">leer la nota →</p>' : "")
       + "</div>";
     capa.append(el);
-    return { c, el, visto: false };
+    const e = { c, el, ficha: el.querySelector(".marte-ficha"), x: 0, visto: false };
+    el.addEventListener("pointerenter", () => ajustaFicha(e));
+    return e;
   });
+  // La ficha va centrada bajo la chapa; si así se sale de la pantalla (en el
+  // móvil, con la chapa cerca del borde), se corre hacia dentro. Con cuentas
+  // (dónde está la chapa y cuánto mide la ficha): leer su caja en pantalla no
+  // vale, porque se mueve con la transición al abrirse.
+  function ajustaFicha(e) {
+    const w = e.ficha.offsetWidth, m = 8;
+    const izq = window.innerWidth / 2 + e.x - w / 2;    // la capa está en el centro de la ventana
+    const corre = Math.max(m - izq, Math.min(0, window.innerWidth - m - (izq + w)));
+    e.ficha.style.setProperty("--corre", `${Math.round(corre)}px`);
+  }
+
+  // En táctil no hay ratón que pasar por encima: un toque abre la ficha y
+  // otro toque (en ella, si es enlace, lleva a la nota) o tocar fuera la
+  // cierra. Con ratón no hace nada: la ficha sale al pasar por encima.
+  const tactil = matchMedia("(hover: none)");
+  const toca = (e) => {
+    const el = e.target instanceof Element ? e.target.closest(".marte-chapa") : null;
+    for (const x of chs) if (x.el !== el) x.el.classList.remove("abierta");
+    const ch = chs.find((x) => x.el === el);
+    if (!ch || !tactil.matches || el.classList.contains("abierta")) return;
+    e.preventDefault();
+    el.classList.add("abierta");
+    ajustaFicha(ch);
+  };
+  document.addEventListener("click", toca);
 
   // El tamaño de cada texto se mide una vez, con la letra ya cargada, y el
   // reparto de sitio se hace con cuentas: leer cajas en cada fotograma del
@@ -81,6 +108,13 @@ export async function montarNombres(capa, marte, chapas = []) {
   function coloca() {
     const z = marte.vista().zoom, ppg = marte.pxGrado();
     const pantalla = Math.max(window.innerWidth, window.innerHeight);
+    // Los umbrales (`px`) se ajustaron con el disco de 540 px de un portátil
+    // (60 svh de 900). En el móvil el disco es más pequeño (88 vw, unos 340
+    // px) y los lugares pequeños no llegaban a su umbral ni a x6 (usuario,
+    // 23-sep-2026: "Olympus Paterae … en móvil no lo llego a ver"): el umbral
+    // encoge con el disco, así salen al mismo zoom que en el portátil. En
+    // pantallas más grandes no crece (salen antes, como hasta ahora).
+    const escala = Math.min(1, (ppg / z) * 360 / Math.PI / 540);
     const salen = [];
     for (const e of els) {
       const { n, el } = e;
@@ -94,7 +128,7 @@ export async function montarNombres(capa, marte, chapas = []) {
       // margen al alejar, para que no parpadee en el umbral), y las zonas se
       // van cuando ya no caben en la pantalla.
       const toca = z >= 1.2
-        && tam >= n.px * (e.visto ? 0.94 : 1)
+        && tam >= n.px * escala * (e.visto ? 0.94 : 1)
         && (n.clase !== "region" || tam < 1.6 * pantalla);
       if (!toca || borde <= 0) {
         if (e.visto) { e.visto = false; el.classList.remove("visto"); }
@@ -150,6 +184,8 @@ export async function montarNombres(capa, marte, chapas = []) {
       e.el.hidden = false;
       e.el.style.setProperty("--borde", borde.toFixed(2));
       e.el.style.transform = `translate(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px)`;
+      e.x = c.x;
+      if (e.el.classList.contains("abierta")) ajustaFicha(e);   // abierta en táctil y girando
       if (!e.visto) {
         e.visto = true;
         requestAnimationFrame(() => e.el.classList.add("visto"));
@@ -159,6 +195,9 @@ export async function montarNombres(capa, marte, chapas = []) {
 
   return {
     coloca,
-    desmontar: () => capa.replaceChildren(),
+    desmontar: () => {
+      document.removeEventListener("click", toca);
+      capa.replaceChildren();
+    },
   };
 }
