@@ -49,8 +49,7 @@ __pycache__/
 # curl de logo-files/generar-marte.py) y la caché de su pasada lenta.
 logo-files/marte-fuentes/
 
-# Proyecto Marte: teselas del zoom (13 MB por versión). No se commitean hasta
-# que el pixel art de Marte sea el definitivo, para no sumar 13 MB al
-# historial cada vez que se regeneran (decisión del usuario, 21-sep-2026).
-# Se sacan con: cd logo-files && python3 generar-marte.py --canvas ../public/marte/
-public/marte/n*/
+# Proyecto Marte: las teselas del zoom (public/marte/n1-n3, 38 MB) SÍ van en
+# Git desde el 23-sep-2026, cuando el usuario dio el pixel art por definitivo
+# (hasta entonces se dejaban fuera para no sumar MB al historial en cada
+# prueba). Si se vuelven a regenerar, cada versión suma lo que cambie.
