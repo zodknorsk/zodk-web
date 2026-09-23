@@ -1064,13 +1064,18 @@ html:has(.marte-hero) { overflow: hidden; }
   height: var(--lado);
 }
 .marte-tierra {
-  z-index: 2;                 /* delante de Marte: con zoom, Marte llena la pantalla */
+  /* detrás de Marte (el lienzo, z-index 1, es transparente fuera del disco):
+     al acercarse, Marte la tapa (usuario, 23-sep-2026: antes iba delante y
+     "si amplías, la Tierra se sigue viendo por encima") */
+  z-index: 0;
   pointer-events: none;
   background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
 }
 html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 .marte-tierra-enlace { z-index: 3; border-radius: 50%; cursor: pointer; }
+/* tapada por Marte: el enlace no se lleva el clic (marte.astro) */
+.marte-tierra-enlace.tapada { pointer-events: none; visibility: hidden; }
 .marte-tierra-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
 @keyframes marte-aparece { from { opacity: 0; } }
 .marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
@@ -1916,3 +1921,134 @@ html.home main { padding-top: 9.5rem; }
   .hero-cambio .btn-caja,
   .hero-cambio:active .btn-caja { transform: none; }
 }
+
+/* Nombres de lugares de /marte (src/scripts/marte-nombres.js; decididos en
+   el banco logo-files/prototipo-marte/nombres.html, 22-sep-2026). Capa
+   encima del lienzo, con el origen en el centro del disco: el script coloca
+   cada nombre con transform. No se lleva el ratón: se sigue arrastrando
+   Marte por encima. Por debajo de la Tierra pequeña. */
+.marte-nombres { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
+.marte-nombre { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.35s ease; }
+.marte-nombre.visto { opacity: var(--borde, 1); }
+.marte-nombre[hidden] { display: none; }
+/* el texto lleva el contorno negro de 1 px del título de la portada */
+.marte-nombre .texto {
+  position: absolute;
+  font: 600 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #eef1f4;
+  text-shadow: 1px 0 0 #05060a, -1px 0 0 #05060a, 0 1px 0 #05060a, 0 -1px 0 #05060a,
+    1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a;
+}
+.marte-nombre.menor .texto { font-weight: 500; font-size: 10px; letter-spacing: 0.16em; color: #dfe4ea; }
+/* Visor: las cuatro esquinas del marco del título de la portada, ceñidas al
+   lugar, y el nombre bajo la esquina de abajo a la izquierda. Al aparecer,
+   las esquinas se cierran desde fuera. */
+.marte-nombre .marco {
+  position: absolute;
+  left: 0;
+  top: 0;
+  --c: rgba(255, 255, 255, 0.85);
+  --l: 12px;
+  --g: 1.5px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+.marte-nombre.menor .marco { --l: 7px; --c: rgba(255, 255, 255, 0.7); }
+.marte-nombre.visor .marco-fuera { background: none; }   /* solo sitúa */
+.marte-nombre .marco-dentro { position: absolute; inset: 0; }
+.marte-nombre.visor.visto .marco-dentro { animation: marte-cierra 0.4s cubic-bezier(0.3, 0, 0.2, 1) both; }
+@keyframes marte-cierra { from { transform: scale(1.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.marte-nombre.visor .texto { left: 0; top: calc(100% + 6px); }
+.marte-nombre.visor.visto .texto { animation: marte-entra 0.3s ease 0.25s both; }
+@keyframes marte-entra { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+/* Regiones: sin borde claro que enmarcar. Rótulo de mapa: letras muy
+   espaciadas, más finas y algo transparentes, en medio de la zona. */
+.marte-nombre.region .texto {
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  color: rgba(238, 241, 244, 0.75);
+  text-shadow: 1px 0 0 rgba(5, 6, 10, 0.75), -1px 0 0 rgba(5, 6, 10, 0.75), 0 1px 0 rgba(5, 6, 10, 0.75), 0 -1px 0 rgba(5, 6, 10, 0.75);
+}
+/* Chapas de los amartizajes (src/data/amartizajes.ts): la bandera en pixel
+   art de /luna, en su sitio exacto; no crecen con el zoom. Llevan el ratón
+   (la ficha); con la nota publicada son un enlace a ella. */
+.marte-chapa {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 12px;
+  margin: -6px 0 0 -9px;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+a.marte-chapa { cursor: pointer; }
+.agarrando .marte-chapa { cursor: grabbing; }
+.marte-chapa.visto { opacity: var(--borde, 1); }
+.marte-chapa[hidden] { display: none; }
+.marte-chapa:hover { z-index: 1; }
+.marte-chapa svg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; overflow: visible; }
+/* La que no llegó entera: en color y con una raya (usuario, 22-sep-2026).
+   z-index: por encima de la bandera, que es un hijo. */
+.marte-chapa.perdida::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: calc(100% + 6px);
+  height: 1.5px;
+  z-index: 1;
+  background: #10131c;
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.55);
+  transform: rotate(33deg);
+}
+/* La ficha al pasar el ratón: la dorada de las naves y de /luna. */
+.marte-ficha {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  width: 15rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(6, 8, 12, 0.92);
+  border: 1px solid rgba(230, 192, 120, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  opacity: 0;
+  transform: translate(-50%, -4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.marte-chapa:is(:hover, :focus-visible) .marte-ficha { opacity: 1; transform: translate(-50%, 0); }
+.agarrando .marte-ficha { opacity: 0 !important; }
+.marte-ficha-titulo { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c078; }
+.marte-ficha-clase {
+  margin: 0.12rem 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(230, 192, 120, 0.22);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b93a0;
+}
+.marte-ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.16rem 0.8rem; font-size: 0.68rem; }
+.marte-ficha dt { color: #8b93a0; }
+.marte-ficha dd { margin: 0; color: #dfe4ea; }
+.marte-ficha-nota { margin: 0.5rem 0 0; font-size: 0.6rem; color: #e6c078; }

@@ -4,30 +4,57 @@
 paso (lo pidió el usuario el 21-sep-2026): qué está hecho, qué no, qué está
 decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
 
-## Dónde estamos (22-sep-2026, fin de sesión: nombres de lugares, commiteado)
+## Dónde estamos (23-sep-2026: nombres, chapas y accidentes en /marte, commiteado)
 
-**Rama `mars-project`** (creada desde `main` el 21-sep-2026). Lo de la sesión
-anterior está **commiteado y subido** ("Queda perfecto. commit push aqui").
+**Rama `mars-project`** (creada desde `main` el 21-sep-2026). Lo de hoy está
+**commiteado, sin subir** ("Cuando esté, commit y lo pruebo en Zen").
 **Nada fusionado ni publicado**: `main` y zodk.eu siguen sin Marte.
 
-**Nombres de lugares que salen al acercarse** (commiteado y subido al cerrar
-la sesión del 22-sep-2026, aquí en `mars-project` y en `main` de la bóveda),
-que
-el usuario ha puesto por delante de lo demás ("me gustaría darte prioridad a
-una … podemos empezar por el monte olympus? Dame ejemplos y opciones").
-Decidido cómo se ven y hecha la primera tanda de **49 nombres** en el banco
-`prototipo-marte/nombres.html`, con `logo-files/generar-nombres.py` →
-`public/marte/marte-nombres.json`, y en el motor `proyecta()` y `pxGrado()`
-(`marte-gl.js`). **Falta llevarlo a `/marte`.** La página no se ha tocado.
+**Hecho hoy** (23-sep-2026):
+- **Los nombres de lugares salen en `/marte`** (antes solo estaban en el
+  banco): `src/scripts/marte-nombres.js`, `marte.astro`, `global.css` y la
+  letra IBM Plex Mono 500 en `Head.astro`.
+- **Un accidente geográfico para cada amartizaje**: 9 nombres nuevos en
+  `generar-nombres.py` (58 en total). Ver "Un accidente geográfico para cada
+  amartizaje".
+- **Chapas de Mars 3 y Mars 2 en `/marte`** (las del banco), con sus datos
+  en `src/data/amartizajes.ts`: la bandera, la ficha al pasar el ratón y, la
+  fallida, en color con una raya. Enlazan a su nota solo cuando esté
+  publicada; hoy, solo ficha.
+- **Arreglado: la Tierra pequeña se veía encima de Marte al acercarse**
+  (usuario: "si amplías, la Tierra se sigue viendo por encima"). Ahora va
+  **detrás** de Marte: al acercarse, Marte la tapa, y su enlace se desactiva
+  mientras su centro cae dentro del disco (para no irse a la Tierra al
+  pulsar Marte). Al alejarse vuelve a asomar y a poder pulsarse.
+- Comprobado en Chrome (el de la extensión y sin ventana): nombres a partir
+  de ×1,2; Nanedi Valles junto a Mars 2 y Ptolemaeus junto a Mars 3; la ficha
+  de Mars 2 con la raya; la Tierra tapada al acercar y de vuelta a ×1; vuelo
+  a la Tierra limpio. Sin errores en la consola.
 
-**En la bóveda** (`boveda-osint`, repositorio aparte): creadas las notas de
-las misiones en `02 - Temas/mars-project/Soft Landings/` (13 notas y un
-índice, `publicar: false`), que el usuario irá completando, y
-`Hard Landings/` para las que no llegaron enteras (de momento, Mars 2). Son
-las que llevarán chapa con ficha en `/marte`.
+**Falta**: que el usuario lo pruebe en **Zen** (consumo al hacer zoom).
 
-**Chapas de prueba en el banco**: Mars 3 (se posó) y Mars 2 (se estrelló),
-esta apagada. Solo esas dos, a petición del usuario.
+**Decidido hoy por el usuario** (23-sep-2026):
+- **Marte NO gira solo** ("creo que me voy a decantar por que marte NO
+  gire"): quieto, solo se mueve al arrastrarlo. Nada de botón play/pausa.
+- **En el móvil sí: girar con el dedo y zoom pellizcando** ("en movil si que
+  habria que probar que girase con el dedo e hiciese zoom").
+- **Cada amartizaje, bueno o fallido, tiene que tener cerca un accidente
+  geográfico con nombre** ("mete los accidentes de la tabla").
+- **Las chapas del banco, a la página** ("si hay que meter los que ayer se
+  quedaron en el banco de pruebas, también"), y la de los fallidos **en color
+  con una raya**.
+
+**Siguiente paso**: la prueba en Zen; luego, el móvil (dedo y pellizco).
+
+**En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
+misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
+índice "Amartizajes", `publicar: false`) y `Hard Landings/` (Mars 2). Son las
+que llevarán chapa con ficha en `/marte`. El índice decía que la chapa de los fallidos
+sale "en blanco y negro"; corregido el 23-sep-2026 a "en color, tachada con
+una raya" (a petición del usuario; cambio en la bóveda, sin commitear allí).
+
+**Chapas**: Mars 3 y Mars 2, en el banco y en `/marte`. Las demás misiones,
+cuando el usuario lo diga (sus notas están en la bóveda).
 
 Verlo: `npm run dev` y abrir `http://localhost:4321/` (pulsar Marte, arriba a
 la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
@@ -40,10 +67,12 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
   Marte en pixel art a pantalla completa (60 svh a ×1), quieto; se gira con
   clic y arrastrar (flecha normal y mano cerrada solo al pinchar) y se acerca
   con la rueda o el trackpad hasta ×6, con más detalle según se acerca
-  (teselas). Sin cabecera ni scroll. Sin título.
+  (teselas). Sin cabecera ni scroll. Sin título. **Al acercarse salen los
+  nombres de lugares** (desde ×1,2) y las chapas de Mars 3 y Mars 2.
   - **Tierra pequeña** arriba a la derecha de Marte (a 1,6 radios a la
     derecha y 0,85 por encima), de día o de noche según el tema: se pulsa y
-    hay un **vuelo hacia delante** a la portada.
+    hay un **vuelo hacia delante** a la portada. Va **detrás** de Marte: al
+    acercarse, Marte la tapa (y no se puede pulsar).
   - **"volver a la Luna"** (abajo a la derecha) solo si se llegó desde
     `/luna`: deshace ese vuelo.
 - **Portada**: **Marte pequeño** arriba a la derecha (de día y de noche) y
@@ -56,7 +85,7 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
   Marte tal como se dejó y sin pararse si estaba acercado). Los de la Luna no
   cambian.
 
-### Hecho (todo commiteado y subido)
+### Hecho (commiteado; del 14 al 17, sin subir)
 
 1. **Estudio y Marte provisional** (`generar-marte.py`, relieve MOLA + color
    Viking, pixel art con el recorrido de la Luna). `5a99c5c`.
@@ -89,6 +118,15 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
     C elegida por el usuario, de día y de noche (el vuelo va de noche a noche
     en modo oscuro), y colocada respecto a Marte. Ver "La Tierra pequeña de
     /marte".
+14. **Nombres de lugares en `/marte`** (23-sep-2026): la capa del banco
+    pasada a la página (`src/scripts/marte-nombres.js`, con
+    `montarNombres(capa, marte, chapas)`). Ver "Nombres de lugares".
+15. **Un accidente con nombre junto a cada amartizaje** (23-sep-2026): 9
+    nombres más en `generar-nombres.py`.
+16. **Chapas de Mars 3 y Mars 2 en `/marte`** (23-sep-2026), datos en
+    `src/data/amartizajes.ts`.
+17. **La Tierra pequeña, detrás de Marte** (23-sep-2026): arreglado que se
+    viera encima al acercarse.
 
 ### Lo que NO está en Git (ojo al cambiar de ordenador)
 
@@ -108,26 +146,22 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 
 ### Pendiente (por orden)
 
-0. **Llevar los nombres a `/marte`** (lo siguiente; en el banco están hechos y
-   aprobados, ver "Nombres de lugares"). Es mover la capa de
-   `prototipo-marte/nombres.html` a la página: el marcado y el CSS a
-   `marte.astro` y `global.css`, y la colocación a un módulo (p. ej.
-   `src/scripts/marte-nombres.js`) con un `montarNombres(hero, marte)`. Con
-   ello: mirar el consumo en Zen (son ~50 elementos que se recolocan en cada
-   fotograma del zoom) y decidir qué pasa en táctil, donde no hay ratón que
-   pasar por encima de una chapa.
+0. **Probar en Zen** los nombres, las chapas y la Tierra tapada (usuario).
+   Si el consumo al hacer zoom se nota, mirarlo entonces.
 1. **Móvil y táctil** (el usuario: "Móvil lo último"). Nada
    hecho aún en `/marte` para el dedo:
-   - Girar con un dedo y hacer zoom pellizcando (hoy, en táctil, ni gira ni
-     acerca).
+   - **Girar con un dedo y hacer zoom pellizcando: decidido que sí**
+     (usuario, 23-sep-2026). Hoy, en táctil, ni gira ni acerca.
+   - Qué pasa con las fichas de las chapas en táctil, donde no hay ratón que
+     pasar por encima.
    - En un móvil en vertical, el disco de 60 svh es más ancho que la pantalla:
      decidir el tamaño.
    - Mirar dónde cae la Tierra pequeña (en el móvil, 112 px) y el botón.
    - Probar los vuelos en un móvil de verdad (y el consumo).
-2. **Decisión abierta: ¿Marte gira solo?** Se recomendó que empiece quieto con
-   un botón play/pausa como el de la Tierra (ver "Decisiones pendientes").
-3. **Chapas de las misiones de verdad**: en el banco solo están Mars 3 y Mars
-   2, de prueba. Cuando el usuario publique una nota (`publicar: true`), esa
+2. ~~¿Marte gira solo?~~ **Decidido: no** (usuario, 23-sep-2026). Quieto, sin
+   botón play/pausa.
+3. **Chapas del resto de misiones**: hoy solo Mars 3 y Mars 2 (en `/marte`,
+   datos en `src/data/amartizajes.ts`); los accidentes de todas ya están. Cuando el usuario publique una nota (`publicar: true`), esa
    misión pasa a un archivo de datos como `src/data/alunizajes.ts`, con su
    sitio, su bandera, si llegó entera y el enlace a la nota. Después, quizá un
    menú HUD en `/marte` como el de `/luna`.
@@ -234,9 +268,19 @@ viajar, y la publicación (merge en `main`).
   cabecera y vuelo como el de la Luna. De día y de noche: la recomendación,
   sin objeción expresa.
 
+- **Marte no gira solo** (usuario, 23-sep-2026: "creo que me voy a decantar
+  por que marte NO gire"): la opción A de abajo. Quieto; solo se mueve al
+  arrastrarlo. Sin botón play/pausa.
+- **En el móvil, girar con un dedo y zoom pellizcando** (usuario,
+  23-sep-2026).
+- **Cada amartizaje (bueno o fallido) tendrá cerca un accidente geográfico
+  con nombre** (usuario, 23-sep-2026). Lista propuesta en "Un accidente
+  geográfico para cada amartizaje".
+
 ## Decisiones pendientes
 
-1. **¿Marte gira solo?** El usuario lo está pensando (21-sep-2026). Dos
+1. ~~¿Marte gira solo?~~ **Decidido el 23-sep-2026: A, quieto.** Lo que se
+   planteó (21-sep-2026), para el registro. Dos
    opciones que planteó él:
    - A: siempre quieto; solo gira cuando el usuario lo arrastra.
    - B: **empieza quieto** y un botón play/pausa, como el de la Tierra, lo
@@ -251,9 +295,8 @@ viajar, y la publicación (merge en `main`).
 
    No bloquea nada: los pasos 1 a 4 son iguales con A y con B, y el botón se
    añade al final.
-2. **Móvil / táctil**: sin barra espaciadora, ¿cómo se gira y se hace zoom?
-   (lo natural sería arrastrar con un dedo y pellizcar). El usuario lo deja
-   por decidir (21-sep-2026).
+2. ~~Móvil / táctil~~: **decidido el 23-sep-2026**: un dedo para girar y
+   pellizco para el zoom.
 3. **El Marte de la portada**: **decidido** el 21-sep-2026 ("Si, opción B,
    un poco más pequeña que la luna. Si, mars project en cabecera y que haga
    el viaje") y hecho (ver "Marte en la portada y el vuelo"). Opciones que se
@@ -483,9 +526,65 @@ viajar, y la publicación (merge en `main`).
     Curiosity (2012), InSight (2018), Perseverance, Ingenuity y Zhurong
     (2021), más el índice "Amartizajes". Las chapas se harán cuando estén
     publicadas.
-- **Sin hacer (a propósito)**: nada en `/marte`; los nombres no se pisan
+- **Llevado a `/marte`** (23-sep-2026): `src/scripts/marte-nombres.js` hace
+  lo mismo que el banco (umbrales, visor cuadrado con 6 % de aire, rótulos,
+  fundidos, reparto de sitio), con dos cambios de cocina: el tamaño de cada
+  texto se mide una vez al montar (con la letra ya cargada) y el reparto de
+  sitio se hace con cuentas, sin leer cajas del navegador en cada fotograma
+  del zoom (sería maquetar ~50 elementos por fotograma); y la capa se quita
+  en cuanto se pulsa para irse (a la Tierra o a la Luna). Las chapas de
+  prueba se llevaron después, a petición del usuario (ver "Dónde estamos"). La letra IBM Plex Mono 500 (rótulos de región)
+  se carga ahora en `Head.astro`; solo se baja donde se usa.
+- **Sin hacer (a propósito)**:  los nombres no se pisan
   entre ellos más que por su colocación (con muchos habrá que apartar o
   esconder los que choquen); nada para táctil.
+
+## Un accidente geográfico para cada amartizaje (23-sep-2026, hecho)
+
+- **Lo que pidió el usuario**: "en mi obsidian (boveda-osint) hay una entrada
+  de mars-project donde se pondrán todos los amartizajes fallidos y
+  exitosos. Todos estos tienen que tener cerca un accidente geográfico con el
+  que asociarlos."
+- **Cómo se buscó**: para cada sitio de aterrizaje, los nombres oficiales
+  del catálogo de la UAI (el mismo `.dbf`) más cercanos y los que lo
+  contienen. Ojo con el tamaño: a ×6 un grado mide unos 28 px, así que un
+  cráter de menos de ~40 km no llega a tener visor que se vea. Por eso se
+  propone el accidente con nombre **más cercano que se vea en el mapa**, no
+  el más cercano a secas (Viking 1 tiene al lado Yorktown y Lexington, de 5 a
+  8 km: invisibles).
+- **Sitio de Mars 2**: 4° N, 47° O, confirmado en NASA NSSDC ("impacted Mars
+  at high velocity near 4 N, 47 W").
+- **Aprobada y hecha** (usuario, 23-sep-2026: "mete los accidentes de la
+  tabla"). En `generar-nombres.py`: los valles, colinas y escarpes, como
+  rótulo con umbral (200-220 px, salen hacia ×4); Ptolemaeus y Miyamoto,
+  visor a 55 px (como Gale); Mie, a 45; Endeavour, a 9 (22 km: sale a ×6).
+  Comprobado: Nanedi Valles junto a Mars 2 y Ptolemaeus junto a Mars 3.
+- **La lista** (✓ = ya estaba):
+
+  | Misión | Sitio | Accidente propuesto | Distancia | ¿En la lista? |
+  |---|---|---|---|---|
+  | Mars 2 (1971, fallida) | 4° N, 47° O | Nanedi Valles (valle, 550 km) | 114 km | añadir |
+  | Mars 3 (1971) | 45,0° S, 158,0° O | Ptolemaeus (cráter, 165 km) | dentro | añadir |
+  | Mars 6 (1974, fallida) | 23,9° S, 19,4° O | Samara Valles (valle, 662 km) | dentro | añadir |
+  | Viking 1 (1976) | 22,3° N, 48,0° O | Chryse Planitia | dentro | ✓ |
+  | Viking 2 (1976) | 47,6° N, 134,3° E | Mie (cráter, 101 km) | 215 km | añadir |
+  | Pathfinder (1997) | 19,1° N, 33,2° O | Ares Vallis (valle, 1758 km) | dentro | añadir |
+  | Mars Polar Lander (1999, fallida) | 76,6° S, 165,2° E (objetivo) | Ultimi Scopuli (escarpes, 560 km) | dentro | añadir |
+  | Beagle 2 (2003) | 11,5° N, 90,4° E | Isidis Planitia | dentro | ✓ |
+  | Spirit (2004) | 14,6° S, 175,5° E | Gusev (cráter) | dentro | ✓ |
+  | Opportunity (2004) | 1,9° S, 5,5° O | Endeavour (cráter, 22 km, lo exploró 11 años) y Meridiani Planum | 28 km | Meridiani ✓; Endeavour, añadir |
+  | Phoenix (2008) | 68,2° N, 125,8° O | Scandia Colles (colinas, 1522 km) | dentro | añadir |
+  | Curiosity (2012) | 4,6° S, 137,4° E | Gale y Aeolis Mons | dentro | ✓ |
+  | Schiaparelli (2016, fallida) | 2,1° S, 6,2° O | Miyamoto (cráter, 145 km) | dentro | añadir |
+  | InSight (2018) | 4,5° N, 135,6° E | Elysium Planitia | dentro | ✓ |
+  | Perseverance e Ingenuity (2021) | 18,4° N, 77,5° E | Jezero | dentro | ✓ |
+  | Zhurong (2021) | 25,1° N, 109,9° E | Utopia Planitia | dentro | ✓ |
+
+- **Dudas para el usuario**: Endeavour (22 km) es pequeño pero es *el*
+  cráter de Opportunity: con `px` bajo, como Jezero, saldría a ×6. InSight
+  y Zhurong solo tienen al lado su llanura (a Zhurong lo rodean nombres
+  chinos de 6 a 22 km puestos en 2023, demasiado pequeños para verse).
+  Mars 6, Polar Lander y Schiaparelli aún no tienen nota en la bóveda.
 
 ## Chapas de las misiones: la prueba de Mars 3 y Mars 2 (22-sep-2026)
 
