@@ -1068,7 +1068,7 @@ Es lo que pasa cuando no vas a tus medios de confianza. <br>
 <br>
 Lo disfrutaría más, si no fuera porque estamos en manos de estos desgraciados.</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-dxhwykqsm3gmx-qk.jpg"><source src="https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/2290x1288/Hn__VbvMG_-7cewJ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+  <a class="tweet-date" href="https://x.com/elequidistante/status/2097809936260428006" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
 
@@ -1085,7 +1085,7 @@ Pardo le lleva al huerto, y Puente cae como un cochino.<br>
 <br>
 Ay la hemeroteca.</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-xx2dwqi6p5lq_pyn.jpg"><source src="https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/2288x1290/OEqZQ9EAJir2I_gL.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">9 de septiembre de 2026</a>
+  <a class="tweet-date" href="https://x.com/elequidistante/status/2097818712422109330" target="_blank" rel="noopener">10 de septiembre de 2026</a>
 </blockquote>
 
 
