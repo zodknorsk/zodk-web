@@ -265,6 +265,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
           clase: `${pais.bandera} ${a.quien} · ${a.anio} · ${a.tipo}`,
           datos: [["Lugar", a.lugar], ["Fecha", a.fecha], ["Estado", a.estado]] as [string, string][],
           texto: a.texto,
+          foto: `/amartizajes/${a.foto}`, fotoPos: a.fotoPos ?? "center", credito: a.credito ?? null,
           bandera: svgBandera(pais),
           enlace: publicadas.includes(a.nota) ? `/notas/${a.nota}` : null,
         };

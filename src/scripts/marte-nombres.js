@@ -29,7 +29,7 @@ const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de air
  *   pxGrado: () => number, vista: () => { zoom: number } }} marte
  * @param {{ lat: number, lon: number, llego: boolean, separa: number, bandera: string,
  *   titulo: string, clase: string, datos: [string, string][], texto: string,
- *   enlace: string | null }[]} [chapas]
+ *   foto: string, fotoPos: string, credito: string | null, enlace: string | null }[]} [chapas]
  * @returns {Promise<{ coloca: () => void, desmontar: () => void }>}
  */
 export async function montarNombres(capa, marte, chapas = []) {
@@ -58,10 +58,12 @@ export async function montarNombres(capa, marte, chapas = []) {
       el.setAttribute("aria-label", `${c.titulo}: leer la nota`);
     }
     el.innerHTML = c.bandera
-      + `<div class="marte-ficha"><div class="marte-ficha-titulo">${c.titulo}</div>`
+      + `<div class="marte-ficha"><img class="marte-ficha-foto" src="${c.foto}" alt="" loading="lazy" style="object-position: ${c.fotoPos}">`
+      + `<div class="marte-ficha-titulo">${c.titulo}</div>`
       + `<div class="marte-ficha-clase">${c.clase}</div>`
       + `<dl>${c.datos.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`
       + `<p class="marte-ficha-texto">${c.texto}</p>`
+      + (c.credito ? `<p class="marte-ficha-credito">${c.credito}</p>` : "")
       + (c.enlace ? '<p class="marte-ficha-nota">leer la nota →</p>' : "")
       + "</div>";
     capa.append(el);
@@ -70,8 +72,10 @@ export async function montarNombres(capa, marte, chapas = []) {
     return e;
   });
   // La ficha va centrada bajo la chapa; si así se sale de la pantalla (en el
-  // móvil, con la chapa cerca del borde), se corre hacia dentro, y si no cabe
-  // por debajo, se abre hacia arriba. Con cuentas
+  // móvil, con la chapa cerca del borde), se corre hacia dentro; si no cabe
+  // por debajo, se abre hacia arriba; y si no cabe ni arriba ni abajo (en el
+  // móvil, con la foto mide ~450 px), se corre en vertical hasta quedar
+  // dentro, aunque tape la chapa. Con cuentas
   // (dónde está la chapa y cuánto mide la ficha): leer su caja en pantalla no
   // vale, porque se mueve con la transición al abrirse.
   function ajustaFicha(e) {
@@ -79,8 +83,14 @@ export async function montarNombres(capa, marte, chapas = []) {
     const izq = window.innerWidth / 2 + e.x - w / 2;    // la capa está en el centro de la ventana
     const corre = Math.max(m - izq, Math.min(0, window.innerWidth - m - (izq + w)));
     e.ficha.style.setProperty("--corre", `${Math.round(corre)}px`);
-    const abajo = window.innerHeight / 2 + e.y + 6 + 8 + e.ficha.offsetHeight;   // bajo la chapa
-    e.el.classList.toggle("ficha-arriba", abajo > window.innerHeight - m);
+    const H = window.innerHeight, h = e.ficha.offsetHeight, yc = H / 2 + e.y;   // yc: centro de la chapa
+    const abajo = yc + 6 + 8, arriba = yc - 6 - 8 - h;                        // arriba de la ficha, en cada caso
+    const cabeAbajo = abajo + h <= H - m, cabeArriba = arriba >= m;
+    const haciaArriba = !cabeAbajo && (cabeArriba || yc > H / 2);
+    const top = haciaArriba ? arriba : abajo;
+    const sube = top < m ? m - top : Math.min(0, H - m - h - top);
+    e.el.classList.toggle("ficha-arriba", haciaArriba);
+    e.ficha.style.setProperty("--sube", `${Math.round(sube)}px`);
   }
 
   // En táctil no hay ratón que pasar por encima: un toque abre la ficha y
