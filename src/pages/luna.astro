@@ -499,8 +499,10 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
       boton.disabled = volver.disabled = true;
       // Las chapas y la columna se apagan con los botones: si no, se quedaban
       // flotando mientras la Luna se aleja hacia el icono.
-      // Marte (arriba a la izquierda) también: no gira con la cámara.
-      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-hero .hero-marte")]);
+      // Marte (arriba a la izquierda) también: no gira con la cámara. Y el
+      // menú de arriba a la derecha, como en el vuelo a Marte (antes se
+      // quedaba flotando).
+      volverATierra(hero, l, disco, [boton, volver, ...(capa ? [capa] : []), ...(columna ? [columna] : []), ...(sats ? [sats] : []), ...document.querySelectorAll<HTMLElement>(".luna-orbitas, .luna-hero .hero-marte, .luna-menu")]);
     };
     // Marte (arriba a la izquierda): vuelo a /marte. Como volver a la Tierra,
     // se apaga todo lo de la Luna menos el disco, que es el que se va.
