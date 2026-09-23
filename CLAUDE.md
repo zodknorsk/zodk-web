@@ -113,6 +113,41 @@ Pendiente (sin orden, lo decide él):
 - Polo sur: **descartado**, Chandrayaan-3, IM-1 e IM-2 se quedan pegadas al
   borde de abajo.
 
+## Proyecto Marte (`/marte`) — en la rama `mars-project`, sin publicar
+
+Tercera "portada": Marte en pixel art con los amartizajes. **Se trabaja en la
+rama `mars-project`**; el usuario decide cuándo fusionar en `main` (explicarle
+antes el merge: el push a `main` publica). **Antes de tocarlo, leer
+`logo-files/MARTE-WIP.md`**: arriba dice en qué punto está, y se actualiza en
+cada paso (lo pidió el usuario).
+
+Qué hay hoy en `/marte`:
+- **Marte quieto** (no gira solo: decisión del usuario) que se **gira con
+  clic y arrastrar** (un dedo en el móvil) y se **acerca con la rueda, el
+  trackpad o pellizcando** hasta ×6, ganando detalle. Motor WebGL
+  `src/scripts/marte-gl.js` y la mano en `src/scripts/marte.js`; datos en
+  `public/marte/` de `logo-files/generar-marte.py` (las teselas `n1`-`n3`,
+  38 MB, van en Git desde que el pixel art es definitivo, 23-sep-2026). Al
+  regenerar: subir `MARTE_V` en `marte.js` y el `?v=` de `marte-quieto.png`
+  en `global.css`.
+- **Nombres de lugares** que salen al acercarse (a ×1, ninguno): visor de
+  esquinas para montes y cráteres, rótulo de región para llanuras y zonas.
+  Lista elegida a mano en `logo-files/generar-nombres.py` →
+  `public/marte/marte-nombres.json`; la capa, `src/scripts/marte-nombres.js`.
+- **17 chapas de amartizajes** (bandera en pixel art; las fallidas en blanco
+  y negro) con ficha: foto, Lugar / Fecha / Estado y una frase. Datos en
+  `src/data/amartizajes.ts`, fotos en `public/amartizajes/` (las mismas que
+  en las notas de la bóveda, `02 - Temas/mars-project`). La chapa enlaza a su
+  nota solo si está publicada.
+- **Se llega** con un vuelo desde el Marte pequeño de la portada (o
+  `mars-project` en la cabecera) y desde el de `/luna`; **se va** pulsando la
+  Tierra pequeña (vuelo hacia delante) o "volver a la Luna" si se vino de
+  allí. Vuelos: `src/scripts/viaje-luna.js`.
+
+Pendiente: ver "Pendiente" en `MARTE-WIP.md`. Ojo antes de publicar notas de
+Marte: las de la Luna tienen filtros para no salir en `/notas`, la portada ni
+el RSS (ver arriba); las de Marte (etiqueta `marte`) aún no.
+
 ## Pendiente del planeta de la Tierra
 
 - Comprobar en un móvil real que en táctil no sale la coordenada MGRS.
