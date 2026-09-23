@@ -631,15 +631,20 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     mideMarte();
     window.addEventListener("resize", mideMarte);
     quitar.push(() => window.removeEventListener("resize", mideMarte));
+    // El mando, en directo: la píldora sigue a la Luna (usuario, 23-sep-2026:
+    // "según giras la Luna, el slider de cara visible / cara oculta en tiempo
+    // real").
+    boton.classList.add("en-directo");
     cadaFotograma = () => {
       colocaNombres?.();
       colocarChapas();
       const v = l.vista(), t = l.oculta();
+      boton.style.setProperty("--lado", t.toFixed(3));
       const cara = t >= 0.5 ? "oculta" : "visible";
       if (cara !== caraAhora) {
         if (cara === "oculta") soloChina();
         caraAhora = cara;
-        if (!l.girando()) pon(cara);
+        pon(cara);
         hero.classList.toggle("cara-oculta", cara === "oculta");
         guardarSeleccion();
       }
@@ -660,7 +665,6 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     const clic = async () => {
       if (l.girando() || enVuelo) return;
       const destino = l.cara() === "visible" ? "oculta" : "visible";
-      boton.dataset.cara = destino;
       boton.disabled = true;
       await l.aCara(destino);
       boton.disabled = false;

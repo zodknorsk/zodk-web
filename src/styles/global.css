@@ -374,7 +374,7 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
   width: var(--luna-tam);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: url(/luna/luna-visible.png?v=4) no-repeat 0 0 / 100% 100%;
+  background: url(/luna/luna-visible.png?v=5) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   z-index: 1;
 }
@@ -924,6 +924,12 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
   --giro: 2.8s cubic-bezier(0.37, 0, 0.63, 1);
 }
 .luna-cambio[data-cara="oculta"] { --lado: 1; }
+/* En directo (luna.astro, 23-sep-2026): la píldora va donde está la Luna,
+   según cuánto de cara oculta se ve (--lado lo pone el script en cada
+   fotograma), así que sigue al dedo al girar y al giro del mando; sin su
+   viaje propio. Los colores cambian al cruzar la mitad, algo más rápido. */
+.luna-cambio.en-directo { --giro: 0.35s ease; }
+.luna-cambio.en-directo .luna-cambio-pildora { transition: none; }
 .luna-cambio:disabled { cursor: default; }
 .luna-cambio:is(:hover, :focus-visible):not(:disabled) { border-color: rgba(230, 192, 120, 0.7); }
 .luna-cambio:focus-visible { outline: 1px dashed #e6c078; outline-offset: 4px; }
