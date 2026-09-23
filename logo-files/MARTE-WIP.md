@@ -134,7 +134,7 @@ usuario ("Vale, vamos con las chapas"):
 
 Chapas y fichas **commiteadas** (`0c1b504`).
 
-**Fotos de las fichas (23-sep-2026, SIN COMMITEAR)**. El usuario: "Ok a la
+**Fotos de las fichas (23-sep-2026, commiteado: `f7a3a4f`)**. El usuario: "Ok a la
 prioridad. Si las fotos son buenas, aunque pidan citar, ponlas". Criterio:
 la nave en Marte si hay foto; si no, lo que vio al llegar; si no, la nave
 desde órbita, una maqueta o un dibujo.
@@ -157,11 +157,16 @@ desde órbita, una maqueta o un dibujo.
   interés.
 - La ficha, con la foto, mide ~450 px: si no cabe ni arriba ni abajo (el
   móvil), se corre en vertical hasta quedar dentro (`--sube`).
-- **Falta**: que el usuario las vea; y ponerlas en las notas de la bóveda
-  como las de la Luna (`Adjuntos/amartizaje-<nota>.jpg`, bajo el titular,
-  con un pie en cursiva): propuesta hecha, pendiente de su visto bueno.
+- **Aprobadas por el usuario** ("Sí, ponlas en las notas y commit") y
+  puestas en la bóveda como las de la Luna: `02 - Temas/Adjuntos/
+  amartizaje-<nota>.jpg` (las mismas 17), bajo el titular de cada nota con
+  un pie en cursiva que dice qué es y de quién es.
+- **Notas nuevas en `Hard Landings`** ("crea las notas de Mars 6 etc."):
+  Mars 6 (1974), Mars Polar Lander (1999) y Schiaparelli (2016), con su foto,
+  `publicar: false`, y enlazadas en el índice "Amartizajes". Ya hay nota para
+  las 17 chapas.
 
-**Siguiente paso**: el visto bueno a las fotos y a ponerlas en las notas.
+**Siguiente paso**: por decidir con el usuario (ver "Pendiente").
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
