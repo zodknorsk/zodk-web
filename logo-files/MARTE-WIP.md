@@ -31,7 +31,10 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   de Mars 2 con la raya; la Tierra tapada al acercar y de vuelta a ×1; vuelo
   a la Tierra limpio. Sin errores en la consola.
 
-**Falta**: que el usuario lo pruebe en **Zen** (consumo al hacer zoom).
+**Probado por el usuario en Zen** (23-sep-2026): "no se calienta mucho, sube
+como a 13W cuando giro pero bien". Como referencia, `/luna` quieta marcaba
+~16,5 W y la portada ~27 W: los nombres y las chapas no añaden un gasto que
+se note.
 
 **Decidido hoy por el usuario** (23-sep-2026):
 - **Marte NO gira solo** ("creo que me voy a decantar por que marte NO
@@ -44,7 +47,8 @@ decidido y qué queda pendiente. Leyendo solo esto hay que poder retomarlo.
   quedaron en el banco de pruebas, también"), y la de los fallidos **en color
   con una raya**.
 
-**Siguiente paso**: la prueba en Zen; luego, el móvil (dedo y pellizco).
+**Siguiente paso**: el móvil, girar con un dedo y zoom pellizcando (punto 1
+de "Pendiente").
 
 **En la bóveda** (`boveda-osint`, repositorio aparte): las notas de las
 misiones están en `02 - Temas/mars-project/Soft Landings/` (13 notas y el
@@ -146,8 +150,7 @@ ordenador hacen falta antes las teselas (ver "Lo que NO está en Git").
 
 ### Pendiente (por orden)
 
-0. **Probar en Zen** los nombres, las chapas y la Tierra tapada (usuario).
-   Si el consumo al hacer zoom se nota, mirarlo entonces.
+0. ~~Probar en Zen~~: hecho, ~13 W al girar (usuario, 23-sep-2026).
 1. **Móvil y táctil** (el usuario: "Móvil lo último"). Nada
    hecho aún en `/marte` para el dedo:
    - **Girar con un dedo y hacer zoom pellizcando: decidido que sí**
