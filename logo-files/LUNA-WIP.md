@@ -23,8 +23,11 @@ se probó y se RECHAZÓ (no reintentarlo sin que lo pida el usuario).
 
 ## Luna que gira y se acerca (desde el 23-sep-2026, EN CURSO, rama `mars-project`)
 
-**Dónde estamos** (23-sep-2026): **pasos 1, 2 y 3 hechos y el aspecto con
-zoom aprobado por el usuario; SIN COMMITEAR** (banco de pruebas, teselas
+**Dónde estamos** (23-sep-2026, fin de sesión): **todo hecho, commiteado y
+subido en `mars-project`**: la Luna gira y se acerca en `/luna`, con móvil,
+mando en directo y relieve fino. Sin fusionar en `main`. Lo de abajo es el
+detalle por pasos. (Antes: pasos 1, 2 y 3 hechos y el aspecto con
+zoom aprobado por el usuario; SIN COMMITEAR) (banco de pruebas, teselas
 n1-n4 y nombres; ver abajo). `/luna` sin tocar. Las teselas, fuera de Git
 hasta que todo sea definitivo. Código de los pasos 1-3 commiteado (`5635f7b`). **Paso 4 hecho, sin
 commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
@@ -191,7 +194,7 @@ commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
     (6 chapas), ficha del Apolo 11 en el panel y cierre tocando fuera; y en
     escritorio, columna y fichas como siempre. **Probado por el usuario en
     su iPhone: "se ve bien"** (commiteado y subido, `54cf2a9`).
-- **El mando en directo (23-sep-2026, SIN COMMITEAR)**. El usuario: "¿se
+- **El mando en directo (23-sep-2026, commiteado y subido, `cd37ba9`)**. El usuario: "¿se
   podría hacer que según giras la Luna el slider de cara oculta / cara
   visible [se mueva] en tiempo real?". La píldora ya no hace su viaje propio
   de 2,8 s: en cada fotograma se pone donde toca según cuánto de cara oculta
@@ -199,7 +202,8 @@ commitear: `/luna` ya usa la Luna nueva.** Falta la prueba del usuario.
   al giro del mando. El texto y los iconos cambian al cruzar la mitad (0,35
   s). Comprobado: 0 → 0,28 → 0,61 (cambia a "cara oculta") arrastrando, y de
   vuelta con el mando pasando por 0,31.
-- **Relieve fino también a x3-x5 (23-sep-2026, SIN COMMITEAR)**. El usuario:
+- **Relieve fino también a x3-x5 (23-sep-2026, commiteado y subido,
+  `60e3fe4`)**. El usuario:
   "la Luna se ve como pixelada hasta que haces un zoom casi máximo… en Marte
   parece que va más progresivo". Causa: los niveles de 16 y 24 px/grado
   (n2, n3) sacaban el relieve del LDEM de 16, y a x3-x5 salía en bloques de
