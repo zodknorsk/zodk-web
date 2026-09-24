@@ -124,14 +124,8 @@ const socialImageURL = new URL(image, Astro.site);
       marcaEstrellas(!isDark);
     });
 
-    // Si el usuario no ha elegido tema a mano, seguir el del sistema en vivo.
-    window.matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", event => {
-        if (!localStorage.theme) {
-          toggleTheme(event.matches);
-        }
-      }
-    );
+    // (Antes, sin tema elegido a mano, se seguía en vivo el del sistema. Desde
+    // el 24-sep-2026 la web carga de día de serie: ver preloadTheme.)
 
   }
 
@@ -426,14 +420,13 @@ function toggleTheme(dark) {
     document.head.removeChild(css);
   }
 
+  // Tema al cargar: el que se eligió con el botón (se guarda en
+  // localStorage) y, si no se ha elegido nunca, de día, aunque el sistema esté
+  // en modo oscuro (usuario, 24-sep-2026: "que de serie la página cargue en
+  // modo día").
   function preloadTheme() {
     const userTheme = localStorage.theme;
-
-    if (userTheme === "light" || userTheme === "dark") {
-      toggleTheme(userTheme === "dark");
-    } else {
-      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
-    }
+    toggleTheme(userTheme === "dark");
   }
 
   // Marca "hay JS" antes de pintar el body: el CSS usa html.js para que el

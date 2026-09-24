@@ -8,7 +8,9 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 ## Dónde estamos (24-sep-2026)
 
 - Rama **`earth-project`**, creada desde `main` el 24-sep-2026 (`main` estaba
-  en `6862600`, con Marte y la Luna publicados). **Solo en el Mac, sin subir.**
+  en `6862600`, con Marte y la Luna publicados). **Subida a GitHub el
+  24-sep-2026 al cerrar la sesión** (sin fusionar: no publica nada). En el PC
+  con Linux: `git fetch` y `git switch earth-project`.
 - **Commiteado** (`e2dfc1d`): pasos 1 y 2. El motor `src/scripts/tierra-gl.js`
   (disco completo, gira sola a 90 s por vuelta, se arrastra, zoom hasta ×6,
   nubes; radio de arte 180) y el banco `logo-files/prototipo-tierra/giro.html`;
@@ -73,7 +75,18 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   - La línea de costa del nivel fino es más fina que la de la base (2 celdas
     de 16 px/grado); se le ofreció engordarla y eligió "la C" tal cual.
 - Commiteado con él: naves al 55 % y el RQ-4 sobre el globo.
-- **Siguiente**: paso 7 (la noche).
+- Commiteado: `46eb6ba` (paso 6).
+- Commiteado y subido al cerrar (24-sep-2026): la web **carga de día de serie** (usuario: "que de serie
+  la página cargue en modo día"): `preloadTheme` en `Head.astro` usa el tema
+  elegido con el botón (localStorage) y, si no hay, día, aunque el sistema
+  esté en oscuro; ya no se sigue en vivo el tema del sistema.
+- **Siguiente (el usuario: "mañana seguimos con la noche")**: paso 7, la
+  noche sobre el globo entero. Hoy es provisional (`ponNoche` en
+  `tierra-gl.js`: LUT de noche, la luna, el suelo de la noche, halo y nubes de
+  noche). Faltan las luces de las ciudades (`planeta-luces.png`, ya en
+  `public/planeta/`), la aurora y el brillo de atmósfera, que en el horizonte
+  de antes pintaba `planeta.js` en CPU; y la X y la coordenada fijada en verde
+  de visión nocturna.
 
 ## Qué quiere el usuario (24-sep-2026)
 

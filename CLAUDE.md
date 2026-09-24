@@ -24,10 +24,27 @@ empezar, `git push` al terminar.
 - Vocabulario: "subrayar" un texto = resaltado tipo marcador (fondo detrás,
   texto oscuro), no una línea.
 
-## El planeta de la portada
+## Proyecto Tierra (rama `earth-project`) — EN CURSO, sin fusionar
+
+Desde el 24-sep-2026 la portada lleva **la Tierra entera** (disco que gira
+solo, se arrastra y se acerca hasta ×6, como Marte y la Luna) en vez del
+horizonte de abajo. Se trabaja en la rama **`earth-project`** (subida a
+GitHub, sin fusionar: `main` sigue publicando la portada de antes). **Antes de
+tocar nada, leer `logo-files/TIERRA-WIP.md`**: arriba dice en qué punto está
+(se actualiza en cada paso, como el de Marte), qué decidió el usuario y qué
+queda. Hechos los pasos 1-6 (motor `src/scripts/tierra-gl.js`, hemisferio sur,
+chapas y X, portada con el rótulo escrito a máquina, tamaño común de los tres
+astros, zoom con detalle y nombres). **Siguiente: el paso 7, la noche** (luces
+de ciudades, aurora, brillo de atmósfera sobre el globo entero); hoy hay una
+noche provisional (luz de luna y colores de noche). La web carga de día de
+serie. Las fuentes de datos del zoom van en `logo-files/tierra-fuentes/`
+(fuera de Git; cómo bajarlas y regenerarlas, en el documento).
+
+## El planeta de la portada (el de antes, en `main`)
 
 **Antes de tocarlo, leer `logo-files/HERO-WIP.md`** (punto 7 y "Modo noche"):
-cómo funciona, qué se probó y descartó, y por qué.
+cómo funciona, qué se probó y descartó, y por qué. En la rama `earth-project`
+lo sustituye el Proyecto Tierra (arriba).
 
 Estado (13-sep-2026): publicado en `main` (merge de la rama
 `daylight-planet-v2`, que se deja en GitHub como registro). Planeta de día en
