@@ -59,3 +59,7 @@ logo-files/marte-fuentes/
 # usuario dio el aspecto por bueno. Se sacan con:
 #   cd logo-files && python3 generar-luna.py --teselas ../public/luna/
 # Cada regeneración commiteada suma su peso entero al historial.
+
+# Proyecto Tierra: fuentes de los niveles de zoom (Natural Earth 1:10m, ETOPO1
+# a 24 px/grado y lo que sale de ellos). Regenerables: ver logo-files/TIERRA-WIP.md.
+logo-files/tierra-fuentes/

@@ -149,9 +149,13 @@ export async function montarNombres(capa, marte, chapas = [], {
       // A x1 nada; luego cada lugar sale cuando mide lo suyo (con un 6 % de
       // margen al alejar, para que no parpadee en el umbral), y las zonas se
       // van cuando ya no caben en la pantalla.
-      const toca = z >= 1.2
+      // `zmin` y `zmax` (opcionales, los de la Tierra): desde qué zoom sale
+      // (por defecto x1,2) y por encima de cuál se retira (los continentes,
+      // para dejar sitio a los países).
+      const toca = z >= (n.zmin ?? 1.2) * (e.visto ? 0.97 : 1)
         && tam >= n.px * escala * (e.visto ? 0.94 : 1)
-        && (n.clase !== "region" || tam < 1.6 * pantalla);
+        && (n.clase !== "region" || tam < 1.6 * pantalla)
+        && (n.zmax == null || z < n.zmax * (e.visto ? 1.03 : 1));
       if (!toca || borde <= 0) {
         if (e.visto) { e.visto = false; el.classList.remove("visto"); }
         el.hidden = true;

@@ -228,12 +228,12 @@ html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono :i
   width: var(--tierra-caja);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: url(/planeta/tierra-quieto.png?v=11) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/tierra-quieto.png?v=12) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
 }
-html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?v=11); }
+html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?v=12); }
 .hero-planet.planeta-listo { visibility: hidden; }
 .hero-tierra {
   position: absolute;
@@ -1393,8 +1393,9 @@ html.dark .hero-mgrs.fijada {
    en cada fotograma de un desplazamiento que no cae en un píxel entero. */
 /* Tamaño de las naves respecto al de antes (Proyecto Tierra: con la Tierra
    entera, más pequeña que el horizonte de antes, se veían grandes). El usuario
-   vio las ocho sobre el globo al 60, 50 y 40 % y eligió el 40 (24-sep-2026). */
-:root { --naves-k: 0.4; }
+   vio las ocho sobre el globo al 60, 50 y 40 % y eligió el 40 (24-sep-2026);
+   después, "sube a 55 %, las veo chicas". */
+:root { --naves-k: 0.55; }
 .hero-craft {
   position: absolute;
   background: var(--sprite) center / contain no-repeat;
@@ -1499,8 +1500,10 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más chica que la nave anterior */
 }
 .hero-craft--fijo-izq {
-  left: 20%;
-  top: 60%;
+  /* sobre la parte izquierda del globo (Proyecto Tierra: con el 20 % / 60 % de
+     antes se quedaba fuera del planeta), relativo a su disco */
+  left: calc(50% - var(--tierra-disco) * 0.36);
+  top: calc(50% + var(--tierra-disco) * 0.12);
   width: calc(clamp(58px, 5.5vw, 86px) * var(--naves-k));
 }
 .hero-craft--fijo-centro {
@@ -1719,7 +1722,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1) * var(--naves-k)); }
   .hero-craft--orbita { top: 8%; width: calc(clamp(40px, 12vw, 62px) * var(--naves-k)); }
   .hero-craft--fijo { top: 56%; left: 50%; width: calc(clamp(96px, 28vw, 140px) * var(--naves-k)); }
-  .hero-craft--fijo-izq { top: 62%; left: 14%; width: calc(clamp(48px, 14vw, 68px) * var(--naves-k)); }
+  .hero-craft--fijo-izq { width: calc(clamp(48px, 14vw, 68px) * var(--naves-k)); }
   .hero-craft--fijo-centro { top: 60%; left: 38%; width: calc(clamp(64px, 18vw, 90px) * var(--naves-k)); }
   /* en la esquina; al cambiar de tema, hacia el centro del globo (en 50 %,
      50 svh) el 60 % del camino: acaba detrás del disco */

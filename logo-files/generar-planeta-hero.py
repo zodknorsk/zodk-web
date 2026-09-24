@@ -15,11 +15,24 @@ continua (src/scripts/planeta.js); aquí se exportan sus datos a public/planeta/
     python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba (--noche, --ambos)
     python3 generar-planeta-hero.py --canvas carpeta/        # datos del <canvas> a otra carpeta
     python3 generar-planeta-hero.py --sprite                 # el sprite antiguo (ya no se usa)
+    python3 generar-planeta-hero.py --nivel 2 carpeta/ [--zona S,N,O,E]
+        # nivel de zoom (Proyecto Tierra, TIERRA-WIP.md): el mapa a 2x la
+        # resolución (16 px/grado) en teselas carpeta/n1/F-C.png, con las costas
+        # de Natural Earth 1:10m y el relieve fino; amplía la LUT y los datos
+        # de carpeta/ (que tiene que tener ya la base, de --canvas)
 """
 import colorsys
 import math
 import sys
-from mapa_tierra import GRID_W, GRID_H, ROWS
+# Nivel de zoom (Proyecto Tierra): 1 = la base de siempre (8 px/grado, costas
+# de ne_50m_land, mapa_tierra.py); K > 1 = K veces la resolución, con la
+# máscara de rasterizar.py --nivel K (costas de 1:10m) y el relieve de
+# elevacion-fina.py.
+NIVEL = int(sys.argv[sys.argv.index("--nivel") + 1]) if "--nivel" in sys.argv else 1
+if NIVEL == 1:
+    from mapa_tierra import GRID_W, GRID_H, ROWS
+else:
+    GRID_W, GRID_H, ROWS = 2880 * NIVEL, 1440 * NIVEL, None
 from elev import elev as _elev, W as ELEV_W, H as ELEV_H
 from png8 import write_rgba
 
@@ -156,7 +169,15 @@ SINT, COST = math.sin(T), math.cos(T)
 # --------------------------------------------- máscara tierra/mar submuestreada
 _K = {"o": 0, "l": 1, "i": 2}
 _FULL = [bytearray(GRID_W) for _ in range(GRID_H)]
-for r, spans in enumerate(ROWS):
+if NIVEL > 1:
+    import os as _os
+    with open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                            "tierra-fuentes", f"mascara-n{NIVEL}.bin"), "rb") as _fh:
+        _b = _fh.read()
+    for r in range(GRID_H):
+        _FULL[r][:] = _b[r * GRID_W:(r + 1) * GRID_W]
+    del _b
+for r, spans in enumerate(ROWS or ()):
     row = _FULL[r]
     for a, b, k in spans:
         v = _K[k]
@@ -164,8 +185,8 @@ for r, spans in enumerate(ROWS):
             row[c] = v
 
 MH, MW = GRID_H // MAPRES, GRID_W // MAPRES
-GRID = [bytearray(MW) for _ in range(MH)]
-for r in range(MH):
+GRID = _FULL if MAPRES == 1 else [bytearray(MW) for _ in range(MH)]
+for r in range(MH if MAPRES > 1 else 0):
     for c in range(MW):
         cnt = [0, 0, 0]
         for dr in range(MAPRES):
@@ -185,14 +206,19 @@ def _mcell(lat, lon):
 # Lo que debe medir lo mismo EN PÍXELES (copas, dunas, manchas de mezcla) se
 # divide entre SCALE en grados; lo que debe medir lo mismo RESPECTO AL PLANETA
 # (franjas del mar, franja de mezcla, claros) se mantiene en grados (x KC celdas).
+# En los niveles de zoom, lo que mide lo mismo EN PÍXELES se hace NIVEL veces
+# más pequeño en grados (las copas miden lo mismo en celdas del mapa, que a
+# su zoom son ~1 px de pantalla); lo que va RESPECTO AL PLANETA, igual.
 KC = MW // 1440
-SCALE = COLS / 400.0
+SCALE = COLS / 400.0 * NIVEL
 
 # Estrecho de Gibraltar: el submuestreo une Iberia y Marruecos; se abre a mano
-# una celda de mar (~1 grado, un pixel de canal).
-_gr, _gc = _mcell(35.6, -5.5)
-for _c in (_gc - 1, _gc, _gc + 1):
-    GRID[_gr][_c] = 0
+# una celda de mar (~1 grado, un pixel de canal). Con las costas de 1:10m (los
+# niveles de zoom) ya está abierto.
+if NIVEL == 1:
+    _gr, _gc = _mcell(35.6, -5.5)
+    for _c in (_gc - 1, _gc, _gc + 1):
+        GRID[_gr][_c] = 0
 
 # ------------------------------ costa, profundidad de mar y bioma (en el GRID)
 import random
@@ -267,7 +293,9 @@ for r in range(MH):
 # siga midiendo ~1 px de pantalla y el muestreo (sobre todo el vertical, que no
 # tiene mipmaps) no se lo salte. Tres anillos también evitan huecos cuando la
 # proyección comprime el mapa lejos del centro del disco.
-_T3, _T2, _T1 = KC, KC + 1, KC + 2
+# En los niveles de zoom, los mismos anillos en celdas (2, 3, 4): la costa
+# sigue midiendo ~1-2 px a su zoom en vez de engordar con KC.
+_T3, _T2, _T1 = (KC, KC + 1, KC + 2) if NIVEL == 1 else (2, 3, 4)
 _LD = [bytearray(MW) for _ in range(MH)]
 _dq2 = deque()
 for r in range(MH):
@@ -461,6 +489,35 @@ def _elev_bi(lat, lon):
     return a * (1 - tr) + b * tr
 
 
+# Relieve fino de los niveles de zoom: ETOPO1 a 24 px/grado
+# (tierra-fuentes/etopo24.i16, de elevacion-fina.py), interpolado.
+if NIVEL > 1:
+    from array import array as _arr
+    _EF = _arr("h")
+    with open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                            "tierra-fuentes", "etopo24.i16"), "rb") as _fh:
+        _EF.frombytes(_fh.read())
+    if sys.byteorder != "little":
+        _EF.byteswap()
+    _EFW, _EFH = 8640, 4320
+
+    def _elev_bi(lat, lon):
+        fr = (90.0 - lat) * 24.0 - 0.5
+        fc = (lon + 180.0) * 24.0 - 0.5
+        r0, c0 = math.floor(fr), math.floor(fc)
+        tr, tc = fr - r0, fc - c0
+        r0 = 0 if r0 < 0 else _EFH - 1 if r0 >= _EFH else r0
+        r1 = r0 + 1 if r0 + 1 < _EFH else r0
+        c0 %= _EFW
+        c1 = (c0 + 1) % _EFW
+        a = _EF[r0 * _EFW + c0] * (1 - tc) + _EF[r0 * _EFW + c1] * tc
+        b = _EF[r1 * _EFW + c0] * (1 - tc) + _EF[r1 * _EFW + c1] * tc
+        return a * (1 - tr) + b * tr
+
+
+# En los niveles de zoom, la pendiente se mide a RELIEVE_PASO celdas a cada
+# lado (1 = la más fina; más = relieve más suavizado, "de dibujo").
+RELIEVE_PASO = float(sys.argv[sys.argv.index("--relieve") + 1]) if "--relieve" in sys.argv else 1.0
 MTNK = [bytearray(MW) for _ in range(MH)]           # escalón de relieve + 8
 _md = 180.0 / MH
 for r in range(MH):
@@ -474,8 +531,9 @@ for r in range(MH):
         if e < 250:
             MTNK[r][c] = 8
             continue
-        ex = (_elev_bi(lat, lon + _md) - _elev_bi(lat, lon - _md)) * (0.5 / _md)   # desnivel por grado
-        ez = (_elev_bi(lat + _md, lon) - _elev_bi(lat - _md, lon)) * (0.5 / _md)
+        _dd = _md * RELIEVE_PASO
+        ex = (_elev_bi(lat, lon + _dd) - _elev_bi(lat, lon - _dd)) * (0.5 / _dd)   # desnivel por grado
+        ez = (_elev_bi(lat + _dd, lon) - _elev_bi(lat - _dd, lon)) * (0.5 / _dd)
         kk = 900.0
         nl = math.sqrt(ex * ex + ez * ez + kk * kk) or 1.0
         hs = (ex * 0.6 - ez * 0.6 + kk * 0.75) / nl       # luz desde el NO
@@ -1621,34 +1679,12 @@ LUZ_PNG_W = 256                     # luces por fila en planeta-luces.png
 _COAST_MIXK = (0.0, 0.20, 0.48, 0.84)
 
 
-def export_canvas(outdir):
-    import json
+def escribe_luts(outdir, orden):
+    """LUT de día y de noche (LUT_KN x nº de materiales) y prioridades, para
+    la lista de materiales `orden` (claves (r, g, b, tex_k, terreno, costa))."""
     import os
-    os.makedirs(outdir, exist_ok=True)
-    mats = {}
-    mapa = [bytearray(MW * 4) for _ in range(MH)]
-    for r in range(MH):
-        lat = 90.0 - (r + 0.5) * _md
-        row = mapa[r]
-        for c in range(MW):
-            lon = (c + 0.5) * _md - 180.0
-            terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
-            lvl = 0
-            if terrain != 0:                       # línea de costa, por celda
-                lvl = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
-                if lvl:
-                    surf = mix(surf, COAST_COL, _COAST_MIXK[lvl])
-            key = (round(surf[0]), round(surf[1]), round(surf[2]), int(tex_k), terrain, lvl)
-            m = mats.get(key)
-            if m is None:
-                m = mats[key] = len(mats)
-            o = c * 4
-            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain in (2, 3) else 0
-            row[o + 3] = 255
-    write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
-    lut, lut_n = [], []
-    prio = []
-    for (rr, gg, bb, tk, terrain, lvl), _m in sorted(mats.items(), key=lambda kv: kv[1]):
+    lut, lut_n, prio = [], [], []
+    for rr, gg, bb, tk, terrain, lvl in orden:
         # Prioridad al reducir el mapa para las zonas donde un píxel abarca
         # varias celdas (mipmaps en el navegador): la línea de costa gana, luego
         # la tierra, luego el mar -> costas e islas pequeñas no desaparecen.
@@ -1661,6 +1697,111 @@ def export_canvas(outdir):
             dst.append(row)
     write_rgba(os.path.join(outdir, "planeta-lut.png"), LUT_KN, len(lut), lut)
     write_rgba(os.path.join(outdir, "planeta-lut-noche.png"), LUT_KN, len(lut_n), lut_n)
+    return lut, lut_n, prio
+
+
+def celda_material(lat, lon):
+    """Clave del material de un punto: la superficie y, en tierra, el anillo de
+    la línea de costa mezclado encima."""
+    terrain, surf, tex_k, gr, gc = _surface_at(lat, lon)
+    lvl = 0
+    if terrain != 0:
+        lvl = 3 if COAST[gr][gc] else 2 if COAST2[gr][gc] else 1 if COAST3[gr][gc] else 0
+        if lvl:
+            surf = mix(surf, COAST_COL, _COAST_MIXK[lvl])
+    return (round(surf[0]), round(surf[1]), round(surf[2]), int(tex_k), terrain, lvl)
+
+
+TESELA = 360                        # celdas por lado de las teselas de los niveles de zoom
+
+
+def export_nivel(outdir, zona=None):
+    """Nivel de zoom NIVEL en teselas de TESELA x TESELA celdas:
+    outdir/n{NIVEL-1}/F-C.png (fila F desde el norte, columna C desde 180° O),
+    con el material en R + G*256 y B = 1 si es hielo, como planeta-mapa.png.
+    Los materiales parten de los de la base (planeta-materiales.json de
+    --canvas: sus índices no cambian) y los nuevos se añaden al final; luego se
+    rehacen las LUT y se ponen NIVELES, TESELA, MATERIALES y prio en
+    planeta-datos.json. `zona` (S, N, O, E en grados): solo las teselas que la
+    tocan (para probar)."""
+    import json
+    import os
+    with open(os.path.join(outdir, "planeta-materiales.json")) as fh:
+        orden = [tuple(k) for k in json.load(fh)]
+    mats = {k: i for i, k in enumerate(orden)}
+    nbase = len(orden)
+    carpeta = os.path.join(outdir, f"n{NIVEL - 1}")
+    os.makedirs(carpeta, exist_ok=True)
+    ppd = MW / 360.0
+    nf, nc = MH // TESELA, MW // TESELA
+    hechas = 0
+    for f in range(nf):
+        la1, la0 = 90.0 - f * TESELA / ppd, 90.0 - (f + 1) * TESELA / ppd
+        for c in range(nc):
+            lo0, lo1 = -180.0 + c * TESELA / ppd, -180.0 + (c + 1) * TESELA / ppd
+            if zona and (la1 <= zona[0] or la0 >= zona[1] or lo1 <= zona[2] or lo0 >= zona[3]):
+                continue
+            filas = []
+            for r in range(f * TESELA, (f + 1) * TESELA):
+                lat = 90.0 - (r + 0.5) * _md
+                fila = bytearray(TESELA * 4)
+                for cc in range(TESELA):
+                    lon = (c * TESELA + cc + 0.5) * _md - 180.0
+                    key = celda_material(lat, lon)
+                    m = mats.get(key)
+                    if m is None:
+                        m = mats[key] = len(orden)
+                        orden.append(key)
+                    o = cc * 4
+                    fila[o] = m & 255; fila[o + 1] = m >> 8; fila[o + 2] = 1 if key[4] in (2, 3) else 0
+                    fila[o + 3] = 255
+                filas.append(fila)
+            write_rgba(os.path.join(carpeta, f"{f}-{c}.png"), TESELA, TESELA, filas)
+            hechas += 1
+        print(f"  fila {f + 1}/{nf} de teselas ({hechas} hechas)", file=sys.stderr)
+    if len(orden) > 32767:
+        raise SystemExit(f"{len(orden)} materiales: no caben en 15 bits (el 16 es el hielo)")
+    with open(os.path.join(outdir, "planeta-materiales.json"), "w") as fh:
+        json.dump(orden, fh, separators=(",", ":"))
+    lut, _ln, prio = escribe_luts(outdir, orden)
+    with open(os.path.join(outdir, "planeta-datos.json")) as fh:
+        datos = json.load(fh)
+    niveles = [n for n in datos.get("NIVELES", [{"ppd": 2880 / 360}]) if n["ppd"] != ppd]
+    niveles.append({"ppd": ppd, "teselas": True})
+    datos.update({"MATERIALES": len(lut), "prio": prio, "TESELA": TESELA,
+                  "NIVELES": sorted(niveles, key=lambda n: n["ppd"])})
+    with open(os.path.join(outdir, "planeta-datos.json"), "w") as fh:
+        json.dump(datos, fh, separators=(",", ":"))
+    return hechas, nbase, len(orden)
+
+
+def export_canvas(outdir):
+    import json
+    import os
+    os.makedirs(outdir, exist_ok=True)
+    mats = {}
+    mapa = [bytearray(MW * 4) for _ in range(MH)]
+    for r in range(MH):
+        lat = 90.0 - (r + 0.5) * _md
+        row = mapa[r]
+        for c in range(MW):
+            lon = (c + 0.5) * _md - 180.0
+            key = celda_material(lat, lon)
+            terrain = key[4]
+            m = mats.get(key)
+            if m is None:
+                m = mats[key] = len(mats)
+            o = c * 4
+            row[o] = m & 255; row[o + 1] = m >> 8; row[o + 2] = 1 if terrain in (2, 3) else 0
+            row[o + 3] = 255
+    write_rgba(os.path.join(outdir, "planeta-mapa.png"), MW, MH, mapa)
+    orden = [k for k, _m in sorted(mats.items(), key=lambda kv: kv[1])]
+    with open(os.path.join(outdir, "planeta-materiales.json"), "w") as fh:
+        json.dump(orden, fh, separators=(",", ":"))
+    lut, lut_n, prio = escribe_luts(outdir, orden)
+        # Prioridad al reducir el mapa para las zonas donde un píxel abarca
+        # varias celdas (mipmaps en el navegador): la línea de costa gana, luego
+        # la tierra, luego el mar -> costas e islas pequeñas no desaparecen.
     # Luces: 2 píxeles por luz, en filas de LUZ_PNG_W luces (ordenadas por
     # longitud). 1º = latitud (R alto, G bajo) + intensidad*16 (B); 2º =
     # longitud (R alto, G bajo). Alfa siempre 255 (si no, el navegador
@@ -1705,7 +1846,16 @@ def export_canvas(outdir):
     return len(lut)
 
 
-if len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
+if NIVEL > 1:
+    _args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    _dir = _args[1]                                  # (el primero es el número del nivel)
+    _zona = None
+    if "--zona" in sys.argv:
+        _zona = [float(x) for x in sys.argv[sys.argv.index("--zona") + 1].split(",")]
+        _dir = [a for a in _args[1:] if a != sys.argv[sys.argv.index("--zona") + 1]][0]
+    _h, _nb, _nt = export_nivel(_dir, _zona)
+    print(f"nivel {NIVEL}: {_h} teselas -> {_dir}/n{NIVEL - 1}/; materiales {_nb} -> {_nt}")
+elif len(sys.argv) >= 3 and sys.argv[1] == "--canvas":
     _n = export_canvas(sys.argv[2])
     print(f"canvas: {_n} materiales -> {sys.argv[2]}")
 elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":

@@ -114,6 +114,9 @@ const eventos = todosEventos
       <canvas class="hero-tierra-canvas"></canvas>
       <div class="hero-tierra-sonda"></div>
     </div>
+    <!-- Nombres de continentes y países, que salen al acercarse (la capa de
+         Marte y la Luna, marte-nombres.js; public/planeta/tierra-nombres.json). -->
+    <div class="marte-nombres tierra-nombres" aria-hidden="true"></div>
     <div class="hero-banderas">
       {banderasBlog.map((p) => (
         <div class="hero-bandera" data-iso={p.iso} tabindex="0" hidden aria-label={`${p.nombre}: artículos relacionados`}>
@@ -362,6 +365,8 @@ const eventos = todosEventos
   import { montarTierraGL } from "../scripts/tierra-gl.js";
   import { montarZoom } from "../scripts/marte-gl.js";
   import { montarMano } from "../scripts/marte.js";
+  import { montarNombres } from "../scripts/marte-nombres.js";
+  import { PLANETA_V } from "../scripts/planeta.js";
   import { mgrs } from "../scripts/mgrs.js";
   import { LUNA_V } from "../scripts/luna.js";
   import { MARTE_V } from "../scripts/marte.js";
@@ -613,7 +618,7 @@ const eventos = todosEventos
       await img!.decode().catch(() => {});
       // La cabecera también: /luna y /marte no la tienen y así no desaparece
       // de golpe. Y el otro astro del cielo: no gira con la cámara.
-      const SEL_APAGAR = `.hero-rotulo, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
+      const SEL_APAGAR = `.hero-rotulo, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
       const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
       // El planeta deja de girar mientras dura el vuelo: se va encogiendo y el
       // giro no se aprecia, pero cada repintado cuesta un volcado entero del
@@ -713,8 +718,10 @@ const eventos = todosEventos
       // con zoom, un dedo mueve el globo; sin él, baja la página (CSS)
       hero.classList.toggle("con-zoom", t.vista().zoom > 1.01);
       colocaChapas();
+      colocaNombres?.();
       (hero as HTMLElement & { __actualizaMira?: () => void }).__actualizaMira?.();
     };
+    let colocaNombres: (() => void) | null = null, quitaNombres = () => {};
 
     t = await montarTierraGL(cv, {
       disco: () => sonda.getBoundingClientRect().height,
@@ -737,11 +744,21 @@ const eventos = todosEventos
       tierra.ponNoche(temaNoche);
     });
     mo.observe(html, { attributes: true, attributeFilter: ["class"] });
+    const capaNombres = hero.querySelector<HTMLElement>(".tierra-nombres");
+    if (capaNombres) {
+      montarNombres(capaNombres, tierra, [], { url: `/planeta/tierra-nombres.json?v=${PLANETA_V}`, radioKm: 6371 })
+        .then((n) => {
+          if (!capaNombres.isConnected) return n.desmontar();
+          colocaNombres = n.coloca;
+          quitaNombres = n.desmontar;
+          n.coloca();
+        }).catch(() => {});
+    }
     const quitaMano = montarMano(hero, tierra, { alArrastrar: true, tactil: () => tierra.vista().zoom > 1.01 });
     const quitaZoom = montarZoom(hero, tierra, { soloCtrl: true });
     const p = {
       geo: tierra.geo, setMarca: tierra.ponMarca, posMarca: tierra.posMarca, setParado: tierra.ponParado,
-      desmontar() { mo.disconnect(); quitaMano(); quitaZoom(); tierra.desmontar(); },
+      desmontar() { mo.disconnect(); quitaMano(); quitaZoom(); quitaNombres(); colocaNombres = null; tierra.desmontar(); },
     };
     planeta?.desmontar();
     quitaMira?.();
