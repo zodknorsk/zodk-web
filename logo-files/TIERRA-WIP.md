@@ -14,27 +14,16 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   nubes; radio de arte 180) y el banco `logo-files/prototipo-tierra/giro.html`;
   hemisferio sur (banquisa austral estrecha, la Antártida con su relieve),
   `public/planeta/` regenerado (`PLANETA_V` 11).
-- **Sin commitear**:
-  - Paso 3: chapas de bandera con su sombra y X de blanco en `tierra-gl.js`;
-    en el banco, un `<div>` encima de cada chapa (nombre del país al pasar el
-    ratón, para el giro) y clic para clavar la X (clic sobre ella o Esc la
-    quita). La ficha de artículos de verdad llega con la portada.
-  - La mano de la Tierra se cierra al empezar a girar, no con un clic suelto
-    (`montarMano(..., { alArrastrar: true })`; Marte y la Luna, como antes).
-  - Paso 4, el título: banco `logo-files/prototipo-tierra/titulo.html`. **Sin
-    título grande ni animación sobre el globo**: solo el rótulo encima del
-    globo, "el blog de hegoi márquez" escrito a máquina (75 ms por letra) con
-    cursor de bloque que parpadea lento (1,1 s) detrás de la última letra;
-    debajo, el lema y la coordenada. **A los 5 s** el nombre, el lema y el
-    cursor se desvanecen a la vez (0,6 s) y solo queda la coordenada, en su
-    sitio. Todo centrado en el mismo eje (el botón de pausa cuelga a la
-    izquierda de la coordenada, en una caja de ancho fijo). Aprobado por el
-    usuario ("vamos a dejarlo así").
-- La portada todavía no se ha tocado.
-- **Siguiente**: montar el paso 4 en la portada de verdad: el globo nuevo en
-  vez del horizonte, el rótulo, las chapas con su ficha, la mira y la X con la
-  coordenada MGRS, el botón de giro, naves, astros pequeños y vuelos. La noche
-  sigue siendo la de antes hasta el paso 7 (ver plan).
+- **Commiteado** (`1b4306b`): paso 3 (chapas y X en el motor), la mano que
+  solo se cierra al girar y el banco del rótulo (`titulo.html`).
+- **Paso 4 HECHO, sin commitear, pendiente de que el usuario lo pruebe**: la
+  portada ya lleva la Tierra entera (ver "Registro", paso 4: la portada).
+  Probado en Chrome sin ventana: día y noche, arrastre, clic con X y
+  coordenada fijada, rueda que baja la página, Ctrl + rueda que acerca, ficha
+  de chapa, vuelo a Marte y vuelta a la Tierra, y móvil (390 × 844). **Falta:
+  que lo pruebe él en Zen y en su iPhone** (pellizco y un dedo que baja la
+  página no se pueden probar sin ventana).
+- **Siguiente**: su prueba; después, paso 5 (Luna y Marte al tamaño común).
 
 ## Qué quiere el usuario (24-sep-2026)
 
@@ -106,6 +95,9 @@ esté terminada.
   lema pisaba la de entrada).
 - **Portada: maqueta A**, título encima del globo, "un poco más arriba y un
   poco más pequeño" (usuario, 24-sep-2026; se le recomendó la B).
+- **Gestos en la portada** (usuario, 24-sep-2026): la rueda baja la página
+  y el zoom va con pellizco del trackpad o Ctrl + rueda; en el móvil, un dedo
+  baja la página y dos dedos acercan; ya con zoom, un dedo mueve el globo.
 - **Zoom hasta ×6**, como Marte y la Luna (usuario, 24-sep-2026: "¿sería
   posible un x5 o x6?"). Hasta que haya teselas (paso 6) solo amplía el mapa
   de 8 px/grado; con teselas harán falta niveles de 16 y 24 px/grado, como en
@@ -118,7 +110,7 @@ esté terminada.
 - [x] 2. Hemisferio sur: Antártida, banquisa austral y lo que salga mal al
       verlo entero.
 - [x] 3. Nubes, chapas de bandera y X de blanco en el motor nuevo.
-- [ ] 4. Portada: el globo sustituye al horizonte; sitio del título, MGRS,
+- [x] 4. Portada: el globo sustituye al horizonte; sitio del título, MGRS,
       naves y astros pequeños; vuelos a la Luna y a Marte.
 - [ ] 5. Tamaño común: Luna y Marte al tamaño intermedio.
 - [ ] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
@@ -238,3 +230,36 @@ esté terminada.
   bloque en la casilla de la siguiente letra, que parpadea 1,5 s al acabar y
   se apaga. Con `visibility` para ocultar las letras, el cursor asomaba antes
   de tiempo (un hijo con `visible` se ve aunque el padre esté oculto).
+
+### 24-sep-2026 — paso 4: la portada
+
+- `index.astro`: `.hero-planet` pasa a ser la Tierra quieta (caja del disco,
+  centrada) y `.hero-tierra` lleva el lienzo WebGL a todo el hero con su
+  sonda (`--tierra-disco: min(70svh, 88vw)`). El título se sustituye por el
+  rótulo `.hero-rotulo` (h1 `rotulo-nombre`, lema, `.hero-lectura` con el
+  botón de giro a la izquierda de la coordenada y la hélice de "otro objeto" a
+  la derecha, 22 px; en táctil, sin coordenada, los dos botones juntos en el
+  eje). `montarRotulo()` escribe el nombre (75 ms por letra, cursor) y a los
+  5 s pone `.solo-lect`. Sin JS o con reduced-motion, entero y sin escribirse.
+- Script: `montarTierraGL` en vez de `montarPlaneta`; `montarMano(hero, …,
+  { alArrastrar, tactil: zoom > 1 })` y `montarZoom(hero, …, { soloCtrl })`;
+  la mira, la X y el giro, como antes, con un adaptador; las chapas se colocan
+  en píxeles del hero y miden 13 × 9 px de arte; el tema cambia la luz con
+  `ponNoche`. El vuelo aparta el lienzo (`.hero-tierra.lista`) o, si no ha
+  pintado, la Tierra quieta.
+- CSS: `.hero { touch-action: pan-y }` y `.con-zoom { touch-action: none }`;
+  la mano cerrada al girar; fuera el CSS del título viejo (barras de censura
+  al bajar, marco, velo, reglas de noche del marco y del lema, móvil). La
+  coordenada fijada de noche sigue en verde de visión nocturna.
+- Motor: noche provisional (`ponNoche`: LUT de noche, la luna, `N_NIGHT`,
+  halo y nubes de noche; sin luces de ciudades, aurora ni brillo de
+  atmósfera, que son el paso 7), `instantanea()`, opción `sinNubes`. Arreglado:
+  las listas de uniformes (`uNube[5]`) llegan como `uNube[0]` y las nubes
+  salían negras.
+- `generar-tierra-quieto.mjs` (nuevo): `public/planeta/tierra-quieto.png` y
+  `-noche`, 368 px de arte con el disco de 360, hechas con el motor en un
+  Chrome sin ventana. Las usan la portada mientras carga y los vuelos de
+  vuelta: `VUELO_TIERRA` pasa a 368/360 y `/marte` ya no monta el cuadrado de
+  1200 con el horizonte. `/luna` usa `.hero-planet` tal cual (su CSS nuevo).
+- La cabecera de Head.astro sigue buscando `.hero-titulo` para tachar el
+  título al bajar: ya no existe y no hace nada (se deja; limpiar al cerrar).
