@@ -46,6 +46,7 @@
   <canvas id="tierra"></canvas>
   <div id="sonda"></div>
   <div id="chapas"></div>
+  <div class="marte-nombres" id="nombres"></div>
   <div id="panel" data-sin-arrastre>
     <button id="giro">pausa</button> ·
     <button data-v="20,-10">Europa</button> <button data-v="20,-80">América</button>
@@ -60,6 +61,7 @@
 import { montarMano } from "../../src/scripts/marte.js";
 import { montarZoom } from "../../src/scripts/marte-gl.js";
 import { montarTierraGL } from "../../src/scripts/tierra-gl.js";
+import { montarNombres } from "../../src/scripts/marte-nombres.js";
 
 const $ = (id) => document.getElementById(id);
 const sonda = $("sonda");
@@ -87,8 +89,9 @@ const colocaChapas = () => {
   }
   for (const [iso, el] of divs) if (!vistas.has(iso) && !el.matches(":hover")) el.hidden = true;
 };
+let colocaNombres = null;
 const tierra = await montarTierraGL($("tierra"), {
-  alPintar: colocaChapas,
+  alPintar: () => { colocaChapas(); colocaNombres?.(); },
   pausado: () => !!document.querySelector(".chapa:hover"),
   base: q.get("datos") ? `${q.get("datos")}/` : "../../public/planeta/",
   disco: () => sonda.getBoundingClientRect().height,
@@ -100,6 +103,9 @@ if (!tierra) {
   montarMano($("hero"), tierra, { alArrastrar: true });   // mano cerrada solo al girar, no con un clic
   montarZoom($("hero"), tierra);
   window.tierra = motor = tierra;       // para probar desde la consola
+  const base = q.get("datos") ? `${q.get("datos")}/` : "../../public/planeta/";
+  montarNombres($("nombres"), tierra, [], { url: `${base}tierra-nombres.json`, radioKm: 6371 })
+    .then((n) => { colocaNombres = n.coloca; n.coloca(); }).catch(() => {});
   colocaChapas();
   // X de blanco: clic en la Tierra la clava (gira con ella); clic sobre la X
   // o Esc, fuera. Un arrastre no es un clic (montarMano se lo come).

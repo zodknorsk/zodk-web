@@ -60,7 +60,15 @@ const f = (x) => (Number.isInteger(x) ? `${x}.0` : `${x}`);
 // (1) Material y escalón de luz: las cuentas del precálculo de planeta.js,
 // para una vista cualquiera. Sale R/G = material (bajo/alto), B = escalón,
 // A = 1 dentro del disco.
-function fragCodigos(D, off, lmax) {
+// `finos`: los niveles de zoom en teselas ({ ppd, fila0, kmax }, de
+// generar-planeta-hero.py --nivel); `A`: teselas por lado del atlas.
+function fragCodigos(D, off, lmax, finos, A) {
+  const NF = finos.length;
+  const lista = (xs, conv) => xs.map(conv).join(", ");
+  // Cortes entre niveles: a mitad de camino (en escala logarítmica) entre la
+  // resolución de uno y la del siguiente (como marte-gl.js).
+  const ppd = [D.MW / 360, ...finos.map((n) => n.ppd)];
+  const cortes = ppd.slice(1).map((p, i) => Math.log2(ppd[i] * p) / 2);
   return `#version 300 es
 precision highp float;
 precision highp int;
@@ -71,6 +79,9 @@ uniform vec3 uM0, uM1, uM2; // vista -> Tierra (filas de Ry(lon0)·Rx(lat0))
 uniform vec3 uS;            // sol en vista
 uniform usampler2D uMapa;   // nivel 0 (filas 0..MH-1) y mipmaps 1..LMAX en fila (filas MH..2MH-1)
 uniform float uSuelo;       // luz de la cara sin sol: NIGHT de día, N_NIGHT a la luz de la luna
+uniform usampler2D uAtlas;  // teselas de los niveles de zoom que han llegado (A x A huecos)
+uniform usampler2D uInd;    // por nivel y tesela: hueco del atlas + 1 (0 = no está)
+uniform int uNivMax;        // 0 hasta que llega la primera tesela
 out vec4 o;
 const float PI = 3.141592653589793;
 const float AA = ${f(D.LIMB_AA)};
@@ -79,6 +90,11 @@ const float INV_LN_LS = ${f(D.LIGHT_SUB / D.LNSTEP)};
 const int KMIN = ${D.LUT_KMIN * D.LIGHT_SUB}, KN = ${D.LUT_KN};
 const int MW = ${D.MW}, MH = ${D.MH}, LMAX = ${lmax};
 const int OFF[${lmax + 1}] = int[${lmax + 1}](${off.join(", ")});
+const int T = ${D.TESELA ?? 360}, NF = ${NF}, A = ${A};
+const float PPD[${NF + 1}] = float[${NF + 1}](${lista(ppd, f)});
+const float CORTE[${Math.max(1, NF)}] = float[${Math.max(1, NF)}](${NF ? lista(cortes, f) : "1e9"});
+const int FILA0[${NF + 1}] = int[${NF + 1}](${lista([0, ...finos.map((n) => n.fila0)], String)});
+const int KMAX[${NF + 1}] = int[${NF + 1}](${lista([0, ...finos.map((n) => n.kmax)], String)});
 
 int escalon(float lam, float dc, float limbMul) {
   float bright = (uSuelo + (1.0 - uSuelo) * smoothstep(TERM_A, TERM_B, lam))
@@ -96,17 +112,45 @@ void main() {
   vec3 B = vec3(dot(uM0, U), dot(uM1, U), dot(uM2, U));
   float lat = asin(clamp(B.y, -1.0, 1.0));
   float lon = atan(B.x, B.z);
-  // Huella del píxel en longitud (derivadas: antes de cualquier rama).
+  // Huella del píxel en latitud y longitud (derivadas: antes de cualquier rama).
+  float dlat = max(abs(dFdx(lat)), abs(dFdy(lat))) / (PI / 180.0);
   vec2 dl = vec2(dFdx(lon), dFdy(lon));
   dl = mod(dl + PI, 2.0 * PI) - PI;                   // la costura de los 180°
-  float fx = max(abs(dl.x), abs(dl.y)) / (2.0 * PI) * float(MW);   // en celdas
+  float dlon = max(abs(dl.x), abs(dl.y)) / (PI / 180.0);
+  float fx = dlon / 360.0 * float(MW);                // en celdas de la base
   if (dc > 1.0 + AA / uR) { o = vec4(0.0); return; }
   float latD = lat / (PI / 180.0), lonD = lon / (PI / 180.0);
-  // Mipmap en longitud: el texel al menos tan ancho como la huella.
-  int L = clamp(int(ceil(log2(max(fx, 1e-6)) - 0.001)), 0, LMAX);
-  int r = clamp(int(floor((90.0 - latD) / 180.0 * float(MH))), 0, MH - 1);
-  int c = int(floor((lonD + 180.0) / 360.0 * float(MW))) % MW;
-  uint v = texelFetch(uMapa, ivec2(OFF[L] + (c >> L), (L > 0 ? MH : 0) + r), 0).r;
+  // Nivel de zoom: el de la celda más parecida al píxel en LATITUD (en
+  // longitud, hacia los polos, las celdas se agrupan de 2 en 2, de 4 en 4…,
+  // como en marte-gl.js). Si su tesela no ha llegado, el de debajo.
+  float fLat = log2(max(1e-6, 1.0 / dlat));
+  int niv = 0;
+  for (int l = 0; l < NF; l++) if (fLat >= CORTE[l]) niv = l + 1;
+  niv = min(niv, uNivMax);
+  uint v = 0u;
+  bool listo = false;
+  for (int l = NF; l >= 1; l--) {
+    if (listo || l > niv) continue;
+    float p = PPD[l];
+    int ancho = int(360.0 * p);
+    int rf = clamp(int((90.0 - latD) * p), 0, int(180.0 * p) - 1);
+    int cf = int((lonD + 180.0) * p) % ancho;
+    int k = clamp(int(ceil(log2(max(1.0, dlon * p)) - 0.001)), 0, KMAX[l]);
+    cf = (cf >> k) << k;
+    uint h = texelFetch(uInd, ivec2(cf / T, FILA0[l] + rf / T), 0).r;
+    if (h > 0u) {
+      int s = int(h) - 1;
+      v = texelFetch(uAtlas, ivec2((s % A) * T + cf % T, (s / A) * T + rf % T), 0).r;
+      listo = true;
+    }
+  }
+  if (!listo) {
+    // la base, con mipmap en longitud: el texel al menos tan ancho como la huella
+    int L = clamp(int(ceil(log2(max(fx, 1e-6)) - 0.001)), 0, LMAX);
+    int r = clamp(int(floor((90.0 - latD) / 180.0 * float(MH))), 0, MH - 1);
+    int c = int(floor((lonD + 180.0) / 360.0 * float(MW))) % MW;
+    v = texelFetch(uMapa, ivec2(OFF[L] + (c >> L), (L > 0 ? MH : 0) + r), 0).r;
+  }
   int m = int(v & 0x7fffu);
   bool hielo = (v & 0x8000u) != 0u;                   // el limbo oscurece menos el hielo
   float lam = dot(U, uS);
@@ -301,7 +345,8 @@ function filas(lat0, lon0) {
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
  *   disco?: () => number, alPintar?: () => void, zoomMax?: number,
- *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean }} [opciones]
+ *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean,
+ *   ladoAtlas?: number }} [opciones]
  */
 export async function montarTierraGL(canvas, {
   base = "/planeta/",
@@ -315,6 +360,7 @@ export async function montarTierraGL(canvas, {
   pausado = () => false,                         // no gira mientras dé true (en la portada: ratón sobre una chapa o una nave)
   noche: nocheIni = false,                       // a la luz de la luna (el tema oscuro); se cambia con ponNoche
   sinNubes = false,                              // sin nubes (la foto de tierra-quieto.png)
+  ladoAtlas = 8,                                 // huecos por lado del atlas de teselas
   zoomMax = 6,                                   // como Marte y la Luna (usuario, 24-sep-2026: "¿sería posible un x5 o x6?")
 } = {}) {
   const gl = canvas.getContext("webgl2", {
@@ -393,7 +439,62 @@ export async function montarTierraGL(canvas, {
   };
   const luz = () => (noche && texLutNoche ? LUZ.noche : LUZ.dia);
 
-  const progCod = programa(gl, VERT, fragCodigos(D, off, LMAX));
+  // Niveles de zoom en teselas (como marte-gl.js): no se reserva en la GPU
+  // el mapa entero de cada uno; las teselas que llegan van a un ATLAS de
+  // A x A huecos y un índice dice en qué hueco está cada una. Si se llena,
+  // sale la que lleva más tiempo sin usarse. A x6 se ven unas 10-20.
+  const T = D.TESELA ?? 360;
+  let fila0 = 0;
+  const finos = (D.NIVELES ?? []).map((n, i) => ({ ...n, niv: i })).filter((n) => n.teselas).map((n) => {
+    const w = 360 * n.ppd, tc = w / T, tf = (180 * n.ppd) / T;
+    let kmax = 0;                                 // cuántas veces se puede agrupar de 2 en 2 la longitud
+    while (kmax < 8 && (w >> (kmax + 1)) << (kmax + 1) === w) kmax++;
+    const nivel = { niv: n.niv, ppd: n.ppd, tc, tf, fila0, kmax, estado: new Map() };   // "F-C" -> "pedida" | "lista" | "fallo"
+    fila0 += tf;
+    return nivel;
+  });
+  const ppds = [MW / 360, ...finos.map((n) => n.ppd)];
+  const cortes = ppds.slice(1).map((p, i) => Math.log2(ppds[i] * p) / 2);
+  const A = Math.max(1, Math.min(ladoAtlas, Math.floor(gl.getParameter(gl.MAX_TEXTURE_SIZE) / T)));
+  const huecos = [];                              // hueco -> { n, clave, f, c, uso }
+  const libres = Array.from({ length: A * A }, (_, i) => A * A - 1 - i);
+  let texAtlas = null;
+  const texInd = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16UI, Math.max(1, ...finos.map((n) => n.tc)), Math.max(1, fila0), 0,
+    gl.RED_INTEGER, gl.UNSIGNED_SHORT, new Uint16Array(Math.max(1, ...finos.map((n) => n.tc)) * Math.max(1, fila0)));
+  const vacia = textura(gl);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.R16UI, 1, 1, 0, gl.RED_INTEGER, gl.UNSIGNED_SHORT, new Uint16Array(1));
+  let usoAhora = 0;
+  function guarda(n, f, c, datos) {
+    if (!texAtlas) {
+      texAtlas = textura(gl);
+      gl.texStorage2D(gl.TEXTURE_2D, 1, gl.R16UI, A * T, A * T);
+    }
+    let h = libres.pop();
+    if (h === undefined) {                        // lleno: fuera la que lleva más sin usarse
+      h = 0;
+      for (let i = 1; i < huecos.length; i++) if (huecos[i].uso < huecos[h].uso) h = i;
+      if (huecos[h].uso >= usoAhora) return false;   // todas a la vista: la que llega es de una vista vieja
+      const viejo = huecos[h];
+      viejo.n.estado.delete(viejo.clave);
+      gl.bindTexture(gl.TEXTURE_2D, texInd);
+      gl.texSubImage2D(gl.TEXTURE_2D, 0, viejo.c, viejo.n.fila0 + viejo.f, 1, 1, gl.RED_INTEGER, gl.UNSIGNED_SHORT, new Uint16Array([0]));
+    }
+    huecos[h] = { n, clave: `${f}-${c}`, f, c, uso: usoAhora };
+    gl.bindTexture(gl.TEXTURE_2D, texAtlas);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, (h % A) * T, Math.floor(h / A) * T, T, T, gl.RED_INTEGER, gl.UNSIGNED_SHORT, datos);
+    gl.bindTexture(gl.TEXTURE_2D, texInd);
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, c, n.fila0 + f, 1, 1, gl.RED_INTEGER, gl.UNSIGNED_SHORT, new Uint16Array([h + 1]));
+    return true;
+  }
+  // Tesela (RGBA: material R + G*256, B = hielo) -> material | hielo << 15.
+  const empaqueta = (px) => {
+    const out = new Uint16Array(T * T);
+    for (let i = 0; i < T * T; i++) out[i] = px[i * 4] | (px[i * 4 + 1] << 8) | (px[i * 4 + 2] ? 0x8000 : 0);
+    return out;
+  };
+
+  const progCod = programa(gl, VERT, fragCodigos(D, off, LMAX, finos, A));
   const progNubes = programa(gl, VERT_NUBES, FRAG_NUBES);
   // Chapas de bandera (países del blog) y X de blanco. Sus colores van a una
   // paleta (pocos: los de las banderas, el contorno y la X).
@@ -521,6 +622,9 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uS, S);
     gl.uniform1f(u.uSuelo, L.suelo);
     unidad(0, texMapa, u.uMapa);
+    unidad(1, texAtlas || vacia, u.uAtlas);
+    unidad(2, texInd, u.uInd);
+    gl.uniform1i(u.uNivMax, texAtlas ? finos.length : 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     // (1b) nubes: aquí sus uniformes; se pintan después de las sombras de las chapas
     u = progNubes.u;
@@ -676,11 +780,67 @@ export async function montarTierraGL(canvas, {
     return { lat0: t / DEG, lon0: (lon - Math.atan2(ux, zz)) / DEG };
   }
 
+  // --- Teselas: cuáles hacen falta para lo que se ve. Se muestrea la pantalla
+  // en una rejilla y, en cada punto del disco, se calcula el nivel igual que
+  // el shader (huella de un píxel de arte en latitud). Como marte-gl.js.
+  const EN_VUELO_MAX = 6;
+  let enVuelo = 0, cola = [];
+  function planifica() {
+    if (!finos.length) return;
+    const R = R0 * zoom, paso = 24, quiere = new Map();
+    for (let sy = paso / 2; sy < H; sy += paso) {
+      for (let sx = paso / 2; sx < W; sx += paso) {
+        const x = (sx - W / 2) / R, y = -(sy - H / 2) / R;
+        const g = geoDisco(x, y), gx = geoDisco(x + 1 / R, y), gy = geoDisco(x, y + 1 / R);
+        if (!g || !gx || !gy) continue;
+        const dlat = Math.max(Math.abs(gx.lat - g.lat), Math.abs(gy.lat - g.lat)) / DEG;
+        const fLat = Math.log2(1 / Math.max(1e-6, dlat));
+        let niv = 0;
+        cortes.forEach((k, l) => { if (fLat >= k) niv = l + 1; });
+        if (niv < 1) continue;
+        // y las de debajo, respaldo mientras llega la fina (solo hasta la primera que ya esté)
+        for (let l = niv; l >= 1; l--) {
+          const n = finos[l - 1];
+          const f = Math.min(n.tf - 1, Math.floor((90 - g.lat / DEG) * n.ppd / T));
+          const c = Math.floor(((g.lon / DEG + 180) * n.ppd) / T) % n.tc;
+          const clave = `${n.niv}:${f}-${c}`;
+          const d = x * x + y * y + (niv - l) * 4;
+          if (!quiere.has(clave) || quiere.get(clave).d > d) quiere.set(clave, { n, f, c, d });
+          if (n.estado.get(`${f}-${c}`) === "lista") break;
+        }
+      }
+    }
+    // Nunca más de las que caben en el atlas (las más centrales), y las que
+    // están en uso no salen.
+    const usadas = [...quiere.values()].sort((a, b) => a.d - b.d).slice(0, A * A);
+    const enUso = new Set(usadas.map((t) => `${t.n.niv}:${t.f}-${t.c}`));
+    usoAhora++;
+    for (const hc of huecos) if (hc && enUso.has(`${hc.n.niv}:${hc.clave}`)) hc.uso = usoAhora;
+    cola = usadas.filter((t) => !t.n.estado.has(`${t.f}-${t.c}`));
+    baja();
+  }
+  function baja() {
+    while (enVuelo < EN_VUELO_MAX && cola.length) {
+      const t = cola.shift(), clave = `${t.f}-${t.c}`;
+      if (t.n.estado.has(clave)) continue;
+      t.n.estado.set(clave, "pedida");
+      enVuelo++;
+      bitmap(`${base}n${t.n.niv}/${clave}.png${v}`).then((bm) => {
+        if (!vivo) return;
+        if (guarda(t.n, t.f, t.c, empaqueta(pixels(bm)))) {
+          t.n.estado.set(clave, "lista");
+          pide();
+        } else t.n.estado.delete(clave);
+      }).catch(() => t.n.estado.set(clave, "fallo")).finally(() => { enVuelo--; baja(); });
+    }
+  }
+
   // --- Bucle. El giro solo avanza la vista (lon0) de forma continua y se
   // repinta a 30 fotogramas por segundo, como la portada (a 90 s por vuelta,
   // 0,13° por fotograma: invisible, y la mitad de trabajo). La mano y el zoom
   // piden fotograma a 60. Quieto (parado o sin giro) no se repinta.
   const TAU = 0.07;
+  let tPlan = 0;
   let raf = 0, sucio = false, tAnt = 0, ultimo30 = -1, ultimo60 = -1;
   const quieto = () => parado || agarrado || !enVista || reduce.matches || document.visibilityState !== "visible";
   const gira = () => !quieto() && !pausado();
@@ -716,6 +876,9 @@ export async function montarTierraGL(canvas, {
       ultimo60 = s60;
       sucio = false;
       pinta();
+      // qué teselas hacen falta: como mucho ~7 veces por segundo, y siempre
+      // en el último fotograma (al acabar un zoom o un arrastre)
+      if (ahora - tPlan > 150 || !(sucio || sigue)) { tPlan = ahora; planifica(); }
     }
     if (sucio || sigue) raf = requestAnimationFrame(bucle);
   }
@@ -752,7 +915,7 @@ export async function montarTierraGL(canvas, {
   const io = new IntersectionObserver(([e]) => { enVista = e.isIntersecting; arranca(); });
   io.observe(canvas);
   if (nocheIni) { noche = true; await cargaNoche(); }
-  if (ajusta()) pinta();
+  if (ajusta()) { pinta(); planifica(); }
   arranca();
   const perdido = (e) => { e.preventDefault(); vivo = false; };
   canvas.addEventListener("webglcontextlost", perdido);
@@ -763,7 +926,10 @@ export async function montarTierraGL(canvas, {
   reduce.addEventListener("change", pide);
 
   return {
-    vista: () => ({ lat0, lon0: ((lon0 + 540) % 360 + 360) % 360 - 180, zoom }),
+    vista: () => ({
+      lat0, lon0: ((lon0 + 540) % 360 + 360) % 360 - 180, zoom,
+      teselas: finos.map((n) => [...n.estado.values()].filter((e) => e === "lista").length),
+    }),
     ponVista(la, lo) { lat0 = Math.max(-90, Math.min(90, la)); lon0 = lo; ancla = null; pide(); },
     ponZoom(z, ya = false) {
       zoomObj = Math.max(1, Math.min(zoomMax, z));
@@ -773,7 +939,7 @@ export async function montarTierraGL(canvas, {
     },
     zoom: hazZoom,
     mueve,
-    suelta: () => { agarrado = false; tAnt = 0; arranca(); },
+    suelta: () => { agarrado = false; tAnt = 0; planifica(); arranca(); },
     ponParado(b) { parado = b; tAnt = 0; arranca(); },
     parado: () => parado,
     proyecta,

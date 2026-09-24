@@ -17,7 +17,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 - **Commiteado** (`1b4306b`): paso 3 (chapas y X en el motor), la mano que
   solo se cierra al girar y el banco del rótulo (`titulo.html`).
 - **Commiteado** (`6f8d0e0`): paso 4, la portada con la Tierra entera.
-- **Sin commitear** (pedido del usuario al commitear el paso 4):
+- **Commiteado** (`5d80e07`, pedido del usuario al commitear el paso 4):
   - **Paso 5 hecho**: la Luna y Marte al tamaño común, disco de 70 svh (88 vw
     en vertical). La Luna tenía ~78 svh; Marte, 60. Su pixel art no cambia:
     solo lo que ocupan (`--luna-tam`, `--marte-disco`).
@@ -27,7 +27,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   - **Cambio de tema**: el astro se esconde en diagonal detrás del globo
     (hacia su centro) y el otro sale de detrás, en vez de bajar tras el
     horizonte.
-  - **Naves al 40 %**: un factor común `--naves-k` en todos los anchos
+  - **Naves al 40 %** (luego, 55 %): un factor común `--naves-k` en todos los anchos
     (escritorio y móvil). Se le enseñaron 1, 0,75 y 0,6 y pidió "tipo 3 o
     incluso algo más chico"; después, las ocho sobre el globo al 60, 50 y
     40 %, y eligió el 40.
@@ -35,8 +35,45 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     `planeta.js`): se pinta la luz vieja y encima la nueva cada vez más opaca
     (`pintaCon(L, mezcla)` con `CONSTANT_ALPHA`). `generar-tierra-quieto.mjs`
     espera 2 s tras cambiar la luz para no hacer la foto a medias.
-- **Siguiente**: que lo repase y commit; después, paso 6 (zoom con teselas y
-  nombres).
+- **Sin commitear**: naves al **55 %** (usuario: "sube a 55 %, las veo
+  chicas"; todas) y el **RQ-4 sobre el globo** (su sitio, `fijo-izq`, era el
+  20 % / 60 % de la pantalla y se quedaba fuera del planeta; ahora relativo al
+  disco: −0,36 / +0,12 diámetros del centro, también en el móvil).
+- **Paso 6 HECHO y commiteado**:
+  - **Nivel de detalle `n1` (16 px/grado) del mundo entero** en
+    `public/planeta/n1/` (128 teselas, 2,5 MB: el mar comprime a casi nada),
+    con el relieve suavizado (`--relieve 3`, la opción C que eligió). Solo hace
+    falta este nivel: con radio de arte 180 y zoom hasta ×6 la vista pide como
+    mucho 18,8 px/grado, y el corte entre 8 y 16 cae en ×3,6. La LUT pasa de
+    1529 a 1577 materiales. `PLANETA_V` 12.
+  - **Nombres**: `generar-nombres-tierra.py` → `public/planeta/tierra-nombres.json`,
+    con la capa de Marte y la Luna (`montarNombres`). Primero salieron
+    países; el usuario los quitó: "quitamos los nombres de países. Dejamos
+    continentes y ponemos océanos, mares y accidentes geográficos que sean
+    interesantes". Ahora, 131 (listas elegidas a mano, de Natural Earth, en
+    castellano):
+    - **rótulo de región**: continentes (de ×1,2 a ×2,6, `zmax`) y océanos
+      (desde ×1,2); mares, golfos y canales (44) y regiones físicas (49:
+      desiertos, cordilleras, mesetas, penínsulas, cuencas) desde ×1,8
+      (`zmin`) y cuando miden 90 px;
+    - **visor** (las esquinas): estrechos (Gibraltar, Bósforo, Dardanelos,
+      Bab el-Mandeb, Malaca, Taiwán y Ormuz, este a mano: no viene en Natural
+      Earth) y picos (Everest, K2, Aconcagua, Kilimanjaro, Mont Blanc, Teide,
+      Mulhacén, Aneto…), desde ×3; marco de 0,7° como mínimo.
+    `marte-nombres.js` admite `zmin` y `zmax` opcionales (Marte y la Luna no
+    los usan).
+  - Fuentes (en `logo-files/tierra-fuentes/`, fuera de Git): costas de
+    Natural Earth 1:10m, geografía de Natural Earth (mares 1:10m, regiones
+    1:50m, picos 1:10m) y relieve ETOPO1 a 24
+    px/grado (72 trozos de la NOAA → `etopo24.i16` con `elevacion-fina.py`).
+  - Cómo regenerar: `python3 rasterizar.py --nivel 2` (máscara), luego
+    `python3 generar-planeta-hero.py --canvas ../public/planeta/` (la base,
+    con `planeta-materiales.json`) y `python3 generar-planeta-hero.py --nivel 2
+    ../public/planeta/ --relieve 3` (~2 min); subir `PLANETA_V`.
+  - La línea de costa del nivel fino es más fina que la de la base (2 celdas
+    de 16 px/grado); se le ofreció engordarla y eligió "la C" tal cual.
+- Commiteado con él: naves al 55 % y el RQ-4 sobre el globo.
+- **Siguiente**: paso 7 (la noche).
 
 ## Qué quiere el usuario (24-sep-2026)
 
@@ -126,7 +163,7 @@ esté terminada.
 - [x] 4. Portada: el globo sustituye al horizonte; sitio del título, MGRS,
       naves y astros pequeños; vuelos a la Luna y a Marte.
 - [x] 5. Tamaño común: Luna y Marte al tamaño intermedio.
-- [ ] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
+- [x] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
       continentes y países.
 - [ ] 7. Noche: luces de ciudades, aurora, luz de luna.
 - [ ] 8. Probar en Zen y en el móvil; fusionar en `main`.

@@ -9,11 +9,21 @@ Datos de origen (Natural Earth, dominio publico). Descargar a este directorio:
 Uso:  python3 rasterizar.py     # escribe mapa_tierra.py
 Solo hace falta si cambias la resolucion o los umbrales de hielo; para el
 planeta basta con mapa_tierra.py, que ya esta generado.
+
+Niveles de zoom (Proyecto Tierra): con --nivel K rasteriza las costas finas
+de Natural Earth 1:10m (tierra-fuentes/ne_10m_land.geojson) a K veces la
+resolucion (K = 2: 0,0625 grados, 16 px/grado) y escribe un binario, un byte
+por celda (0 mar, 1 tierra, 2 hielo), fila 0 = 90 N:
+  python3 rasterizar.py --nivel 2   # -> tierra-fuentes/mascara-n2.bin
+Descarga:
+  curl -sSLo tierra-fuentes/ne_10m_land.geojson \\
+    https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson
 """
 import json, math, sys, time
 
-GRID_W = 2880           # columnas: 0.125 grados (antes 1440 = 0.25; subido para el canvas a 600 px)
-GRID_H = 1440           # filas
+NIVEL = int(sys.argv[sys.argv.index("--nivel") + 1]) if "--nivel" in sys.argv else 1
+GRID_W = 2880 * NIVEL   # columnas: 0.125 grados (antes 1440 = 0.25; subido para el canvas a 600 px)
+GRID_H = 1440 * NIVEL   # filas
 ICE_WATER_LAT = 91.0    # (desactivado) el mar ya no se vuelve hielo aquí: la banquisa la
                         # dibuja generar-planeta-hero.py con forma real (antes, >82N = círculo perfecto)
 ICE_LAND_LAT  = 75.0    # tierra por encima de esta latitud -> hielo
@@ -22,7 +32,7 @@ ICE_LAND_LAT  = 75.0    # tierra por encima de esta latitud -> hielo
 GREENLAND = (70.0, 84.0, -70.0, -15.0)
 
 t0 = time.time()
-data = json.load(open("ne_land.json"))
+data = json.load(open("ne_land.json" if NIVEL == 1 else "tierra-fuentes/ne_10m_land.geojson"))
 
 def rings(geom):
     if geom["type"] == "Polygon":
@@ -71,6 +81,27 @@ def kind(r, c, is_land):
     if not is_land and lat >= ICE_WATER_LAT:
         return "i"
     return "l" if is_land else "o"
+
+if NIVEL > 1:
+    # binario, sin RLE ni modulo: a esta resolucion el modulo seria enorme
+    out = bytearray(GRID_W * GRID_H)
+    code = {"o": 0, "l": 1, "i": 2}
+    for r in range(GRID_H):
+        xs = sorted(crossings[r])
+        land = [False] * GRID_W
+        for i in range(0, len(xs) - 1, 2):
+            a = max(0, int(xs[i] + 0.5))
+            b = min(GRID_W, int(xs[i + 1] + 0.5))
+            for c in range(a, b):
+                land[c] = True
+        base = r * GRID_W
+        for c in range(GRID_W):
+            out[base + c] = code[kind(r, c, land[c])]
+    with open(f"tierra-fuentes/mascara-n{NIVEL}.bin", "wb") as fh:
+        fh.write(out)
+    print(f"escrito tierra-fuentes/mascara-n{NIVEL}.bin: {GRID_W} x {GRID_H} "
+          f"({time.time()-t0:.1f}s)", file=sys.stderr)
+    sys.exit(0)
 
 ROWS = []
 for r in range(GRID_H):
