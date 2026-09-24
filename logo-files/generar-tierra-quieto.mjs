@@ -36,7 +36,7 @@ const t = await montarTierraGL(document.getElementById("c"), {
 t.ponParado(true);
 window.foto = async (noche) => {
   t.ponNoche(noche);
-  await new Promise((r) => setTimeout(r, 600));
+  await new Promise((r) => setTimeout(r, 2000));   // el fundido de día a noche dura 1,5 s
   return t.instantanea(${LADO}).toDataURL("image/png");
 };
 window.listo = true;

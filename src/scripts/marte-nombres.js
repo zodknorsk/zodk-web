@@ -130,7 +130,8 @@ export async function montarNombres(capa, marte, chapas = [], {
     const z = marte.vista().zoom, ppg = marte.pxGrado();
     const pantalla = Math.max(window.innerWidth, window.innerHeight);
     // Los umbrales (`px`) se ajustaron con el disco de 540 px de un portátil
-    // (60 svh de 900). En el móvil el disco es más pequeño (88 vw, unos 340
+    // (60 svh de 900; desde el 24-sep-2026 el disco es de 70 svh, 630 px, y
+    // salen algo antes). En el móvil el disco es más pequeño (88 vw, unos 340
     // px) y los lugares pequeños no llegaban a su umbral ni a x6 (usuario,
     // 23-sep-2026: "Olympus Paterae … en móvil no lo llego a ver"): el umbral
     // encoge con el disco, así salen al mismo zoom que en el portátil. En
