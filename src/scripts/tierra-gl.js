@@ -70,17 +70,18 @@ uniform float uR;           // radio del disco en píxeles de arte
 uniform vec3 uM0, uM1, uM2; // vista -> Tierra (filas de Ry(lon0)·Rx(lat0))
 uniform vec3 uS;            // sol en vista
 uniform usampler2D uMapa;   // nivel 0 (filas 0..MH-1) y mipmaps 1..LMAX en fila (filas MH..2MH-1)
+uniform float uSuelo;       // luz de la cara sin sol: NIGHT de día, N_NIGHT a la luz de la luna
 out vec4 o;
 const float PI = 3.141592653589793;
 const float AA = ${f(D.LIMB_AA)};
-const float NIGHT = ${f(D.NIGHT)}, TERM_A = ${f(D.TERM_A)}, TERM_B = ${f(D.TERM_B)}, LIMB_K = ${f(D.LIMB_K)};
+const float TERM_A = ${f(D.TERM_A)}, TERM_B = ${f(D.TERM_B)}, LIMB_K = ${f(D.LIMB_K)};
 const float INV_LN_LS = ${f(D.LIGHT_SUB / D.LNSTEP)};
 const int KMIN = ${D.LUT_KMIN * D.LIGHT_SUB}, KN = ${D.LUT_KN};
 const int MW = ${D.MW}, MH = ${D.MH}, LMAX = ${lmax};
 const int OFF[${lmax + 1}] = int[${lmax + 1}](${off.join(", ")});
 
 int escalon(float lam, float dc, float limbMul) {
-  float bright = (NIGHT + (1.0 - NIGHT) * smoothstep(TERM_A, TERM_B, lam))
+  float bright = (uSuelo + (1.0 - uSuelo) * smoothstep(TERM_A, TERM_B, lam))
                * (1.0 - LIMB_K * smoothstep(0.72, 1.0, dc) * limbMul);
   int k = int(floor(log(max(bright, 1e-3)) * INV_LN_LS + 0.5));
   return clamp(k - KMIN, 0, KN - 1);
@@ -204,10 +205,11 @@ uniform vec2 uEscala;       // píxeles de arte por píxel del canvas
 uniform vec2 uTam;
 uniform float uR;
 uniform vec3 uS;
+uniform vec3 uAtmo;         // halo del borde: ATMO de día, N_ATMO de noche
+uniform vec3 uNube[5];      // tonos de las nubes: C_NUBE / C_NUBE_NOCHE
 out vec4 o;
 const float AA = ${f(D.LIMB_AA)};
-const vec3 ESPACIO = ${c3(D.SPACE)}, ATMO = ${c3(D.ATMO)};
-const vec3 NUBE[5] = vec3[5](${D.C_NUBE.map(c3).join(", ")});
+const vec3 ESPACIO = ${c3(D.SPACE)};
 const vec3 PAL[${paleta.length}] = vec3[${paleta.length}](${paleta.map(c3).join(", ")});
 void main() {
   ivec2 p = ivec2(floor(gl_FragCoord.xy * uEscala));
@@ -222,7 +224,7 @@ void main() {
     int k = g - 64;
     float l = t.b;
     float tt = k < 2 ? min(1.0, l + 0.1) : k < 4 ? l : max(0.7, l);
-    o = vec4(mix(ESPACIO, NUBE[k], tt), 1.0);
+    o = vec4(mix(ESPACIO, uNube[k], tt), 1.0);
     return;
   }
   int m = int(t.r * 255.0 + 0.5) + g * 256, j = int(t.b * 255.0 + 0.5);
@@ -239,7 +241,7 @@ void main() {
     float lam = dot(U, uS);
     if (lam > 0.0) {
       float a = 0.3 * floor(smoothstep(0.93, 1.0, dc) * smoothstep(0.0, 0.45, lam) * 4.0 + 0.5) / 4.0;
-      col = mix(col, ATMO, a);
+      col = mix(col, uAtmo, a);
     }
     float rin = 1.0 - AA / uR, rout = 1.0 + AA / uR;
     if (dc > rin) col = mix(ESPACIO, col, 1.0 - smoothstep(rin, rout, dc));
@@ -264,8 +266,9 @@ function programa(gl, vs, fs) {
   const u = {};
   const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
   for (let i = 0; i < n; i++) {
+    // las listas (uNube[5]) llegan como "uNube[0]": se guardan sin el [0]
     const nombre = gl.getActiveUniform(p, i).name;
-    u[nombre] = gl.getUniformLocation(p, nombre);
+    u[nombre.replace(/\[0\]$/, "")] = gl.getUniformLocation(p, nombre);
   }
   return { p, u };
 }
@@ -298,7 +301,7 @@ function filas(lat0, lon0) {
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
  *   disco?: () => number, alPintar?: () => void, zoomMax?: number,
- *   banderas?: string[] | null, pausado?: () => boolean }} [opciones]
+ *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean }} [opciones]
  */
 export async function montarTierraGL(canvas, {
   base = "/planeta/",
@@ -310,6 +313,8 @@ export async function montarTierraGL(canvas, {
   alPintar = () => {},
   banderas = null,                               // códigos iso de las chapas a pintar (null = todas)
   pausado = () => false,                         // no gira mientras dé true (en la portada: ratón sobre una chapa o una nave)
+  noche: nocheIni = false,                       // a la luz de la luna (el tema oscuro); se cambia con ponNoche
+  sinNubes = false,                              // sin nubes (la foto de tierra-quieto.png)
   zoomMax = 6,                                   // como Marte y la Luna (usuario, 24-sep-2026: "¿sería posible un x5 o x6?")
 } = {}) {
   const gl = canvas.getContext("webgl2", {
@@ -366,6 +371,27 @@ export async function montarTierraGL(canvas, {
   const texLut = textura(gl);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, lutBm.width, lutBm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
     new Uint8Array(lp.buffer, lp.byteOffset, lutBm.width * lutBm.height * 4));
+
+  // Noche (provisional, Proyecto Tierra paso 7 pendiente): la misma superficie
+  // con la LUT de noche de generar-planeta-hero.py, la luna en vez del sol,
+  // el suelo de la noche, el halo y las nubes de noche. Sin luces de ciudades,
+  // aurora ni brillo de atmósfera todavía. La LUT se baja la primera vez.
+  let noche = false, texLutNoche = null, pidiendoNoche = null;
+  function cargaNoche() {
+    pidiendoNoche ??= bitmap(`${base}planeta-lut-noche.png${v}`).then((bm) => {
+      const px = pixels(bm);
+      texLutNoche = textura(gl);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, bm.width, bm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+        new Uint8Array(px.buffer, px.byteOffset, bm.width * bm.height * 4));
+    });
+    return pidiendoNoche;
+  }
+  const aVec = (c) => c.map((x) => x / 255);
+  const LUZ = {
+    dia: { S: [D.SX, -D.SY, D.SZ], suelo: D.NIGHT, atmo: aVec(D.ATMO), nube: D.C_NUBE.flatMap(aVec) },
+    noche: { S: [D.MX, -D.MY, D.MZ], suelo: D.N_NIGHT, atmo: aVec(D.N_ATMO), nube: D.C_NUBE_NOCHE.flatMap(aVec) },
+  };
+  const luz = () => (noche && texLutNoche ? LUZ.noche : LUZ.dia);
 
   const progCod = programa(gl, VERT, fragCodigos(D, off, LMAX));
   const progNubes = programa(gl, VERT_NUBES, FRAG_NUBES);
@@ -436,10 +462,9 @@ export async function montarTierraGL(canvas, {
   gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 20, 8);
   gl.bindVertexArray(null);
 
-  // Sol en vista (x derecha, y ARRIBA, z hacia quien mira): el de los datos
-  // lleva la y hacia abajo. No cambia al girar ni al arrastrar: la luz viene
-  // siempre de arriba a la izquierda, como en la portada de siempre.
-  const S = [D.SX, -D.SY, D.SZ];
+  // Sol (o luna) en vista (x derecha, y ARRIBA, z hacia quien mira): el de
+  // los datos lleva la y hacia abajo. No cambia al girar ni al arrastrar: la
+  // luz viene siempre del mismo lado, como en la portada de siempre.
 
   let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
   let parado = false, agarrado = false, enVista = true;
@@ -478,7 +503,7 @@ export async function montarTierraGL(canvas, {
 
   // --- Un fotograma.
   function pinta() {
-    const M = filas(lat0, lon0), R = R0 * zoom;
+    const M = filas(lat0, lon0), R = R0 * zoom, L = luz(), S = L.S;
     const unidad = (i, t, loc) => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(loc, i); };
     gl.disable(gl.BLEND);
     // (1) códigos
@@ -493,6 +518,7 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uM1, M[1]);
     gl.uniform3fv(u.uM2, M[2]);
     gl.uniform3fv(u.uS, S);
+    gl.uniform1f(u.uSuelo, L.suelo);
     unidad(0, texMapa, u.uMapa);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     // (1b) nubes: aquí sus uniformes; se pintan después de las sombras de las chapas
@@ -536,7 +562,7 @@ export async function montarTierraGL(canvas, {
     u = progNubes.u;
     gl.useProgram(progNubes.p);
     gl.bindVertexArray(vaoNubes);
-    gl.drawArrays(gl.POINTS, 0, nCeldas);
+    if (!sinNubes) gl.drawArrays(gl.POINTS, 0, nCeldas);
     u = progSprites.u;
     gl.useProgram(progSprites.p);
     sprites(capaChapas, D.BAND_PZ, 1, 0);
@@ -548,11 +574,13 @@ export async function montarTierraGL(canvas, {
     u = progColor.u;
     gl.useProgram(progColor.p);
     unidad(0, trabajo, u.uC);
-    unidad(1, texLut, u.uLut);
+    unidad(1, L === LUZ.noche ? texLutNoche : texLut, u.uLut);
     gl.uniform2f(u.uEscala, W / canvas.width, H / canvas.height);
     gl.uniform2f(u.uTam, W, H);
     gl.uniform1f(u.uR, R);
     gl.uniform3fv(u.uS, S);
+    gl.uniform3fv(u.uAtmo, L.atmo);
+    gl.uniform3fv(u.uNube, L.nube);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     alPintar();
   }
@@ -584,7 +612,7 @@ export async function montarTierraGL(canvas, {
     const B = [cl * Math.sin(lo), Math.sin(la), cl * Math.cos(lo)];
     const M = filas(lat0, lon0), R = R0 * zoom;
     const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
-    const l = U[0] * S[0] + U[1] * S[1] + U[2] * S[2];
+    const S = luz().S, l = U[0] * S[0] + U[1] * S[1] + U[2] * S[2];
     const a = D.TERM_A + 0.06, b = D.TERM_B + 0.2, t = Math.max(0, Math.min(1, (l - a) / (b - a)));
     return { z: U[2], luz: t * t * (3 - 2 * t), cx: U[0] * R + W / 2 - 0.5, cy: -U[1] * R + H / 2 - 0.5 };
   }
@@ -696,6 +724,7 @@ export async function montarTierraGL(canvas, {
   observa.observe(canvas.parentElement);
   const io = new IntersectionObserver(([e]) => { enVista = e.isIntersecting; arranca(); });
   io.observe(canvas);
+  if (nocheIni) { noche = true; await cargaNoche(); }
   if (ajusta()) pinta();
   arranca();
   const perdido = (e) => { e.preventDefault(); vivo = false; };
@@ -728,6 +757,27 @@ export async function montarTierraGL(canvas, {
       return g && { lat: g.lat / DEG, lon: g.lon / DEG };
     },
     chapas: chapasVisibles,
+    // Tema: a la luz de la luna (true) o del sol. De noche, en cuanto llega su
+    // LUT (hasta entonces, de día).
+    ponNoche(b) {
+      noche = b;
+      if (b && !texLutNoche) cargaNoche().then(pide);
+      pide();
+    },
+    // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x
+    // `lado` centrado en el disco (como la de marte-gl.js). Para la imagen
+    // fija (tierra-quieto.png) y los vuelos. Se pinta y se copia en el mismo
+    // paso: el lienzo WebGL no guarda lo pintado (preserveDrawingBuffer: false).
+    instantanea(lado) {
+      pinta();
+      const c = document.createElement("canvas");
+      c.width = c.height = lado;
+      const x = c.getContext("2d");
+      x.imageSmoothingEnabled = false;
+      const e = canvas.width / W;                  // px del lienzo por px de arte
+      x.drawImage(canvas, (canvas.width - lado * e) / 2, (canvas.height - lado * e) / 2, lado * e, lado * e, 0, 0, lado, lado);
+      return c;
+    },
     // Píxeles CSS que mide un píxel de arte.
     pxArte: () => px,
     // X de blanco en { lat, lon } (grados; null = quitarla). Gira con la Tierra.

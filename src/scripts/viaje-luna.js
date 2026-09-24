@@ -50,13 +50,12 @@ export const VUELO_MARTE = {
   iconoDisco: 24 / 56, claseIcono: "viaje-icono-marte",
 };
 // El vuelo de /marte a la Tierra (hacia delante, desde la Tierra pequeña):
-// acaba en la Tierra de la portada, que no es un disco centrado sino el
-// horizonte de abajo; su caja se mide en un .hero-planet (`destino`). La
-// imagen es planeta-quieto*.png (600 x 585, el disco la llena de alto) puesta
-// en un lienzo cuadrado de 1200 con el disco en medio (ver /marte); el icono,
-// radio 12 en 56.
+// acaba en la Tierra de la portada, cuya caja se mide en un .hero-planet
+// (`destino`). Desde el Proyecto Tierra es un disco centrado (antes, el
+// horizonte de abajo): la imagen es tierra-quieto*.png, 368 px de arte con el
+// disco de 360 en medio (generar-tierra-quieto.mjs); el icono, radio 12 en 56.
 export const VUELO_TIERRA = {
-  imgLado: 1200, imgDisco: 1170, iconoDisco: 24 / 56, claseIcono: "viaje-icono-tierra",
+  imgLado: 368, imgDisco: 360, iconoDisco: 24 / 56, claseIcono: "viaje-icono-tierra",
 };
 
 function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }

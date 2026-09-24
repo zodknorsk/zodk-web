@@ -113,16 +113,16 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   // Ir a la Tierra (la Tierra pequeña): hacia delante, como los vuelos de
   // ida (usuario, 22-sep-2026: "la animación sería ir hacia adelante, no
   // hacia detrás"). La cámara gira hacia la Tierra pequeña, que crece hasta
-  // quedar como en la portada (el horizonte de abajo), y Marte, tal como se
-  // haya dejado (girado o acercado: vale el lienzo tal cual), crece un poco y
-  // sale por abajo, como la Luna en el vuelo de /luna a Marte. La Tierra de la
-  // portada se mide en un .hero-planet puesto aquí sin verse (mismo sitio y
-  // tamaño que allí); su imagen, la del tema que toque, va en un lienzo
-  // cuadrado de 1200 con el disco en medio (VUELO_TIERRA).
+  // quedar como en la portada (el disco entero, centrado), y Marte, tal como
+  // se haya dejado (girado o acercado: vale el lienzo tal cual), crece un poco
+  // y sale por abajo, como la Luna en el vuelo de /luna a Marte. La Tierra de
+  // la portada se mide en un .hero-planet puesto aquí sin verse (mismo sitio y
+  // tamaño que allí); su imagen, tierra-quieto*.png del tema que toque
+  // (VUELO_TIERRA).
   async function irATierra(hero: HTMLElement, m: Marte | null, marteEl: HTMLElement, icono: HTMLElement, apagar: HTMLElement[]) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/");
     const img = new Image();
-    img.src = `/planeta/planeta-quieto${document.documentElement.classList.contains("dark") ? "-noche" : ""}.png?v=${PLANETA_V}`;
+    img.src = `/planeta/tierra-quieto${document.documentElement.classList.contains("dark") ? "-noche" : ""}.png?v=${PLANETA_V}`;
     const cargada = img.decode().catch(() => {});
     if (m) {
       for (const f of quitar.slice(1)) f();     // sin mano ni zoom mientras se va
@@ -130,18 +130,13 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
       await alejarAx1(m);
     }
     await cargada;
-    const cuadrado = document.createElement("canvas");
-    cuadrado.width = cuadrado.height = 1200;
-    const x = cuadrado.getContext("2d")!;
-    x.imageSmoothingEnabled = false;
-    x.drawImage(img, 0, 15, 1200, 1170);         // 600 x 585 a x2, el disco en (600, 600)
     const destino = document.createElement("div");
     destino.className = "hero-planet";
     destino.style.visibility = "hidden";
     destino.setAttribute("aria-hidden", "true");
     hero.append(destino);
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
-    const vuelo = volarALuna({ icono, planeta: marteEl, estrellas, apagar, img: cuadrado, destino, ...VUELO_TIERRA });
+    const vuelo = volarALuna({ icono, planeta: marteEl, estrellas, apagar, img, destino, ...VUELO_TIERRA });
     for (const f of quitar) f();                // sin mano, zoom ni motor: el lienzo se queda con lo último que pintó
     quitar = [];
     estrellasLlegada = await vuelo.fin;

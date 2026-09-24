@@ -426,13 +426,14 @@ export async function montarMarte(canvas, {
 // 22-sep-2026). Con `alArrastrar`, `agarrando` no llega al pinchar sino al
 // empezar a girar: un clic suelto no cierra la mano (la Tierra, usuario,
 // 24-sep-2026: "si se hace un solo click, que no salga la mano cerrada").
-// Devuelve la función que lo desmonta.
+// `tactil()`: si un dedo agarra (en la portada, solo con zoom: sin él, el dedo
+// baja la página). Devuelve la función que lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ mueve: (dx: number, dy: number) => void, suelta: () => void }} marte
- * @param {{ alArrastrar?: boolean }} [opciones]
+ * @param {{ alArrastrar?: boolean, tactil?: () => boolean }} [opciones]
  */
-export function montarMano(zona, marte, { alArrastrar = false } = {}) {
+export function montarMano(zona, marte, { alArrastrar = false, tactil = () => true } = {}) {
   const UMBRAL = 4;                               // px CSS antes de que cuente como arrastre
   const NO_AGARRA = "a, button, input, select, textarea, label, summary, [data-sin-arrastre]";
   let pulsado = null, arrastrado = false;         // pulsado: { id, x0, y0, x, y, activo }
@@ -449,6 +450,7 @@ export function montarMano(zona, marte, { alArrastrar = false } = {}) {
   };
   const empieza = (e) => {
     if (e.button !== 0 || pulsado || (e.target instanceof Element && e.target.closest(NO_AGARRA))) return;
+    if (e.pointerType === "touch" && !tactil()) return;
     e.preventDefault();                           // sin selección de texto ni arrastrar imágenes
     pulsado = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false };
     arrastrado = false;

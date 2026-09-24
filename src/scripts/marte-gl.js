@@ -765,12 +765,17 @@ export async function montarMarteGL(canvas, {
 // clase `pellizcando` (la mano no gira con el primer dedo). En iOS llegan
 // además gesture* con el mismo pellizco: se ignoran si hay dedos (si no, el
 // zoom iría doble). Devuelve la función que lo desmonta.
+// `soloCtrl` (la portada, que tiene página debajo): la rueda normal baja la
+// página como siempre; solo el pellizco del trackpad (rueda con ctrlKey) o
+// Ctrl + rueda acercan (usuario, 24-sep-2026).
 /**
  * @param {HTMLElement} zona
  * @param {{ zoom: (factor: number, clientX?: number, clientY?: number) => void }} marte
+ * @param {{ soloCtrl?: boolean }} [opciones]
  */
-export function montarZoom(zona, marte) {
+export function montarZoom(zona, marte, { soloCtrl = false } = {}) {
   const rueda = (e) => {
+    if (soloCtrl && !e.ctrlKey) return;
     e.preventDefault();
     let d = e.deltaY;
     if (e.deltaMode === 1) d *= 16;                // en líneas
