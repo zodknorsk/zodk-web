@@ -423,12 +423,16 @@ export async function montarMarte(canvas, {
 // disco). Pone en `zona` la clase `arrastrable` siempre y `agarrando` desde
 // que se pincha hasta que se suelta; el cursor lo pone el CSS de la página. En
 // /marte, flecha normal y mano cerrada solo con el botón pulsado (usuario,
-// 22-sep-2026). Devuelve la función que lo desmonta.
+// 22-sep-2026). Con `alArrastrar`, `agarrando` no llega al pinchar sino al
+// empezar a girar: un clic suelto no cierra la mano (la Tierra, usuario,
+// 24-sep-2026: "si se hace un solo click, que no salga la mano cerrada").
+// Devuelve la función que lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ mueve: (dx: number, dy: number) => void, suelta: () => void }} marte
+ * @param {{ alArrastrar?: boolean }} [opciones]
  */
-export function montarMano(zona, marte) {
+export function montarMano(zona, marte, { alArrastrar = false } = {}) {
   const UMBRAL = 4;                               // px CSS antes de que cuente como arrastre
   const NO_AGARRA = "a, button, input, select, textarea, label, summary, [data-sin-arrastre]";
   let pulsado = null, arrastrado = false;         // pulsado: { id, x0, y0, x, y, activo }
@@ -448,7 +452,7 @@ export function montarMano(zona, marte) {
     e.preventDefault();                           // sin selección de texto ni arrastrar imágenes
     pulsado = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false };
     arrastrado = false;
-    zona.classList.add("agarrando");              // la mano cerrada, nada más pinchar
+    if (!alArrastrar) zona.classList.add("agarrando");   // la mano cerrada, nada más pinchar
   };
   const mueve = (e) => {
     if (!pulsado || e.pointerId !== pulsado.id) return;

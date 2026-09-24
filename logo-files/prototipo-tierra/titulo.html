@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: el título sobre la Tierra</title>
+<!--
+  Banco del título de la portada con el globo entero (Proyecto Tierra, paso 4,
+  logo-files/TIERRA-WIP.md). Decidido por el usuario (24-sep-2026): sin
+  título grande ni animaciones de entrada y salida sobre el globo; todo
+  arriba del globo, en el rótulo: "el blog de hegoi márquez" en minúscula,
+  escrito a máquina con cursor, con las letras algo separadas; el lema y la
+  coordenada aparecen debajo, suaves. A los 5 s el nombre y el lema se
+  desvanecen a la vez (el cursor, parpadeando hasta entonces, se va con
+  ellos) y solo queda la coordenada.
+  Servir desde la raíz del repo (python3 -m http.server 4400) y abrir
+  http://127.0.0.1:4400/logo-files/prototipo-tierra/titulo.html
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #05060a; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  #tierra { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  #sonda { position: absolute; height: 70svh; width: 0; visibility: hidden; }
+  #panel { position: fixed; left: 10px; bottom: 10px; z-index: 5; background: #000a; padding: 5px 8px;
+    border-radius: 6px; font: 11px/2 ui-monospace, Menlo, monospace; color: #9fb3c8; }
+  #panel button { font: inherit; color: #05060a; background: #8fc6e8; border: 0; border-radius: 4px;
+    padding: 1px 6px; cursor: pointer; }
+  /* la cabecera de la portada, de referencia (no hace nada) */
+  #nav { position: absolute; top: 26px; left: 0; right: 0; text-align: center; z-index: 3; pointer-events: none;
+    font: 400 15px system-ui, -apple-system, sans-serif; color: #cfd6de; opacity: .85; }
+
+  :root {
+    --contorno-suave: 1px 0 0 rgba(3,4,8,.9), -1px 0 0 rgba(3,4,8,.9), 0 1px 0 rgba(3,4,8,.9), 0 -1px 0 rgba(3,4,8,.9);
+    --globo-arriba: calc(50% - 35svh);      /* borde de arriba del disco (70 svh, centrado) */
+  }
+  @keyframes desaparece { to { opacity: 0; } }
+
+  /* ================= EL RÓTULO ARRIBA DEL GLOBO ================= */
+  .rotulo { position: absolute; left: 50%; top: calc(var(--globo-arriba) - 60px); transform: translateX(-50%);
+    z-index: 2; pointer-events: none; text-align: center; visibility: hidden; }
+  .rotulo.ve { visibility: visible; }
+  .rotulo.vete { visibility: visible; animation: desaparece .4s forwards; }
+  /* Letras algo separadas, menos que los rótulos de región de Marte
+     (usuario: "las letras más juntas"; antes, 0,6em). */
+  .rotulo .nombre { font: 500 14px/1 "IBM Plex Mono", monospace; letter-spacing: .28em; text-indent: .28em;
+    color: rgba(238,241,244,.85); text-shadow: var(--contorno-suave); white-space: nowrap; }
+  /* Máquina de escribir: el texto entero está puesto (no se mueve al
+     escribirse), cada letra transparente hasta que le toca (no oculta: con
+     visibility, el cursor asomaba con el rótulo aún oculto); el cursor es un
+     bloque en la casilla de la siguiente letra. */
+  .rotulo .nombre .l { color: transparent; text-shadow: none; position: relative; }
+  .rotulo .nombre .l.v { color: inherit; text-shadow: inherit; }
+  /* Al acabar, el cursor va DETRÁS de la última letra (::after, tras su
+     espaciado) en vez de en una casilla más: esa casilla descentraba el
+     nombre. Parpadeo lento, de terminal (usuario: "el cursor se mueve más
+     despacio"). */
+  .rotulo .nombre .l.cur::before, .rotulo .nombre .l.fin::after {
+    content: ""; position: absolute; top: -.05em; width: .62em; height: 1.05em;
+    background: rgba(238,241,244,.9); box-shadow: 0 0 0 1px rgba(3,4,8,.9);
+  }
+  .rotulo .nombre .l.cur::before { left: 0; }
+  .rotulo .nombre .l.fin::after { left: 100%; animation: parpadeo 1.1s steps(1) infinite; }
+  @keyframes parpadeo { 50% { opacity: 0; } }
+  .rotulo .lema { margin-top: 10px; font: 500 9px/1 "IBM Plex Mono", monospace; letter-spacing: .45em; text-indent: .45em;
+    text-transform: uppercase; color: rgba(223,228,234,.55); white-space: nowrap; opacity: 0; }
+  /* La coordenada, centrada en el eje (el espaciado de la última letra se
+     compensa con text-indent, como en el nombre y el lema) y en una caja de
+     ancho fijo, la de la coordenada más larga: no baila al cambiar de largo.
+     El botón de pausa cuelga a su izquierda, fuera del centrado. */
+  .rotulo .lect { position: relative; width: calc(18 * (1ch + .14em)); margin: 10px auto 0;
+    font: 500 10px/1 "IBM Plex Mono", monospace; letter-spacing: .14em; text-indent: .14em;
+    color: rgba(255,255,255,.9); text-shadow: var(--contorno-suave); white-space: nowrap; opacity: 0; }
+  .rotulo .lect b { position: absolute; right: calc(100% + .9em); top: 0; font-weight: 500;
+    letter-spacing: 0; text-indent: 0; }
+  .rotulo.lema-ve .lema { animation: sube .6s forwards; }
+  .rotulo.lect-ve .lect { animation: sube-lect .5s forwards; }
+  @keyframes sube { to { opacity: 1; } }
+  /* A los 5 s se van el nombre y el lema, los dos a la vez y con el cursor,
+     en un desvanecimiento medio rápido; la coordenada se queda donde está
+     (usuario, 24-sep-2026: "al unísono con un desvanecimiento medio rápido").
+     Va en el bloque que los envuelve: cada uno por su lado no iban a la par
+     (la animación de salida del lema pisaba la de entrada y se iba de golpe). */
+  .rotulo.solo-lect .cabeza { animation: se-va .6s ease-in forwards; }
+  @keyframes se-va { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes sube-lect { to { opacity: .7; } }
+
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="tierra"></canvas>
+  <div id="sonda"></div>
+  <div id="nav">notas / eventos / moon-project / mars-project &nbsp;☾</div>
+
+  <div class="rotulo" id="rotulo">
+    <div class="cabeza">
+      <div class="nombre" id="nombre">el blog de hegoi márquez</div>
+      <div class="lema">historia · inteligencia · osint</div>
+    </div>
+    <div class="lect"><b>▮▮</b>-- --- ----- -----</div>
+  </div>
+
+  <div id="panel"><button id="otra">repetir</button> · <button id="pausa">parar el bucle</button></div>
+</div>
+<script type="module">
+import { montarMano } from "../../src/scripts/marte.js";
+import { montarTierraGL } from "../../src/scripts/tierra-gl.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda");
+const tierra = await montarTierraGL($("tierra"), {
+  base: "../../public/planeta/",
+  disco: () => sonda.getBoundingClientRect().height,
+  lon0: 5,
+});
+if (tierra) montarMano($("hero"), tierra, { alArrastrar: true });
+
+// El nombre del rótulo, letra a letra.
+const nombre = $("nombre");
+const texto = nombre.textContent;
+nombre.innerHTML = [...texto].map((c) => `<span class="l">${c === " " ? "&nbsp;" : c}</span>`).join("");
+const letras = [...nombre.querySelectorAll(".l")];
+const PASO = 75;                                 // ms por letra
+
+const r = $("rotulo");
+let tt = [], bucle = true;
+const luego = (ms, f) => tt.push(setTimeout(f, ms));
+function escribe(t0) {
+  letras.forEach((l) => l.classList.remove("v", "cur", "fin"));
+  luego(t0, () => letras[0].classList.add("cur"));
+  for (let i = 0; i < letras.length; i++) {
+    luego(t0 + (i + 1) * PASO, () => {
+      letras[i].classList.remove("cur");
+      letras[i].classList.add("v");
+      // el cursor, a la siguiente casilla; tras la última, detrás de ella,
+      // parpadeando hasta que el nombre se desvanece y se va con él (usuario,
+      // 24-sep-2026: "deja el cursor moviéndose todo el tiempo hasta que desaparezca")
+      if (i + 1 < letras.length) letras[i + 1].classList.add("cur");
+      else letras[i].classList.add("fin");
+    });
+  }
+  return t0 + letras.length * PASO;
+}
+function ciclo() {
+  tt.forEach(clearTimeout);
+  tt = [];
+  r.className = "rotulo";
+  void r.offsetWidth;                            // reinicia las animaciones de CSS
+  const t0 = 400;
+  luego(t0, () => r.classList.add("ve"));
+  const fin = escribe(t0);
+  luego(fin + 200, () => r.classList.add("lema-ve"));
+  luego(fin + 600, () => r.classList.add("lect-ve"));
+  luego(fin + 5000, () => r.classList.add("solo-lect"));   // a los 5 s (usuario)
+  if (bucle) {
+    luego(fin + 8500, () => r.classList.replace("ve", "vete"));
+    luego(fin + 9500, ciclo);
+  }
+}
+$("otra").addEventListener("click", ciclo);
+
+$("pausa").addEventListener("click", () => {
+  bucle = !bucle;
+  $("pausa").textContent = bucle ? "parar el bucle" : "en bucle";
+  ciclo();
+});
+window.ciclo = ciclo;                            // para las capturas
+await document.fonts.ready;
+ciclo();
+</script>
+</body>
+</html>

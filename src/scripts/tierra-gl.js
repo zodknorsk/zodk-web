@@ -149,8 +149,51 @@ in float vLuz;
 out vec4 o;
 void main() { o = vec4(0.0, float(64 + vTono) / 255.0, vLuz, 1.0); }`;
 
+// (1c) Chapas de bandera, su sombra y la X de blanco: como las nubes, un
+// punto por celda, clavado a un punto de la Tierra (chapasVisibles(),
+// sombras(), chapas() y pintaMarca() de planeta.js). Las chapas y la X salen
+// con G = 128 y R = color de la paleta (B = luz); la sombra solo suma 128 a
+// B (mezcla aditiva sobre el azul), y la pasada de color la oscurece.
+const VERT_SPRITES = `#version 300 es
+precision highp float;
+layout(location = 0) in vec2 aGeo;      // latitud y longitud del punto (radianes)
+layout(location = 1) in vec3 aCelda;    // desplazamiento (px de arte, y abajo) y color de la paleta
+uniform vec2 uTam;
+uniform float uR;
+uniform vec3 uM0, uM1, uM2;
+uniform vec3 uS;
+uniform float uTermA, uTermB;
+uniform float uPzMin;                   // no más cerca del borde que esto
+uniform float uConLuz;                  // 1: el color se apaga hacia el terminador (chapas)
+flat out int vCol;
+out float vLuz;
+void main() {
+  float cl = cos(aGeo.x);
+  vec3 B = vec3(cl * sin(aGeo.y), sin(aGeo.x), cl * cos(aGeo.y));
+  vec3 U = vec3(uM0.x * B.x + uM1.x * B.y + uM2.x * B.z,
+                uM0.y * B.x + uM1.y * B.y + uM2.y * B.z,
+                uM0.z * B.x + uM1.z * B.y + uM2.z * B.z);
+  float bright = smoothstep(uTermA + 0.06, uTermB + 0.2, dot(U, uS));
+  gl_PointSize = 1.0;
+  vCol = int(aCelda.z);
+  vLuz = uConLuz > 0.5 ? 0.72 + 0.28 * bright : 1.0;
+  if (U.z <= uPzMin || bright < 0.12) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); return; }
+  float cx = U.x * uR + 0.5 * uTam.x - 0.5, cy = -U.y * uR + 0.5 * uTam.y - 0.5;
+  float x = floor(cx + aCelda.x + 0.5), y = floor(cy + aCelda.y + 0.5);
+  gl_Position = vec4((x + 0.5) / uTam.x * 2.0 - 1.0, 1.0 - (y + 0.5) / uTam.y * 2.0, 0.0, 1.0);
+}`;
+const FRAG_SPRITES = `#version 300 es
+precision highp float;
+flat in int vCol;
+in float vLuz;
+uniform int uSombra;
+out vec4 o;
+void main() {
+  o = uSombra == 1 ? vec4(0.0, 0.0, 128.0 / 255.0, 0.0) : vec4(float(vCol) / 255.0, 128.0 / 255.0, vLuz, 1.0);
+}`;
+
 // (2) Color y ampliación al canvas.
-function fragColor(D) {
+function fragColor(D, paleta) {
   const c3 = (c) => `vec3(${c.map((x) => f(x / 255)).join(", ")})`;
   return `#version 300 es
 precision highp float;
@@ -165,11 +208,16 @@ out vec4 o;
 const float AA = ${f(D.LIMB_AA)};
 const vec3 ESPACIO = ${c3(D.SPACE)}, ATMO = ${c3(D.ATMO)};
 const vec3 NUBE[5] = vec3[5](${D.C_NUBE.map(c3).join(", ")});
+const vec3 PAL[${paleta.length}] = vec3[${paleta.length}](${paleta.map(c3).join(", ")});
 void main() {
   ivec2 p = ivec2(floor(gl_FragCoord.xy * uEscala));
   vec4 t = texelFetch(uC, p, 0);
   if (t.a < 0.5) { o = vec4(0.0); return; }
   int g = int(t.g * 255.0 + 0.5);
+  if (g >= 128) {                                     // chapa o X: color de la paleta, apagado hacia el terminador
+    o = vec4(mix(ESPACIO, PAL[int(t.r * 255.0 + 0.5)], t.b), 1.0);
+    return;
+  }
   if (g >= 64) {                                      // nube: tono y luz (NUBE_T de planeta.js)
     int k = g - 64;
     float l = t.b;
@@ -178,7 +226,10 @@ void main() {
     return;
   }
   int m = int(t.r * 255.0 + 0.5) + g * 256, j = int(t.b * 255.0 + 0.5);
+  bool sombra = j >= 128;                             // bajo la sombra de una chapa
+  j &= 127;
   vec3 col = texelFetch(uLut, ivec2(j, m), 0).rgb;
+  if (sombra) col = floor(col * 255.0 / 2.0) / 255.0 + vec3(0.0, 0.0, 6.0 / 255.0);
   // Halo de atmósfera y borde suavizado, como el "post" de planeta.js.
   vec2 q = (vec2(p) + 0.5 - 0.5 * uTam) / uR;
   float dc = length(q);
@@ -246,7 +297,8 @@ function filas(lat0, lon0) {
 /**
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
- *   disco?: () => number, alPintar?: () => void, zoomMax?: number }} [opciones]
+ *   disco?: () => number, alPintar?: () => void, zoomMax?: number,
+ *   banderas?: string[] | null, pausado?: () => boolean }} [opciones]
  */
 export async function montarTierraGL(canvas, {
   base = "/planeta/",
@@ -256,6 +308,8 @@ export async function montarTierraGL(canvas, {
   vuelta = 90,                                   // segundos por vuelta (elegido por el usuario)
   disco = () => 0.7 * window.innerHeight,
   alPintar = () => {},
+  banderas = null,                               // códigos iso de las chapas a pintar (null = todas)
+  pausado = () => false,                         // no gira mientras dé true (en la portada: ratón sobre una chapa o una nave)
   zoomMax = 6,                                   // como Marte y la Luna (usuario, 24-sep-2026: "¿sería posible un x5 o x6?")
 } = {}) {
   const gl = canvas.getContext("webgl2", {
@@ -315,7 +369,51 @@ export async function montarTierraGL(canvas, {
 
   const progCod = programa(gl, VERT, fragCodigos(D, off, LMAX));
   const progNubes = programa(gl, VERT_NUBES, FRAG_NUBES);
-  const progColor = programa(gl, VERT, fragColor(D));
+  // Chapas de bandera (países del blog) y X de blanco. Sus colores van a una
+  // paleta (pocos: los de las banderas, el contorno y la X).
+  const paleta = [], color = new Map();
+  const indice = (c) => {
+    const k = c.join(",");
+    if (!color.has(k)) { color.set(k, paleta.length); paleta.push(c); }
+    return color.get(k);
+  };
+  const FLAGS = banderas ? D.banderas.filter((b) => banderas.includes(b.iso)) : D.banderas;
+  const celdasChapas = [], celdasSombras = [];
+  for (const b of FLAGS) {
+    const la = b.lat * DEG, lo = b.lon * DEG;
+    for (const [x, y, r, g, bl] of b.cells) celdasChapas.push(la, lo, x - b.ax, y - b.ay, indice([r, g, bl]));
+    for (const [x, y] of b.sombra) celdasSombras.push(la, lo, x - b.ax, y - b.ay, 0);
+  }
+  // La X de marca: blanca con contorno oscuro, como la de planeta.js.
+  const X_ART = ["#...#", "##.##", ".###.", "##.##", "#...#"], XN = X_ART.length;
+  const celdasX = [];                            // sin la latitud y longitud: van al marcar
+  const lleno = (y, x) => y >= 0 && y < XN && x >= 0 && x < XN && X_ART[y][x] === "#";
+  for (let y = -1; y <= XN; y++) {
+    for (let x = -1; x <= XN; x++) {
+      let c = null;
+      if (lleno(y, x)) c = y >= XN - 2 ? [214, 220, 228] : [246, 248, 250];
+      else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) c = [16, 19, 28];
+      if (c) celdasX.push([x - (XN >> 1), y - (XN >> 1), indice(c)]);
+    }
+  }
+  function capa(datos) {
+    const va = gl.createVertexArray();
+    gl.bindVertexArray(va);
+    const bu = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, bu);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(datos), gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 20, 0);
+    gl.enableVertexAttribArray(1);
+    gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 20, 8);
+    gl.bindVertexArray(null);
+    return { va, bu, n: datos.length / 5 };
+  }
+  const capaChapas = capa(celdasChapas), capaSombras = capa(celdasSombras);
+  const capaX = capa([]);
+  let marca = null;                              // { lat, lon } en grados
+  const progSprites = programa(gl, VERT_SPRITES, FRAG_SPRITES);
+  const progColor = programa(gl, VERT, fragColor(D, paleta));
   const vao = gl.createVertexArray();
 
   // Nubes: una celda por vértice. Se dibujan en orden inverso para que, donde
@@ -397,7 +495,7 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uS, S);
     unidad(0, texMapa, u.uMapa);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-    // (1b) nubes
+    // (1b) nubes: aquí sus uniformes; se pintan después de las sombras de las chapas
     u = progNubes.u;
     gl.useProgram(progNubes.p);
     gl.bindVertexArray(vaoNubes);
@@ -409,7 +507,40 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uS, S);
     gl.uniform1f(u.uTermA, D.TERM_A);
     gl.uniform1f(u.uTermB, D.TERM_B);
+    // (1c) sombras de las chapas (antes que las nubes, que las tapan), chapas y X
+    u = progSprites.u;
+    gl.useProgram(progSprites.p);
+    gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uR, R);
+    gl.uniform3fv(u.uM0, M[0]);
+    gl.uniform3fv(u.uM1, M[1]);
+    gl.uniform3fv(u.uM2, M[2]);
+    gl.uniform3fv(u.uS, S);
+    gl.uniform1f(u.uTermA, D.TERM_A);
+    gl.uniform1f(u.uTermB, D.TERM_B);
+    const sprites = (c, pzMin, conLuz, sombra) => {
+      if (!c.n) return;
+      gl.uniform1f(u.uPzMin, pzMin);
+      gl.uniform1f(u.uConLuz, conLuz);
+      gl.uniform1i(u.uSombra, sombra);
+      gl.bindVertexArray(c.va);
+      gl.drawArrays(gl.POINTS, 0, c.n);
+    };
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
+    gl.colorMask(false, false, true, false);
+    sprites(capaSombras, D.BAND_PZ, 1, 1);
+    gl.colorMask(true, true, true, true);
+    gl.disable(gl.BLEND);
+    // las nubes, encima de las sombras y debajo de las chapas (como planeta.js)
+    u = progNubes.u;
+    gl.useProgram(progNubes.p);
+    gl.bindVertexArray(vaoNubes);
     gl.drawArrays(gl.POINTS, 0, nCeldas);
+    u = progSprites.u;
+    gl.useProgram(progSprites.p);
+    sprites(capaChapas, D.BAND_PZ, 1, 0);
+    if (marca) sprites(capaX, 0.06, 0, 0);
     // (2) color, al canvas
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -445,6 +576,31 @@ export async function montarTierraGL(canvas, {
     const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
     return { x: U[0] * k, y: -U[1] * k, z: U[2] };
   }
+  // Punto (lat, lon) en grados -> en la vista (U, y arriba), su luz (como el
+  // sombreado de las chapas y la X en el shader) y su sitio en píxeles de arte
+  // (cx, cy, y abajo, del centro del píxel del que parten las celdas).
+  function enVistaArte(lat, lon) {
+    const la = lat * DEG, lo = lon * DEG, cl = Math.cos(la);
+    const B = [cl * Math.sin(lo), Math.sin(la), cl * Math.cos(lo)];
+    const M = filas(lat0, lon0), R = R0 * zoom;
+    const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
+    const l = U[0] * S[0] + U[1] * S[1] + U[2] * S[2];
+    const a = D.TERM_A + 0.06, b = D.TERM_B + 0.2, t = Math.max(0, Math.min(1, (l - a) / (b - a)));
+    return { z: U[2], luz: t * t * (3 - 2 * t), cx: U[0] * R + W / 2 - 0.5, cy: -U[1] * R + H / 2 - 0.5 };
+  }
+  // Chapas que se ven ahora: { iso, x, y } con la esquina de arriba a la
+  // izquierda de su contorno en píxeles CSS de la ventana (como las que daba
+  // alMoverBanderas en planeta.js), y `px`, lo que mide un píxel de arte.
+  function chapasVisibles() {
+    const r = canvas.getBoundingClientRect(), out = [];
+    for (const b of FLAGS) {
+      const e = enVistaArte(b.lat, b.lon);
+      if (e.z <= D.BAND_PZ || e.luz < 0.12) continue;
+      const ox = Math.floor(e.cx - b.ax + 0.5), oy = Math.floor(e.cy - b.ay + 0.5);
+      out.push({ iso: b.iso, x: r.left + (ox - 1) * px, y: r.top + (oy - 1) * px });
+    }
+    return out;
+  }
   // De píxeles CSS de la ventana a radios del disco.
   function aDisco(clientX, clientY, R = R0 * zoom) {
     const r = canvas.getBoundingClientRect();
@@ -472,7 +628,8 @@ export async function montarTierraGL(canvas, {
   // piden fotograma a 60. Quieto (parado o sin giro) no se repinta.
   const TAU = 0.07;
   let raf = 0, sucio = false, tAnt = 0, ultimo30 = -1, ultimo60 = -1;
-  const gira = () => !parado && !agarrado && enVista && !reduce.matches && document.visibilityState === "visible";
+  const quieto = () => parado || agarrado || !enVista || reduce.matches || document.visibilityState !== "visible";
+  const gira = () => !quieto() && !pausado();
   function bucle(ahora) {
     raf = 0;
     if (!vivo) return;
@@ -496,7 +653,8 @@ export async function montarTierraGL(canvas, {
       sigue = true;
       const s30 = Math.floor(ahora / 1000 * 30);
       if (s30 !== ultimo30) { ultimo30 = s30; sucio = true; }
-    }
+    } else if (!quieto()) sigue = true;            // pausado (ratón sobre una chapa): se sigue mirando
+
     tAnt = sigue ? ahora : 0;
     const s60 = Math.floor(ahora / 1000 * 60);
     if (sucio && s60 !== ultimo60) {
@@ -568,6 +726,30 @@ export async function montarTierraGL(canvas, {
     geo(clientX, clientY) {
       const g = geoDisco(...aDisco(clientX, clientY));
       return g && { lat: g.lat / DEG, lon: g.lon / DEG };
+    },
+    chapas: chapasVisibles,
+    // Píxeles CSS que mide un píxel de arte.
+    pxArte: () => px,
+    // X de blanco en { lat, lon } (grados; null = quitarla). Gira con la Tierra.
+    ponMarca(g) {
+      marca = g;
+      if (g) {
+        const la = g.lat * DEG, lo = g.lon * DEG, datos = [];
+        for (const [x, y, c] of celdasX) datos.push(la, lo, x, y, c);
+        gl.bindBuffer(gl.ARRAY_BUFFER, capaX.bu);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(datos), gl.DYNAMIC_DRAW);
+        capaX.n = celdasX.length;
+      }
+      pide();
+    },
+    // Dónde se ve ahora el centro de la X, en píxeles CSS de la ventana (null
+    // si no hay o no se ve).
+    posMarca() {
+      if (!marca) return null;
+      const e = enVistaArte(marca.lat, marca.lon);
+      if (e.z <= 0.06 || e.luz < 0.12) return null;
+      const r = canvas.getBoundingClientRect();
+      return { x: r.left + (e.cx + 0.5) * px, y: r.top + (e.cy + 0.5) * px };
     },
     // Píxeles CSS que mide un grado en el centro del disco.
     pxGrado: () => R0 * zoom * px * DEG,
