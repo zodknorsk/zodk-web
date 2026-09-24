@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: la Tierra entera</title>
+<!--
+  Banco de pruebas del Proyecto Tierra (logo-files/TIERRA-WIP.md): la Tierra
+  entera en WebGL (src/scripts/tierra-gl.js) con los datos de la portada
+  (public/planeta/), girando sola, arrastrable y con zoom.
+  Servir desde la raíz del repo:
+    cd ~/Documents/zodk-web && python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/logo-files/prototipo-tierra/giro.html
+
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  ?radio=256: otro radio en píxeles de arte (256 = el píxel de Marte y la
+    Luna; por defecto 180, el que eligió el usuario).
+  ?parado: sin giro al cargar.
+  ?datos=carpeta: otros datos (una carpeta de prototipo-tierra/ hecha con
+    python3 generar-planeta-hero.py --canvas prototipo-tierra/carpeta/).
+  ?medir: ms por fotograma a x1.
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  /* el lienzo lo dimensiona tierra-gl.js (píxeles de arte enteros): aquí solo se centra */
+  #tierra { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  /* diámetro del disco a zoom x1: el tamaño común de los astros (usuario, 24-sep-2026) */
+  #sonda { position: absolute; height: 70svh; width: 0; visibility: hidden; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;
+    padding: 5px 8px; border-radius: 6px; line-height: 1.9; }
+  button { font: inherit; color: #05060a; background: #8fc6e8; border: 0; border-radius: 4px;
+    padding: 1px 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="tierra"></canvas>
+  <div id="sonda"></div>
+  <div id="panel" data-sin-arrastre>
+    <button id="giro">pausa</button> ·
+    <button data-v="20,-10">Europa</button> <button data-v="20,-80">América</button>
+    <button data-v="20,100">Asia</button> <button data-v="-20,140">Oceanía</button>
+    <button data-v="-25,-60">Sudamérica</button> <button data-v="90,0">polo N</button>
+    <button data-v="-90,0">polo S</button>
+    · <button data-z="1">x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
+    <span id="vista"></span> <span id="ms"></span>
+  </div>
+</div>
+<script type="module">
+import { montarMano } from "../../src/scripts/marte.js";
+import { montarZoom } from "../../src/scripts/marte-gl.js";
+import { montarTierraGL } from "../../src/scripts/tierra-gl.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda");
+const q = new URLSearchParams(location.search);
+const tierra = await montarTierraGL($("tierra"), {
+  base: q.get("datos") ? `${q.get("datos")}/` : "../../public/planeta/",
+  disco: () => sonda.getBoundingClientRect().height,
+  ...(q.has("radio") ? { radio: Number(q.get("radio")) } : {}),
+});
+if (!tierra) {
+  $("vista").textContent = "Este navegador no tiene WebGL2.";
+} else {
+  montarMano($("hero"), tierra);
+  montarZoom($("hero"), tierra);
+  window.tierra = tierra;               // para probar desde la consola
+  const muestra = () => {
+    const v = tierra.vista();
+    $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(0)}° ${v.lon0.toFixed(0)}°`;
+    requestAnimationFrame(muestra);
+  };
+  muestra();
+  const giro = $("giro");
+  const ponGiro = (p) => { tierra.ponParado(p); giro.textContent = p ? "girar" : "pausa"; };
+  giro.addEventListener("click", () => ponGiro(!tierra.parado()));
+  if (q.has("parado")) ponGiro(true);
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    const [la, lo] = b.dataset.v.split(",").map(Number);
+    tierra.ponVista(la, lo);
+  }));
+  document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => tierra.ponZoom(Number(b.dataset.z))));
+  if (q.has("vista")) {
+    const [la, lo, z] = q.get("vista").split(",").map(Number);
+    tierra.ponVista(la, lo);
+    if (z) tierra.ponZoom(z, true);
+  }
+  if (q.has("medir")) {
+    tierra.medir(10);
+    $("ms").textContent = `· ${tierra.medir(30).toFixed(1)} ms por fotograma a x1`;
+  }
+}
+</script>
+</body>
+</html>

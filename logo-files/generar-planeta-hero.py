@@ -833,6 +833,48 @@ for r in range(MH):
         young = _pnoise(px_, py_, 1.8 / SCALE * 1.5, 504) < 0.30 + 0.45 * (1.0 - p)
         PACK[r][c] = 1 if young else 2
 
+# Banquisa austral (Proyecto Tierra, 24-sep-2026: con el disco entero se ve el
+# sur). Las mismas reglas que la ártica, con el borde de la misma época del
+# año: principios del verano del norte es principios del invierno del sur, así
+# que el hielo rodea la Antártida con anchura (más ancho en el mar de Weddell y
+# el de Ross, más estrecho frente a la península y en el de Amundsen).
+PACK_EDGE_SUR = [   # (longitud, latitud del borde)
+    (-180, -66.0), (-150, -68.0), (-120, -69.0), (-90, -68.5), (-70, -65.5),
+    (-55, -63.0), (-40, -62.0), (-20, -63.0), (0, -64.0), (20, -65.0),
+    (40, -65.5), (60, -65.5), (90, -64.5), (120, -64.5), (150, -66.0),
+    (170, -67.0), (180, -66.0),
+]
+
+
+def _edge_lat_sur(lon):
+    for (l0, a0), (l1, a1) in zip(PACK_EDGE_SUR, PACK_EDGE_SUR[1:]):
+        if l0 <= lon <= l1:
+            return a0 + (a1 - a0) * (lon - l0) / (l1 - l0)
+    return PACK_EDGE_SUR[-1][1]
+
+
+for r in range(MH - 1, -1, -1):
+    lat = 90.0 - (r + 0.5) * _md
+    if lat > -54.0:
+        break
+    for c in range(MW):
+        if GRID[r][c] != 0:
+            continue
+        lon = (c + 0.5) * _md - 180.0
+        rho, th = 90.0 + lat, math.radians(lon)
+        px_, py_ = rho * math.cos(th), rho * math.sin(th)
+        edge = _edge_lat_sur(lon) - (_pnoise(px_, py_, 3.0, 601) - 0.5) * 3.0
+        # como la ártica, en latitud hacia el polo (-lat): 0 fuera, 1 dentro
+        p = smooth(-edge - PACK_FRINGE[0], -edge + PACK_FRINGE[1], -lat)
+        if p <= 0.0:
+            continue
+        floe = smooth(0.25, 0.75, 0.6 * _pnoise(px_, py_, 0.32 / SCALE * 1.5, 602)
+                      + 0.4 * _pnoise(px_, py_, 0.8 / SCALE * 1.5, 603))
+        if floe > p:
+            continue
+        young = _pnoise(px_, py_, 1.8 / SCALE * 1.5, 604) < 0.30 + 0.45 * (1.0 - p)
+        PACK[r][c] = 1 if young else 2
+
 # Nieve y roca van "ganando" copas ENTERAS según sube su cantidad (cada copa
 # tiene su umbral al azar, CROWN_U), y los huecos entre copas al final (nieve)
 # o al principio (roca: asoma entre los árboles). Transiciones a racimos, en
