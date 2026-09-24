@@ -263,10 +263,18 @@ html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?
    en el DOM, mismo z-index). Pixel art de logo-files/generar-astros.py a 1 px
    de arte = 1 px de imagen, escalado x3 (x2 en móvil) como el planeta. La
    luna es una tira de 30 fases; index.astro elige la de hoy (sin JS, llena). */
+/* Sitio de los astros pequeños de la portada: cerca del borde de arriba del
+   globo, a la izquierda el sol y la luna, a la derecha Marte (usuario,
+   24-sep-2026: "los quiero cerquita, como estaban antes"; con el planeta de
+   antes, enorme, su borde les quedaba cerca aunque fueran en las esquinas).
+   Centro del icono a (±0,46, −0,41) diámetros del centro del globo: ~25 px de
+   cielo entre el disco del astro y el de la Tierra. En el móvil, en las
+   esquinas (ver el @media de abajo). */
+:root { --astro-dx: calc(var(--tierra-disco) * 0.46); --astro-dy: calc(var(--tierra-disco) * 0.41); }
 .hero-astro {
   position: absolute;
-  left: 5%;
-  top: 5%;
+  left: calc(50% - var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
   width: 168px;
   height: 168px;
   z-index: 0;
@@ -292,7 +300,10 @@ html.dark .astro-luna { opacity: 1; }
    de las transiciones; al usuario "le encanta"). Las clases .a-noche / .a-dia
    las pone index.astro al detectar el cambio. Son animaciones y no
    transiciones porque el botón de tema anula las transiciones al cambiar. */
-.hero-astro { --astro-caida: translate(36px, 270px); }   /* hasta detrás del limbo */
+/* Con la Tierra entera, el astro va en diagonal hacia el centro del globo y
+   se esconde detrás de su disco (antes bajaba tras el horizonte): recorre el
+   45 % del camino, así acaba ~100 px dentro del borde. */
+.hero-astro { --astro-caida: translate(calc(var(--astro-dx) * 0.45), calc(var(--astro-dy) * 0.45)); }
 @keyframes astro-baja { from { transform: none; opacity: 1; } to { transform: var(--astro-caida); opacity: 1; } }
 @keyframes astro-sube { from { transform: var(--astro-caida); opacity: 1; } to { transform: none; opacity: 1; } }
 .hero-astro.a-noche .astro-sol,
@@ -305,8 +316,8 @@ html.dark .astro-luna { opacity: 1; }
    Al pulsarlo, index.astro hace el vuelo hasta /luna. */
 .hero-luna-enlace {
   position: absolute;
-  left: 5%;
-  top: 5%;
+  left: calc(50% - var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
   width: 168px;
   height: 168px;
   z-index: 2;
@@ -325,8 +336,8 @@ html.dark .hero-luna-enlace { display: block; }
    la luna. Al pulsarlo, vuelo a /marte (index.astro). */
 .hero-marte {
   position: absolute;
-  right: 3%;   /* "un poco más a la derecha" que el 5 % de la luna (usuario, 22-sep-2026) */
-  top: 5%;
+  left: calc(50% + var(--astro-dx) - 84px);   /* en espejo con el sol y la luna */
+  top: calc(50% - var(--astro-dy) - 84px);
   width: 168px;
   height: 168px;
   z-index: 0;
@@ -336,8 +347,8 @@ html.dark .hero-luna-enlace { display: block; }
 }
 .hero-marte-enlace {
   position: absolute;
-  right: 3%;
-  top: 5%;
+  left: calc(50% + var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
   width: 168px;
   height: 168px;
   z-index: 2;
@@ -349,7 +360,7 @@ html.dark .hero-luna-enlace { display: block; }
 .hero-marte-enlace.tapada { pointer-events: none; visibility: hidden; }
 /* En /luna, Marte arriba a la izquierda (el menú va a la derecha), en el sitio
    del sol y la luna de la portada: se pulsa para el vuelo Luna → Marte. */
-.hero-marte--luna { right: auto; left: 5%; }
+.hero-marte--luna { right: auto; left: 5%; top: 5%; }
 
 /* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
    resolución (index.astro), que crece desde la luna del hero hasta donde queda
@@ -386,8 +397,12 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
    aire entre la Luna y el mando de cara de abajo; el usuario no la quería más
    pequeña). El vuelo desde la Tierra lee las dos variables al aterrizar
    (viaje-luna.js), así que acaba justo sobre el disco. */
-:root { --luna-tam: min(80vh, 90vw); --luna-dy: -3.5vh; }
-@supports (height: 1svh) { :root { --luna-tam: min(80svh, 90vw); --luna-dy: -3.5svh; } }
+/* Tamaño común de los astros (usuario, 24-sep-2026, Proyecto Tierra): el
+   disco, 70 svh como la Tierra y Marte (en vertical, el 88 % del ancho); la
+   caja es la imagen de 600 px de arte con el disco de 585 (antes, 80 svh de
+   caja: un disco de ~78 svh). */
+:root { --luna-tam: min(70vh * 600 / 585, 88vw * 600 / 585); --luna-dy: -3.5vh; }
+@supports (height: 1svh) { :root { --luna-tam: min(70svh * 600 / 585, 88vw * 600 / 585); --luna-dy: -3.5svh; } }
 .luna-disco {
   position: absolute;
   left: 50%;
@@ -1081,15 +1096,14 @@ html:has(.marte-hero) { overflow: hidden; }
 /* Los gestos del dedo son de Marte (girar con uno, pellizco con dos): el
    navegador no hace scroll ni zoom de la página. */
 .marte-hero { touch-action: none; }
-/* Diámetro del disco a zoom x1 (60 svh: el mismo tamaño de píxel que la Luna
-   de /luna) y lado de la caja de marte-quieto.png (450 px de arte con el disco
-   de 2 x 219,4 = 438,8 en medio). El vuelo desde la portada acaba en esa caja
-   (viaje-luna.js). */
-/* En vertical (el móvil), 60 svh es más ancho que la pantalla: el disco se
-   ciñe entonces al 88 % del ancho (usuario, 23-sep-2026). En horizontal no
-   cambia nada: 60 svh es siempre menos. */
-:root { --marte-disco: min(60vh, 88vw); }
-@supports (height: 1svh) { :root { --marte-disco: min(60svh, 88vw); } }
+/* Diámetro del disco a zoom x1 y lado de la caja de marte-quieto.png (450 px
+   de arte con el disco de 2 x 219,4 = 438,8 en medio). El vuelo desde la
+   portada acaba en esa caja (viaje-luna.js). Tamaño común de los astros
+   (usuario, 24-sep-2026, Proyecto Tierra): 70 svh, como la Tierra y la Luna
+   (antes, 60: el mismo tamaño de píxel que la Luna de entonces). En vertical
+   (el móvil) se ciñe al 88 % del ancho (usuario, 23-sep-2026). */
+:root { --marte-disco: min(70vh, 88vw); }
+@supports (height: 1svh) { :root { --marte-disco: min(70svh, 88vw); } }
 :root { --marte-caja: calc(var(--marte-disco) * 450 / 438.8); }
 /* Marte quieto (public/marte/marte-quieto.png, de generar-marte-quieto.mjs):
    la vista inicial tal cual la pinta el motor. Se ve al aterrizar del vuelo
@@ -1377,6 +1391,10 @@ html.dark .hero-mgrs.fijada {
    distinción, animar una foto con "pixelated" genera parpadeo/costuras al
    hacer zoom, porque el navegador tiene que re-muestrear con vecino-más-cercano
    en cada fotograma de un desplazamiento que no cae en un píxel entero. */
+/* Tamaño de las naves respecto al de antes (Proyecto Tierra: con la Tierra
+   entera, más pequeña que el horizonte de antes, se veían grandes). El usuario
+   vio las ocho sobre el globo al 60, 50 y 40 % y eligió el 40 (24-sep-2026). */
+:root { --naves-k: 0.4; }
 .hero-craft {
   position: absolute;
   background: var(--sprite) center / contain no-repeat;
@@ -1428,7 +1446,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   left: 44%;
   top: 24%;
   /* ~x1,4 el tamaño anterior; --escala (de aeronaves.ts) ajusta cada nave */
-  width: calc(clamp(100px, 10vw, 157px) * var(--escala, 1));
+  width: calc(clamp(100px, 10vw, 157px) * var(--escala, 1) * var(--naves-k));
   transform: translateX(-50%);
   animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
 }
@@ -1450,7 +1468,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 .hero-craft--orbita {
   left: 0;
   top: 12%;
-  width: clamp(50px, 5.6vw, 92px);
+  width: calc(clamp(50px, 5.6vw, 92px) * var(--naves-k));
   animation: hero-orbita 22s ease-in-out infinite alternate;
 }
 
@@ -1478,33 +1496,33 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 .hero-craft--fijo {
   left: 58%;
   top: 58%;
-  width: clamp(105px, 10.5vw, 165px);   /* foto del E-2, más chica que la nave anterior */
+  width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más chica que la nave anterior */
 }
 .hero-craft--fijo-izq {
   left: 20%;
   top: 60%;
-  width: clamp(58px, 5.5vw, 86px);
+  width: calc(clamp(58px, 5.5vw, 86px) * var(--naves-k));
 }
 .hero-craft--fijo-centro {
   left: 43%;
   top: 62%;
   /* el sprite del MQ-9 trae bastante margen transparente (dron + sombra), así
      que se le da más ancho de caja que al RQ-4 para que el dron se vea igual. */
-  width: clamp(78px, 7.4vw, 116px);
+  width: calc(clamp(78px, 7.4vw, 116px) * var(--naves-k));
 }
 .hero-craft--fijo-arriba {
   left: 40%;
   top: 26%;
   /* foto en horizontal (808x362, mucho más ancha que alta), así que necesita
      más ancho de caja que las demás "fijo" para leerse a tamaño parecido. */
-  width: clamp(140px, 13vw, 210px);
+  width: calc(clamp(140px, 13vw, 210px) * var(--naves-k));
 }
 .hero-craft--fijo-arriba-der {
   /* misma altura y ancho que fijo-arriba, pero centrada sobre "márquez" en
      vez de sobre "blog" (medido en el título renderizado, no a ojo). */
   left: 60%;
   top: 26%;
-  width: clamp(140px, 13vw, 210px);
+  width: calc(clamp(140px, 13vw, 210px) * var(--naves-k));
 }
 
 @keyframes hero-fijo-deriva {
@@ -1698,14 +1716,17 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 }
 
 @media (max-width: 640px) {
-  .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1)); }
-  .hero-craft--orbita { top: 8%; width: clamp(40px, 12vw, 62px); }
-  .hero-craft--fijo { top: 56%; left: 50%; width: clamp(96px, 28vw, 140px); }
-  .hero-craft--fijo-izq { top: 62%; left: 14%; width: clamp(48px, 14vw, 68px); }
-  .hero-craft--fijo-centro { top: 60%; left: 38%; width: clamp(64px, 18vw, 90px); }
-  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px; --astro-caida: translate(16px, 135px); }
+  .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1) * var(--naves-k)); }
+  .hero-craft--orbita { top: 8%; width: calc(clamp(40px, 12vw, 62px) * var(--naves-k)); }
+  .hero-craft--fijo { top: 56%; left: 50%; width: calc(clamp(96px, 28vw, 140px) * var(--naves-k)); }
+  .hero-craft--fijo-izq { top: 62%; left: 14%; width: calc(clamp(48px, 14vw, 68px) * var(--naves-k)); }
+  .hero-craft--fijo-centro { top: 60%; left: 38%; width: calc(clamp(64px, 18vw, 90px) * var(--naves-k)); }
+  /* en la esquina; al cambiar de tema, hacia el centro del globo (en 50 %,
+     50 svh) el 60 % del camino: acaba detrás del disco */
+  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px;
+    --astro-caida: translate(calc((47vw - 56px) * 0.6), calc((44svh - 56px) * 0.6)); }
   .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
-  .hero-marte, .hero-marte-enlace { right: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-marte, .hero-marte-enlace { left: auto; right: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-marte--luna { left: 3%; }
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }

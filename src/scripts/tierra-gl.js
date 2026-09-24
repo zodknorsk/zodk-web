@@ -501,9 +501,10 @@ export async function montarTierraGL(canvas, {
     return true;
   }
 
-  // --- Un fotograma.
-  function pinta() {
-    const M = filas(lat0, lon0), R = R0 * zoom, L = luz(), S = L.S;
+  // --- Un fotograma, con la luz L. `mezcla` (0..1): se pinta ENCIMA de lo
+  // que ya hay en el canvas con esa opacidad (el fundido de día a noche).
+  function pintaCon(L, mezcla = null) {
+    const M = filas(lat0, lon0), R = R0 * zoom, S = L.S;
     const unidad = (i, t, loc) => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(loc, i); };
     gl.disable(gl.BLEND);
     // (1) códigos
@@ -581,7 +582,32 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uS, S);
     gl.uniform3fv(u.uAtmo, L.atmo);
     gl.uniform3fv(u.uNube, L.nube);
+    if (mezcla !== null) {
+      gl.enable(gl.BLEND);
+      gl.blendColor(0, 0, 0, mezcla);
+      gl.blendFunc(gl.CONSTANT_ALPHA, gl.ONE_MINUS_CONSTANT_ALPHA);
+    }
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.disable(gl.BLEND);
+  }
+  // Fundido al cambiar de tema (como el de planeta.js): durante FUNDIDO_MS se
+  // pinta la Tierra con la luz vieja y encima con la nueva, cada vez más
+  // opaca (el doble de trabajo, solo ese rato). Va a la par que el sol y la
+  // luna que se esconden tras la Tierra (global.css, .hero-astro).
+  const FUNDIDO_MS = 1500;
+  let fundido = null;                            // { t0, desde: luz vieja }
+  function pinta() {
+    if (fundido) {
+      const k = (performance.now() - fundido.t0) / FUNDIDO_MS;
+      if (k >= 1) fundido = null;
+      else {
+        pintaCon(fundido.desde);
+        pintaCon(luz(), k * k * (3 - 2 * k));
+        alPintar();
+        return;
+      }
+    }
+    pintaCon(luz());
     alPintar();
   }
 
@@ -673,6 +699,7 @@ export async function montarTierraGL(canvas, {
       sucio = true;
       sigue = zoom !== zoomObj;
     }
+    if (fundido) { sucio = true; sigue = true; }
     if (gira()) {
       // Con zoom el giro se ralentiza a la par: la superficie pasa por la
       // pantalla a la misma velocidad que a x1. Mientras el zoom va hacia el
@@ -760,9 +787,15 @@ export async function montarTierraGL(canvas, {
     // Tema: a la luz de la luna (true) o del sol. De noche, en cuanto llega su
     // LUT (hasta entonces, de día).
     ponNoche(b) {
+      if (b === noche) return;
+      const antes = luz();
       noche = b;
-      if (b && !texLutNoche) cargaNoche().then(pide);
-      pide();
+      const empieza = () => {
+        if (!reduce.matches && luz() !== antes) fundido = { t0: performance.now(), desde: antes };
+        pide();
+      };
+      if (b && !texLutNoche) cargaNoche().then(empieza);   // de día hasta que llega la LUT: el fundido, después
+      else empieza();
     },
     // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x
     // `lado` centrado en el disco (como la de marte-gl.js). Para la imagen

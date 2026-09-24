@@ -16,14 +16,27 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   `public/planeta/` regenerado (`PLANETA_V` 11).
 - **Commiteado** (`1b4306b`): paso 3 (chapas y X en el motor), la mano que
   solo se cierra al girar y el banco del rótulo (`titulo.html`).
-- **Paso 4 HECHO, sin commitear, pendiente de que el usuario lo pruebe**: la
-  portada ya lleva la Tierra entera (ver "Registro", paso 4: la portada).
-  Probado en Chrome sin ventana: día y noche, arrastre, clic con X y
-  coordenada fijada, rueda que baja la página, Ctrl + rueda que acerca, ficha
-  de chapa, vuelo a Marte y vuelta a la Tierra, y móvil (390 × 844). **Falta:
-  que lo pruebe él en Zen y en su iPhone** (pellizco y un dedo que baja la
-  página no se pueden probar sin ventana).
-- **Siguiente**: su prueba; después, paso 5 (Luna y Marte al tamaño común).
+- **Commiteado** (`6f8d0e0`): paso 4, la portada con la Tierra entera.
+- **Sin commitear** (pedido del usuario al commitear el paso 4):
+  - **Paso 5 hecho**: la Luna y Marte al tamaño común, disco de 70 svh (88 vw
+    en vertical). La Luna tenía ~78 svh; Marte, 60. Su pixel art no cambia:
+    solo lo que ocupan (`--luna-tam`, `--marte-disco`).
+  - **Sol, luna y Marte de la portada, cerca del globo** ("cerquita, como
+    estaban antes"): centro a (±0,46, −0,41) diámetros del centro del globo.
+    En el móvil siguen en las esquinas.
+  - **Cambio de tema**: el astro se esconde en diagonal detrás del globo
+    (hacia su centro) y el otro sale de detrás, en vez de bajar tras el
+    horizonte.
+  - **Naves al 40 %**: un factor común `--naves-k` en todos los anchos
+    (escritorio y móvil). Se le enseñaron 1, 0,75 y 0,6 y pidió "tipo 3 o
+    incluso algo más chico"; después, las ocho sobre el globo al 60, 50 y
+    40 %, y eligió el 40.
+  - **Fundido de día a noche recuperado** en el motor (1,5 s, como el de
+    `planeta.js`): se pinta la luz vieja y encima la nueva cada vez más opaca
+    (`pintaCon(L, mezcla)` con `CONSTANT_ALPHA`). `generar-tierra-quieto.mjs`
+    espera 2 s tras cambiar la luz para no hacer la foto a medias.
+- **Siguiente**: que lo repase y commit; después, paso 6 (zoom con teselas y
+  nombres).
 
 ## Qué quiere el usuario (24-sep-2026)
 
@@ -112,7 +125,7 @@ esté terminada.
 - [x] 3. Nubes, chapas de bandera y X de blanco en el motor nuevo.
 - [x] 4. Portada: el globo sustituye al horizonte; sitio del título, MGRS,
       naves y astros pequeños; vuelos a la Luna y a Marte.
-- [ ] 5. Tamaño común: Luna y Marte al tamaño intermedio.
+- [x] 5. Tamaño común: Luna y Marte al tamaño intermedio.
 - [ ] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
       continentes y países.
 - [ ] 7. Noche: luces de ciudades, aurora, luz de luna.
