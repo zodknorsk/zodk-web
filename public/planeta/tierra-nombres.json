@@ -1,5 +1,702 @@
 [
  {
+  "nombre": "Estrecho de Malaca",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 893.3,
+  "lat": 4.9,
+  "lon": 99.3,
+  "caja": [
+   0.69,
+   8.34,
+   95.45,
+   103.5
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Bass",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 506.1,
+  "lat": -39.48,
+  "lon": 146.34,
+  "caja": [
+   -41.17,
+   -37.78,
+   143.55,
+   149.44
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Corea",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 422.3,
+  "lat": 34.03,
+  "lon": 128.74,
+  "caja": [
+   32.45,
+   36.06,
+   126.36,
+   130.94
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Magallanes",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 397.0,
+  "lat": -53.1,
+  "lon": -71.41,
+  "caja": [
+   -54.14,
+   -52.21,
+   -74.63,
+   -68.7
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Taiwán",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 370.7,
+  "lat": 24.24,
+  "lon": 119.36,
+  "caja": [
+   23.05,
+   25.27,
+   117.43,
+   121.09
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "estrecho de Torres",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 225.1,
+  "lat": -9.92,
+  "lon": 142.26,
+  "caja": [
+   -11.12,
+   -9.09,
+   141.19,
+   143.08
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Ormuz",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 159.3,
+  "lat": 26.55,
+  "lon": 56.35,
+  "caja": [
+   25.9,
+   27.1,
+   55.6,
+   57.2
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Cook",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 106.3,
+  "lat": -41.33,
+  "lon": 174.58,
+  "caja": [
+   -41.75,
+   -40.79,
+   174.04,
+   175.24
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Estrecho de Gibraltar",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 35.79,
+  "lon": -5.86,
+  "caja": [
+   35.44,
+   36.14,
+   -6.29,
+   -5.43
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Bósforo",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 41.1,
+  "lon": 29.04,
+  "caja": [
+   40.75,
+   41.45,
+   28.58,
+   29.51
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Bab el-Mandeb",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 12.87,
+  "lon": 43.45,
+  "caja": [
+   12.52,
+   13.22,
+   43.09,
+   43.81
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Dardanelos",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 40.2,
+  "lon": 26.45,
+  "caja": [
+   39.85,
+   40.55,
+   25.99,
+   26.9
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Kenia",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -0.15,
+  "lon": 37.3,
+  "caja": [
+   -0.5,
+   0.2,
+   36.95,
+   37.65
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Kilimanjaro",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -3.08,
+  "lon": 37.35,
+  "caja": [
+   -3.43,
+   -2.73,
+   37.0,
+   37.7
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Macizo Vinson",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -78.53,
+  "lon": -85.63,
+  "caja": [
+   -78.88,
+   -78.18,
+   -87.39,
+   -83.87
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Fuji",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 35.36,
+  "lon": 138.73,
+  "caja": [
+   35.01,
+   35.71,
+   138.3,
+   139.16
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Kliuchevskói",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 56.06,
+  "lon": 160.64,
+  "caja": [
+   55.71,
+   56.41,
+   160.02,
+   161.27
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Damavand",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 35.96,
+  "lon": 52.11,
+  "caja": [
+   35.61,
+   36.31,
+   51.68,
+   52.54
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Gongga",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 29.6,
+  "lon": 101.88,
+  "caja": [
+   29.25,
+   29.95,
+   101.48,
+   102.28
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Everest",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 27.98,
+  "lon": 86.88,
+  "caja": [
+   27.63,
+   28.33,
+   86.48,
+   87.28
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "K2",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 35.88,
+  "lon": 76.51,
+  "caja": [
+   35.53,
+   36.23,
+   76.08,
+   76.95
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Kailash",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 31.07,
+  "lon": 81.31,
+  "caja": [
+   30.72,
+   31.42,
+   80.9,
+   81.72
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Ararat",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 39.7,
+  "lon": 44.3,
+  "caja": [
+   39.35,
+   40.05,
+   43.85,
+   44.75
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Kanchenjunga",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 27.7,
+  "lon": 88.15,
+  "caja": [
+   27.35,
+   28.05,
+   87.75,
+   88.55
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Vesubio",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 40.82,
+  "lon": 14.43,
+  "caja": [
+   40.47,
+   41.17,
+   13.97,
+   14.9
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Mont Blanc",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 45.83,
+  "lon": 6.87,
+  "caja": [
+   45.48,
+   46.18,
+   6.36,
+   7.37
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Elbrus",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 43.36,
+  "lon": 42.44,
+  "caja": [
+   43.01,
+   43.71,
+   41.96,
+   42.92
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Citlaltépetl",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 19.03,
+  "lon": -97.28,
+  "caja": [
+   18.68,
+   19.38,
+   -97.65,
+   -96.91
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Denali",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 63.07,
+  "lon": -151.01,
+  "caja": [
+   62.72,
+   63.42,
+   -151.78,
+   -150.23
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Whitney",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 36.58,
+  "lon": -118.29,
+  "caja": [
+   36.23,
+   36.93,
+   -118.73,
+   -117.86
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Nevado Ojos del Salado",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -27.11,
+  "lon": -68.54,
+  "caja": [
+   -27.46,
+   -26.76,
+   -68.94,
+   -68.15
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Kosciuszko",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -36.46,
+  "lon": 148.26,
+  "caja": [
+   -36.81,
+   -36.11,
+   147.83,
+   148.7
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Kinabalu",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 6.08,
+  "lon": 116.55,
+  "caja": [
+   5.73,
+   6.43,
+   116.2,
+   116.9
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Monte Etna",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 37.76,
+  "lon": 15.0,
+  "caja": [
+   37.41,
+   38.11,
+   14.55,
+   15.44
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Puncak Jaya",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -4.08,
+  "lon": 137.17,
+  "caja": [
+   -4.43,
+   -3.73,
+   136.82,
+   137.52
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Aoraki (monte Cook)",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -43.6,
+  "lon": 170.14,
+  "caja": [
+   -43.95,
+   -43.25,
+   169.66,
+   170.62
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Teide",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 28.27,
+  "lon": -16.64,
+  "caja": [
+   27.92,
+   28.62,
+   -17.04,
+   -16.24
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Mauna Kea",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": 19.82,
+  "lon": -155.47,
+  "caja": [
+   19.47,
+   20.17,
+   -155.84,
+   -155.1
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Huascarán",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -9.12,
+  "lon": -77.61,
+  "caja": [
+   -9.47,
+   -8.77,
+   -77.96,
+   -77.25
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Volcán Chimborazo",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -1.47,
+  "lon": -78.82,
+  "caja": [
+   -1.82,
+   -1.12,
+   -79.17,
+   -78.47
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
+  "nombre": "Aconcagua",
+  "clase": "visor",
+  "px": 10,
+  "menor": true,
+  "km": 77.9,
+  "lat": -32.66,
+  "lon": -70.02,
+  "caja": [
+   -33.01,
+   -32.31,
+   -70.43,
+   -69.6
+  ],
+  "linea": true,
+  "zmin": 3.0
+ },
+ {
   "nombre": "Asia",
   "clase": "region",
   "px": 0,
@@ -210,7 +907,7 @@
   "lat": 15.88,
   "lon": 14.35,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "mar del Coral",
@@ -242,6 +939,39 @@
   "km": 2009.7,
   "lat": 57.2,
   "lon": -88.74,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Meseta Brasileña",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1993.8,
+  "lat": -15.46,
+  "lon": -46.43,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Archipiélago Ártico Canadiense",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1868.7,
+  "lat": 73.6,
+  "lon": -90.14,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Islas mayores de la Sonda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1844.9,
+  "lat": -1.31,
+  "lon": 112.15,
   "linea": true,
   "zmin": 1.8
  },
@@ -298,7 +1028,18 @@
   "lat": 27.89,
   "lon": -59.72,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Desierto Líbico",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1737.6,
+  "lat": 20.93,
+  "lon": 25.83,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Cordillera de los Andes",
@@ -334,6 +1075,39 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Groenlandia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1567.4,
+  "lat": 74.72,
+  "lon": -41.36,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Meseta Central Siberiana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1519.8,
+  "lat": 64.96,
+  "lon": 107.75,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Meseta del Mato Grosso",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1434.6,
+  "lat": -10.65,
+  "lon": -56.26,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
   "nombre": "Bahía de Bengala",
   "clase": "region",
   "px": 90,
@@ -367,6 +1141,28 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Meseta Occidental",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1327.8,
+  "lat": -25.0,
+  "lon": 125.49,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Islas Carolinas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1327.1,
+  "lat": 6.54,
+  "lon": 149.36,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
   "nombre": "mar de Noruega",
   "clase": "region",
   "px": 90,
@@ -375,7 +1171,7 @@
   "lat": 68.58,
   "lon": 4.75,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "Estepa kazaja",
@@ -400,6 +1196,17 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Alaska",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1232.2,
+  "lat": 64.79,
+  "lon": -153.3,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
   "nombre": "Mar de Barents",
   "clase": "region",
   "px": 90,
@@ -408,7 +1215,18 @@
   "lat": 75.35,
   "lon": 43.02,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Escudo Guayanés",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1213.5,
+  "lat": 3.2,
+  "lon": -59.21,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "mar de Ojotsk",
@@ -422,15 +1240,15 @@
   "zmin": 1.8
  },
  {
-  "nombre": "Canal de Mozambique",
+  "nombre": "Llanura de Siberia Occidental",
   "clase": "region",
   "px": 90,
   "menor": true,
-  "km": 1180.9,
-  "lat": -19.1,
-  "lon": 40.98,
+  "km": 1208.4,
+  "lat": 61.78,
+  "lon": 79.76,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
   "nombre": "Golfo de México",
@@ -463,7 +1281,40 @@
   "lat": 75.43,
   "lon": -8.13,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Seychelles",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1117.2,
+  "lat": -7.46,
+  "lon": 52.98,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Gran Bahía Australiana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1115.1,
+  "lat": -36.71,
+  "lon": 132.64,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Estepa póntica",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1094.8,
+  "lat": 49.41,
+  "lon": 42.93,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "mar de Bering",
@@ -473,6 +1324,28 @@
   "km": 1094.7,
   "lat": 58.11,
   "lon": -171.65,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Filipinas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1089.8,
+  "lat": 11.23,
+  "lon": 122.33,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Japón",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1084.1,
+  "lat": 36.4,
+  "lon": 137.47,
   "linea": true,
   "zmin": 1.8
  },
@@ -507,7 +1380,7 @@
   "lat": -43.42,
   "lon": -69.39,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "Cuerno de África",
@@ -518,7 +1391,18 @@
   "lat": 5.63,
   "lon": 44.52,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Cuenca Artesiana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 1015.3,
+  "lat": -26.13,
+  "lon": 141.64,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "mar de Ross",
@@ -530,6 +1414,28 @@
   "lon": -157.52,
   "linea": true,
   "zmin": 1.8
+ },
+ {
+  "nombre": "Islas Marshall",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 991.2,
+  "lat": 9.85,
+  "lon": 167.9,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Islas de la Reina Isabel",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 981.0,
+  "lat": 78.49,
+  "lon": -92.35,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "mar del Japón",
@@ -562,7 +1468,73 @@
   "lat": 76.25,
   "lon": 77.02,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Cuenca del Murray–Darling",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 952.0,
+  "lat": -31.21,
+  "lon": 145.6,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Depresión del Turán",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 942.2,
+  "lat": 41.74,
+  "lon": 62.53,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Meseta de Mongolia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 940.7,
+  "lat": 45.67,
+  "lon": 107.7,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Islas Molucas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 927.1,
+  "lat": -4.15,
+  "lon": 128.8,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Meseta de Katanga",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 926.4,
+  "lat": -10.97,
+  "lon": 27.19,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "La Pampa",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 917.1,
+  "lat": -33.96,
+  "lon": -62.94,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Apalaches",
@@ -573,7 +1545,29 @@
   "lat": 40.3,
   "lon": -78.27,
   "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Archipiélago de Hawái",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 904.0,
+  "lat": 24.11,
+  "lon": -165.51,
+  "linea": true,
   "zmin": 1.8
+ },
+ {
+  "nombre": "mar de Laquedivas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 902.7,
+  "lat": 6.96,
+  "lon": 74.8,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Escandinavia",
@@ -587,23 +1581,6 @@
   "zmin": 1.8
  },
  {
-  "nombre": "Estrecho de Malaca",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 893.3,
-  "lat": 4.9,
-  "lon": 99.3,
-  "caja": [
-   0.69,
-   8.34,
-   95.45,
-   103.5
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
   "nombre": "Gran Cordillera Divisoria",
   "clase": "region",
   "px": 90,
@@ -611,6 +1588,28 @@
   "km": 892.3,
   "lat": -26.13,
   "lon": 148.2,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Nueva Guinea",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 883.4,
+  "lat": -5.34,
+  "lon": 140.94,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "América Central",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 879.4,
+  "lat": 15.12,
+  "lon": -87.91,
   "linea": true,
   "zmin": 1.8
  },
@@ -623,7 +1622,40 @@
   "lat": -23.61,
   "lon": 20.31,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "mar de Salomón",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 874.8,
+  "lat": -8.62,
+  "lon": 154.34,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "mar de Banda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 871.3,
+  "lat": -5.39,
+  "lon": 126.13,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "mar de Arafura",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 867.6,
+  "lat": -8.81,
+  "lon": 136.14,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Bahía de Hudson",
@@ -645,7 +1677,7 @@
   "lat": 39.0,
   "lon": 35.34,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "mar de China Oriental",
@@ -656,7 +1688,51 @@
   "lat": 28.72,
   "lon": 125.28,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Isla de Borneo",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 854.5,
+  "lat": 0.86,
+  "lon": 114.21,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Chaco",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 845.8,
+  "lat": -23.84,
+  "lon": -60.83,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Archipiélago Tuamotu",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 842.5,
+  "lat": -17.45,
+  "lon": -142.03,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Antillas Mayores",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 835.3,
+  "lat": 19.92,
+  "lon": -76.12,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Atlas",
@@ -667,7 +1743,7 @@
   "lat": 33.64,
   "lon": -1.0,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "Macizo etíope",
@@ -678,7 +1754,7 @@
   "lat": 9.94,
   "lon": 38.06,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "Golfo de Guinea",
@@ -689,7 +1765,7 @@
   "lat": 3.06,
   "lon": 2.77,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "mar de Andamán",
@@ -699,6 +1775,17 @@
   "km": 792.2,
   "lat": 11.0,
   "lon": 95.44,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Madagascar",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 773.6,
+  "lat": -19.38,
+  "lon": 46.7,
   "linea": true,
   "zmin": 1.8
  },
@@ -711,7 +1798,7 @@
   "lat": 20.22,
   "lon": 50.54,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
   "nombre": "península ibérica",
@@ -725,6 +1812,17 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Caatinga",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 752.6,
+  "lat": -6.5,
+  "lon": -40.13,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
   "nombre": "mar de Java",
   "clase": "region",
   "px": 90,
@@ -733,7 +1831,73 @@
   "lat": -5.14,
   "lon": 111.95,
   "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Cuenca",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 741.4,
+  "lat": 39.6,
+  "lon": -116.66,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Nueva Zelanda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 735.7,
+  "lat": -41.51,
+  "lon": 172.76,
+  "linea": true,
   "zmin": 1.8
+ },
+ {
+  "nombre": "Islas británicas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 735.3,
+  "lat": 54.1,
+  "lon": -4.37,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "Archipiélago Bismarck",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 732.2,
+  "lat": -3.47,
+  "lon": 149.2,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Archipiélago de las islas Salomón",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 731.7,
+  "lat": -9.59,
+  "lon": 160.82,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "isla de Baffin",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 716.8,
+  "lat": 68.61,
+  "lon": -74.65,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "mar del Norte",
@@ -744,7 +1908,29 @@
   "lat": 56.39,
   "lon": 2.76,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Llanura Indo-Gangética",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 713.2,
+  "lat": 25.91,
+  "lon": 84.12,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Kyzyl Kum",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 701.1,
+  "lat": 43.38,
+  "lon": 63.94,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "península balcánica",
@@ -755,7 +1941,18 @@
   "lat": 42.36,
   "lon": 22.0,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Islas menores de la Sonda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 690.3,
+  "lat": -8.94,
+  "lon": 121.09,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Himalaya",
@@ -769,6 +1966,39 @@
   "zmin": 1.8
  },
  {
+  "nombre": "macizo de Altái",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 684.4,
+  "lat": 47.72,
+  "lon": 90.51,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "mar de Célebes",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 680.0,
+  "lat": 3.73,
+  "lon": 121.93,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Llanura del Norte de China",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 679.1,
+  "lat": 34.9,
+  "lon": 117.17,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
   "nombre": "mar de Beaufort",
   "clase": "region",
   "px": 90,
@@ -776,6 +2006,17 @@
   "km": 677.9,
   "lat": 72.23,
   "lon": -136.64,
+  "linea": true,
+  "zmin": 1.8
+ },
+ {
+  "nombre": "bahía de Baffin",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 673.6,
+  "lat": 73.58,
+  "lon": -67.59,
   "linea": true,
   "zmin": 1.8
  },
@@ -799,7 +2040,29 @@
   "lat": 76.22,
   "lon": 120.59,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Sumatra",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 653.6,
+  "lat": -0.45,
+  "lon": 101.51,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "cuenca del Tarim",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 652.1,
+  "lat": 39.31,
+  "lon": 83.23,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Golfo de Alaska",
@@ -811,6 +2074,17 @@
   "lon": -149.41,
   "linea": true,
   "zmin": 1.8
+ },
+ {
+  "nombre": "Altiplanicie Mexicana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 646.2,
+  "lat": 26.13,
+  "lon": -104.01,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "mar Negro",
@@ -835,6 +2109,61 @@
   "zmin": 1.8
  },
  {
+  "nombre": "mar de Timor",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 642.0,
+  "lat": -10.99,
+  "lon": 128.05,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Antillas Menores",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 630.6,
+  "lat": 13.74,
+  "lon": -63.08,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Desierto de Karakum",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 622.3,
+  "lat": 39.65,
+  "lon": 60.73,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Llanos",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 621.9,
+  "lat": 7.12,
+  "lon": -68.47,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Meseta Yunnan-Guizhou",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 617.1,
+  "lat": 26.24,
+  "lon": 103.0,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
   "nombre": "mar Caspio",
   "clase": "region",
   "px": 90,
@@ -854,7 +2183,150 @@
   "lat": 35.77,
   "lon": 123.37,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Desierto occidental",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 610.0,
+  "lat": 27.42,
+  "lon": 28.33,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Decán",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 607.4,
+  "lat": 17.08,
+  "lon": 77.34,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Islas Bahamas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 604.2,
+  "lat": 23.68,
+  "lon": -75.84,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Islas Mascareñas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 600.4,
+  "lat": -20.3,
+  "lon": 61.02,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Gran Barrera de Coral",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 594.6,
+  "lat": -18.25,
+  "lon": 148.35,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Cordillera de Brooks",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 590.6,
+  "lat": 68.81,
+  "lon": -152.87,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Khingan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 589.4,
+  "lat": 48.51,
+  "lon": 121.24,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Altiplano",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 588.6,
+  "lat": -20.09,
+  "lon": -68.16,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Yáblonovy",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 581.6,
+  "lat": 54.24,
+  "lon": 116.73,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar de Chukotka",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 580.6,
+  "lat": 69.18,
+  "lon": -170.22,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "islas Ryūkyū",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 578.6,
+  "lat": 26.21,
+  "lon": 128.5,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar de Bismarck",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 577.6,
+  "lat": -3.59,
+  "lon": 147.37,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "mar de Sulú",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 573.8,
+  "lat": 8.56,
+  "lon": 120.16,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Gran Valle del Rift",
@@ -865,7 +2337,106 @@
   "lat": 8.13,
   "lon": 39.55,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Mackenzie",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 563.0,
+  "lat": 63.1,
+  "lon": -129.16,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Sierra Madre Occidental",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 558.0,
+  "lat": 26.0,
+  "lon": -106.87,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera Annamita",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 556.5,
+  "lat": 16.43,
+  "lon": 106.2,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Kunlun",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 552.4,
+  "lat": 36.28,
+  "lon": 88.01,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Svalbard",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 551.1,
+  "lat": 78.66,
+  "lon": 21.77,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta del Colorado",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 550.9,
+  "lat": 37.08,
+  "lon": -109.88,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de Tailandia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 548.3,
+  "lat": 9.7,
+  "lon": 101.87,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Drakensberg",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 545.8,
+  "lat": -29.27,
+  "lon": 28.78,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de Carpentaria",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 543.3,
+  "lat": -14.55,
+  "lon": 138.99,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "península de Kamchatka",
@@ -875,6 +2446,50 @@
   "km": 541.0,
   "lat": 56.7,
   "lon": 160.01,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Sierra Madre del Sur",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 540.5,
+  "lat": 18.36,
+  "lon": -99.9,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Llanura de Manchuria",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 529.1,
+  "lat": 45.25,
+  "lon": 124.3,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Desierto Arenoso",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 527.5,
+  "lat": -20.61,
+  "lon": 124.92,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Transantárticos",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 521.3,
+  "lat": -81.15,
+  "lon": 165.35,
   "linea": true,
   "zmin": 1.8
  },
@@ -887,7 +2502,7 @@
   "lat": 27.45,
   "lon": 71.84,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
   "nombre": "Golfo de Adén",
@@ -898,7 +2513,51 @@
   "lat": 12.52,
   "lon": 47.64,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de San Lorenzo",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 506.9,
+  "lat": 48.29,
+  "lon": -61.0,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Depresión cáspica",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 505.9,
+  "lat": 47.0,
+  "lon": 49.76,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera Blanca",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 500.2,
+  "lat": -9.34,
+  "lon": -76.59,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Gran Desierto de Victoria",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 499.8,
+  "lat": -28.24,
+  "lon": 127.94,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "golfo Pérsico",
@@ -920,7 +2579,18 @@
   "lat": 30.85,
   "lon": 51.09,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Desierto de Nubia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 493.3,
+  "lat": 20.35,
+  "lon": 33.66,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Hindú Kush",
@@ -931,7 +2601,51 @@
   "lat": 35.77,
   "lon": 71.46,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "mar de Bellingshausen",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 479.5,
+  "lat": -71.72,
+  "lon": -81.85,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Honshū",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 476.0,
+  "lat": 36.66,
+  "lon": 138.0,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Meseta del Columbia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 474.0,
+  "lat": 44.99,
+  "lon": -117.51,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar de Molucas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 470.2,
+  "lat": 0.68,
+  "lon": 126.09,
+  "linea": true,
+  "zmin": 3.4
  },
  {
   "nombre": "montes Cárpatos",
@@ -942,7 +2656,40 @@
   "lat": 47.45,
   "lon": 22.98,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Isla Victoria",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 466.4,
+  "lat": 70.88,
+  "lon": -110.39,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Alpes escandinavos",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 466.1,
+  "lat": 64.39,
+  "lon": 12.9,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar Tirreno",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 465.9,
+  "lat": 40.15,
+  "lon": 12.14,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Golfo de Vizcaya",
@@ -953,7 +2700,29 @@
   "lat": 45.55,
   "lon": -4.33,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Costeras",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 461.1,
+  "lat": 54.74,
+  "lon": -129.02,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montes Stanovoi",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 460.9,
+  "lat": 55.93,
+  "lon": 130.24,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Mar Báltico",
@@ -964,7 +2733,18 @@
   "lat": 56.8,
   "lon": 18.28,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Gran Bretaña",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 458.7,
+  "lat": 53.93,
+  "lon": -2.49,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Península Antártica",
@@ -978,6 +2758,17 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Sierra Madre Oriental",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 455.0,
+  "lat": 25.45,
+  "lon": -100.9,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
   "nombre": "Taklamakán",
   "clase": "region",
   "px": 90,
@@ -986,7 +2777,40 @@
   "lat": 38.99,
   "lon": 83.08,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Azores",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 450.6,
+  "lat": 38.65,
+  "lon": -27.69,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Isla de Ellesmere",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 447.2,
+  "lat": 80.31,
+  "lon": -78.03,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Desierto Sirio",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 446.4,
+  "lat": 32.33,
+  "lon": 40.15,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "península de Yucatán",
@@ -997,7 +2821,40 @@
   "lat": 18.86,
   "lon": -89.33,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Ghats orientales",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 441.9,
+  "lat": 16.86,
+  "lon": 81.22,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Sayanes del Este",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 440.0,
+  "lat": 53.59,
+  "lon": 97.21,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta de Loes",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 439.9,
+  "lat": 36.18,
+  "lon": 107.45,
+  "linea": true,
+  "zmin": 3.4
  },
  {
   "nombre": "Montes Urales",
@@ -1011,15 +2868,59 @@
   "zmin": 1.8
  },
  {
-  "nombre": "Península de Corea",
+  "nombre": "península de Malaca",
   "clase": "region",
   "px": 90,
   "menor": true,
-  "km": 425.1,
-  "lat": 37.96,
-  "lon": 127.15,
+  "km": 433.5,
+  "lat": 5.15,
+  "lon": 101.51,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Ahaggar",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 432.3,
+  "lat": 24.21,
+  "lon": 5.43,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montañas Qilian",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 429.6,
+  "lat": 38.22,
+  "lon": 98.72,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta de Shan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 429.3,
+  "lat": 21.47,
+  "lon": 96.67,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta central rusa",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 429.0,
+  "lat": 52.3,
+  "lon": 36.85,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Alpes",
@@ -1033,6 +2934,83 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Golfo de California",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 417.6,
+  "lat": 27.08,
+  "lon": -111.13,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar Jónico",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 415.3,
+  "lat": 38.02,
+  "lon": 18.63,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Islas Aleutianas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 414.6,
+  "lat": 53.27,
+  "lon": -169.4,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Pantanal",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 413.2,
+  "lat": -18.02,
+  "lon": -57.11,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Sijoté-Alín",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 409.7,
+  "lat": 46.99,
+  "lon": 136.91,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Célebes",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 409.4,
+  "lat": -2.0,
+  "lon": 121.11,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera Verjoyansk",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 409.1,
+  "lat": 66.2,
+  "lon": 130.58,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
   "nombre": "Desierto de Atacama",
   "clase": "region",
   "px": 90,
@@ -1041,7 +3019,40 @@
   "lat": -23.12,
   "lon": -69.52,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Llanura de Nullarbor",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 406.8,
+  "lat": -31.05,
+  "lon": 127.99,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Desierto de Ordos",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 400.3,
+  "lat": 39.07,
+  "lon": 108.19,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Golfo de Campeche",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 400.1,
+  "lat": 19.79,
+  "lon": -93.56,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Mesopotamia",
@@ -1052,7 +3063,7 @@
   "lat": 34.54,
   "lon": 42.76,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
   "nombre": "Cáucaso",
@@ -1066,6 +3077,39 @@
   "zmin": 1.8
  },
  {
+  "nombre": "Meseta de Khorat",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 394.5,
+  "lat": 16.77,
+  "lon": 102.57,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Isla Sur",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 385.3,
+  "lat": -43.98,
+  "lon": 170.52,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Nueva Zembla",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 384.8,
+  "lat": 74.12,
+  "lon": 58.39,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
   "nombre": "mar Adriático",
   "clase": "region",
   "px": 90,
@@ -1074,24 +3118,51 @@
   "lat": 42.76,
   "lon": 16.03,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
-  "nombre": "Estrecho de Taiwán",
-  "clase": "visor",
-  "px": 10,
+  "nombre": "Cordillera de las Cascadas",
+  "clase": "region",
+  "px": 90,
   "menor": true,
-  "km": 370.7,
-  "lat": 24.24,
-  "lon": 119.36,
-  "caja": [
-   23.05,
-   25.27,
-   117.43,
-   121.09
-  ],
+  "km": 375.4,
+  "lat": 46.52,
+  "lon": -121.39,
   "linea": true,
-  "zmin": 3.0
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Ghats occidentales",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 369.9,
+  "lat": 15.54,
+  "lon": 74.69,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Qinling",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 368.3,
+  "lat": 33.76,
+  "lon": 109.6,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Betpak-Dala",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 366.4,
+  "lat": 44.79,
+  "lon": 70.65,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Namib",
@@ -1102,7 +3173,7 @@
   "lat": -21.33,
   "lon": 14.16,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
   "nombre": "mar Egeo",
@@ -1113,7 +3184,150 @@
   "lat": 38.79,
   "lon": 25.18,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Tierra de Arnhem",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 355.6,
+  "lat": -13.29,
+  "lon": 134.27,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Java",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 353.1,
+  "lat": -7.3,
+  "lon": 109.93,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Tibesti",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 351.8,
+  "lat": 21.56,
+  "lon": 18.13,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península de California",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 351.3,
+  "lat": 27.83,
+  "lon": -113.34,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península de Taimyr",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 351.2,
+  "lat": 75.36,
+  "lon": 105.81,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Golfo de Botnia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 346.2,
+  "lat": 62.57,
+  "lon": 20.79,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Tierras Bajas del Norte de Siberia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 345.4,
+  "lat": 71.9,
+  "lon": 107.96,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Pequeño Khingan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 344.7,
+  "lat": 49.11,
+  "lon": 127.64,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta de Kimberley",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 343.7,
+  "lat": -16.26,
+  "lon": 126.72,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Península de Yamal",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 343.2,
+  "lat": 69.9,
+  "lon": 70.33,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Islas de Nueva Siberia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 342.6,
+  "lat": 74.88,
+  "lon": 142.62,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de Tonkín",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 339.9,
+  "lat": 19.86,
+  "lon": 107.76,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Isla Norte",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 337.2,
+  "lat": -38.62,
+  "lon": 175.75,
+  "linea": true,
+  "zmin": 2.2
  },
  {
   "nombre": "Cordillera del Karakórum",
@@ -1124,7 +3338,29 @@
   "lat": 35.53,
   "lon": 77.49,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Florida",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 332.5,
+  "lat": 28.07,
+  "lon": -81.6,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cuenca de Sichuan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 332.2,
+  "lat": 30.32,
+  "lon": 105.26,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Golfo de Omán",
@@ -1134,6 +3370,72 @@
   "km": 330.1,
   "lat": 24.54,
   "lon": 58.77,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera de Alaska",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 328.3,
+  "lat": 62.87,
+  "lon": -149.24,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Desierto de Gibson",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 325.7,
+  "lat": -24.49,
+  "lon": 124.99,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Isla de Terranova",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 324.5,
+  "lat": 48.73,
+  "lon": -56.07,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montañas Hejaz",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 324.4,
+  "lat": 26.0,
+  "lon": 37.75,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Luzón",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 322.5,
+  "lat": 15.98,
+  "lon": 121.4,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Islandia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 316.6,
+  "lat": 65.0,
+  "lon": -18.57,
   "linea": true,
   "zmin": 1.8
  },
@@ -1146,18 +3448,513 @@
   "lat": 38.41,
   "lon": 73.67,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.2
  },
  {
-  "nombre": "canal de la Mancha",
+  "nombre": "Nan Ling",
   "clase": "region",
   "px": 90,
   "menor": true,
-  "km": 310.9,
-  "lat": 49.75,
-  "lon": -2.61,
+  "km": 307.6,
+  "lat": 24.66,
+  "lon": 111.67,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar Blanco",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 304.6,
+  "lat": 66.32,
+  "lon": 39.29,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar de Amundsen",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 304.5,
+  "lat": -74.03,
+  "lon": -106.37,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Mindanao",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 304.2,
+  "lat": 7.67,
+  "lon": 124.85,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta del Yukón",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 303.8,
+  "lat": 62.42,
+  "lon": -136.85,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Tierra del Norte",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 298.5,
+  "lat": 79.77,
+  "lon": 96.65,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península de Kola",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 297.9,
+  "lat": 67.58,
+  "lon": 36.69,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Tierra de Francisco José",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 295.7,
+  "lat": 80.74,
+  "lon": 55.53,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Altyn-Tagh",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 290.0,
+  "lat": 38.46,
+  "lon": 90.23,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar Balear",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 289.3,
+  "lat": 40.08,
+  "lon": 1.98,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Meseta de Putorana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 287.3,
+  "lat": 68.66,
+  "lon": 103.84,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Irlanda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 285.6,
+  "lat": 53.43,
+  "lon": -7.87,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Taihang",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 280.2,
+  "lat": 38.6,
+  "lon": 113.84,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "mar de Bohai",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 279.1,
+  "lat": 38.99,
+  "lon": 120.02,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Hokkaidō",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 278.1,
+  "lat": 43.38,
+  "lon": 142.59,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península del Cabo York",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 277.8,
+  "lat": -13.31,
+  "lon": 142.54,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Sajalín",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 272.6,
+  "lat": 50.33,
+  "lon": 142.71,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Bahía James",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 269.7,
+  "lat": 53.17,
+  "lon": -80.45,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cuenca de Qaidam",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 268.0,
+  "lat": 37.14,
+  "lon": 94.49,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Sierra Nevada",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 265.3,
+  "lat": 37.87,
+  "lon": -119.73,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "islas Andamán",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 263.3,
+  "lat": 11.96,
+  "lon": 92.64,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Asir",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 261.3,
+  "lat": 19.3,
+  "lon": 42.38,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera de Vindhya",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 260.0,
+  "lat": 23.19,
+  "lon": 76.92,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera Siwalik",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 259.9,
+  "lat": 28.1,
+  "lon": 83.19,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Cuenca de Junggar",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 258.5,
+  "lat": 44.91,
+  "lon": 86.51,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Montañas Tarbagatai",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 258.1,
+  "lat": 47.64,
+  "lon": 82.16,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Sri Lanka",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 256.7,
+  "lat": 7.61,
+  "lon": 80.7,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Península de Alaska",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 253.8,
+  "lat": 57.7,
+  "lon": -157.08,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Wuyi",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 251.0,
+  "lat": 26.89,
+  "lon": 117.09,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Tasmania",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 250.9,
+  "lat": -42.01,
+  "lon": 146.59,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Dabie",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 242.2,
+  "lat": 31.45,
+  "lon": 114.98,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Elburz",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 242.0,
+  "lat": 36.5,
+  "lon": 51.82,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montañas Yin",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 241.4,
+  "lat": 41.65,
+  "lon": 108.71,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Atlas sahariano",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 240.8,
+  "lat": 33.79,
+  "lon": 1.6,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Cordillera Chugach",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 239.7,
+  "lat": 61.01,
+  "lon": -144.99,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Meseta Aldan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 235.5,
+  "lat": 57.87,
+  "lon": 129.08,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar de Irlanda",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 227.5,
+  "lat": 53.38,
+  "lon": -4.87,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Montañas Reina Maud",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 222.1,
+  "lat": -85.71,
+  "lon": -163.83,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Alto Atlas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 219.0,
+  "lat": 31.97,
+  "lon": -5.73,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Archipiélago de Tierra del Fuego",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 218.8,
+  "lat": -54.03,
+  "lon": -68.72,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Islas Nicobar",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 218.5,
+  "lat": 7.81,
+  "lon": 93.34,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Archipiélago de las Comoras",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 216.2,
+  "lat": -12.39,
+  "lon": 44.25,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montes Ellsworth",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 212.0,
+  "lat": -79.46,
+  "lon": -82.43,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Alpes del Sur",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 210.5,
+  "lat": -43.96,
+  "lon": 169.66,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Delta del Amazonas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 206.8,
+  "lat": -1.36,
+  "lon": -50.42,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península de Shandong",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 202.5,
+  "lat": 36.75,
+  "lon": 120.41,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "Pirineos",
@@ -1168,35 +3965,150 @@
   "lat": 42.74,
   "lon": 0.64,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
-  "nombre": "mar de Azov",
+  "nombre": "Delta del Níger",
   "clase": "region",
   "px": 90,
   "menor": true,
-  "km": 193.7,
-  "lat": 46.18,
-  "lon": 36.82,
+  "km": 197.3,
+  "lat": 5.25,
+  "lon": 6.25,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
-  "nombre": "Estrecho de Ormuz",
-  "clase": "visor",
-  "px": 10,
+  "nombre": "Nueva Bretaña",
+  "clase": "region",
+  "px": 90,
   "menor": true,
-  "km": 159.3,
-  "lat": 26.55,
-  "lon": 56.35,
-  "caja": [
-   25.9,
-   27.1,
-   55.6,
-   57.2
-  ],
+  "km": 189.9,
+  "lat": -5.47,
+  "lon": 150.65,
   "linea": true,
-  "zmin": 3.0
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Taiwán",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 188.9,
+  "lat": 23.75,
+  "lon": 120.96,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Kyūshū",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 188.3,
+  "lat": 32.64,
+  "lon": 130.88,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Islas Baleares",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 185.7,
+  "lat": 39.45,
+  "lon": 2.76,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Montañas Pensacola",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 185.0,
+  "lat": -83.44,
+  "lon": -54.41,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Hainan",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 184.2,
+  "lat": 19.2,
+  "lon": 109.74,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Río de la Plata",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 180.7,
+  "lat": -35.13,
+  "lon": -56.82,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Isla de Vancouver",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 174.5,
+  "lat": 49.64,
+  "lon": -125.7,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de Finlandia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 173.8,
+  "lat": 59.93,
+  "lon": 26.38,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Islas Malvinas",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 168.7,
+  "lat": -51.74,
+  "lon": -59.54,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Timor",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 167.6,
+  "lat": -9.24,
+  "lon": 125.12,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Sicilia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 159.2,
+  "lat": 37.59,
+  "lon": 14.16,
+  "linea": true,
+  "zmin": 2.8
  },
  {
   "nombre": "península de Crimea",
@@ -1207,374 +4119,160 @@
   "lat": 45.29,
   "lon": 34.32,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
  },
  {
-  "nombre": "Estrecho de Gibraltar",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 35.79,
-  "lon": -5.86,
-  "caja": [
-   35.44,
-   36.14,
-   -6.29,
-   -5.43
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Bósforo",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 41.1,
-  "lon": 29.04,
-  "caja": [
-   40.75,
-   41.45,
-   28.58,
-   29.51
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Bab el-Mandeb",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 12.87,
-  "lon": 43.45,
-  "caja": [
-   12.52,
-   13.22,
-   43.09,
-   43.81
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Dardanelos",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 40.2,
-  "lon": 26.45,
-  "caja": [
-   39.85,
-   40.55,
-   25.99,
-   26.9
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Kilimanjaro",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": -3.08,
-  "lon": 37.35,
-  "caja": [
-   -3.43,
-   -2.73,
-   37.0,
-   37.7
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Macizo Vinson",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": -78.53,
-  "lon": -85.63,
-  "caja": [
-   -78.88,
-   -78.18,
-   -87.39,
-   -83.87
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Monte Fuji",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 35.36,
-  "lon": 138.73,
-  "caja": [
-   35.01,
-   35.71,
-   138.3,
-   139.16
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Everest",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 27.98,
-  "lon": 86.88,
-  "caja": [
-   27.63,
-   28.33,
-   86.48,
-   87.28
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "K2",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 35.88,
-  "lon": 76.51,
-  "caja": [
-   35.53,
-   36.23,
-   76.08,
-   76.95
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Monte Ararat",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 39.7,
-  "lon": 44.3,
-  "caja": [
-   39.35,
-   40.05,
-   43.85,
-   44.75
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Pico Aneto",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 42.63,
-  "lon": 0.66,
-  "caja": [
-   42.28,
-   42.98,
-   0.19,
-   1.14
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Mulhacén",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 37.05,
-  "lon": -3.31,
-  "caja": [
-   36.7,
-   37.4,
-   -3.75,
-   -2.87
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Vesubio",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 40.82,
-  "lon": 14.43,
-  "caja": [
-   40.47,
-   41.17,
-   13.97,
-   14.9
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Mont Blanc",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 45.83,
-  "lon": 6.87,
-  "caja": [
-   45.48,
-   46.18,
-   6.36,
-   7.37
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Monte Elbrus",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 43.36,
-  "lon": 42.44,
-  "caja": [
-   43.01,
-   43.71,
-   41.96,
-   42.92
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Denali",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 63.07,
-  "lon": -151.01,
-  "caja": [
-   62.72,
-   63.42,
-   -151.78,
-   -150.23
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Monte Etna",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 37.76,
-  "lon": 15.0,
-  "caja": [
-   37.41,
-   38.11,
-   14.55,
-   15.44
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Teide",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 28.27,
-  "lon": -16.64,
-  "caja": [
-   27.92,
-   28.62,
-   -17.04,
-   -16.24
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Mauna Kea",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": 19.82,
-  "lon": -155.47,
-  "caja": [
-   19.47,
-   20.17,
-   -155.84,
-   -155.1
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Volcán Chimborazo",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": -1.47,
-  "lon": -78.82,
-  "caja": [
-   -1.82,
-   -1.12,
-   -79.17,
-   -78.47
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Aconcagua",
-  "clase": "visor",
-  "px": 10,
-  "menor": true,
-  "km": 77.9,
-  "lat": -32.66,
-  "lon": -70.02,
-  "caja": [
-   -33.01,
-   -32.31,
-   -70.43,
-   -69.6
-  ],
-  "linea": true,
-  "zmin": 3.0
- },
- {
-  "nombre": "Pasaje de Drake",
+  "nombre": "Cerdeña",
   "clase": "region",
   "px": 90,
   "menor": true,
-  "km": 0.1,
-  "lat": -64.54,
-  "lon": -63.99,
+  "km": 153.8,
+  "lat": 40.1,
+  "lon": 9.04,
   "linea": true,
-  "zmin": 1.8
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Valle de Fergana",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 137.4,
+  "lat": 40.64,
+  "lon": 71.64,
+  "linea": true,
+  "zmin": 2.2
+ },
+ {
+  "nombre": "Delta del Mekong",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 135.5,
+  "lat": 10.29,
+  "lon": 105.97,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Shikoku",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 134.8,
+  "lat": 33.66,
+  "lon": 133.47,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de León",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 130.3,
+  "lat": 42.91,
+  "lon": 3.99,
+  "linea": true,
+  "zmin": 3.4
+ },
+ {
+  "nombre": "Istmo de Panamá",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 130.0,
+  "lat": 9.06,
+  "lon": -78.82,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Istmo de Tehuantepec",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 127.6,
+  "lat": 17.35,
+  "lon": -94.71,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Golfo de Honduras",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 123.7,
+  "lat": 16.26,
+  "lon": -88.0,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Córcega",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 92.9,
+  "lat": 42.16,
+  "lon": 9.1,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Delta del Volga",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 84.5,
+  "lat": 46.15,
+  "lon": 48.11,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "delta del Danubio",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 66.4,
+  "lat": 45.12,
+  "lon": 29.23,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "Península Valdés",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 62.1,
+  "lat": -42.51,
+  "lon": -63.96,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "delta del Misisipi",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 39.7,
+  "lat": 29.25,
+  "lon": -89.37,
+  "linea": true,
+  "zmin": 2.8
+ },
+ {
+  "nombre": "mar del Scotia",
+  "clase": "region",
+  "px": 90,
+  "menor": true,
+  "km": 21.6,
+  "lat": -61.16,
+  "lon": -54.9,
+  "linea": true,
+  "zmin": 2.2
  }
 ]

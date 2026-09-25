@@ -541,6 +541,40 @@ for r in range(MH):
         MTNK[r][c] = 8 + max(-4, min(2, round(math.log(m) / _LNSTEP * MTN_CONTRAST)))
 
 
+# Roca y nieve de los niveles de zoom, con el relieve fino (usuario,
+# 25-sep-2026: "pese a salir cadenas montañosas (ejemplo Pirineos) me
+# gustaría que se representasen con nieve"). Las de la base (ROCKAMT,
+# SNOWAMT) salen de celdas de 0,25°, cuya altura media se queda por debajo
+# de la línea de nieve en las cordilleras estrechas (Pirineos, Alpes,
+# Cáucaso...). Las mismas reglas que en la base y los mismos escalones, pero
+# con la altura del punto, y el "sobresale del entorno" medido a 1° (en vez
+# de 2°) para que las mesetas altas (Tíbet, Altiplano) no se vuelvan blancas.
+# ETOPO1 a 2,5' interpolado y suavizado también rebaja las cumbres (el Aneto
+# se queda en ~2560 m, las crestas de los Pirineos en 2200-2500): la línea de
+# nieve va más baja que en la base (1960 m en los Pirineos, 1770 en los
+# Alpes, 2760 en el Himalaya, 4300 en el ecuador) y cubre antes; y la roca
+# empieza antes (1200 m), para que asome en las crestas entre los árboles.
+NIEVE_FINA_L0, NIEVE_FINA_LK, NIEVE_FINA_RANGO = 4300.0, 55.0, 600.0
+ROCA_FINA_E0, ROCA_FINA_RANGO = 1200.0, 3000.0
+
+
+def _roca_nieve_fina(lat, lon):
+    e = _elev_bi(lat, lon)
+    ra = (min(180, (int((e - ROCA_FINA_E0) / ROCA_FINA_RANGO * 255) // 45) * 45) / 180.0
+          if e > ROCA_FINA_E0 else 0.0)
+    sl = NIEVE_FINA_L0 - abs(lat) * NIEVE_FINA_LK
+    sa = 0.0
+    if e > sl:
+        around = (_elev_bi(lat + 1, lon) + _elev_bi(lat - 1, lon)
+                  + _elev_bi(lat, lon + 1) + _elev_bi(lat, lon - 1)) / 4.0
+        relief = e - around
+        if relief > 200:
+            sa = min(1.0, (e - sl) / NIEVE_FINA_RANGO) * min(1.0, (relief - 200) / 500.0)
+    latsnow = smooth(58.0, 75.0, abs(lat)) * 0.85
+    sa = (int(min(1.0, max(sa, latsnow)) * 215) // 28) * 28 / 215.0
+    return ra, sa
+
+
 # ------------------------------------------------------- copas de árbol
 # La textura "de ilustración": en vez de ruido, racimos con forma. Copas
 # redondas repartidas sobre la ESFERA (rejilla con jitter, espaciado constante
@@ -1207,8 +1241,11 @@ def _surface_at(lat, lon):
             surf = mix(surf, mix(REG, ERG, PATCH[gr][gc] / 255.0), 0.6)
             if mk == 0:
                 tex_k = DUNE_K[DUNE[gr][gc]]
-        er, ec = _ecell(lat, lon)
-        _ra, _sa = ROCKAMT[er][ec] / 180.0, SNOWAMT[er][ec] / 215.0
+        if NIVEL > 1:
+            _ra, _sa = _roca_nieve_fina(lat, lon)
+        else:
+            er, ec = _ecell(lat, lon)
+            _ra, _sa = ROCKAMT[er][ec] / 180.0, SNOWAMT[er][ec] / 215.0
         if _sa and (_sa > SNOW_GAP if code == 0 else _sa > 0.05 + u * 0.55):
             surf = SNOW                    # copa nevada: conserva su sombreado de copa
             tex_k = (min(0, tex_k) if code else 0) + mk
