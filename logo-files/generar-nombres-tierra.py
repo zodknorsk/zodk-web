@@ -20,7 +20,9 @@ Fuentes (Natural Earth, dominio público; nombres en español de su NAME_ES):
     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/<archivo>
 El tamaño (`km`) de una zona es el lado de un cuadrado de la superficie de su
 trozo más grande, y su rótulo va en el centro de ese trozo. La lista de lo que
-sale está elegida a mano (MARES, REGIONES, ESTRECHOS, PICOS).
+sale va por la importancia que les da Natural Earth (scalerank), con lo que
+se quita o se añade a mano (NO_REGIONES, MARES_4, REGIONES_4), y a mano los
+estrechos y los picos (ESTRECHOS, PICOS).
 Uso:  python3 generar-nombres-tierra.py
 """
 import json
@@ -43,45 +45,85 @@ CONTINENTES = [
     ("Europa", 53.0, 22.0, 3500),
 ]
 CONT_ZMAX = 2.6          # los continentes se van al acercarse, cuando salen mares y regiones
-ZONA_ZMIN = 1.8          # mares y regiones, no antes
-ZONA_PX = 90             # y cada uno cuando mide esto en pantalla
+# Mares y regiones salen por orden de importancia (el `scalerank` de Natural
+# Earth: 0-1 lo más conocido, 4 lo de detalle), cada uno desde su zoom y
+# cuando mide ZONA_PX en pantalla.
+ZONA_ZMIN = {0: 1.8, 1: 1.8, 2: 2.2, 3: 2.8, 4: 3.4}
+ZONA_PX = 90
 VISOR_ZMIN = 3.0         # estrechos y picos, ya acercado
 VISOR_PX = 10
 VISOR_MIN = 0.7          # lado mínimo del visor, en grados (los estrechos son finísimos)
 
-MARES = [
-    "Mediterráneo", "mar Caribe", "mar Rojo", "mar Negro", "mar Caspio", "mar Arábigo",
-    "golfo Pérsico", "Golfo de Omán", "Golfo de Adén", "Golfo de México", "Bahía de Bengala",
-    "Bahía de Hudson", "mar de China Meridional", "mar de China Oriental", "mar Amarillo",
-    "mar del Japón", "mar de Ojotsk", "mar de Bering", "Mar Báltico", "mar del Norte",
-    "Mar de Barents", "mar de Noruega", "mar de Groenlandia", "mar de Kara", "mar de Láptev",
-    "mar de Beaufort", "mar de Labrador", "mar del Coral", "mar de Tasmania", "mar de Filipinas",
-    "mar de Weddell", "mar de Ross", "Golfo de Guinea", "Golfo de Vizcaya", "mar de los Sargazos",
-    "mar Adriático", "mar Egeo", "mar de Azov", "mar de Andamán", "mar de Java", "Golfo de Alaska",
-    "canal de la Mancha", "Canal de Mozambique", "Pasaje de Drake",
-]
-REGIONES = [
-    "Sahara", "Desierto de Gobi", "Kalahari", "Desierto de Rub al-Jali", "Desierto de Atacama",
-    "Namib", "Desierto de Thar", "Taklamakán", "Cuenca del Amazonas", "Cuenca del Congo",
-    "Siberia", "Patagonia", "SAHEL", "Meseta Tibetana", "Himalaya", "Cordillera de Los Andes",
-    "Alpes", "Montañas Rocosas", "Cáucaso", "Montes Urales", "Atlas", "Zagros", "Hindú Kush",
-    "Cordillera del Karakórum", "Cordillera del Pamir", "Tian Shan", "Apalaches",
-    "Gran Cordillera Divisoria", "Pirineos", "montes Cárpatos", "Grandes Llanuras",
-    "Estepa kazaja", "Escandinavia", "Arabia", "Anatolia", "península balcánica",
-    "península ibérica", "Indochina", "Cuerno de África", "península de Kamchatka",
-    "península de Crimea", "Mesopotamia", "Gran Valle del Rift", "Macizo etíope",
-    "Península Antártica", "Meseta Antártica", "Escudo Canadiense", "península de Yucatán",
-    "Península de Corea",
-]
+# Mares, golfos y bahías: todos los de scalerank 0-3 de Natural Earth 1:10m
+# (usuario, 25-sep-2026: "oceanía / australia / china están prácticamente
+# vacíos de nombres") y estos de detalle (4).
+MAR_RANGO = 3
+MARES_4 = ["Gran barrera de coral", "mar Jónico", "mar de Bohai", "Golfo de Tonkín",
+           "Golfo de San Lorenzo", "Río de la Plata", "mar de Salomón", "mar de Bismarck",
+           "Golfo de Finlandia", "Golfo de León", "mar Balear", "mar Egeo", "mar de Molucas"]
+# Regiones (desiertos, cordilleras, mesetas, llanuras, cuencas, penínsulas,
+# islas y archipiélagos): las de scalerank 0-3 de Natural Earth 1:50m, menos
+# las clases que no son accidentes (costas y tierras de la Antártida) y los
+# nombres raros o sueltos de NO_REGIONES; y estas de detalle (4), para que
+# Australia y China tengan lo suyo.
+REG_RANGO = 3
+REG_CLASES = {"Range/mtn", "Desert", "Plateau", "Plain", "Basin", "Lowland", "Tundra", "Valley",
+              "Pen/cape", "Peninsula", "Island", "Island group", "Isthmus", "Delta", "Wetlands",
+              "Geoarea"}
+NO_REGIONES = {
+    "Antártida Oriental", "Antártida Occidental", "Tierra de Wilkes", "Tierra de la Reina Maud",
+    "Tierra de Marie Byrd", "Tierra de Victoria", "Tierra de Mac. Robertson", "Tierra de Enderby",
+    "Nueva Suabia", "Tierra de Coats", "Tierra de Ellsworth", "Tierra de Kemp", "Tierra de Palmer",
+    "Tierra de Graham", "Talos Dome", "Domo C", "Domo A", "Domo F", "Tierras Altas Americanas",
+    "Meseta Hollick-Kenyon", "Meseta de Rockefeller", "Isla Berkner", "KNUD RASMUSSEN LAND",
+    "SELVAS", "Punyab", "Isla Bolshói Bégichev", "Central Highlands", "Cabo de Cà Mau",
+    "Kiribati", "Islas de la Línea", "Isla de Hawái", "Isla Espíritu Santo", "Maui", "Tahití",
+    "Bougainville", "Guadalcanal", "Viti Levu", "Isla Isabela", "Tundra Bol’shezemel’skaya",
+    "BARREN GROUNDS", "ISLAS PARRY", "Isla Gran Nicobar", "Isla Andamán del Sur",
+    "Isla Andamán del Medio", "Isla Andamán del Norte", "Chaco Boreal", "Chaco Austral",
+    "Yungas", "Sudd", "Montañas de Air", "MONTAÑAS DE CRISTAL", "MONTAÑAS MITUMBA",
+    "Apeninos ligures", "Planicie Costera", "TIERRAS BAJAS CENTRALES", "North Slope", "Piedmont",
+    "Meseta de Allegheny", "Meseta de Cumberland", "Cadena costera del Pacífico",
+    "Archipiélago de Mergui", "Islas Spratly", "Istmo de Kra", "Corredor del Hexi",
+    "Llanura nordeuropea", "Nueva Escocia", "Labrador", "Asia", "África", "Europa",
+    "América del Norte", "América del Sur", "Antártida", "Australia", "Melanesia", "Micronesia",
+    "Polinesia", "Archipiélago malayo", "Indias Occidentales", "subcontinente indio",
+    "Cordillera Occidental", "Cordillera Oriental", "Cordillera Real",
+}
+REGIONES_4 = ["Desierto de Gibson", "MESETA DE KIMBERLEY", "Meseta de Loes", "Cordillera Qin",
+              "Cuenca de Junggar", "Cuenca de Qaidam", "Taklamakán", "Hainan", "Timor",
+              "Meandro de Ordos", "Montañas Yin", "Montañas Taihang"]
 # Nombres que Natural Earth trae en mayúsculas o raros
-ARREGLOS = {"SAHEL": "Sahel", "Cordillera de Los Andes": "Cordillera de los Andes"}
+ARREGLOS = {"SAHEL": "Sahel", "Cordillera de Los Andes": "Cordillera de los Andes",
+            "Jaya": "Puncak Jaya", "Kliuchevskoi": "Kliuchevskói", "monte Cook": "Aoraki (monte Cook)",
+            "mar de Chukotka.": "mar de Chukotka", "Meandro de Ordos": "Desierto de Ordos",
+            "Cordillera Qin": "Qinling", "Región pampeana": "La Pampa",
+            "Gran barrera de coral": "Gran Barrera de Coral",
+            "Montañas Transantárticas": "Montes Transantárticos", "Montaña Nan Ling": "Nan Ling",
+            "Cordillera Lesser Khingan": "Pequeño Khingan", "MONTE MACKENZIE": "Montes Mackenzie",
+            "Región Delta del Río Mekong": "Delta del Mekong", "Monte Wuyi": "Montes Wuyi"}
 ESTRECHOS = ["Estrecho de Gibraltar", "Bósforo", "Dardanelos", "Bab el-Mandeb",
-             "Estrecho de Malaca", "Estrecho de Taiwán"]
+             "Estrecho de Malaca", "Estrecho de Taiwán", "Estrecho de Bass", "estrecho de Torres",
+             "Estrecho de Magallanes", "Estrecho de Cook", "Estrecho de Corea"]
 # Ormuz no viene en Natural Earth: a mano (caja S, N, O, E)
 A_MANO = [("Estrecho de Ormuz", 26.55, 56.35, [25.9, 27.1, 55.6, 57.2])]
-PICOS = ["Everest", "K2", "Aconcagua", "Denali", "Kilimanjaro", "Mont Blanc", "Monte Elbrus",
-         "Macizo Vinson", "Monte Ararat", "Teide", "Monte Fuji", "Mauna Kea", "Monte Etna",
-         "Vesubio", "Volcán Chimborazo", "Mulhacén", "Pico Aneto"]
+# Picos: los conocidos en todo el mundo (los más altos de cada continente,
+# los ochomiles más famosos y los volcanes célebres). Sin los de interés solo
+# local (usuario, 25-sep-2026: "Mulhacén, que es un pico sin importancia").
+PICOS = ["Everest", "K2", "Kanchenjunga", "Aconcagua", "Denali", "Kilimanjaro", "Monte Elbrus",
+         "Macizo Vinson", "Jaya", "Mont Blanc", "Monte Fuji", "Mauna Kea", "Monte Kenia",
+         "Volcán Chimborazo", "Nevado Ojos del Salado", "Huascarán", "Citlaltépetl", "Damavand",
+         "Monte Ararat", "Kliuchevskoi", "Monte Etna", "Vesubio", "Teide", "Monte Kosciuszko",
+         "monte Cook", "Kailash", "Monte Gongga", "Monte Kinabalu", "Monte Whitney"]
+
+
+def titulo(n):
+    """Los que Natural Earth trae en mayúsculas, en minúscula con la inicial."""
+    if n != n.upper():
+        return n
+    menores = {"de", "del", "la", "las", "los", "y"}
+    return " ".join(w if i and w.lower() in menores else w.capitalize()
+                    for i, w in enumerate(n.lower().split()))
 
 
 def area_km2(anillo):
@@ -167,17 +209,35 @@ def main():
         faltan.extend(n for n in lista if n not in por_nombre)
         return por_nombre
 
-    for n, fs in busca(marinos, "name_es", MARES).items():
-        for f in fs:
-            km, lat, lon, _c = zona(f["geometry"])
-            nombres.append({"nombre": ARREGLOS.get(n, n), "clase": "region", "px": ZONA_PX, "menor": True,
-                            "km": round(km, 1), "lat": round(lat, 2), "lon": round(lon, 2), "linea": True,
-                            "zmin": ZONA_ZMIN})
-    for n, fs in busca(carga("ne_50m_geography_regions_polys.geojson"), "NAME_ES", REGIONES).items():
-        km, lat, lon, _c = max((zona(f["geometry"]) for f in fs), key=lambda z: z[0])
-        nombres.append({"nombre": ARREGLOS.get(n, n), "clase": "region", "px": ZONA_PX, "menor": True,
-                        "km": round(km, 1), "lat": round(lat, 2), "lon": round(lon, 2), "linea": True,
-                        "zmin": ZONA_ZMIN})
+    def zona_nombre(n, feats, rango):
+        km, lat, lon, _c = max((zona(f["geometry"]) for f in feats), key=lambda z: z[0])
+        nombres.append({"nombre": titulo(ARREGLOS.get(n, n)), "clase": "region", "px": ZONA_PX,
+                        "menor": True, "km": round(km, 1), "lat": round(lat, 2), "lon": round(lon, 2),
+                        "linea": True, "zmin": ZONA_ZMIN[rango]})
+
+    # mares: por nombre (el Pacífico y el Atlántico vienen en dos trozos)
+    mares = {}
+    for f in marinos:
+        p = f["properties"]
+        n = p["name_es"]
+        if p["featurecla"] in ("sea", "gulf", "bay", "reef", "sound") and n and \
+                (p["scalerank"] <= MAR_RANGO or n in MARES_4):
+            mares.setdefault(n, [p["scalerank"], []])[1].append(f)
+    for n, (rango, fs) in mares.items():
+        zona_nombre(n, fs, rango)
+    regiones = {}
+    for f in carga("ne_50m_geography_regions_polys.geojson"):
+        p = f["properties"]
+        n = p["NAME_ES"]
+        if n and n not in NO_REGIONES and p["FEATURECLA"] in REG_CLASES and \
+                (p["SCALERANK"] <= REG_RANGO or n in REGIONES_4):
+            r = regiones.setdefault(n, [p["SCALERANK"], []])
+            r[0] = min(r[0], p["SCALERANK"])
+            r[1].append(f)
+    faltan.extend(n for n in REGIONES_4 if n not in regiones)
+    faltan.extend(n for n in MARES_4 if n not in mares)
+    for n, (rango, fs) in regiones.items():
+        zona_nombre(n, fs, rango)
     visores = []
     for n, fs in busca(marinos, "name_es", ESTRECHOS).items():
         km, lat, lon, caja = zona(fs[0]["geometry"])
@@ -199,11 +259,13 @@ def main():
         for_visores.append((n, lat, lon, (s_, n_, o, e)))
     for n, lat, lon, (s_, n_, o, e) in for_visores:
         km = max((n_ - s_) * KM_GRADO, (e - o) % 360 * KM_GRADO * math.cos(math.radians(lat)))
-        nombres.append({"nombre": n, "clase": "visor", "px": VISOR_PX, "menor": True,
+        nombres.append({"nombre": ARREGLOS.get(n, n), "clase": "visor", "px": VISOR_PX, "menor": True,
                         "km": round(km, 1), "lat": round(lat, 2), "lon": round(lon, 2),
                         "caja": [round(x, 2) for x in (s_, n_, o, e)], "linea": True, "zmin": VISOR_ZMIN})
-    # de mayor a menor: la capa deja el del lugar más grande cuando dos se pisan
-    nombres.sort(key=lambda n: -n["km"])
+    # Cuando dos se pisan, la capa deja el primero del archivo: primero los
+    # visores (son pequeños y marcan un sitio exacto: Bab el-Mandeb no salía
+    # nunca, tapado por el rótulo del golfo de Adén) y luego, de mayor a menor.
+    nombres.sort(key=lambda n: (n["clase"] != "visor", -n["km"]))
     with open(SALIDA, "w") as fh:
         json.dump(nombres, fh, ensure_ascii=False, indent=1)
     cuenta = {}

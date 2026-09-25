@@ -5,7 +5,96 @@ paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Ley
 solo esto hay que poder retomarlo. El detalle del planeta de antes (horizonte
 de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 
-## Dónde estamos (24-sep-2026)
+## Dónde estamos (25-sep-2026)
+
+- Rama **`earth-project`**, **commiteada y subida** a GitHub el
+  25-sep-2026 al cerrar la sesión (sin fusionar). En el otro ordenador:
+  `git fetch` y `git switch earth-project` (o `git pull` si ya está).
+- **Hecho**: pasos 1-6 y el 6b (abajo). Nada sin commitear.
+- **SIGUIENTE (próxima sesión, el usuario: "lo voy a hacer en la próxima
+  sesión"): paso 7, el modo noche sobre el globo entero.** Qué hay y qué
+  falta:
+  - **Lo que ya hace el motor** (`ponNoche` en `src/scripts/tierra-gl.js`,
+    ~línea 423 y 955): LUT de noche (`planeta-lut-noche.png`), la luz de la
+    luna, el suelo de la noche, el halo (`uAtmo` = `N_ATMO`) y las nubes de
+    noche, con fundido de 1,5 s al cambiar de tema. El zoom (`n1/`) usa la
+    misma LUT de noche: los 1579 materiales tienen su color de noche.
+  - **Falta, por este orden** (todo estaba en el horizonte de antes, pintado
+    en CPU por `src/scripts/planeta.js`; el detalle de cómo se decidió, en
+    `HERO-WIP.md`, sección "Modo noche v2"):
+    1. **Luces de las ciudades**: `public/planeta/planeta-luces.png` (2
+       píxeles por luz, latitud/longitud/fuerza; `LUCES_N` y `LUZ_PNG_W`
+       en `planeta-datos.json`). En `planeta.js`, `luces()` (~línea 333-395)
+       las pinta como `light_cells()` del generador: pocos niveles de
+       brillo, cálidas. En el motor nuevo: un pase más en el shader o
+       puntos en la textura de arte, solo en la cara de noche; que se vean
+       también con zoom (a ×6 los puntos deben seguir siendo de 1 píxel de
+       arte, no crecer).
+    2. **Brillo de atmósfera** de noche (`planeta.js` ~línea 210: `dpx`,
+       píxeles desde el borde). Hoy el halo es el mismo con otro color.
+    3. **Aurora boreal** (`planeta.js` ~línea 396-470): cortinas de rayos
+       sobre el óvalo auroral alrededor del polo norte geomagnético, de
+       `AUR_H0` a `AUR_H1` radios, verde abajo y violeta arriba, pocos
+       niveles. En el horizonte de antes el polo quedaba arriba; ahora es
+       un globo que gira y se arrastra: la aurora tiene que ir pegada a la
+       Tierra (girar con ella) y verse por encima del borde cuando el polo
+       está cerca del limbo. Ojo con la CPU (`zodk-web-animaciones`): si se
+       pinta en cada fotograma, que sea en el shader.
+    4. **La X y la coordenada fijada en verde de visión nocturna**, como en
+       el horizonte de antes (`src/styles/global.css` ~línea 1366).
+    5. Rehacer `tierra-quieto-noche.png`
+       (`node logo-files/generar-tierra-quieto.mjs`) cuando la noche esté
+       terminada, y subir `PLANETA_V`.
+  - Luego, paso 8: probar en Zen y en el móvil (consumo:
+    `zodk-web-medir-rendimiento`) y fusionar en `main`.
+  - Para ver cosas sin ventana: el script de capturas de esta sesión
+    abría la portada del servidor de desarrollo en un Chrome sin ventana y
+    movía el globo con un `window.__tierra` temporal (ya quitado); si hace
+    falta, volver a ponerlo solo en desarrollo y quitarlo antes de commitear.
+- **Paso 6b HECHO, commiteado y subido (25-sep-2026)**: pulir el zoom antes de la noche.
+  Usuario, 25-sep-2026: "antes de ir con el modo nocturno creo que el zoom /
+  relieve hay que pulirlo algo más": montañas con nieve (Pirineos), Bab
+  el-Mandeb "sale solo un periodo muy pequeño de tiempo y tiene un visor
+  diferente al resto", y nombres: "Mulhacén, que es un pico sin importancia,
+  aparece, pero luego Oceanía / Australia / China están prácticamente vacíos".
+  Hecho y **aprobado** (usuario, 25-sep-2026: "mejor. Con el tiempo iremos
+  puliendo nombres pero mejor"; los nombres se seguirán ajustando):
+  - **Nieve y roca del zoom con el relieve fino** (`_roca_nieve_fina` en
+    `generar-planeta-hero.py`, solo `--nivel 2`): antes salían de celdas de
+    0,25° y en las cordilleras estrechas la media no llegaba a la línea de
+    nieve. ETOPO a 2,5' suaviza las cumbres (Aneto ~2560 m), así que la
+    línea va más baja que en la base (1960 m en los Pirineos, 1770 en los
+    Alpes, 4300 en el ecuador; `NIEVE_FINA_*`) y la roca empieza a 1200 m
+    (`ROCA_FINA_*`). Las mesetas altas (Tíbet, Altiplano) no se vuelven
+    blancas: la nieve pide sobresalir 200 m del entorno a 1°. `n1/`
+    regenerado entero; LUT 1577 → 1579 materiales; `PLANETA_V` 13.
+    **La base (zoom < ×3,6) no cambia**: los Pirineos solo se nievan con el
+    nivel fino. Si lo pide, la base puede usar lo mismo.
+  - **Más nieve en los Pirineos** (usuario, 25-sep-2026: "Nieve mejor. Los
+    Pirineos me siguen pareciendo poco"). Bajar la línea de nieve casi no
+    cambia nada (probado a 1960, 1840 y 1700 m): la franja alta de los
+    Pirineos mide ~0,2° y a ×6 son 4-5 píxeles. Probado **ensanchar la
+    nieve** (`NIEVE_FINA_ANCHO` = 0,2°: cada punto cuenta la cumbre más alta
+    a esa distancia): los Pirineos, claramente nevados, y los Alpes, mucho
+    más blancos. **Rechazado** (usuario, 25-sep-2026: "déjalo como antes y
+    ya"): se queda la nieve sin ensanchar (línea a 1960 m en los Pirineos,
+    `NIEVE_FINA_*` = 4300, 55, 600) y se quitó el código. Las 4 teselas de
+    la prueba, regeneradas como el resto.
+  - **Nombres, 131 → 367** (`generar-nombres-tierra.py`): mares y regiones
+    por la importancia de Natural Earth (`scalerank` 0-3, más unos de 4 a
+    mano: `MARES_4`, `REGIONES_4`), islas y archipiélagos incluidos, cada
+    rango desde su zoom (`ZONA_ZMIN`: 1,8 / 2,2 / 2,8 / 3,4); fuera las
+    tierras y costas de la Antártida y rarezas (`NO_REGIONES`). Picos: solo
+    los conocidos en todo el mundo (fuera Mulhacén y Aneto; entran
+    Kanchenjunga, Puncak Jaya, Kosciuszko, Aoraki, Kinabalu, Gongga...).
+    Estrechos: + Bass, Torres, Magallanes, Cook y Corea.
+  - **Bab el-Mandeb**: su nombre chocaba con el rótulo del golfo de Adén y,
+    al pisarse, ganaba siempre el lugar más grande; ahora el archivo pone
+    primero los visores (ganan a los rótulos). Sin tocar `marte-nombres.js`.
+    El visor de Ormuz es más grande que el resto (caja a mano de 1,2 x 1,6°;
+    los demás estrechos, 0,7°): pendiente de ver si es eso lo "diferente".
+
+## Dónde estábamos (24-sep-2026, histórico)
 
 - Rama **`earth-project`**, creada desde `main` el 24-sep-2026 (`main` estaba
   en `6862600`, con Marte y la Luna publicados). **Subida a GitHub el
@@ -178,6 +267,8 @@ esté terminada.
 - [x] 5. Tamaño común: Luna y Marte al tamaño intermedio.
 - [x] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
       continentes y países.
+- [ ] 6b. Pulir el zoom: nieve en las montañas, nombres (Oceanía, China), Bab
+  el-Mandeb. Hecho, aprobado, commiteado y subido.
 - [ ] 7. Noche: luces de ciudades, aurora, luz de luna.
 - [ ] 8. Probar en Zen y en el móvil; fusionar en `main`.
 
