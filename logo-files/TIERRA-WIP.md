@@ -10,7 +10,48 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 - Rama **`earth-project`**, **commiteada y subida** a GitHub el
   25-sep-2026 al cerrar la sesión (sin fusionar). En el otro ordenador:
   `git fetch` y `git switch earth-project` (o `git pull` si ya está).
-- **Hecho**: pasos 1-6 y el 6b (abajo). Nada sin commitear.
+- **Hecho**: pasos 1-6 y el 6b (abajo).
+- **26-sep-2026, paso 7 en curso**: 7.1 (luces) y 7.2 (brillo) commiteados
+  en local (sin subir); la aurora (7.3), empezando:
+  - **7.1 Luces de las ciudades: hechas, falta su visto bueno.** En la GPU
+    (`tierra-gl.js`, pasada "(1d)", `VERT_LUCES`): cada ciudad de
+    `planeta-luces.png` deja su huella (`HUELLA`, `HUELLA_R2`,
+    `HUELLA_GRANDE`) en una textura RGBA16F con mezcla aditiva (R = suma,
+    G = núcleos, A = halo más fuerte con mezcla MAX) y la pasada de color
+    saca el nivel de ámbar como `luces()` de `planeta.js` (`LUZ_UMBRAL`,
+    `LUZ_RAMPA`, `LUZ_SUMA_MAX`), bajo nubes y chapas. Una llamada
+    instanciada por tipo de huella. Se bajan con la LUT de noche. Necesita
+    `EXT_color_buffer_float`; sin él, noche sin luces. Hacia el borde las
+    sumas pesan `U.z` (si no, las ciudades amontonadas por la perspectiva
+    hacían un canto brillante alrededor del disco).
+    **Con zoom** (usuario, 26-sep-2026: "la India a x1 está completamente
+    amarilla pero si amplío se van reduciendo las luces"): la huella fija en
+    píxeles hacía que al ampliar las ciudades dejasen de solaparse. Ahora la
+    huella va agarrada al terreno (crece con el zoom: un punto por ciudad,
+    anillos a 0,5 / 1,2 / 1,6 / 2,1 × zoom, que a x1 dan las mismas celdas
+    que `HUELLA*`). Enseñado a x1 y x6 (India, China, Europa) frente a la
+    huella fija: **aprobado** ("vale, me gusta").
+    **Luces flojas "quemadas"** (usuario, 26-sep-2026: "en el fogonazo de
+    luz se ve de puta madre pero las luces amarillas suaves dan un efecto de
+    quemadas"): los niveles 1 y 2 mezclaban el suelo con el ámbar oscuro
+    (192, 128, 52) y el azul de la noche se volvía marrón. Se le enseñaron
+    cinco (original; A sumar ámbar claro, "no me termina de gustar"; B sumar
+    ámbar cálido más flojo; C mezclar con ámbar claro; D sin velo y halo con
+    ámbar claro) y eligió **la D** ("la que más se acerca"): nivel 1 (velo)
+    no pinta nada; nivel 2 (halo), `mix(col, LUZ_SUAVE, 0.5)` con
+    `LUZ_SUAVE` = (255, 191, 92); los 4 fuertes, sin tocar. Puede pedir
+    retoques sobre ella.
+    Usuario: "lo voy viendo bien" (luces dadas por buenas de momento).
+  - **7.2 Brillo de atmósfera de noche: hecho, enseñado.** En la pasada de
+    color (`uGlow`): la franja de `AIRGLOW_PX` (1,5 / 3 px de arte) junto
+    al borde, mezclada con `AIRGLOW` al 55 % / 25 %, alrededor de todo el
+    disco, como `planeta.js`. Con zoom sigue midiendo lo mismo en píxeles.
+    Probado más fino (1 y 2 px; 1 px) y el usuario lo quiere "como estaba":
+    se queda con 1,5 / 3 px.
+  - **Siguiente: 7.3, la aurora boreal.**
+  - **Temporal, quitar antes de commitear**: `window.__tierra` en
+    `index.astro` (para las capturas sin ventana). Quitado para el commit
+    de 7.1 y 7.2; se vuelve a poner mientras se hace la aurora.
 - **SIGUIENTE (próxima sesión, el usuario: "lo voy a hacer en la próxima
   sesión"): paso 7, el modo noche sobre el globo entero.** Qué hay y qué
   falta:
@@ -22,7 +63,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   - **Falta, por este orden** (todo estaba en el horizonte de antes, pintado
     en CPU por `src/scripts/planeta.js`; el detalle de cómo se decidió, en
     `HERO-WIP.md`, sección "Modo noche v2"):
-    1. **Luces de las ciudades**: `public/planeta/planeta-luces.png` (2
+    1. (HECHO el 26-sep, ver arriba) **Luces de las ciudades**: `public/planeta/planeta-luces.png` (2
        píxeles por luz, latitud/longitud/fuerza; `LUCES_N` y `LUZ_PNG_W`
        en `planeta-datos.json`). En `planeta.js`, `luces()` (~línea 333-395)
        las pinta como `light_cells()` del generador: pocos niveles de
@@ -30,7 +71,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
        puntos en la textura de arte, solo en la cara de noche; que se vean
        también con zoom (a ×6 los puntos deben seguir siendo de 1 píxel de
        arte, no crecer).
-    2. **Brillo de atmósfera** de noche (`planeta.js` ~línea 210: `dpx`,
+    2. (HECHO el 26-sep) **Brillo de atmósfera** de noche (`planeta.js` ~línea 210: `dpx`,
        píxeles desde el borde). Hoy el halo es el mismo con otro color.
     3. **Aurora boreal** (`planeta.js` ~línea 396-470): cortinas de rayos
        sobre el óvalo auroral alrededor del polo norte geomagnético, de

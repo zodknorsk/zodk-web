@@ -237,6 +237,67 @@ void main() {
   o = uSombra == 1 ? vec4(0.0, 0.0, 128.0 / 255.0, 0.0) : vec4(float(vCol) / 255.0, 128.0 / 255.0, vLuz, 1.0);
 }`;
 
+// (1d) Luces de las ciudades (noche): las de luces() de planeta.js, en la
+// GPU. Cada ciudad deja su huella en una textura aparte, con mezcla aditiva:
+// R = suma de todo, G = suma de núcleos (peso 1) y A = el halo más fuerte
+// (mezcla MAX). La pasada de color saca de ahí el nivel de ámbar.
+// La huella va agarrada al terreno: a x1 es la de planeta.js (HUELLA,
+// HUELLA_R2 o HUELLA_GRANDE, según la fuerza) y con zoom crece con él, así
+// cada ciudad ilumina siempre la misma superficie y lo que a x1 es amarillo
+// lo sigue siendo al acercarse (usuario, 26-sep-2026: con la huella fija en
+// píxeles, "la India a x1 está completamente amarilla pero si amplío se van
+// reduciendo las luces"). Se pinta como anillos alrededor del centro, que a
+// x1 dan justo las celdas de las tres huellas de planeta.js: núcleo, cruz a
+// 1 (0,3), diagonales a 1,41 (0,15) y cruz a 2 (0,12); la grande, centrada
+// entre sus 4 píxeles de núcleo, con anillos a 0,71 / 1,58 / 2,12 / 2,55.
+const vertLuces = (D) => `#version 300 es
+precision highp float;
+layout(location = 0) in vec3 aLuz;      // latitud, longitud (radianes) y fuerza
+uniform vec2 uTam;
+uniform float uR, uZ;                   // radio del disco (px de arte) y zoom
+uniform vec3 uM0, uM1, uM2;
+flat out vec2 vCentro;                  // centro de la huella, px de arte (y abajo)
+flat out float vA, vK;
+flat out int vTipo;                     // 0 pequeña, 1 con anillo, 2 grande
+const float LUZ_CORE2 = ${f(D.LUZ_CORE2)}, LUZ_R2_MIN = ${f(D.LUZ_R2_MIN)};
+void main() {
+  float cl = cos(aLuz.x);
+  vec3 B = vec3(cl * sin(aLuz.y), sin(aLuz.x), cl * cos(aLuz.y));
+  vec3 U = vec3(uM0.x * B.x + uM1.x * B.y + uM2.x * B.z,
+                uM0.y * B.x + uM1.y * B.y + uM2.y * B.z,
+                uM0.z * B.x + uM1.z * B.y + uM2.z * B.z);
+  if (U.z <= 0.02) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 1.0; return; }   // por detrás
+  vA = aLuz.z * smoothstep(0.02, 0.25, U.z);                         // se apaga hacia el borde
+  // Hacia el borde la perspectiva junta muchas ciudades en un píxel y las
+  // sumas (todo y núcleos) hacían un canto brillante alrededor del disco (el
+  // horizonte de antes no tenía borde a los lados): en las sumas, cada una
+  // pesa lo que se ve de frente (U.z; en el centro del disco, casi 1). El
+  // halo más fuerte (un máximo, no suma) no lo necesita.
+  vK = min(1.0, U.z / 0.85);
+  vTipo = aLuz.z >= LUZ_CORE2 ? 2 : aLuz.z >= LUZ_R2_MIN ? 1 : 0;
+  vec2 c = floor(vec2(U.x * uR + 0.5 * uTam.x, -U.y * uR + 0.5 * uTam.y)) + (vTipo == 2 ? 1.0 : 0.5);
+  vCentro = c;
+  gl_PointSize = 2.0 * ceil(2.6 * uZ) + 4.0;
+  gl_Position = vec4(c.x / uTam.x * 2.0 - 1.0, 1.0 - c.y / uTam.y * 2.0, 0.0, 1.0);
+}`;
+const FRAG_LUCES = `#version 300 es
+precision highp float;
+flat in vec2 vCentro;
+flat in float vA, vK;
+flat in int vTipo;
+uniform vec2 uTam;
+uniform float uZ;
+out vec4 o;
+void main() {
+  vec2 p = vec2(gl_FragCoord.x, uTam.y - gl_FragCoord.y);      // centro del píxel, y abajo
+  float d = length(p - vCentro) / uZ;
+  float w;
+  if (vTipo == 2) w = d < 1.0 ? 1.0 : d < 1.8 ? 0.3 : d < 2.3 ? 0.15 : d < 2.7 ? 0.12 : 0.0;
+  else w = d < 0.5 ? 1.0 : d < 1.2 ? 0.3 : d < 1.6 ? 0.15 : (vTipo == 1 && d < 2.1) ? 0.12 : 0.0;
+  if (w == 0.0) discard;
+  o = w == 1.0 ? vec4(vA * vK, vA * vK, 0.0, 0.0) : vec4(vA * w * vK, 0.0, 0.0, vA * w);
+}`;
+
 // (2) Color y ampliación al canvas.
 function fragColor(D, paleta) {
   const c3 = (c) => `vec3(${c.map((x) => f(x / 255)).join(", ")})`;
@@ -251,8 +312,20 @@ uniform float uR;
 uniform vec3 uS;
 uniform vec3 uAtmo;         // halo del borde: ATMO de día, N_ATMO de noche
 uniform vec3 uNube[5];      // tonos de las nubes: C_NUBE / C_NUBE_NOCHE
+uniform float uGlow;        // 1 de noche: brillo de atmósfera en el borde
+uniform sampler2D uLuces;   // luces de las ciudades (1d); solo de noche
+uniform int uConLuces;
 out vec4 o;
 const float AA = ${f(D.LIMB_AA)};
+const float LUZ_UMB[${D.LUZ_UMBRAL.length}] = float[${D.LUZ_UMBRAL.length}](${D.LUZ_UMBRAL.map(f).join(", ")});
+const vec3 LUZ_COL[${D.LUZ_RAMPA.length}] = vec3[${D.LUZ_RAMPA.length}](${D.LUZ_RAMPA.map((r) => c3(r[0])).join(", ")});
+const float LUZ_T[${D.LUZ_RAMPA.length}] = float[${D.LUZ_RAMPA.length}](${D.LUZ_RAMPA.map((r) => f(r[1])).join(", ")});
+const vec3 LUZ_SUAVE = vec3(1.0, 0.75, 0.36);          // ámbar claro del halo (nivel 2)
+int nivelLuz(float v) {
+  int l = 0;
+  for (int i = 0; i < ${D.LUZ_UMBRAL.length}; i++) if (v >= LUZ_UMB[i]) l = i + 1;
+  return l;
+}
 const vec3 ESPACIO = ${c3(D.SPACE)};
 const vec3 PAL[${paleta.length}] = vec3[${paleta.length}](${paleta.map(c3).join(", ")});
 void main() {
@@ -276,6 +349,18 @@ void main() {
   j &= 127;
   vec3 col = texelFetch(uLut, ivec2(j, m), 0).rgb;
   if (sombra) col = floor(col * 255.0 / 2.0) / 255.0 + vec3(0.0, 0.0, 6.0 / 255.0);
+  if (uConLuces == 1) {                               // luces de las ciudades, bajo nubes y chapas
+    vec4 lz = texelFetch(uLuces, p, 0);
+    int lv = max(nivelLuz(max(lz.a, lz.g)), min(${D.LUZ_SUMA_MAX}, nivelLuz(lz.r)));
+    // Los dos niveles flojos: con el ámbar oscuro de LUZ_RAMPA el suelo
+    // azulado de la noche se volvía marrón, "quemado" (usuario, 26-sep-2026).
+    // Se probaron sumar luz, mezclar con ámbar claro y quitar el velo; eligió
+    // quitar el velo (nivel 1: nada) y el halo (nivel 2) con ámbar claro al
+    // 50 %. Los fuertes, como en planeta.js.
+    if (lv > 2) col = mix(col, LUZ_COL[lv - 1], LUZ_T[lv - 1]);
+    else if (lv == 2) col = mix(col, LUZ_SUAVE, 0.5);
+    col = floor(col * 255.0 + 0.5) / 255.0;
+  }
   // Halo de atmósfera y borde suavizado, como el "post" de planeta.js.
   vec2 q = (vec2(p) + 0.5 - 0.5 * uTam) / uR;
   float dc = length(q);
@@ -286,6 +371,13 @@ void main() {
     if (lam > 0.0) {
       float a = 0.3 * floor(smoothstep(0.93, 1.0, dc) * smoothstep(0.0, 0.45, lam) * 4.0 + 0.5) / 4.0;
       col = mix(col, uAtmo, a);
+    }
+    // Brillo de atmósfera de noche (airglow), como planeta.js: la franja de
+    // AIRGLOW_PX píxeles de arte junto al borde, alrededor de todo el disco.
+    if (uGlow > 0.5) {
+      float dpx = (1.0 - dc) * uR;
+      float g = dpx < ${f(D.AIRGLOW_PX[0])} ? ${f(D.AIRGLOW_A[0])} : dpx < ${f(D.AIRGLOW_PX[1])} ? ${f(D.AIRGLOW_A[1])} : 0.0;
+      col = mix(col, ${c3(D.AIRGLOW)}, g);
     }
     float rin = 1.0 - AA / uR, rout = 1.0 + AA / uR;
     if (dc > rin) col = mix(ESPACIO, col, 1.0 - smoothstep(rin, rout, dc));
@@ -418,19 +510,49 @@ export async function montarTierraGL(canvas, {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, lutBm.width, lutBm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
     new Uint8Array(lp.buffer, lp.byteOffset, lutBm.width * lutBm.height * 4));
 
-  // Noche (provisional, Proyecto Tierra paso 7 pendiente): la misma superficie
-  // con la LUT de noche de generar-planeta-hero.py, la luna en vez del sol,
-  // el suelo de la noche, el halo y las nubes de noche. Sin luces de ciudades,
-  // aurora ni brillo de atmósfera todavía. La LUT se baja la primera vez.
-  let noche = false, texLutNoche = null, pidiendoNoche = null;
+  // Noche (Proyecto Tierra paso 7, en curso): la misma superficie con la LUT
+  // de noche de generar-planeta-hero.py, la luna en vez del sol, el suelo de
+  // la noche, el halo, las nubes de noche, las luces de las ciudades y el
+  // brillo de atmósfera del borde. Sin aurora todavía. La LUT y las luces se bajan la
+  // primera vez.
+  let noche = false, texLutNoche = null, pidiendoNoche = null, luces = null;
   function cargaNoche() {
-    pidiendoNoche ??= bitmap(`${base}planeta-lut-noche.png${v}`).then((bm) => {
+    pidiendoNoche ??= Promise.all([
+      bitmap(`${base}planeta-lut-noche.png${v}`),
+      bitmap(`${base}planeta-luces.png${v}`).catch(() => null),
+    ]).then(([bm, lucesBm]) => {
       const px = pixels(bm);
       texLutNoche = textura(gl);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, bm.width, bm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
         new Uint8Array(px.buffer, px.byteOffset, bm.width * bm.height * 4));
+      if (lucesBm) luces = montaLuces(pixels(lucesBm));
     });
     return pidiendoNoche;
+  }
+  // Luces de las ciudades: planeta-luces.png lleva 2 píxeles por luz en filas
+  // de LUZ_PNG_W luces (1º = latitud en 16 bits (R, G) + fuerza*16 (B), 2º =
+  // longitud en 16 bits (R, G)), como en planeta.js. Un punto por ciudad, del
+  // tamaño de su huella (ver vertLuces). Hace falta pintar en coma flotante
+  // (EXT_color_buffer_float, lo tienen casi todos); sin él, la noche sale sin
+  // luces.
+  function montaLuces(d) {
+    if (!gl.getExtension("EXT_color_buffer_float")) return null;
+    const n = D.LUCES_N, lw = D.LUZ_PNG_W, datos = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const o = (((i / lw) | 0) * lw * 2 + (i % lw) * 2) * 4;
+      datos[i * 3] = (((d[o] << 8) | d[o + 1]) * 180 / 65535 - 90) * DEG;
+      datos[i * 3 + 1] = (((d[o + 4] << 8) | d[o + 5]) * 360 / 65535 - 180) * DEG;
+      datos[i * 3 + 2] = d[o + 2] / 16;
+    }
+    const va = gl.createVertexArray();
+    gl.bindVertexArray(va);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, datos, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 12, 0);
+    gl.bindVertexArray(null);
+    const tex = textura(gl), fb = gl.createFramebuffer();
+    return { va, n, tex, fb, prog: programa(gl, vertLuces(D), FRAG_LUCES), w: 0, h: 0 };
   }
   const aVec = (c) => c.map((x) => x / 255);
   const LUZ = {
@@ -672,6 +794,35 @@ export async function montarTierraGL(canvas, {
     gl.useProgram(progSprites.p);
     sprites(capaChapas, D.BAND_PZ, 1, 0);
     if (marca) sprites(capaX, 0.06, 0, 0);
+    // (1d) luces de las ciudades, de noche
+    const conLuces = L === LUZ.noche && luces !== null;
+    if (conLuces) {
+      if (luces.w !== W || luces.h !== H) {
+        luces.w = W; luces.h = H;
+        gl.bindTexture(gl.TEXTURE_2D, luces.tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, W, H, 0, gl.RGBA, gl.HALF_FLOAT, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, luces.fb);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, luces.tex, 0);
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, luces.fb);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      u = luces.prog.u;
+      gl.useProgram(luces.prog.p);
+      gl.uniform2f(u.uTam, W, H);
+      gl.uniform1f(u.uR, R);
+      gl.uniform3fv(u.uM0, M[0]);
+      gl.uniform3fv(u.uM1, M[1]);
+      gl.uniform3fv(u.uM2, M[2]);
+      gl.uniform1f(u.uZ, zoom);
+      gl.enable(gl.BLEND);
+      gl.blendEquationSeparate(gl.FUNC_ADD, gl.MAX);
+      gl.blendFunc(gl.ONE, gl.ONE);
+      gl.bindVertexArray(luces.va);
+      gl.drawArrays(gl.POINTS, 0, luces.n);
+      gl.blendEquation(gl.FUNC_ADD);
+      gl.disable(gl.BLEND);
+    }
     // (2) color, al canvas
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -686,6 +837,9 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uS, S);
     gl.uniform3fv(u.uAtmo, L.atmo);
     gl.uniform3fv(u.uNube, L.nube);
+    gl.uniform1f(u.uGlow, L === LUZ.noche ? 1 : 0);
+    unidad(2, conLuces ? luces.tex : trabajo, u.uLuces);
+    gl.uniform1i(u.uConLuces, conLuces ? 1 : 0);
     if (mezcla !== null) {
       gl.enable(gl.BLEND);
       gl.blendColor(0, 0, 0, mezcla);
