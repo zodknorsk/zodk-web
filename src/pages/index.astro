@@ -1,17 +1,19 @@
 ---
 // La portada: arriba, el hero con la Tierra (todo su JavaScript está en
-// src/scripts/portada.ts); debajo, saludo, últimas notas, últimos eventos y
+// src/scripts/portada.ts); debajo, los bloques de la Luna y Marte, la tira
+// del blog con el "hecho con", los últimos eventos y notas en dos columnas y
 // la barra de redes.
 import { getCollection } from "astro:content";
-import Container from "@components/Container.astro";
+import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard.astro";
 import FormattedDate from "@components/FormattedDate.astro";
-import Link from "@components/Link.astro";
 import { SITE, HOME, STACK, CONTACTO } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 import { PAISES } from "@data/paises";
-import { esDelBlog, porFecha } from "@lib/contenido";
+import { ALUNIZAJES } from "@data/alunizajes";
+import { AMARTIZAJES } from "@data/amartizajes";
+import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
+import { esDelBlog, porFecha, proyectoDe, primeraFoto, enCurso } from "@lib/contenido";
 
 // El hero lleva un objeto de AERONAVES a la vez (dron, avión o satélite),
 // cada uno con su trayectoria. Solo cambia con el botón .hero-cambio. Lo
@@ -33,8 +35,12 @@ const heliceSvg = botonSvg.replace(
   `viewBox="13.4 94.7 62 62"`,
 );
 
-const todasNotas = (await getCollection("notas")).filter(esDelBlog).sort(porFecha);
+const notasTodas = await getCollection("notas");
+const todasNotas = notasTodas.filter(esDelBlog).sort(porFecha);
 const notas = todasNotas.slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
+const notasDe = (p: "luna" | "marte") => notasTodas.filter((n) => !n.data.draft && proyectoDe(n.data.tags) === p).length;
+const notasLuna = notasDe("luna");
+const notasMarte = notasDe("marte");
 
 const todosEventos = await getCollection("eventos");
 
@@ -55,19 +61,20 @@ const banderasBlog = PAISES.map((p) => ({
     .filter((a) => a.tags.some((t) => p.etiquetas.includes(t.toLowerCase())))
     .sort((a, b) => b.fecha.valueOf() - a.fecha.valueOf()),
 })).filter((p) => p.articulos.length > 0);
-const eventos = todosEventos
-  .filter((e) => e.data.kind === "index" && !e.data.draft)
-  .sort(porFecha)
-  .slice(0, 3)
-  .map((ev) => ({
-    ev,
-    semanas: todosEventos.filter(
-      (x) =>
-        x.data.evento === ev.data.evento &&
-        x.data.kind === "semana" &&
-        !x.data.draft,
-    ).length,
-  }));
+const indicesEventos = todosEventos.filter((e) => e.data.kind === "index" && !e.data.draft).sort(porFecha);
+const eventos = indicesEventos.slice(0, 3).map((ev) => {
+  const semanas = todosEventos
+    .filter((x) => x.data.evento === ev.data.evento && x.data.kind === "semana" && !x.data.draft)
+    .sort((a, b) => b.data.orden - a.data.orden);
+  // La foto del índice; si no tiene, la de la semana más reciente que tenga.
+  const foto = primeraFoto(ev) ?? semanas.map(primeraFoto).find(Boolean);
+  return { ev, semanas: semanas.length, foto, enCurso: enCurso(ev.data.periodo) };
+});
+
+// "13 sept 2026": las fechas de las filas, cortas.
+const fechaCorta = (d: Date) =>
+  d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(".", "");
+const dos = (n: number) => String(n).padStart(2, "0");
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} hero>
@@ -201,119 +208,92 @@ const eventos = todosEventos
        que este punto llega arriba del todo (ver initHeader en Head.astro). -->
   <div id="hero-sentinel" aria-hidden="true"></div>
 
-  <Container>
-    <h2 class="animate font-semibold text-black dark:text-white">
-      Hola <span class="text-xl">👋</span>
-    </h2>
-    <div class="space-y-16">
-      <section>
-        <article class="space-y-4">
-          <p class="animate">
-            Esto es <strong>zodk.eu</strong>, mi blog personal. Aquí publico
-            notas y análisis propios sobre actualidad, historia y OSINT
-            (inteligencia de fuentes abiertas), escritos a partir de mi archivo
-            de trabajo.
-          </p>
-          <p class="animate">
-            El blog está en una fase muy temprana. El contenido se irá ampliando
-            poco a poco. Puedes ver todo lo publicado en
-            <Link href="/notas">notas</Link> y <Link href="/eventos">eventos</Link>.
-          </p>
-        </article>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">Últimas notas</h5>
-          <Link href="/notas">Ver todas</Link>
+  <div class="portada-bajo">
+    <!-- La Luna y Marte, dos por fila, y debajo la tira del blog con el "hecho
+         con". Las fotos de los astros son las quietas de /luna y /marte. -->
+    <div class="portada-astros animate">
+      <a class="bloque-astro bloque-luna" href="/luna">
+        <img src={`/luna/luna-visible.png?v=${LUNA_V}`} alt="" loading="lazy" decoding="async" />
+        <span class="bloque-titulo">Moon-project</span>
+        <span class="bloque-num">{ALUNIZAJES.length}</span>
+        <span class="bloque-sub">alunizajes · {notasLuna} notas</span>
+      </a>
+      <a class="bloque-astro bloque-marte" href="/marte">
+        <img src={`/marte/marte-quieto.png?v=${MARTE_V}`} alt="" loading="lazy" decoding="async" />
+        <span class="bloque-titulo">Mars-project</span>
+        <span class="bloque-num">{AMARTIZAJES.length}</span>
+        <span class="bloque-sub">amartizajes{notasMarte > 0 && ` · ${notasMarte} notas`}</span>
+      </a>
+      <div class="tira-blog">
+        <img class="tira-avatar" src="/zodk-avatar.gif" alt="" width="48" height="52" />
+        <span class="bloque-titulo">Blog</span>
+        <div class="tira-hecho">
+          <span class="tira-hecho-titulo">Hecho con</span>
+          {STACK.map((t) => (
+            <a class="chip" href={t.HREF} target="_blank" rel="noopener noreferrer" style={`--marca:${t.COLOR}`}>
+              <span class="chip-icono" set:html={t.ICONO} />
+              {t.NAME}
+            </a>
+          ))}
         </div>
-        <ul class="flex flex-col gap-4">
-          {
-            notas.map((nota) => (
-              <li>
-                <ArrowCard entry={nota} tituloAzul />
-              </li>
-            ))
-          }
+      </div>
+    </div>
+
+    <!-- Eventos y notas, lado a lado con una línea fina en medio (en móvil,
+         una debajo de otra). Cada fila: foto, fecha, título y entradilla. -->
+    <div class="portada-dos animate">
+      <section class="portada-col" aria-label="Últimos eventos">
+        <div class="portada-col-cab">
+          <h2>Eventos<span>{dos(indicesEventos.length)}</span></h2>
+          <a href="/eventos">Ver todos</a>
+        </div>
+        <ul>
+          {eventos.map(({ ev, semanas, foto, enCurso }) => (
+            <li>
+              <a class="fila" href={`/eventos/${ev.data.evento}`}>
+                <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
+                {enCurso && <span class="sello-en-curso">En curso</span>}
+                <span class="fila-texto">
+                  <span class="fila-fecha">
+                    {semanas === 0 && ev.data.periodo
+                      ? ev.data.periodo
+                      : `Desde ${fechaCorta(ev.data.date)}${semanas > 0 ? ` · ${semanas} semana${semanas === 1 ? "" : "s"}` : ""}`}
+                  </span>
+                  <span class="fila-titulo">{ev.data.title}</span>
+                  {ev.data.description && <span class="fila-entradilla">{ev.data.description}</span>}
+                </span>
+              </a>
+            </li>
+          ))}
         </ul>
       </section>
-
-      {
-        eventos.length > 0 && (
-          <section class="animate space-y-6">
-            <div class="flex flex-wrap gap-y-2 items-center justify-between">
-              <h5 class="font-semibold text-black dark:text-white">
-                Últimos eventos
-              </h5>
-              <Link href="/eventos">Ver todos</Link>
-            </div>
-            <ul class="flex flex-col gap-4">
-              {eventos.map(({ ev, semanas }) => (
-                <li>
-                  <a
-                    href={`/eventos/${ev.data.evento}`}
-                    class="relative group flex flex-nowrap py-3 px-4 pr-10 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
-                  >
-                    <div class="flex flex-col flex-1 truncate">
-                      <div class="font-semibold group-hover:text-[#2576eb] dark:group-hover:text-[#649fff]">{ev.data.title}</div>
-                      <div class="text-sm">
-                        {semanas === 0 && ev.data.periodo ? (
-                          ev.data.periodo
-                        ) : (
-                          <>
-                            Desde <FormattedDate date={ev.data.date} />
-                            {semanas > 0 && (
-                              <>
-                                {" "}· {semanas} semana{semanas === 1 ? "" : "s"}
-                              </>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      class="absolute top-1/2 right-2 -translate-y-1/2 size-5 stroke-2 fill-none stroke-current"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12" class="translate-x-3 group-hover:translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out" />
-                      <polyline points="12 5 19 12 12 19" class="-translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
-                    </svg>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
-
-      <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">
-          Este blog ha sido hecho con:
-        </h5>
-        <ul class="flex flex-wrap gap-2 text-xs">
-          {
-            STACK.map((tech) => (
+      <section class="portada-col" aria-label="Últimas notas">
+        <div class="portada-col-cab">
+          <h2>Notas<span>{dos(todasNotas.length)}</span></h2>
+          <a href="/notas">Ver todas</a>
+        </div>
+        <ul>
+          {notas.map((nota) => {
+            const foto = primeraFoto(nota);
+            return (
               <li>
-                <a
-                  href={tech.HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={tech.NAME}
-                  class="flex items-center gap-1.5 rounded-lg border border-black/15 dark:border-white/20 px-2.5 py-1.5 font-bold text-black/70 dark:text-white/75 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
-                >
-                  <span class="flex items-center justify-center shrink-0" set:html={tech.ICONO} />
-                  {tech.NAME}
+                <a class="fila" href={`/notas/${nota.id}`}>
+                  <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
+                  <span class="fila-texto">
+                    <span class="fila-fecha">{fechaCorta(nota.data.date)}</span>
+                    <span class="fila-titulo">{nota.data.title}</span>
+                    {nota.data.description && <span class="fila-entradilla">{nota.data.description}</span>}
+                  </span>
                 </a>
               </li>
-            ))
-          }
+            );
+          })}
         </ul>
       </section>
     </div>
-  </Container>
+  </div>
 
-  <!-- Barra de redes a todo el ancho: va fuera de <Container>, directamente
+  <!-- Barra de redes a todo el ancho: va fuera de .portada-bajo, directamente
        en <main>, que no tiene ancho máximo. El margen negativo de abajo la
        pega al pie. -->
   <section class="social-bar animate" aria-label="Redes sociales">

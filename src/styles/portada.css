@@ -814,3 +814,233 @@ html.home main { padding-top: 9.5rem; }
   .hero-cambio .btn-caja,
   .hero-cambio:active .btn-caja { transform: none; }
 }
+
+/* ── Debajo del hero ─────────────────────────────────────────────────────
+   Los bloques de la Luna y Marte (dos por fila), la tira del blog con el
+   "hecho con" y, debajo, eventos y notas en dos columnas separadas por una
+   línea fina. Los bloques son de espacio (oscuros) de día y de noche. */
+.portada-bajo {
+  max-width: 980px;
+  margin: 0 auto 2.5rem;
+  padding: 1rem 20px 0;
+}
+.portada-astros {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.bloque-astro,
+.tira-blog {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background: url(/zodk-estrellas.png) repeat, radial-gradient(circle at 30% 20%, #151a26, #05060a 70%);
+  color: #e6e8ec;
+}
+.bloque-astro {
+  display: flex;
+  flex-direction: column;
+  height: 230px;
+  padding: 1.2rem 1.3rem;
+  text-decoration: none;
+}
+.bloque-astro img { position: absolute; pointer-events: none; }
+.bloque-luna img { width: 250px; right: -30px; top: -10px; }
+.bloque-marte img { width: 240px; right: -20px; top: -5px; }
+.bloque-astro > span { position: relative; }
+.bloque-titulo {
+  font: 600 0.78rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.bloque-num {
+  margin-top: auto;
+  font: 600 2.4rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  color: #fff;
+}
+.bloque-sub { margin-top: 0.35rem; font-size: 0.82rem; color: #9aa3ad; }
+
+.tira-blog {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.1rem 0.75rem 0.75rem;
+}
+.tira-avatar {
+  width: 48px;
+  height: 52px;
+  image-rendering: pixelated;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+.tira-hecho {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+.tira-hecho-titulo {
+  margin-right: 0.35rem;
+  font: 500 0.66rem "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7d8691;
+}
+/* Al pasar el ratón, cada insignia se enciende con el color de su marca. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.6rem 0.32rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #c9ced6;
+  text-decoration: none;
+  transition: border-color 0.25s, color 0.25s, background-color 0.25s, box-shadow 0.25s;
+}
+.chip-icono { display: flex; }
+.chip-icono svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.chip:hover, .chip:focus-visible {
+  border-color: var(--marca);
+  color: #fff;
+  background: color-mix(in srgb, var(--marca) 12%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--marca) 35%, transparent);
+  outline: none;
+}
+.chip:hover .chip-icono svg, .chip:focus-visible .chip-icono svg { transform: scale(1.12); }
+
+.portada-dos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 3.8rem;
+}
+.portada-col { padding: 0 2.2rem; }
+.portada-col:first-child { padding-left: 0; }
+.portada-col:last-child { padding-right: 0; border-left: 1px solid rgba(0, 0, 0, 0.12); }
+html.dark .portada-col:last-child { border-left-color: rgba(255, 255, 255, 0.14); }
+.portada-col-cab {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+.portada-col-cab h2 {
+  margin: 0;
+  font: 600 0.78rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #18181b;
+}
+.portada-col-cab h2 span { margin-left: 0.5rem; font-weight: 500; letter-spacing: 0.1em; color: #a1a1aa; }
+.portada-col-cab a { font-size: 0.85rem; color: #71717a; text-decoration: underline; text-underline-offset: 3px; }
+.portada-col-cab a:hover { color: #18181b; }
+html.dark .portada-col-cab h2 { color: #f4f4f5; }
+html.dark .portada-col-cab a { color: #a1a1aa; }
+html.dark .portada-col-cab a:hover { color: #f4f4f5; }
+.portada-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fila {
+  position: relative;
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+.fila:hover { border-color: rgba(0, 0, 0, 0.28); }
+html.dark .fila { background: #202024; border-color: rgba(255, 255, 255, 0.1); }
+html.dark .fila:hover { border-color: rgba(255, 255, 255, 0.3); }
+.fila-foto {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #e4e4e7;
+}
+html.dark .fila-foto { background: #2a2a2f; }
+.fila-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fila-texto { display: flex; flex-direction: column; min-width: 0; }
+.fila-fecha {
+  font: 600 0.66rem "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+.fila-titulo {
+  margin-top: 0.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #18181b;
+  transition: color 0.2s;
+}
+.fila:hover .fila-titulo { color: #2576eb; }
+html.dark .fila-fecha { color: #a1a1aa; }
+html.dark .fila-titulo { color: #f4f4f5; }
+html.dark .fila:hover .fila-titulo { color: #649fff; }
+.fila-entradilla {
+  display: -webkit-box;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #71717a;
+}
+html.dark .fila-entradilla { color: #a1a1aa; }
+/* El sello de los eventos abiertos, con la tinta del sello del título. */
+.sello-en-curso {
+  position: absolute;
+  z-index: 1;
+  left: 18px;
+  top: 50%;
+  margin-top: -12px;
+  padding: 4px 6px 3px;
+  border: 3px double #b3261e;
+  background: rgba(250, 247, 238, 0.92);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transform: rotate(-8deg);
+  font: 700 0.56rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: #b3261e;
+}
+
+@media (max-width: 760px) {
+  .portada-astros { grid-template-columns: 1fr; }
+  .bloque-astro { height: 170px; }
+  .bloque-luna img, .bloque-marte img { width: 190px; right: -30px; top: -10px; }
+  .tira-blog { flex-wrap: wrap; gap: 0.9rem; }
+  .tira-hecho { margin-left: 0; width: 100%; }
+  .tira-hecho-titulo { width: 100%; margin-bottom: 0.1rem; }
+  .portada-dos { grid-template-columns: 1fr; gap: 3rem; }
+  .portada-col, .portada-col:first-child, .portada-col:last-child { padding: 0; border-left: 0; }
+  .portada-col:last-child { padding-top: 2.4rem; border-top: 1px solid rgba(0, 0, 0, 0.12); }
+  html.dark .portada-col:last-child { border-top-color: rgba(255, 255, 255, 0.14); }
+  .fila { grid-template-columns: 104px 1fr; }
+  .fila-entradilla { display: none; }
+}

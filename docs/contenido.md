@@ -53,12 +53,23 @@ Las notas de `03 - Eventos/<carpeta>/` forman un evento:
 
 Una nota suelta en `03 - Eventos/` es un evento de una sola página. Los
 `[[SEMANA 2]]` y `[[…#30 de julio]]` se convierten en enlaces y anclas. El
-índice puede llevar `periodo` (las fechas reales, escritas a mano).
+índice puede llevar `periodo` (las fechas reales, escritas a mano). Si el
+periodo dice "en desarrollo" (o "en curso"), el evento lleva en la portada el
+sello rojo de **EN CURSO** (`enCurso` en `src/lib/contenido.ts`).
+
+## La portada, debajo del planeta
+
+Los bloques de la Luna y Marte (con cuántos alunizajes, amartizajes y notas
+hay), la tira del blog con las insignias de "hecho con" (`STACK` en
+`src/consts.ts`, con el color de cada marca para el hover) y, en dos
+columnas, los tres últimos eventos y las cinco últimas notas. La foto de
+cada fila es la primera foto local del texto (`primeraFoto`); un evento sin
+foto en el índice coge la de su semana más reciente que tenga.
 
 ## Notas que no salen en los listados
 
 Las etiquetadas `luna` o `marte` se publican pero **no salen** en `/notas`,
-en "últimas notas" de la portada, en las chapas de bandera de la Tierra ni en
+en las notas de la portada, en las chapas de bandera de la Tierra ni en
 el RSS: viven en su astro, y su botón de volver lleva a `/luna` o `/marte`.
 El filtro está en `src/lib/contenido.ts` (`esDelBlog`, `proyectoDe`). Las
 fichas de `/luna` y `/marte` solo enlazan a una nota si está publicada.
