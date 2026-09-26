@@ -6,8 +6,8 @@
 // .hero-planet) y los vuelos de vuelta a la Tierra desde /luna y /marte, así
 // que tiene que ser exactamente lo que pinta el motor: se abre
 // src/scripts/tierra-gl.js en un Chrome sin ventana y se le hace la foto
-// (instantanea()). Sin nubes ni chapas: las nubes se mueven con el giro y las
-// chapas son del contenido; la foto es solo el planeta.
+// (instantanea()). Sin nubes, aurora ni chapas: las nubes y la aurora se mueven
+// y las chapas son del contenido; la foto es solo el planeta.
 // Rehacerlo cada vez que cambien los datos de la Tierra (generar-planeta-hero.py)
 // o el motor, y subir PLANETA_V en planeta.js:
 //   node logo-files/generar-tierra-quieto.mjs
@@ -31,7 +31,7 @@ const PAGINA = `<!doctype html><meta charset="utf-8">
 <script type="module">
 import { montarTierraGL } from "/src/scripts/tierra-gl.js";
 const t = await montarTierraGL(document.getElementById("c"), {
-  base: "/public/planeta/", disco: () => 2 * 180, banderas: [], sinNubes: true,
+  base: "/public/planeta/", disco: () => 2 * 180, banderas: [], sinNubes: true, sinAurora: true,
 });
 t.ponParado(true);
 window.foto = async (noche) => {

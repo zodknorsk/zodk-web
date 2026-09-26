@@ -19,7 +19,7 @@
 
 // Subir al regenerar public/planeta/ (cache-busting: los archivos se llaman
 // siempre igual).
-export const PLANETA_V = 13;
+export const PLANETA_V = 14;
 
 const cargas = new Map();              // base -> Promise de datos preparados (una vez por página)
 const cargasNoche = new Map();         // base -> Promise de la LUT de noche y las luces
