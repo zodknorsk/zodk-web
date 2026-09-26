@@ -11,8 +11,10 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   25-sep-2026 al cerrar la sesión (sin fusionar). En el otro ordenador:
   `git fetch` y `git switch earth-project` (o `git pull` si ya está).
 - **Hecho**: pasos 1-6 y el 6b (abajo).
-- **26-sep-2026, paso 7 en curso**: 7.1 (luces) y 7.2 (brillo) commiteados
-  en local (sin subir); la aurora (7.3), empezando:
+- **26-sep-2026, paso 7 casi terminado**: 7.1 (luces), 7.2 (brillo), 7.3
+  (aurora) y 7.4 (X verde) commiteados en local (sin subir). Falta 7.5 (la
+  foto quieta de noche); el usuario no quiso hacerla aún ("no. Commit de lo
+  que llevamos hasta ahora"):
   - **7.1 Luces de las ciudades: hechas, falta su visto bueno.** En la GPU
     (`tierra-gl.js`, pasada "(1d)", `VERT_LUCES`): cada ciudad de
     `planeta-luces.png` deja su huella (`HUELLA`, `HUELLA_R2`,
@@ -48,10 +50,43 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     disco, como `planeta.js`. Con zoom sigue midiendo lo mismo en píxeles.
     Probado más fino (1 y 2 px; 1 px) y el usuario lo quiere "como estaba":
     se queda con 1,5 / 3 px.
-  - **Siguiente: 7.3, la aurora boreal.**
+  - **7.3 Aurora boreal: hecha, enseñada, SIN COMMITEAR.** En la GPU
+    (`tierra-gl.js`, pasada "(1e)", `VERT_AURORA`, constantes `AUR`): cada
+    punto de las cortinas sale de `gl_VertexID` y el vertex shader hace las
+    cuentas de `aurora()` de `planeta.js` (óvalo alrededor del polo
+    geomagnético, pliegues, haces, estrías, alturas propias, dos arcos y
+    resplandor difuso, violeta arriba); se suma en una textura RGBA16F y la
+    pasada de color la pinta por niveles sobre el planeta, sobre las nubes
+    y fuera del disco (asoma por el borde), bajo chapas y X. Gira con la
+    Tierra y se arrastra con ella. Con zoom, más rayos y puntos por rayo
+    (hasta x4) y cada uno pesa menos (`uW`: la densidad del horizonte de
+    antes, radio 292,5): no se deshace en puntos. Encendido "de serpiente"
+    al anochecer (`ponNoche`, +900 ms) y al cargar de noche (+300 ms);
+    mientras se enciende, el bucle pinta a 30 fps aunque el globo esté
+    quieto. Como en `planeta.js`, se mueve solo cuando se repinta (girando).
+    Vista desde arriba (el polo de frente) las cortinas son cintas finas; de
+    perfil, asoman por el borde.
+    **Retoque en curso** (usuario, 26-sep-2026: "se ve pequeña y sobre todo,
+    cuando se amplía sobre la zona se ve rarilla"). Probado y descartado sin
+    enseñar: apartar cada rayo del arco al azar (se deshacía en confeti) y
+    4 arcos paralelos (carriles de autopista). Lo que funciona: una **franja
+    sobre el suelo calculada por píxel** en la pasada de color
+    (`aurFranja`: distancia al óvalo con los mismos pliegues y haces, por
+    niveles) + las cortinas. Enseñadas actual, V6 (franja 0,25 + 2 cortinas,
+    `H1` 0,075) y V7 (franja 0,4 más ancha + 3 cortinas, `H1` 0,09).
+    Eligió "V6 o un poco más intensa": puesto franja 0,32 de −2,7 a +3,7°
+    (más fuerte a +0,6), 2 cortinas, `H1` 0,08 (bloque `AUR`, comentado);
+    el resplandor de puntos de antes (`ND`, `DIFUSO`) queda a 0.
+    **Aprobada** ("okey").
+  - **7.4 La X de noche en verde: hecha, enseñada.** `celdasXN` / `capaXN`
+    en `tierra-gl.js` con los colores de `X_CELLS_N` de `planeta.js`
+    (141, 255, 158 y 104, 222, 126; contorno 6, 20, 10); de noche se pinta
+    esa. La coordenada fijada en verde ya la hacía el CSS de la página
+    (`html.dark .hero-mgrs.fijada`, global.css), sin tocar.
+  - Falta 7.5: rehacer `tierra-quieto-noche.png` y subir `PLANETA_V`.
   - **Temporal, quitar antes de commitear**: `window.__tierra` en
-    `index.astro` (para las capturas sin ventana). Quitado para el commit
-    de 7.1 y 7.2; se vuelve a poner mientras se hace la aurora.
+    `index.astro` (para las capturas sin ventana). Quitado en los commits;
+    ahora no está.
 - **SIGUIENTE (próxima sesión, el usuario: "lo voy a hacer en la próxima
   sesión"): paso 7, el modo noche sobre el globo entero.** Qué hay y qué
   falta:
@@ -73,7 +108,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
        arte, no crecer).
     2. (HECHO el 26-sep) **Brillo de atmósfera** de noche (`planeta.js` ~línea 210: `dpx`,
        píxeles desde el borde). Hoy el halo es el mismo con otro color.
-    3. **Aurora boreal** (`planeta.js` ~línea 396-470): cortinas de rayos
+    3. (HECHA el 26-sep, ver arriba) **Aurora boreal** (`planeta.js` ~línea 396-470): cortinas de rayos
        sobre el óvalo auroral alrededor del polo norte geomagnético, de
        `AUR_H0` a `AUR_H1` radios, verde abajo y violeta arriba, pocos
        niveles. En el horizonte de antes el polo quedaba arriba; ahora es
@@ -81,7 +116,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
        Tierra (girar con ella) y verse por encima del borde cuando el polo
        está cerca del limbo. Ojo con la CPU (`zodk-web-animaciones`): si se
        pinta en cada fotograma, que sea en el shader.
-    4. **La X y la coordenada fijada en verde de visión nocturna**, como en
+    4. (HECHA el 26-sep) **La X y la coordenada fijada en verde de visión nocturna**, como en
        el horizonte de antes (`src/styles/global.css` ~línea 1366).
     5. Rehacer `tierra-quieto-noche.png`
        (`node logo-files/generar-tierra-quieto.mjs`) cuando la noche esté
