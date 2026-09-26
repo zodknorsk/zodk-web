@@ -5,13 +5,13 @@
 //
 // La chapa es la bandera del país en pixel art, con el mismo formato que las de
 // la Tierra (11x7 celdas + contorno de 1 px; ver BANDERAS en
-// logo-files/generar-planeta-hero.py). Aquí van las filas porque la Luna en
+// arte/generar-tierra.py). Aquí van las filas porque la Luna en
 // reposo es un PNG fijo y las chapas se pintan encima con el DOM, no dentro del
 // dibujo como en la Tierra.
 //
 // Cada nota de la bóveda está en 02 - Temas/moon-project (boveda-osint); la
 // ficha enlaza a ella en el blog si está publicada (`publicar: true`).
-// Detalle y decisiones en logo-files/LUNA-WIP.md.
+// Detalle y decisiones en arte/LUNA-WIP.md.
 
 export interface Pais {
   codigo: string;

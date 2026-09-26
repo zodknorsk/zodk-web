@@ -26,9 +26,9 @@
 // va a un múltiplo entero del arte (x3 como mucho) y lo demás lo amplía el
 // CSS (el arreglo de la Luna y la Tierra para Zen, ver temperatura-zen.md).
 //
-// Lo usa logo-files/prototipo-marte/zoom.html. Detalle en logo-files/MARTE-WIP.md.
+// Lo usa arte/prototipo-marte/zoom.html. Detalle en arte/MARTE-WIP.md.
 //
-// También pinta la Luna (23-sep-2026, logo-files/LUNA-WIP.md): sus datos de
+// También pinta la Luna (23-sep-2026, arte/LUNA-WIP.md): sus datos de
 // generar-luna.py tienen el mismo formato (mapa de 1440 x 720 con material y
 // normal, LUT por material y escalón de luz). Con `prefijo: "luna-"` se leen
 // esos, y `luz(lat0, lon0)` da la luz de cada vista: fase y lado del sol,

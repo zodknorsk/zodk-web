@@ -11,12 +11,12 @@
 // La ficha (usuario, 23-sep-2026): título, bandera, país, año y qué era;
 // tres filas, Lugar, Fecha y Estado; y una descripción breve (la entradilla
 // de su nota en la bóveda). `lugar` es el accidente con nombre que sale a su
-// lado en el mapa (logo-files/generar-nombres.py).
+// lado en el mapa (arte/generar-nombres.py).
 //
 // Las notas están en la bóveda (boveda-osint), en 02 - Temas/mars-project
 // (Soft Landings y Hard Landings). La chapa enlaza a /notas/<nota> solo si está
 // publicada (`publicar: true`); si no, es solo la ficha.
-// Detalle y decisiones en logo-files/MARTE-WIP.md.
+// Detalle y decisiones en arte/MARTE-WIP.md.
 
 import { PAISES_LUNA, type Pais } from "./alunizajes";
 

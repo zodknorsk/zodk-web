@@ -2,7 +2,7 @@
 """Versión de noche de las fotos de las naves del hero (public/zodk-<id>.png ->
 public/zodk-<id>-noche.png), a la luz de la luna como el planeta: cada color se
 desatura un poco, se tiñe de luz fría y se oscurece (misma idea que noche() en
-generar-planeta-hero.py, algo más suave para que la nave se lea sobre el
+generar-tierra.py, algo más suave para que la nave se lea sobre el
 planeta oscuro). El alfa NO se toca: la sombra y los bordes quedan tal cual.
 Las zonas que dan luz propia (postquemadores del SR-71) se dejan como están.
 

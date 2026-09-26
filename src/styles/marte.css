@@ -1,0 +1,203 @@
+/* --- Proyecto Marte (/marte) -------------------------------------------------
+   Marte en WebGL (src/scripts/marte-gl.js), quieto: se gira con clic y
+   arrastrar y se acerca con la rueda o el trackpad. La rueda es el zoom, así
+   que la página no hace scroll: es una escena a pantalla completa. */
+html:has(.marte-hero) { overflow: hidden; }
+/* Los gestos del dedo son de Marte (girar con uno, pellizco con dos): el
+   navegador no hace scroll ni zoom de la página. */
+.marte-hero { touch-action: none; }
+/* Diámetro del disco a zoom x1 y lado de la caja de marte-quieto.png (450 px
+   de arte con el disco de 2 x 219,4 = 438,8 en medio). El vuelo desde la
+   portada acaba en esa caja (viaje-luna.js). Tamaño común de los astros
+   (usuario, 24-sep-2026, Proyecto Tierra): 70 svh, como la Tierra y la Luna
+   (antes, 60: el mismo tamaño de píxel que la Luna de entonces). En vertical
+   (el móvil) se ciñe al 88 % del ancho (usuario, 23-sep-2026). */
+:root { --marte-disco: min(70vh, 88vw); }
+@supports (height: 1svh) { :root { --marte-disco: min(70svh, 88vw); } }
+:root { --marte-caja: calc(var(--marte-disco) * 450 / 438.8); }
+/* Marte quieto (public/marte/marte-quieto.png, de generar-marte-quieto.mjs):
+   la vista inicial tal cual la pinta el motor. Se ve al aterrizar del vuelo
+   mientras carga el lienzo, y si no hay WebGL2 se queda. El ?v= va con
+   MARTE_V de marte.js. */
+.marte-disco {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--marte-caja);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: url(/marte/marte-quieto.png?v=7) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+/* El lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se
+   centra. */
+.marte-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  z-index: 1;
+}
+/* Mide el diámetro del disco a zoom x1 para marte-gl.js. */
+.marte-sonda {
+  position: absolute;
+  width: 0;
+  height: var(--marte-disco);
+  visibility: hidden;
+}
+/* La Tierra pequeña de /marte (usuario, 22-sep-2026): se pulsa para ir a la
+   Tierra con un vuelo hacia delante, hacia ella. Pixel art de
+   generar-tierra-icono.mjs (la Tierra de la portada, de pie y con la luz de
+   Marte; de día o de noche según el tema), en el lienzo del Marte pequeño
+   (56 px de arte, x3; x2 en el móvil). Aparece con un fundido al llegar, como
+   el botón de volver a la Luna.
+   Sitio: arriba a la derecha de Marte, y colocada respecto a Marte, no a la
+   esquina de la pantalla: al 3 % de la esquina, en pantalla completa quedaba
+   "muy alejada de Marte". Su centro va a 1,6 radios de Marte a la derecha y
+   0,85 por encima (en /luna, Marte queda de la Luna a 1,6-1,9 y 0,85, y así
+   "se ve algo mejor"); en ventanas estrechas, sin salirse de la pantalla. */
+.marte-tierra, .marte-tierra-enlace {
+  --lado: 168px;
+  position: absolute;
+  left: min(calc(50% + var(--marte-disco) * 0.8 - var(--lado) / 2), calc(97% - var(--lado)));
+  top: max(calc(50% - var(--marte-disco) * 0.425 - var(--lado) / 2), 3%);
+  width: var(--lado);
+  height: var(--lado);
+}
+.marte-tierra {
+  /* detrás de Marte (el lienzo, z-index 1, es transparente fuera del disco):
+     al acercarse, Marte la tapa (usuario, 23-sep-2026: antes iba delante y
+     "si amplías, la Tierra se sigue viendo por encima") */
+  z-index: 0;
+  pointer-events: none;
+  background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
+.marte-tierra-enlace { z-index: 3; border-radius: 50%; cursor: pointer; }
+/* tapada por Marte: el enlace no se lleva el clic (marte.astro) */
+.marte-tierra-enlace.tapada { pointer-events: none; visibility: hidden; }
+.marte-tierra-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
+@keyframes marte-aparece { from { opacity: 0; } }
+.marte-tierra, .marte-hero .luna-volver { animation: marte-aparece 0.8s ease-out both; }
+@media (max-width: 640px) {
+  .marte-tierra, .marte-tierra-enlace { --lado: 112px; }
+}
+/* /luna en el móvil (23-sep-2026): los países, en una fila de banderas encima
+   del mando (la columna no cabía: tapaba el Marte pequeño y la Luna); los
+   subgrupos de EE. UU., en otra fila encima. "Volver a la Tierra" se queda en
+   el icono (con el texto se montaba sobre el mando). */
+@media (max-width: 640px) {
+  .luna-paises {
+    left: 50%;
+    top: auto;
+    bottom: calc(max(1.5rem, 5svh) + 3.2rem);
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: 0.4rem;
+  }
+  .luna-pais { padding: 6px 8px; }
+  .luna-pais-nombre { display: none; }
+  .luna-pais-grupo { position: static; }
+  .luna-pais-grupo.abierto .luna-pais { transform: none; }
+  .luna-subgrupos {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.4rem);
+    width: max-content;
+    transform: translateX(-50%);
+  }
+  .luna-subgrupos-dentro { flex-direction: row; padding-left: 0; }
+  .luna-subgrupo:first-child { margin-top: 0; }
+  .luna-volver > span:first-child { display: none; }
+  .luna-volver { right: 3%; padding: 8px; }
+}
+/* En vertical no cabe a la derecha de Marte: va encima, pegada a la derecha
+   (sin tapar el disco, que va del 6 al 94 % del ancho). */
+@media (max-aspect-ratio: 1/1) {
+  .marte-tierra, .marte-tierra-enlace {
+    left: calc(97% - var(--lado));
+    top: max(calc(50% - var(--marte-disco) / 2 - var(--lado) - 8px), 3%);
+  }
+}
+
+/* La mano: se agarra en todo el hero (montarMano pone las clases). Flecha
+   normal todo el rato y mano cerrada solo al pinchar para mover (usuario,
+   22-sep-2026: antes salía la mano abierta al pasar por encima). */
+.marte-hero.agarrando, .marte-hero.agarrando * { cursor: grabbing !important; user-select: none; }
+
+/* Chapas de los amartizajes (src/data/amartizajes.ts): la bandera en pixel
+   art de /luna, en su sitio exacto; no crecen con el zoom. Llevan el ratón
+   (la ficha); con la nota publicada son un enlace a ella. */
+.marte-chapa {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 12px;
+  margin: -6px 0 0 -9px;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+a.marte-chapa { cursor: pointer; }
+.agarrando .marte-chapa { cursor: grabbing; }
+.marte-chapa.visto { opacity: var(--borde, 1); }
+.marte-chapa[hidden] { display: none; }
+.marte-chapa:hover { z-index: 1; }
+.marte-chapa svg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; overflow: visible; }
+/* La que no llegó entera: en blanco y negro (usuario, 23-sep-2026, "vamos a
+   ver cómo queda con muchos países"; antes, una raya). */
+.marte-chapa.perdida svg { filter: grayscale(1) brightness(1.15) contrast(0.85); }
+/* La ficha al pasar el ratón: la dorada de las naves y de /luna. */
+.marte-ficha {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  width: 15rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(6, 8, 12, 0.92);
+  border: 1px solid rgba(230, 192, 120, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  opacity: 0;
+  /* --corre y --sube: lo que se desplaza para no salirse de la pantalla (marte-nombres.js) */
+  transform: translate(calc(-50% + var(--corre, 0px)), calc(var(--sube, 0px) - 4px));
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.marte-chapa:is(:hover, :focus-visible, .abierta) .marte-ficha { opacity: 1; transform: translate(calc(-50% + var(--corre, 0px)), var(--sube, 0px)); }
+.marte-chapa.abierta { z-index: 1; }
+/* Sin sitio por debajo: la ficha se abre encima de la chapa. */
+.marte-chapa.ficha-arriba .marte-ficha { top: auto; bottom: calc(100% + 8px); }
+/* Más sitio para el dedo que los 18 x 12 px de la bandera. */
+.marte-chapa::after { content: ""; position: absolute; inset: -12px; }
+.agarrando .marte-ficha { opacity: 0 !important; }
+.marte-ficha-titulo { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c078; }
+.marte-ficha-clase {
+  margin: 0.12rem 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(230, 192, 120, 0.22);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b93a0;
+}
+.marte-ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.16rem 0.8rem; font-size: 0.68rem; }
+.marte-ficha dt { color: #8b93a0; }
+.marte-ficha dd { margin: 0; color: #dfe4ea; }
+/* La foto, en cuadrado como en /luna (.mision-foto). */
+.marte-ficha-foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 1px;
+  margin-bottom: 0.55rem;
+  filter: saturate(0.9);
+}
+.marte-ficha-credito { margin: 0.45rem 0 0; font-size: 0.55rem; line-height: 1.4; color: #6b7380; }
+.marte-ficha-texto { margin: 0.55rem 0 0; font-size: 0.66rem; line-height: 1.45; color: #b8bfca; }
+.marte-ficha-nota { margin: 0.5rem 0 0; font-size: 0.6rem; color: #e6c078; }

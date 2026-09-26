@@ -19,8 +19,8 @@
 //   - halo solo por el lado de la luz, como la atmósfera de la portada (la
 //     variante C que eligió el usuario el 22-sep-2026).
 // Rehacerlo si cambia la Tierra de la portada:
-//   node logo-files/generar-tierra-icono.mjs
-//   node logo-files/generar-tierra-icono.mjs --pruebas carpeta/   (caras y halos para comparar)
+//   node arte/generar-tierra-icono.mjs
+//   node arte/generar-tierra-icono.mjs --pruebas carpeta/   (caras y halos para comparar)
 import fs from "node:fs";
 import zlib from "node:zlib";
 import path from "node:path";

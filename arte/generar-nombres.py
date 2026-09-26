@@ -8,11 +8,11 @@ público), quedándose con la lista elegida a mano de abajo.
 La fuente es el `.dbf` del zip de puntos centrales, que además del nombre trae
 el centro, el diámetro en km y la caja de latitud y longitud de cada lugar:
 
-    cd logo-files/marte-fuentes
+    cd arte/marte-fuentes
     curl -LO https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MARS_nomenclature_center_pts.zip
     unzip MARS_nomenclature_center_pts.zip
 
-Luego, desde logo-files:
+Luego, desde arte:
 
     python3 generar-nombres.py
 

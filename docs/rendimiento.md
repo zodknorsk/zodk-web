@@ -25,7 +25,7 @@ midió, los números y lo que se probó sin éxito.
 4. Lo que queda está en "Lo que queda suelto", y es menor.
 
 Contexto general del proyecto: `CLAUDE.md` en la raíz. Detalle del hero y de la
-Luna: `logo-files/HERO-WIP.md` y `logo-files/LUNA-WIP.md`.
+Luna: `arte/HERO-WIP.md` y `arte/LUNA-WIP.md`.
 
 ## El síntoma
 
@@ -241,5 +241,5 @@ aprecia.
 - El bucle de la Tierra ya **se para solo** cuando el hero no está a la vista
   (un `IntersectionObserver`) y cuando se pulsa el botón de play/pausa.
 - El detalle de por qué el canvas se pinta como se pinta está en
-  `logo-files/HERO-WIP.md` (la Tierra) y `logo-files/LUNA-WIP.md`, apartado
+  `arte/HERO-WIP.md` (la Tierra) y `arte/LUNA-WIP.md`, apartado
   "Pruebas en Zen" (la Luna).

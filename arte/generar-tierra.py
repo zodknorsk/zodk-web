@@ -11,11 +11,11 @@ la luna (paleta nocturna, ver noche()), y de noche con las luces de las
 ciudades (light_cells()). La web lo pinta en un <canvas> que gira de forma
 continua (src/scripts/planeta.js); aquí se exportan sus datos a public/planeta/.
 
-    python3 generar-planeta-hero.py                          # lo de la web -> public/planeta/
-    python3 generar-planeta-hero.py --frame 17 prueba.png   # un solo fotograma de prueba (--noche, --ambos)
-    python3 generar-planeta-hero.py --canvas carpeta/        # datos del <canvas> a otra carpeta
-    python3 generar-planeta-hero.py --sprite                 # el sprite antiguo (ya no se usa)
-    python3 generar-planeta-hero.py --nivel 2 carpeta/ [--zona S,N,O,E]
+    python3 generar-tierra.py                          # lo de la web -> public/planeta/
+    python3 generar-tierra.py --frame 17 prueba.png   # un solo fotograma de prueba (--noche, --ambos)
+    python3 generar-tierra.py --canvas carpeta/        # datos del <canvas> a otra carpeta
+    python3 generar-tierra.py --sprite                 # el sprite antiguo (ya no se usa)
+    python3 generar-tierra.py --nivel 2 carpeta/ [--zona S,N,O,E]
         # nivel de zoom (Proyecto Tierra, TIERRA-WIP.md): el mapa a 2x la
         # resolución (16 px/grado) en teselas carpeta/n1/F-C.png, con las costas
         # de Natural Earth 1:10m y el relieve fino; amplía la LUT y los datos

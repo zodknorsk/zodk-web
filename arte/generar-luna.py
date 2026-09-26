@@ -3,7 +3,7 @@
 
 Cara visible tal como se ve desde la Tierra: disco completo, norte arriba, sin
 inclinación ni giro. Mismo lenguaje que la Tierra del hero
-(generar-planeta-hero.py): proyección ortográfica, luz en escalones lisos de
+(generar-tierra.py): proyección ortográfica, luz en escalones lisos de
 1/LIGHT_SUB, rampas de color con cambio de tono (sombras frías), relieve en
 escalones enteros de rampa.
 
@@ -32,7 +32,7 @@ Datos del <canvas> (media vuelta entre caras, src/scripts/luna.js):
     python3 generar-luna.py --canvas carpeta/    # mapa + LUT + datos + las dos caras aprobadas
 
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
-http://127.0.0.1:4400/logo-files/prototipo-luna/
+http://127.0.0.1:4400/arte/prototipo-luna/
 
 La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
 luna-fuentes/cache-<nombre>.bin; si solo cambian paleta o umbrales de albedo, no

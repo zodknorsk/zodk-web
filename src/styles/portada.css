@@ -1,0 +1,832 @@
+/* La Tierra entera (Proyecto Tierra, logo-files/TIERRA-WIP.md). El lienzo
+   WebGL (.hero-tierra, de src/scripts/tierra-gl.js) ocupa todo el hero: con
+   zoom el disco lo llena; el disco, centrado, mide --tierra-disco a zoom x1,
+   el tamaño común de los astros (70 svh; en vertical, como Marte, se ciñe al
+   88 % del ancho). La sonda le da ese diámetro al motor.
+   .hero-planet es la Tierra quieta (public/planeta/tierra-quieto*.png, de
+   logo-files/generar-tierra-quieto.mjs: LADO 368 px de arte con el disco de
+   360 en medio): se ve mientras carga el lienzo y sin WebGL2, y es la caja
+   del disco que miden los vuelos (también en /luna y /marte). En cuanto el
+   lienzo pinta, index.astro le pone .planeta-listo y se oculta. El ?v= va
+   con PLANETA_V de planeta.js. */
+:root { --tierra-disco: min(70vh, 88vw); }
+@supports (height: 1svh) { :root { --tierra-disco: min(70svh, 88vw); } }
+:root { --tierra-caja: calc(var(--tierra-disco) * 368 / 360); }
+.hero-planet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--tierra-caja);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: url(/planeta/tierra-quieto.png?v=14) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 0;
+}
+html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?v=14); }
+.hero-planet.planeta-listo { visibility: hidden; }
+.hero-tierra {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* el lienzo lo dimensiona tierra-gl.js (píxeles de arte enteros): aquí solo se centra */
+.hero-tierra-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+}
+.hero-tierra-sonda { position: absolute; height: var(--tierra-disco); width: 0; visibility: hidden; }
+
+/* Título de la portada, sobre el globo. El nombre en Serif (en minúsculas, sin
+   negrita), el lema en Mono espaciado. Detrás, un velo radial muy suave
+   (::before) para despegarlo del pixel art.
+
+   Efecto "documento censurado": cada línea (el nombre, y cada término del lema)
+   lleva una barra negra (::after) que barre de izquierda a derecha.
+   - Al cargar: el título aparece tachado, aguanta ~1,3 s y se DEStacha
+     (animación hero-redact-in, escalonada línea a línea).
+   - Al bajar: el título va pegado a la Tierra (hace scroll con el hero) y se
+     tacha de forma progresiva según --redact (0..1, lo pone updateHero en
+     Head.astro a partir del scroll); cada línea en un tramo distinto. Al final
+     del recorrido se desvanece también. Al subir, se destacha igual. */
+.hero-titulo {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: max-content;               /* el marco (.hero-marco) se ciñe al texto */
+  max-width: 90vw;
+  padding: 0.75rem 1.5rem 0.85rem;
+  text-align: center;
+  z-index: 1;
+  pointer-events: none;
+  /* 0..1, lo mueve el scroll (updateHero en Head.astro): cuánto del título
+     está tachado. Al final del recorrido se desvanece también. */
+  --redact: 0;
+  opacity: clamp(0, calc((1 - var(--redact)) / 0.25), 1);
+}
+
+.hero-titulo::before {
+  content: "";
+  position: absolute;
+  inset: -2.25rem -3rem;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse 62% 58% at 50% 50%,
+    rgba(3, 4, 8, 0.3) 0%,
+    rgba(3, 4, 8, 0.12) 46%,
+    transparent 78%
+  );
+}
+
+.hero-titulo h1 {
+  position: relative;
+  margin: 0;
+  font-family: "IBM Plex Serif", ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.55rem, 4.5vw, 2.65rem);
+  line-height: 1.15;
+  text-wrap: balance;
+  color: #eef1f4;
+  /* contorno negro nítido de 1 px (como las chapas y nubes del planeta) +
+     sombra suave: despega el nombre del pixel art sin engordarlo */
+  text-shadow: 1px 0px 0 #05060a, -1px 0px 0 #05060a, 0px 1px 0 #05060a, 0px -1px 0 #05060a, 1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a, 0 2px 16px rgba(3, 4, 8, 0.6);
+}
+
+.hero-titulo h1 span {
+  /* mismo estilo que el resto; solo sirve para partir limpio en móvil */
+  white-space: nowrap;
+}
+
+.hero-titulo p {
+  margin: 0.9rem 0 0;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: clamp(0.6rem, 1.7vw, 0.86rem);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em; /* compensa el tracking del último carácter */
+  font-weight: 600;
+  color: #dfe4ea;
+  text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.85), -1px 0px 0 rgba(3, 4, 8, 0.85), 0px 1px 0 rgba(3, 4, 8, 0.85), 0px -1px 0 rgba(3, 4, 8, 0.85), 1px 1px 0 rgba(3, 4, 8, 0.85), -1px -1px 0 rgba(3, 4, 8, 0.85), 1px -1px 0 rgba(3, 4, 8, 0.85), -1px 1px 0 rgba(3, 4, 8, 0.85);
+}
+
+.hero-titulo p span {
+  position: relative;
+}
+
+/* La barra de censura de cada línea. Barra de tóner: negra, cubre de sobra, con
+   un granulado muy leve. Crece de izquierda a derecha.
+   - Al cargar: aparece tachada, aguanta ~1,3 s y se destacha (hero-redact-in).
+   - Después, el tachado lo controla el scroll: cada línea se tacha en un tramo
+     distinto de --redact (0..1), escalonadas. */
+.hero-titulo h1::after,
+.hero-titulo p span::after {
+  content: "";
+  position: absolute;
+  left: -0.2em;
+  right: -0.2em;
+  top: -0.06em;
+  bottom: -0.02em;
+  background: #050506;
+  transform-origin: left center;
+  animation: hero-redact-in 0.5s cubic-bezier(0.5, 0, 0.25, 1) backwards;
+}
+
+.hero-titulo h1::after {
+  transform: scaleX(clamp(0, calc(var(--redact) / 0.5), 1));
+  animation-delay: 1.3s;
+}
+.hero-titulo p span:nth-of-type(1)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.32) / 0.32), 1));
+  animation-delay: 1.46s;
+}
+.hero-titulo p span:nth-of-type(2)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.46) / 0.32), 1));
+  animation-delay: 1.58s;
+}
+.hero-titulo p span:nth-of-type(3)::after {
+  transform: scaleX(clamp(0, calc((var(--redact) - 0.6) / 0.32), 1));
+  animation-delay: 1.7s;
+}
+
+@keyframes hero-redact-in {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+/* Marco de visor alrededor de todo el título: cuatro esquinas blancas. Debajo
+   de la esquina inferior derecha, la coordenada MGRS del punto del planeta
+   bajo el cursor (la actualiza el script de index.astro). */
+.hero-marco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --c: rgba(255, 255, 255, 0.85);
+  --l: 28px;
+  --g: 1.5px;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+/* las cuatro esquinas, en su capa: se desvanecen sin la lectura (.titulo-fuera) */
+.hero-marco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+}
+/* Ancho fijo, el de la coordenada más larga (18 caracteres, zona de 2 cifras):
+   el botón queda anclado a la izquierda y no se mueve aunque la lectura
+   cambie de largo (zona de 1 cifra, UPS en los polos). */
+.hero-lectura {
+  position: absolute;
+  right: 0;
+  bottom: -22px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font: 500 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  width: calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em));
+}
+.hero-mgrs {
+  padding-left: 0.14em;   /* compensa el letter-spacing que queda al final */
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 0px 0 rgba(3, 4, 8, 0.9), -1px 0px 0 rgba(3, 4, 8, 0.9), 0px 1px 0 rgba(3, 4, 8, 0.9), 0px -1px 0 rgba(3, 4, 8, 0.9), 1px 1px 0 rgba(3, 4, 8, 0.9), -1px -1px 0 rgba(3, 4, 8, 0.9), 1px -1px 0 rgba(3, 4, 8, 0.9), -1px 1px 0 rgba(3, 4, 8, 0.9);
+  white-space: nowrap;
+}
+
+/* Coordenada fijada (hay una X en el planeta): resaltada como con marcador,
+   fondo blanco con contorno oscuro de 1 px y texto oscuro. El margen va con
+   box-shadow para que no empuje nada. */
+.hero-mgrs.fijada {
+  color: #10131c;
+  text-shadow: none;
+  background: #fff;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(3, 4, 8, 0.9);
+}
+
+/* En pantallas táctiles no hay cursor que apuntar: sin coordenada (se quedaba
+   en guiones), solo el botón, bajo la esquina del marco. */
+@media (hover: none), (pointer: coarse) {
+  .hero-lectura { width: auto; }
+  .hero-mgrs { display: none; }
+}
+
+/* Botón de play/pausa del giro, en pixel art (SVG con bordes nítidos). */
+.hero-giro {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(1px 0 0 #05060a) drop-shadow(-1px 0 0 #05060a) drop-shadow(0 1px 0 #05060a) drop-shadow(0 -1px 0 #05060a);
+}
+.hero-giro svg { height: 12px; width: auto; fill: currentColor; shape-rendering: crispEdges; }
+.hero-giro:hover, .hero-giro:focus-visible { color: #e6c078; outline: none; }
+.hero-giro .icono-play { display: none; }
+.hero.giro-parado .hero-giro .icono-play { display: block; }
+.hero.giro-parado .hero-giro .icono-pausa { display: none; }
+
+/* Mira: sustituye al cursor mientras está sobre el planeta. */
+.hero.apuntando { cursor: none; }
+.hero-mira {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  margin: -16.5px 0 0 -16.5px;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    linear-gradient(#fff, #fff) center top / 2px 11px no-repeat,
+    linear-gradient(#fff, #fff) center bottom / 2px 11px no-repeat,
+    linear-gradient(#fff, #fff) left center / 11px 2px no-repeat,
+    linear-gradient(#fff, #fff) right center / 11px 2px no-repeat;
+  filter: drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a);
+}
+
+/* Noche (opción D del usuario): el título se ve como de día, en blanco. Al
+   fijar una coordenada (clic en el planeta: .hero-mgrs.fijada), el marco, la
+   coordenada resaltada y el lema pasan a verde de visión nocturna, como un
+   visor que se engancha al blanco; la X del planeta también va en verde (la
+   pinta planeta.js). El velo aprieta un poco (hay focos de ciudad debajo). */
+html.dark .hero-titulo {
+  --nvg: #8dff9e;
+  --nvg-brillo: rgba(70, 255, 120, 0.55);
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-marco {
+  --c: var(--nvg);
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9)) drop-shadow(0 0 4px var(--nvg-brillo));
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) p {
+  color: var(--nvg);
+  text-shadow: 1px 0 0 rgba(3, 4, 8, 0.85), -1px 0 0 rgba(3, 4, 8, 0.85), 0 1px 0 rgba(3, 4, 8, 0.85), 0 -1px 0 rgba(3, 4, 8, 0.85), 0 0 8px var(--nvg-brillo);
+}
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-giro:not(:hover, :focus-visible) { color: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [fill="#d3d3d3"] { fill: var(--nvg); }
+html.dark .hero-titulo:has(.hero-mgrs.fijada) .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: var(--nvg); }
+html.dark .hero-mgrs.fijada {
+  color: #06140a;
+  background: var(--nvg);
+  box-shadow: 0 0 0 3px var(--nvg), 0 0 0 4px rgba(3, 4, 8, 0.9), 0 0 10px 3px var(--nvg-brillo);
+}
+
+/* El objeto (dron / avión / satélite) que sobrevuela el hero. Hay UN `.hero-craft`;
+   initObjeto() (Head.astro) le cambia el sprite (vars --sprite / --sprite-noche),
+   la proporción y la trayectoria al pulsar el botón .hero-cambio. Los datos salen
+   de src/data/aeronaves.ts. La trayectoria la da el modificador (--sweep / --orbita
+   / --fijo). Al pasar el ratón el objeto se para —y toda la portada— y sale una
+   línea a una ficha con las specs. Solo ratón.
+
+   Renderizado: por defecto "auto" (suavizado), correcto para las fotos (.png).
+   El único sprite que sigue siendo pixel art de verdad (el Sentinel-2, .svg)
+   lleva el modificador `--pixelado` (lo añade index.astro/Head.astro mirando
+   la extensión del sprite) para mantener el borde nítido a bloques. Sin esta
+   distinción, animar una foto con "pixelated" genera parpadeo/costuras al
+   hacer zoom, porque el navegador tiene que re-muestrear con vecino-más-cercano
+   en cada fotograma de un desplazamiento que no cae en un píxel entero. */
+/* Tamaño de las naves respecto al de antes (Proyecto Tierra: con la Tierra
+   entera, más pequeña que el horizonte de antes, se veían grandes). El usuario
+   vio las ocho sobre el globo al 60, 50 y 40 % y eligió el 40 (24-sep-2026);
+   después, "sube a 55 %, las veo chicas". */
+:root { --naves-k: 0.55; }
+.hero-craft {
+  position: absolute;
+  background: var(--sprite) center / contain no-repeat;
+  pointer-events: auto;
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.7s ease; /* fundido al cambiar de objeto (initObjeto) */
+}
+
+.hero-craft--pixelado { image-rendering: pixelated; }
+
+/* Objeto a punto de cambiar: se desvanece; el JS le cambia el sprite/ficha
+   mientras está invisible y lo vuelve a mostrar. */
+.hero-craft.rot-oculta { opacity: 0; }
+
+/* Con JS el objeto nace oculto y initObjeto() lo revela (data-listo) al elegir
+   el aleatorio, fundiéndolo con la transición de arriba; así no se ve saltar el
+   objeto por defecto al aleatorio. Sin JS (html sin .js) se ve desde el principio. */
+html.js .hero-craft:not([data-listo]) { opacity: 0; }
+
+html.dark .hero-craft { background-image: var(--sprite-noche); }
+
+/* Luces de posición, solo de noche (posiciones en aeronaves.ts, en % de la
+   imagen). Tamaño fijo en pantalla: dentro de la foto, reducida, quedarían de
+   menos de 1 px. Solo verde en el ala derecha (arriba) y roja en la izquierda
+   (abajo), fijas. */
+.craft-luz {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  pointer-events: none;
+  display: none;
+}
+html.dark .craft-luz:not([hidden]) { display: block; }
+.craft-luz--der { background: #6dff96; box-shadow: 0 0 3px 1px rgba(51, 221, 102, 0.8); }
+.craft-luz--izq { background: #ff6a5e; box-shadow: 0 0 3px 1px rgba(255, 59, 48, 0.8); }
+
+.hero-craft::after { /* zona de hover ampliada */
+  content: "";
+  position: absolute;
+  inset: -14px;
+}
+
+/* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
+   título y vuelve a subir (alternate). El sprite del TB3 es casi cuadrado
+   (116x108) y con detalle, así que se le da bastante ancho para que se lea. */
+.hero-craft--sweep {
+  left: 44%;
+  top: 24%;
+  /* ~x1,4 el tamaño anterior; --escala (de aeronaves.ts) ajusta cada nave */
+  width: calc(clamp(100px, 10vw, 157px) * var(--escala, 1) * var(--naves-k));
+  transform: translateX(-50%);
+  animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+
+@keyframes hero-sweep {
+  to {
+    transform: translate(
+      calc(-50% + clamp(30px, 7vw, 100px)),
+      clamp(200px, 40vh, 380px)
+    );
+  }
+}
+
+/* Trayectoria "orbita" (satélite): pasada de lado a lado cerca del limbo, con
+   una leve curva. Al llegar al limbo opuesto frena y vuelve al inicio (órbita
+   alta), y así en bucle —hasta que el botón trae otro objeto—. El `alternate`
+   hace la ida y la vuelta; el `ease-in-out` frena y gira en cada extremo. Se
+   queda siempre dentro de pantalla. */
+.hero-craft--orbita {
+  left: 0;
+  top: 12%;
+  width: calc(clamp(50px, 5.6vw, 92px) * var(--naves-k));
+  animation: hero-orbita 22s ease-in-out infinite alternate;
+}
+
+@keyframes hero-orbita {
+  0%   { transform: translate(3vw, 6vh); }
+  50%  { transform: translate(48vw, -2vh); }
+  100% { transform: translate(90vw, 7vh); }
+}
+
+/* "fijo" / "fijo-izq" / "fijo-centro" / "fijo-arriba" / "fijo-arriba-der": la
+   nave se queda en su punto —normalmente debajo del título— pero describe una
+   elipse pequeña y lenta para que no parezca del todo parada. "fijo" = E-2,
+   escorado a la derecha y grande. "fijo-izq" = RQ-4, abajo a la izquierda y
+   más pequeño. "fijo-centro" = MQ-9, centrado bajo el título, mismo tamaño
+   que el RQ-4. "fijo-arriba" = U-2, por ENCIMA del título, sobre la palabra
+   "blog". "fijo-arriba-der" = SR-71, igual pero más a la derecha, sobre
+   "márquez". */
+.hero-craft--fijo,
+.hero-craft--fijo-izq,
+.hero-craft--fijo-centro,
+.hero-craft--fijo-arriba,
+.hero-craft--fijo-arriba-der {
+  animation: hero-fijo-deriva 16s linear infinite;
+}
+.hero-craft--fijo {
+  left: 58%;
+  top: 58%;
+  width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más chica que la nave anterior */
+}
+.hero-craft--fijo-izq {
+  /* sobre la parte izquierda del globo (Proyecto Tierra: con el 20 % / 60 % de
+     antes se quedaba fuera del planeta), relativo a su disco */
+  left: calc(50% - var(--tierra-disco) * 0.36);
+  top: calc(50% + var(--tierra-disco) * 0.12);
+  width: calc(clamp(58px, 5.5vw, 86px) * var(--naves-k));
+}
+.hero-craft--fijo-centro {
+  left: 43%;
+  top: 62%;
+  /* el sprite del MQ-9 trae bastante margen transparente (dron + sombra), así
+     que se le da más ancho de caja que al RQ-4 para que el dron se vea igual. */
+  width: calc(clamp(78px, 7.4vw, 116px) * var(--naves-k));
+}
+.hero-craft--fijo-arriba {
+  left: 40%;
+  top: 26%;
+  /* foto en horizontal (808x362, mucho más ancha que alta), así que necesita
+     más ancho de caja que las demás "fijo" para leerse a tamaño parecido. */
+  width: calc(clamp(140px, 13vw, 210px) * var(--naves-k));
+}
+.hero-craft--fijo-arriba-der {
+  /* misma altura y ancho que fijo-arriba, pero centrada sobre "márquez" en
+     vez de sobre "blog" (medido en el título renderizado, no a ojo). */
+  left: 60%;
+  top: 26%;
+  width: calc(clamp(140px, 13vw, 210px) * var(--naves-k));
+}
+
+@keyframes hero-fijo-deriva {
+  0%   { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
+  25%  { transform: translate(0, calc(-1 * clamp(10px, 1.4vh, 22px))); }
+  50%  { transform: translate(clamp(16px, 2vw, 34px), 0); }
+  75%  { transform: translate(0, clamp(10px, 1.4vh, 22px)); }
+  100% { transform: translate(calc(-1 * clamp(16px, 2vw, 34px)), 0); }
+}
+
+/* Al inspeccionar cualquier nave o chapa de bandera se congela toda la
+   portada (el planeta de día, que es un canvas, lo para planeta.js). */
+.hero-craft:hover { animation-play-state: paused; }
+.hero:has(.hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within) :is(.hero-planet, .hero-sparkle, .hero-scroll, .hero-craft) {
+  animation-play-state: paused;
+}
+
+/* --- Chapas de bandera del planeta ------------------------------------ */
+/* Capa del tamaño del hero; dentro, un <div> encima de cada chapa visible
+   (lo coloca y lo mide el script de index.astro con lo que dice
+   tierra-gl.js). Al pasar el ratón (o con el foco) despliega la misma ficha que
+   las naves, con los artículos del país. El "puente" es una franja invisible
+   sobre la línea para poder llegar a la ficha sin que se cierre. */
+.hero-banderas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+/* Con una ficha de país abierta, la capa sube por encima de naves, mira y
+   botón de cambio (misma altura que las naves y, al ir antes en el HTML, una
+   nave que pasara por delante tapaba la ficha). */
+.hero-banderas:has(.hero-bandera:hover, .hero-bandera:focus-within) { z-index: 4; }
+.hero-bandera {
+  position: absolute;             /* sitio y tamaño (13 x 9 px de arte), del script */
+  pointer-events: auto;
+  outline: none;
+}
+.hero-bandera:is(:hover, :focus-within) .craft-dossier { opacity: 1; pointer-events: auto; }
+.hero-bandera:is(:hover, :focus-within) .craft-linea { transform: scale(1); }
+.hero-bandera:is(:hover, :focus-within) .craft-specs { opacity: 1; transform: translateY(-50%) translateX(0); }
+.bandera-puente {
+  position: absolute;
+  top: calc(50% - 16px);
+  left: 100%;
+  width: 92px;
+  height: 32px;
+}
+.hero-bandera.flip-x .craft-linea { left: auto; right: 100%; transform-origin: right center; }
+.hero-bandera.flip-x .bandera-puente { left: auto; right: 100%; }
+.hero-bandera.flip-x .craft-specs {
+  left: auto;
+  right: calc(100% + 92px);
+  transform: translateY(-50%) translateX(6px);
+}
+.hero-bandera.flip-x:is(:hover, :focus-within) .craft-specs { transform: translateY(-50%) translateX(0); }
+.bandera-articulos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.bandera-articulos a {
+  display: block;
+  color: #dfe4ea;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.bandera-articulos a:hover,
+.bandera-articulos a:focus-visible { color: #e6c078; }
+.bandera-articulos span {
+  display: block;
+  margin-top: 0.1rem;
+  color: #8b93a0;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (hover: none) {
+  .hero-craft, .hero-bandera { pointer-events: none; }
+  .craft-dossier { display: none; }
+}
+
+@media (max-width: 640px) {
+  .hero-craft--sweep { top: 20%; width: calc(clamp(72px, 21vw, 106px) * var(--escala, 1) * var(--naves-k)); }
+  .hero-craft--orbita { top: 8%; width: calc(clamp(40px, 12vw, 62px) * var(--naves-k)); }
+  .hero-craft--fijo { top: 56%; left: 50%; width: calc(clamp(96px, 28vw, 140px) * var(--naves-k)); }
+  .hero-craft--fijo-izq { width: calc(clamp(48px, 14vw, 68px) * var(--naves-k)); }
+  .hero-craft--fijo-centro { top: 60%; left: 38%; width: calc(clamp(64px, 18vw, 90px) * var(--naves-k)); }
+  /* en la esquina; al cambiar de tema, hacia el centro del globo (en 50 %,
+     50 svh) el 60 % del camino: acaba detrás del disco */
+  .hero-astro { left: 3%; top: 6%; width: 112px; height: 112px;
+    --astro-caida: translate(calc((47vw - 56px) * 0.6), calc((44svh - 56px) * 0.6)); }
+  .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-marte, .hero-marte-enlace { left: auto; right: 3%; top: 6%; width: 112px; height: 112px; }
+  .hero-marte--luna { left: 3%; }
+  .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
+  /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
+  .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
+  .hero-titulo h1 { font-size: clamp(0.95rem, 5.2vw, 1.75rem); white-space: nowrap; } /* "el blog de hegoi márquez" en una sola línea */
+  .hero-titulo p {
+    font-size: 0.5rem;
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+  }
+}
+
+/* Acercamiento de la portada (montarAcercamiento en index.astro; usuario,
+   26-sep-2026). Con JS, el título no se ve hasta que el script decide: al
+   acabar el acercamiento (.titulo-entra: el visor se cierra desde fuera y la
+   censura se retira antes que en la carga normal) o de golpe si no hay
+   acercamiento (vuelta en vuelo, reduced-motion, sin WebGL2). Al pasar de
+   display: none a verse, sus animaciones empiezan de cero. La nave, igual:
+   oculta hasta .nave-lista, y entonces aparece con su fundido de siempre
+   (0,7 s, .hero-craft); los nombres del zoom,
+   hasta que se usa el zoom (.sin-nombres). El sol, la luna y Marte se van a
+   las esquinas (donde estaban en la portada de antes) a la par que la
+   cámara. */
+html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
+
+/* El título en papel (usuario, 26-sep-2026: "tipo documento antiguo, tal vez
+   clasificado"; "que ponga NATO SECRET"; "ládealo un pelín más"). Papel
+   viejo girado −2,2°: manchas de humedad, fibra (un ruido SVG quieto), el
+   doblez en horizontal y los bordes más oscuros; las letras en negro, sin
+   contorno, y un sello rojo de tinta (multiply) abajo a la derecha. La barra
+   de censura y el visor, los de siempre. Va por encima de las naves
+   (z-index 3). El papel va en ::before para poder desvanecerlo sin la
+   coordenada (.titulo-fuera, abajo). */
+.hero-titulo {
+  z-index: 3;
+  padding: 26px 46px 40px;
+  transform: translate(-50%, -50%) rotate(-2.2deg);
+}
+.hero-titulo::before {
+  display: block;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 48.5%, rgba(95, 70, 35, 0.12) 49.6%, rgba(255, 250, 235, 0.35) 50.4%, transparent 51.5%),
+    radial-gradient(ellipse 38% 55% at 12% 18%, rgba(140, 100, 45, 0.16), transparent 70%),
+    radial-gradient(ellipse 30% 45% at 88% 85%, rgba(140, 100, 45, 0.2), transparent 70%),
+    radial-gradient(circle at 70% 22%, rgba(150, 110, 50, 0.1) 0 3%, transparent 9%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .15 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)'/%3E%3C/svg%3E"),
+    #e9dec4;
+  box-shadow:
+    inset 0 0 26px rgba(115, 82, 36, 0.28),
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 12px 32px rgba(3, 4, 8, 0.6);
+}
+.hero-titulo h1 {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3.6vw, 2.2rem);
+  letter-spacing: 0.02em;
+  color: #17150f;
+  text-shadow: none;
+}
+.hero-titulo p { color: #2e2a21; text-shadow: none; }
+.titulo-sello {
+  position: absolute;
+  right: 24px;
+  bottom: 11px;
+  padding: 5px 9px 4px;
+  transform: rotate(-7deg);
+  border: 3px double #b3261e;
+  border-radius: 2px;
+  font: 700 13px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+  color: #b3261e;
+  opacity: 0.82;
+  mix-blend-mode: multiply;
+}
+.hero-marco { inset: -14px; }
+/* De noche, al fijar coordenada, el visor y los botones en verde; el lema
+   sigue en tinta sobre el papel. */
+html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: none; }
+/* El documento solo se ve en el encuadre de llegada (usuario, 26-sep-2026):
+   al arrastrar o con otro zoom (también a x1 y al volver en vuelo), papel,
+   letras, sello y esquinas se desvanecen y la coordenada y sus botones pasan
+   al recuadro de la esquina (.titulo-fuera lo pone montarTituloFuera en
+   index.astro). Si solo se ha girado, vuelve al soltar. */
+.hero-titulo::before, .hero-titulo h1, .hero-titulo p, .titulo-sello, .hero-marco::before {
+  transition: opacity 0.45s ease;
+}
+.hero.titulo-fuera .hero-titulo::before,
+.hero.titulo-fuera .hero-marco::before { opacity: 0; }
+.hero.titulo-fuera .hero-titulo h1,
+.hero.titulo-fuera .hero-titulo p,
+.hero.titulo-fuera .titulo-sello { opacity: 0; }
+/* El recuadro de la esquina (usuario, 26-sep-2026: "mejor en una esquina,
+   pero que resalte más, envolviéndolo en un cuadrado"; después, "quita las 4
+   esquinas y que sea un fondo claro"): con el documento retirado, play/pausa,
+   la coordenada y el aspa, abajo a la izquierda en una caja del color del
+   papel del título, con la tinta oscura. */
+.hero-hud {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 8px 12px;
+  background: #e9dec4;
+  border: 1px solid rgba(60, 45, 20, 0.35);
+  box-shadow: inset 0 0 10px rgba(115, 82, 36, 0.2), 0 6px 18px rgba(3, 4, 8, 0.5);
+  animation: rotulo-aparece-hud 0.35s ease-out both;
+}
+.hero-hud[hidden] { display: none; }
+@keyframes rotulo-aparece-hud { from { opacity: 0; transform: translateY(4px); } }
+.hero-hud .hero-lectura { position: relative; right: auto; bottom: auto; }
+.hero-hud .hero-cambio { position: relative; left: auto; bottom: auto; filter: none; }
+.hero-hud .hero-mgrs:not(.fijada) { color: #17150f; text-shadow: none; }
+.hero-hud .hero-giro { color: #2e2a21; filter: none; }
+.hero-hud .hero-giro:hover, .hero-hud .hero-giro:focus-visible { color: #b3261e; }
+.hero-hud .hero-cambio:not(:active) .btn-helice-giro [fill="#d3d3d3"] { fill: #2e2a21; }
+.hero-hud .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: #2e2a21; }
+@media (max-width: 640px) { .hero-hud { left: 12px; bottom: 16px; } }
+
+/* la nave, por debajo del papel; su ficha, por encima al pasar el ratón */
+.hero-craft:hover { z-index: 4; }
+@media (max-width: 640px) {
+  .hero-titulo { padding: 20px 22px 34px; }
+  .hero-titulo h1 { font-size: clamp(0.95rem, 4.8vw, 1.5rem); }
+  .titulo-sello { right: 12px; bottom: 8px; font-size: 10px; }
+}
+.hero.titulo-entra .hero-titulo { animation: titulo-aparece 0.3s ease-out backwards; }
+@keyframes titulo-aparece { from { opacity: 0; } }
+.hero.titulo-entra .hero-marco { animation: marco-cierra 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
+@keyframes marco-cierra { from { inset: -40px; opacity: 0; } 30% { opacity: 1; } }
+/* la censura aguanta y se retira despacio (usuario, 26-sep-2026: "que aguante
+   un poco más y se quite más lento, va muy apresurado"): 1,4 s tachado y
+   1,1 s por barra, escalonadas */
+.hero.titulo-entra .hero-titulo h1::after,
+.hero.titulo-entra .hero-titulo p span::after { animation-duration: 1.1s; }
+.hero.titulo-entra .hero-titulo h1::after { animation-delay: 1.4s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(1)::after { animation-delay: 1.8s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(2)::after { animation-delay: 2.05s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(3)::after { animation-delay: 2.3s; }
+html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
+.hero.sin-nombres .tierra-nombres { display: none; }
+.hero.astros-esquina { --astro-dx: calc(45vw - 84px); --astro-dy: calc(45vh - 84px); }
+@supports (height: 1svh) { .hero.astros-esquina { --astro-dy: calc(45svh - 84px); } }
+.hero.moviendo-astros :is(.hero-astro, .hero-luna-enlace, .hero-marte, .hero-marte-enlace) {
+  transition: left 5s cubic-bezier(0.45, 0.05, 0.2, 1), top 5s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+/* Botón "otro objeto": la hélice del E-2 del usuario (Excalidraw, heliceSvg en
+   index.astro), sola y sin recuadro, bajo la esquina de abajo a la
+   izquierda del visor, al otro lado de la coordenada (como en la portada
+   de antes; usuario, 26-sep-2026). Trae otro objeto al hero (initObjeto en Head.astro). Lo
+   revela el JS (nace con [hidden]); sin JS no aparece. */
+.hero-cambio {
+  position: absolute;
+  left: 0;
+  bottom: -26px;
+  z-index: 3;
+  width: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  pointer-events: auto;   /* el título entero ignora el ratón; esto no */
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+.hero-cambio .btn-caja,
+.hero-cambio .btn-flecha { display: none; }
+
+.hero-cambio > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.hero-cambio:focus-visible {
+  outline: 2px solid #eef2f7;
+  outline-offset: 3px;
+}
+
+/* La "diana de click" es una hélice (guiño al E-2). El giro lo lleva un bucle
+   rAF en initHelice() (Head.astro): acelera al pasar el ratón / enfocar y frena
+   con inercia hasta parar al salir. Aquí solo van los colores, el disco de
+   "barrido" (opacidad la pone el JS) y el hundido al pulsar.
+   Dos grupos: .btn-helice se hunde al pulsar (CSS), .btn-helice-giro gira (JS). */
+.hero-cambio .btn-helice,
+.hero-cambio .btn-helice-giro {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.hero-cambio .btn-helice { transition: transform 0.1s ease; }
+.hero-cambio:active .btn-helice { transform: translateY(4px); }
+
+/* La hélice (SVG del usuario, Excalidraw) trae sus colores; el disco de barrido
+   lleva el suyo (opacidad la pone el JS). Al pulsar, las palas #d3d3d3 pasan a
+   rojo (selector por atributo, gana a la presentación del SVG). */
+.hero-cambio .btn-helice-disco { fill: #c9ced6; opacity: 0; }
+.hero-cambio:active .btn-helice-giro [fill="#d3d3d3"] { fill: #fa6969; }
+.hero-cambio:active .btn-helice-giro [stroke="#d3d3d3"] { stroke: #fa6969; }
+
+/* Al pulsar se hunden el cuadrado y la hélice (no la flecha). */
+.hero-cambio .btn-caja { transition: transform 0.1s ease; }
+.hero-cambio:active .btn-caja { transform: translateY(4px); }
+
+@media (max-width: 640px) {
+  .hero-cambio { width: 24px; }
+}
+
+/* Cabecera de la portada, tres estados:
+   1. arriba del todo (.at-top, sin .scrolled) -> mínima: "notas / eventos /
+      tema", transparente, sin logo.
+   2. bajando por el planeta (sin .at-top, sin .scrolled) -> escondida arriba.
+   3. en el contenido del blog (.scrolled) -> sólida, con el logo bajando a su
+      sitio; entra deslizándose desde arriba. */
+html.home header {
+  transition: transform 0.3s ease, opacity 0.3s ease,
+    background-color 0.35s ease, backdrop-filter 0.35s ease;
+}
+
+html.home header a[href="/"] {
+  overflow: hidden;
+  max-height: 6.5rem;
+  transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
+}
+
+/* Estados 1 y 2: transparente y sin logo */
+html.home:not(.scrolled) header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html.home:not(.scrolled) header a[href="/"] {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  pointer-events: none;
+}
+
+html.home:not(.scrolled) header > div > div {
+  justify-content: center;   /* sin logo, la nav centrada (usuario, 26-sep-2026; cabe en móvil) */
+}
+/* Centrada de verdad: el logo escondido (altura 0) seguía ocupando su ancho
+   y empujaba la nav a la derecha; fuera del flujo. Y el botón de tema cuelga
+   a la derecha de la nav: el centro de la pantalla cae en el de los enlaces. */
+html.home:not(.scrolled) header a[href="/"] { position: absolute; }
+html.home:not(.scrolled) header nav { position: relative; }
+html.home:not(.scrolled) header nav + * { position: absolute; left: calc(100% + 0.5rem); }
+html.home:not(.scrolled) header > div > div > div { position: relative; }
+
+/* Estado 2: escondida mientras bajas por el hero */
+html.home:not(.at-top):not(.scrolled) header {
+  transform: translateY(-115%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.home:not(.scrolled) header a,
+html.home:not(.scrolled) header button,
+html.home:not(.scrolled) header span {
+  color: #cfd6de;
+}
+
+html.home:not(.scrolled) header a:hover,
+html.home:not(.scrolled) header button:hover {
+  color: #ffffff;
+}
+
+/* Hueco arriba de <main>: en la portada el contenido empieza tras el hero, pero
+   la cabecera con logo (~140 px) ya está activa al llegar aquí, así que hay que
+   dejar sitio para que no lo tape. */
+html.home main { padding-top: 9.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-planet,
+  .hero-craft,
+  .hero-sparkle,
+  .hero-scroll { animation: none; }
+  .hero-craft { transition: none; } /* revelado y cambio de objeto instantáneos */
+  .hero-astro > span { animation: none !important; }   /* sol y luna cambian sin moverse */
+  .hero-craft--orbita { left: 22%; top: 16%; } /* aparcado en sitio visible, sin tapar el botón */
+  /* botón: sin hundirse; la hélice no gira (initHelice se autodesactiva); las
+     palas sí siguen poniéndose rojas al pulsar */
+  .hero-cambio .btn-helice,
+  .hero-cambio:active .btn-helice,
+  .hero-cambio .btn-caja,
+  .hero-cambio:active .btn-caja { transform: none; }
+}
