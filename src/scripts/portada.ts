@@ -324,7 +324,7 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     await img!.decode().catch(() => {});
     // La cabecera también: /luna y /marte no la tienen y así no desaparece
     // de golpe. Y el otro astro del cielo: no gira con la cámara.
-    const SEL_APAGAR = `.hero-titulo, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
+    const SEL_APAGAR = `.hero-titulo, .hero-hud, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
     const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
     // El planeta deja de girar mientras dura el vuelo: se va encogiendo y el
     // giro no se aprecia, pero cada repintado cuesta un volcado entero del

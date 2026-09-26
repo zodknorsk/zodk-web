@@ -5,13 +5,9 @@ import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import { NOTAS } from "@consts";
+import { esDelBlog, porFecha } from "@lib/contenido";
 
-// Las notas del Proyecto Luna (etiqueta "luna") y del Proyecto Marte ("marte")
-// no salen aquí: se quedan en /luna y /marte, y solo se llega a ellas desde
-// allí o desde "moon-project" / "mars-project".
-const data = (await getCollection("notas"))
-  .filter((nota) => !nota.data.draft && !nota.data.tags.some((t) => ["luna", "marte"].includes(t.toLowerCase())))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const data = (await getCollection("notas")).filter(esDelBlog).sort(porFecha);
 
 type Acc = {
   [year: string]: CollectionEntry<"notas">[];
@@ -30,7 +26,7 @@ const years = Object.keys(notasPorAno).sort((a, b) => parseInt(b) - parseInt(a))
 <PageLayout title={NOTAS.TITLE} description={NOTAS.DESCRIPTION}>
   <Container>
     <div class="space-y-10">
-      <div class="animate font-semibold text-black dark:text-white">Notas</div>
+      <h1 class="animate font-semibold text-black dark:text-white">Notas</h1>
       <div class="space-y-4">
         {
           years.map((year) => (

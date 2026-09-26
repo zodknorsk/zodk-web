@@ -150,50 +150,46 @@ const socialImageURL = new URL(image, Astro.site);
   }
 
   // La cabecera "sólida" (con logo) se activa con la clase "scrolled".
-  // En la portada no salta al primer pixel: espera a que el contenido del blog
-  // llegue arriba, usando un centinela invisible en el limite hero/contenido.
-  // En el resto de paginas (sin centinela) se activa al primer scroll.
+  // En la portada no salta al primer píxel: espera a que el contenido del blog
+  // llegue arriba, con un centinela invisible en el límite entre el hero y el
+  // contenido (#hero-sentinel). En el resto de páginas, al primer scroll.
+  // El escuchador del scroll se pone una sola vez (la web cambia de página
+  // sin recargar y init() se repite en cada cambio) y mira qué página hay.
+  let observador = null;
   function initHeader() {
+    observador?.disconnect();
+    observador = null;
     const sentinel = document.getElementById("hero-sentinel");
     if (sentinel && "IntersectionObserver" in window) {
-      // "scrolled" = cabecera solida con logo. Se activa al bajar cuando el
-      // limite hero/contenido cruza el 48% del viewport, y se retira al subir en
-      // ese mismo punto (simetrico). El rootMargin define esa linea: mas
-      // negativo -> linea mas arriba -> la cabecera aparece mas tarde.
-      new IntersectionObserver(
-        (entries) => {
-          const e = entries[0];
-          document.documentElement.classList.toggle(
-            "scrolled",
-            e.isIntersecting || e.boundingClientRect.top < 1
-          );
+      // "scrolled" se pone cuando el límite hero/contenido cruza el 48 % de la
+      // ventana, bajando o subiendo. Más negativo el margen -> más tarde.
+      observador = new IntersectionObserver(
+        ([e]) => {
+          document.documentElement.classList.toggle("scrolled", e.isIntersecting || e.boundingClientRect.top < 1);
         },
-        { rootMargin: "0px 0px -52% 0px", threshold: 0 }
-      ).observe(sentinel);
-      // "at-top" = pegado arriba del todo (para la nav minima). Y ademas, a
-      // medida que se baja, se tacha el titulo: --redact 0..1 segun el scroll
-      // (el CSS reparte ese 0..1 por lineas). Se recalcula en un rAF.
-      const titulo = document.querySelector(".hero-titulo");
-      let raf = 0;
-      const updateHero = () => {
-        raf = 0;
-        document.documentElement.classList.toggle("at-top", window.scrollY < 24);
-        if (titulo) {
-          const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
-          titulo.style.setProperty("--redact", p.toFixed(3));
-        }
-      };
-      updateHero();
-      document.addEventListener(
-        "scroll",
-        () => { if (!raf) raf = requestAnimationFrame(updateHero); },
-        { passive: true }
+        { rootMargin: "0px 0px -52% 0px", threshold: 0 },
       );
+      observador.observe(sentinel);
+    }
+    alScroll();
+  }
+  // En la portada: "at-top" (pegado arriba del todo, la cabecera mínima) y la
+  // censura del título según se baja (--redact de 0 a 1; el CSS la reparte
+  // por líneas). En las demás páginas, "scrolled" desde el primer píxel.
+  function alScroll() {
+    const html = document.documentElement;
+    if (document.getElementById("hero-sentinel")) {
+      html.classList.toggle("at-top", window.scrollY < 24);
+      const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
+      document.querySelector(".hero-titulo")?.style.setProperty("--redact", p.toFixed(3));
     } else {
-      onScroll();
-      document.addEventListener("scroll", onScroll);
+      html.classList.toggle("scrolled", window.scrollY > 0);
     }
   }
+  let rafScroll = 0;
+  document.addEventListener("scroll", () => {
+    if (!rafScroll) rafScroll = requestAnimationFrame(() => { rafScroll = 0; alScroll(); });
+  }, { passive: true });
 
   // Fichas de las naves: al pasar el raton, la nave se para (CSS :hover) y sale
   // la ficha. Aqui solo se decide, una vez al entrar, donde cae el recuadro para
@@ -388,14 +384,6 @@ const socialImageURL = new URL(image, Astro.site);
         element.classList.add("show");
       }, index * 150);
     });
-  }
-
-  function onScroll() {
-    if (window.scrollY > 0) {
-      document.documentElement.classList.add("scrolled");
-    } else {
-      document.documentElement.classList.remove("scrolled");
-    }
   }
 
 function toggleTheme(dark) {
