@@ -21,12 +21,12 @@ export default defineConfig({
   // Tailwind 3 va directo como plugin de PostCSS. Antes lo metía la integración
   // @astrojs/tailwind, que no funciona con Astro 6 o posterior; esto es lo mismo
   // que hacía ella por dentro (tailwind.config.mjs + autoprefixer). Las
-  // directivas @tailwind están al principio de src/styles/global.css.
+  // directivas @tailwind están al principio de src/styles/base.css.
   vite: {
     build: {
       // Vite 8 minifica el CSS con Lightning CSS, y Lightning CSS 1.33 se
       // estrella (Segmentation fault, sin mensaje) con el ancho de .hero-lectura
-      // en global.css: calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em)). El
+      // en portada.css: calc(16px + 0.8rem + 0.14em + 18 * (1ch + 0.14em)). El
       // CSS es válido; el fallo es suyo. esbuild es el minificador que usaba
       // Astro 5, así que el CSS sale como siempre.
       cssMinify: "esbuild",

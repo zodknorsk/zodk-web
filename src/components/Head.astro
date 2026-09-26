@@ -1,5 +1,11 @@
 ---
-import "../styles/global.css";
+// Estilos, en este orden: los de toda la web, lo que comparten las tres
+// portadas de astros y después cada una.
+import "../styles/base.css";
+import "../styles/astros.css";
+import "../styles/portada.css";
+import "../styles/luna.css";
+import "../styles/marte.css";
 // Familia IBM Plex: Sans para interfaz y titulares, Serif para el texto de
 // lectura, Mono para datos (handles, fechas, tiempo de lectura).
 import "@fontsource/ibm-plex-sans/latin-400.css";
@@ -32,7 +38,7 @@ const { title, description, image = "/og-image.png" } = Astro.props;
 const socialImageURL = new URL(image, Astro.site);
 ---
 
-<!-- Global Metadata -->
+<!-- Básicos e iconos -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- El sufijo -v2 fuerza a los navegadores (sobre todo Safari en iOS, que
@@ -54,21 +60,19 @@ const socialImageURL = new URL(image, Astro.site);
   </style>
 </noscript>
 
-<!-- Font preloads -->
+<!-- Fuentes que se usan nada más cargar -->
 <link rel="preload" href={plexSans400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSans600} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSerif400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSerif600} as="font" type="font/woff2" crossorigin/>
 
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+<!-- Vista previa al compartir (Open Graph y Twitter) -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
@@ -77,28 +81,24 @@ const socialImageURL = new URL(image, Astro.site);
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={title} />
-
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImageURL} />
 
-<ClientRouter  />
+<ClientRouter />
 
-<!-- RSS Link -->
 <link rel="alternate" type="application/rss+xml" title={SITE.NAME} href={new URL("rss.xml", Astro.site)} />
 
 <script>
+  // Al cambiar de página las fuentes ya están cargadas: no hace falta volver
+  // a precargarlas.
   import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-  document.addEventListener("astro:before-swap", (e) =>
-    [
-      ...(e as TransitionBeforeSwapEvent).newDocument.head.querySelectorAll(
-        "link[as=\"font\"]"
-      ),
-    ].forEach((link) => link.remove())
-  );
+  document.addEventListener("astro:before-swap", (e) => {
+    const nueva = (e as TransitionBeforeSwapEvent).newDocument;
+    nueva.head.querySelectorAll("link[as=font]").forEach((link) => link.remove());
+  });
 </script>
 
 <script is:inline>
@@ -113,9 +113,9 @@ const socialImageURL = new URL(image, Astro.site);
     const themeButton = document.getElementById("theme-button");
     themeButton?.addEventListener("click", () => {
       const isDark = document.documentElement.classList.contains("dark");
-      localStorage.setItem("theme", isDark ? "light" : "dark");
+      try { sessionStorage.setItem("theme", isDark ? "light" : "dark"); } catch { /* sin sessionStorage: solo esta página */ }
       toggleTheme(!isDark);
-      // El icono nuevo sale relleno y se vacía (global.css, .tema-pulsado).
+      // El icono nuevo sale relleno y se vacía (.tema-pulsado en base.css).
       themeButton.classList.remove("tema-pulsado");
       void themeButton.offsetWidth;                // reinicia la animación
       themeButton.classList.add("tema-pulsado");
@@ -123,21 +123,11 @@ const socialImageURL = new URL(image, Astro.site);
       themeButton._tPulsado = setTimeout(() => themeButton.classList.remove("tema-pulsado"), 900);
       marcaEstrellas(!isDark);
     });
-
-    // Si el usuario no ha elegido tema a mano, seguir el del sistema en vivo.
-    window.matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", event => {
-        if (!localStorage.theme) {
-          toggleTheme(event.matches);
-        }
-      }
-    );
-
   }
 
   // Al pasar a noche, las estrellas de más del hero (.hero-stars::after) se
   // encienden poco a poco en vez de salir de golpe: html.estrellas-entrando
-  // mientras dura (global.css). Solo al cambiar de tema, no al cargar.
+  // mientras dura (astros.css). Solo al cambiar de tema, no al cargar.
   let tEstrellas = 0;
   function marcaEstrellas(aNoche) {
     const html = document.documentElement;
@@ -150,54 +140,50 @@ const socialImageURL = new URL(image, Astro.site);
   }
 
   // La cabecera "sólida" (con logo) se activa con la clase "scrolled".
-  // En la portada no salta al primer pixel: espera a que el contenido del blog
-  // llegue arriba, usando un centinela invisible en el limite hero/contenido.
-  // En el resto de paginas (sin centinela) se activa al primer scroll.
+  // En la portada no salta al primer píxel: espera a que el contenido del blog
+  // llegue arriba, con un centinela invisible en el límite entre el hero y el
+  // contenido (#hero-sentinel). En el resto de páginas, al primer scroll.
+  // El escuchador del scroll se pone una sola vez (la web cambia de página
+  // sin recargar y init() se repite en cada cambio) y mira qué página hay.
+  let observador = null;
   function initHeader() {
+    observador?.disconnect();
+    observador = null;
     const sentinel = document.getElementById("hero-sentinel");
     if (sentinel && "IntersectionObserver" in window) {
-      // "scrolled" = cabecera solida con logo. Se activa al bajar cuando el
-      // limite hero/contenido cruza el 48% del viewport, y se retira al subir en
-      // ese mismo punto (simetrico). El rootMargin define esa linea: mas
-      // negativo -> linea mas arriba -> la cabecera aparece mas tarde.
-      new IntersectionObserver(
-        (entries) => {
-          const e = entries[0];
-          document.documentElement.classList.toggle(
-            "scrolled",
-            e.isIntersecting || e.boundingClientRect.top < 1
-          );
+      // "scrolled" se pone cuando el límite hero/contenido cruza el 48 % de la
+      // ventana, bajando o subiendo. Más negativo el margen -> más tarde.
+      observador = new IntersectionObserver(
+        ([e]) => {
+          document.documentElement.classList.toggle("scrolled", e.isIntersecting || e.boundingClientRect.top < 1);
         },
-        { rootMargin: "0px 0px -52% 0px", threshold: 0 }
-      ).observe(sentinel);
-      // "at-top" = pegado arriba del todo (para la nav minima). Y ademas, a
-      // medida que se baja, se tacha el titulo: --redact 0..1 segun el scroll
-      // (el CSS reparte ese 0..1 por lineas). Se recalcula en un rAF.
-      const titulo = document.querySelector(".hero-titulo");
-      let raf = 0;
-      const updateHero = () => {
-        raf = 0;
-        document.documentElement.classList.toggle("at-top", window.scrollY < 24);
-        if (titulo) {
-          const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
-          titulo.style.setProperty("--redact", p.toFixed(3));
-        }
-      };
-      updateHero();
-      document.addEventListener(
-        "scroll",
-        () => { if (!raf) raf = requestAnimationFrame(updateHero); },
-        { passive: true }
+        { rootMargin: "0px 0px -52% 0px", threshold: 0 },
       );
+      observador.observe(sentinel);
+    }
+    alScroll();
+  }
+  // En la portada: "at-top" (pegado arriba del todo, la cabecera mínima) y la
+  // censura del título según se baja (--redact de 0 a 1; el CSS la reparte
+  // por líneas). En las demás páginas, "scrolled" desde el primer píxel.
+  function alScroll() {
+    const html = document.documentElement;
+    if (document.getElementById("hero-sentinel")) {
+      html.classList.toggle("at-top", window.scrollY < 24);
+      const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
+      document.querySelector(".hero-titulo")?.style.setProperty("--redact", p.toFixed(3));
     } else {
-      onScroll();
-      document.addEventListener("scroll", onScroll);
+      html.classList.toggle("scrolled", window.scrollY > 0);
     }
   }
+  let rafScroll = 0;
+  document.addEventListener("scroll", () => {
+    if (!rafScroll) rafScroll = requestAnimationFrame(() => { rafScroll = 0; alScroll(); });
+  }, { passive: true });
 
-  // Fichas de las naves: al pasar el raton, la nave se para (CSS :hover) y sale
-  // la ficha. Aqui solo se decide, una vez al entrar, donde cae el recuadro para
-  // que no se salga de pantalla; no hay bucle ni seguimiento.
+  // Fichas de las naves: al pasar el ratón, la nave se para (CSS :hover) y sale
+  // la ficha. Aquí solo se decide, al entrar, a qué lado cae el recuadro para
+  // que no se salga de la pantalla.
   function initCraft() {
     if (!window.matchMedia("(hover: hover)").matches) return;
     document.querySelectorAll(".hero-craft").forEach((el) => {
@@ -208,12 +194,11 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-  // Hero: UN objeto de AERONAVES a la vez, con su trayectoria. initObjeto()
-  // elige el primero con "bolsa barajada" (se recorren todos antes de repetir;
-  // localStorage recuerda el ultimo para no repetir al recargar) y engancha el
-  // boton .hero-cambio: al pulsarlo, el objeto se desvanece, se le cambia
-  // sprite + trayectoria + ficha por el siguiente de la bolsa y vuelve a
-  // aparecer. Con reduced-motion el cambio es instantaneo pero el boton sigue.
+  // Un objeto de AERONAVES (src/data/aeronaves.ts) a la vez en el hero, con
+  // su trayectoria. Se eligen de una bolsa barajada (salen todos antes de
+  // repetir; localStorage recuerda el último para no repetirlo al recargar).
+  // El botón .hero-cambio lo desvanece, le pone dibujo, trayectoria y ficha
+  // del siguiente y lo vuelve a mostrar. Con reduced-motion, sin fundido.
   function initObjeto() {
     const data = document.getElementById("aeronaves-data");
     const el = document.querySelector(".hero-craft[data-slot]");
@@ -242,9 +227,8 @@ const socialImageURL = new URL(image, Astro.site);
         "hero-craft--fijo-arriba-der", "hero-craft--pixelado", "flip-x"
       );
       el.classList.add("hero-craft--" + a.vuelo);
-      // Solo el pixel art de verdad (.svg) quiere vecino-más-cercano; las
-      // fotos (.png) se ven mejor —y sin parpadeo al moverse— con el
-      // suavizado normal del navegador (ver comentario en global.css).
+      // Solo el pixel art (.svg) va sin suavizar; las fotos (.png) se ven
+      // mejor, y sin parpadeo al moverse, con el suavizado del navegador.
       if (a.sprite.endsWith(".svg")) el.classList.add("hero-craft--pixelado");
       el.dataset.craft = a.id;
       el.style.aspectRatio = a.ratio;
@@ -259,7 +243,7 @@ const socialImageURL = new URL(image, Astro.site);
         if (p) { luz.style.left = p[0] + "%"; luz.style.top = p[1] + "%"; }
       }
       el.style.animation = "none";
-      void el.offsetWidth; // reinicia la animacion de la trayectoria
+      void el.offsetWidth; // reinicia la animación de la trayectoria
       el.style.animation = "";
       el.style.animationDelay = "-" + (FASE0[a.vuelo] || 0) + "s";
       const specs = el.querySelector(".craft-specs");
@@ -276,8 +260,8 @@ const socialImageURL = new URL(image, Astro.site);
         .join("");
     }
 
-    // Bolsa barajada de indices: se saca de la bolsa hasta vaciarla y se vuelve
-    // a barajar; nunca se repite el objeto actual de forma consecutiva.
+    // Bolsa barajada de índices: se saca hasta vaciarla y se vuelve a barajar;
+    // nunca sale dos veces seguidas el mismo.
     let bolsa = [];
     function rellenaBolsa() {
       bolsa = pool.map((_, i) => i);
@@ -304,8 +288,8 @@ const socialImageURL = new URL(image, Astro.site);
     let actual = sacaIndice(ultimo);
     pinta(pool[actual]);
     try { localStorage.setItem("hero-objeto", String(actual)); } catch { /* localStorage no disponible */ }
-    // Revela el objeto: quita el ocultado de html.js y deja que el CSS lo funda
-    // (instantaneo con reduced-motion).
+    // Lo muestra: quita el ocultado de html.js y el CSS lo funde (de golpe con
+    // reduced-motion).
     if (sinMovimiento) {
       el.dataset.listo = "";
     } else {
@@ -338,10 +322,9 @@ const socialImageURL = new URL(image, Astro.site);
     }
   }
 
-  // Helice del boton .hero-cambio: un bucle rAF lleva una velocidad angular que
-  // tiende suavemente a "rapido" al pasar el raton / enfocar y a 0 al salir (se
-  // para con inercia donde quede). El bucle solo corre mientras se mueve y se
-  // apaga solo. Con reduced-motion no gira.
+  // Hélice del botón .hero-cambio: acelera al pasar el ratón (o al enfocarlo)
+  // y al salir frena con inercia hasta pararse donde quede. El bucle de rAF
+  // solo corre mientras se mueve. Con reduced-motion no gira.
   function initHelice() {
     const boton = document.querySelector(".hero-cambio");
     const giro = boton && boton.querySelector(".btn-helice-giro");
@@ -350,7 +333,7 @@ const socialImageURL = new URL(image, Astro.site);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const MAX = 1300;   // grados/segundo a tope
-    const EASE = 2.7;   // rapidez de aceleracion/frenada
+    const EASE = 2.7;   // rapidez de aceleración y frenada
     let ang = 0, vel = 0, target = 0, raf = 0, prev = 0;
 
     function tick(now) {
@@ -390,50 +373,28 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-  function onScroll() {
-    if (window.scrollY > 0) {
-      document.documentElement.classList.add("scrolled");
-    } else {
-      document.documentElement.classList.remove("scrolled");
-    }
-  }
-
-function toggleTheme(dark) {
+  // Cambia de tema de golpe: sin transiciones mientras se pone o quita .dark.
+  function toggleTheme(dark) {
     const css = document.createElement("style");
-
-    css.appendChild(
-      document.createTextNode(
-        `* {
-             -webkit-transition: none !important;
-             -moz-transition: none !important;
-             -o-transition: none !important;
-             -ms-transition: none !important;
-             transition: none !important;
-          }
-        `,
-      )
-    );
-
+    css.textContent = "* { transition: none !important; }";
     document.head.appendChild(css);
-
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-  window.getComputedStyle(css).opacity;
+    document.documentElement.classList.toggle("dark", dark);
+    window.getComputedStyle(css).opacity;   // obliga a aplicar los estilos antes de quitarlo
     document.head.removeChild(css);
   }
 
+  // Tema al cargar: de día, aunque el sistema esté en modo oscuro. La noche
+  // que se elija con el botón (o la que pone el vuelo a la Luna) dura lo que
+  // la visita: va en sessionStorage, así que aguanta al navegar y al recargar,
+  // pero una visita nueva empieza de día. Lo que quede en localStorage de
+  // cuando se guardaba ahí, se borra.
   function preloadTheme() {
-    const userTheme = localStorage.theme;
-
-    if (userTheme === "light" || userTheme === "dark") {
-      toggleTheme(userTheme === "dark");
-    } else {
-      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
-    }
+    let userTheme = null;
+    try {
+      localStorage.removeItem("theme");
+      userTheme = sessionStorage.getItem("theme");
+    } catch { /* sin almacenamiento: de día */ }
+    toggleTheme(userTheme === "dark");
   }
 
   // Marca "hay JS" antes de pintar el body: el CSS usa html.js para que el

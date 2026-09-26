@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: la Tierra entera</title>
+<!--
+  Banco de pruebas de la Tierra: la Tierra entera en WebGL
+  (src/scripts/tierra-gl.js) con los datos de la portada (public/planeta/),
+  girando sola, arrastrable y con zoom.
+  Servir desde la raíz del repo:
+    python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/arte/bancos/tierra.html
+
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  ?radio=256: otro radio en píxeles de arte (256 = el píxel de Marte y la
+    Luna; por defecto 180, el de la portada).
+  ?parado: sin giro al cargar.
+  ?datos=../pruebas/tierra: otros datos (hechos con
+    python3 generar-tierra.py --canvas pruebas/tierra/).
+  ?medir: ms por fotograma a ×1.
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  /* el lienzo lo dimensiona tierra-gl.js (píxeles de arte enteros): aquí solo se centra */
+  #tierra { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  /* diámetro del disco a ×1: el tamaño común de los astros */
+  #sonda { position: absolute; height: 70svh; width: 0; visibility: hidden; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;
+    padding: 5px 8px; border-radius: 6px; line-height: 1.9; }
+  /* chapas: el <div> que reacciona al ratón encima de cada una (en la portada
+     abre la ficha de artículos; aquí, solo el nombre) */
+  .chapa { position: fixed; width: 22px; height: 16px; z-index: 3; cursor: pointer; }
+  .chapa span { display: none; position: absolute; left: 26px; top: -2px; white-space: nowrap;
+    background: #0c0f16e6; color: #e8edf3; padding: 2px 6px; border-radius: 3px; }
+  .chapa:hover span { display: block; }
+  button { font: inherit; color: #05060a; background: #8fc6e8; border: 0; border-radius: 4px;
+    padding: 1px 6px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="tierra"></canvas>
+  <div id="sonda"></div>
+  <div id="chapas"></div>
+  <div class="capa-nombres" id="nombres"></div>
+  <div id="panel" data-sin-arrastre>
+    <button id="giro">pausa</button> ·
+    <button data-v="20,-10">Europa</button> <button data-v="20,-80">América</button>
+    <button data-v="20,100">Asia</button> <button data-v="-20,140">Oceanía</button>
+    <button data-v="-25,-60">Sudamérica</button> <button data-v="90,0">polo N</button>
+    <button data-v="-90,0">polo S</button>
+    · <button data-z="1">x1</button> <button data-z="4">x4</button> <button data-z="6">x6</button><br>
+    <span id="vista"></span> <span id="marca"></span> <span id="ms"></span>
+  </div>
+</div>
+<script type="module">
+import { montarMano, montarZoom } from "../../src/scripts/gestos.js";
+import { montarTierraGL } from "../../src/scripts/tierra-gl.js";
+import { montarNombres } from "../../src/scripts/nombres.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda");
+const q = new URLSearchParams(location.search);
+const NOMBRES = { ES: "España", MA: "Marruecos", IR: "Irán", US: "EE. UU.", AF: "Afganistán" };
+const capaChapas = $("chapas"), divs = new Map();
+let motor = null;                     // (window.tierra sería el <canvas id="tierra"> hasta que llegue)
+const colocaChapas = () => {
+  if (!motor) return;
+  const vistas = new Set();
+  for (const { iso, x, y } of motor.chapas()) {
+    let el = divs.get(iso);
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "chapa";
+      el.dataset.sinArrastre = "";
+      el.innerHTML = `<span>${NOMBRES[iso] ?? iso}</span>`;
+      capaChapas.append(el);
+      divs.set(iso, el);
+    }
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.hidden = false;
+    vistas.add(iso);
+  }
+  for (const [iso, el] of divs) if (!vistas.has(iso) && !el.matches(":hover")) el.hidden = true;
+};
+let colocaNombres = null;
+const tierra = await montarTierraGL($("tierra"), {
+  alPintar: () => { colocaChapas(); colocaNombres?.(); },
+  pausado: () => !!document.querySelector(".chapa:hover"),
+  base: q.get("datos") ? `${q.get("datos")}/` : "../../public/planeta/",
+  disco: () => sonda.getBoundingClientRect().height,
+  ...(q.has("radio") ? { radio: Number(q.get("radio")) } : {}),
+});
+if (!tierra) {
+  $("vista").textContent = "Este navegador no tiene WebGL2.";
+} else {
+  montarMano($("hero"), tierra, { alArrastrar: true });   // mano cerrada solo al girar, no con un clic
+  montarZoom($("hero"), tierra);
+  window.tierra = motor = tierra;       // para probar desde la consola
+  const base = q.get("datos") ? `${q.get("datos")}/` : "../../public/planeta/";
+  montarNombres($("nombres"), tierra, [], { url: `${base}tierra-nombres.json`, radioKm: 6371 })
+    .then((n) => { colocaNombres = n.coloca; n.coloca(); }).catch(() => {});
+  colocaChapas();
+  // X de blanco: clic en la Tierra la clava (gira con ella); clic sobre la X
+  // o Esc, fuera. Un arrastre no es un clic (montarMano se lo come).
+  let marca = null;
+  const quita = () => { marca = null; tierra.ponMarca(null); $("marca").textContent = ""; };
+  $("hero").addEventListener("click", (e) => {
+    if (e.target.closest("[data-sin-arrastre]")) return;
+    const g = tierra.geo(e.clientX, e.clientY);
+    if (!g) return;
+    const x = tierra.posMarca();
+    if (marca && x && Math.hypot(x.x - e.clientX, x.y - e.clientY) < 16) return quita();
+    marca = g;
+    tierra.ponMarca(g);
+    $("marca").textContent = `· X en ${g.lat.toFixed(1)}° ${g.lon.toFixed(1)}°`;
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && marca) quita(); });
+  const muestra = () => {
+    const v = tierra.vista();
+    $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(0)}° ${v.lon0.toFixed(0)}°`;
+    requestAnimationFrame(muestra);
+  };
+  muestra();
+  const giro = $("giro");
+  const ponGiro = (p) => { tierra.ponParado(p); giro.textContent = p ? "girar" : "pausa"; };
+  giro.addEventListener("click", () => ponGiro(!tierra.parado()));
+  if (q.has("parado")) ponGiro(true);
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    const [la, lo] = b.dataset.v.split(",").map(Number);
+    tierra.ponVista(la, lo);
+  }));
+  document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => tierra.ponZoom(Number(b.dataset.z))));
+  if (q.has("vista")) {
+    const [la, lo, z] = q.get("vista").split(",").map(Number);
+    tierra.ponVista(la, lo);
+    if (z) tierra.ponZoom(z, true);
+  }
+  if (q.has("medir")) {
+    tierra.medir(10);
+    $("ms").textContent = `· ${tierra.medir(30).toFixed(1)} ms por fotograma a x1`;
+  }
+}
+</script>
+</body>
+</html>

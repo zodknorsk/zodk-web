@@ -42,6 +42,8 @@ module.exports = {
       // llamada con genérico cuyos argumentos ocupan VARIAS líneas
       // (`querySelectorAll<HTMLElement>(\n ... \n)`) da "Parsing error:
       // Expression expected". Deja el genérico y sus argumentos en una línea.
+      // Tampoco entiende `new Set<string>()`: se escribe
+      // `const x: Set<string> = new Set()`.
     },
   ],
 };

@@ -1,20 +1,14 @@
-// La Luna que gira y se acerca (Proyecto Luna, 23-sep-2026): la Luna de
-// /luna en el motor WebGL de Marte (src/scripts/marte-gl.js), con los datos
-// de public/luna/ (generar-luna.py --canvas y --teselas). Se gira con clic y
-// arrastrar (un dedo en el móvil) y se acerca con la rueda, el trackpad o
-// pellizcando, hasta x6, con los niveles de teselas n1-n4.
+// La Luna de /luna: el motor de Marte (marte-gl.js) con los datos de
+// public/luna/ (generar-luna.py --canvas y --teselas). Se gira con la mano y
+// se acerca hasta x6, con los niveles de teselas n1-n4.
 //
-// La luz va con la vista (usuario, 23-sep-2026): según gana terreno la cara
-// oculta, la Luna se oscurece y se enfría, como en la media vuelta de antes.
-// "Cuánto de cara oculta se ve" es el ángulo de la vista a la cara visible,
-// en proporción al que hay entre las dos caras de luna-datos.json (150°), y
-// la fase del sol, la exposición y el tono frío van de los de una cara a los
-// de la otra.
-//
-// Lo prueba logo-files/prototipo-luna/giro-libre.html. Detalle en
-// logo-files/LUNA-WIP.md.
+// La luz va con la vista: según gana terreno la cara oculta, la Luna se
+// oscurece y se enfría. "Cuánto de cara oculta se ve" es el ángulo de la
+// vista a la cara visible, en proporción al que hay entre las dos caras de
+// luna-datos.json (150°), y la fase del sol, la exposición y el tono frío van
+// de los de una cara a los de la otra. Más en docs/luna.md.
 
-import { LUNA_V } from "./luna.js";
+import { LUNA_V } from "./versiones.js";
 import { montarMarteGL } from "./marte-gl.js";
 
 const DEG = Math.PI / 180;

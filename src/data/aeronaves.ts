@@ -1,28 +1,21 @@
-// Naves y satélites que sobrevuelan / orbitan la portada. El pixel art lo
-// genera logo-files/generar-aeronaves.py -> public/zodk-<id>[-noche].svg; aquí
-// van los datos que necesita la web (sprite, proporción, trayectoria y la
-// ficha que sale al pasar el ratón).
+// Naves y satélites que sobrevuelan la portada: dibujo, proporción,
+// trayectoria y la ficha que sale al pasar el ratón.
 //
-// Para añadir una nave: dibújala en generar-aeronaves.py, copia el SVG a
-// public/, y añade una entrada aquí. Se suma sola a la rotación del hero.
+// El hero muestra un objeto de esta lista a la vez, con su trayectoria
+// ("vuelo"): "sweep" barrido diagonal, "orbita" pasada de lado a lado que
+// vuelve, "fijo" quieta con una elipse pequeña. Solo cambia al pulsar el
+// botón .hero-cambio, que trae otro al azar (salen todos antes de repetir).
+// Lo lleva initObjeto() en Head.astro; sin JS se ve el primero de la lista.
 //
-// El hero muestra UN objeto de esta lista a la vez, con su trayectoria
-// ("vuelo"): "sweep" barrido diagonal, "orbita" pasada de lado a lado que rebota
-// en el limbo y vuelve, "fijo" quieta con una elipse pequeña. No hay relevo
-// automático: el objeto solo cambia al pulsar el botón .hero-cambio (espacio
-// profundo, arriba a la izquierda), que desvanece el actual y trae otro al azar
-// —"bolsa barajada": se recorren todos antes de repetir—. Lo lleva initObjeto()
-// en Head.astro; sin JS se ve el primero de la lista, quieto.
-//
-// Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
-// TB3, el MQ-9, el RQ-4, el E-2, el U-2, el SR-71 y el Shahed-136 son fotos
-// PNG tal cual; su versión de noche (-noche.png, a la luz de la luna) la saca
-// logo-files/generar-naves-noche.py. Todas en public/zodk-<id>[-noche].{svg,png}.
+// Dibujos, en public/zodk-<id>[-noche].{svg,png}: todas son fotos PNG salvo
+// el Sentinel-2, que es pixel art de arte/generar-aeronaves.py. La versión de
+// noche de las fotos (a la luz de la luna) sale de arte/generar-naves-noche.py.
+// Añadir una nave = su foto en public/, la de noche con ese script y una
+// entrada aquí.
 //
 // Luces de posición (solo de noche): puntos fijos encima de la nave, en % de
 // su imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala
-// DERECHA es la de arriba (verde) y la IZQUIERDA la de abajo (roja). Solo esas
-// dos (el usuario quitó la blanca de cola, los destellos y la baliza). Sin
+// derecha es la de arriba (verde) y la izquierda la de abajo (roja). Sin
 // `luces`, la nave va a oscuras (el Shahed-136, como en la realidad; el
 // satélite no lleva).
 
@@ -40,7 +33,7 @@ export type Aeronave = {
     | "fijo-izq"
     | "fijo-centro"
     | "fijo-arriba"
-    | "fijo-arriba-der"; // trayectoria (ver global.css)
+    | "fijo-arriba-der"; // trayectoria (clases .hero-craft--* de portada.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
   bandera?: string; // emoji junto a "Origen" (o "País")
   luces?: {

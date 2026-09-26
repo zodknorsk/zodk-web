@@ -1,0 +1,22 @@
+---
+// Página de las direcciones que no existen: GitHub Pages sirve dist/404.html
+// cuando no encuentra lo que se pide.
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+---
+
+<PageLayout title="No encontrada" description="Esta página no existe.">
+  <Container>
+    <div class="space-y-6">
+      <h1 class="animate font-semibold text-black dark:text-white">Aquí no hay nada</h1>
+      <p class="animate">
+        La dirección no existe o ha cambiado de sitio.
+      </p>
+      <p class="animate">
+        Puedes volver a la <Link href="/">portada</Link> o mirar las
+        <Link href="/notas">notas</Link> y los <Link href="/eventos">eventos</Link>.
+      </p>
+    </div>
+  </Container>
+</PageLayout>

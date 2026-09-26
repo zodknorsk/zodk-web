@@ -7,12 +7,11 @@ import { SITE } from "@consts";
 type Props = {
   title: string;
   description: string;
-  // "hero" activa la portada a pantalla completa: se pinta el slot "hero"
-  // a sangre entre la cabecera y <main>, y <html> lleva la clase "home"
-  // (para que la cabecera sea transparente sobre el planeta hasta el scroll).
+  // Portada a pantalla completa: el slot "hero" va a sangre entre la
+  // cabecera y <main>, y <html> lleva la clase "home" (cabecera transparente
+  // sobre el planeta hasta hacer scroll).
   hero?: boolean;
-  // Sin cabecera (logo, notas / eventos, día/noche): /luna, donde no pinta
-  // nada (la Luna no cambia con el tema) y estorba a la escena.
+  // Sin cabecera: /luna y /marte, a pantalla completa con sus propios botones.
   cabecera?: boolean;
 };
 

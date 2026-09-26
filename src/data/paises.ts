@@ -3,7 +3,7 @@
 // ratón por ella se despliega una ficha con esos artículos, con el mismo estilo
 // que la de las naves.
 //
-// El dibujo pixel art de cada bandera vive en logo-files/generar-planeta-hero.py
+// El dibujo pixel art de cada bandera vive en arte/generar-tierra.py
 // (BANDERAS, por el mismo código iso): añadir un país = una entrada aquí y otra
 // allí, y regenerar public/planeta/.
 export interface Pais {

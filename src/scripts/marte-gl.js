@@ -1,50 +1,43 @@
-// Marte en WebGL (Proyecto Marte, rama mars-project): el mismo planeta que
-// src/scripts/marte.js (misma luz, paleta, relieve y limpieza de píxeles
-// sueltos), pintado en la tarjeta gráfica, con zoom.
+// Marte en WebGL, con zoom hasta x6. El mismo motor pinta la Luna de /luna
+// (luna-gl.js le pasa sus datos y su luz) y es el esqueleto de tierra-gl.js.
 //
-// Por qué en la GPU (21-sep-2026): con zoom x4 el disco llena la pantalla y
-// son ~850.000 píxeles de arte por fotograma, no ~150.000. Medido con el
-// motor de marte.js (en Node, el motor de JS de Chrome): 35 ms por fotograma
-// inclinando y 11 a los lados, sin contar el volcado; la animación del zoom
-// rehace todo en cada fotograma. Para la GPU es trabajo de nada, y gasta
-// mucho menos que el mismo cálculo en JavaScript. Quieto no se repinta.
+// Todo va en la tarjeta gráfica: con zoom el disco llena la pantalla y son
+// unos 850.000 píxeles de arte por fotograma, demasiado para calcularlos en
+// JavaScript en cada paso de la animación del zoom. Quieto no se repinta.
 //
-// Zoom: el píxel de arte mide siempre lo mismo en pantalla (el de la Luna de
-// /luna) y lo que crece es el radio del disco, R = RADIUS·zoom. Para que al
-// acercarse haya más detalle hay una pirámide de mapas (generar-marte.py
-// --canvas): la base de 4 px/grado entera (marte-mapa.png) y tres niveles
-// finos, 8, 16 y 24 px/grado, en teselas de 360 x 360 celdas (n1/, n2/, n3/).
-// Cada píxel lee del nivel cuya celda mide lo que él en latitud (derivadas en
-// la GPU); si esa tesela aún no ha llegado, del nivel de debajo. Solo se
-// bajan las teselas que se ven, y en la GPU van a un atlas de tamaño fijo. En longitud, hacia los polos, las celdas se agrupan
-// (mipmaps en la base, como la Luna y la Tierra; columnas agrupadas en los
-// niveles finos) para que el detalle no parpadee al girar.
+// Zoom: el píxel de arte mide siempre lo mismo en pantalla y lo que crece es
+// el radio del disco, R = RADIUS·zoom. Para que al acercarse haya más detalle
+// hay una pirámide de mapas (generar-marte.py --canvas): la base entera de
+// 4 px/grado (marte-mapa.png) y tres niveles de 8, 16 y 24 px/grado en
+// teselas de 360 x 360 celdas (n1/, n2/, n3/). Cada píxel lee del nivel cuya
+// celda mide lo que él en latitud; si esa tesela aún no ha llegado, del de
+// debajo. Solo se bajan las teselas que se ven, y en la GPU van a un atlas de
+// tamaño fijo. En longitud, hacia los polos, las celdas se agrupan para que
+// el detalle no parpadee al girar.
 //
 // Tres pasadas por fotograma: (1) material y escalón de luz de cada píxel de
-// arte a una textura; (2) dos pasadas de limpieza, como _limpiar() del
-// generador; (3) color con la LUT y ampliación sin suavizado al canvas, que
-// va a un múltiplo entero del arte (x3 como mucho) y lo demás lo amplía el
-// CSS (el arreglo de la Luna y la Tierra para Zen, ver temperatura-zen.md).
+// arte a una textura; (2) dos pasadas de limpieza de píxeles sueltos, como
+// hace el generador; (3) color con la LUT y ampliación sin suavizado al
+// lienzo, que va a un múltiplo entero del arte (x3 como mucho) y lo demás lo
+// amplía el CSS (ver docs/rendimiento.md).
 //
-// Lo usa logo-files/prototipo-marte/zoom.html. Detalle en logo-files/MARTE-WIP.md.
+// La Luna: sus datos (generar-luna.py) tienen el mismo formato. Con
+// `prefijo: "luna-"` se leen esos, y `luz(lat0, lon0)` da la luz de cada
+// vista: fase y lado del sol, exposición (sube o baja todos los escalones) y
+// tono frío (el bloque de la LUT: la Luna tiene FRIO_PASOS + 1 paletas, una
+// debajo de otra).
 //
-// También pinta la Luna (23-sep-2026, logo-files/LUNA-WIP.md): sus datos de
-// generar-luna.py tienen el mismo formato (mapa de 1440 x 720 con material y
-// normal, LUT por material y escalón de luz). Con `prefijo: "luna-"` se leen
-// esos, y `luz(lat0, lon0)` da la luz de cada vista: fase y lado del sol,
-// exposición (sube o baja todos los escalones) y tono frío (el bloque de la
-// LUT: la Luna tiene FRIO_PASOS + 1 paletas, una debajo de otra).
+// Banco de pruebas: arte/bancos/marte-zoom.html. Más en docs/marte.md.
 
-import { MARTE_V } from "./marte.js";
+import { MARTE_V } from "./versiones.js";
 
 const DEG = Math.PI / 180;
-// Vista inicial de /marte: inclinada 12,5° al norte (21-sep-2026; era 10° y
-// se probó 25°: el usuario la quiso con "no tanta inclinación, la mitad por lo
-// menos") y con Tharsis en el centro. Es también la de marte-quieto.png y la
-// del Marte pequeño de la portada (el vuelo empieza y acaba en ella).
+// Vista inicial de /marte: inclinada 12,5° al norte, con Tharsis en el
+// centro. Es también la de marte-quieto.png y la del Marte pequeño de la
+// portada (el vuelo empieza y acaba en ella).
 export const VISTA_INICIAL = { lat0: 12.5, lon0: -80 };
-// Decidido por el usuario: x4 "y vamos viendo" y luego x6 (21-sep-2026). El
-// nivel más fino (24 px/grado) está hecho para x6: más allá solo se agrandaría.
+// El nivel más fino (24 px/grado) está hecho para x6: más allá solo se
+// agrandaría.
 const ZOOM_MAX = 6;
 
 async function bitmap(url) {
@@ -79,7 +72,7 @@ void main() {
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
 }`;
 
-// (1) Material y escalón de luz. Mismas cuentas que calcular() de marte.js.
+// (1) Material y escalón de luz de cada píxel.
 // `finos`: los niveles en teselas ({ ppd, fila0, kmax }); `A`: teselas por
 // lado del atlas.
 function fragCodigos(D, off, finos, A) {
@@ -146,7 +139,7 @@ void main() {
   // 4 en 4… (la de la izquierda de cada grupo, como los mipmaps de la base),
   // siempre en la misma rejilla del mapa, así que al girar no parpadea. Si el
   // nivel se eligiera también por la longitud, cerca del polo bajaría a la
-  // base y saldrían bloques en abanico (probado el 21-sep-2026).
+  // base y saldrían bloques en abanico.
   // El que toca es el de resolución más parecida (en escala logarítmica) a
   // la que pide el píxel; si su tesela no está en el atlas, el de debajo.
   float fLat = log2(max(1e-6, 1.0 / dlat));        // px/grado que pide el píxel
@@ -211,7 +204,7 @@ void main() {
 }`;
 }
 
-// (2) Limpieza: como _limpiar() del generador (y marte.js).
+// (2) Limpieza de píxeles sueltos, la misma que _limpiar() del generador.
 const FRAG_LIMPIA = `#version 300 es
 precision highp float;
 precision highp int;
@@ -284,8 +277,7 @@ function textura(gl, filtro = gl.NEAREST) {
   return t;
 }
 
-// Orientación: filas de M = Ry(lon0)·Rx(lat0) (vista -> Marte), como
-// orientacion() de luna.js.
+// Orientación: filas de M = Ry(lon0)·Rx(lat0), de la vista a Marte.
 function filas(lat0, lon0) {
   const a = lat0 * DEG, b = lon0 * DEG, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
   return [[cb, -sb * sa, sb * ca], [0, ca, sa], [-sb, -cb * sa, cb * ca]];
@@ -624,7 +616,7 @@ export async function montarMarteGL(canvas, {
   }
 
   // --- Bucle: solo mientras hay algo que pintar; como mucho 60 fotogramas por
-  // segundo (el portátil del usuario va a 120 Hz). El zoom se acerca a su
+  // segundo (hay pantallas de 120 Hz). El zoom se acerca a su
   // objetivo con una curva suave (cada rueda o pellizco mueve el objetivo).
   const FPS = 60, TAU = 0.07;
   let raf = 0, sucio = false, ultimoHueco = -1, tAnt = 0, tPlan = 0;
@@ -668,8 +660,8 @@ export async function montarMarteGL(canvas, {
   // ratón se queda bajo el ratón (si el ratón está fuera del disco, hacia el
   // centro). Al ALEJARSE, hacia el centro y sin girar, como Google Earth:
   // mantener el punto bajo el ratón obliga a girar el globo cada vez más según
-  // encoge, y con el ratón en una esquina acababa mirando al polo (probado el
-  // 21-sep-2026: de lat0 29° a 83° en un solo alejamiento).
+  // encoge, y con el ratón en una esquina acababa mirando al polo (de lat0
+  // 29° a 83° en un solo alejamiento).
   function hazZoom(factor, clientX, clientY) {
     const nuevo = Math.max(1, Math.min(zoomMax, zoomObj * factor));
     if (nuevo === zoomObj) return;
@@ -690,7 +682,7 @@ export async function montarMarteGL(canvas, {
   canvas.addEventListener("webglcontextlost", perdido);
   // Quieto no se repinta, y si la pestaña está en segundo plano al pintar (p.
   // ej. /marte abierta en otra pestaña), Chrome descarta ese fotograma: Marte
-  // no salía hasta tocarlo (22-sep-2026). Al volver a verse, se repinta.
+  // no salía hasta tocarlo. Al volver a verse, se repinta.
   const alVerse = () => { if (document.visibilityState === "visible") pide(); };
   document.addEventListener("visibilitychange", alVerse);
 
@@ -752,85 +744,5 @@ export async function montarMarteGL(canvas, {
       canvas.removeEventListener("webglcontextlost", perdido);
       document.removeEventListener("visibilitychange", alVerse);
     },
-  };
-}
-
-// Zoom con la rueda del ratón y el trackpad sobre `zona`. En Chrome y Firefox
-// el pellizco del trackpad llega como rueda con ctrlKey (y más fino: pasos
-// pequeños), y el arrastre con dos dedos, como rueda normal. Safari manda el
-// pellizco como eventos gesture*. En todos se anula lo que harían por
-// defecto (scroll o el zoom de la página).
-// En táctil (móvil, tableta), el pellizco con dos dedos: la distancia entre
-// ellos es el zoom, hacia su punto medio. Mientras dura, `zona` lleva la
-// clase `pellizcando` (la mano no gira con el primer dedo). En iOS llegan
-// además gesture* con el mismo pellizco: se ignoran si hay dedos (si no, el
-// zoom iría doble). Devuelve la función que lo desmonta.
-/**
- * @param {HTMLElement} zona
- * @param {{ zoom: (factor: number, clientX?: number, clientY?: number) => void }} marte
- */
-export function montarZoom(zona, marte) {
-  const rueda = (e) => {
-    e.preventDefault();
-    let d = e.deltaY;
-    if (e.deltaMode === 1) d *= 16;                // en líneas
-    else if (e.deltaMode === 2) d *= window.innerHeight;
-    // un golpe de rueda (100 px) = x1,28; el pellizco, más sensible
-    const k = e.ctrlKey ? 0.012 : 0.0025;
-    marte.zoom(Math.exp(-Math.max(-300, Math.min(300, d)) * k), e.clientX, e.clientY);
-  };
-  const dedos = new Map();                         // pointerId -> { x, y }, solo táctiles
-  let separacion = 0;                              // entre los dos dedos, en px CSS
-  const medida = () => {
-    const [a, b] = [...dedos.values()];
-    return [Math.hypot(a.x - b.x, a.y - b.y), (a.x + b.x) / 2, (a.y + b.y) / 2];
-  };
-  const dedo = (e) => {
-    if (e.pointerType !== "touch") return;
-    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (dedos.size === 2) {
-      zona.classList.add("pellizcando");
-      separacion = medida()[0];
-    }
-  };
-  const dedoMueve = (e) => {
-    if (!dedos.has(e.pointerId)) return;
-    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (dedos.size !== 2) return;
-    const [d, x, y] = medida();
-    if (separacion > 0 && d > 0) marte.zoom(d / separacion, x, y);
-    separacion = d;
-  };
-  const dedoFuera = (e) => {
-    if (!dedos.delete(e.pointerId)) return;
-    if (dedos.size < 2) {
-      zona.classList.remove("pellizcando");
-      separacion = 0;
-    }
-  };
-  let escala = 1;
-  const gesto0 = (e) => { e.preventDefault(); escala = 1; };
-  const gesto = (e) => {
-    e.preventDefault();
-    if (dedos.size) return;                        // iOS: ya lo lleva el pellizco táctil
-    marte.zoom(e.scale / escala, e.clientX, e.clientY);
-    escala = e.scale;
-  };
-  zona.addEventListener("wheel", rueda, { passive: false });
-  zona.addEventListener("pointerdown", dedo);
-  zona.addEventListener("pointermove", dedoMueve);
-  zona.addEventListener("pointerup", dedoFuera);
-  zona.addEventListener("pointercancel", dedoFuera);
-  zona.addEventListener("gesturestart", gesto0);
-  zona.addEventListener("gesturechange", gesto);
-  return () => {
-    zona.removeEventListener("wheel", rueda);
-    zona.removeEventListener("pointerdown", dedo);
-    zona.removeEventListener("pointermove", dedoMueve);
-    zona.removeEventListener("pointerup", dedoFuera);
-    zona.removeEventListener("pointercancel", dedoFuera);
-    zona.removeEventListener("gesturestart", gesto0);
-    zona.removeEventListener("gesturechange", gesto);
-    zona.classList.remove("pellizcando");
   };
 }

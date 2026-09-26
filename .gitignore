@@ -1,61 +1,35 @@
-# build output
+# Lo que genera Astro
 dist/
-
-# generated types
 .astro/
 
-# dependencies
+# Dependencias
 node_modules/
 
-# logs
+# Logs y entorno
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-
-# environment variables
 .env
 .env.production
 
-# macOS-specific files
+# macOS
 .DS_Store
 
-# planeta del hero: datos de origen y copias intermedias (regenerables, ver
-# logo-files/HERO-WIP.md). Lo que sirve la web vive en public/.
-logo-files/ne_land.json
-logo-files/pp10.json
-logo-files/cities15000.txt
-logo-files/etopo.tiff
-logo-files/zodk-planeta-sprite.png
-logo-files/zodk-planeta-noche.png
-logo-files/zodk-dron.svg
-logo-files/zodk-dron-noche.svg
-logo-files/zodk-estrellas.png
-
-# aeronaves en boceto (aún no aprobadas, generar-aeronaves.py las re-crea).
-# Se quitan de aquí y se commitean cuando el usuario dé el visto bueno.
-public/zodk-tb3.svg
-public/zodk-tb3-noche.svg
-
-# Proyecto Luna: fuentes de la NASA (~70 MB, se re-descargan con los curl de
-# logo-files/generar-luna.py) y la caché de su pasada lenta.
-logo-files/luna-fuentes/
-
-# Caché de Python al importar los módulos de logo-files/ (png8, etc.)
+# Caché de Python al importar los módulos de arte/
 __pycache__/
 
-# Proyecto Marte: fuentes de la NASA/USGS (~800 MB, se re-descargan con los
-# curl de logo-files/generar-marte.py) y la caché de su pasada lenta.
-logo-files/marte-fuentes/
+# Fuentes de datos de los generadores de arte/: pesan mucho y se vuelven a
+# bajar con los comandos que explica docs/ (tierra.md, luna.md, marte.md).
+# Lo que usa la web está en public/ y sí va en Git.
+arte/ne_land.json
+arte/cities15000.txt
+arte/etopo.tiff
+arte/tierra-fuentes/
+arte/luna-fuentes/
+arte/marte-fuentes/
 
-# Proyecto Marte: las teselas del zoom (public/marte/n1-n3, 38 MB) SÍ van en
-# Git desde el 23-sep-2026, cuando el usuario dio el pixel art por definitivo
-# (hasta entonces se dejaban fuera para no sumar MB al historial en cada
-# prueba). Si se vuelven a regenerar, cada versión suma lo que cambie.
+# Salida de generar-estrellas.py y generar-logo.py (lo bueno se copia a public/)
+arte/zodk-estrellas.png
+arte/zodk-estrellas-noche.png
+arte/zodk-logo-animado.svg
 
-# Proyecto Luna (la que gira y se acerca): las teselas del zoom
-# (public/luna/n1-n4, ~167 MB) SÍ van en Git desde el 23-sep-2026, cuando el
-# usuario dio el aspecto por bueno. Se sacan con:
-#   cd logo-files && python3 generar-luna.py --teselas ../public/luna/
-# Cada regeneración commiteada suma su peso entero al historial.
+# Renders de prueba de los generadores (comparar variantes)
+arte/pruebas/
