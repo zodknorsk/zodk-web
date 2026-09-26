@@ -79,7 +79,9 @@ nombres "se irán puliendo con el tiempo".
   noche, `planeta-datos.json`, `planeta-luces.png` (34.091 ciudades de
   GeoNames), el nivel de zoom `n1/` (16 px/grado, 128 teselas, 2,6 MB),
   `tierra-nombres.json` y la Tierra quieta (`tierra-quieto*.png`), que se ve
-  mientras carga, sin WebGL2 y en los vuelos.
+  mientras carga, sin WebGL2 y en los vuelos. `planeta-quieto-noche.png` es
+  de la portada de antes y solo sirve de icono de "volver a la Tierra" en
+  `/luna`: no se regenera ni se borra.
 - **Acercamiento**: zoom hacia un punto fijo cerca del polo. El centro del
   disco baja a la par que crece (`encuadre(zoom)` en el motor, uniforme `uDes`
   en los shaders) y a 2,5 lo alto del disco queda al 12 % del alto (22 % en

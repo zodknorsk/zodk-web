@@ -37,7 +37,9 @@
 - **Menú** arriba a la derecha (`alunizajes / relés / orion`), enlaces a sus
   notas; hace de cabecera, que en `/luna` no se pinta.
 - **Marte pequeño** arriba a la izquierda: vuelo a `/marte`. **Volver a la
-  Tierra** abajo a la derecha: el vuelo de ida al revés.
+  Tierra** abajo a la derecha: el vuelo de ida al revés. Su icono es la Tierra
+  de noche de la portada de antes (`public/planeta/planeta-quieto-noche.png`):
+  ya no la genera ningún script, pero se usa.
 - **La selección aguanta**: países encendidos y vista se guardan en
   `sessionStorage` (`luna-estado`), así que entrar en una nota y volver con
   "Volver a la Luna" lo deja todo igual. Al volver a la Tierra se borra.
