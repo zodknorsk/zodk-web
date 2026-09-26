@@ -54,8 +54,6 @@ Otros archivos:
 
 - `favicon*.png`, `favicon.ico`, `apple-touch-icon.png`, `zodk-favicon.svg`:
   originales de los iconos de `public/` (ver `docs/logo.md`).
-- `zodk-dron-fuente.svg`, `zodk-e2-hawkeye-fuente.svg`: los dibujos en pixel
-  art del dron y del E-2 de antes de pasar a fotos. No los usa nada.
 - `bancos/`: páginas de prueba de los motores (ver `docs/astros.md`).
 
 ## Fuentes de datos (fuera de Git)
