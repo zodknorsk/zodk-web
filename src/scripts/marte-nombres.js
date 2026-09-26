@@ -69,7 +69,7 @@ export async function montarNombres(capa, marte, chapas = [], {
       + `<dl>${c.datos.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`
       + `<p class="marte-ficha-texto">${c.texto}</p>`
       + (c.credito ? `<p class="marte-ficha-credito">${c.credito}</p>` : "")
-      + (c.enlace ? '<p class="marte-ficha-nota">leer la nota →</p>' : "")
+      + (c.enlace ? `<p class="marte-ficha-nota">leer la nota →</p>` : "")
       + "</div>";
     capa.append(el);
     const e = { c, el, ficha: el.querySelector(".marte-ficha"), x: 0, y: 0, visto: false };
