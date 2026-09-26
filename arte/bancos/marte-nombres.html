@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba: nombres de lugares en Marte</title>
+<!--
+  Banco de pruebas de los nombres de lugares que salen al acercarse. Los
+  nombres son los oficiales de la UAI y salen de
+  public/marte/marte-nombres.json (arte/generar-nombres.py).
+
+  Dos formas:
+  - Zonas (planicies, tierras, mesetas, y también las medianas como Kasei
+    Valles o Noctis Labyrinthus): rótulo de región, sin marco. Se van cuando
+    ya no caben en la pantalla.
+  - Formas claras (montes, cráteres, calderas): el marco de esquinas del
+    título de la portada, ceñido al lugar, que crece con él.
+  A ×1 no sale ningún nombre. Las chapas de aquí son una prueba con dos
+  misiones; las de verdad están en /marte.
+
+  Servir desde la raíz del repo:
+    python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/arte/bancos/marte-nombres.html
+  ?vista=lat0,lon0,zoom: vista al cargar.
+  ?margen=N: aire del marco por fuera del lugar (0,06 por defecto).
+  ?cuadrado=0: marco ceñido a la caja del lugar, rectangular.
+  ?sin-orden: sin apartar los nombres que se pisan (para ver el lío).
+-->
+<style>
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 500;
+    src: url(../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-weight: 600;
+    src: url(../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2) format("woff2"); }
+  html, body { margin: 0; height: 100%; overflow: hidden;
+    font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; }
+  #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
+  #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+  #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
+  .arrastrable { cursor: grab; }
+  .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
+  #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;
+    padding: 5px 8px; border-radius: 6px; line-height: 1.9; }
+  button { font: inherit; color: #05060a; background: #e6a978; border: 0; border-radius: 4px;
+    padding: 1px 6px; cursor: pointer; }
+
+  /* ---- Capa de nombres: encima del lienzo, con el origen en el centro del
+     disco. Cada nombre lo coloca el script con transform (píxeles CSS). */
+  #nombres { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 2; pointer-events: none; }
+  .nombre { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.35s ease; }
+  .nombre.visto { opacity: var(--borde, 1); }
+  .nombre[hidden] { display: none; }
+  /* el texto lleva el contorno negro de 1 px del título de la portada */
+  .texto {
+    position: absolute;
+    font: 600 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+    letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap;
+    color: #eef1f4;
+    text-shadow: 1px 0 0 #05060a, -1px 0 0 #05060a, 0 1px 0 #05060a, 0 -1px 0 #05060a,
+      1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a;
+  }
+  .menor .texto { font-weight: 500; font-size: 10px; letter-spacing: 0.16em; color: #dfe4ea; }
+
+  /* Visor: las cuatro esquinas del marco del título de la portada, ceñidas al
+     lugar (crecen con él), y el nombre bajo la esquina de abajo a la
+     izquierda. Al aparecer, las esquinas se cierran desde fuera. */
+  .marco {
+    position: absolute; left: 0; top: 0;
+    --c: rgba(255, 255, 255, 0.85); --l: 12px; --g: 1.5px;
+    background:
+      linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+      linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+      linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+      linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+      linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+    filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+  }
+  .menor .marco { --l: 7px; --c: rgba(255, 255, 255, 0.7); }
+  .visor .marco-fuera { background: none; }                 /* solo sitúa */
+  .marco-dentro { position: absolute; inset: 0; }
+  .visor.visto .marco-dentro { animation: cierra 0.4s cubic-bezier(0.3, 0, 0.2, 1) both; }
+  @keyframes cierra { from { transform: scale(1.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .visor .texto { left: 0; top: calc(100% + 6px); }
+  .visor.visto .texto { animation: entra 0.3s ease 0.25s both; }
+  @keyframes entra { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+
+  /* ---- Chapas de las misiones: la bandera en pixel art, como las de /luna.
+     Van en su sitio exacto, no crecen con el zoom y se ven a cualquier zoom
+     (a x1 son lo único que sale). La de una misión que no llegó entera va
+     apagada: en blanco y negro, tachada, o las dos. */
+  /* Es un enlace a su nota: cursor de mano al pasar por encima, y por eso
+     tampoco arrastra el planeta. */
+  .chapa { position: absolute; left: 0; top: 0; width: 18px; height: 12px;
+    margin: -6px 0 0 -9px; pointer-events: auto; cursor: pointer; opacity: 0; transition: opacity 0.35s ease; }
+  .agarrando .chapa { cursor: grabbing; }
+  .chapa.visto { opacity: var(--borde, 1); }
+  .chapa[hidden] { display: none; }
+  .chapa svg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; overflow: visible; }
+  .chapa.perdida.bn svg { filter: grayscale(1) brightness(1.15) contrast(0.85); }
+  .chapa.perdida.bn { opacity: calc(var(--borde, 1) * 0.8); }
+  :is(.chapa.perdida.aspa, .chapa.perdida.raya)::before,
+  .chapa.perdida.aspa::after {
+    content: ""; position: absolute; left: -3px; top: 50%; width: calc(100% + 6px); height: 1.5px;
+    /* por encima de la bandera: el SVG es un hijo y, sin esto, tapaba la raya
+       de ::before (el aspa salía con una sola) */
+    z-index: 1;
+    background: #10131c; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.55);
+  }
+  :is(.chapa.perdida.aspa, .chapa.perdida.raya)::before { transform: rotate(33deg); }
+  .chapa.perdida.aspa::after { transform: rotate(-33deg); }
+  /* Ficha al pasar el ratón, la de las naves y las chapas de /luna. */
+  .ficha { position: absolute; left: 50%; top: calc(100% + 8px); width: 15rem; padding: 0.7rem 0.85rem;
+    background: rgba(6, 8, 12, 0.92); border: 1px solid rgba(230, 192, 120, 0.35); border-radius: 2px;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45); font-family: "IBM Plex Mono", ui-monospace, monospace;
+    opacity: 0; transform: translate(-50%, -4px); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; }
+  .chapa:hover .ficha, .chapa.abierta .ficha { opacity: 1; transform: translate(-50%, 0); }
+  .ficha-titulo { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c078; }
+  .ficha-clase { margin: 0.12rem 0 0.55rem; padding-bottom: 0.4rem; border-bottom: 1px solid rgba(230, 192, 120, 0.22);
+    font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8b93a0; }
+  .ficha dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.16rem 0.8rem; font-size: 0.68rem; }
+  .ficha dt { color: #8b93a0; } .ficha dd { margin: 0; color: #dfe4ea; }
+  .ficha .nota { margin: 0.5rem 0 0; font-size: 0.6rem; color: #8b93a0; }
+
+  /* Regiones: no tienen un borde claro que enmarcar. Rótulo de mapa: letras
+     muy espaciadas, más finas y algo transparentes, en medio de la zona. */
+  .region .texto {
+    transform: translate(-50%, -50%); text-align: center;
+    font-weight: 500; font-size: 12px; line-height: 1.6;
+    letter-spacing: 0.6em; text-indent: 0.6em; color: rgba(238, 241, 244, 0.75);
+    text-shadow: 1px 0 0 rgba(5, 6, 10, 0.75), -1px 0 0 rgba(5, 6, 10, 0.75), 0 1px 0 rgba(5, 6, 10, 0.75), 0 -1px 0 rgba(5, 6, 10, 0.75);
+  }
+</style>
+</head>
+<body>
+<div id="hero">
+  <canvas id="marte"></canvas>
+  <div id="sonda"></div>
+  <div id="nombres"></div>
+  <div id="panel" data-sin-arrastre>
+    ir a: <button data-v="18.5,-133.5">Olympus</button> <button data-v="0,-100">Tharsis</button>
+    <button data-v="-10,-60">Marineris</button> <button data-v="-5.4,137.4">Gale</button>
+    <button data-v="10,70">Syrtis</button> <button data-v="-40,70">Hellas</button>
+    <button data-v="85,-50">casquete N</button><br>
+    zoom: <button data-z="1">x1</button> <button data-z="2">x2</button>
+    <button data-z="4">x4</button> <button data-z="6">x6</button> ·
+    <button data-v="-45,-158">Mars 3</button> <button data-v="4,-47">Mars 2</button><br>
+    la que no llegó: <button data-fallo="aspa">aspa</button>
+    <button data-fallo="raya">una raya</button> <button data-fallo="bn">blanco y negro</button>
+    <button data-fallo="bn aspa">aspa + b/n</button><br>
+    <span id="vista"></span>
+  </div>
+</div>
+<script type="module">
+import { montarMano, montarZoom } from "../../src/scripts/gestos.js";
+import { MARTE_V } from "../../src/scripts/versiones.js";
+import { montarMarteGL } from "../../src/scripts/marte-gl.js";
+
+const $ = (id) => document.getElementById(id);
+const sonda = $("sonda"), capa = $("nombres"), hero = $("hero");
+const q = new URLSearchParams(location.search);
+// Aire del marco por fuera del lugar, y marco cuadrado: una mira puesta
+// encima, no un recorte de su caja.
+const MARGEN = Number(q.get("margen") ?? 0.06);
+const CUADRADO = (q.get("cuadrado") ?? "1") !== "0";
+const ORDENAR = !q.has("sin-orden");
+const KM_GRADO = Math.PI * 3389.5 / 180;                  // un grado de Marte, en km
+
+const NOMBRES = await fetch(`../../public/marte/marte-nombres.json?v=${MARTE_V}`).then((r) => r.json());
+
+// Prueba de chapas: solo Mars 3, que se posó, y Mars 2,
+// que se estrelló cinco días antes. Sus notas están en la bóveda, en
+// 02 - Temas/mars-project (Soft Landings y Hard Landings). Cuando estén
+// publicadas, la ficha enlazará a ellas.
+const URSS = {
+  filas: ["wwwwwwwwwww", "wwwwwwwwwww", "zzzzzzzzzzz", "zzzzzzzzzzz", "zzzzzzzzzzz", "vvvvvvvvvvv", "vvvvvvvvvvv"],
+  paleta: { w: "#f4f4f4", z: "#0039a6", v: "#d52b1e" },
+};
+const CHAPAS = [
+  {
+    mision: "Mars 3", pais: "URSS", anio: 1971, lat: -45.04, lon: -157.98, llego: true,
+    clase: "módulo de descenso · se posó entero",
+    datos: [["cuándo", "2 de diciembre de 1971"], ["dónde", "45° S, región del cráter Ptolemaeus"],
+      ["qué pasó", "primer amartizaje suave de la historia; transmitió unos 20 segundos y se calló"]],
+  },
+  {
+    mision: "Mars 2", pais: "URSS", anio: 1971, lat: 4, lon: -47, llego: false,
+    clase: "módulo de descenso · se estrelló",
+    datos: [["cuándo", "27 de noviembre de 1971"], ["dónde", "4° N, 47° O (sitio aproximado)"],
+      ["qué pasó", "el paracaídas no se abrió; primer objeto humano en tocar Marte"]],
+  },
+];
+// La bandera en pixel art: 11x7 celdas con contorno de 1 px, como svgBandera()
+// de src/data/alunizajes.ts.
+function svgBandera({ filas, paleta }) {
+  let r = '<rect x="0" y="0" width="13" height="9" fill="#10131c"/>';
+  for (let y = 0; y < 7; y++) {
+    for (let x = 0; x < 11; x++) r += `<rect x="${x + 1}" y="${y + 1}" width="1" height="1" fill="${paleta[filas[y][x]]}"/>`;
+  }
+  return `<svg viewBox="0 0 13 9" aria-hidden="true">${r}</svg>`;
+}
+// Aquí, una raya (en /marte acabó en blanco y negro). El aspa se come la bandera
+// y el blanco y negro no deja distinguir los países (la rusa, la
+// estadounidense y la británica son de los mismos colores).
+let FALLO = q.get("fallo") ?? "raya";                       // "raya", "aspa", "bn" o mezcla
+
+let marte = null;
+marte = await montarMarteGL($("marte"), {
+  base: "../../public/marte/",
+  disco: () => sonda.getBoundingClientRect().height,
+  alPintar: () => marte && coloca(),
+});
+
+// --- Un elemento por nombre.
+const els = NOMBRES.map((n) => {
+  const el = document.createElement("div");
+  el.className = `nombre ${n.clase}${n.menor ? " menor" : ""}`;
+  el.hidden = true;
+  el.innerHTML = n.clase === "region"
+    ? `<span class="texto">${n.linea ? n.nombre : n.nombre.split(" ").join("<br>")}</span>`
+    : `<div class="marco marco-fuera"><div class="marco-dentro marco"></div><span class="texto">${n.nombre}</span></div>`;
+  capa.append(el);
+  return { n, el, visto: false };
+});
+
+// --- Las chapas de las misiones.
+const chapas = CHAPAS.map((c) => {
+  const el = document.createElement("a");
+  el.className = `chapa${c.llego ? "" : ` perdida ${FALLO}`}`;
+  el.hidden = true;
+  // En la web irá a su nota (/notas/<slug>), como las chapas de /luna. Aquí
+  // no hay blog que abrir: el enlace está para ver el cursor de mano.
+  el.href = "#";
+  el.setAttribute("aria-label", `${c.mision} (${c.pais}, ${c.anio}): ficha de la misión`);
+  el.innerHTML = svgBandera(URSS)
+    + `<div class="ficha"><div class="ficha-titulo">${c.mision}</div>`
+    + `<div class="ficha-clase">${c.pais}, ${c.anio} · ${c.clase}</div>`
+    + `<dl>${c.datos.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`
+    + '<p class="nota">nota en la bóveda, sin publicar todavía</p></div>';
+  capa.append(el);
+  return { c, el, visto: false };
+});
+
+// --- Colocar: tras cada fotograma del lienzo (quieto no se repinta nada).
+function coloca() {
+  const z = marte.vista().zoom, ppg = marte.pxGrado();
+  const pantalla = Math.max(window.innerWidth, window.innerHeight);
+  const salen = [];
+  for (const e of els) {
+    const { n, el } = e;
+    const c = marte.proyecta(n.lat, n.lon);
+    // Cerca del borde del disco se funde; por detrás, fuera.
+    const borde = Math.max(0, Math.min(1, (c.z - 0.12) / 0.2));
+    // Cuánto mide el lugar en pantalla. Se saca de su tamaño real, no de la
+    // caja proyectada: cerca del borde la caja se aplasta y el nombre
+    // aparecería y desaparecería al girar.
+    const tam = (n.km / KM_GRADO) * ppg;
+    // A ×1 no sale ningún nombre: al llegar, Marte limpio. Las chapas de las misiones, cuando las haya, no seguirán
+    // esta regla. Luego, cada lugar sale cuando mide lo suyo (con un 6 % de
+    // margen al alejar, para que no parpadee justo en el umbral) y las zonas
+    // se van cuando ya no caben en la pantalla, como en los mapas.
+    const toca = z >= 1.2
+      && tam >= n.px * (e.visto ? 0.94 : 1)
+      && (n.clase !== "region" || tam < 1.6 * pantalla);
+    if (!toca || borde <= 0) {
+      if (e.visto) { e.visto = false; el.classList.remove("visto"); }
+      el.hidden = true;
+      continue;
+    }
+    el.hidden = false;
+    el.style.visibility = "";
+    el.style.setProperty("--borde", borde.toFixed(2));
+    if (n.clase === "region") {
+      el.style.transform = `translate(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px)`;
+    } else {
+      // La caja del lugar en pantalla: sus cuatro bordes y sus cuatro esquinas.
+      const [s, nn, o, es] = n.caja;
+      const pts = [[nn, n.lon], [s, n.lon], [n.lat, o], [n.lat, es], [nn, o], [nn, es], [s, o], [s, es]]
+        .map(([la, lo]) => marte.proyecta(la, lo));
+      let x0 = Math.min(...pts.map((p) => p.x)), x1 = Math.max(...pts.map((p) => p.x));
+      let y0 = Math.min(...pts.map((p) => p.y)), y1 = Math.max(...pts.map((p) => p.y));
+      if (CUADRADO) {
+        const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, l = Math.max(x1 - x0, y1 - y0) * (1 + 2 * MARGEN) / 2;
+        x0 = cx - l; x1 = cx + l; y0 = cy - l; y1 = cy + l;
+      } else {
+        const mx = (x1 - x0) * MARGEN, my = (y1 - y0) * MARGEN;
+        x0 -= mx; x1 += mx; y0 -= my; y1 += my;
+      }
+      const m = el.querySelector(".marco-fuera");
+      el.style.transform = `translate(${x0.toFixed(1)}px, ${y0.toFixed(1)}px)`;
+      m.style.width = `${(x1 - x0).toFixed(1)}px`;
+      m.style.height = `${(y1 - y0).toFixed(1)}px`;
+    }
+    salen.push(e);
+  }
+  // Los que se pisan: se queda el del lugar más grande (el archivo viene
+  // ordenado de mayor a menor) y el otro espera a que haya sitio.
+  let a_la_vista = salen.length;
+  if (ORDENAR) {
+    const puestos = [];
+    for (const e of salen) {
+      const r = e.el.querySelector(".texto").getBoundingClientRect();
+      const caja = { x0: r.left - 4, x1: r.right + 4, y0: r.top - 3, y1: r.bottom + 3 };
+      if (puestos.some((p) => caja.x0 < p.x1 && p.x0 < caja.x1 && caja.y0 < p.y1 && p.y0 < caja.y1)) {
+        e.el.style.visibility = "hidden";
+        a_la_vista--;
+        continue;
+      }
+      puestos.push(caja);
+    }
+  }
+  for (const e of salen) {
+    if (!e.visto && e.el.style.visibility !== "hidden") {
+      e.visto = true;
+      requestAnimationFrame(() => e.el.classList.add("visto"));   // un fotograma después: arranca la transición
+    }
+  }
+  // Las chapas: en su sitio exacto y a cualquier zoom (a x1 son lo único que
+  // sale). No entran en el reparto de sitio de los nombres: son pequeñas.
+  for (const e of chapas) {
+    const c = marte.proyecta(e.c.lat, e.c.lon);
+    const borde = Math.max(0, Math.min(1, (c.z - 0.12) / 0.2));
+    if (borde <= 0) {
+      if (e.visto) { e.visto = false; e.el.classList.remove("visto"); }
+      e.el.hidden = true;
+      continue;
+    }
+    e.el.hidden = false;
+    e.el.style.setProperty("--borde", borde.toFixed(2));
+    e.el.style.transform = `translate(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px)`;
+    if (!e.visto) {
+      e.visto = true;
+      requestAnimationFrame(() => e.el.classList.add("visto"));
+    }
+  }
+  $("vista").dataset.n = a_la_vista;
+}
+
+if (!marte) {
+  $("vista").textContent = "Este navegador no tiene WebGL2.";
+} else {
+  montarMano(hero, marte);
+  montarZoom(hero, marte);
+  window.marte = marte;
+  const muestra = () => {
+    const v = marte.vista();
+    $("vista").textContent = `x${v.zoom.toFixed(1)} · ${v.lat0.toFixed(1)}° ${v.lon0.toFixed(1)}° · ${$("vista").dataset.n ?? 0} nombres`;
+    requestAnimationFrame(muestra);
+  };
+  muestra();
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    const [la, lo] = b.dataset.v.split(",").map(Number);
+    marte.ponVista(la, lo);
+  }));
+  document.querySelectorAll("[data-z]").forEach((b) => b.addEventListener("click", () => marte.ponZoom(Number(b.dataset.z))));
+  document.querySelectorAll("[data-fallo]").forEach((b) => b.addEventListener("click", () => {
+    FALLO = b.dataset.fallo;
+    for (const e of chapas) if (!e.c.llego) e.el.className = `chapa perdida ${FALLO}${e.visto ? " visto" : ""}`;
+  }));
+  // ?chapa=N: deja abierta la ficha de una chapa (para las capturas).
+  if (q.has("chapa")) chapas[Number(q.get("chapa")) || 0].el.classList.add("abierta");
+  if (q.has("vista")) {
+    const [la, lo, z] = q.get("vista").split(",").map(Number);
+    marte.ponVista(la, lo);
+    if (z) marte.ponZoom(z, true);
+  }
+}
+</script>
+</body>
+</html>

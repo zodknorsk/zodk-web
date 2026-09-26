@@ -1,17 +1,16 @@
-// Alunizajes con chapa sobre la Luna de /luna. Una chapa por misión que SÍ se
+// Alunizajes con chapa sobre la Luna de /luna. Una chapa por misión que se
 // posó, aunque fuera mal (Luna 23, IM-1 e IM-2 volcaron); los intentos que se
-// estrellaron o no llegaron no entran: Chandrayaan-2, Peregrine y Beresheet. Al pasar el ratón por una chapa se despliega su
-// ficha, con el mismo estilo que las de las naves y los países de la portada.
+// estrellaron o no llegaron no entran: Chandrayaan-2, Peregrine y Beresheet.
+// Al pasar el ratón por una chapa se despliega su ficha.
 //
-// La chapa es la bandera del país en pixel art, con el mismo formato que las de
-// la Tierra (11x7 celdas + contorno de 1 px; ver BANDERAS en
-// logo-files/generar-planeta-hero.py). Aquí van las filas porque la Luna en
-// reposo es un PNG fijo y las chapas se pintan encima con el DOM, no dentro del
-// dibujo como en la Tierra.
+// La chapa es la bandera del país en pixel art, con el mismo formato que las
+// de la Tierra (11x7 celdas + contorno de 1 px; ver BANDERAS en
+// arte/generar-tierra.py). Aquí van las filas porque en la Luna las chapas
+// son elementos del DOM encima del lienzo, no parte del dibujo.
 //
-// Cada nota de la bóveda está en 02 - Temas/moon-project (boveda-osint); la
-// ficha enlaza a ella en el blog si está publicada (`publicar: true`).
-// Detalle y decisiones en logo-files/LUNA-WIP.md.
+// Las notas están en la bóveda, en 02 - Temas/moon-project; la ficha enlaza
+// a la del blog si está publicada (`publicar: true`). Añadir una misión = una
+// entrada en ALUNIZAJES y su foto en public/alunizajes/.
 
 export interface Pais {
   codigo: string;
