@@ -1,3 +1,4 @@
+// /robots.txt: todo permitido, y dónde está el mapa del sitio.
 import type { APIRoute } from "astro";
 
 const robotsTxt = `

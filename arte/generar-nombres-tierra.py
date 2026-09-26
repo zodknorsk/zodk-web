@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""Nombres de la Tierra (Proyecto Tierra, TIERRA-WIP.md): continentes,
-océanos, mares y accidentes geográficos, en castellano, para la capa de
-nombres de la portada (la de Marte y la Luna, src/scripts/nombres.js)
--> public/planeta/tierra-nombres.json.
+"""Nombres de la Tierra: continentes, océanos, mares y accidentes
+geográficos, en castellano, para la capa de nombres de la portada
+(src/scripts/nombres.js) -> public/planeta/tierra-nombres.json.
 
-Decidido por el usuario (24-sep-2026): al acercarse salen nombres, SIN
-fronteras; primero se probaron países y los quitó: "quitamos los nombres de
-países. Dejamos continentes y ponemos océanos, mares y accidentes geográficos
-que sean interesantes". Como en Marte: rótulo de región (sin marco) para las
-zonas (océanos, mares, desiertos, cordilleras, mesetas, penínsulas) y visor
-para lo concreto (estrechos y picos); a x1, ninguno. Los continentes salen
-primero y se retiran (`zmax`) cuando empiezan los mares y las regiones.
+Sin fronteras ni países (se probaron y no quedaban bien). Como en Marte:
+rótulo de región (sin marco) para las zonas (océanos, mares, desiertos,
+cordilleras, mesetas, penínsulas) y visor para lo concreto (estrechos y
+picos); a ×1, ninguno. Los continentes salen primero y se retiran (`zmax`)
+cuando empiezan los mares y las regiones.
 
 Fuentes (Natural Earth, dominio público; nombres en español de su NAME_ES):
   tierra-fuentes/ne_10m_geography_marine_polys.geojson     (océanos, mares, estrechos)
@@ -55,8 +52,8 @@ VISOR_PX = 10
 VISOR_MIN = 0.7          # lado mínimo del visor, en grados (los estrechos son finísimos)
 
 # Mares, golfos y bahías: todos los de scalerank 0-3 de Natural Earth 1:10m
-# (usuario, 25-sep-2026: "oceanía / australia / china están prácticamente
-# vacíos de nombres") y estos de detalle (4).
+# (con menos, Oceanía, Australia y China quedaban casi vacías) y estos de
+# detalle (4).
 MAR_RANGO = 3
 MARES_4 = ["Gran barrera de coral", "mar Jónico", "mar de Bohai", "Golfo de Tonkín",
            "Golfo de San Lorenzo", "Río de la Plata", "mar de Salomón", "mar de Bismarck",
@@ -109,7 +106,7 @@ ESTRECHOS = ["Estrecho de Gibraltar", "Bósforo", "Dardanelos", "Bab el-Mandeb",
 A_MANO = [("Estrecho de Ormuz", 26.55, 56.35, [25.9, 27.1, 55.6, 57.2])]
 # Picos: los conocidos en todo el mundo (los más altos de cada continente,
 # los ochomiles más famosos y los volcanes célebres). Sin los de interés solo
-# local (usuario, 25-sep-2026: "Mulhacén, que es un pico sin importancia").
+# local, como el Mulhacén.
 PICOS = ["Everest", "K2", "Kanchenjunga", "Aconcagua", "Denali", "Kilimanjaro", "Monte Elbrus",
          "Macizo Vinson", "Jaya", "Mont Blanc", "Monte Fuji", "Mauna Kea", "Monte Kenia",
          "Volcán Chimborazo", "Nevado Ojos del Salado", "Huascarán", "Citlaltépetl", "Damavand",

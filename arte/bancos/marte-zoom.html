@@ -9,18 +9,16 @@
   (src/scripts/marte-gl.js), con los datos de
   python3 arte/generar-marte.py --canvas public/marte/
   Servir desde la raíz del repo:
-    cd ~/Documents/zodk-web && python3 -m http.server 4400
-  y abrir http://127.0.0.1:4400/arte/prototipo-marte/zoom.html
+    python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/arte/bancos/marte-zoom.html
 
-  El panel se dejó mínimo el 21-sep-2026 (el usuario: "limpia de opciones la
-  página de prueba que apenas veo marte ya"). Las comparaciones del pulido ya
-  decididas se quitaron de los botones, pero siguen funcionando por la URL:
-  ?medir: al cargar, cuánto tarda un fotograma a zoom x1 y x6 (para Zen).
+  Panel mínimo, para ver Marte; las comparaciones van por la URL:
+  ?medir: al cargar, cuánto tarda un fotograma a ×1 y ×6.
   ?atlas=N: atlas de N x N teselas en la GPU (por defecto 12).
   ?vista=lat0,lon0,zoom: vista al cargar.
-  ?datos=llanuras/bandas (o casquete/amplio…): otros datos, solo la base
-    (variantes de generar-marte.py --variante, en prototipo-marte/).
-  ?lut=oscuras/basalto.png: otra LUT (colores), con los datos de siempre.
+  ?datos=../pruebas/marte/bandas: otros datos, solo la base (variantes de
+    generar-marte.py --variante).
+  ?lut=../pruebas/marte/basalto.png: otra LUT (colores), con los datos de siempre.
   ?noche=0.16: otra luz del lado sin sol (sin regenerar).
 -->
 <style>
@@ -29,8 +27,8 @@
   #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
   /* el lienzo lo dimensiona marte-gl.js (píxeles de arte enteros): aquí solo se centra */
   #marte { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
-  /* diámetro del disco a zoom x1: el mismo tamaño de píxel que la Luna de /luna */
-  #sonda { position: absolute; height: 60svh; width: 0; visibility: hidden; }
+  /* diámetro del disco a ×1: el tamaño común de los astros, como en /marte */
+  #sonda { position: absolute; height: 70svh; width: 0; visibility: hidden; }
   .arrastrable { cursor: grab; }
   .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
   #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;

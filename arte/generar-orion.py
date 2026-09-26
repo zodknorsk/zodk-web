@@ -2,7 +2,7 @@
 
 Genera public/luna/zodk-orion-giro.png (día) y zodk-orion-giro-noche.png: una
 tira de 32 fotogramas de 64x56 px, uno por cada 1/32 de la órbita que da la
-nave alrededor de la Luna en /luna (.luna-nave en global.css). En cada uno la
+nave alrededor de la Luna en /luna (.luna-nave en luna.css). En cada uno la
 nave apunta hacia donde va, calculado con las mismas curvas que la animación
 CSS (pos_orbita()): por delante va de perfil, en el borde izquierdo se la ve
 de cola (la X de alas entera) y en el derecho de frente.
@@ -16,7 +16,7 @@ En PNG y no en SVG: 32 dibujos en un SVG animado es lo que calienta Zen.
 
 Uso:  python3 generar-orion.py [--png DIR]   (--png: tira ampliada x3, PPM)
       python3 generar-orion.py --css         (@keyframes nave-sombra, para
-                                              pegar en global.css)
+                                              pegar en luna.css)
 """
 import importlib.util
 import math
@@ -50,7 +50,7 @@ PALETAS = {
     "o2": ("#d9b060", "#6a5837"),
     "o3": ("#f6e2a8", "#877655"),
     # Paneles. De noche, algo más claros que en el Sentinel-2: con su azul se
-    # fundían con el espacio (pedido del usuario).
+    # fundían con el espacio.
     "p0": ("#0d1430", "#111a33"),
     "p1": ("#1e2850", "#22305a"),
     "p2": ("#41528f", "#40508a"),
@@ -317,7 +317,7 @@ def orion(eje=None, giro=None, cara=None, barrido=None, esc=None, ref=(0, 0, 1))
 
 
 # --- La órbita de /luna, fotograma a fotograma --------------------------------
-# Misma cuenta que .luna-nave-x / .luna-nave-y en global.css: dos vaivenes
+# Misma cuenta que .luna-nave-x / .luna-nave-y en luna.css: dos vaivenes
 # ease-in-out de T cada tramo (alternate), X de -1 a 1 empezando en el extremo
 # izquierdo e Y con -1,5 T de retraso. En 3D es una circunferencia en un plano
 # inclinado (sen i = RY / RX): lo de arriba en pantalla queda detrás. La nave
@@ -366,7 +366,7 @@ def fotograma(k):
     return orion(eje, GIRO_ORBITA, CARA_ORBITA, esc=ESCALA, ref=normal)
 
 
-# Sombra de la Luna sobre la Orion en la cara visible (idea del usuario): el
+# Sombra de la Luna sobre la Orion en la cara visible: el
 # Sol de esa cara (luz por la derecha, fase 38°, 14° por encima, como
 # generar-luna.py --derecha) proyecta la sombra de la Luna hacia la izquierda y
 # hacia atrás. La nave entra en ella al llegar al borde izquierdo y sale ya
@@ -376,8 +376,7 @@ SOL_VISIBLE = (38, 14)              # fase y altura del Sol en la cara visible
 SOMBRA_BRILLO = 0.35                # brillo en plena sombra (luz de la Tierra)
 FRANJA = 0.08                       # ancho del paso a la sombra en la línea día/noche
 PENUMBRA = (0.70, 0.50)             # de dónde empieza a oscurecer a sombra plena
-                                    # (distancia al eje de la sombra). Era
-                                    # (0,56, 0,46): el usuario la quiso antes
+                                    # (distancia al eje de la sombra)
 
 
 def sombra(f):
@@ -392,8 +391,8 @@ def sombra(f):
         return u * u * (3 - 2 * u)
     eje = math.sqrt(max(0.0, sum(c * c for c in p) - d * d))
     proyectada = suave(0.1, -0.05, d) * suave(PENUMBRA[0], PENUMBRA[1], eje)
-    # Y la franja oscura del disco tal como se ve (pedido del usuario: "que se
-    # oscurezca cuando llega a la sombra de la Luna"): a la izquierda de la
+    # Y la franja oscura del disco tal como se ve, para que se oscurezca al
+    # llegar a la sombra de la Luna: a la izquierda de la
     # línea día/noche de la cara visible, x < -cos(fase)·√(R² - y²), también
     # más allá del borde izquierdo, para que no se aclare al salir del disco.
     x, y = p[0], p[1]

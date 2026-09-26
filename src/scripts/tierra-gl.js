@@ -1,34 +1,27 @@
-// La Tierra entera en WebGL (Proyecto Tierra, rama earth-project): el mismo
-// planeta que el <canvas> de la portada (src/scripts/planeta.js), con los
-// mismos datos (public/planeta/, de arte/generar-tierra.py), pero
-// como disco completo que gira solo, se arrastra con la mano y se acerca, como
-// Marte y la Luna (src/scripts/marte-gl.js, de donde sale el esqueleto).
+// La Tierra de la portada en WebGL: un disco que gira solo, se arrastra con
+// la mano y se acerca hasta x6, con los datos de public/planeta/ (los saca
+// arte/generar-tierra.py). El esqueleto es el de marte-gl.js.
 //
-// Por qué en la GPU: planeta.js precalcula qué celda del mapa cae en cada
-// píxel porque la inclinación es fija y solo cambia el giro. Al arrastrar, la
-// inclinación cambia en cada fotograma y ese precálculo no sirve; en la GPU se
-// calcula todo en cada fotograma sin coste que se note (Marte, 21-sep-2026).
-//
-// Dos pasadas por fotograma, más las nubes: (1) material y escalón de luz de
-// cada píxel de arte a una textura, con los mipmaps en longitud de planeta.js
-// (al juntar celdas gana la de más prioridad: costa > tierra > mar); (1b) las
-// nubes, puntos de un píxel de arte encima; (2) color con la LUT, halo de
-// atmósfera y borde suavizado, y ampliación sin suavizado al canvas, a un
-// múltiplo entero del arte (x3 como mucho, el arreglo para Zen).
-//
-// Lo usa arte/prototipo-tierra/giro.html. Detalle en
-// arte/TIERRA-WIP.md.
+// Todo se calcula en la tarjeta gráfica en cada fotograma, porque al arrastrar
+// cambia la inclinación y no sirve ningún precálculo. Por fotograma:
+//  (1)  material y escalón de luz de cada píxel de arte, a una textura. En
+//       longitud se agrupan celdas hacia los polos (mipmaps) y al juntarlas
+//       gana la de más prioridad: costa > tierra > mar;
+//  (1b) nubes, (1c) chapas y la X, (1d) luces de las ciudades y (1e) aurora,
+//       encima o en texturas aparte;
+//  (2)  color con la tabla de colores (LUT), halo de atmósfera y borde, y
+//       ampliación sin suavizado al lienzo. El lienzo va a un múltiplo entero
+//       del arte, x3 como mucho, y el resto lo amplía el CSS: así gasta poco
+//       (ver docs/rendimiento.md).
+// Banco de pruebas: arte/bancos/tierra.html. Más en docs/tierra.md.
 
 import { PLANETA_V } from "./versiones.js";
 
 const DEG = Math.PI / 180;
-// Vista inicial: la inclinación del horizonte de antes (20° al norte) y el
-// Atlántico con Europa y África.
+// Vista inicial: inclinada 20° al norte, con el Atlántico, Europa y África.
 export const VISTA_INICIAL = { lat0: 20, lon0: -10 };
-// Radio del disco en píxeles de arte: 180 (el disco ocupa el 70 % del alto,
-// el tamaño común de los astros). Con el píxel de Marte y la Luna serían 256;
-// el usuario comparó los dos y prefirió el de 180, algo más grueso (24-sep-2026:
-// "no veo mucha diferencia, pero la que pone radio 180 creo que mejor").
+// Radio del disco en píxeles de arte. Con el píxel de Marte y la Luna serían
+// 256; con 180 el píxel es algo más grueso, y se eligió ese.
 export const RADIO_ARTE = 180;
 
 async function bitmap(url) {
@@ -57,9 +50,8 @@ void main() {
 
 const f = (x) => (Number.isInteger(x) ? `${x}.0` : `${x}`);
 
-// (1) Material y escalón de luz: las cuentas del precálculo de planeta.js,
-// para una vista cualquiera. Sale R/G = material (bajo/alto), B = escalón,
-// A = 1 dentro del disco.
+// (1) Material y escalón de luz de cada píxel. Sale R/G = material (byte
+// bajo y alto), B = escalón de luz, A = 1 dentro del disco.
 // `finos`: los niveles de zoom en teselas ({ ppd, fila0, kmax }, de
 // generar-tierra.py --nivel); `A`: teselas por lado del atlas.
 function fragCodigos(D, off, lmax, finos, A) {
@@ -160,8 +152,8 @@ void main() {
 }`;
 }
 
-// (1b) Nubes: un punto de un píxel de arte por celda de cada plantilla, con
-// las mismas cuentas que nubes() de planeta.js. Sale G = 64 + tono, B = luz.
+// (1b) Nubes: un punto de un píxel de arte por celda de cada plantilla. Sale
+// G = 64 + tono, B = luz.
 const VERT_NUBES = `#version 300 es
 precision highp float;
 layout(location = 0) in vec2 aGeo;      // latitud y longitud del centro de la nube (radianes)
@@ -196,11 +188,10 @@ in float vLuz;
 out vec4 o;
 void main() { o = vec4(0.0, float(64 + vTono) / 255.0, vLuz, 1.0); }`;
 
-// (1c) Chapas de bandera, su sombra y la X de blanco: como las nubes, un
-// punto por celda, clavado a un punto de la Tierra (chapasVisibles(),
-// sombras(), chapas() y pintaMarca() de planeta.js). Las chapas y la X salen
-// con G = 128 y R = color de la paleta (B = luz); la sombra solo suma 128 a
-// B (mezcla aditiva sobre el azul), y la pasada de color la oscurece.
+// (1c) Chapas de bandera, su sombra y la X: como las nubes, un punto por
+// celda, clavado a un punto de la Tierra. Las chapas y la X salen con G = 128
+// y R = color de la paleta (B = luz); la sombra solo suma 128 a B (mezcla
+// aditiva) y la pasada de color oscurece ese píxel.
 const VERT_SPRITES = `#version 300 es
 precision highp float;
 layout(location = 0) in vec2 aGeo;      // latitud y longitud del punto (radianes)
@@ -240,19 +231,16 @@ void main() {
   o = uSombra == 1 ? vec4(0.0, 0.0, 128.0 / 255.0, 0.0) : vec4(float(vCol) / 255.0, 128.0 / 255.0, vLuz, 1.0);
 }`;
 
-// (1d) Luces de las ciudades (noche): las de luces() de planeta.js, en la
-// GPU. Cada ciudad deja su huella en una textura aparte, con mezcla aditiva:
-// R = suma de todo, G = suma de núcleos (peso 1) y A = el halo más fuerte
-// (mezcla MAX). La pasada de color saca de ahí el nivel de ámbar.
-// La huella va agarrada al terreno: a x1 es la de planeta.js (HUELLA,
-// HUELLA_R2 o HUELLA_GRANDE, según la fuerza) y con zoom crece con él, así
-// cada ciudad ilumina siempre la misma superficie y lo que a x1 es amarillo
-// lo sigue siendo al acercarse (usuario, 26-sep-2026: con la huella fija en
-// píxeles, "la India a x1 está completamente amarilla pero si amplío se van
-// reduciendo las luces"). Se pinta como anillos alrededor del centro, que a
-// x1 dan justo las celdas de las tres huellas de planeta.js: núcleo, cruz a
-// 1 (0,3), diagonales a 1,41 (0,15) y cruz a 2 (0,12); la grande, centrada
-// entre sus 4 píxeles de núcleo, con anillos a 0,71 / 1,58 / 2,12 / 2,55.
+// (1d) Luces de las ciudades (de noche). Cada ciudad deja su huella en una
+// textura aparte, con mezcla aditiva: R = suma de todo, G = suma de núcleos y
+// A = el halo más fuerte (mezcla MAX). La pasada de color saca de ahí el
+// nivel de ámbar.
+// La huella crece con el zoom: cada ciudad ilumina siempre la misma
+// superficie, y una zona que a x1 sale amarilla lo sigue siendo al acercarse
+// (con una huella fija en píxeles, las luces se separaban y se apagaba todo).
+// Se pinta como anillos alrededor del centro: núcleo, cruz a 1 (0,3),
+// diagonales a 1,41 (0,15) y cruz a 2 (0,12); la grande, centrada entre sus
+// 4 píxeles de núcleo, con anillos a 0,71 / 1,58 / 2,12 / 2,55.
 const vertLuces = (D) => `#version 300 es
 precision highp float;
 layout(location = 0) in vec3 aLuz;      // latitud, longitud (radianes) y fuerza
@@ -273,10 +261,8 @@ void main() {
   if (U.z <= 0.02) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 1.0; return; }   // por detrás
   vA = aLuz.z * smoothstep(0.02, 0.25, U.z);                         // se apaga hacia el borde
   // Hacia el borde la perspectiva junta muchas ciudades en un píxel y las
-  // sumas (todo y núcleos) hacían un canto brillante alrededor del disco (el
-  // horizonte de antes no tenía borde a los lados): en las sumas, cada una
-  // pesa lo que se ve de frente (U.z; en el centro del disco, casi 1). El
-  // halo más fuerte (un máximo, no suma) no lo necesita.
+  // sumas hacían un canto brillante alrededor del disco: en las sumas, cada
+  // una pesa lo que se ve de frente (U.z). El halo, que es un máximo, no.
   vK = min(1.0, U.z / 0.85);
   vTipo = aLuz.z >= LUZ_CORE2 ? 2 : aLuz.z >= LUZ_R2_MIN ? 1 : 0;
   vec2 c = floor(vec2(U.x * uR + 0.5 * uTam.x, -U.y * uR + 0.5 * uTam.y + uDes)) + (vTipo == 2 ? 1.0 : 0.5);
@@ -303,36 +289,28 @@ void main() {
   o = w == 1.0 ? vec4(vA * vK, vA * vK, 0.0, 0.0) : vec4(vA * w * vK, 0.0, 0.0, vA * w);
 }`;
 
-// (1e) Aurora boreal (noche): la de aurora() de planeta.js, en la GPU.
-// Cortinas de rayos alrededor del polo norte geomagnético (el óvalo
-// auroral), de AUR_H0 a AUR_H1 radios terrestres de altura, que giran con la
-// Tierra. Cada punto de cada rayo sale de gl_VertexID: el vertex shader hace
-// las cuentas de planeta.js (pliegues, haces, estrías, alturas propias,
-// encendido "de serpiente") y suma su brillo en una textura (R = todo, G =
-// lo de arriba, violeta). Un punto se ve si está en la cara de delante o
-// fuera del disco (por encima del horizonte). Con zoom se ponen más rayos y
-// más puntos por rayo (`uF`) y cada uno pesa menos (`uW`), para que las
-// cortinas no se deshagan en puntos sueltos.
+// (1e) Aurora boreal (de noche): cortinas de rayos alrededor del polo norte
+// geomagnético (el óvalo auroral), de H0 a H1 radios terrestres de altura,
+// que giran con la Tierra. Cada punto de cada rayo sale de gl_VertexID: el
+// shader calcula pliegues, haces, estrías, alturas y el encendido "de
+// serpiente", y suma su brillo en una textura (R = todo, G = lo de arriba,
+// que va en violeta). Un punto se ve si está en la cara de delante o asoma
+// por encima del borde. Con zoom hay más rayos y más puntos por rayo, y cada
+// uno pesa menos (`uW`), para que las cortinas no se deshagan en puntos.
+// Además hay una franja sobre el suelo calculada por píxel (aurFranja).
 const AUR = {
   POLO: [80.7, -72.7],        // polo norte geomagnético (lat, lon)
   R: 21, WOB: 2.2,            // radio del óvalo y ondulación, en grados
   BARRIDO: 3.6,               // segundos que tarda la "serpiente" en cerrar el óvalo
-  // Alturas: hasta 0,08 radios (planeta.js, 0,05: en el globo, más pequeño,
-  // se quedaba corta de perfil; usuario, 26-sep-2026: "se ve pequeña").
-  N: 1000, K: 11, H0: 0.016, H1: 0.08,
-  ANCHO: 0,                   // cada rayo se aparta del arco hasta ±ANCHO/2 grados (probado: confeti; 0)
-  // arcos paralelos: desvío del principal (grados) y brillo; cada uno ondula
-  // por su cuenta (probados 4: "carriles"; se quedan los 2 de planeta.js)
+  N: 1000, K: 11,             // rayos y puntos por rayo a zoom x1
+  H0: 0.016, H1: 0.08,        // altura de los rayos, en radios terrestres
+  // arcos: desvío del principal (grados) y brillo; cada uno ondula por su cuenta
   ARCOS: [[0, 1], [1.3, 0.6]],
-  // resplandor de puntos de planeta.js (ND por rayo, de DIFUSO[0] a DIFUSO[1]
-  // grados, brillo DIF_A): con zoom se deshacía; lo sustituye la franja
-  ND: 0, DIFUSO: [0, 0], DIF_A: 0,
-  // franja sobre el suelo, por píxel (aurFranja en fragColor): de dónde a
-  // dónde (grados desde el arco), dónde es más fuerte y su brillo. Elegida
-  // entre la V6 (0,25) y la V7 (0,4): "V6 o un poco más intensa".
+  // franja sobre el suelo (aurFranja): de dónde a dónde, en grados desde el
+  // arco, dónde es más fuerte, y su brillo
   FRANJA: [-2.7, 3.7, 0.6],
   FRANJA_A: 0.32,
-  R_ANTES: 292.5,             // radio del horizonte de planeta.js, con el que se ajustó el brillo
+  R_BRILLO: 292.5,            // radio (px de arte) al que se ajustaron los niveles de brillo
   // niveles: [intensidad mínima, color, opacidad]; verde de la línea de 557 nm del oxígeno
   NIV: [
     [0.10, [30, 150, 105], 0.13], [0.22, [40, 190, 120], 0.22], [0.40, [60, 225, 140], 0.33],
@@ -371,7 +349,7 @@ uniform float uR;
 uniform vec3 uM0, uM1, uM2;
 uniform float uT;           // segundos (los pliegues y haces se mueven)
 uniform int uN, uK;         // rayos y puntos por rayo
-uniform float uW, uWd;      // peso de cada punto de las cortinas y del resplandor
+uniform float uW;           // peso de cada punto
 uniform float uFrente, uCola, uSentido;   // encendido (uFrente < 0: ya encendida)
 out vec2 vVal;
 const float PI = 3.141592653589793, DEG = PI / 180.0;
@@ -399,22 +377,13 @@ void pon(vec2 xy, float v, bool vio) {
   vVal = vec2(v, vio ? v : 0.0);
 }
 void main() {
-  int P = NA * uK + ${AUR.ND};              // por rayo: NA arcos de uK puntos y el resplandor
+  int P = NA * uK;                          // por rayo: NA arcos de uK puntos
   int i = gl_VertexID / P, r = gl_VertexID % P;
   float u = float(i) / float(uN), al = u * 2.0 * PI, t = uT;
-  float j = floor(u * N0);                  // el rayo de planeta.js (estrías y alturas propias)
+  float j = floor(u * N0);                  // el rayo a x1: con zoom se reparten sus estrías y alturas
   float th0 = aurTh0(u, t);                 // pliegues: el radio del óvalo ondula
   float A = aurA(u, t, uFrente, uCola, uSentido);   // haces y encendido
   if (A < 0.05) { fuera(); return; }
-  float jj = floor(u * 4000.0);             // azar estable al cambiar de zoom
-  if (r >= NA * uK) {                       // resplandor difuso sobre el suelo, a lo ancho del arco
-    float q = ${AUR.ND > 1 ? `(float(r - NA * uK) + (${AUR.ND > 2 ? "rnd(jj * 3.0 + float(r))" : "0.0"})) / ${f(AUR.ND - (AUR.ND > 2 ? 0 : 1))}` : "0.5"};
-    float dd = mix(${f(AUR.DIFUSO[0])}, ${f(AUR.DIFUSO[1])}, q);
-    vec3 b = punto(al, (th0 + dd) * DEG);
-    if (b.z <= 0.0) { fuera(); return; }
-    pon(b.xy, A * ${f(AUR.DIF_A)} * (1.0 - abs(dd) / 4.5) * uWd, false);
-    return;
-  }
   int a = r / uK;
   float kf = float(r % uK) * K0 / float(uK - 1);
   float fa = ARC_F[a];
@@ -424,7 +393,6 @@ void main() {
   if (kf > tope - 1.0) { fuera(); return; }
   // cada arco con su propia ondulación, para que no vayan paralelos
   float th = a == 0 ? th0 : th0 + ARC_D[a] + 0.8 * (ruido(u * 14.0 + float(a) * 50.0 + t * 0.07) * 2.0 - 1.0);
-  th += ${f(AUR.ANCHO)} * (rnd(jj * 5.0 + float(a) * 7.0 + 11.0) - 0.5);
   vec3 b = punto(al, th * DEG);
   float alto = 1.0 + ${f(AUR.H0)} + ${f(AUR.H1 - AUR.H0)} * kf / K0;
   vec2 xy = b.xy * alto;
@@ -490,9 +458,9 @@ float aurFranja(vec3 B) {
   float x = d < ${f(AUR.FRANJA[2])} ? (d - ${f(AUR.FRANJA[0])}) / ${f(AUR.FRANJA[2] - AUR.FRANJA[0])} : (${f(AUR.FRANJA[1])} - d) / ${f(AUR.FRANJA[1] - AUR.FRANJA[2])};
   return ${f(AUR.FRANJA_A)} * aurA(u, uT, uFrente, uCola, uSentido) * smoothstep(0.0, 1.0, x);
 }
-// Aurora en el píxel p: color y opacidad (a = 0: nada). Por niveles, como
-// planeta.js; violeta arriba, donde lo alto de los rayos pesa más. enDisco:
-// si el píxel es de la Tierra (lleva la franja); fuera del disco, sin ella.
+// Aurora en el píxel p: color y opacidad (a = 0: nada), por niveles; violeta
+// donde lo alto de los rayos pesa más. enDisco: si el píxel es de la Tierra
+// (lleva la franja); fuera del disco, sin ella.
 vec4 aurora(ivec2 p, bool enDisco) {
   if (uConAurora == 0) return vec4(0.0);
   vec2 v = texelFetch(uAurora, p, 0).rg;
@@ -528,7 +496,7 @@ void main() {
     o = vec4(mix(ESPACIO, PAL[int(t.r * 255.0 + 0.5)], t.b), 1.0);
     return;
   }
-  if (g >= 64) {                                      // nube: tono y luz (NUBE_T de planeta.js); la aurora, encima
+  if (g >= 64) {                                      // nube: tono y luz; la aurora, encima
     int k = g - 64;
     float l = t.b;
     float tt = k < 2 ? min(1.0, l + 0.1) : k < 4 ? l : max(0.7, l);
@@ -544,16 +512,14 @@ void main() {
   if (uConLuces == 1) {                               // luces de las ciudades, bajo nubes y chapas
     vec4 lz = texelFetch(uLuces, p, 0);
     int lv = max(nivelLuz(max(lz.a, lz.g)), min(${D.LUZ_SUMA_MAX}, nivelLuz(lz.r)));
-    // Los dos niveles flojos: con el ámbar oscuro de LUZ_RAMPA el suelo
-    // azulado de la noche se volvía marrón, "quemado" (usuario, 26-sep-2026).
-    // Se probaron sumar luz, mezclar con ámbar claro y quitar el velo; eligió
-    // quitar el velo (nivel 1: nada) y el halo (nivel 2) con ámbar claro al
-    // 50 %. Los fuertes, como en planeta.js.
+    // Los dos niveles flojos no usan el ámbar oscuro de LUZ_RAMPA, que volvía
+    // marrón el suelo azulado de la noche: el nivel 1 no pinta nada y el 2 es
+    // un ámbar claro al 50 %.
     if (lv > 2) col = mix(col, LUZ_COL[lv - 1], LUZ_T[lv - 1]);
     else if (lv == 2) col = mix(col, LUZ_SUAVE, 0.5);
     col = floor(col * 255.0 + 0.5) / 255.0;
   }
-  // Halo de atmósfera y borde suavizado, como el "post" de planeta.js.
+  // Halo de atmósfera y borde suavizado.
   vec2 q = (vec2(p) + 0.5 - vec2(0.5 * uTam.x, 0.5 * uTam.y - uDes)) / uR;
   float dc = length(q);
   if (dc > 0.93) {
@@ -564,8 +530,8 @@ void main() {
       float a = 0.3 * floor(smoothstep(0.93, 1.0, dc) * smoothstep(0.0, 0.45, lam) * 4.0 + 0.5) / 4.0;
       col = mix(col, uAtmo, a);
     }
-    // Brillo de atmósfera de noche (airglow), como planeta.js: la franja de
-    // AIRGLOW_PX píxeles de arte junto al borde, alrededor de todo el disco.
+    // Brillo de atmósfera de noche (airglow): una franja de AIRGLOW_PX
+    // píxeles de arte junto al borde, alrededor de todo el disco.
     if (uGlow > 0.5) {
       float dpx = (1.0 - dc) * uR;
       float g = dpx < ${f(D.AIRGLOW_PX[0])} ? ${f(D.AIRGLOW_A[0])} : dpx < ${f(D.AIRGLOW_PX[1])} ? ${f(D.AIRGLOW_A[1])} : 0.0;
@@ -612,23 +578,19 @@ function textura(gl) {
   return t;
 }
 
-// Orientación: filas de M = Ry(lon0)·Rx(lat0) (vista -> Tierra), como en
-// marte-gl.js.
+// Orientación: filas de M = Ry(lon0)·Rx(lat0), de la vista a la Tierra.
 function filas(lat0, lon0) {
   const a = lat0 * DEG, b = lon0 * DEG, ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
   return [[cb, -sb * sa, sb * ca], [0, ca, sa], [-sb, -cb * sa, cb * ca]];
 }
 
-// Monta la Tierra en `canvas` (WebGL2), que ocupa todo su contenedor, con el
-// disco centrado. `disco()` da el diámetro del disco a zoom x1 en píxeles CSS.
-// `encuadre(zoom)`: cuántos píxeles CSS baja el centro del disco a ese zoom (la
-// portada: el horizonte del hemisferio norte al acercarse; sin él, centrado).
-// Devuelve { vista(), ponVista(lat0, lon0), ponZoom(z), acercar(z, ms, curva),
-// zoom(factor, clientX,
-// clientY), mueve(dx, dy), suelta(), ponParado(b), parado(), proyecta(lat,
-// lon), geo(clientX, clientY), medir(), desmontar() }, o null si el navegador
-// no tiene WebGL2. `mueve` y `suelta` son para montarMano (marte.js) y `zoom`
-// para montarZoom (marte-gl.js).
+// Monta la Tierra en `canvas` (WebGL2), que ocupa todo su contenedor.
+// - `disco()`: diámetro del disco a zoom x1, en píxeles CSS.
+// - `encuadre(zoom)`: cuántos píxeles CSS baja el centro del disco a ese zoom
+//   (la portada lo usa para acabar en el horizonte al acercarse; sin él, el
+//   disco va centrado).
+// Devuelve el objeto de mandos (ver el final) o null si no hay WebGL2.
+// `mueve`, `suelta` y `zoom` son para montarMano y montarZoom (gestos.js).
 /**
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
@@ -641,7 +603,7 @@ export async function montarTierraGL(canvas, {
   lat0: lat0Ini = VISTA_INICIAL.lat0,
   lon0: lon0Ini = VISTA_INICIAL.lon0,
   radio = RADIO_ARTE,
-  vuelta = 90,                                   // segundos por vuelta (elegido por el usuario)
+  vuelta = 90,                                   // segundos por vuelta
   disco = () => 0.7 * window.innerHeight,
   encuadre = () => 0,                            // px CSS que baja el centro del disco a cada zoom
   alPintar = () => {},
@@ -651,7 +613,7 @@ export async function montarTierraGL(canvas, {
   sinNubes = false,                              // sin nubes (la foto de tierra-quieto.png)
   sinAurora = false,                             // sin aurora (ídem: se mueve y se enciende al anochecer)
   ladoAtlas = 8,                                 // huecos por lado del atlas de teselas
-  zoomMax = 6,                                   // como Marte y la Luna (usuario, 24-sep-2026: "¿sería posible un x5 o x6?")
+  zoomMax = 6,                                   // como Marte y la Luna
 } = {}) {
   const gl = canvas.getContext("webgl2", {
     alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false,
@@ -667,7 +629,7 @@ export async function montarTierraGL(canvas, {
   const MW = D.MW, MH = D.MH, R0 = radio;
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
 
-  // Mapa y mipmaps en longitud, como preparar() de planeta.js: material de
+  // Mapa y mipmaps en longitud: material de
   // cada celda (R + G*256) con el bit 15 si es hielo; en cada nivel, de cada
   // par de celdas gana la de más prioridad, y desde el nivel 3 la costa ya no
   // gana (si no, los islotes árticos salpicaban el polo).
@@ -708,11 +670,10 @@ export async function montarTierraGL(canvas, {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, lutBm.width, lutBm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
     new Uint8Array(lp.buffer, lp.byteOffset, lutBm.width * lutBm.height * 4));
 
-  // Noche (Proyecto Tierra paso 7, en curso): la misma superficie con la LUT
-  // de noche de generar-tierra.py, la luna en vez del sol, el suelo de
-  // la noche, el halo, las nubes de noche, las luces de las ciudades y el
-  // brillo de atmósfera del borde y la aurora. La LUT y las luces se bajan la
-  // primera vez.
+  // Noche: la misma superficie con la LUT de noche, la luna en vez del sol,
+  // otro suelo, halo y nubes, las luces de las ciudades, el brillo de
+  // atmósfera del borde y la aurora. La LUT y las luces se bajan la primera
+  // vez que hace falta.
   let noche = false, texLutNoche = null, pidiendoNoche = null, luces = null;
   function cargaNoche() {
     pidiendoNoche ??= Promise.all([
@@ -730,7 +691,7 @@ export async function montarTierraGL(canvas, {
   }
   // Luces de las ciudades: planeta-luces.png lleva 2 píxeles por luz en filas
   // de LUZ_PNG_W luces (1º = latitud en 16 bits (R, G) + fuerza*16 (B), 2º =
-  // longitud en 16 bits (R, G)), como en planeta.js. Un punto por ciudad, del
+  // longitud en 16 bits (R, G)). Un punto por ciudad, del
   // tamaño de su huella (ver vertLuces). Hace falta pintar en coma flotante
   // (EXT_color_buffer_float, lo tienen casi todos); sin él, la noche sale sin
   // luces.
@@ -767,8 +728,7 @@ export async function montarTierraGL(canvas, {
     const el = (performance.now() - aurInicio) / 1000;
     return el < AUR.BARRIDO * 1.3 ? Math.max(0, el) : null;
   };
-  // Encendido como una serpiente que se muerde la cola (como planeta.js):
-  // arranca en el punto del óvalo más a la izquierda de la cara de delante,
+  // Encendido como una serpiente que se muerde la cola: arranca en el punto del óvalo más a la izquierda de la cara de delante,
   // avanza por delante y vuelve por el fondo hasta cerrar donde empezó.
   function arrancaSerpiente(M) {
     const fp = AUR.POLO[0] * DEG, lp = AUR.POLO[1] * DEG, th = AUR.R * DEG;
@@ -795,7 +755,7 @@ export async function montarTierraGL(canvas, {
   };
   const luz = () => (noche && texLutNoche ? LUZ.noche : LUZ.dia);
 
-  // Niveles de zoom en teselas (como marte-gl.js): no se reserva en la GPU
+  // Niveles de zoom en teselas: no se reserva en la GPU
   // el mapa entero de cada uno; las teselas que llegan van a un ATLAS de
   // A x A huecos y un índice dice en qué hueco está cada una. Si se llena,
   // sale la que lleva más tiempo sin usarse. A x6 se ven unas 10-20.
@@ -867,10 +827,10 @@ export async function montarTierraGL(canvas, {
     for (const [x, y, r, g, bl] of b.cells) celdasChapas.push(la, lo, x - b.ax, y - b.ay, indice([r, g, bl]));
     for (const [x, y] of b.sombra) celdasSombras.push(la, lo, x - b.ax, y - b.ay, 0);
   }
-  // La X de marca: blanca con contorno oscuro, como la de planeta.js.
+  // La X de marca: blanca con contorno oscuro.
   const X_ART = ["#...#", "##.##", ".###.", "##.##", "#...#"], XN = X_ART.length;
-  // De noche, en verde de visión nocturna con contorno verde muy oscuro, como
-  // X_CELLS_N de planeta.js (va con la coordenada fijada en verde, global.css).
+  // De noche, en verde de visión nocturna con contorno verde muy oscuro (a
+  // juego con la coordenada fijada, que también se pone verde).
   const celdasX = [], celdasXN = [];            // sin la latitud y longitud: van al marcar
   const lleno = (y, x) => y >= 0 && y < XN && x >= 0 && x < XN && X_ART[y][x] === "#";
   for (let y = -1; y <= XN; y++) {
@@ -911,7 +871,7 @@ export async function montarTierraGL(canvas, {
   const vao = gl.createVertexArray();
 
   // Nubes: una celda por vértice. Se dibujan en orden inverso para que, donde
-  // dos se pisan, gane la primera de la lista (como el `stamped` de planeta.js).
+  // dos se pisan, gane la primera de la lista.
   const celdas = [];
   for (const nb of [...D.nubes].reverse()) {
     for (const [ox, oy, k] of nb.cells) {
@@ -932,7 +892,7 @@ export async function montarTierraGL(canvas, {
 
   // Sol (o luna) en vista (x derecha, y ARRIBA, z hacia quien mira): el de
   // los datos lleva la y hacia abajo. No cambia al girar ni al arrastrar: la
-  // luz viene siempre del mismo lado, como en la portada de siempre.
+  // luz viene siempre del mismo lado.
 
   let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
   // El centro del disco, `des` píxeles de arte por debajo del centro del
@@ -966,7 +926,7 @@ export async function montarTierraGL(canvas, {
     const k = Math.min(MULT_MAX, Math.floor(px * dpr));
     canvas.style.width = `${nW * px}px`;
     canvas.style.height = `${nH * px}px`;
-    // por debajo de x2, el tamaño exacto de pantalla (como la Luna)
+    // por debajo de x2, el tamaño exacto de pantalla
     const cw = k >= 2 ? nW * k : Math.round(nW * px * dpr), ch = k >= 2 ? nH * k : Math.round(nH * px * dpr);
     if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
     if (nW !== W || nH !== H) {
@@ -1042,7 +1002,7 @@ export async function montarTierraGL(canvas, {
     sprites(capaSombras, D.BAND_PZ, 1, 1);
     gl.colorMask(true, true, true, true);
     gl.disable(gl.BLEND);
-    // las nubes, encima de las sombras y debajo de las chapas (como planeta.js)
+    // las nubes, encima de las sombras y debajo de las chapas
     u = progNubes.u;
     gl.useProgram(progNubes.p);
     gl.bindVertexArray(vaoNubes);
@@ -1099,10 +1059,10 @@ export async function montarTierraGL(canvas, {
       if (el === null) aurCola = null;
       else if (aurCola === null) arrancaSerpiente(M);
       // Con zoom, más rayos y más puntos por rayo (hasta x4), y cada uno pesa
-      // menos: así la densidad de puntos por píxel es la del horizonte de
-      // antes, con el que se ajustaron los niveles (radio AUR.R_ANTES).
-      const F = Math.max(1, Math.min(4, Math.ceil(R / AUR.R_ANTES)));
-      const nR = AUR.N * F, nK = (AUR.K - 1) * F + 1, e = R / AUR.R_ANTES;
+      // menos: así la densidad de puntos por píxel es la del radio con el que
+      // se ajustaron los niveles (AUR.R_BRILLO).
+      const F = Math.max(1, Math.min(4, Math.ceil(R / AUR.R_BRILLO)));
+      const nR = AUR.N * F, nK = (AUR.K - 1) * F + 1, e = R / AUR.R_BRILLO;
       u = aurora.prog.u;
       gl.useProgram(aurora.prog.p);
       gl.uniform2f(u.uTam, W, H);
@@ -1117,14 +1077,13 @@ export async function montarTierraGL(canvas, {
       gl.uniform1i(u.uN, nR);
       gl.uniform1i(u.uK, nK);
       gl.uniform1f(u.uW, (AUR.N * AUR.K) / (nR * nK) * e * e);
-      gl.uniform1f(u.uWd, AUR.ND ? AUR.N / nR * e / 3 * 2 / AUR.ND : 0); // en planeta.js, 2 puntos en uno de cada tres rayos
       gl.uniform1f(u.uFrente, aurFrente);
       gl.uniform1f(u.uCola, aurCola ?? 0);
       gl.uniform1f(u.uSentido, aurSentido);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.ONE, gl.ONE);
       gl.bindVertexArray(vao);
-      gl.drawArrays(gl.POINTS, 0, nR * (AUR.ARCOS.length * nK + AUR.ND));
+      gl.drawArrays(gl.POINTS, 0, nR * AUR.ARCOS.length * nK);
       gl.disable(gl.BLEND);
     }
     // (2) color, al canvas
@@ -1164,10 +1123,10 @@ export async function montarTierraGL(canvas, {
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.disable(gl.BLEND);
   }
-  // Fundido al cambiar de tema (como el de planeta.js): durante FUNDIDO_MS se
-  // pinta la Tierra con la luz vieja y encima con la nueva, cada vez más
-  // opaca (el doble de trabajo, solo ese rato). Va a la par que el sol y la
-  // luna que se esconden tras la Tierra (global.css, .hero-astro).
+  // Fundido al cambiar de tema: durante FUNDIDO_MS se pinta la Tierra con la
+  // luz vieja y encima con la nueva, cada vez más opaca (el doble de trabajo,
+  // solo ese rato). Va a la par que el sol y la luna que se esconden tras la
+  // Tierra (.hero-astro en astros.css).
   const FUNDIDO_MS = 1500;
   let fundido = null;                            // { t0, desde: luz vieja }
   function pinta() {
@@ -1218,8 +1177,8 @@ export async function montarTierraGL(canvas, {
     return { z: U[2], luz: t * t * (3 - 2 * t), cx: U[0] * R + W / 2 - 0.5, cy: -U[1] * R + H / 2 + desArte() - 0.5 };
   }
   // Chapas que se ven ahora: { iso, x, y } con la esquina de arriba a la
-  // izquierda de su contorno en píxeles CSS de la ventana (como las que daba
-  // alMoverBanderas en planeta.js), y `px`, lo que mide un píxel de arte.
+  // izquierda de su contorno en píxeles CSS de la ventana, y `px`, lo que
+  // mide un píxel de arte.
   function chapasVisibles() {
     const r = canvas.getBoundingClientRect(), out = [];
     for (const b of FLAGS) {
@@ -1236,7 +1195,7 @@ export async function montarTierraGL(canvas, {
     return [((clientX - r.left) / px - W / 2) / R, -((clientY - r.top) / px - H / 2 - desArte(R / R0)) / R];
   }
   // Orientación (sin ladear) que deja el punto (lat, lon) bajo el punto (x, y)
-  // del disco: la de marte-gl.js, para el zoom hacia el cursor.
+  // del disco: para el zoom hacia el cursor.
   function orientaPara(x, y, lat, lon) {
     const rr = x * x + y * y;
     if (rr >= 0.998) return null;
@@ -1253,7 +1212,7 @@ export async function montarTierraGL(canvas, {
 
   // --- Teselas: cuáles hacen falta para lo que se ve. Se muestrea la pantalla
   // en una rejilla y, en cada punto del disco, se calcula el nivel igual que
-  // el shader (huella de un píxel de arte en latitud). Como marte-gl.js.
+  // el shader (huella de un píxel de arte en latitud).
   const EN_VUELO_MAX = 6;
   let enVuelo = 0, cola = [];
   function planifica() {
@@ -1306,10 +1265,10 @@ export async function montarTierraGL(canvas, {
     }
   }
 
-  // --- Bucle. El giro solo avanza la vista (lon0) de forma continua y se
-  // repinta a 30 fotogramas por segundo, como la portada (a 90 s por vuelta,
-  // 0,13° por fotograma: invisible, y la mitad de trabajo). La mano y el zoom
-  // piden fotograma a 60. Quieto (parado o sin giro) no se repinta.
+  // --- Bucle. El giro avanza la vista (lon0) de forma continua y se repinta a
+  // 30 fotogramas por segundo (a 90 s por vuelta son 0,13° por fotograma: no
+  // se nota, y es la mitad de trabajo). La mano, el zoom y el acercamiento
+  // piden 60. Quieto (parado o sin giro) no se repinta.
   const TAU = 0.07;
   let tPlan = 0;
   let raf = 0, sucio = false, tAnt = 0, ultimo30 = -1, ultimo60 = -1;
@@ -1380,8 +1339,7 @@ export async function montarTierraGL(canvas, {
     ancla = null;
     pide();
   }
-  // Zoom hacia el cursor al acercarse; al alejarse, hacia el centro (como
-  // Marte, ver marte-gl.js).
+  // Zoom hacia el cursor al acercarse; al alejarse, hacia el centro.
   function hazZoom(factor, clientX, clientY) {
     acabaTramo();                                // quien usa el zoom manda sobre el acercamiento
     const nuevo = Math.max(1, Math.min(zoomMax, zoomObj * factor));
@@ -1406,7 +1364,7 @@ export async function montarTierraGL(canvas, {
   const perdido = (e) => { e.preventDefault(); vivo = false; };
   canvas.addEventListener("webglcontextlost", perdido);
   // Si la pestaña está en segundo plano al pintar, Chrome descarta ese
-  // fotograma (Marte, 22-sep-2026): al volver a verse, se repinta.
+  // fotograma: al volver a verse, se repinta.
   const alVerse = () => { if (document.visibilityState === "visible") { tAnt = 0; pide(); } };
   document.addEventListener("visibilitychange", alVerse);
   reduce.addEventListener("change", pide);
@@ -1463,8 +1421,8 @@ export async function montarTierraGL(canvas, {
       else empieza();
     },
     // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x
-    // `lado` centrado en el disco (como la de marte-gl.js). Para la imagen
-    // fija (tierra-quieto.png) y los vuelos. Se pinta y se copia en el mismo
+    // `lado` centrado en el disco. Para la imagen fija (tierra-quieto.png) y
+    // los vuelos. Se pinta y se copia en el mismo
     // paso: el lienzo WebGL no guarda lo pintado (preserveDrawingBuffer: false).
     instantanea(lado) {
       pinta();

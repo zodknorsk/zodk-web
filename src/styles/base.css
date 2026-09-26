@@ -1,3 +1,6 @@
+/* Estilos de toda la web: la base de Tailwind, cabecera, texto de las notas
+   y lo que mete el importador (tuits, vídeos, TikTok). Los de las portadas de
+   astros van en astros.css, portada.css, luna.css y marte.css. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -186,7 +189,7 @@ article .tiktok a {
 }
 html.dark #theme-button:is(:hover, :focus-visible) .tema-icono circle { fill: #fff; fill-opacity: 1; }
 html:not(.dark) #theme-button:is(:hover, :focus-visible) .tema-icono path { fill: #000; fill-opacity: 1; }
-/* Sobre el hero (portada y /luna, cabecera transparente) el fondo es negro en
+/* Sobre el hero de la portada (cabecera transparente) el fondo es negro en
    los dos temas: el icono al pasar el ratón, en blanco (el trazo negro de
    group-hover:stroke-black lo hacía desaparecer). */
 html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono { stroke: #fff; }

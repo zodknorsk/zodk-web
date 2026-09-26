@@ -1,3 +1,4 @@
+// El RSS (/rss.xml): las notas del blog, sin borradores ni las de la Luna y Marte.
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import { SITE, NOTAS } from "@consts";

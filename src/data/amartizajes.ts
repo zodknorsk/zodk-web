@@ -1,22 +1,19 @@
-// Amartizajes con chapa sobre el Marte de /marte (Proyecto Marte). Como las
-// chapas de /luna: la bandera del país en pixel art (svgBandera de
-// alunizajes.ts), en su sitio exacto y a cualquier zoom (a x1 son lo único
-// que sale). Al pasar el ratón (o con un toque en el móvil), su ficha.
+// Amartizajes con chapa sobre el Marte de /marte. Como las chapas de /luna:
+// la bandera del país en pixel art (svgBandera de alunizajes.ts), en su sitio
+// exacto y a cualquier zoom (a ×1 son lo único que sale). Al pasar el ratón
+// (o con un toque en el móvil), su ficha.
 //
-// Una chapa por cada intento que llegó a la superficie, bueno o fallido
-// (usuario, 23-sep-2026). Las que no llegaron enteras (`llego: false`) van
-// en blanco y negro (usuario, 23-sep-2026: "finalmente en blanco y negro",
-// después de haber probado una raya).
+// Una chapa por cada intento que llegó a la superficie, bueno o fallido. Las
+// que no llegaron enteras (`llego: false`) van en blanco y negro.
 //
-// La ficha (usuario, 23-sep-2026): título, bandera, país, año y qué era;
-// tres filas, Lugar, Fecha y Estado; y una descripción breve (la entradilla
-// de su nota en la bóveda). `lugar` es el accidente con nombre que sale a su
-// lado en el mapa (arte/generar-nombres.py).
+// La ficha: título, bandera, país, año y qué era; tres filas, Lugar, Fecha y
+// Estado; y una descripción breve (la entradilla de su nota en la bóveda).
+// `lugar` es el accidente con nombre que sale a su lado en el mapa
+// (arte/generar-nombres.py).
 //
-// Las notas están en la bóveda (boveda-osint), en 02 - Temas/mars-project
-// (Soft Landings y Hard Landings). La chapa enlaza a /notas/<nota> solo si está
-// publicada (`publicar: true`); si no, es solo la ficha.
-// Detalle y decisiones en arte/MARTE-WIP.md.
+// Las notas están en la bóveda, en 02 - Temas/mars-project (Soft Landings y
+// Hard Landings). La chapa enlaza a /notas/<nota> solo si está publicada
+// (`publicar: true`); si no, es solo la ficha.
 
 import { PAISES_LUNA, type Pais } from "./alunizajes";
 
@@ -58,13 +55,13 @@ export interface Amartizaje {
   texto: string;
   nota: string; // slug de su nota en el blog (/notas/<nota>)
   // Foto de la ficha, en public/amartizajes/ (la misma que en la nota de la
-  // bóveda). Criterio (usuario, 23-sep-2026): la nave en Marte si hay foto;
+  // bóveda). Criterio: la nave en Marte si hay foto;
   // si no, lo que vio al llegar; si no, la nave desde órbita, una maqueta o
   // un dibujo. De Wikimedia Commons; si la licencia pide citar, `credito`.
   foto: string;
   fotoPos?: string; // object-position del recorte cuadrado, si no va centrado
   credito?: string;
-  // Px de pantalla a la derecha de su sitio a x1, que crecen con el zoom:
+  // Px de pantalla a la derecha de su sitio a ×1, que crecen con el zoom:
   // para dos chapas en el mismo sitio (Ingenuity bajó dentro de Perseverance).
   separa?: number;
 }
@@ -126,8 +123,8 @@ export const AMARTIZAJES: Amartizaje[] = [
     lat: 18.44, lon: 77.45, llego: true,
     lugar: "cráter Jezero", fecha: "18 feb 2021", estado: "en marcha",
     texto: "Guarda muestras de roca de un antiguo lago para que algún día vuelvan a la Tierra.", nota: "perseverance-2021", foto: "perseverance-2021.jpg", fotoPos: "80% 50%" },
-  // Ingenuity bajó colgado de Perseverance: a x1, las dos chapas pegadas, y
-  // se separan al acercar (usuario, 23-sep-2026).
+  // Ingenuity bajó colgado de Perseverance: a ×1, las dos chapas pegadas, y
+  // se separan al acercar.
   { nombre: "Ingenuity", pais: "US", quien: "EE. UU.", anio: 2021, tipo: "helicóptero",
     lat: 18.44, lon: 77.45, llego: true, separa: 20,
     lugar: "cráter Jezero", fecha: "18 feb 2021", estado: "fin en 2024 (72 vuelos)",

@@ -28,3 +28,6 @@ arte/marte-fuentes/
 
 # Salida intermedia de generar-estrellas.py (la buena va a public/)
 arte/zodk-estrellas.png
+
+# Renders de prueba de los generadores (comparar variantes)
+arte/pruebas/

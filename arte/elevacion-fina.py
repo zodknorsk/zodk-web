@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Relieve fino de la Tierra (Proyecto Tierra, niveles de zoom): ETOPO1 (NOAA,
+"""Relieve fino de la Tierra (para los niveles de zoom): ETOPO1 (NOAA,
 dominio público) a 24 px/grado, de los 72 trozos de 30° x 30° bajados a
 tierra-fuentes/etopo24/, en un solo archivo de enteros de 16 bits (metros,
 little-endian), 8640 x 4320, fila 0 = 90° N:

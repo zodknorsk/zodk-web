@@ -1,14 +1,14 @@
-/* La Tierra entera (Proyecto Tierra, logo-files/TIERRA-WIP.md). El lienzo
-   WebGL (.hero-tierra, de src/scripts/tierra-gl.js) ocupa todo el hero: con
-   zoom el disco lo llena; el disco, centrado, mide --tierra-disco a zoom x1,
-   el tamaño común de los astros (70 svh; en vertical, como Marte, se ciñe al
-   88 % del ancho). La sonda le da ese diámetro al motor.
+/* Estilos de la portada.
+
+   La Tierra: el lienzo WebGL (.hero-tierra, de tierra-gl.js) ocupa todo el
+   hero, porque con zoom el disco lo llena. A ×1 el disco, centrado, mide
+   --tierra-disco, el tamaño común de los tres astros (70 svh; en vertical se
+   ciñe al 88 % del ancho). La sonda le da ese diámetro al motor.
    .hero-planet es la Tierra quieta (public/planeta/tierra-quieto*.png, de
-   logo-files/generar-tierra-quieto.mjs: LADO 368 px de arte con el disco de
-   360 en medio): se ve mientras carga el lienzo y sin WebGL2, y es la caja
-   del disco que miden los vuelos (también en /luna y /marte). En cuanto el
-   lienzo pinta, index.astro le pone .planeta-listo y se oculta. El ?v= va
-   con PLANETA_V de planeta.js. */
+   arte/generar-tierra-quieto.mjs: 368 px de arte con el disco de 360 en
+   medio): se ve mientras carga el lienzo y sin WebGL2, y es la caja del
+   disco que miden los vuelos. En cuanto el lienzo pinta, portada.ts le pone
+   .planeta-listo y se oculta. El ?v= va con PLANETA_V de versiones.js. */
 :root { --tierra-disco: min(70vh, 88vw); }
 @supports (height: 1svh) { :root { --tierra-disco: min(70svh, 88vw); } }
 :root { --tierra-caja: calc(var(--tierra-disco) * 368 / 360); }
@@ -51,9 +51,10 @@ html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?
    - Al cargar: el título aparece tachado, aguanta ~1,3 s y se DEStacha
      (animación hero-redact-in, escalonada línea a línea).
    - Al bajar: el título va pegado a la Tierra (hace scroll con el hero) y se
-     tacha de forma progresiva según --redact (0..1, lo pone updateHero en
-     Head.astro a partir del scroll); cada línea en un tramo distinto. Al final
-     del recorrido se desvanece también. Al subir, se destacha igual. */
+     tacha de forma progresiva según --redact (0..1, lo pone alScroll en
+     Head.astro); cada línea en un tramo distinto. Al final del recorrido se
+     desvanece también. Al subir, se destacha igual.
+   Más abajo, "El título en papel" cambia el aspecto a documento. */
 .hero-titulo {
   position: absolute;
   left: 50%;
@@ -65,7 +66,7 @@ html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?
   text-align: center;
   z-index: 1;
   pointer-events: none;
-  /* 0..1, lo mueve el scroll (updateHero en Head.astro): cuánto del título
+  /* 0..1, lo mueve el scroll (alScroll en Head.astro): cuánto del título
      está tachado. Al final del recorrido se desvanece también. */
   --redact: 0;
   opacity: clamp(0, calc((1 - var(--redact)) / 0.25), 1);
@@ -161,7 +162,7 @@ html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?
 
 /* Marco de visor alrededor de todo el título: cuatro esquinas blancas. Debajo
    de la esquina inferior derecha, la coordenada MGRS del punto del planeta
-   bajo el cursor (la actualiza el script de index.astro). */
+   bajo el cursor (la actualiza portada.ts). */
 .hero-marco {
   position: absolute;
   inset: 0;
@@ -261,11 +262,10 @@ html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?
   filter: drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a);
 }
 
-/* Noche (opción D del usuario): el título se ve como de día, en blanco. Al
-   fijar una coordenada (clic en el planeta: .hero-mgrs.fijada), el marco, la
-   coordenada resaltada y el lema pasan a verde de visión nocturna, como un
-   visor que se engancha al blanco; la X del planeta también va en verde (la
-   pinta planeta.js). El velo aprieta un poco (hay focos de ciudad debajo). */
+/* De noche, al fijar una coordenada (clic en el planeta: .hero-mgrs.fijada),
+   el marco y la coordenada pasan a verde de visión nocturna, como un visor
+   que se engancha al blanco; la X del planeta también va en verde (la pinta
+   tierra-gl.js). */
 html.dark .hero-titulo {
   --nvg: #8dff9e;
   --nvg-brillo: rgba(70, 255, 120, 0.55);
@@ -287,24 +287,17 @@ html.dark .hero-mgrs.fijada {
   box-shadow: 0 0 0 3px var(--nvg), 0 0 0 4px rgba(3, 4, 8, 0.9), 0 0 10px 3px var(--nvg-brillo);
 }
 
-/* El objeto (dron / avión / satélite) que sobrevuela el hero. Hay UN `.hero-craft`;
-   initObjeto() (Head.astro) le cambia el sprite (vars --sprite / --sprite-noche),
-   la proporción y la trayectoria al pulsar el botón .hero-cambio. Los datos salen
-   de src/data/aeronaves.ts. La trayectoria la da el modificador (--sweep / --orbita
-   / --fijo). Al pasar el ratón el objeto se para —y toda la portada— y sale una
-   línea a una ficha con las specs. Solo ratón.
+/* El objeto (dron, avión o satélite) que sobrevuela el hero. Hay un solo
+   .hero-craft; initObjeto() (Head.astro) le cambia el dibujo (--sprite y
+   --sprite-noche), la proporción y la trayectoria (--sweep, --orbita,
+   --fijo...). Datos en src/data/aeronaves.ts. Al pasar el ratón se para toda
+   la portada y sale la ficha. Solo con ratón.
 
-   Renderizado: por defecto "auto" (suavizado), correcto para las fotos (.png).
-   El único sprite que sigue siendo pixel art de verdad (el Sentinel-2, .svg)
-   lleva el modificador `--pixelado` (lo añade index.astro/Head.astro mirando
-   la extensión del sprite) para mantener el borde nítido a bloques. Sin esta
-   distinción, animar una foto con "pixelated" genera parpadeo/costuras al
-   hacer zoom, porque el navegador tiene que re-muestrear con vecino-más-cercano
-   en cada fotograma de un desplazamiento que no cae en un píxel entero. */
-/* Tamaño de las naves respecto al de antes (Proyecto Tierra: con la Tierra
-   entera, más pequeña que el horizonte de antes, se veían grandes). El usuario
-   vio las ocho sobre el globo al 60, 50 y 40 % y eligió el 40 (24-sep-2026);
-   después, "sube a 55 %, las veo chicas". */
+   Las fotos (.png) van suavizadas; el único pixel art (el Sentinel-2, .svg)
+   lleva --pixelado. Una foto animada en "pixelated" parpadea, porque se
+   vuelve a muestrear en cada fotograma de un desplazamiento que no cae en
+   un píxel entero.
+   --naves-k: tamaño de todas las naves respecto a sus medidas de abajo. */
 :root { --naves-k: 0.55; }
 .hero-craft {
   position: absolute;
@@ -351,12 +344,12 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 }
 
 /* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
-   título y vuelve a subir (alternate). El sprite del TB3 es casi cuadrado
-   (116x108) y con detalle, así que se le da bastante ancho para que se lea. */
+   título y vuelve a subir (alternate). La foto del TB3 es casi cuadrada y
+   con detalle, así que se le da bastante ancho para que se lea. */
 .hero-craft--sweep {
   left: 44%;
   top: 24%;
-  /* ~x1,4 el tamaño anterior; --escala (de aeronaves.ts) ajusta cada nave */
+  /* --escala (de aeronaves.ts) ajusta cada nave */
   width: calc(clamp(100px, 10vw, 157px) * var(--escala, 1) * var(--naves-k));
   transform: translateX(-50%);
   animation: hero-sweep 8s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
@@ -410,8 +403,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más chica que la nave anterior */
 }
 .hero-craft--fijo-izq {
-  /* sobre la parte izquierda del globo (Proyecto Tierra: con el 20 % / 60 % de
-     antes se quedaba fuera del planeta), relativo a su disco */
+  /* sobre la parte izquierda del globo, relativo a su disco */
   left: calc(50% - var(--tierra-disco) * 0.36);
   top: calc(50% + var(--tierra-disco) * 0.12);
   width: calc(clamp(58px, 5.5vw, 86px) * var(--naves-k));
@@ -447,7 +439,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 }
 
 /* Al inspeccionar cualquier nave o chapa de bandera se congela toda la
-   portada (el planeta de día, que es un canvas, lo para planeta.js). */
+   portada (el planeta lo para portada.ts). */
 .hero-craft:hover { animation-play-state: paused; }
 .hero:has(.hero-craft:hover, .hero-bandera:hover, .hero-bandera:focus-within) :is(.hero-planet, .hero-sparkle, .hero-scroll, .hero-craft) {
   animation-play-state: paused;
@@ -455,8 +447,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 
 /* --- Chapas de bandera del planeta ------------------------------------ */
 /* Capa del tamaño del hero; dentro, un <div> encima de cada chapa visible
-   (lo coloca y lo mide el script de index.astro con lo que dice
-   tierra-gl.js). Al pasar el ratón (o con el foco) despliega la misma ficha que
+   (lo coloca y lo mide portada.ts con lo que dice tierra-gl.js). Al pasar el ratón (o con el foco) despliega la misma ficha que
    las naves, con los artículos del país. El "puente" es una franja invisible
    sobre la línea para poder llegar a la ficha sin que se cierre. */
 .hero-banderas {
@@ -536,7 +527,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   .hero-luna-enlace { left: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-marte, .hero-marte-enlace { left: auto; right: 3%; top: 6%; width: 112px; height: 112px; }
   .hero-marte--luna { left: 3%; }
-  .hero-titulo { top: 33%; }        /* más arriba que en escritorio (pedido del usuario) */
+  .hero-titulo { top: 33%; }        /* más arriba que en escritorio */
   /* U-2 y SR-71 vuelan por encima del título: suben con él para no pisarlo */
   .hero-craft--fijo-arriba, .hero-craft--fijo-arriba-der { top: 16%; }
   .hero-titulo h1 { font-size: clamp(0.95rem, 5.2vw, 1.75rem); white-space: nowrap; } /* "el blog de hegoi márquez" en una sola línea */
@@ -547,8 +538,8 @@ html.dark .craft-luz:not([hidden]) { display: block; }
   }
 }
 
-/* Acercamiento de la portada (montarAcercamiento en index.astro; usuario,
-   26-sep-2026). Con JS, el título no se ve hasta que el script decide: al
+/* Acercamiento de la portada (montarAcercamiento en portada.ts). Con JS, el
+   título no se ve hasta que el script decide: al
    acabar el acercamiento (.titulo-entra: el visor se cierra desde fuera y la
    censura se retira antes que en la carga normal) o de golpe si no hay
    acercamiento (vuelta en vuelo, reduced-motion, sin WebGL2). Al pasar de
@@ -556,13 +547,10 @@ html.dark .craft-luz:not([hidden]) { display: block; }
    oculta hasta .nave-lista, y entonces aparece con su fundido de siempre
    (0,7 s, .hero-craft); los nombres del zoom,
    hasta que se usa el zoom (.sin-nombres). El sol, la luna y Marte se van a
-   las esquinas (donde estaban en la portada de antes) a la par que la
-   cámara. */
+   las esquinas a la par que la cámara. */
 html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
 
-/* El título en papel (usuario, 26-sep-2026: "tipo documento antiguo, tal vez
-   clasificado"; "que ponga NATO SECRET"; "ládealo un pelín más"). Papel
-   viejo girado −2,2°: manchas de humedad, fibra (un ruido SVG quieto), el
+/* El título en papel: un documento clasificado. Papel viejo girado −2,2°: manchas de humedad, fibra (un ruido SVG quieto), el
    doblez en horizontal y los bordes más oscuros; las letras en negro, sin
    contorno, y un sello rojo de tinta (multiply) abajo a la derecha. La barra
    de censura y el visor, los de siempre. Va por encima de las naves
@@ -617,11 +605,11 @@ html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
 /* De noche, al fijar coordenada, el visor y los botones en verde; el lema
    sigue en tinta sobre el papel. */
 html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: none; }
-/* El documento solo se ve en el encuadre de llegada (usuario, 26-sep-2026):
-   al arrastrar o con otro zoom (también a x1 y al volver en vuelo), papel,
-   letras, sello y esquinas se desvanecen y la coordenada y sus botones pasan
-   al recuadro de la esquina (.titulo-fuera lo pone montarTituloFuera en
-   index.astro). Si solo se ha girado, vuelve al soltar. */
+/* El documento solo se ve en el encuadre de llegada: al arrastrar o con
+   otro zoom (también a ×1 y al volver en vuelo), papel, letras, sello y
+   esquinas se desvanecen y la coordenada y sus botones pasan al recuadro de
+   la esquina (.titulo-fuera lo pone montarTituloFuera en portada.ts). Si
+   solo se ha girado, vuelve al soltar. */
 .hero-titulo::before, .hero-titulo h1, .hero-titulo p, .titulo-sello, .hero-marco::before {
   transition: opacity 0.45s ease;
 }
@@ -630,10 +618,8 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: n
 .hero.titulo-fuera .hero-titulo h1,
 .hero.titulo-fuera .hero-titulo p,
 .hero.titulo-fuera .titulo-sello { opacity: 0; }
-/* El recuadro de la esquina (usuario, 26-sep-2026: "mejor en una esquina,
-   pero que resalte más, envolviéndolo en un cuadrado"; después, "quita las 4
-   esquinas y que sea un fondo claro"): con el documento retirado, play/pausa,
-   la coordenada y el aspa, abajo a la izquierda en una caja del color del
+/* El recuadro de la esquina: con el documento retirado, play/pausa, la
+   coordenada y la hélice, abajo a la izquierda en una caja del color del
    papel del título, con la tinta oscura. */
 .hero-hud {
   position: absolute;
@@ -671,8 +657,7 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: n
 @keyframes titulo-aparece { from { opacity: 0; } }
 .hero.titulo-entra .hero-marco { animation: marco-cierra 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
 @keyframes marco-cierra { from { inset: -40px; opacity: 0; } 30% { opacity: 1; } }
-/* la censura aguanta y se retira despacio (usuario, 26-sep-2026: "que aguante
-   un poco más y se quite más lento, va muy apresurado"): 1,4 s tachado y
+/* tras el acercamiento, la censura aguanta 1,4 s y se retira despacio:
    1,1 s por barra, escalonadas */
 .hero.titulo-entra .hero-titulo h1::after,
 .hero.titulo-entra .hero-titulo p span::after { animation-duration: 1.1s; }
@@ -688,11 +673,10 @@ html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
   transition: left 5s cubic-bezier(0.45, 0.05, 0.2, 1), top 5s cubic-bezier(0.45, 0.05, 0.2, 1);
 }
 
-/* Botón "otro objeto": la hélice del E-2 del usuario (Excalidraw, heliceSvg en
-   index.astro), sola y sin recuadro, bajo la esquina de abajo a la
-   izquierda del visor, al otro lado de la coordenada (como en la portada
-   de antes; usuario, 26-sep-2026). Trae otro objeto al hero (initObjeto en Head.astro). Lo
-   revela el JS (nace con [hidden]); sin JS no aparece. */
+/* Botón "otro objeto": la hélice del E-2 (heliceSvg en index.astro), sola y
+   sin recuadro, bajo la esquina de abajo a la izquierda del visor, al otro
+   lado de la coordenada. Trae otro objeto al hero (initObjeto en
+   Head.astro). Lo muestra el JS (nace con [hidden]); sin JS no aparece. */
 .hero-cambio {
   position: absolute;
   left: 0;
@@ -735,7 +719,7 @@ html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
 .hero-cambio .btn-helice { transition: transform 0.1s ease; }
 .hero-cambio:active .btn-helice { transform: translateY(4px); }
 
-/* La hélice (SVG del usuario, Excalidraw) trae sus colores; el disco de barrido
+/* La hélice trae sus colores del SVG; el disco de barrido
    lleva el suyo (opacidad la pone el JS). Al pulsar, las palas #d3d3d3 pasan a
    rojo (selector por atributo, gana a la presentación del SVG). */
 .hero-cambio .btn-helice-disco { fill: #c9ced6; opacity: 0; }
@@ -751,8 +735,8 @@ html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
 }
 
 /* Cabecera de la portada, tres estados:
-   1. arriba del todo (.at-top, sin .scrolled) -> mínima: "notas / eventos /
-      tema", transparente, sin logo.
+   1. arriba del todo (.at-top, sin .scrolled) -> mínima: los enlaces y el
+      botón de tema, transparente, sin logo.
    2. bajando por el planeta (sin .at-top, sin .scrolled) -> escondida arriba.
    3. en el contenido del blog (.scrolled) -> sólida, con el logo bajando a su
       sitio; entra deslizándose desde arriba. */
@@ -782,7 +766,7 @@ html.home:not(.scrolled) header a[href="/"] {
 }
 
 html.home:not(.scrolled) header > div > div {
-  justify-content: center;   /* sin logo, la nav centrada (usuario, 26-sep-2026; cabe en móvil) */
+  justify-content: center;   /* sin logo, la nav centrada */
 }
 /* Centrada de verdad: el logo escondido (altura 0) seguía ocupando su ancho
    y empujaba la nav a la derecha; fuera del flujo. Y el botón de tema cuelga

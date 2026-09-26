@@ -1,17 +1,13 @@
 ---
-// Marte (ruta "/marte"): la tercera "portada", la del Proyecto Marte (rama
-// mars-project). Como /luna, sin cabecera y a pantalla completa. Marte está
-// quieto y se gira con clic y arrastrar (como Google Maps) y se acerca con la
-// rueda o el trackpad, hasta x6, ganando detalle. Se llega desde la portada
-// (Marte de arriba a la derecha o "mars-project") o desde /luna (Marte de
-// arriba a la izquierda) con un vuelo. Para irse (usuario, 22-sep-2026): una
-// Tierra pequeña arriba a la derecha, que se pulsa para ir a la Tierra con un
-// vuelo hacia delante (hacia ella; Marte se queda atrás), y, solo si se llegó
-// desde /luna, el botón "volver a la Luna" (el de /luna, abajo a la derecha),
-// con el vuelo de ida al revés.
-// Motor: src/scripts/marte-gl.js (WebGL) y la mano de src/scripts/marte.js;
-// datos en public/marte/, de arte/generar-marte.py. Detalle y
-// decisiones en arte/MARTE-WIP.md.
+// /marte: Marte en pixel art con los amartizajes. Como /luna, sin cabecera y
+// a pantalla completa. Marte está quieto; se gira con clic y arrastrar y se
+// acerca con la rueda o el trackpad hasta ×6, ganando detalle.
+// Se llega con un vuelo desde la portada (Marte de arriba a la derecha o
+// "mars-project") o desde /luna. Para irse: la Tierra pequeña de arriba a la
+// derecha (vuelo hacia delante, Marte se queda atrás) y, solo si se vino de
+// /luna, el botón "volver a la Luna" (el vuelo de ida al revés).
+// Motor: src/scripts/marte-gl.js; datos en public/marte/, de
+// arte/generar-marte.py. Más en docs/marte.md.
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import { AMARTIZAJES } from "../data/amartizajes";
@@ -29,12 +25,11 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
          se queda. -->
     <div class="marte-disco" aria-hidden="true"></div>
     <!-- El lienzo lo dimensiona marte-gl.js (píxeles de arte enteros); el CSS
-         solo lo centra. La sonda mide el diámetro del disco a zoom x1: 60svh,
-         el píxel de la Luna de /luna. -->
+         solo lo centra. La sonda mide el diámetro del disco a ×1. -->
     <canvas class="marte-canvas" role="img" aria-label="Marte"></canvas>
     <div class="marte-sonda" aria-hidden="true"></div>
     <!-- Nombres de lugares, que salen al acercarse, y chapas de los
-         amartizajes (marte-nombres.js): encima del lienzo, con el origen en el
+         amartizajes (nombres.js): encima del lienzo, con el origen en el
          centro del disco. data-publicadas: las notas de amartizajes que ya
          están en el blog. -->
     <div class="capa-nombres" data-publicadas={JSON.stringify(notasPublicadas)}></div>
@@ -60,8 +55,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { montarMano, montarZoom } from "../scripts/gestos.js";
   import { PLANETA_V, LUNA_V, MARTE_V } from "../scripts/versiones.js";
   import { montarNombres } from "../scripts/nombres.js";
-  import { AMARTIZAJES } from "../data/amartizajes";
-  import { PAISES_MARTE } from "../data/amartizajes";
+  import { AMARTIZAJES, PAISES_MARTE } from "../data/amartizajes";
   import { svgBandera } from "../data/alunizajes";
   import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
 
@@ -88,11 +82,10 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
     },
   };
 
-  // Si estaba acercado, antes de ir a la Tierra Marte se aleja hasta x1 sin
+  // Si estaba acercado, antes de ir a la Tierra Marte se aleja hasta ×1 sin
   // girar: el lienzo solo pinta lo que cabe en la ventana y, con zoom, al
   // salir por abajo asomaba cortado en seco por arriba. A la velocidad del
-  // vuelo (1,6 s por cada e de zoom, como la vuelta a la Luna), con arranque y
-  // frenada suaves.
+  // vuelo (1,6 s por cada e de zoom), con arranque y frenada suaves.
   function alejarAx1(m: Marte): Promise<void> {
     const z0 = m.vista().zoom;
     if (z0 <= 1) return Promise.resolve();
@@ -103,21 +96,18 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
         const p = Math.min(1, (ahora - t0) / ms);
         m.ponZoom(z0 ** (1 - inOutSine(p)), true);
         if (p < 1) requestAnimationFrame(paso);
-        else requestAnimationFrame(() => listo());   // un fotograma más: el lienzo ya pintado a x1
+        else requestAnimationFrame(() => listo());   // un fotograma más: el lienzo ya pintado a ×1
       };
       requestAnimationFrame(paso);
     });
   }
 
   // Ir a la Tierra (la Tierra pequeña): hacia delante, como los vuelos de
-  // ida (usuario, 22-sep-2026: "la animación sería ir hacia adelante, no
-  // hacia detrás"). La cámara gira hacia la Tierra pequeña, que crece hasta
-  // quedar como en la portada (el disco entero, centrado), y Marte, tal como
-  // se haya dejado (girado o acercado: vale el lienzo tal cual), crece un poco
-  // y sale por abajo, como la Luna en el vuelo de /luna a Marte. La Tierra de
-  // la portada se mide en un .hero-planet puesto aquí sin verse (mismo sitio y
-  // tamaño que allí); su imagen, tierra-quieto*.png del tema que toque
-  // (VUELO_TIERRA).
+  // ida. La Tierra pequeña crece hasta quedar como en la portada (el disco
+  // entero, centrado) y Marte, tal como se haya dejado, crece un poco y sale
+  // por abajo. La Tierra de la portada se mide en un .hero-planet puesto aquí
+  // sin verse (mismo sitio y tamaño que allí); su imagen, tierra-quieto*.png
+  // del tema que toque (VUELO_TIERRA).
   async function irATierra(hero: HTMLElement, m: Marte | null, marteEl: HTMLElement, icono: HTMLElement, apagar: HTMLElement[]) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate("/");
     const img = new Image();
@@ -143,12 +133,10 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   }
 
   // Volver a la Luna: el vuelo de ida (Luna → Marte) al revés, desde Marte tal
-  // como se ha dejado (usuario, 22-sep-2026: "que el vuelo de regreso empiece
-  // desde donde esté el planeta en este momento"). Si estaba acercado, primero
-  // se aleja en el lienzo hasta x1, sin girar (con zoom el disco no cabe
-  // entero); ahí se le hace una foto, con el giro de ese momento, y vuela
-  // ella, que al final, ya pequeña, se funde con el Marte de /luna (con su
-  // cara de siempre). Alejarse y volar son un solo movimiento, sin pararse
+  // como se ha dejado. Si estaba acercado, primero se aleja en el lienzo hasta
+  // ×1, sin girar (con zoom el disco no cabe entero); ahí se le hace una foto,
+  // con el giro de ese momento, y vuela ella, que al final, ya pequeña, se
+  // funde con el Marte de /luna. Alejarse y volar son un solo movimiento
   // (`alejar` en volarALuna). Sin WebGL2 vuela Marte quieto (marte-quieto.png).
   async function volver(vuelta: Vuelta, hero: HTMLElement, m: Marte | null, ocultar: HTMLElement[], apagar: HTMLElement[]) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate(vuelta.ruta);
@@ -168,7 +156,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
     planeta.setAttribute("aria-hidden", "true");
     hero.append(icono, planeta);
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
-    // Con el lienzo: la foto al llegar a x1, y entonces fuera el lienzo (lo
+    // Con el lienzo: la foto al llegar a ×1, y entonces fuera el lienzo (lo
     // sustituye la capa del vuelo, en el mismo sitio). Sin él, fuera ya.
     const esconder = () => {
       for (const el of ocultar) el.style.visibility = "hidden";
@@ -244,6 +232,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
     motor = marte;
     // Sin WebGL2 se queda Marte quieto (el PNG de .marte-disco), sin mano ni
     // zoom; volver funciona igual.
+    let enVuelo = false;
     if (marte) {
       // El lienzo ya ha pintado la vista inicial encima (los mismos píxeles):
       // fuera la imagen, que asomaría al girar o al hacer zoom.
@@ -271,7 +260,6 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
         nombres.coloca();
       }).catch(() => {});
     }
-    let enVuelo = false;
     tierra.hidden = enlaceTierra.hidden = false;
     midoTierra();
     tapaTierra();

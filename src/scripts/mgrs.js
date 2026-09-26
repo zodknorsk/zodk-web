@@ -3,9 +3,8 @@
 // Entre 80°S y 84°N es UTM con su cuadrícula de 100 km; en los casquetes
 // polares MGRS usa UPS (Universal Polar Stereographic), sin número de zona:
 // "Z AH 12345 67890" (norte: Y/Z; sur: A/B).
-// Lo usa la lectura de coordenadas del hero (src/pages/index.astro): el
-// planeta tiene píxeles de ~20-30 km, así que los últimos dígitos son
-// estéticos (decisión del usuario).
+// Lo usa la coordenada de la portada (portada.ts). El planeta tiene píxeles
+// de 20-30 km, así que los últimos dígitos son de adorno, a propósito.
 
 const A = 6378137;                     // semieje mayor WGS84
 const F = 1 / 298.257223563;

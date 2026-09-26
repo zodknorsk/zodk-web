@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
-"""Planeta de la portada de zodk.eu — la Tierra grande, hemisferio norte.
+"""La Tierra de la portada: los datos del motor WebGL (src/scripts/tierra-gl.js).
 
-Proyección ortográfica de una esfera enorme (como el globo del logo pero a lo
-grande), Polo Norte arriba, con inclinación ligera; se dibuja el casquete
-visible y por debajo cae en sombra y se funde con el negro del hero. La máscara
-tierra/mar/hielo sale de Natural Earth (mapa_tierra.py). Gira sobre el eje polar.
-
-Día y noche, como el logo: la misma superficie, iluminada por el sol o por
-la luna (paleta nocturna, ver noche()), y de noche con las luces de las
-ciudades (light_cells()). La web lo pinta en un <canvas> que gira de forma
-continua (src/scripts/planeta.js); aquí se exportan sus datos a public/planeta/.
+La máscara tierra/mar/hielo sale de Natural Earth (mapa_tierra.py); encima,
+biomas por latitud (con las cajas DESIERTOS y SABANAS para corregir zonas),
+relieve, nieve, banquisa, nubes y las chapas de bandera. Día y noche, como el
+logo: la misma superficie iluminada por el sol o por la luna (paleta
+nocturna, ver noche()), y de noche las luces de las ciudades (light_cells()).
 
     python3 generar-tierra.py                          # lo de la web -> public/planeta/
-    python3 generar-tierra.py --frame 17 prueba.png   # un solo fotograma de prueba (--noche, --ambos)
-    python3 generar-tierra.py --canvas carpeta/        # datos del <canvas> a otra carpeta
-    python3 generar-tierra.py --sprite                 # el sprite antiguo (ya no se usa)
-    python3 generar-tierra.py --nivel 2 carpeta/ [--zona S,N,O,E]
-        # nivel de zoom (Proyecto Tierra, TIERRA-WIP.md): el mapa a 2x la
-        # resolución (16 px/grado) en teselas carpeta/n1/F-C.png, con las costas
-        # de Natural Earth 1:10m y el relieve fino; amplía la LUT y los datos
-        # de carpeta/ (que tiene que tener ya la base, de --canvas)
+    python3 generar-tierra.py --canvas carpeta/        # lo mismo, a otra carpeta
+    python3 generar-tierra.py --nivel 2 ../public/planeta/ [--zona S,N,O,E]
+        # nivel de zoom: el mapa a 2x la resolución (16 px/grado) en teselas
+        # n1/F-C.png, con las costas de Natural Earth 1:10m y el relieve fino;
+        # amplía la LUT y los datos de la carpeta (que tiene que tener ya la
+        # base)
+    python3 generar-tierra.py --frame 17 prueba.png    # (--noche, --ambos)
+        # un fotograma del horizonte de la portada antigua (render()), solo
+        # para comparar
+
+Después, subir PLANETA_V en src/scripts/versiones.js y rehacer la Tierra
+quieta con generar-tierra-quieto.mjs.
 """
 import colorsys
 import math
 import sys
-# Nivel de zoom (Proyecto Tierra): 1 = la base de siempre (8 px/grado, costas
+# Nivel de zoom: 1 = la base de siempre (8 px/grado, costas
 # de ne_50m_land, mapa_tierra.py); K > 1 = K veces la resolución, con la
 # máscara de rasterizar.py --nivel K (costas de 1:10m) y el relieve de
 # elevacion-fina.py.
@@ -541,9 +541,8 @@ for r in range(MH):
         MTNK[r][c] = 8 + max(-4, min(2, round(math.log(m) / _LNSTEP * MTN_CONTRAST)))
 
 
-# Roca y nieve de los niveles de zoom, con el relieve fino (usuario,
-# 25-sep-2026: "pese a salir cadenas montañosas (ejemplo Pirineos) me
-# gustaría que se representasen con nieve"). Las de la base (ROCKAMT,
+# Roca y nieve de los niveles de zoom, con el relieve fino, para que las
+# cordilleras estrechas salgan nevadas. Las de la base (ROCKAMT,
 # SNOWAMT) salen de celdas de 0,25°, cuya altura media se queda por debajo
 # de la línea de nieve en las cordilleras estrechas (Pirineos, Alpes,
 # Cáucaso...). Las mismas reglas que en la base y los mismos escalones, pero
@@ -925,8 +924,7 @@ for r in range(MH):
         young = _pnoise(px_, py_, 1.8 / SCALE * 1.5, 504) < 0.30 + 0.45 * (1.0 - p)
         PACK[r][c] = 1 if young else 2
 
-# Banquisa austral (Proyecto Tierra, 24-sep-2026: con el disco entero se ve el
-# sur). Las mismas reglas que la ártica, con el borde de la misma época del
+# Banquisa austral (con el disco entero se ve el sur). Las mismas reglas que la ártica, con el borde de la misma época del
 # año: principios del verano del norte es principios del invierno del sur, así
 # que el hielo rodea la Antártida con anchura (más ancho en el mar de Weddell y
 # el de Ross, más estrecho frente a la península y en el de Amundsen).
@@ -1360,8 +1358,7 @@ def cell_index(sx, sy, lon0, night):
     # suman los de la textura (copas, relieve). Se redondea a escalón ENTERO:
     # colores de paleta, no degradado. El terminador y el limbo quedan en
     # escalones lisos que siguen la curva de la luz: sin punteado Bayer (se veía
-    # como una mosquitera) ni bordes ondulados por ruido (probados en sept 2026
-    # y rechazados por el usuario).
+    # como una mosquitera) ni bordes ondulados por ruido (se probaron los dos).
     kg = math.floor(math.log(max(bright, 1e-3)) / _LNSTEP * LIGHT_SUB + 0.5) / LIGHT_SUB
     col = ramp(surf, kg + tex_k, 0.45 if terrain == 0 else 1.0)
     if dc > 0.93 and lam > 0.0:
