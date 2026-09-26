@@ -54,13 +54,24 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     y unas comillas en `marte-nombres.js`).
 - **Cabecera de la portada centrada** (arriba del todo, sin logo); al bajar
   al blog, como siempre.
-- **Títulos: sin decidir.** Rechazados el 26-sep (usuario: "no me gustan"):
+- **Título en papel: hecho** (usuario, 26-sep-2026, de las maquetas "ficha"
+  y "clasificado" eligió la segunda: "que ponga NATO SECRET", "quita lo de
+  expediente zodk", "mejora un poco el papel"). Papel viejo girado −1,2°
+  (manchas, fibra de ruido SVG quieto, doblez, bordes oscuros), el nombre en
+  Mono negro, la marca "NATO SECRET" arriba centrada y un sello rojo abajo a
+  la derecha; el visor y la censura de siempre. Por encima de las naves
+  (`z-index: 3`; la ficha de la nave, encima al pasar el ratón). De noche, al
+  fijar coordenada, el lema sigue en tinta.
+- **Cabecera centrada de verdad**: el logo escondido seguía ocupando 78 px y
+  empujaba la nav; ahora fuera del flujo, y el botón de tema cuelga a la
+  derecha (el centro de la pantalla cae en el de los enlaces).
+- **Títulos descartados antes (26-sep).** Rechazados el 26-sep (usuario: "no me gustan"):
   cabecera de revista tras la Tierra, rótulo de mapa curvado sobre el
   océano, cabecera de periódico y chincheta en la X. **Siguiente idea
   suya**: "tipo documento antiguo (tal vez clasificado)", un rectángulo
   blanco o color papel con las letras en negro. Ojo: se parece a la
   "cartela de expediente" que rechazó en septiembre; avisarle.
-- **Lo que queda**, por este orden: el título; el paso 8 (Zen y móvil: el
+- **Lo que queda**, por este orden: el paso 8 (Zen y móvil: el
   acercamiento pinta a 60 fps 5 s, medirlo también); fusionar en `main`.
 
 ## Dónde estábamos (26-sep-2026, sesión de mediodía, histórico)
