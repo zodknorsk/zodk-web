@@ -607,12 +607,12 @@
 .luna-volver:is(:hover, :focus-visible):not(:disabled)::before,
 .luna-volver:is(:hover, :focus-visible):not(:disabled)::after { width: calc(100% - 2px); height: calc(100% - 2px); opacity: 1; }
 .luna-volver:disabled { cursor: default; opacity: 0.5; }
-/* La Tierra pequeña de /marte (56 px de arte, disco de 24) a ×1: el disco
-   llena el botón y el halo se recorta. */
+/* Icono de "volver a la Tierra": la Tierra de noche de la portada de antes
+   (planeta-quieto-noche.png, ya no la genera nada: no borrarla). */
 .luna-volver-tierra {
   width: 26px;
   height: 26px;
-  background: url(/zodk-tierra-noche.png) center / 56px 56px no-repeat;
+  background: url(/planeta/planeta-quieto-noche.png) center / contain no-repeat;
   image-rendering: pixelated;
 }
 /* En /marte, si se llegó desde /luna: "volver a la Luna", con la Luna. */
