@@ -1834,6 +1834,78 @@ html.dark .craft-luz:not([hidden]) { display: block; }
    las esquinas (donde estaban en la portada de antes) a la par que la
    cámara. */
 html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
+
+/* El título en papel (usuario, 26-sep-2026: "tipo documento antiguo, tal vez
+   clasificado"; "que ponga NATO SECRET"). Papel viejo algo girado: manchas
+   de humedad, fibra (un ruido SVG quieto), el doblez en horizontal y los
+   bordes más oscuros; las letras en negro, sin contorno. La marca de
+   clasificación arriba, centrada como en los documentos de verdad, y un
+   sello rojo de tinta (multiply) abajo a la derecha. La barra de censura y
+   el visor, los de siempre. Va por encima de las naves (z-index 3). */
+.hero-titulo {
+  z-index: 3;
+  padding: 34px 46px 40px;
+  transform: translate(-50%, -50%) rotate(-1.2deg);
+  background:
+    linear-gradient(180deg, transparent 48.5%, rgba(95, 70, 35, 0.12) 49.6%, rgba(255, 250, 235, 0.35) 50.4%, transparent 51.5%),
+    radial-gradient(ellipse 38% 55% at 12% 18%, rgba(140, 100, 45, 0.16), transparent 70%),
+    radial-gradient(ellipse 30% 45% at 88% 85%, rgba(140, 100, 45, 0.2), transparent 70%),
+    radial-gradient(circle at 70% 22%, rgba(150, 110, 50, 0.1) 0 3%, transparent 9%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .15 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)'/%3E%3C/svg%3E"),
+    #e9dec4;
+  box-shadow:
+    inset 0 0 26px rgba(115, 82, 36, 0.28),
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 12px 32px rgba(3, 4, 8, 0.6);
+}
+.hero-titulo::before { display: none; }
+.hero-titulo h1 {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3.6vw, 2.2rem);
+  letter-spacing: 0.02em;
+  color: #17150f;
+  text-shadow: none;
+}
+.hero-titulo p { color: #2e2a21; text-shadow: none; }
+.titulo-marca {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13px;
+  font: 700 9px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  text-transform: uppercase;
+  color: #8e2a1f;
+}
+.titulo-sello {
+  position: absolute;
+  right: 24px;
+  bottom: 11px;
+  padding: 5px 9px 4px;
+  transform: rotate(-7deg);
+  border: 3px double #b3261e;
+  border-radius: 2px;
+  font: 700 13px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+  color: #b3261e;
+  opacity: 0.82;
+  mix-blend-mode: multiply;
+}
+.hero-marco { inset: -14px; }
+/* De noche, al fijar coordenada, el visor y los botones en verde; el lema
+   sigue en tinta sobre el papel. */
+html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: none; }
+/* la nave, por debajo del papel; su ficha, por encima al pasar el ratón */
+.hero-craft:hover { z-index: 4; }
+@media (max-width: 640px) {
+  .hero-titulo { padding: 26px 22px 34px; }
+  .hero-titulo h1 { font-size: clamp(0.95rem, 4.8vw, 1.5rem); }
+  .titulo-sello { right: 12px; bottom: 8px; font-size: 10px; }
+}
 .hero.titulo-entra .hero-titulo { animation: titulo-aparece 0.3s ease-out backwards; }
 @keyframes titulo-aparece { from { opacity: 0; } }
 .hero.titulo-entra .hero-marco { animation: marco-cierra 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
@@ -2029,6 +2101,13 @@ html.home:not(.scrolled) header a[href="/"] {
 html.home:not(.scrolled) header > div > div {
   justify-content: center;   /* sin logo, la nav centrada (usuario, 26-sep-2026; cabe en móvil) */
 }
+/* Centrada de verdad: el logo escondido (altura 0) seguía ocupando su ancho
+   y empujaba la nav a la derecha; fuera del flujo. Y el botón de tema cuelga
+   a la derecha de la nav: el centro de la pantalla cae en el de los enlaces. */
+html.home:not(.scrolled) header a[href="/"] { position: absolute; }
+html.home:not(.scrolled) header nav { position: relative; }
+html.home:not(.scrolled) header nav + * { position: absolute; left: calc(100% + 0.5rem); }
+html.home:not(.scrolled) header > div > div > div { position: relative; }
 
 /* Estado 2: escondida mientras bajas por el hero */
 html.home:not(.at-top):not(.scrolled) header {
