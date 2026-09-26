@@ -172,6 +172,9 @@ const eventos = todosEventos
         )}
       </div>
     </div>
+    <!-- Recuadro de la esquina: con el documento retirado (al mover o ampliar
+         el planeta), la coordenada y sus botones pasan aquí (montarTituloFuera). -->
+    <div class="hero-hud" hidden></div>
     <div class="hero-mira" aria-hidden="true" hidden></div>
     <div
       class:list={[
@@ -525,21 +528,32 @@ const eventos = todosEventos
   // pintado y al soltar (quieto, el planeta no repinta). Devuelve { mira, quita }.
   function montarTituloFuera(hero: HTMLElement, zoom: () => number) {
     let t = 0;
+    // la coordenada y sus botones: bajo el visor con el documento, en el
+    // recuadro de la esquina sin él (se mueven los nodos: siguen sus eventos)
+    const marco = hero.querySelector<HTMLElement>(".hero-marco"), hud = hero.querySelector<HTMLElement>(".hero-hud");
+    const piezas = [".hero-lectura", ".hero-cambio"].map((q) => hero.querySelector<HTMLElement>(q)).filter((e) => e !== null);
+    const fuera = (si: boolean) => {
+      if (hero.classList.contains("titulo-fuera") === si) return;
+      hero.classList.toggle("titulo-fuera", si);
+      if (!marco || !hud) return;
+      (si ? hud : marco).append(...piezas);
+      hud.hidden = !si;
+    };
     const reposo = () => !hero.matches(".agarrando, .pellizcando") && zoom() <= ZOOM_CERCA + 0.05;
     const mira = () => {
       if (hero.classList.contains("acercandose")) return;
       if (!reposo()) {
         clearTimeout(t);
         t = 0;
-        hero.classList.add("titulo-fuera");
+        fuera(true);
       } else if (hero.classList.contains("titulo-fuera") && !t) {
-        t = window.setTimeout(() => { t = 0; if (reposo()) hero.classList.remove("titulo-fuera"); else mira(); }, 900);
+        t = window.setTimeout(() => { t = 0; if (reposo()) fuera(false); else mira(); }, 900);
       }
     };
     const alSoltar = () => requestAnimationFrame(mira);
     hero.addEventListener("pointerup", alSoltar);
     hero.addEventListener("touchend", alSoltar);
-    return { mira, quita: () => { clearTimeout(t); hero.removeEventListener("pointerup", alSoltar); hero.removeEventListener("touchend", alSoltar); } };
+    return { mira, quita: () => { clearTimeout(t); fuera(false); hero.removeEventListener("pointerup", alSoltar); hero.removeEventListener("touchend", alSoltar); } };
   }
   let quitaAcercamiento: (() => void) | null = null;
   function montarAcercamiento(hero: HTMLElement, tierra: { acercar(z: number, ms: number, curva: (u: number) => number): Promise<void>; ponZoom(z: number, ya?: boolean): void }) {
