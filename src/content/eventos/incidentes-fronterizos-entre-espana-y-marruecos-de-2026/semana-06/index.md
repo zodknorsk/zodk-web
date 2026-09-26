@@ -15,7 +15,7 @@ rango: 3 septiembre – 9 septiembre
 ---
 ## 03 de septiembre - El famoso informe del CENIF
 
-[![342](./pasted-image-20260903180111.png)](https://theobjective.com/wp-content/uploads/2026/09/informe_ceuta_sept__compressed.pdf)
+[![342](./pasted-image-20260903180111.jpg)](https://theobjective.com/wp-content/uploads/2026/09/informe_ceuta_sept__compressed.pdf)
 
 
 <div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/Y-mci3pBpTw" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
@@ -800,7 +800,7 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
 </blockquote>
 
 
-![](./pasted-image-20260908214136.png)
+![](./pasted-image-20260908214136.jpg)
 
 
 <blockquote class="tweet" data-tweet-id="2097262720747749671">

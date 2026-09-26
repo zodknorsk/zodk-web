@@ -10,7 +10,7 @@ tags:
 ---
 ## Qué es la ley de nietos?
 
-![](./pasted-image-20260907210847.png)
+![](./pasted-image-20260907210847.jpg)
 
 Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la [**Ley de Memoria Democrática** (LMD)](https://www.boe.es/eli/es/l/2022/10/19/20/con) aprobada en España en octubre de 2022. Permite a **hijos y nietos de españoles que emigraron** (muchos durante o después de la Guerra Civil y el franquismo) **recuperar o solicitar la nacionalidad española**, aunque nunca hayan vivido en España.
 

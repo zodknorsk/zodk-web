@@ -13,7 +13,7 @@ kind: index
 evento: solo-al-amanecer-la-historia-de-john-chapman
 orden: 0
 ---
-![](./pasted-image-20260913155314.png) _Tech Sgt. John A. Chapman, 24th Special Tactics Squadron, Afganistán, un mes antes de Takur Ghar._
+![](./pasted-image-20260913155314.jpg) _Tech Sgt. John A. Chapman, 24th Special Tactics Squadron, Afganistán, un mes antes de Takur Ghar._
 
 > En la madrugada del 4 de marzo de 2002, en la nevada cima de Takur Ghar a 3100 metros de altura, mientras intentaban recuperar a un compañero caído en dicha cima, un Combat Controller de la Fuerza Aérea estadounidense libró una batalla en solitario contra decenas de combatientes atrincherados de Al Qaeda. Dado por muerto y dejado atrás por su equipo en aquel pico, John Chapman continuó combatiendo solo al amanecer, dando su vida para proteger a la fuerza de reacción rápida que venía en su ayuda.
 
@@ -33,7 +33,7 @@ Chapman pasó por dicha pipeline de 1989 a 1990, junto a su compañero Joe Mayno
 
 ## Guerra de Afganistán: Operación Libertad Duradera (OEF)
 
-![](./pasted-image-20260914190746.png) _11 de septiembre de 2001, Nueva York_
+![](./pasted-image-20260914190746.jpg) _11 de septiembre de 2001, Nueva York_
 
 Tres semanas después del 11 de septiembre, un CCT y un oficial del STS ya operaban en el aeródromo de Karshi-Khanabad ("K2") en Uzbekistán, la base desde la que EE. UU. lanzaría sus primeras operaciones en Afganistán —"_First There_", los primeros en llegar— antes incluso de que la guerra llegase a suelo afgano. En la primera semana de octubre, el 5th SFG insertó sus dos primeros equipos (ODA 595 y ODA 555) para enlazar con la Alianza del Norte, la coalición de facciones afganas en la que EE. UU. tendría que apoyarse para derrocar al régimen. Cada equipo, de diez a doce Boinas Verdes, tenía una misión clara: hacer contacto, entender el terreno, y sobre todo, dirigir el poder aéreo americano contra el Talibán y Al Qaeda desde tierra.
 
@@ -41,7 +41,7 @@ Con el apoyo aéreo canalizado a través de estos pequeños equipos de Fuerzas E
 
 ## Operación Anaconda
 
-![](./composicion-2.png) _Valle de Shah-i-Kot con los puestos de observación de la Task Force AFO, posiciones de bloqueo y la cima de Takur Ghar._
+![](./composicion-2.jpg) _Valle de Shah-i-Kot con los puestos de observación de la Task Force AFO, posiciones de bloqueo y la cima de Takur Ghar._
 
 Anaconda nació de una idea clásica del manual militar: _hammer and anvil_ (martillo y yunque) y de las lecciones aprendidas de la batalla de Tora Bora. El martillo lo formarían unos 400 hombres de la milicia afgana del general Zia, junto con Boinas Verdes americanos, empujando desde FOB Gardez hacia el centro del valle de Shah-i-Kot (Objective Remington) —infestado de combatientes de Al Qaeda que escaparon de la batalla de Tora Bora— para forzar al enemigo a huir. El yunque contra el que se estrellarían serían las tropas convencionales de las divisiones 10th Mountain y 101st Airborne, bajo el mando del general Franklin Hagenbeck, posicionadas en las montañas al este hacia la frontera con Pakistán —la ruta de escape que, según la inteligencia americana, tomarían los combatientes en fuga. Fue la operación más grande de la guerra hasta ese momento.
 
@@ -51,7 +51,7 @@ La inteligencia oficial estimaba unos 200 combatientes enemigos dispersos por el
 
 ## _Mako 30_ y «_Razor 03_»
 
-![](./pasted-image-20260914231956.png) _Chief Britt Slabinski, Afganistán (2002)_
+![](./pasted-image-20260914231956.jpg) _Chief Britt Slabinski, Afganistán (2002)_
 
 _Mako 30_ era un pequeño equipo compuesto por Slabinski (jefe de equipo), Chapman (CCT) y 5 SEALs más a bordo del MH-47E «_Razor 03_», pilotado por "Mack". Estos debían insertarse en la base de Takur Ghar y subir caminando hasta el puesto de observación en la cumbre, a 3100 metros de altura. Una sucesión de eventos cambió los planes: primero un ataque aéreo obligó al AC-130 de cobertura a abandonar la zona, luego un asalto del 101st Airborne forzó otra demora, y finalmente el segundo motor del helicóptero se quedó inutilizado. Slabinski pidió por radio un aplazamiento de 24 horas —no quería subir la montaña de día, a plena vista del enemigo— pero las órdenes fueron claras: había que entrar esa misma noche. Sin margen para caminar, Slabinski valoró los riesgos y decidió aterrizar directamente en la cima.
 

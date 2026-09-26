@@ -9,7 +9,7 @@
 //        - el resto                      -> colección "notas" (plana)
 //   3. Traduce el frontmatter en español al que esperan las colecciones de Astro.
 //   4. Convierte la sintaxis de Obsidian a Markdown/HTML estándar:
-//        - ![[imagen.png]]  y  ![](<imagen.png>)   -> ![](./imagen.png) + copia
+//        - ![[imagen.png]]  y  ![](<imagen.png>)   -> ![](./imagen.png) + copia reducida
 //        - ![[vídeo.mp4]]                          -> <video> + copia a public/adjuntos/
 //        - ![](youtube.com/watch?v=...)            -> <iframe> embebido
 //        - [[Nota]] / [[Nota#sección|texto]]       -> enlace resuelto (o texto)
@@ -28,6 +28,7 @@ import os from "node:os";
 import crypto from "node:crypto";
 import matter from "gray-matter";
 import GithubSlugger from "github-slugger";
+import sharp from "sharp";
 import {
   descargarTweet,
   enParalelo,
@@ -71,6 +72,15 @@ const RE_TWEET_SUELTO = new RegExp(
   `^(?:!\\[[^\\]]*\\]\\(\\s*)?<?\\s*${RE_TWEET_URL.source}\\S*\\s*>?\\s*\\)?$`,
 );
 const EXT_IMAGEN = /\.(png|jpe?g|webp|gif|svg|avif)$/i;
+
+// Fotos de los artículos. Astro las sirve con los píxeles que tengan, así que
+// se reducen al copiarlas: lado largo máximo LADO_MAX_FOTO. Los PNG opacos que
+// pesan más de PNG_A_JPG_DESDE (fotos y capturas grandes) pasan a JPG; los
+// pequeños se quedan en PNG para que el texto salga nítido. Los originales de
+// la bóveda no se tocan.
+const LADO_MAX_FOTO = 2400;
+const PNG_A_JPG_DESDE = 500 * 1024;
+const CALIDAD_JPG = 88;
 const EXT_VIDEO = /\.(mp4|mov|webm)$/i;
 
 // URL de un vídeo de YouTube, envuelta en `![](...)` (así los embebe el
@@ -83,6 +93,40 @@ const RE_YOUTUBE = new RegExp(
 );
 
 // --- Utilidades generales ------------------------------------------------
+
+/**
+ * Copia una imagen de la bóveda a `carpeta` como `base` + extensión, reducida
+ * a LADO_MAX_FOTO. Devuelve el nombre final (un PNG puede acabar en .jpg).
+ */
+async function copiarFoto(origen, carpeta, base) {
+  const ext = path.extname(origen).toLowerCase();
+  const copiaTalCual = () => {
+    fs.copyFileSync(origen, path.join(carpeta, base + ext));
+    return base + ext;
+  };
+  if (![".png", ".jpg", ".jpeg", ".webp"].includes(ext)) return copiaTalCual();
+
+  const { width, height } = await sharp(origen).metadata();
+  const grande = Math.max(width, height) > LADO_MAX_FOTO;
+  const aJpg = ext === ".png"
+    && fs.statSync(origen).size > PNG_A_JPG_DESDE
+    && (await sharp(origen).stats()).isOpaque;
+  if (!grande && !aJpg) return copiaTalCual();
+
+  let img = sharp(origen).rotate(); // aplica la orientación EXIF antes de reducir
+  if (grande) img = img.resize({ width: LADO_MAX_FOTO, height: LADO_MAX_FOTO, fit: "inside" });
+  let final = ext;
+  if (aJpg || ext === ".jpg" || ext === ".jpeg") {
+    img = img.jpeg({ quality: CALIDAD_JPG, mozjpeg: true });
+    if (aJpg) final = ".jpg";
+  } else if (ext === ".png") {
+    img = img.png({ compressionLevel: 9 });
+  } else {
+    img = img.webp({ quality: 90 });
+  }
+  await img.toFile(path.join(carpeta, base + final));
+  return base + final;
+}
 
 function buscarMarkdown(dir) {
   const out = [];
@@ -342,7 +386,7 @@ function convertirTikTok(cuerpo) {
 
 /**
  * Transforma el cuerpo. `resolver(destino)` devuelve la URL de un [[wikilink]]
- * o null. `copiarImagen(nombre)` copia la imagen y devuelve su nombre final.
+ * o null. `copiarImagen(nombre)` copia la imagen y devuelve lo que va en el enlace.
  */
 function transformarCuerpo(cuerpo, ctx) {
   const { resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache, esEventoSemana } = ctx;
@@ -583,20 +627,30 @@ async function main() {
   for (const it of items) {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
 
+    // Reducir una foto es asíncrono y transformarCuerpo no, así que aquí se
+    // deja una marca en el texto y se cambia por el nombre final al terminar.
+    const fotos = new Map(); // origen -> { marca, promesa }
     const copiarImagen = (nombre) => {
       nombre = nombre.normalize("NFC");
       const origen = indiceImagenes.get(nombre) || indiceImagenes.get(path.basename(nombre));
       if (!origen) return null;
-      const ext = path.extname(origen);
-      const base = generarSlug(path.basename(origen, ext)) + ext.toLowerCase();
-      fs.copyFileSync(origen, path.join(it.carpetaDestino, base));
-      return base;
+      if (!fotos.has(origen)) {
+        const base = generarSlug(path.basename(origen, path.extname(origen)));
+        fotos.set(origen, {
+          marca: `\u0000foto${fotos.size}\u0000`,
+          promesa: copiarFoto(origen, it.carpetaDestino, base),
+        });
+      }
+      return fotos.get(origen).marca;
     };
 
-    const cuerpo = transformarCuerpo(it.content, {
+    let cuerpo = transformarCuerpo(it.content, {
       resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache,
       esEventoSemana: it.clase.kind === "semana",
     });
+    for (const { marca, promesa } of fotos.values()) {
+      cuerpo = cuerpo.replaceAll(marca, await promesa);
+    }
 
     const fm = {
       title: it.titulo,

@@ -12,7 +12,7 @@ tags:
 ---
 ## Introducción al Sáhara
 
-![](./pasted-image-20260906131314.png)
+![](./pasted-image-20260906131314.jpg)
 
 Este artículo nace de haber escuchado muchas veces la misma idea: que el Sáhara era una provincia española de pleno derecho, con representación en Cortes, con los mismos derechos que Cuenca o Toledo, una más del mapa. Dicho siempre con ese tono de quien se da golpes en el pecho por lo bien que se hicieron las cosas. Yo también lo creía así, hasta que me puse a escribir sobre este periodo de la historia.
 
@@ -40,7 +40,7 @@ Aquella declaración le costó una tormenta diplomática: hubo un conflicto inte
 
 ## ¿Y Guinea? La historia de Fernando Poo y Río Muni
 
-![](./pasted-image-20260906131331.png)
+![](./pasted-image-20260906131331.jpg)
 
 El [21 de agosto de 1956](https://www.boe.es/diario_gazeta/comun/pdf.php?p=1956/09/19/pdfs/BOE-1956-263.pdf) se aprobó el Decreto por el que los "Territorios Españoles del Golfo de Guinea" (hasta entonces colonia) pasan a ser **una sola provincia**: la "Provincia Española del Golfo de Guinea". La primera vez que España convirtió una colonia africana en "provincia" fue aquí, **dos años antes** que con Ifni y el Sáhara.
 

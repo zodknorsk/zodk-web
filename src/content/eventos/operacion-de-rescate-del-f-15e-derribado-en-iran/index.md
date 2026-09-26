@@ -14,7 +14,7 @@ evento: operacion-de-rescate-del-f-15e-derribado-en-iran
 orden: 0
 periodo: Del 3 al 5 de abril de 2026
 ---
-![](./pasted-image-20260913001930.png)
+![](./pasted-image-20260913001930.jpg)
 *Marineros de EE. UU. se preparan para organizar el armamento en la cubierta de vuelo del USS _Abraham Lincoln_, 28 de febrero de 2026.*
 
 
@@ -82,7 +82,7 @@ Indicates at least one of the aircraft’s crew successfully punched out and is 
 
 Durante la fase final del rescate del piloto, Estados Unidos confirmó la pérdida de un A-10 Thunderbolt II, alcanzado mientras prestaba apoyo aéreo cercano sobre la zona de extracción. El piloto logró eyectarse a salvo ya fuera del espacio aéreo iraní. 
 
-![](./pasted-image-20260912173559.png)
+![](./pasted-image-20260912173559.jpg)
 *A-10 Thunderbolt II del 190th Fighter Squadron sobre Afganistán durante la Operación Enduring Freedom.*
 
 ## La maniobra SERE del oficial de sistemas de armas en los Montes Zagros
@@ -107,16 +107,16 @@ Con el WSO ya localizado en su grieta rocosa de los Zagros, la fase final de la 
 
 Allí aterrizaron dos MC-130J Commando II, con parte del centenar de operadores de fuerzas especiales que iban a asegurar la zona y ejecutar el rescate final. El problema llegó casi de inmediato: el terreno, blando y encharcado por la humedad, se tragó literalmente el tren de aterrizaje de ambos aparatos. Los dos C-130 quedaron atascados a la vez en la misma pista, con los motores fríos y las ruedas hundidas en el barro, incapaces de generar la tracción necesaria para despegar de nuevo.
 
-![](./pasted-image-20260912172010.png)
+![](./pasted-image-20260912172010.jpg)
 *MC-130J Commando II del 492nd Special Operations Wing durante el ejercicio Emerald Warrior 24*
 *(USAF / Senior Airman Ty Pilgrim)*
 
 Con Delta Force asegurando el perímetro y el reloj corriendo —las fuerzas iraníes se acercaban a la zona—, cerca de cien operadores estadounidenses se quedaron durante aproximadamente dos horas sin ninguna opción inmediata de extracción, varados en territorio hostil junto a dos aeronaves inutilizadas. La decisión, autorizada por CENTCOM, fue tan rápida como drástica: en lugar de intentar salvar los aparatos, se colocaron cargas y se destruyeron deliberadamente en el sitio, junto con cuatro helicópteros MH-6/AH-6 Little Bird del 160th SOAR, para evitar que cualquiera de los dos cayera en manos iraníes —o, como advirtió más tarde la Casa Blanca, en manos de aliados de Teherán como Rusia o China—.
 
-![](./pasted-image-20260912171550.png)
+![](./pasted-image-20260912171550.jpg)
 *Restos destruidos de la FOB, @Osinttechnical, 5 abril 2026.*
 
-![](./pasted-image-20260912171604.png)
+![](./pasted-image-20260912171604.jpg)
 *Restos destruidos de la FOB, @Osinttechnical, 5 abril 2026.*
 
 Con un paquete de más de 150 aeronaves (F-22A, F-35A, F-15E) apoyadas por bombarderos (B-2, B-52), aviones cisterna (KC-46, KC-135) y A-10C Thunderbolt II destruyendo carreteras y bloqueando rutas de acceso, helicópteros del 160th SOAR se posan en el filo de una cresta a 2100m de altura, recuperando a _Dude 44 Bravo_, exhausto y herido tras casi 48h de evasión.
