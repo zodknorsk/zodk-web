@@ -2,20 +2,16 @@
 
 ## Estado
 
-**En la rama `earth-project`, sin fusionar.** `main` sigue publicando la
-portada de antes (el horizonte del hemisferio norte). Hecho: la Tierra entera
-en WebGL, hemisferio sur, chapas y X, tamaño común de los tres astros, zoom
-con detalle y nombres, la noche entera, el acercamiento al cargar y el título
-en papel.
+**Publicada.** Se hizo en la rama `earth-project`, fusionada en `main` (la
+rama se deja en GitHub como registro). Hecho: la Tierra entera en WebGL,
+hemisferio sur, chapas y X, tamaño común de los tres astros, zoom con detalle
+y nombres, la noche entera, el acercamiento al cargar y el título en papel.
+En Zen no calienta mucho.
 
-Queda, por este orden:
-
-1. **Probar en Zen y en el móvil** lo que es nuevo en la GPU: las luces (un
-   punto por ciudad, 34.091) y la aurora (hasta ~340.000 puntos a ×6), y el
-   acercamiento, que pinta a 60 fps durante 5 s. Medir en vatios (ver
-   `rendimiento.md`). Si pesa: menos puntos de aurora a ×6 (`F` en
-   `pintaCon`, `tierra-gl.js`) o menos fps.
-2. **Fusionar en `main`** y publicar.
+Queda probarla a fondo en el móvil: las luces (un punto por ciudad, 34.091),
+la aurora (hasta ~340.000 puntos a ×6) y el acercamiento, que pinta a 60 fps
+durante 5 s. Si pesa: menos puntos de aurora a ×6 (`F` en `pintaCon`,
+`tierra-gl.js`) o menos fps.
 
 Opcional, ofrecido y sin decidir: que la vista de lejos (por debajo de ×3,6)
 también nieve los Pirineos con el relieve fino (hoy solo lo hace el zoom). Los

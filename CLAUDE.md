@@ -44,12 +44,11 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 
 ## Estado
 
-- **Rama `earth-project`, sin fusionar**: la Tierra entera en la portada (en
-  `main` sigue el horizonte de antes) y, encima, un repaso de todo el
-  repositorio (carpetas `arte/` y `docs/`, CSS partido por zonas, código
-  muerto fuera, comentarios y documentación al día). Queda el paso 8
-  (probar en Zen y en el móvil) y fusionar. Ver `docs/tierra.md`.
-- **La Luna y Marte**: terminados y publicados.
+- **Los tres astros, publicados.** La Tierra entera en la portada y el
+  repaso de todo el repositorio (carpetas `arte/` y `docs/`, CSS partido por
+  zonas, código muerto fuera, comentarios y documentación al día) se hicieron
+  en la rama `earth-project`, fusionada en `main`; la rama se deja en GitHub
+  como registro. Lo nuevo va sobre `main` o en rama nueva.
 - **En el Mac y en el PC, tras el pull de la reorganización**: las fuentes de
   datos que no están en Git se quedan en la carpeta vieja. Moverlas:
   `mv logo-files/{luna-fuentes,marte-fuentes,tierra-fuentes,ne_land.json,cities15000.txt,etopo.tiff} arte/`
@@ -108,7 +107,7 @@ Decidido: **seguir con Astro y GitHub Pages**. Descartados: WordPress/Ghost
 (cuota gratis pequeña y cada despliegue la vuelve a bajar), cambiar de
 framework o de hosting (no arregla el historial). Por orden, cuando toque:
 
-1. Terminar el Proyecto Tierra (paso 8 y fusión).
+1. ~~Terminar el Proyecto Tierra~~: hecho y publicado.
 2. **Que `scripts/importar-notas.mjs` reduzca las fotos** antes de copiarlas
    (máx. ~2400 px de ancho, JPG/WebP de buena calidad). En Obsidian siguen a
    tamaño completo.
