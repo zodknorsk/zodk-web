@@ -87,6 +87,15 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   color del papel del título con la tinta oscura. `montarTituloFuera` mueve los nodos (no se clonan: siguen sus
   eventos) al recuadro al retirarse el documento y de vuelta al visor al
   volver.
+- **La censura del título, más pausada** (usuario: "va muy apresurado"):
+  en la entrada tras el acercamiento aguanta 1,4 s tachado y cada barra se
+  retira en 1,1 s (antes 0,35 s y 0,5 s), escalonadas.
+- **Cada visita empieza de día** (usuario: "siempre el modo día, porque si
+  no tenemos el problema de la luna": el vuelo con `moon-project` pasa a
+  noche y eso se quedaba guardado). El tema elegido va en `sessionStorage`
+  (antes `localStorage`): aguanta al navegar y al recargar, pero otra
+  pestaña u otro día arranca de día. El valor viejo de `localStorage` se
+  borra al cargar (`preloadTheme`, `Head.astro`).
 - **Cabecera centrada de verdad**: el logo escondido seguía ocupando 78 px y
   empujaba la nav; ahora fuera del flujo, y el botón de tema cuelga a la
   derecha (el centro de la pantalla cae en el de los enlaces).

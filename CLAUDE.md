@@ -36,8 +36,10 @@ queda. Hechos los pasos 1-7 (motor `src/scripts/tierra-gl.js`, hemisferio sur,
 chapas y X, tamaño común de los tres astros, zoom con detalle y nombres, la
 noche entera) y, el 26-sep, **el acercamiento**: al cargar la portada, la
 Tierra entera se acerca en 5 s hasta el horizonte del hemisferio norte y
-entra el título de `main` (Serif con visor). Pendiente: decidir el título, el
-paso 8 (Zen y móvil) y fusionar. La web carga de día de serie. Las fuentes de datos del zoom van en `logo-files/tierra-fuentes/`
+entra el título: un documento clasificado en papel (NATO SECRET) con el
+visor y la censura de `main`; solo se ve en ese encuadre (al mover o ampliar
+se retira y la coordenada pasa a un recuadro de papel en la esquina).
+Pendiente: el paso 8 (Zen y móvil) y fusionar. La web carga de día de serie. Las fuentes de datos del zoom van en `logo-files/tierra-fuentes/`
 (fuera de Git; cómo bajarlas y regenerarlas, en el documento).
 
 ## El planeta de la portada (el de antes, en `main`)

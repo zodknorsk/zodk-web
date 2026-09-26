@@ -1952,10 +1952,15 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: n
 @keyframes titulo-aparece { from { opacity: 0; } }
 .hero.titulo-entra .hero-marco { animation: marco-cierra 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
 @keyframes marco-cierra { from { inset: -40px; opacity: 0; } 30% { opacity: 1; } }
-.hero.titulo-entra .hero-titulo h1::after { animation-delay: 0.35s; }
-.hero.titulo-entra .hero-titulo p span:nth-of-type(1)::after { animation-delay: 0.5s; }
-.hero.titulo-entra .hero-titulo p span:nth-of-type(2)::after { animation-delay: 0.62s; }
-.hero.titulo-entra .hero-titulo p span:nth-of-type(3)::after { animation-delay: 0.74s; }
+/* la censura aguanta y se retira despacio (usuario, 26-sep-2026: "que aguante
+   un poco más y se quite más lento, va muy apresurado"): 1,4 s tachado y
+   1,1 s por barra, escalonadas */
+.hero.titulo-entra .hero-titulo h1::after,
+.hero.titulo-entra .hero-titulo p span::after { animation-duration: 1.1s; }
+.hero.titulo-entra .hero-titulo h1::after { animation-delay: 1.4s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(1)::after { animation-delay: 1.8s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(2)::after { animation-delay: 2.05s; }
+.hero.titulo-entra .hero-titulo p span:nth-of-type(3)::after { animation-delay: 2.3s; }
 html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
 .hero.sin-nombres .tierra-nombres { display: none; }
 .hero.astros-esquina { --astro-dx: calc(45vw - 84px); --astro-dy: calc(45vh - 84px); }
