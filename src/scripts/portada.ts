@@ -1,6 +1,6 @@
-// La Tierra del hero, entera, en WebGL (src/scripts/tierra-gl.js, Proyecto
-// Tierra: logo-files/TIERRA-WIP.md): gira sola, se arrastra con el ratón y
-// se acerca pellizcando o con Ctrl + rueda (la rueda sola baja la página).
+// La portada: la Tierra del hero en WebGL (tierra-gl.js) gira sola, se
+// arrastra con el ratón y se acerca pellizcando o con Ctrl + rueda (la rueda
+// sola baja la página).
 // La web cambia de página sin recargar (ClientRouter), así que se monta en
 // cada llegada a la portada y se desmonta al salir. Se para, como el resto
 // del hero, con el ratón sobre una nave o una chapa.
@@ -112,16 +112,14 @@ function montarGiro(hero: HTMLElement, p: Planeta) {
   return () => { b.removeEventListener("click", clic); hero.classList.remove("giro-parado"); };
 }
 
-// Acercamiento de la portada (usuario, 26-sep-2026): al cargar se ve la
-// Tierra entera (la foto quieta y el primer fotograma) y, al segundo, la
-// cámara se acerca en 5 s hasta el horizonte del hemisferio norte, como la
-// portada de antes. Arranque suave y frenada larga, hacia un punto fijo
-// cerca del polo: el centro del disco baja a la par que crece (encuadre), y
-// al alejar con el zoom vuelve solo al disco entero centrado. Al acabar
-// entra el título (el visor se cierra y la censura se retira) y después la
-// nave; los nombres del zoom esperan a que se use el zoom. Solo al cargar la
-// portada: al volver en vuelo de la Luna o Marte se queda el disco entero.
-const ZOOM_CERCA = 2.5, ESPERA = 1000, ACERCA = 5000;   // 2,8 al principio: "un pelín menos"
+// Acercamiento: al cargar se ve la Tierra entera y, al segundo, la cámara se
+// acerca en 5 s hasta el horizonte del hemisferio norte. Arranque suave y
+// frenada larga, hacia un punto fijo cerca del polo: el centro del disco baja
+// a la par que crece (encuadre), y al alejar con el zoom vuelve solo al disco
+// entero centrado. Al acabar entra el título (el visor se cierra y la censura
+// se retira) y después la nave; los nombres esperan a que se use el zoom.
+// Solo al cargar la portada: al volver en vuelo se queda el disco entero.
+const ZOOM_CERCA = 2.5, ESPERA = 1000, ACERCA = 5000;
 // lo alto del disco a ZOOM_CERCA, en tanto por uno del alto del hero; en vertical
 // más abajo, que el sol y Marte (en las esquinas) queden en el cielo
 const HORIZONTE = 0.12, HORIZONTE_VERTICAL = 0.22;
@@ -154,14 +152,13 @@ function encuadreLlegada(hero: HTMLElement, sonda: HTMLElement) {
   };
   return { encuadre, quita: () => ro.disconnect() };
 }
-// El documento solo se ve en el encuadre de llegada (ZOOM_CERCA) y sin
-// arrastrar; con cualquier otro zoom (también a x1, o al volver en vuelo)
-// se retira y la coordenada pasa al recuadro de la esquina (.titulo-fuera
-// en global.css; usuario, 26-sep-2026: "si amplío o lo pongo a x1 va
-// saliendo el título"). Si solo se gira arrastrando, vuelve un momento
-// después de soltar. No durante el acercamiento (el zoom cambia solo). Se
-// mira en cada fotograma pintado y al soltar (quieto, el planeta no
-// repinta). Devuelve { mira, quita }.
+// El documento del título solo se ve en el encuadre de llegada (ZOOM_CERCA)
+// y sin arrastrar; con cualquier otro zoom (también a ×1, o al volver en
+// vuelo) se retira y la coordenada pasa al recuadro de la esquina
+// (.titulo-fuera en portada.css). Si solo se gira arrastrando, vuelve un
+// momento después de soltar. No durante el acercamiento (el zoom cambia
+// solo). Se mira en cada fotograma pintado y al soltar (quieto, el planeta
+// no repinta). Devuelve { mira, quita }.
 function montarTituloFuera(hero: HTMLElement, zoom: () => number) {
   let t = 0;
   // la coordenada y sus botones: bajo el visor con el documento, en el
@@ -218,7 +215,7 @@ function montarAcercamiento(hero: HTMLElement, tierra: { acercar(z: number, ms: 
   luego(ESPERA + ACERCA + 1000, () => hero.classList.add("nave-lista"));
 }
 
-// Fase de la luna de hoy (faseLunaHoy() en viaje-luna.js; sin JS, llena).
+// Fase de la luna de hoy (faseLunaHoy() en vuelos.js; sin JS, llena).
 function faseLuna() {
   const el = document.querySelector<HTMLElement>(".astro-luna");
   if (el) el.style.backgroundPosition = faseLunaHoy();
@@ -264,7 +261,7 @@ const LUNA: Destino = {
   ruta: "/luna", enlace: ".hero-luna-enlace", icono: ".astro-luna",
   img: `/luna/luna-visible.png?v=${LUNA_V}`, heroDestino: ".luna-hero", apagarTambien: ".hero-marte",
 };
-// Marte acaba en el disco de /marte (VUELO_MARTE en viaje-luna.js).
+// Marte acaba en el disco de /marte (VUELO_MARTE en vuelos.js).
 const MARTE: Destino = {
   ruta: "/marte", enlace: ".hero-marte-enlace", icono: ".hero-marte",
   img: `/marte/marte-quieto.png?v=${MARTE_V}`, heroDestino: ".marte-hero", apagarTambien: ".hero-astro",
@@ -326,10 +323,9 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     // de golpe. Y el otro astro del cielo: no gira con la cámara.
     const SEL_APAGAR = `.hero-titulo, .hero-hud, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
     const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
-    // El planeta deja de girar mientras dura el vuelo: se va encogiendo y el
-    // giro no se aprecia, pero cada repintado cuesta un volcado entero del
-    // lienzo justo en el momento de más trabajo de toda la web (20-sep-2026,
-    // ver temperatura-zen.md).
+    // El planeta deja de girar mientras dura el vuelo: no se aprecia y cada
+    // repintado cuesta un volcado entero del lienzo justo en el momento de
+    // más trabajo de toda la web (docs/rendimiento.md).
     giroPlaneta(false);
     // La Tierra que se queda atrás: el lienzo si ya ha pintado (con zoom o
     // girada, tal como esté), si no la Tierra quieta.

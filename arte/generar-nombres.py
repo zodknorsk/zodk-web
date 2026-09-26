@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Nombres de lugares de Marte para /marte (Proyecto Marte, rama mars-project).
+"""Nombres de lugares de Marte (y, con --luna, de la Luna).
 
 Saca `public/marte/marte-nombres.json` del catálogo oficial de la Unión
 Astronómica Internacional (Gazetteer of Planetary Nomenclature, USGS; dominio
@@ -28,10 +28,10 @@ Las grandes zonas llevan `px` 0: salen en cuanto se empieza a acercar (zoom
 ya no caben en la pantalla. Las zonas medianas (Kasei Valles, Noctis
 Labyrinthus…) llevan rótulo pero con umbral, para que no salgan tan pronto.
 
-Los nombres van en latín, que es como están en el catálogo y en los mapas
-(decisión del usuario, 22-sep-2026). El castellano, en la ficha.
+Los nombres van en latín, que es como están en el catálogo y en los mapas.
+El castellano, en la ficha.
 
-Con --luna, lo mismo para la Luna (23-sep-2026, ver LUNA-WIP.md): catálogo
+Con --luna, lo mismo para la Luna: catálogo
 de la Luna (luna-fuentes/MOON_nomenclature_center_pts.dbf, del zip
 https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MOON_nomenclature_center_pts.zip),
 la lista LISTA_LUNA y el relieve LOLA (luna-fuentes/ldem_16.img) para ceñir
@@ -53,7 +53,7 @@ MOLA_PPD = 32
 MOLA_BIG_ENDIAN = True                          # el MEGDR va en MSB; el LDEM de la Luna, en LSB
 # Los umbrales `px` de las listas se multiplican por esto. En la Luna, 0,45: un
 # cráter del mismo tamaño ocupa menos pantalla que en Marte al mismo zoom (con
-# los de Marte, Copérnico no salía ni a x4; 23-sep-2026).
+# los de Marte, Copérnico no salía ni a ×4).
 ESCALA_PX = 1.0
 
 # nombre del catálogo -> (clase, px, menor)
@@ -85,8 +85,8 @@ LISTA = {
     "Melas Chasma": ("region", 200, True),
     "Ma'adim Vallis": ("region", 220, False),
     "Nili Fossae": ("region", 200, False),
-    # Los sitios de los amartizajes (usuario, 23-sep-2026: cada uno, bueno o
-    # fallido, tiene que tener cerca un accidente con nombre). Zonas:
+    # Los sitios de los amartizajes: cada uno, bueno o fallido, tiene cerca un
+    # accidente con nombre. Zonas:
     "Ares Vallis": ("region", 220, False),        # Mars Pathfinder
     "Scandia Colles": ("region", 200, False),     # Phoenix
     "Samara Valles": ("region", 200, False),      # Mars 6
@@ -156,12 +156,12 @@ def dbf(ruta):
     return filas
 
 
-# --- La Luna (--luna, 23-sep-2026): misma idea que en Marte. Zonas (mares,
-# océano, bahías, cordilleras, valles y grietas largas): rótulo de región;
-# formas claras (cráteres y montes): visor. A x1, nada. Cada alunizaje de
-# /luna (src/data/alunizajes.ts) tiene cerca un nombre de la lista, como
-# pidió el usuario para Marte (los "Statio" oficiales de algunos sitios de
-# aterrizaje son un punto, sin tamaño: ahí ya está la chapa).
+# --- La Luna (--luna): misma idea que en Marte. Zonas (mares, océano,
+# bahías, cordilleras, valles y grietas largas): rótulo de región; formas
+# claras (cráteres y montes): visor. A ×1, nada. Cada alunizaje de /luna
+# (src/data/alunizajes.ts) tiene cerca un nombre de la lista, como en Marte
+# (los "Statio" oficiales de algunos sitios de aterrizaje son un punto, sin
+# tamaño: ahí ya está la chapa).
 LISTA_LUNA = {
     # --- Grandes zonas: rótulo de región -----------------------------------
     "Oceanus Procellarum": ("region", 0, False),
@@ -264,8 +264,7 @@ def usar_luna():
     ESCALA_PX = 0.45
 
 
-# --- El visor ceñido a la geografía (usuario, 22-sep-2026: "para futuros sí
-# que quiero que sea ajustado a la geografía"). La caja del catálogo es un
+# --- El visor ceñido a la geografía. La caja del catálogo es un
 # rectángulo de latitud y longitud que abarca el lugar con holgura (en el
 # Olympus Mons sobraba por la derecha). Para los montes se saca del relieve:
 # desde el centro, rayos en 36 direcciones, y en cada una el pie, donde la
@@ -273,10 +272,11 @@ def usar_luna():
 # sobre ella), sin pasar de 1,3 veces su radio (Alba Mons, tan plano, se iba
 # lejísimos). La caja nueva abarca esos 36 puntos (sin los que se salen mucho
 # de la mediana). Ceñir es estrechar o recolocar, no agrandar: si sale más de
-# un 10 % mayor que la del catálogo (Alba Mons, casi plano), se queda esa. Los cráteres y las calderas se quedan con la del catálogo:
-# su diámetro ya se mide de borde a borde, y buscar el borde en el relieve
-# (probado el 23-sep-2026) lo agrandaba cuando el terreno de fuera es más
-# alto. Las fosas y los cañones, también con la del catálogo.
+# un 10 % mayor que la del catálogo (Alba Mons, casi plano), se queda esa.
+# Los cráteres y las calderas se quedan con la del catálogo: su diámetro ya
+# se mide de borde a borde, y buscar el borde en el relieve (se probó) lo
+# agrandaba cuando el terreno de fuera es más alto. Las fosas y los cañones,
+# también con la del catálogo.
 CENIR = {"Mons": "pie", "Tholus": "pie"}
 KM_GRADO = math.pi * 3389.5 / 180
 

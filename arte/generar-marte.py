@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Marte en pixel art (Proyecto Marte, rama mars-project) — BOCETO PROVISIONAL.
+"""Marte en pixel art: los datos del motor de /marte y el Marte pequeño.
 
-Primer Marte para tener algo sobre lo que probar el giro con la barra
-espaciadora y el zoom (ver MARTE-WIP.md). El pixel art definitivo va después.
 Mismo recorrido que la Luna (generar-luna.py): proyección ortográfica, luz en
 escalones lisos de 1/LIGHT_SUB, rampas de color con cambio de tono, relieve en
 escalones enteros de rampa, sombras proyectadas cerca del terminador y
 limpieza de píxeles sueltos. Lo propio de Marte: fuentes, paleta (óxidos y
 casquetes de hielo) y materiales por brillo y color del mosaico.
 
-Fuentes (NASA/USGS, dominio público; pesadas y sin trackear, en marte-fuentes/):
+Fuentes (NASA/USGS, dominio público; pesan mucho y no van en Git, en marte-fuentes/):
   - Relieve: MOLA MEGDR de Mars Global Surveyor, 16 px/grado, int16 big-endian
     en metros, columnas de 0 a 360° E:
       curl -sSLO https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/megt90n000eb.img
@@ -18,20 +16,9 @@ Fuentes (NASA/USGS, dominio público; pesadas y sin trackear, en marte-fuentes/)
       curl -sSLO https://planetarymaps.usgs.gov/mosaic/Mars_Viking_ClrMosaic_global_925m.tif
       sips -s format bmp -z 1440 2880 Mars_Viking_ClrMosaic_global_925m.tif --out viking_8.bmp
 
-Uso:
-    python3 generar-marte.py              # las dos caras de prueba -> prototipo-marte/
-    python3 generar-marte.py tharsis      # solo una (tharsis, syrtis)
-    python3 generar-marte.py --zoom       # además, un recorte ampliado x4 del centro
-    python3 generar-marte.py --histograma # reparto de brillo del mosaico (para los umbrales)
-    python3 generar-marte.py --recalc     # rehace la pasada lenta (geometría/luz)
-
-Datos del <canvas> (el Marte que se gira con la mano y el zoom):
-    python3 generar-marte.py --canvas ../public/marte/   # base + teselas n1/, n2/ + LUT + datos (~3 min)
+Datos del motor (marte-gl.js):
+    python3 generar-marte.py --canvas ../public/marte/   # base + teselas n1-n3 + LUT + datos
     python3 generar-marte.py --canvas ../public/marte/ --niveles 0   # solo la base
-    Color de las zonas oscuras (solo la LUT; en el banco con ?lut=):
-    python3 generar-marte.py --solo-lut prototipo-marte/oscuras/basalto.png --oscuras basalto
-    Variantes del pulido, para comparar en el banco (solo la base, sin teselas):
-    python3 generar-marte.py --canvas prototipo-marte/llanuras/bandas/ --niveles 0 --sin-teselas --variante bandas
     Necesita también el mosaico a 16 y 24 px/grado y el MOLA de 32:
       sips -s format bmp -z 2880 5760 Mars_Viking_ClrMosaic_global_925m.tif --out viking_16.bmp
       sips -s format bmp -z 4320 8640 Mars_Viking_ClrMosaic_global_925m.tif --out viking_24.bmp
@@ -41,8 +28,20 @@ Marte pequeño de la portada (arriba a la derecha; se pulsa para viajar a
 /marte), con la misma cara y la misma luz que la vista inicial de /marte:
     python3 generar-marte.py --icono ../public/zodk-marte.png
 
-Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
-http://127.0.0.1:4400/arte/prototipo-marte/
+Después, marte-quieto.png con generar-marte-quieto.mjs.
+
+Para probar (todo sale en arte/pruebas/marte/; el banco es
+arte/bancos/marte-zoom.html):
+    python3 generar-marte.py              # dos caras de prueba (tharsis, syrtis)
+    python3 generar-marte.py tharsis      # solo una
+    --zoom         además, un recorte ampliado x4 del centro
+    --histograma   reparto de brillo del mosaico (para los umbrales)
+    --recalc       rehace la pasada lenta
+    Colores de las zonas oscuras que se probaron (solo la LUT; en el banco
+    con ?lut=):
+    python3 generar-marte.py --solo-lut pruebas/marte/basalto.png --oscuras basalto
+    Variantes que se probaron para las llanuras y el grano (solo la base):
+    python3 generar-marte.py --canvas pruebas/marte/bandas/ --niveles 0 --sin-teselas --variante bandas
 
 La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
 marte-fuentes/cache-<cara>.bin; si solo cambian paleta o umbrales, no se repite.
@@ -58,7 +57,7 @@ from png8 import write_rgba
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FUENTES = os.path.join(AQUI, "marte-fuentes")
-SALIDA = os.path.join(AQUI, "prototipo-marte")
+SALIDA = os.path.join(AQUI, "pruebas", "marte")
 
 
 def smooth(e0, e1, x):
@@ -98,9 +97,9 @@ LADO    = -1           # -1 izquierda, +1 derecha
 # Terminador algo menos seco que el de la Luna (-0,01/0,30): Marte tiene una
 # atmósfera fina.
 TERM_A, TERM_B = -0.03, 0.32
-# Brillo del lado sin sol (y suelo de las sombras del relieve). Empezó en 0,16,
-# el de la Luna; el usuario lo quiso "menos oscuro" y, comparando 0,16 / 0,22 /
-# 0,28 / 0,35 en el banco (21-sep-2026), eligió 0,22.
+# Brillo del lado sin sol (y suelo de las sombras del relieve). Algo más que
+# el de la Luna (0,16), que en Marte quedaba demasiado oscuro; se compararon
+# 0,16, 0,22, 0,28 y 0,35.
 NOCHE   = 0.22
 LIMB_K  = 0.10         # oscurecimiento del borde
 
@@ -137,21 +136,19 @@ SPACE = (0x05, 0x06, 0x0a)
 
 # Materiales: por brillo del mosaico (0-255) y, en los polos, hielo.
 # (hasta, color a plena luz); los umbrales salen de --histograma.
-# Los tres oscuros, en "chocolate suave" (pulido del 21-sep-2026): el pardo de
-# antes (#5c3c31, #724937, #8c563b) algo más hondo. Se compararon también
-# "basalto gris" y "gris azulado" (ver OSCURAS): el usuario los rechazó y
-# prefirió el pardo/chocolate, que es además lo más fiel al color real de las
-# zonas oscuras de Marte; pidió "un pelín menos de contraste que chocolate".
+# Los tres oscuros, en "chocolate suave": un pardo hondo, que es además lo
+# más fiel al color real de las zonas oscuras de Marte. Se probaron también
+# "basalto gris", "gris azulado" y un chocolate con más contraste (ver
+# OSCURAS) y quedaron peor.
 MATERIALES = [
     (None, (0x53, 0x34, 0x2b)),   # basalto muy oscuro (el corazón de Syrtis Major)
     (None, (0x6a, 0x43, 0x31)),   # regiones oscuras (Acidalia, Mare Erythraeum…)
     (None, (0x89, 0x55, 0x3a)),   # transición
-    # Óxido medio, en DOS TONOS casi iguales (pulido del 21-sep-2026). Era uno
-    # solo, #a66440, de 80 a 98: el pico del histograma entero en un material,
-    # porque en la Luna partirlo salía a manchas. Pero así las llanuras
-    # grandes (Utopia, Amazonis) salían de un solo tono. Comparado en el banco
-    # con "bandas de altura" y "más relieve en lo llano" (ver --variante), el
-    # usuario eligió esto: manchas suaves que siguen el brillo real.
+    # Óxido medio, en dos tonos casi iguales. Con uno solo (#a66440, de 80 a
+    # 98: el pico entero del histograma) las llanuras grandes (Utopia,
+    # Amazonis) salían de un solo tono. Se probaron también "bandas de
+    # altura" y "más relieve en lo llano" (--variante); los dos tonos dan
+    # manchas suaves que siguen el brillo real.
     (None, (0xa1, 0x61, 0x3e)),   # óxido medio, algo más oscuro (80-89)
     (None, (0xab, 0x68, 0x43)),   # óxido medio, algo más claro (89-98)
     (None, (0xbc, 0x77, 0x49)),   # ocre
@@ -546,14 +543,14 @@ def histograma(brillo, hielo):
 # así que al acercarse aparecen cráteres y cañones que la base no tiene.
 #   marte-lut.png    color de cada material (fila) por escalón de luz (columna)
 #   marte-datos.json constantes de luz y geometría, niveles y caras de prueba
-MAPA_W, MAPA_H = 1440, 720    # 4 px/grado: en el zoom x1 un píxel del disco son ~0,26°
+MAPA_W, MAPA_H = 1440, 720    # 4 px/grado: a ×1 un píxel del disco son ~0,26°
 NIVELES = [                   # (px/grado del mapa, del mosaico de color, del MOLA, en teselas)
-    (4, 8, 16, False),        # base: zoom x1
-    (8, 8, 16, True),         # hasta x2
-    (16, 16, 16, True),       # hasta x4
-    # x6 (decidido el 21-sep-2026): 24 y no 32 px/grado. A x6 un píxel de
-    # arte son ~23 px/grado, así que 32 no enseñaría más detalle y pesaría el
-    # doble; con 24 cada celda cae en un píxel. El relieve sale del MOLA de 32.
+    (4, 8, 16, False),        # base: ×1
+    (8, 8, 16, True),         # hasta ×2
+    (16, 16, 16, True),       # hasta ×4
+    # ×6: 24 y no 32 px/grado. A ×6 un píxel de arte son ~23 px/grado, así
+    # que 32 no enseñaría más detalle y pesaría el doble; con 24 cada celda
+    # cae en un píxel. El relieve sale del MOLA de 32.
     (24, 24, 32, True),
 ]
 TESELA = 360
@@ -561,14 +558,14 @@ LUT_KMIN, LUT_KMAX = -16, 4   # escalones de rampa que caben (noche + relieve + 
 NORMAL_NIVELES = 64           # niveles por componente de la normal (menos = PNG más ligero)
 
 
-# --------------------------------------- pulido: llanuras de un solo tono
-# Variantes para comparar en el banco (--variante), 21-sep-2026. Con None, el
-# mapa sale como hasta ahora. Las llanuras (Utopia, Amazonis, Tharsis…) salen
-# de un solo tono porque casi la mitad del planeta cae en el pico de brillo
-# del mosaico (un solo material) y son tan llanas que el relieve no dibuja.
+# --------------------------------------- variantes: llanuras de un solo tono
+# Se probaron en el banco (--variante) y no se usan: con None, el mapa normal.
+# Las llanuras (Utopia, Amazonis, Tharsis…) salían de un solo tono porque casi
+# la mitad del planeta cae en el pico de brillo del mosaico (un solo
+# material) y son tan llanas que el relieve no dibuja.
 LLANURAS = None
-# ("dos-tonos", el material del pico partido en dos tonos casi iguales, fue la
-# elegida y ya es lo normal: ver MATERIALES.)
+# (Lo que se quedó, el material del pico partido en dos tonos, ya es lo
+# normal: ver MATERIALES.)
 # "bandas": cada BANDA_M metros de altura (suavizada) el tono se aclara
 # BANDA_LUZ tercios de escalón en las bandas impares, como terrazas.
 BANDA_M = 1000.0
@@ -580,17 +577,17 @@ LLANOS_EXAG = 3.0
 LLANOS_A, LLANOS_B = 0.005, 0.03
 
 
-# "casquete-amplio" (pulido, 21-sep-2026): umbral de hielo más suelto, para
+# "casquete-amplio": umbral de hielo más suelto, para
 # que el casquete norte llegue hasta donde llega el real (~80-81° N; con los
 # umbrales de siempre está entero hasta 84° N, a medias en 83° y se acaba
 # hacia 76° N).
 CASQUETE_AMPLIO = {"HIELO_R_MIN": 125, "HIELO_B_R": 0.72, "HIELO_T": 0.3}
 
 
-# ------------------------------------------- pulido: grano en las llanuras
-# A x6, en las llanuras se ven rayitas norte-sur discontinuas: las órbitas del
+# ------------------------------------------- variantes: grano en las llanuras
+# A ×6, en las llanuras se ven rayitas norte-sur discontinuas: las órbitas del
 # MOLA (casi de polo a polo) dejan escalones este-oeste entre pasada y pasada,
-# y la derivada este-oeste los recoge. Variantes (21-sep-2026), solo en los
+# y la derivada este-oeste los recoge. Variantes probadas, solo en los
 # niveles de GRANO_DESDE_PPD px/grado o más: derivada este-oeste más larga
 # ("grano-eo") y, además, algo más larga también norte-sur ("grano-suave").
 DERIV_EO = 1.0
@@ -683,10 +680,10 @@ def escribe_lut(ruta):
     return kn, len(lut)
 
 
-# ------------------------------------ pulido: zonas oscuras "algo pardas"
-# Variantes del color de los tres materiales oscuros (basalto muy oscuro,
-# regiones oscuras, transición), 21-sep-2026. Solo cambian la LUT: el mapa es
-# el mismo. `--solo-lut ruta --oscuras X` escribe solo esa LUT, para
+# ------------------------------------ variantes: color de las zonas oscuras
+# Colores probados para los tres materiales oscuros (basalto muy oscuro,
+# regiones oscuras, transición); el que se usa es "chocolate-suave". Solo
+# cambian la LUT: el mapa es el mismo. `--solo-lut ruta --oscuras X` escribe solo esa LUT, para
 # compararla en el banco con todos los niveles de zoom (?lut=).
 OSCURAS = {
     "antes": ((0x5c, 0x3c, 0x31), (0x72, 0x49, 0x37), (0x8c, 0x56, 0x3b)),
@@ -696,8 +693,7 @@ OSCURAS = {
     "gris-azulado": ((0x4e, 0x47, 0x4c), (0x65, 0x56, 0x53), (0x84, 0x5d, 0x49)),
     # C: marrón más hondo y oscuro, más contraste, igual de cálido
     "chocolate": ((0x4f, 0x31, 0x29), (0x67, 0x40, 0x2f), (0x88, 0x54, 0x3a)),
-    # "un pelín menos de contraste que chocolate" (el usuario): 70 % del camino
-    # del pardo de antes al chocolate
+    # algo menos de contraste que chocolate: el 70 % del camino desde "antes"
     "chocolate-suave": ((0x53, 0x34, 0x2b), (0x6a, 0x43, 0x31), (0x89, 0x55, 0x3a)),
 }
 
@@ -710,8 +706,7 @@ def pon_oscuras(nombre):
 # ------------------------------------------------ Marte pequeño de la portada
 # Arriba a la derecha de la portada, simétrico a la luna (arriba a la
 # izquierda), en un lienzo igual que el suyo (56 px de arte, que el CSS amplía
-# x3) y "un poco más pequeño que la luna" (el usuario, 21-sep-2026): radio 12
-# frente a 16. Misma cara que la vista inicial de /marte (marte-gl.js), para
+# ×3) y algo más pequeño que la luna: radio 12 frente a 16. Misma cara que la vista inicial de /marte (marte-gl.js), para
 # que el vuelo acabe en el mismo planeta. Borde seco y halo en tres escalones,
 # como la luna de generar-astros.py, en un tono cálido.
 ICONO_N, ICONO_R = 56, 12

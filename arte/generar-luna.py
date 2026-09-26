@@ -1,42 +1,40 @@
 #!/usr/bin/env python3
-"""La Luna en pixel art (Proyecto Luna, rama moon-project) — PRIMER BOCETO.
+"""La Luna en pixel art: las dos caras fijas y los datos del motor de /luna.
 
-Cara visible tal como se ve desde la Tierra: disco completo, norte arriba, sin
-inclinación ni giro. Mismo lenguaje que la Tierra del hero
-(generar-tierra.py): proyección ortográfica, luz en escalones lisos de
-1/LIGHT_SUB, rampas de color con cambio de tono (sombras frías), relieve en
-escalones enteros de rampa.
+Mismo lenguaje que la Tierra (generar-tierra.py): proyección ortográfica, luz
+en escalones lisos de 1/LIGHT_SUB, rampas de color con cambio de tono
+(sombras frías) y relieve en escalones enteros de rampa.
 
-Fuentes (NASA, dominio público; pesadas y sin trackear, en luna-fuentes/):
-  - Relieve: LOLA/LRO, LDEM_16 (16 px/grado, int16 en metros x 0,5):
+Fuentes (NASA, dominio público; pesan mucho y no van en Git, en luna-fuentes/):
+  - Relieve: LOLA/LRO, LDEM_16 y LDEM_64 (16 y 64 px/grado, int16 en metros
+    x 0,5; el de 64 pesa 530 MB y solo lo usan las teselas):
       curl -sSLO https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.img
+      curl -sSLO https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img
   - Claros/oscuros (mares y tierras altas): mosaico de color LROC WAC del
     "CGI Moon Kit" (SVS 4720), 4096x2048, centrado en 0° de longitud:
       curl -sSLO https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif
       sips -s format bmp lroc_color_poles_4k.tif --out lroc_4k.bmp
 
-Uso:
-    python3 generar-luna.py              # luz por la izquierda -> prototipo-luna/luna-visible.png
-    python3 generar-luna.py --derecha    # luz por la derecha   -> prototipo-luna/luna-visible-derecha.png
-    python3 generar-luna.py --penumbra-corta   # paso luz/sombra más seco (TERM_B 0,15)
-    python3 generar-luna.py --noche 0.07 # otra luz cenicienta en el lado sin sol (ver NOCHE)
-    python3 generar-luna.py --zoom       # además, un recorte ampliado x4 para revisar los píxeles
-    python3 generar-luna.py --recalc     # rehace la pasada lenta (geometría/luz)
+Las dos caras de la web (public/luna/luna-visible.png y luna-oculta.png):
+    python3 generar-luna.py --derecha --valles --relieve-mares 2.5
+    python3 generar-luna.py --oculta --sur --valles --relieve-mares 2.5 --exposicion 0.6 --frio 0.5
+  (salen en arte/pruebas/luna/ con el nombre de sus opciones; ver CARAS)
 
-Cara oculta (bocetos, 17-sep-2026; siempre luz por la derecha):
-    python3 generar-luna.py --oculta             # de frente (lon 180), fase 65° -> luna-oculta-f65.png
-    python3 generar-luna.py --oculta --sur       # inclinada 30° al sur: cuenca Polo Sur-Aitken
-    python3 generar-luna.py --oculta --fase 90   # otra fase (90 = media luz: la mitad izquierda a oscuras)
+Datos del motor (luna-gl.js) y teselas del zoom:
+    python3 generar-luna.py --canvas ../public/luna/    # mapa, LUT, datos y las dos caras
+    python3 generar-luna.py --teselas ../public/luna/   # n1-n4 (tarda)
 
-Datos del <canvas> (media vuelta entre caras, src/scripts/luna.js):
-    python3 generar-luna.py --canvas carpeta/    # mapa + LUT + datos + las dos caras aprobadas
-
-Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
-http://127.0.0.1:4400/arte/prototipo-luna/
+Para probar variantes (todo sale en arte/pruebas/luna/):
+    python3 generar-luna.py              # cara visible, luz por la izquierda
+    python3 generar-luna.py --derecha    # luz por la derecha
+    python3 generar-luna.py --oculta [--sur] [--fase 90]
+    --penumbra-corta, --noche 0.07, --exposicion, --frio, --limpiar N ...
+    --zoom       además, un recorte ampliado x4 para revisar los píxeles
+    --recalc     rehace la pasada lenta
 
 La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
-luna-fuentes/cache-<nombre>.bin; si solo cambian paleta o umbrales de albedo, no
-se repite.
+luna-fuentes/cache-<nombre>.bin; si solo cambian paleta o umbrales de albedo,
+no se repite.
 """
 import array
 import colorsys
@@ -49,7 +47,7 @@ from png8 import write_rgba
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FUENTES = os.path.join(AQUI, "luna-fuentes")
-SALIDA = os.path.join(AQUI, "prototipo-luna")
+SALIDA = os.path.join(AQUI, "pruebas", "luna")
 
 
 def smooth(e0, e1, x):
@@ -81,12 +79,11 @@ LADO    = -1           # de dónde viene la luz: -1 izquierda (oeste), +1 derech
 TERM_A, TERM_B = -0.01, 0.30
 # Brillo de la cara sin sol (luz cenicienta: el sol no le da, pero la Tierra
 # llena sí la ilumina; es lo que deja ver los mares en el lado oscuro de una
-# luna creciente real). Subido de 0,07 a 0,16 el 17-sep-2026: con 0,07 el
-# terreno de noche quedaba en (7,6,8), casi idéntico a SPACE (5,6,10), así que
-# no se distinguía la Luna del fondo y una chapa puesta ahí parecía flotar en
-# el espacio (se vio con Luna 9). Con 0,16 queda en (15,14,17): se ven los
-# mares y sigue leyéndose como noche. Comparado en prototipo-luna/noche.html
-# (0,07 / 0,12 / 0,16 / 0,22); el usuario eligió 0,16.
+# luna creciente real). Con 0,07 el terreno de noche quedaba en (7,6,8),
+# casi igual que SPACE (5,6,10): no se distinguía la Luna del fondo y una
+# chapa puesta ahí parecía flotar en el espacio. Con 0,16 queda en
+# (15,14,17): se ven los mares y sigue leyéndose como noche (se compararon
+# 0,07, 0,12, 0,16 y 0,22).
 NOCHE   = 0.16         # se cambia con --noche (solo color: no rehace la pasada lenta)
 LIMB_K  = 0.10         # oscurecimiento del borde (la Luna llena apenas lo tiene)
 
@@ -137,10 +134,10 @@ ALBEDO = [  # (hasta, color a plena luz)
     (186, (0xbd, 0xba, 0xb3)),   # tierras altas claras
     (256, (0xda, 0xd7, 0xcf)),   # rayos y eyecta fresca (Tycho, Copérnico…)
 ]
-# Pruebas del 17-sep-2026 (la cara visible "parece de poca resolución"): en la
-# cara visible los mares se amontonan en 80-89 y el corte de 76 los partía en
-# manchas de dos grises casi iguales. Umbrales en los valles del histograma:
-# un solo "mar" de 66 a 104 (con "mar oscuro" solo para lo muy oscuro).
+# En la cara visible los mares se amontonan en 80-89 y el corte de 76 los
+# partía en manchas de dos grises casi iguales (parecía de poca resolución).
+# Umbrales en los valles del histograma (--valles): un solo "mar" de 66 a 104,
+# con "mar oscuro" solo para lo muy oscuro.
 ALBEDO_VALLE = [66, 104, 128, 160, 186, 256]
 # Relieve extra en los mares (llanos: sin esto no tienen bordes nítidos, solo
 # manchas): multiplica la exageración donde el albedo es de mar, con rampa
@@ -151,8 +148,8 @@ MARES_A, MARES_B = 100, 120
 # largo = relieve más suave (quita el grano que sale al exagerar, deja las
 # arrugas de lava, que miden varios km).
 MARES_DERIV = 1.0
-# Cara oculta más oscura (bocetos 17-sep-2026): EXPOSICION multiplica toda la
-# luz (1 = como la visible); FRIO (0-1) enfría los colores hacia azul.
+# Cara oculta más oscura: EXPOSICION multiplica toda la luz (1 = como la
+# visible); FRIO (0-1) enfría los colores hacia azul.
 EXPOSICION = 1.0
 FRIO = 0.0
 
@@ -486,10 +483,12 @@ def colorear(datos):
 #                  del relieve (este, norte; ya exagerada) de -1..1 a 0..255
 #   luna-lut.png   color de cada material (fila) por escalón de luz (columna)
 #   luna-datos.json  constantes de luz/geometría y las dos caras
-# Las aprobadas (17-sep-2026). Las dos llevan los mares de la V2 (--valles
-# --relieve-mares 2.5: el mapa del giro es uno solo para las dos caras).
-#   visible: --derecha --valles --relieve-mares 2.5                         (V2)
-#   oculta:  --oculta --sur --valles --relieve-mares 2.5 --exposicion 0.6 --frio 0.5   (D3)
+# Las dos caras de la web. Las dos llevan los mismos mares (--valles
+# --relieve-mares 2.5), porque el mapa del giro es uno solo para las dos.
+#   visible: --derecha --valles --relieve-mares 2.5
+#   oculta:  --oculta --sur --valles --relieve-mares 2.5 --exposicion 0.6 --frio 0.5
+# --canvas copia sus PNG de arte/pruebas/luna/ si están (hay que generarlas
+# antes); si no, deja las que ya haya en la carpeta de destino.
 CARAS = {
     "visible": {"lat0": 0.0, "lon0": 0.0, "fase": 38.0, "lado": 1, "exposicion": 1.0, "frio": 0.0,
                 "png": "luna-visible-derecha-valles-rm2.5.png"},
@@ -551,7 +550,11 @@ def export_canvas(outdir):
     write_rgba(os.path.join(outdir, "luna-lut.png"), kn, len(lut), lut)
     caras = {}
     for nombre, cara in CARAS.items():
-        shutil.copyfile(os.path.join(SALIDA, cara["png"]), os.path.join(outdir, f"luna-{nombre}.png"))
+        origen, destino = os.path.join(SALIDA, cara["png"]), os.path.join(outdir, f"luna-{nombre}.png")
+        if os.path.exists(origen):
+            shutil.copyfile(origen, destino)
+        else:
+            print(f"  (sin {os.path.relpath(origen, AQUI)}: se deja {os.path.relpath(destino)})")
         caras[nombre] = {k: v for k, v in cara.items() if k != "png"}
     datos = {
         "SIZE": SIZE, "RADIUS": RADIUS, "LIMB_AA": LIMB_AA, "SOL_ARR": SOL_ARR,
@@ -568,29 +571,24 @@ def export_canvas(outdir):
 
 
 # ------------------------------------------------ teselas del zoom (/luna)
-# La Luna que gira y se acerca (23-sep-2026, ver LUNA-WIP.md): como Marte
-# (generar-marte.py), tres niveles finos en teselas de 360 x 360 celdas para
-# el motor WebGL (src/scripts/marte-gl.js): 8, 16 y 24 px/grado. El mapa base
-# (luna-mapa.png, 4 px/grado) y las dos caras aprobadas no se tocan.
-# Pixel art contenido (usuario, 23-sep-2026: "demasiado detalle hace que
-# parezca menos pixel art… lo que no quiero es que se convierta en algo súper
-# realista"): los materiales (mares y tierras altas) salen del mismo mosaico
-# de 4k y con el mismo suavizado que la base, así que el zoom no añade
-# manchas nuevas, solo afina los bordes; el detalle nuevo es solo el relieve,
-# del LDEM de 16 px/grado (el de 32 no existe), con la derivada a
-# TESELA_DERIV celdas del nivel (1 = lo más fino que da el dato; el usuario
-# eligió esta, la "d1", frente a una más suavizada).
-# El nivel de 32 px/grado (n4) sale del LDEM de 64 (530 MB) (usuario,
-# 23-sep-2026: "¿no se puede sacar un pelín más de resolución?"): la Luna se
-# dibuja con 292,5 px de arte de radio, así que a x6 son 30,6 px de arte por
-# grado; con el de 24 cada celda ocupaba 1,28 px (bloques de 1 y 2 px), con
-# el de 32, 0,96, como Marte a x6.
+# Como Marte (generar-marte.py): cuatro niveles finos en teselas de
+# 360 x 360 celdas para el motor WebGL (marte-gl.js, vía luna-gl.js): 8, 16,
+# 24 y 32 px/grado. El mapa base (luna-mapa.png, 4 px/grado) y las dos caras
+# no se tocan.
+# Pixel art contenido, no realista: los materiales (mares y tierras altas)
+# salen del mismo mosaico de 4k y con el mismo suavizado que la base, así que
+# el zoom no añade manchas nuevas, solo afina los bordes; el detalle nuevo es
+# solo el relieve, con la derivada a TESELA_DERIV celdas del nivel (1 = lo
+# más fino que da el dato; se comparó con otra más suavizada).
+# El nivel de 32 px/grado (n4): la Luna se dibuja con 292,5 px de arte de
+# radio, así que a ×6 son 30,6 px de arte por grado; con el de 24 cada celda
+# ocupaba 1,28 px (bloques de 1 y 2 px), con el de 32, 0,96, como Marte a ×6.
 TESELA = 360
 NIVELES_ZOOM = [4, 8, 16, 24, 32]             # px/grado; el 4 es luna-mapa.png
-# Nivel -> LDEM del que sale (si no, el de 16). Los de 16, 24 y 32, del de 64
-# (23-sep-2026): del de 16, a x3-x5 el relieve salía en bloques de 1/16° y la
-# Luna "se ve como pixelada hasta que haces un zoom casi máximo" (usuario);
-# con el de 64 sale nítida desde x3, como Marte.
+# Nivel -> LDEM del que sale (si no, el de 16). Los de 16, 24 y 32, del de
+# 64: con el de 16, de ×3 a ×5 el relieve salía en bloques de 1/16° y la Luna
+# parecía pixelada hasta casi el zoom máximo; con el de 64 sale nítida desde
+# ×3, como Marte.
 DEM_FINO = {16: 64, 24: 64, 32: 64}
 TESELA_DERIV = 1.0
 

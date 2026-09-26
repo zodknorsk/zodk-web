@@ -1,21 +1,17 @@
-// Nombres de lugares de /marte (Proyecto Marte): salen al acercarse. Lo mismo
-// que el banco arte/prototipo-marte/nombres.html, donde se decidió
-// (usuario, 22-sep-2026):
-// - Zonas (planicies, tierras, mesetas, y las medianas como Kasei Valles o
-//   Noctis Labyrinthus): rótulo de región, sin marco. Se van cuando ya no
-//   caben en la pantalla.
-// - Formas claras (montes, cráteres, calderas): el visor, las esquinas del
-//   marco del título de la portada, ceñidas al lugar y crecen con él.
-// - A x1 no sale ningún nombre: al llegar, Marte limpio.
-// Los nombres son los oficiales de la UAI, de public/marte/marte-nombres.json
-// (arte/generar-nombres.py). La capa es HTML encima del lienzo, con el
-// origen en el centro del disco; `coloca()` se llama tras cada fotograma del
-// lienzo (quieto no se repinta nada).
-// En la misma capa, las chapas de los amartizajes (src/data/amartizajes.ts):
-// la bandera en su sitio exacto, a cualquier zoom (a x1 son lo único que
-// sale), con su ficha al pasar el ratón; la de una misión que no llegó
-// entera, en blanco y negro.
-// Detalle y decisiones en arte/MARTE-WIP.md.
+// Nombres de lugares que salen al acercarse, en la Tierra, la Luna y Marte.
+// - Zonas (llanuras, mesetas, mares, desiertos...): rótulo de región, sin
+//   marco. Se van cuando ya no caben en la pantalla.
+// - Formas claras (montes, cráteres, estrechos): el visor, las esquinas del
+//   marco del título de la portada, ceñidas al lugar y creciendo con él.
+// - A x1 no sale ninguno.
+// La lista de cada astro la sacan los generadores de arte/ a un JSON
+// (tierra-nombres.json, luna-nombres.json, marte-nombres.json). La capa es
+// HTML encima del lienzo, con el origen en el centro del disco; `coloca()` se
+// llama tras cada fotograma del lienzo.
+// En Marte, en la misma capa van las chapas de los amartizajes
+// (src/data/amartizajes.ts): la bandera en su sitio exacto a cualquier zoom,
+// con su ficha al pasar el ratón; la de una misión que no llegó entera, en
+// blanco y negro.
 
 const MARGEN = 0.06;                         // aire del visor por fuera del lugar
 const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de aire
@@ -124,13 +120,10 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
   function coloca() {
     const z = marte.vista().zoom, ppg = marte.pxGrado();
     const pantalla = Math.max(window.innerWidth, window.innerHeight);
-    // Los umbrales (`px`) se ajustaron con el disco de 540 px de un portátil
-    // (60 svh de 900; desde el 24-sep-2026 el disco es de 70 svh, 630 px, y
-    // salen algo antes). En el móvil el disco es más pequeño (88 vw, unos 340
-    // px) y los lugares pequeños no llegaban a su umbral ni a x6 (usuario,
-    // 23-sep-2026: "Olympus Paterae … en móvil no lo llego a ver"): el umbral
-    // encoge con el disco, así salen al mismo zoom que en el portátil. En
-    // pantallas más grandes no crece (salen antes, como hasta ahora).
+    // Los umbrales (`px`) se ajustaron con un disco de 540 px. En el móvil el
+    // disco es más pequeño (unos 340 px) y los lugares pequeños no llegaban a
+    // su umbral ni a x6: el umbral encoge con el disco, así salen al mismo
+    // zoom que en el portátil. En pantallas más grandes no crece.
     const escala = Math.min(1, (ppg / z) * 360 / Math.PI / 540);
     const salen = [];
     for (const e of els) {
@@ -144,9 +137,9 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
       // A x1 nada; luego cada lugar sale cuando mide lo suyo (con un 6 % de
       // margen al alejar, para que no parpadee en el umbral), y las zonas se
       // van cuando ya no caben en la pantalla.
-      // `zmin` y `zmax` (opcionales, los de la Tierra): desde qué zoom sale
+      // `zmin` y `zmax` (opcionales, los usa la Tierra): desde qué zoom sale
       // (por defecto x1,2) y por encima de cuál se retira (los continentes,
-      // para dejar sitio a los países).
+      // para dejar sitio a lo de dentro).
       const toca = z >= (n.zmin ?? 1.2) * (e.visto ? 0.97 : 1)
         && tam >= n.px * escala * (e.visto ? 0.94 : 1)
         && (n.clase !== "region" || tam < 1.6 * pantalla)

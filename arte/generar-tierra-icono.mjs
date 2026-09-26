@@ -1,23 +1,20 @@
 // Tierra pequeña de /marte (public/zodk-tierra.png y zodk-tierra-noche.png):
-// se pulsa para ir a la Tierra. Lienzo de 56 px de arte, que el CSS amplía x3,
+// se pulsa para ir a la Tierra. Lienzo de 56 px de arte, que el CSS amplía ×3,
 // disco de radio 12 con borde seco y halo, como el Marte pequeño
 // (generar-marte.py --icono).
 //
-// Primero era la Tierra de la portada reducida (planeta-quieto*.png) y el
-// usuario la vio "demasiado artificial" (22-sep-2026): plana, inclinada 20° al
-// norte como en la portada y con un aro gris azulado que parecía un marco.
-// Ahora es la Tierra de la portada pintada con sus mismas cuentas (mapa de
+// Es la Tierra de la portada pintada con sus mismas cuentas (mapa de
 // materiales, colores por escalón de luz, terminador, borde y, de noche, las
-// luces de las ciudades como planeta.js), a su misma escala (radio 288, 24
-// píxeles por cada uno del icono) y luego reducida a la media; pero:
+// luces de las ciudades), a su misma escala (radio 288, 24 píxeles por cada
+// uno del icono) y luego reducida a la media. La Tierra de la portada
+// reducida sin más quedaba plana y artificial. Además:
 //   - de pie, inclinada 12,5° al norte, como Marte en /marte (VISTA);
 //   - con la luz de Marte: desde la izquierda, 40° de fase y 20° de subida
 //     (FASE y SOL_ARR de generar-marte.py), así que tiene su lado en sombra.
 //     De noche, esa luz es la de la luna (colores y suelo de la noche de la
 //     portada), y con las luces encendidas: la web en modo oscuro aterriza en
 //     la Tierra de noche de la portada y el vuelo no cambia de día a noche.
-//   - halo solo por el lado de la luz, como la atmósfera de la portada (la
-//     variante C que eligió el usuario el 22-sep-2026).
+//   - halo solo por el lado de la luz, como la atmósfera de la portada.
 // Rehacerlo si cambia la Tierra de la portada:
 //   node arte/generar-tierra-icono.mjs
 //   node arte/generar-tierra-icono.mjs --pruebas carpeta/   (caras y halos para comparar)
@@ -100,7 +97,7 @@ const sol = (() => {                                      // x derecha, y arriba
   return v.map((c) => c / n);
 })();
 
-// Luces de las ciudades (planeta-luces.png, como cargarNoche() de planeta.js).
+// Luces de las ciudades (planeta-luces.png).
 const luces = (() => {
   const png = decodePNG(fs.readFileSync(path.join(P, "planeta-luces.png"))), d = png.data, lw = D.LUZ_PNG_W, out = [];
   for (let i = 0; i < D.LUCES_N; i++) {
@@ -137,7 +134,7 @@ function tierraGrande({ lat0, lon0 }, noche) {
   }
   if (noche) {
     // Luces: huella por ciudad, suma, pico y núcleos por píxel y de ahí el
-    // nivel de ámbar, como luces() de planeta.js.
+    // nivel de ámbar, con las mismas reglas que la portada.
     const acc = new Float32Array(L * L), pico = new Float32Array(L * L), nuc = new Float32Array(L * L);
     const HUELLAS = [D.HUELLA, D.HUELLA_R2, D.HUELLA_GRANDE];
     const nivel = (v) => { let l = 0; while (l < D.LUZ_UMBRAL.length && v >= D.LUZ_UMBRAL[l]) l++; return l; };

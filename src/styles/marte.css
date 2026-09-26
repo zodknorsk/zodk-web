@@ -1,4 +1,4 @@
-/* --- Proyecto Marte (/marte) -------------------------------------------------
+/* --- Marte (/marte) ----------------------------------------------------------
    Marte en WebGL (src/scripts/marte-gl.js), quieto: se gira con clic y
    arrastrar y se acerca con la rueda o el trackpad. La rueda es el zoom, así
    que la página no hace scroll: es una escena a pantalla completa. */
@@ -6,19 +6,17 @@ html:has(.marte-hero) { overflow: hidden; }
 /* Los gestos del dedo son de Marte (girar con uno, pellizco con dos): el
    navegador no hace scroll ni zoom de la página. */
 .marte-hero { touch-action: none; }
-/* Diámetro del disco a zoom x1 y lado de la caja de marte-quieto.png (450 px
-   de arte con el disco de 2 x 219,4 = 438,8 en medio). El vuelo desde la
-   portada acaba en esa caja (viaje-luna.js). Tamaño común de los astros
-   (usuario, 24-sep-2026, Proyecto Tierra): 70 svh, como la Tierra y la Luna
-   (antes, 60: el mismo tamaño de píxel que la Luna de entonces). En vertical
-   (el móvil) se ciñe al 88 % del ancho (usuario, 23-sep-2026). */
+/* Diámetro del disco a ×1 y lado de la caja de marte-quieto.png (450 px de
+   arte con el disco de 2 × 219,4 = 438,8 en medio). El vuelo desde la
+   portada acaba en esa caja (vuelos.js). Tamaño común de los astros: 70 svh,
+   como la Tierra y la Luna; en vertical, el 88 % del ancho. */
 :root { --marte-disco: min(70vh, 88vw); }
 @supports (height: 1svh) { :root { --marte-disco: min(70svh, 88vw); } }
 :root { --marte-caja: calc(var(--marte-disco) * 450 / 438.8); }
 /* Marte quieto (public/marte/marte-quieto.png, de generar-marte-quieto.mjs):
    la vista inicial tal cual la pinta el motor. Se ve al aterrizar del vuelo
    mientras carga el lienzo, y si no hay WebGL2 se queda. El ?v= va con
-   MARTE_V de marte.js. */
+   MARTE_V de versiones.js. */
 .marte-disco {
   position: absolute;
   left: 50%;
@@ -39,24 +37,23 @@ html:has(.marte-hero) { overflow: hidden; }
   image-rendering: pixelated;
   z-index: 1;
 }
-/* Mide el diámetro del disco a zoom x1 para marte-gl.js. */
+/* Mide el diámetro del disco a ×1 para marte-gl.js. */
 .marte-sonda {
   position: absolute;
   width: 0;
   height: var(--marte-disco);
   visibility: hidden;
 }
-/* La Tierra pequeña de /marte (usuario, 22-sep-2026): se pulsa para ir a la
-   Tierra con un vuelo hacia delante, hacia ella. Pixel art de
-   generar-tierra-icono.mjs (la Tierra de la portada, de pie y con la luz de
-   Marte; de día o de noche según el tema), en el lienzo del Marte pequeño
-   (56 px de arte, x3; x2 en el móvil). Aparece con un fundido al llegar, como
-   el botón de volver a la Luna.
-   Sitio: arriba a la derecha de Marte, y colocada respecto a Marte, no a la
-   esquina de la pantalla: al 3 % de la esquina, en pantalla completa quedaba
-   "muy alejada de Marte". Su centro va a 1,6 radios de Marte a la derecha y
-   0,85 por encima (en /luna, Marte queda de la Luna a 1,6-1,9 y 0,85, y así
-   "se ve algo mejor"); en ventanas estrechas, sin salirse de la pantalla. */
+/* La Tierra pequeña de /marte: se pulsa para ir a la portada con un vuelo
+   hacia delante. Pixel art de generar-tierra-icono.mjs (la Tierra de la
+   portada, de pie y con la luz de Marte; de día o de noche según el tema), en
+   el lienzo del Marte pequeño (56 px de arte, ×3; ×2 en el móvil). Aparece
+   con un fundido al llegar, como el botón de volver a la Luna.
+   Sitio: arriba a la derecha de Marte, colocada respecto a él y no a la
+   esquina de la pantalla (en pantalla completa quedaba muy lejos). Su centro
+   va a 1,6 radios de Marte a la derecha y 0,85 por encima, como el Marte
+   pequeño respecto a la Luna en /luna; en ventanas estrechas, sin salirse de
+   la pantalla. */
 .marte-tierra, .marte-tierra-enlace {
   --lado: 168px;
   position: absolute;
@@ -67,8 +64,7 @@ html:has(.marte-hero) { overflow: hidden; }
 }
 .marte-tierra {
   /* detrás de Marte (el lienzo, z-index 1, es transparente fuera del disco):
-     al acercarse, Marte la tapa (usuario, 23-sep-2026: antes iba delante y
-     "si amplías, la Tierra se sigue viendo por encima") */
+     al acercarse, Marte la tapa */
   z-index: 0;
   pointer-events: none;
   background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%;
@@ -84,7 +80,7 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 @media (max-width: 640px) {
   .marte-tierra, .marte-tierra-enlace { --lado: 112px; }
 }
-/* /luna en el móvil (23-sep-2026): los países, en una fila de banderas encima
+/* /luna en el móvil: los países, en una fila de banderas encima
    del mando (la columna no cabía: tapaba el Marte pequeño y la Luna); los
    subgrupos de EE. UU., en otra fila encima. "Volver a la Tierra" se queda en
    el icono (con el texto se montaba sobre el mando). */
@@ -123,8 +119,7 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
 }
 
 /* La mano: se agarra en todo el hero (montarMano pone las clases). Flecha
-   normal todo el rato y mano cerrada solo al pinchar para mover (usuario,
-   22-sep-2026: antes salía la mano abierta al pasar por encima). */
+   normal todo el rato y mano cerrada solo al pinchar para mover. */
 .marte-hero.agarrando, .marte-hero.agarrando * { cursor: grabbing !important; user-select: none; }
 
 /* Chapas de los amartizajes (src/data/amartizajes.ts): la bandera en pixel
@@ -147,8 +142,7 @@ a.marte-chapa { cursor: pointer; }
 .marte-chapa[hidden] { display: none; }
 .marte-chapa:hover { z-index: 1; }
 .marte-chapa svg { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; overflow: visible; }
-/* La que no llegó entera: en blanco y negro (usuario, 23-sep-2026, "vamos a
-   ver cómo queda con muchos países"; antes, una raya). */
+/* La que no llegó entera: en blanco y negro. */
 .marte-chapa.perdida svg { filter: grayscale(1) brightness(1.15) contrast(0.85); }
 /* La ficha al pasar el ratón: la dorada de las naves y de /luna. */
 .marte-ficha {
@@ -163,7 +157,7 @@ a.marte-chapa { cursor: pointer; }
   box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   opacity: 0;
-  /* --corre y --sube: lo que se desplaza para no salirse de la pantalla (marte-nombres.js) */
+  /* --corre y --sube: lo que se desplaza para no salirse de la pantalla (nombres.js) */
   transform: translate(calc(-50% + var(--corre, 0px)), calc(var(--sube, 0px) - 4px));
   transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;

@@ -1,11 +1,9 @@
 ---
-// Botón único de tema: alterna claro <-> oscuro. El JavaScript vive en
-// Head.astro y lo engancha por su "id" en cada carga y tras cada transición
-// de página. Se muestran los dos iconos y CSS enseña solo el que toca según
-// la clase "dark" del <html>: se ve el icono del tema al que se cambiaría, no
-// el del tema actual (en oscuro sale el sol, en claro la luna).
-// Dos modelos de cada icono: vacío (normal) y relleno (hover, foco y al
-// pulsar), con transición entre ellos (.tema-icono en global.css).
+// Botón de día / noche. Su JavaScript está en Head.astro, que lo engancha
+// por el id en cada página. Lleva los dos iconos y el CSS enseña el del tema
+// al que se cambiaría (de noche, el sol; de día, la luna). Cada icono sale
+// vacío y se rellena al pasar el ratón, al enfocarlo y al pulsar
+// (.tema-icono en base.css).
 ---
 
 <button

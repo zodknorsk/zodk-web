@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prueba: la Tierra entera</title>
 <!--
-  Banco de pruebas del Proyecto Tierra (arte/TIERRA-WIP.md): la Tierra
-  entera en WebGL (src/scripts/tierra-gl.js) con los datos de la portada
-  (public/planeta/), girando sola, arrastrable y con zoom.
+  Banco de pruebas de la Tierra: la Tierra entera en WebGL
+  (src/scripts/tierra-gl.js) con los datos de la portada (public/planeta/),
+  girando sola, arrastrable y con zoom.
   Servir desde la raíz del repo:
-    cd ~/Documents/zodk-web && python3 -m http.server 4400
-  y abrir http://127.0.0.1:4400/arte/prototipo-tierra/giro.html
+    python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/arte/bancos/tierra.html
 
   ?vista=lat0,lon0,zoom: vista al cargar.
   ?radio=256: otro radio en píxeles de arte (256 = el píxel de Marte y la
-    Luna; por defecto 180, el que eligió el usuario).
+    Luna; por defecto 180, el de la portada).
   ?parado: sin giro al cargar.
-  ?datos=carpeta: otros datos (una carpeta de prototipo-tierra/ hecha con
-    python3 generar-tierra.py --canvas prototipo-tierra/carpeta/).
-  ?medir: ms por fotograma a x1.
+  ?datos=../pruebas/tierra: otros datos (hechos con
+    python3 generar-tierra.py --canvas pruebas/tierra/).
+  ?medir: ms por fotograma a ×1.
 -->
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden;
@@ -26,7 +26,7 @@
   #hero { position: fixed; inset: 0; overflow: hidden; background: #05060a url(../../public/zodk-estrellas.png); }
   /* el lienzo lo dimensiona tierra-gl.js (píxeles de arte enteros): aquí solo se centra */
   #tierra { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
-  /* diámetro del disco a zoom x1: el tamaño común de los astros (usuario, 24-sep-2026) */
+  /* diámetro del disco a ×1: el tamaño común de los astros */
   #sonda { position: absolute; height: 70svh; width: 0; visibility: hidden; }
   .agarrando, .agarrando * { cursor: grabbing !important; user-select: none; }
   #panel { position: fixed; left: 10px; top: 10px; z-index: 5; background: #0008;

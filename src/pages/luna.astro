@@ -1,18 +1,14 @@
 ---
-// La Luna (ruta "/luna"): la segunda "portada" del Proyecto Luna. Se llega
-// desde la Tierra de la portada pulsando la luna de arriba a la izquierda
-// (vuelo en index.astro) y siempre se aterriza en la cara visible. El botón
-// de abajo a la derecha da media vuelta a la cara oculta y vuelve; el de abajo
-// a la izquierda vuelve a la Tierra con el mismo vuelo hacia atrás. Marte,
-// arriba a la izquierda, lleva a /marte con el mismo vuelo (Proyecto Marte).
-// Desde el 23-sep-2026 la Luna gira y se acerca como Marte (usuario: "que la
-// luna sea capaz de moverse al hacer click, exactamente igual que Marte,
-// manteniendo el botón cara oculta / cara visible para centrar en las
-// caras"): motor src/scripts/luna-gl.js (el WebGL de Marte con los datos de
-// public/luna/, de arte/generar-luna.py --canvas y --teselas). El mando
-// lleva a cada cara con un giro; las chapas salen según la zona que se ve, y
-// al adentrarse en la cara oculta se enciende China y salen los relés.
-// Detalle y decisiones en arte/LUNA-WIP.md.
+// /luna: la Luna en pixel art con la historia de los alunizajes. Se llega
+// con un vuelo desde la luna del hero de la portada (o "moon-project"). La
+// Luna se gira arrastrando y se acerca con la rueda, el trackpad o
+// pellizcando, como Marte: motor src/scripts/luna-gl.js, datos en
+// public/luna/ (arte/generar-luna.py --canvas y --teselas).
+// Abajo en el centro, el mando que lleva a cada cara con un giro; abajo a la
+// derecha, "volver a la Tierra" (el vuelo de ida al revés); arriba a la
+// izquierda, Marte, que lleva a /marte. Las chapas salen según la zona que
+// se ve, y al adentrarse en la cara oculta se enciende China y salen los
+// relés. Más en docs/luna.md.
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection } from "astro:content";
 import { ALUNIZAJES, PAISES_LUNA, RELES, ORION_NOTA, svgBandera } from "../data/alunizajes";
@@ -30,18 +26,17 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
 <PageLayout title="La Luna" description="La Luna en pixel art: la cara visible y la cara oculta." hero cabecera={false}>
   <section slot="hero" class="hero luna-hero" aria-label="La Luna">
     <div class="hero-stars" aria-hidden="true"></div>
-    <!-- Proyecto Marte: Marte pequeño arriba a la izquierda (el de la portada,
-         en el sitio del sol y la luna de allí); lleva a /marte con el mismo
-         vuelo. Detrás de la Luna, que está más cerca. -->
+    <!-- Marte pequeño arriba a la izquierda (en el sitio del sol y la luna de
+         la portada): lleva a /marte. Detrás de la Luna, que está más cerca. -->
     <div class="hero-marte hero-marte--luna" aria-hidden="true"></div>
     <a class="hero-marte-enlace hero-marte--luna" href="/marte" aria-label="Viajar a Marte" title="Viajar a Marte"></a>
     <!-- Mismo tamaño y sitio que donde termina el vuelo desde la Tierra
-         (.luna-disco en global.css). El fondo es la cara visible: se ve sin JS,
+         (.luna-disco en luna.css). El fondo es la cara visible: se ve sin JS,
          sin WebGL2 y mientras carga el lienzo. -->
     <div class="luna-disco" role="img" aria-label="La Luna, cara visible"></div>
     <!-- La Luna que gira y se acerca (luna-gl.js): el lienzo, centrado en el
-         disco de .luna-disco; la sonda mide su diámetro a x1, y encima, los
-         nombres de accidentes que salen al acercarse (marte-nombres.js). -->
+         disco de .luna-disco; la sonda mide su diámetro a ×1, y encima, los
+         nombres de accidentes que salen al acercarse (nombres.js). -->
     <div class="luna-gl" aria-hidden="true">
       <canvas class="luna-canvas"></canvas>
       <div class="luna-sonda"></div>
@@ -180,20 +175,18 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         </div>
       ))}
     </div>
-    <!-- Menú del Proyecto Luna: enlaces a las notas del blog que dan contexto
-         (alunizajes, relés de la cara oculta y Orion). No depende del motor
-         ni de JS, así que se pinta siempre (a diferencia de las fichas, que
-         necesitan ratón); solo se enlaza si la nota está publicada, como en
-         las fichas. Sustituye a la cabecera normal, que aquí no se pinta. -->
+    <!-- Menú de arriba a la derecha: las notas del blog que dan contexto
+         (alunizajes, relés y Orion), solo si están publicadas. No necesita
+         JS. Hace de cabecera, que aquí no se pinta. -->
     <nav class="luna-menu" aria-label="Proyecto Luna">
       {publicadas.has("alunizajes") && <a href="/notas/alunizajes">alunizajes</a>}
       {publicadas.has("reles-en-la-cara-oculta") && <a href="/notas/reles-en-la-cara-oculta">relés</a>}
       {publicadas.has(ORION_NOTA) && <a href={`/notas/${ORION_NOTA}`}>orion</a>}
     </nav>
-    <!-- Botones: volver a la Tierra (HUD, con esquinas doradas como las fichas)
-         abajo a la derecha, y el mando de cara abajo en el centro: UN solo
-         botón, se pulse donde se pulse cambia de cara; la píldora dorada se
-         desliza a la cara nueva a la vez que gira la Luna. -->
+    <!-- Botones: volver a la Tierra abajo a la derecha y el mando de cara
+         abajo en el centro. El mando es un solo botón: se pulse donde se pulse
+         cambia de cara, y la píldora dorada se desliza a la nueva mientras
+         gira la Luna. -->
     <button class="luna-volver" type="button" aria-label="Volver a la Tierra" hidden>
       <span>volver a la Tierra</span>
       <span class="luna-volver-tierra" aria-hidden="true"></span>
@@ -247,7 +240,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     try { sessionStorage.removeItem(CLAVE_ESTADO); } catch { /* sessionStorage no disponible */ }
   }
 
-  // Si estaba acercada, antes de volar a Marte la Luna se aleja hasta x1 sin
+  // Si estaba acercada, antes de volar a Marte la Luna se aleja hasta ×1 sin
   // girar (como Marte antes de ir a la Tierra, en /marte): con zoom no cabe
   // entera y al salir asomaría cortada.
   function alejarAx1(l: Luna): Promise<void> {
@@ -266,9 +259,9 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     });
   }
 
-  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (viaje-luna.js),
-  // desde la Luna tal como se ha dejado. Si estaba acercada, primero se aleja
-  // en el lienzo hasta x1 y ahí se le hace una foto, que es la que vuela (como
+  // Vuelta a la Tierra: el vuelo de la portada hacia atrás (vuelos.js), desde
+  // la Luna tal como se ha dejado. Si estaba acercada, primero se aleja en el
+  // lienzo hasta ×1 y ahí se le hace una foto, que es la que vuela (como
   // la vuelta de /marte a la Luna). Para saber dónde acaban la luna del hero
   // y la Tierra se ponen aquí un icono y una Tierra con las clases de la
   // portada; se van con la página al aterrizar.
@@ -307,8 +300,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     navigate("/");
   }
 
-  // Vuelo a Marte (Proyecto Marte): el de la portada, desde Marte arriba a la
-  // izquierda. La Luna es aquí lo que se deja atrás: sale por abajo tal como
+  // Vuelo a Marte: el de la portada, desde Marte arriba a la izquierda. La
+  // Luna es aquí lo que se deja atrás: sale por abajo tal como
   // se ve (el lienzo), como la Tierra en el vuelo a la Luna. En /marte, el
   // botón dirá "volver a la Luna": se le avisa con sessionStorage
   // ("marte-desde"), que /marte lee y borra al llegar. La selección y la
@@ -369,8 +362,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     return { x: U[0], y: -U[1], z: U[2] };
   }
   // Los relés Queqiao flotan sobre la cuenca Polo Sur-Aitken, bajo Chang'e 4
-  // y 6 (usuario, 23-sep-2026: "los satélites igual, estarían flotando por
-  // esa zona"): su capa se desplaza con este punto.
+  // y 6: su capa se desplaza con este punto.
   const ANCLA_RELES = { lat: -44, lon: 191 };
 
   document.addEventListener("astro:page-load", async () => {
@@ -452,9 +444,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
       // se ponen lado a lado, pegadas y centradas en su punto medio, la más al
       // oeste a la izquierda. Al acercarse, en cuanto caben, cada una en su
       // sitio. Cuentas en píxeles del lienzo de 600.
-      // Salen las de la zona que se ve (usuario, 23-sep-2026: "las chapas
-      // salen según yo veo la zona del planeta"): delante, y no pegadas al
-      // borde del disco.
+      // Salen las de la zona que se ve: delante, y no pegadas al borde del
+      // disco.
       const PASO = 14;
       colocarChapas = () => {
         const grupos: { u: number; v: number; els: { el: HTMLElement; u: number }[] }[] = [];
@@ -523,9 +514,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         cajas.inert = false;
       }
       // Al adentrarse en la cara oculta se apaga todo y se enciende China,
-      // para que Chang'e 4 y 6 salgan sin activarlas a mano (usuario,
-      // 23-sep-2026: "según se oscurece la Luna por la cara oculta, aparecen
-      // las chinas"). Lo hace cadaFotograma al pasar la cara oculta a dominar.
+      // para que Chang'e 4 y 6 salgan sin activarlas a mano. Lo hace
+      // cadaFotograma al pasar la cara oculta a dominar.
       soloChina = () => {
         encendidos.clear();
         for (const b of subs) if (b.dataset.pais === "CN") encendidos.add(b.dataset.clave!);
@@ -625,9 +615,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     mideMarte();
     window.addEventListener("resize", mideMarte);
     quitar.push(() => window.removeEventListener("resize", mideMarte));
-    // El mando, en directo: la píldora sigue a la Luna (usuario, 23-sep-2026:
-    // "según giras la Luna, el slider de cara visible / cara oculta en tiempo
-    // real").
+    // El mando, en directo: la píldora sigue a la Luna según se gira.
     boton.classList.add("en-directo");
     cadaFotograma = () => {
       colocaNombres?.();
@@ -655,7 +643,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     cadaFotograma();
 
     // El mando: lleva a la otra cara con un giro (y, si estaba acercada, de
-    // vuelta a x1). La píldora se desliza a la cara nueva mientras gira.
+    // vuelta a ×1). La píldora se desliza a la cara nueva mientras gira.
     const clic = async () => {
       if (l.girando() || enVuelo) return;
       const destino = l.cara() === "visible" ? "oculta" : "visible";
@@ -684,7 +672,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
       e.preventDefault();
       if (enVuelo) return;
       enVuelo = true;
-      // Se guarda la cara que domina, centrada y a x1, no la vista exacta: la
+      // Se guarda la cara que domina, centrada y a ×1, no la vista exacta: la
       // vuelta desde /marte aterriza con la imagen de esa cara (A_LA_LUNA en
       // marte.astro), y con la vista exacta la Luna saltaba al llegar.
       const cara = l.cara();

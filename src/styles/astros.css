@@ -1,7 +1,8 @@
-/* --- Portada: el hero del planeta ------------------------------------------
-   Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
-   al sol en modo claro, a la luz de la luna y con las ciudades encendidas en
-   modo oscuro (mismo canvas, ver abajo). */
+/* Lo que comparten las tres portadas de astros (la Tierra, /luna y /marte):
+   el hero, los gestos, los astros pequeños del cielo, la capa de los vuelos,
+   las fichas, las estrellas y los nombres de lugares.
+
+   El hero: fondo de espacio negro siempre. */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -11,8 +12,7 @@
   isolation: isolate;
 }
 
-/* Gestos: la rueda y un dedo bajan la página (usuario, 24-sep-2026); con
-   dos dedos se acerca, y ya con zoom (.con-zoom) un dedo mueve el globo. La
+/* Gestos: la rueda y un dedo bajan la página; con dos dedos se acerca, y ya con zoom (.con-zoom) un dedo mueve el globo. La
    mano cerrada, solo mientras se gira con el ratón (montarMano). */
 .hero { touch-action: pan-y; }
 .hero.con-zoom { touch-action: none; }
@@ -20,17 +20,13 @@
 .hero.agarrando .hero-mira { visibility: hidden; }
 
 /* Sol (día) y luna (noche), arriba a la izquierda y en el mismo sitio en los
-   dos modos (decisión del usuario: simétricos). Detrás del planeta (va antes
-   en el DOM, mismo z-index). Pixel art de logo-files/generar-astros.py a 1 px
-   de arte = 1 px de imagen, escalado x3 (x2 en móvil) como el planeta. La
-   luna es una tira de 30 fases; index.astro elige la de hoy (sin JS, llena). */
-/* Sitio de los astros pequeños de la portada: cerca del borde de arriba del
-   globo, a la izquierda el sol y la luna, a la derecha Marte (usuario,
-   24-sep-2026: "los quiero cerquita, como estaban antes"; con el planeta de
-   antes, enorme, su borde les quedaba cerca aunque fueran en las esquinas).
-   Centro del icono a (±0,46, −0,41) diámetros del centro del globo: ~25 px de
-   cielo entre el disco del astro y el de la Tierra. En el móvil, en las
-   esquinas (ver el @media de abajo). */
+   dos modos. Detrás del planeta (va antes en el DOM, mismo z-index). Pixel
+   art de arte/generar-astros.py, escalado ×3 (×2 en móvil). La luna es una
+   tira de 30 fases; portada.ts elige la de hoy (sin JS, llena).
+   Sitio: cerca del borde de arriba del globo, a la izquierda el sol y la
+   luna, a la derecha Marte. Centro del icono a (±0,46, −0,41) diámetros del
+   centro del globo: ~25 px de cielo entre su disco y el de la Tierra. En el
+   móvil, en las esquinas (@media de portada.css). */
 :root { --astro-dx: calc(var(--tierra-disco) * 0.46); --astro-dy: calc(var(--tierra-disco) * 0.41); }
 .hero-astro {
   position: absolute;
@@ -56,14 +52,12 @@
 }
 html.dark .astro-sol { opacity: 0; }
 html.dark .astro-luna { opacity: 1; }
-/* Al cambiar de tema (no al cargar): el astro que se va baja y se esconde tras
-   el borde de la Tierra, y el otro sale de detrás y sube a su sitio (opción 1
-   de las transiciones; al usuario "le encanta"). Las clases .a-noche / .a-dia
-   las pone index.astro al detectar el cambio. Son animaciones y no
-   transiciones porque el botón de tema anula las transiciones al cambiar. */
-/* Con la Tierra entera, el astro va en diagonal hacia el centro del globo y
-   se esconde detrás de su disco (antes bajaba tras el horizonte): recorre el
-   45 % del camino, así acaba ~100 px dentro del borde. */
+/* Al cambiar de tema (no al cargar): el astro que se va se esconde tras la
+   Tierra, en diagonal hacia el centro del globo (recorre el 45 % del camino,
+   así acaba ~100 px dentro del borde), y el otro sale de detrás y sube a su
+   sitio. Las clases .a-noche / .a-dia las pone portada.ts al detectar el
+   cambio. Son animaciones y no transiciones porque el botón de tema anula
+   las transiciones al cambiar. */
 .hero-astro { --astro-caida: translate(calc(var(--astro-dx) * 0.45), calc(var(--astro-dy) * 0.45)); }
 @keyframes astro-baja { from { transform: none; opacity: 1; } to { transform: var(--astro-caida); opacity: 1; } }
 @keyframes astro-sube { from { transform: var(--astro-caida); opacity: 1; } to { transform: none; opacity: 1; } }
@@ -72,9 +66,9 @@ html.dark .astro-luna { opacity: 1; }
 .hero-astro.a-noche .astro-luna,
 .hero-astro.a-dia .astro-sol { animation: astro-sube 1.6s cubic-bezier(0.1, 0.4, 0.5, 1) 0.9s both; }
 
-/* Enlace a la Luna (Proyecto Luna): encima de la luna de arriba a la
-   izquierda, con su misma caja; solo de noche, que es cuando se ve la luna.
-   Al pulsarlo, index.astro hace el vuelo hasta /luna. */
+/* Enlace a la Luna: encima de la luna de arriba a la izquierda, con su misma
+   caja; solo de noche, que es cuando se ve. Al pulsarlo, portada.ts hace el
+   vuelo hasta /luna. */
 .hero-luna-enlace {
   position: absolute;
   left: calc(50% - var(--astro-dx) - 84px);
@@ -89,12 +83,11 @@ html.dark .astro-luna { opacity: 1; }
 html.dark .hero-luna-enlace { display: block; }
 .hero-luna-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
 
-/* Proyecto Marte: Marte arriba a la derecha, frente al sol y la luna (21-sep-
-   2026: "a la derecha, para que desde la tierra se viaje a un lado o se viaje
-   a otro"). Se ve de día y de noche. Pixel art de generar-marte.py --icono,
-   en el mismo lienzo que la luna (56 px de arte, x3; x2 en móvil) y algo más
-   pequeño que ella (radio 12 frente a 16). Detrás del planeta, como el sol y
-   la luna. Al pulsarlo, vuelo a /marte (index.astro). */
+/* Marte, arriba a la derecha, frente al sol y la luna: desde la Tierra se
+   viaja a un lado o a otro. Se ve de día y de noche. Pixel art de
+   generar-marte.py --icono, en el mismo lienzo que la luna (56 px de arte,
+   ×3; ×2 en móvil) y algo más pequeño (radio 12 frente a 16). Detrás del
+   planeta. Al pulsarlo, vuelo a /marte (portada.ts). */
 .hero-marte {
   position: absolute;
   left: calc(50% + var(--astro-dx) - 84px);   /* en espejo con el sol y la luna */
@@ -123,9 +116,8 @@ html.dark .hero-luna-enlace { display: block; }
    del sol y la luna de la portada: se pulsa para el vuelo Luna → Marte. */
 .hero-marte--luna { right: auto; left: 5%; top: 5%; }
 
-/* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
-   resolución (index.astro), que crece desde la luna del hero hasta donde queda
-   en /luna (.luna-disco). */
+/* Capa de los vuelos (vuelos.js): fija, con el icono y el dibujo del astro
+   de destino, que crecen desde el cielo hasta donde queda en su página. */
 .viaje-luna {
   position: fixed;
   inset: 0;
@@ -146,7 +138,7 @@ html.dark .hero-luna-enlace { display: block; }
   background-size: 3000% 100%;
 }
 /* y la de Marte, en el vuelo a /marte, y la de la Tierra, en el de /marte a
-   la Tierra */
+   la portada */
 .viaje-icono-marte { background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%; }
 .viaje-icono-tierra { background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%; }
 html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
@@ -256,10 +248,9 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
 }
 .hero-craft.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
 
-/* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
-   genera logo-files/generar-estrellas.py) repetida con background-repeat. Antes
-   eran ~50 gradientes radiales apilados en el CSS; la baldosa repetida pinta
-   mucho más barato. En oscuro, encima, una baldosa propia con muchas más. */
+/* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, de
+   arte/generar-estrellas.py) repetida. En oscuro, encima, otra baldosa con
+   muchas más. */
 .hero-stars {
   position: absolute;
   inset: 0;
@@ -267,7 +258,7 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
   pointer-events: none;
   background: url(/zodk-estrellas.png) repeat;
   background-size: 320px 320px;
-  background-position: var(--estrellas-pos, 0 0);   /* el vuelo a la Luna las desplaza */
+  background-position: var(--estrellas-pos, 0 0);   /* los vuelos las desplazan */
   image-rendering: pixelated;
   opacity: 0.7;
 }
@@ -338,11 +329,11 @@ html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars::after { 
   50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
 }
 
-/* Nombres de lugares de /marte (src/scripts/nombres.js; decididos en
-   el banco logo-files/prototipo-marte/nombres.html, 22-sep-2026). Capa
-   encima del lienzo, con el origen en el centro del disco: el script coloca
-   cada nombre con transform. No se lleva el ratón: se sigue arrastrando
-   Marte por encima. Por debajo de la Tierra pequeña. */
+/* Nombres de lugares de los tres astros (nombres.js; el banco de pruebas es
+   arte/bancos/marte-nombres.html). Capa encima del lienzo, con el origen en
+   el centro del disco: el script coloca cada nombre con transform. No se
+   lleva el ratón: se sigue arrastrando el astro por encima. En /marte, por
+   debajo de la Tierra pequeña. */
 .capa-nombres { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
 .nombre-lugar { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.35s ease; }
 .nombre-lugar.visto { opacity: var(--borde, 1); }

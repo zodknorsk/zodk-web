@@ -5,7 +5,7 @@ rejilla de 56x36 celdas de 4 px (viewBox 224x144, como antes), un <rect> por
 celda, con la paleta de noche del Sentinel-2 de la portada. Solo hay versión
 noche: la cara oculta no cambia con el tema.
 
-Referencias: los renders de Wikipedia de cada uno (18-sep-2026). Lo que los
+Referencias: los renders de Wikipedia de cada uno. Lo que los
 distingue:
   - Queqiao (2018): caja de lámina dorada, plato GRIS enorme de malla con
     varillas delante, un ala solar corta y antenas largas y finas en diagonal.

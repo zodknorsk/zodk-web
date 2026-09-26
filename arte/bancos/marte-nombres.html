@@ -5,28 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prueba: nombres de lugares en Marte</title>
 <!--
-  Banco de pruebas de los nombres de lugares que salen al acercarse
-  (22-sep-2026). Los nombres son los oficiales de la UAI y salen de
+  Banco de pruebas de los nombres de lugares que salen al acercarse. Los
+  nombres son los oficiales de la UAI y salen de
   public/marte/marte-nombres.json (arte/generar-nombres.py).
 
-  Dos formas, decididas por el usuario el 22-sep-2026:
+  Dos formas:
   - Zonas (planicies, tierras, mesetas, y también las medianas como Kasei
     Valles o Noctis Labyrinthus): rótulo de región, sin marco. Se van cuando
     ya no caben en la pantalla.
   - Formas claras (montes, cráteres, calderas): el marco de esquinas del
     título de la portada, ceñido al lugar, que crece con él.
-  A x1 no sale ningún nombre.
-  Faltan las chapas con ficha de los sitios con entrada en el blog (las
-  misiones), que se harán cuando estén publicadas sus notas.
+  A ×1 no sale ningún nombre. Las chapas de aquí son una prueba con dos
+  misiones; las de verdad están en /marte.
 
   Servir desde la raíz del repo:
-    cd ~/Documents/zodk-web && python3 -m http.server 4400
-  y abrir http://127.0.0.1:4400/arte/prototipo-marte/nombres.html
+    python3 -m http.server 4400
+  y abrir http://127.0.0.1:4400/arte/bancos/marte-nombres.html
   ?vista=lat0,lon0,zoom: vista al cargar.
   ?margen=N: aire del marco por fuera del lugar (0,06 por defecto).
   ?cuadrado=0: marco ceñido a la caja del lugar, rectangular.
   ?sin-orden: sin apartar los nombres que se pisan (para ver el lío).
-  Detalle y decisiones en arte/MARTE-WIP.md.
 -->
 <style>
   @font-face { font-family: "IBM Plex Mono"; font-weight: 500;
@@ -92,8 +90,8 @@
      Van en su sitio exacto, no crecen con el zoom y se ven a cualquier zoom
      (a x1 son lo único que sale). La de una misión que no llegó entera va
      apagada: en blanco y negro, tachada, o las dos. */
-  /* Es un enlace a su nota: cursor de mano al pasar por encima (usuario,
-     22-sep-2026), y por eso tampoco arrastra el planeta. */
+  /* Es un enlace a su nota: cursor de mano al pasar por encima, y por eso
+     tampoco arrastra el planeta. */
   .chapa { position: absolute; left: 0; top: 0; width: 18px; height: 12px;
     margin: -6px 0 0 -9px; pointer-events: auto; cursor: pointer; opacity: 0; transition: opacity 0.35s ease; }
   .agarrando .chapa { cursor: grabbing; }
@@ -163,7 +161,7 @@ const $ = (id) => document.getElementById(id);
 const sonda = $("sonda"), capa = $("nombres"), hero = $("hero");
 const q = new URLSearchParams(location.search);
 // Aire del marco por fuera del lugar, y marco cuadrado: una mira puesta
-// encima, no un recorte de su caja (22-sep-2026).
+// encima, no un recorte de su caja.
 const MARGEN = Number(q.get("margen") ?? 0.06);
 const CUADRADO = (q.get("cuadrado") ?? "1") !== "0";
 const ORDENAR = !q.has("sin-orden");
@@ -171,7 +169,7 @@ const KM_GRADO = Math.PI * 3389.5 / 180;                  // un grado de Marte, 
 
 const NOMBRES = await fetch(`../../public/marte/marte-nombres.json?v=${MARTE_V}`).then((r) => r.json());
 
-// Prueba de chapas (usuario, 22-sep-2026): solo Mars 3, que se posó, y Mars 2,
+// Prueba de chapas: solo Mars 3, que se posó, y Mars 2,
 // que se estrelló cinco días antes. Sus notas están en la bóveda, en
 // 02 - Temas/mars-project (Soft Landings y Hard Landings). Cuando estén
 // publicadas, la ficha enlazará a ellas.
@@ -202,7 +200,7 @@ function svgBandera({ filas, paleta }) {
   }
   return `<svg viewBox="0 0 13 9" aria-hidden="true">${r}</svg>`;
 }
-// Elegida por el usuario (22-sep-2026): una raya. El aspa se come la bandera
+// Aquí, una raya (en /marte acabó en blanco y negro). El aspa se come la bandera
 // y el blanco y negro no deja distinguir los países (la rusa, la
 // estadounidense y la británica son de los mismos colores).
 let FALLO = q.get("fallo") ?? "raya";                       // "raya", "aspa", "bn" o mezcla
@@ -258,8 +256,7 @@ function coloca() {
     // caja proyectada: cerca del borde la caja se aplasta y el nombre
     // aparecería y desaparecería al girar.
     const tam = (n.km / KM_GRADO) * ppg;
-    // A x1 no sale ningún nombre: al llegar, Marte limpio (usuario,
-    // 22-sep-2026). Las chapas de las misiones, cuando las haya, no seguirán
+    // A ×1 no sale ningún nombre: al llegar, Marte limpio. Las chapas de las misiones, cuando las haya, no seguirán
     // esta regla. Luego, cada lugar sale cuando mide lo suyo (con un 6 % de
     // margen al alejar, para que no parpadee justo en el umbral) y las zonas
     // se van cuando ya no caben en la pantalla, como en los mapas.

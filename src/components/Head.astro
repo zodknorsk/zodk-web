@@ -38,7 +38,7 @@ const { title, description, image = "/og-image.png" } = Astro.props;
 const socialImageURL = new URL(image, Astro.site);
 ---
 
-<!-- Global Metadata -->
+<!-- Básicos e iconos -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- El sufijo -v2 fuerza a los navegadores (sobre todo Safari en iOS, que
@@ -60,21 +60,19 @@ const socialImageURL = new URL(image, Astro.site);
   </style>
 </noscript>
 
-<!-- Font preloads -->
+<!-- Fuentes que se usan nada más cargar -->
 <link rel="preload" href={plexSans400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSans600} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSerif400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={plexSerif600} as="font" type="font/woff2" crossorigin/>
 
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+<!-- Vista previa al compartir (Open Graph y Twitter) -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
@@ -83,28 +81,24 @@ const socialImageURL = new URL(image, Astro.site);
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={title} />
-
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialImageURL} />
 
-<ClientRouter  />
+<ClientRouter />
 
-<!-- RSS Link -->
 <link rel="alternate" type="application/rss+xml" title={SITE.NAME} href={new URL("rss.xml", Astro.site)} />
 
 <script>
+  // Al cambiar de página las fuentes ya están cargadas: no hace falta volver
+  // a precargarlas.
   import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-  document.addEventListener("astro:before-swap", (e) =>
-    [
-      ...(e as TransitionBeforeSwapEvent).newDocument.head.querySelectorAll(
-        "link[as=\"font\"]"
-      ),
-    ].forEach((link) => link.remove())
-  );
+  document.addEventListener("astro:before-swap", (e) => {
+    const nueva = (e as TransitionBeforeSwapEvent).newDocument;
+    nueva.head.querySelectorAll("link[as=font]").forEach((link) => link.remove());
+  });
 </script>
 
 <script is:inline>
@@ -121,7 +115,7 @@ const socialImageURL = new URL(image, Astro.site);
       const isDark = document.documentElement.classList.contains("dark");
       try { sessionStorage.setItem("theme", isDark ? "light" : "dark"); } catch { /* sin sessionStorage: solo esta página */ }
       toggleTheme(!isDark);
-      // El icono nuevo sale relleno y se vacía (global.css, .tema-pulsado).
+      // El icono nuevo sale relleno y se vacía (.tema-pulsado en base.css).
       themeButton.classList.remove("tema-pulsado");
       void themeButton.offsetWidth;                // reinicia la animación
       themeButton.classList.add("tema-pulsado");
@@ -129,15 +123,11 @@ const socialImageURL = new URL(image, Astro.site);
       themeButton._tPulsado = setTimeout(() => themeButton.classList.remove("tema-pulsado"), 900);
       marcaEstrellas(!isDark);
     });
-
-    // (Antes, sin tema elegido a mano, se seguía en vivo el del sistema. Desde
-    // el 24-sep-2026 la web carga de día de serie: ver preloadTheme.)
-
   }
 
   // Al pasar a noche, las estrellas de más del hero (.hero-stars::after) se
   // encienden poco a poco en vez de salir de golpe: html.estrellas-entrando
-  // mientras dura (global.css). Solo al cambiar de tema, no al cargar.
+  // mientras dura (astros.css). Solo al cambiar de tema, no al cargar.
   let tEstrellas = 0;
   function marcaEstrellas(aNoche) {
     const html = document.documentElement;
@@ -191,9 +181,9 @@ const socialImageURL = new URL(image, Astro.site);
     if (!rafScroll) rafScroll = requestAnimationFrame(() => { rafScroll = 0; alScroll(); });
   }, { passive: true });
 
-  // Fichas de las naves: al pasar el raton, la nave se para (CSS :hover) y sale
-  // la ficha. Aqui solo se decide, una vez al entrar, donde cae el recuadro para
-  // que no se salga de pantalla; no hay bucle ni seguimiento.
+  // Fichas de las naves: al pasar el ratón, la nave se para (CSS :hover) y sale
+  // la ficha. Aquí solo se decide, al entrar, a qué lado cae el recuadro para
+  // que no se salga de la pantalla.
   function initCraft() {
     if (!window.matchMedia("(hover: hover)").matches) return;
     document.querySelectorAll(".hero-craft").forEach((el) => {
@@ -204,12 +194,11 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-  // Hero: UN objeto de AERONAVES a la vez, con su trayectoria. initObjeto()
-  // elige el primero con "bolsa barajada" (se recorren todos antes de repetir;
-  // localStorage recuerda el ultimo para no repetir al recargar) y engancha el
-  // boton .hero-cambio: al pulsarlo, el objeto se desvanece, se le cambia
-  // sprite + trayectoria + ficha por el siguiente de la bolsa y vuelve a
-  // aparecer. Con reduced-motion el cambio es instantaneo pero el boton sigue.
+  // Un objeto de AERONAVES (src/data/aeronaves.ts) a la vez en el hero, con
+  // su trayectoria. Se eligen de una bolsa barajada (salen todos antes de
+  // repetir; localStorage recuerda el último para no repetirlo al recargar).
+  // El botón .hero-cambio lo desvanece, le pone dibujo, trayectoria y ficha
+  // del siguiente y lo vuelve a mostrar. Con reduced-motion, sin fundido.
   function initObjeto() {
     const data = document.getElementById("aeronaves-data");
     const el = document.querySelector(".hero-craft[data-slot]");
@@ -238,9 +227,8 @@ const socialImageURL = new URL(image, Astro.site);
         "hero-craft--fijo-arriba-der", "hero-craft--pixelado", "flip-x"
       );
       el.classList.add("hero-craft--" + a.vuelo);
-      // Solo el pixel art de verdad (.svg) quiere vecino-más-cercano; las
-      // fotos (.png) se ven mejor —y sin parpadeo al moverse— con el
-      // suavizado normal del navegador (ver comentario en global.css).
+      // Solo el pixel art (.svg) va sin suavizar; las fotos (.png) se ven
+      // mejor, y sin parpadeo al moverse, con el suavizado del navegador.
       if (a.sprite.endsWith(".svg")) el.classList.add("hero-craft--pixelado");
       el.dataset.craft = a.id;
       el.style.aspectRatio = a.ratio;
@@ -255,7 +243,7 @@ const socialImageURL = new URL(image, Astro.site);
         if (p) { luz.style.left = p[0] + "%"; luz.style.top = p[1] + "%"; }
       }
       el.style.animation = "none";
-      void el.offsetWidth; // reinicia la animacion de la trayectoria
+      void el.offsetWidth; // reinicia la animación de la trayectoria
       el.style.animation = "";
       el.style.animationDelay = "-" + (FASE0[a.vuelo] || 0) + "s";
       const specs = el.querySelector(".craft-specs");
@@ -272,8 +260,8 @@ const socialImageURL = new URL(image, Astro.site);
         .join("");
     }
 
-    // Bolsa barajada de indices: se saca de la bolsa hasta vaciarla y se vuelve
-    // a barajar; nunca se repite el objeto actual de forma consecutiva.
+    // Bolsa barajada de índices: se saca hasta vaciarla y se vuelve a barajar;
+    // nunca sale dos veces seguidas el mismo.
     let bolsa = [];
     function rellenaBolsa() {
       bolsa = pool.map((_, i) => i);
@@ -300,8 +288,8 @@ const socialImageURL = new URL(image, Astro.site);
     let actual = sacaIndice(ultimo);
     pinta(pool[actual]);
     try { localStorage.setItem("hero-objeto", String(actual)); } catch { /* localStorage no disponible */ }
-    // Revela el objeto: quita el ocultado de html.js y deja que el CSS lo funda
-    // (instantaneo con reduced-motion).
+    // Lo muestra: quita el ocultado de html.js y el CSS lo funde (de golpe con
+    // reduced-motion).
     if (sinMovimiento) {
       el.dataset.listo = "";
     } else {
@@ -334,10 +322,9 @@ const socialImageURL = new URL(image, Astro.site);
     }
   }
 
-  // Helice del boton .hero-cambio: un bucle rAF lleva una velocidad angular que
-  // tiende suavemente a "rapido" al pasar el raton / enfocar y a 0 al salir (se
-  // para con inercia donde quede). El bucle solo corre mientras se mueve y se
-  // apaga solo. Con reduced-motion no gira.
+  // Hélice del botón .hero-cambio: acelera al pasar el ratón (o al enfocarlo)
+  // y al salir frena con inercia hasta pararse donde quede. El bucle de rAF
+  // solo corre mientras se mueve. Con reduced-motion no gira.
   function initHelice() {
     const boton = document.querySelector(".hero-cambio");
     const giro = boton && boton.querySelector(".btn-helice-giro");
@@ -346,7 +333,7 @@ const socialImageURL = new URL(image, Astro.site);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const MAX = 1300;   // grados/segundo a tope
-    const EASE = 2.7;   // rapidez de aceleracion/frenada
+    const EASE = 2.7;   // rapidez de aceleración y frenada
     let ang = 0, vel = 0, target = 0, raf = 0, prev = 0;
 
     function tick(now) {
@@ -386,42 +373,21 @@ const socialImageURL = new URL(image, Astro.site);
     });
   }
 
-function toggleTheme(dark) {
+  // Cambia de tema de golpe: sin transiciones mientras se pone o quita .dark.
+  function toggleTheme(dark) {
     const css = document.createElement("style");
-
-    css.appendChild(
-      document.createTextNode(
-        `* {
-             -webkit-transition: none !important;
-             -moz-transition: none !important;
-             -o-transition: none !important;
-             -ms-transition: none !important;
-             transition: none !important;
-          }
-        `,
-      )
-    );
-
+    css.textContent = "* { transition: none !important; }";
     document.head.appendChild(css);
-
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-  window.getComputedStyle(css).opacity;
+    document.documentElement.classList.toggle("dark", dark);
+    window.getComputedStyle(css).opacity;   // obliga a aplicar los estilos antes de quitarlo
     document.head.removeChild(css);
   }
 
-  // Tema al cargar: de día, aunque el sistema esté en modo oscuro (usuario,
-  // 24-sep-2026: "que de serie la página cargue en modo día"). La noche que se
-  // elija con el botón (o la que pone el vuelo a la Luna) dura lo que la
-  // visita: se guarda en sessionStorage, así que aguanta al navegar y al
-  // recargar, pero una visita nueva (otra pestaña, otro día) empieza de día
-  // (26-sep-2026: "siempre el modo día, porque si no tenemos el problema de
-  // la luna"). Antes iba en localStorage y se quedaba de noche para siempre:
-  // lo viejo se borra.
+  // Tema al cargar: de día, aunque el sistema esté en modo oscuro. La noche
+  // que se elija con el botón (o la que pone el vuelo a la Luna) dura lo que
+  // la visita: va en sessionStorage, así que aguanta al navegar y al recargar,
+  // pero una visita nueva empieza de día. Lo que quede en localStorage de
+  // cuando se guardaba ahí, se borra.
   function preloadTheme() {
     let userTheme = null;
     try {

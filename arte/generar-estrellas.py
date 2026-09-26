@@ -32,12 +32,12 @@ for _ in range(N):
 write_indexed("zodk-estrellas.png", W, H, rows, PAL)
 print(f"zodk-estrellas.png  {W}x{H}, {N} estrellas/baldosa")
 
-# Baldosa extra SOLO de noche (encima de la de siempre): bastantes más
-# estrellas (pedido del usuario), casi todas tenues, algunas blancas, pocas de
+# Baldosa extra solo de noche (encima de la de siempre): bastantes más
+# estrellas, casi todas tenues, algunas blancas, pocas de
 # 2x2 y alguna con tinte cálido o azulado. Más grande (480) para que no se
 # note la repetición.
 WN = HN = 480
-NN = 170                     # 60 se quedaba corto, 95 también ("sube más la cantidad")
+NN = 170                     # con 60 y con 95 se quedaba corto
 PAL_N = [(0, 0, 0, 0), (0xff, 0xff, 0xff, 255), (0xc4, 0xcc, 0xda, 255),
          (0x8a, 0x94, 0xa8, 255), (0x5e, 0x68, 0x7c, 255),
          (0xff, 0xe6, 0xb4, 255), (0xb8, 0xcf, 0xff, 255)]

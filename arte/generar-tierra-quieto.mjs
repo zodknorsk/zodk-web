@@ -1,5 +1,5 @@
 // La Tierra quieta: public/planeta/tierra-quieto.png y tierra-quieto-noche.png.
-// Es la vista inicial de la portada (VISTA_INICIAL de tierra-gl.js, zoom x1)
+// Es la vista inicial de la portada (VISTA_INICIAL de tierra-gl.js, a ×1)
 // con un píxel de arte por píxel de imagen, el disco centrado y transparente
 // alrededor, de día y de noche. Se ve mientras carga el lienzo (o si no hay
 // WebGL2) y la usan los vuelos de vuelta desde /luna y /marte. Va sin nubes,
@@ -7,7 +7,7 @@
 //
 // Rehacerla cuando cambien los datos de la Tierra o el motor, y subir
 // PLANETA_V en src/scripts/versiones.js y el ?v= de tierra-quieto*.png en
-// global.css:
+// src/styles/portada.css:
 //   node arte/generar-tierra-quieto.mjs
 import { fotosDelMotor } from "./fotos-del-motor.mjs";
 

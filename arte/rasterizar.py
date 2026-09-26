@@ -10,7 +10,7 @@ Uso:  python3 rasterizar.py     # escribe mapa_tierra.py
 Solo hace falta si cambias la resolucion o los umbrales de hielo; para el
 planeta basta con mapa_tierra.py, que ya esta generado.
 
-Niveles de zoom (Proyecto Tierra): con --nivel K rasteriza las costas finas
+Niveles de zoom: con --nivel K rasteriza las costas finas
 de Natural Earth 1:10m (tierra-fuentes/ne_10m_land.geojson) a K veces la
 resolucion (K = 2: 0,0625 grados, 16 px/grado) y escribe un binario, un byte
 por celda (0 mar, 1 tierra, 2 hielo), fila 0 = 90 N:

@@ -8,25 +8,22 @@ import { SITE } from "@consts";
 <header>
   <Container>
     <div class="flex flex-wrap gap-y-2 justify-between items-center">
-      <!-- Logo como imagen de fondo (no <img>): así el navegador solo descarga
-           el SVG del tema activo. El de día pesa 88 KB y el de noche 154 KB; con
-           dos <img> se bajaban los dos en cada página. El swap día/noche lo hace
-           html.dark en global.css (.logo-home). -->
+      <!-- El logo va de fondo (.logo-home en base.css) y no como <img>: así
+           solo se baja el SVG del tema activo (88 KB el de día, 154 KB el de
+           noche). -->
       <a href="/" aria-label={SITE.NAME} class="logo-home"></a>
       <div class="flex items-center gap-2">
-        <!-- Con "mars-project" el menú ya no cabía en el móvil: partía "moon-" /
-             "project" por el guion y en la portada se salía por la izquierda.
-             Sin cortes dentro de los enlaces, y en pantallas estrechas la letra
-             baja un poco (desde ~440 px, los 16 px de siempre). -->
+        <!-- Sin cortes dentro de los enlaces (partía "moon-project" por el
+             guion); en pantallas estrechas la letra baja un poco, y desde
+             ~440 px es la normal. -->
         <nav class="flex gap-1 whitespace-nowrap text-[clamp(0.72rem,3.6vw,1rem)]">
           <Link href="/notas" underline={false}>notas</Link>
           <span>{`/`}</span>
           <Link href="/eventos" underline={false}>eventos</Link>
           <span>{`/`}</span>
-          <!-- En la portada, el script de index.astro engancha estos dos enlaces
-               (por href, "nav a[href='/luna']" y "nav a[href='/marte']") para
-               que se comporten como la luna y Marte del hero (mismo vuelo); en el
-               resto de páginas son una navegación normal. -->
+          <!-- En la portada, portada.ts engancha estos dos enlaces (por su
+               href) para que hagan el mismo vuelo que la luna y Marte del
+               hero; en el resto de páginas son enlaces normales. -->
           <Link href="/luna" underline={false}>moon-project</Link>
           <span>{`/`}</span>
           <Link href="/marte" underline={false}>mars-project</Link>
