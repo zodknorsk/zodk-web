@@ -187,6 +187,40 @@ Pendiente: ver "Dónde estamos" en `MARTE-WIP.md`. Las notas de Marte
 
 ## Mantenimiento
 
+### Peso del repositorio: plan acordado (26-sep-2026), sin empezar
+
+Medido en la nube el 26-sep: ~500 MB de archivos (teselas de la Luna 179 MB,
+fotos de notas y eventos 170 MB, tuits 67 MB, Marte 39 MB, la Tierra solo
+4,3 MB) y el historial de Git, con solo los últimos 50 commits, 616 MB (la
+Luna ocupa 255 MB en el historial frente a 179 MB en la web: versiones viejas
+de teselas). La web publicada no sufre (los visitantes no bajan el historial);
+lo que engorda es el repositorio, y borrar no adelgaza el historial.
+
+Lo que más crece a largo plazo son **las fotos de los artículos**: el
+importador las copia de la bóveda a tamaño original (capturas PNG de 26 MB en
+el evento del F-15E, JPG de 11 MB en Luna 21). Astro las aligera para la web,
+pero el original se queda en Git.
+
+Decidido: **seguir con Astro y GitHub Pages**. Descartados: WordPress/Ghost
+(se pierde el pixel art y el flujo de Obsidian), servidor propio, Git LFS
+(cuota gratis pequeña y cada despliegue la vuelve a bajar), cambiar de
+framework y cambiar de hosting (no arregla el historial). Por orden, cuando
+toque:
+
+1. Terminar el Proyecto Tierra (paso 8 y fusión).
+2. **Que `scripts/importar-notas.mjs` reduzca las fotos** antes de copiarlas
+   (máx. ~2400 px de ancho, JPG/WebP de buena calidad). En Obsidian siguen a
+   tamaño completo. De decenas de MB a 1-3 MB por artículo.
+3. **Antes de empezar el zoom grande de la Tierra** (idea: pixel art detallado
+   de países), sacar las teselas (y los vídeos) de Git a Cloudflare R2 con un
+   subdominio tipo `media.zodk.eu`; o pintar el pixel art al vuelo en la GPU
+   (sale de reglas: costas, biomas, nieve) para que el zoom casi no pese.
+   Cuentas: cada nivel de zoom ×4 teselas; la Tierra a 1 px = 1 km son
+   ~100-150 MB, a 250 m ~2 GB (no cabe en GitHub Pages).
+4. Opcional y sin prisa: limpiar el historial viejo (reescribe la historia de
+   Git; obliga a volver a clonar en el Mac y en el PC). Explicárselo con los
+   comandos exactos antes de hacer nada.
+
 ### La portada calentaba en Zen: resuelto (20-sep-2026) — ver `temperatura-zen.md`
 
 Una regresión de rendimiento que entró con el trabajo de la Luna (commit
