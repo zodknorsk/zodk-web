@@ -155,8 +155,9 @@
   </div>
 </div>
 <script type="module">
-import { montarMano, MARTE_V } from "../../src/scripts/marte.js";
-import { montarMarteGL, montarZoom } from "../../src/scripts/marte-gl.js";
+import { montarMano, montarZoom } from "../../src/scripts/gestos.js";
+import { MARTE_V } from "../../src/scripts/versiones.js";
+import { montarMarteGL } from "../../src/scripts/marte-gl.js";
 
 const $ = (id) => document.getElementById(id);
 const sonda = $("sonda"), capa = $("nombres"), hero = $("hero");

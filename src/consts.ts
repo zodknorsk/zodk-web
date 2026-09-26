@@ -1,4 +1,4 @@
-import type { Site, Metadata, Socials } from "@types";
+import type { Site, Metadata } from "@types";
 
 // Configuración central del sitio. Casi todo el texto "de marca" sale de aquí,
 // así que este es el primer archivo que tocarás para personalizar la web.
@@ -23,13 +23,6 @@ export const EVENTOS: Metadata = {
   TITLE: "Eventos",
   DESCRIPTION: "Seguimiento en profundidad de sucesos, semana a semana.",
 };
-
-export const SOCIALS: Socials = [
-  {
-    NAME: "github",
-    HREF: "https://github.com/zodknorsk",
-  },
-];
 
 // Sección "Hecha con" de la portada: con qué está construida la web. Cada
 // insignia enlaza a la web oficial de la tecnología. Los SVG son los oficiales

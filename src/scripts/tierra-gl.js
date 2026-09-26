@@ -19,7 +19,7 @@
 // Lo usa logo-files/prototipo-tierra/giro.html. Detalle en
 // logo-files/TIERRA-WIP.md.
 
-import { PLANETA_V } from "./planeta.js";
+import { PLANETA_V } from "./versiones.js";
 
 const DEG = Math.PI / 180;
 // Vista inicial: la inclinación del horizonte de antes (20° al norte) y el

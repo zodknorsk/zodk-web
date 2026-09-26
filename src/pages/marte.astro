@@ -56,14 +56,13 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   // Como /luna: la web cambia de página sin recargar (ClientRouter), así que
   // Marte se monta en cada llegada y se desmonta al salir.
   import { navigate } from "astro:transitions/client";
-  import { LUNA_V } from "../scripts/luna.js";
-  import { MARTE_V, montarMano } from "../scripts/marte.js";
-  import { montarMarteGL, montarZoom } from "../scripts/marte-gl.js";
+  import { montarMarteGL } from "../scripts/marte-gl.js";
+  import { montarMano, montarZoom } from "../scripts/gestos.js";
+  import { PLANETA_V, LUNA_V, MARTE_V } from "../scripts/versiones.js";
   import { montarNombres } from "../scripts/marte-nombres.js";
   import { AMARTIZAJES } from "../data/amartizajes";
   import { PAISES_MARTE } from "../data/amartizajes";
   import { svgBandera } from "../data/alunizajes";
-  import { PLANETA_V } from "../scripts/planeta.js";
   import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/viaje-luna.js";
 
   type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;
@@ -265,7 +264,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
           enlace: publicadas.includes(a.nota) ? `/notas/${a.nota}` : null,
         };
       });
-      montarNombres(capa, marte, chapas).then((nombres) => {
+      montarNombres(capa, marte, chapas, { url: `/marte/marte-nombres.json?v=${MARTE_V}`, radioKm: 3389.5 }).then((nombres) => {
         if (!capa.isConnected || enVuelo) return nombres.desmontar();   // ya se estaba yendo
         colocaNombres = nombres.coloca;
         quitar.push(() => { colocaNombres = null; nombres.desmontar(); });

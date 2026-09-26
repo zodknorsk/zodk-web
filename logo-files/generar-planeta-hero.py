@@ -1908,20 +1908,11 @@ elif len(sys.argv) >= 3 and sys.argv[1] == "--frame":
     else:
         SW, SH = render("--noche" in sys.argv, _out, [_f])
         print(f"fotograma {_f}: {SW}x{SH} px -> {_out}")
-elif len(sys.argv) >= 2 and sys.argv[1] == "--sprite":
-    # El sprite antiguo de FRAMES fotogramas (ya no lo usa la web). OJO: a
-    # COLS = 600 la rejilla de GRID_COLS = 15 sale de 9000 px de ancho, más de lo
-    # que aguanta una textura de GPU: bajar GRID_COLS si hiciera falta.
-    SW, SH = render(False, "zodk-planeta-sprite.png")
-    print(f"sprite día: {SW}x{SH} px, color real (sin paleta)")
 else:
-    # Lo que usa la web: datos del canvas + imágenes fijas de respaldo, de día
-    # y de noche (el fotograma de giro 0, el mismo con el que arranca el
-    # canvas; se ven sin JS y mientras carga). Después, subir PLANETA_V en
-    # src/scripts/planeta.js y el ?v= de las dos imágenes en global.css.
+    # Lo que usa la web: los datos del motor en public/planeta/. Después, subir
+    # PLANETA_V en src/scripts/versiones.js y rehacer la Tierra quieta con
+    # generar-tierra-quieto.mjs.
     import os
     _dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public", "planeta")
     _n = export_canvas(_dst)
-    render(False, os.path.join(_dst, "planeta-quieto.png"), [0])
-    render(True, os.path.join(_dst, "planeta-quieto-noche.png"), [0])
-    print(f"web: {_n} materiales + imágenes fijas -> public/planeta/ (sube PLANETA_V)")
+    print(f"web: {_n} materiales -> public/planeta/ (sube PLANETA_V y rehaz tierra-quieto)")

@@ -211,10 +211,9 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
   // La web cambia de página sin recargar (ClientRouter), así que la Luna se
   // monta en cada llegada y se desmonta al salir.
   import { navigate } from "astro:transitions/client";
-  import { LUNA_V } from "../scripts/luna.js";
   import { montarLunaGL } from "../scripts/luna-gl.js";
-  import { MARTE_V, montarMano } from "../scripts/marte.js";
-  import { montarZoom } from "../scripts/marte-gl.js";
+  import { montarMano, montarZoom } from "../scripts/gestos.js";
+  import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
   import { montarNombres } from "../scripts/marte-nombres.js";
   import { volarALuna, faseLunaHoy, inOutSine, VUELO_MARTE } from "../scripts/viaje-luna.js";
 
@@ -383,11 +382,6 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     const volver = document.querySelector<HTMLButtonElement>(".luna-volver");
     const hero = document.querySelector<HTMLElement>(".luna-hero");
     if (!cv || !sonda || !capaNombres || !disco || !boton || !volver || !hero) return;
-    // Banco de pruebas de consumo de la Orion (?orion=quieta / sin-z / capa),
-    // igual que el ?medir de la portada: las reglas están en global.css, junto
-    // a la nave. Solo hace algo con el parámetro puesto.
-    const orion = new URLSearchParams(location.search).get("orion");
-    if (orion) hero.classList.add(`prueba-orion-${orion}`);
     const estadoGuardado = leerEstadoLuna();
     // Mientras carga el lienzo se ve el PNG de la cara que se dejó.
     if (estadoGuardado?.cara === "oculta") disco.style.backgroundImage = `url(/luna/luna-oculta.png?v=${LUNA_V})`;
