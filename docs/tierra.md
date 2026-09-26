@@ -1,666 +1,167 @@
-# Proyecto Tierra — documento de traspaso
+# La Tierra (portada)
 
-**Este documento dice en qué punto está el proyecto.** Se actualiza en cada
-paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Leyendo
-solo esto hay que poder retomarlo. El detalle del planeta de antes (horizonte
-de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
+## Estado
 
-## Dónde estamos (26-sep-2026, tarde, sesión en la nube)
+**En la rama `earth-project`, sin fusionar.** `main` sigue publicando la
+portada de antes (el horizonte del hemisferio norte). Hecho: la Tierra entera
+en WebGL, hemisferio sur, chapas y X, tamaño común de los tres astros, zoom
+con detalle y nombres, la noche entera, el acercamiento al cargar y el título
+en papel.
 
-- Rama **`earth-project`**. Commits de esta sesión, **sin subir** (el
-  usuario los sube con su orden): el apunte del peso del repositorio en
-  `CLAUDE.md`, la cabecera centrada y el acercamiento (abajo).
-- **Presencia de la portada** (usuario: "antes tenía mucha más presencia"):
-  con el disco entero al tamaño común, la Tierra ocupaba un 24 % de la
-  pantalla y el rótulo pequeño se iba a los 5 s. Se le enseñaron maquetas
-  con el motor real (A llegada de cerca, B globo grande, C mismo globo con el
-  título de antes, D tipo revista) y pidió **una animación: de la Tierra
-  entera al horizonte del hemisferio norte**. Vídeos fotograma a fotograma;
-  la primera, muy rápida (2,5 s) → "más pausada y natural": **aprobada** la
-  de 5 s. (El avión "hacía cosas raras" en el primer vídeo: era de la
-  grabación, su animación CSS corría a tiempo real mientras cada fotograma
-  tardaba ~0,6 s.)
-- **Hecho: el acercamiento** (`montarAcercamiento` en `index.astro`):
-  - Solo al cargar la portada. Tierra entera 1 s, y acercamiento de 5 s a
-    `ZOOM_CERCA` 2,8 con `cubic-bezier(0.45, 0.05, 0.2, 1)` (arranque suave,
-    frenada larga), el zoom en escala logarítmica. Es un zoom hacia un punto
-    fijo: el centro del disco baja a la par que crece (`encuadreLlegada`,
-    lineal con el zoom) y a 2,8 lo alto del disco queda al 12 % del alto
-    (22 % en vertical, para que el sol y Marte queden en el cielo).
-  - En el motor (`tierra-gl.js`): opción `encuadre(zoom)` (px CSS que baja
-    el centro del disco; uniforme `uDes` en todos los shaders, entero en px
-    de arte) y `acercar(z, ms, curva)` (a 60 fps mientras dura; lo corta
-    usar el zoom). Se pinta solo lo que se ve, sin lienzo gigante. El zoom
-    hacia el cursor tiene en cuenta que el centro se mueve. Al alejar se
-    vuelve solo al disco entero centrado.
-  - El sol, la luna y Marte se van a las esquinas (5 % como en `main`) a la
-    par (`.astros-esquina`, `.moviendo-astros`).
-  - **El título es el de `main`** (Serif con el visor y la barra de
-    censura; decisión del usuario, "el de los vídeos", mientras se decide
-    otro): entra 0,6 s antes de que pare la cámara, el visor se cierra desde
-    fuera y la censura se retira. Fuera el rótulo a máquina (`montarRotulo`
-    y su CSS). La hélice de "otro objeto" sigue a la derecha de la
-    coordenada, en espejo con play/pausa, como en la rama.
-  - La nave aparece al final (oculta hasta `.nave-lista`) y los nombres del
-    zoom esperan a que se use el zoom (`.sin-nombres`).
-  - **Al volver en vuelo** de la Luna o Marte: disco entero, sin
-    acercamiento, con el título encima (se detecta por las estrellas, que
-    llegan con `--estrellas-pos`). Con reduced-motion, directamente cerca.
-    Sin WebGL2, la foto quieta con el título.
-  - Probado en Chrome sin ventana: día, noche, móvil (390 × 844), zoom hacia
-    el cursor, alejar hasta el disco, arrastrar y la vuelta desde /luna.
-    `npm run build` bien. `npm run lint` da 2 errores que ya estaban antes
-    (un genérico de TypeScript en `index.astro` que el extractor no entiende
-    y unas comillas en `marte-nombres.js`).
-- **Cabecera de la portada centrada** (arriba del todo, sin logo); al bajar
-  al blog, como siempre.
-- **Título en papel: hecho** (usuario, 26-sep-2026, de las maquetas "ficha"
-  y "clasificado" eligió la segunda: "que ponga NATO SECRET", "quita lo de
-  expediente zodk", "mejora un poco el papel"). Papel viejo girado −1,2°
-  (manchas, fibra de ruido SVG quieto, doblez, bordes oscuros), el nombre en
-  Mono negro, la marca "NATO SECRET" arriba centrada y un sello rojo abajo a
-  la derecha; el visor y la censura de siempre. Por encima de las naves
-  (`z-index: 3`; la ficha de la nave, encima al pasar el ratón). De noche, al
-  fijar coordenada, el lema sigue en tinta.
-- **Retoques (26-sep-2026, tarde)**: la cámara se acerca "un pelín menos"
-  (`ZOOM_CERCA` 2,8 → 2,5); el papel, más girado (−2,2°) y sin la marca roja
-  de arriba (queda el sello); el aspa de "otro objeto" vuelve bajo la
-  esquina de abajo a la izquierda del visor, al otro lado de la coordenada,
-  como en `main`. **Al arrastrar o ampliar el planeta el documento se
-  retira** (papel, letras, sello y esquinas se desvanecen en 0,45 s;
-  `.titulo-fuera`, `montarTituloFuera`). **Corregido** (usuario, probándolo:
-  "si amplío o lo pongo a x1 va saliendo el título por la cara"): la primera
-  regla lo devolvía con cualquier zoom por debajo del de llegada. Ahora el
-  documento **solo** se ve en el encuadre de llegada (zoom 2,5 ± 0,05) y sin
-  arrastrar; si solo se gira, vuelve 0,9 s después de soltar. A x1, con otro
-  zoom y al volver en vuelo, nunca (la coordenada, en el recuadro de la
-  esquina). Probado paso a paso: carga, acercamiento, arrastrar/soltar,
-  ampliar, alejar a x1 y quedarse, zoom intermedio y vuelta desde /luna. La
-  coordenada y los botones se quedan (el papel y las esquinas pasaron a
-  `::before` para eso).
-- **La coordenada con el documento retirado** (usuario: se quedaba flotando
-  donde estaba el título). Se le enseñaron A (abajo en el centro), B
-  (esquinas de abajo) y C (pegada a la mira); eligió la esquina, "que resalte
-  más, envolviéndolo en un cuadrado": `.hero-hud`, abajo a la izquierda, con
-  play/pausa, la coordenada y el aspa. Primero oscura con esquinas de visor;
-  después (usuario: "quita las 4 esquinas y que sea un fondo claro"), del
-  color del papel del título con la tinta oscura. `montarTituloFuera` mueve los nodos (no se clonan: siguen sus
-  eventos) al recuadro al retirarse el documento y de vuelta al visor al
-  volver.
-- **La censura del título, más pausada** (usuario: "va muy apresurado"):
-  en la entrada tras el acercamiento aguanta 1,4 s tachado y cada barra se
-  retira en 1,1 s (antes 0,35 s y 0,5 s), escalonadas.
-- **Cada visita empieza de día** (usuario: "siempre el modo día, porque si
-  no tenemos el problema de la luna": el vuelo con `moon-project` pasa a
-  noche y eso se quedaba guardado). El tema elegido va en `sessionStorage`
-  (antes `localStorage`): aguanta al navegar y al recargar, pero otra
-  pestaña u otro día arranca de día. El valor viejo de `localStorage` se
-  borra al cargar (`preloadTheme`, `Head.astro`).
-- **Cabecera centrada de verdad**: el logo escondido seguía ocupando 78 px y
-  empujaba la nav; ahora fuera del flujo, y el botón de tema cuelga a la
-  derecha (el centro de la pantalla cae en el de los enlaces).
-- **Títulos descartados antes (26-sep).** Rechazados el 26-sep (usuario: "no me gustan"):
-  cabecera de revista tras la Tierra, rótulo de mapa curvado sobre el
-  océano, cabecera de periódico y chincheta en la X. **Siguiente idea
-  suya**: "tipo documento antiguo (tal vez clasificado)", un rectángulo
-  blanco o color papel con las letras en negro. Ojo: se parece a la
-  "cartela de expediente" que rechazó en septiembre; avisarle.
-- **Lo que queda**, por este orden: el paso 8 (Zen y móvil: el
-  acercamiento pinta a 60 fps 5 s, medirlo también); fusionar en `main`.
+Queda, por este orden:
 
-## Dónde estábamos (26-sep-2026, sesión de mediodía, histórico)
+1. **Probar en Zen y en el móvil** lo que es nuevo en la GPU: las luces (un
+   punto por ciudad, 34.091) y la aurora (hasta ~340.000 puntos a ×6), y el
+   acercamiento, que pinta a 60 fps durante 5 s. Medir en vatios (ver
+   `rendimiento.md`). Si pesa: menos puntos de aurora a ×6 (`F` en
+   `pintaCon`, `tierra-gl.js`) o menos fps.
+2. **Fusionar en `main`** y publicar.
 
-- Rama **`earth-project`**, commiteada en local con el 7.5 y **sin subir**
-  (GitHub va hasta `6fa1c07`; sin fusionar: no publica nada). Nada sin
-  commitear. En el otro ordenador: `git fetch` y
-  `git switch earth-project` (o `git pull` si ya está).
-- **Hecho**: pasos 1-6, el 6b (zoom: nieve, nombres, Bab el-Mandeb) y el 7
-  (noche) entero: 7.1 luces, 7.2 brillo de atmósfera, 7.3 aurora, 7.4 X
-  verde y 7.5 foto quieta de noche.
-- **7.5 Foto quieta de noche (26-sep-2026, commiteada)**: el usuario vio
-  que al volver a la Tierra desde la Luna "aparece apagada" (era la foto del
-  24-sep, sin luces ni brillo). Rehechas con
-  `node arte/generar-tierra-quieto.mjs`: la de día sale idéntica, la
-  de noche ya lleva luces y brillo. **Sin aurora** (como sin nubes: se mueve
-  y se enciende al anochecer; con la espera de 2 s del script salía a medio
-  encender): opción nueva `sinAurora` en `montarTierraGL` (`tierra-gl.js`),
-  que usa el script. `PLANETA_V` 13 → 14 y los `?v=` de `tierra-quieto*.png`
-  en `global.css` (estaban en 12) → 14. Enseñada la comparación antes/ahora.
-- **Lo que queda**, por este orden:
-  1. Push de la rama (orden suya).
-  2. **Paso 8: probar en Zen y en el móvil** lo que es nuevo en la GPU
-     (luces: un punto por ciudad, 34.091; aurora: hasta ~340.000 puntos a
-     x6): consumo y temperatura como dice la memoria
-     `zodk-web-medir-rendimiento` (el usuario mide en su portátil); si pesa,
-     menos puntos de aurora a x6 (`F` hasta 4 en `pintaCon`) o menos fps.
-  3. **Fusionar `earth-project` en `main`** y publicar, cuando dé el visto
-     bueno (commit y push son órdenes suyas, por separado).
-  - Opcional, ofrecido y sin decidir: que la vista de lejos (zoom < x3,6)
-    también neve los Pirineos con el relieve fino (hoy solo el zoom).
-  - Los nombres de la Tierra "se irán puliendo con el tiempo" (usuario).
-- Para ver cosas sin ventana: el script de capturas de las sesiones del
-  25 y 26-sep abría la portada del servidor de desarrollo en un Chrome sin
-  ventana y movía el globo con un `window.__tierra` temporal en
-  `index.astro` (solo en desarrollo; quitado en los commits). Las capturas
-  se le enseñan juntas en una página HTML.
+Opcional, ofrecido y sin decidir: que la vista de lejos (por debajo de ×3,6)
+también nieve los Pirineos con el relieve fino (hoy solo lo hace el zoom). Los
+nombres "se irán puliendo con el tiempo".
 
-## Dónde estábamos (26-sep-2026, al cerrar la sesión de la mañana, histórico)
+## Qué se ve
 
-- Rama **`earth-project`**, **commiteada y subida** a GitHub el
-  26-sep-2026 (sin fusionar: no publica nada). En el otro ordenador:
-  `git fetch` y `git switch earth-project` (o `git pull` si ya está).
-  Nada sin commitear.
-- **Hecho**: pasos 1-6, el 6b (zoom: nieve, nombres, Bab el-Mandeb) y del
-  7 (noche) el 7.1 luces, 7.2 brillo de atmósfera, 7.3 aurora y 7.4 X
-  verde, todos aprobados por el usuario (detalle abajo).
-- **PARA TERMINAR MAÑANA (usuario, 26-sep-2026: "apunta que queda para
-  terminar mañana")**, por este orden:
-  1. **7.5 Foto quieta de noche**: `node arte/generar-tierra-quieto.mjs`
-     (rehace `tierra-quieto.png` y `tierra-quieto-noche.png` con el motor
-     de ahora: la de noche aún es sin luces ni brillo) y subir `PLANETA_V`
-     en `src/scripts/planeta.js` (ahora 13). Enseñársela antes de commitear.
-     Ojo: la foto se hace sin nubes ni chapas; decidir con él si lleva la
-     aurora (se mueve) o no.
-  2. **Paso 8: probar en Zen y en el móvil** lo que es nuevo en la GPU
-     (luces: un punto por ciudad, 34.091; aurora: hasta ~340.000 puntos a
-     x6): consumo y temperatura como dice la memoria
-     `zodk-web-medir-rendimiento` (el usuario mide en su portátil); si pesa,
-     menos puntos de aurora a x6 (`F` hasta 4 en `pintaCon`) o menos fps.
-  3. **Fusionar `earth-project` en `main`** y publicar, cuando dé el visto
-     bueno (commit y push son órdenes suyas, por separado).
-  - Opcional, ofrecido y sin decidir: que la vista de lejos (zoom < x3,6)
-    también neve los Pirineos con el relieve fino (hoy solo el zoom).
-  - Los nombres de la Tierra "se irán puliendo con el tiempo" (usuario).
-- Para ver cosas sin ventana: el script de capturas de las sesiones del
-  25 y 26-sep abría la portada del servidor de desarrollo en un Chrome sin
-  ventana y movía el globo con un `window.__tierra` temporal en
-  `index.astro` (solo en desarrollo; quitado en los commits). Las capturas
-  se le enseñan juntas en una página HTML.
+- La Tierra entera, centrada, que **gira sola** (90 s por vuelta, botón de
+  play/pausa), **se arrastra** con el ratón y **se acerca** hasta ×6 con
+  pellizco o Ctrl + rueda. La rueda sola y un dedo bajan la página; con zoom,
+  un dedo mueve el globo.
+- **Al cargar la portada**: un segundo de Tierra entera y luego la cámara se
+  acerca en 5 s hasta el horizonte del hemisferio norte (zoom 2,5). Al acabar
+  entra el título y después la nave. Al volver en vuelo desde la Luna o Marte
+  no hay acercamiento: se queda el disco entero.
+- **El título** es un documento clasificado: papel viejo girado −2,2°, nombre
+  en Mono negro, sello rojo de NATO SECRET abajo a la derecha, el visor de
+  esquinas alrededor y la barra de censura (se destacha al entrar y se tacha
+  al bajar por la página). **Solo se ve en el encuadre de llegada** (zoom 2,5
+  y sin arrastrar). Con cualquier otro zoom, a ×1 o al volver en vuelo se
+  retira, y la coordenada y sus botones pasan a un recuadro color papel abajo
+  a la izquierda. Si solo se gira arrastrando, vuelve un momento después de
+  soltar.
+- **Coordenada MGRS** del punto bajo el cursor (mira en vez de cursor sobre
+  el planeta). Clic: se clava una X y la coordenada queda fija y resaltada;
+  clic en la X o Esc la quita. En táctil no hay coordenada.
+- **Chapas de bandera** en los países con artículos; al pasar el ratón, ficha
+  con esos artículos (sin fichas en táctil).
+- **Una nave** a la vez sobrevolando (dron, aviones, satélite), al 55 % del
+  tamaño de antes; el botón de la hélice trae otra. Al pasar el ratón, ficha
+  y se para toda la portada.
+- **Sol y luna** arriba a la izquierda y **Marte** a la derecha, cerca del
+  borde de arriba del globo; durante el acercamiento se van a las esquinas.
+  La luna lleva la fase real del día. Pulsar la luna (de noche) o Marte hace
+  el vuelo a su página.
+- **De noche**: luz de luna, luces de las ciudades, brillo de atmósfera en el
+  borde, aurora boreal que se enciende "como una serpiente" y X verde de
+  visión nocturna. Al cambiar de tema el astro se esconde tras la Tierra, sale
+  el otro y el planeta se funde de una luz a la otra en 1,5 s.
+- **Cada visita empieza de día.** El tema elegido va en `sessionStorage`:
+  aguanta al navegar y al recargar, pero otra pestaña u otro día arranca de
+  día. Si no, el vuelo de `moon-project`, que pasa a noche, dejaba la web de
+  noche para siempre.
 
-## Dónde estábamos (25-sep-2026, histórico)
+## Cómo funciona
 
-- **Hecho**: pasos 1-6 y el 6b (abajo).
-- **26-sep-2026, paso 7 casi terminado**: 7.1 (luces), 7.2 (brillo), 7.3
-  (aurora) y 7.4 (X verde) commiteados en local (sin subir). Falta 7.5 (la
-  foto quieta de noche); el usuario no quiso hacerla aún ("no. Commit de lo
-  que llevamos hasta ahora"):
-  - **7.1 Luces de las ciudades: hechas y aprobadas.** En la GPU
-    (`tierra-gl.js`, pasada "(1d)", `VERT_LUCES`): cada ciudad de
-    `planeta-luces.png` deja su huella (`HUELLA`, `HUELLA_R2`,
-    `HUELLA_GRANDE`) en una textura RGBA16F con mezcla aditiva (R = suma,
-    G = núcleos, A = halo más fuerte con mezcla MAX) y la pasada de color
-    saca el nivel de ámbar como `luces()` de `planeta.js` (`LUZ_UMBRAL`,
-    `LUZ_RAMPA`, `LUZ_SUMA_MAX`), bajo nubes y chapas. Un punto por
-    ciudad del tamaño de su huella (anillos, ver abajo). Se bajan con la
-    LUT de noche. Necesita
-    `EXT_color_buffer_float`; sin él, noche sin luces. Hacia el borde las
-    sumas pesan `U.z` (si no, las ciudades amontonadas por la perspectiva
-    hacían un canto brillante alrededor del disco).
-    **Con zoom** (usuario, 26-sep-2026: "la India a x1 está completamente
-    amarilla pero si amplío se van reduciendo las luces"): la huella fija en
-    píxeles hacía que al ampliar las ciudades dejasen de solaparse. Ahora la
-    huella va agarrada al terreno (crece con el zoom: un punto por ciudad,
-    anillos a 0,5 / 1,2 / 1,6 / 2,1 × zoom, que a x1 dan las mismas celdas
-    que `HUELLA*`). Enseñado a x1 y x6 (India, China, Europa) frente a la
-    huella fija: **aprobado** ("vale, me gusta").
-    **Luces flojas "quemadas"** (usuario, 26-sep-2026: "en el fogonazo de
-    luz se ve de puta madre pero las luces amarillas suaves dan un efecto de
-    quemadas"): los niveles 1 y 2 mezclaban el suelo con el ámbar oscuro
-    (192, 128, 52) y el azul de la noche se volvía marrón. Se le enseñaron
-    cinco (original; A sumar ámbar claro, "no me termina de gustar"; B sumar
-    ámbar cálido más flojo; C mezclar con ámbar claro; D sin velo y halo con
-    ámbar claro) y eligió **la D** ("la que más se acerca"): nivel 1 (velo)
-    no pinta nada; nivel 2 (halo), `mix(col, LUZ_SUAVE, 0.5)` con
-    `LUZ_SUAVE` = (255, 191, 92); los 4 fuertes, sin tocar. Puede pedir
-    retoques sobre ella.
-    Usuario: "lo voy viendo bien" (luces dadas por buenas de momento).
-  - **7.2 Brillo de atmósfera de noche: hecho y aprobado.** En la pasada de
-    color (`uGlow`): la franja de `AIRGLOW_PX` (1,5 / 3 px de arte) junto
-    al borde, mezclada con `AIRGLOW` al 55 % / 25 %, alrededor de todo el
-    disco, como `planeta.js`. Con zoom sigue midiendo lo mismo en píxeles.
-    Probado más fino (1 y 2 px; 1 px) y el usuario lo quiere "como estaba":
-    se queda con 1,5 / 3 px.
-  - **7.3 Aurora boreal: hecha y aprobada.** En la GPU
-    (`tierra-gl.js`, pasada "(1e)", `VERT_AURORA`, constantes `AUR`): cada
-    punto de las cortinas sale de `gl_VertexID` y el vertex shader hace las
-    cuentas de `aurora()` de `planeta.js` (óvalo alrededor del polo
-    geomagnético, pliegues, haces, estrías, alturas propias, dos arcos y
-    resplandor difuso, violeta arriba); se suma en una textura RGBA16F y la
-    pasada de color la pinta por niveles sobre el planeta, sobre las nubes
-    y fuera del disco (asoma por el borde), bajo chapas y X. Gira con la
-    Tierra y se arrastra con ella. Con zoom, más rayos y puntos por rayo
-    (hasta x4) y cada uno pesa menos (`uW`: la densidad del horizonte de
-    antes, radio 292,5): no se deshace en puntos. Encendido "de serpiente"
-    al anochecer (`ponNoche`, +900 ms) y al cargar de noche (+300 ms);
-    mientras se enciende, el bucle pinta a 30 fps aunque el globo esté
-    quieto. Como en `planeta.js`, se mueve solo cuando se repinta (girando).
-    Vista desde arriba (el polo de frente) las cortinas son cintas finas; de
-    perfil, asoman por el borde.
-    **Retoque en curso** (usuario, 26-sep-2026: "se ve pequeña y sobre todo,
-    cuando se amplía sobre la zona se ve rarilla"). Probado y descartado sin
-    enseñar: apartar cada rayo del arco al azar (se deshacía en confeti) y
-    4 arcos paralelos (carriles de autopista). Lo que funciona: una **franja
-    sobre el suelo calculada por píxel** en la pasada de color
-    (`aurFranja`: distancia al óvalo con los mismos pliegues y haces, por
-    niveles) + las cortinas. Enseñadas actual, V6 (franja 0,25 + 2 cortinas,
-    `H1` 0,075) y V7 (franja 0,4 más ancha + 3 cortinas, `H1` 0,09).
-    Eligió "V6 o un poco más intensa": puesto franja 0,32 de −2,7 a +3,7°
-    (más fuerte a +0,6), 2 cortinas, `H1` 0,08 (bloque `AUR`, comentado);
-    el resplandor de puntos de antes (`ND`, `DIFUSO`) queda a 0.
-    **Aprobada** ("okey").
-  - **7.4 La X de noche en verde: hecha.** `celdasXN` / `capaXN`
-    en `tierra-gl.js` con los colores de `X_CELLS_N` de `planeta.js`
-    (141, 255, 158 y 104, 222, 126; contorno 6, 20, 10); de noche se pinta
-    esa. La coordenada fijada en verde ya la hacía el CSS de la página
-    (`html.dark .hero-mgrs.fijada`, global.css), sin tocar.
-  - Falta 7.5: rehacer `tierra-quieto-noche.png` y subir `PLANETA_V`.
-  - **Temporal, quitar antes de commitear**: `window.__tierra` en
-    `index.astro` (para las capturas sin ventana). Quitado en los commits;
-    ahora no está.
-- **SIGUIENTE (próxima sesión, el usuario: "lo voy a hacer en la próxima
-  sesión"): paso 7, el modo noche sobre el globo entero.** Qué hay y qué
-  falta:
-  - **Lo que ya hace el motor** (`ponNoche` en `src/scripts/tierra-gl.js`,
-    ~línea 423 y 955): LUT de noche (`planeta-lut-noche.png`), la luz de la
-    luna, el suelo de la noche, el halo (`uAtmo` = `N_ATMO`) y las nubes de
-    noche, con fundido de 1,5 s al cambiar de tema. El zoom (`n1/`) usa la
-    misma LUT de noche: los 1579 materiales tienen su color de noche.
-  - **Falta, por este orden** (todo estaba en el horizonte de antes, pintado
-    en CPU por `src/scripts/planeta.js`; el detalle de cómo se decidió, en
-    `HERO-WIP.md`, sección "Modo noche v2"):
-    1. (HECHO el 26-sep, ver arriba) **Luces de las ciudades**: `public/planeta/planeta-luces.png` (2
-       píxeles por luz, latitud/longitud/fuerza; `LUCES_N` y `LUZ_PNG_W`
-       en `planeta-datos.json`). En `planeta.js`, `luces()` (~línea 333-395)
-       las pinta como `light_cells()` del generador: pocos niveles de
-       brillo, cálidas. En el motor nuevo: un pase más en el shader o
-       puntos en la textura de arte, solo en la cara de noche; que se vean
-       también con zoom (a ×6 los puntos deben seguir siendo de 1 píxel de
-       arte, no crecer).
-    2. (HECHO el 26-sep) **Brillo de atmósfera** de noche (`planeta.js` ~línea 210: `dpx`,
-       píxeles desde el borde). Hoy el halo es el mismo con otro color.
-    3. (HECHA el 26-sep, ver arriba) **Aurora boreal** (`planeta.js` ~línea 396-470): cortinas de rayos
-       sobre el óvalo auroral alrededor del polo norte geomagnético, de
-       `AUR_H0` a `AUR_H1` radios, verde abajo y violeta arriba, pocos
-       niveles. En el horizonte de antes el polo quedaba arriba; ahora es
-       un globo que gira y se arrastra: la aurora tiene que ir pegada a la
-       Tierra (girar con ella) y verse por encima del borde cuando el polo
-       está cerca del limbo. Ojo con la CPU (`zodk-web-animaciones`): si se
-       pinta en cada fotograma, que sea en el shader.
-    4. (HECHA el 26-sep) **La X y la coordenada fijada en verde de visión nocturna**, como en
-       el horizonte de antes (`src/styles/global.css` ~línea 1366).
-    5. Rehacer `tierra-quieto-noche.png`
-       (`node arte/generar-tierra-quieto.mjs`) cuando la noche esté
-       terminada, y subir `PLANETA_V`.
-  - Luego, paso 8: probar en Zen y en el móvil (consumo:
-    `zodk-web-medir-rendimiento`) y fusionar en `main`.
-  - Para ver cosas sin ventana: el script de capturas de esta sesión
-    abría la portada del servidor de desarrollo en un Chrome sin ventana y
-    movía el globo con un `window.__tierra` temporal (ya quitado); si hace
-    falta, volver a ponerlo solo en desarrollo y quitarlo antes de commitear.
-- **Paso 6b HECHO, commiteado y subido (25-sep-2026)**: pulir el zoom antes de la noche.
-  Usuario, 25-sep-2026: "antes de ir con el modo nocturno creo que el zoom /
-  relieve hay que pulirlo algo más": montañas con nieve (Pirineos), Bab
-  el-Mandeb "sale solo un periodo muy pequeño de tiempo y tiene un visor
-  diferente al resto", y nombres: "Mulhacén, que es un pico sin importancia,
-  aparece, pero luego Oceanía / Australia / China están prácticamente vacíos".
-  Hecho y **aprobado** (usuario, 25-sep-2026: "mejor. Con el tiempo iremos
-  puliendo nombres pero mejor"; los nombres se seguirán ajustando):
-  - **Nieve y roca del zoom con el relieve fino** (`_roca_nieve_fina` en
-    `generar-tierra.py`, solo `--nivel 2`): antes salían de celdas de
-    0,25° y en las cordilleras estrechas la media no llegaba a la línea de
-    nieve. ETOPO a 2,5' suaviza las cumbres (Aneto ~2560 m), así que la
-    línea va más baja que en la base (1960 m en los Pirineos, 1770 en los
-    Alpes, 4300 en el ecuador; `NIEVE_FINA_*`) y la roca empieza a 1200 m
-    (`ROCA_FINA_*`). Las mesetas altas (Tíbet, Altiplano) no se vuelven
-    blancas: la nieve pide sobresalir 200 m del entorno a 1°. `n1/`
-    regenerado entero; LUT 1577 → 1579 materiales; `PLANETA_V` 13.
-    **La base (zoom < ×3,6) no cambia**: los Pirineos solo se nievan con el
-    nivel fino. Si lo pide, la base puede usar lo mismo.
-  - **Más nieve en los Pirineos** (usuario, 25-sep-2026: "Nieve mejor. Los
-    Pirineos me siguen pareciendo poco"). Bajar la línea de nieve casi no
-    cambia nada (probado a 1960, 1840 y 1700 m): la franja alta de los
-    Pirineos mide ~0,2° y a ×6 son 4-5 píxeles. Probado **ensanchar la
-    nieve** (`NIEVE_FINA_ANCHO` = 0,2°: cada punto cuenta la cumbre más alta
-    a esa distancia): los Pirineos, claramente nevados, y los Alpes, mucho
-    más blancos. **Rechazado** (usuario, 25-sep-2026: "déjalo como antes y
-    ya"): se queda la nieve sin ensanchar (línea a 1960 m en los Pirineos,
-    `NIEVE_FINA_*` = 4300, 55, 600) y se quitó el código. Las 4 teselas de
-    la prueba, regeneradas como el resto.
-  - **Nombres, 131 → 367** (`generar-nombres-tierra.py`): mares y regiones
-    por la importancia de Natural Earth (`scalerank` 0-3, más unos de 4 a
-    mano: `MARES_4`, `REGIONES_4`), islas y archipiélagos incluidos, cada
-    rango desde su zoom (`ZONA_ZMIN`: 1,8 / 2,2 / 2,8 / 3,4); fuera las
-    tierras y costas de la Antártida y rarezas (`NO_REGIONES`). Picos: solo
-    los conocidos en todo el mundo (fuera Mulhacén y Aneto; entran
-    Kanchenjunga, Puncak Jaya, Kosciuszko, Aoraki, Kinabalu, Gongga...).
-    Estrechos: + Bass, Torres, Magallanes, Cook y Corea.
-  - **Bab el-Mandeb**: su nombre chocaba con el rótulo del golfo de Adén y,
-    al pisarse, ganaba siempre el lugar más grande; ahora el archivo pone
-    primero los visores (ganan a los rótulos). Sin tocar `marte-nombres.js`.
-    El visor de Ormuz es más grande que el resto (caja a mano de 1,2 x 1,6°;
-    los demás estrechos, 0,7°): pendiente de ver si es eso lo "diferente".
+- **Motor**: `src/scripts/tierra-gl.js` (WebGL2), hecho sobre el de Marte con
+  las cuentas del planeta de antes. Radio de arte 180 px (algo más grueso que
+  el píxel de Marte y la Luna). Mapa de materiales (1.579) en una textura con
+  mipmaps en longitud por prioridad, para que no parpadeen costas e islas
+  cerca del polo. Luz en escalones de 1/3, halo de atmósfera, nubes, chapas y
+  X como puntos de un píxel de arte, luces y aurora sumadas en texturas
+  aparte. Gira a 30 fps (0,13° por fotograma a 90 s por vuelta); la mano y el
+  zoom, a 60. Quieto no repinta.
+- **La página**: `src/scripts/portada.ts` monta el motor en cada llegada a la
+  portada (la web cambia de página sin recargar) y lleva el acercamiento, el
+  título, la mira y la coordenada, las chapas, los vuelos y el tema. El HTML
+  está en `src/pages/index.astro` y los estilos en `src/styles/portada.css`
+  (lo común a los tres astros, en `astros.css`).
+- **Datos** en `public/planeta/`: `planeta-mapa.png`, las LUT de día y de
+  noche, `planeta-datos.json`, `planeta-luces.png` (34.091 ciudades de
+  GeoNames), el nivel de zoom `n1/` (16 px/grado, 128 teselas, 2,6 MB),
+  `tierra-nombres.json` y la Tierra quieta (`tierra-quieto*.png`), que se ve
+  mientras carga, sin WebGL2 y en los vuelos.
+- **Acercamiento**: zoom hacia un punto fijo cerca del polo. El centro del
+  disco baja a la par que crece (`encuadre(zoom)` en el motor, uniforme `uDes`
+  en los shaders) y a 2,5 lo alto del disco queda al 12 % del alto (22 % en
+  vertical). Al alejar se vuelve solo al disco entero centrado.
+- **Nombres**: continentes, océanos, mares, regiones, estrechos y picos, en
+  castellano, sin países ni fronteras. Capa común a los tres astros
+  (`src/scripts/nombres.js`).
 
-## Dónde estábamos (24-sep-2026, histórico)
+## Regenerar
 
-- Rama **`earth-project`**, creada desde `main` el 24-sep-2026 (`main` estaba
-  en `6862600`, con Marte y la Luna publicados). **Subida a GitHub el
-  24-sep-2026 al cerrar la sesión** (sin fusionar: no publica nada). En el PC
-  con Linux: `git fetch` y `git switch earth-project`.
-- **Commiteado** (`e2dfc1d`): pasos 1 y 2. El motor `src/scripts/tierra-gl.js`
-  (disco completo, gira sola a 90 s por vuelta, se arrastra, zoom hasta ×6,
-  nubes; radio de arte 180) y el banco `arte/prototipo-tierra/giro.html`;
-  hemisferio sur (banquisa austral estrecha, la Antártida con su relieve),
-  `public/planeta/` regenerado (`PLANETA_V` 11).
-- **Commiteado** (`1b4306b`): paso 3 (chapas y X en el motor), la mano que
-  solo se cierra al girar y el banco del rótulo (`titulo.html`).
-- **Commiteado** (`6f8d0e0`): paso 4, la portada con la Tierra entera.
-- **Commiteado** (`5d80e07`, pedido del usuario al commitear el paso 4):
-  - **Paso 5 hecho**: la Luna y Marte al tamaño común, disco de 70 svh (88 vw
-    en vertical). La Luna tenía ~78 svh; Marte, 60. Su pixel art no cambia:
-    solo lo que ocupan (`--luna-tam`, `--marte-disco`).
-  - **Sol, luna y Marte de la portada, cerca del globo** ("cerquita, como
-    estaban antes"): centro a (±0,46, −0,41) diámetros del centro del globo.
-    En el móvil siguen en las esquinas.
-  - **Cambio de tema**: el astro se esconde en diagonal detrás del globo
-    (hacia su centro) y el otro sale de detrás, en vez de bajar tras el
-    horizonte.
-  - **Naves al 40 %** (luego, 55 %): un factor común `--naves-k` en todos los anchos
-    (escritorio y móvil). Se le enseñaron 1, 0,75 y 0,6 y pidió "tipo 3 o
-    incluso algo más chico"; después, las ocho sobre el globo al 60, 50 y
-    40 %, y eligió el 40.
-  - **Fundido de día a noche recuperado** en el motor (1,5 s, como el de
-    `planeta.js`): se pinta la luz vieja y encima la nueva cada vez más opaca
-    (`pintaCon(L, mezcla)` con `CONSTANT_ALPHA`). `generar-tierra-quieto.mjs`
-    espera 2 s tras cambiar la luz para no hacer la foto a medias.
-- **Sin commitear**: naves al **55 %** (usuario: "sube a 55 %, las veo
-  chicas"; todas) y el **RQ-4 sobre el globo** (su sitio, `fijo-izq`, era el
-  20 % / 60 % de la pantalla y se quedaba fuera del planeta; ahora relativo al
-  disco: −0,36 / +0,12 diámetros del centro, también en el móvil).
-- **Paso 6 HECHO y commiteado**:
-  - **Nivel de detalle `n1` (16 px/grado) del mundo entero** en
-    `public/planeta/n1/` (128 teselas, 2,5 MB: el mar comprime a casi nada),
-    con el relieve suavizado (`--relieve 3`, la opción C que eligió). Solo hace
-    falta este nivel: con radio de arte 180 y zoom hasta ×6 la vista pide como
-    mucho 18,8 px/grado, y el corte entre 8 y 16 cae en ×3,6. La LUT pasa de
-    1529 a 1577 materiales. `PLANETA_V` 12.
-  - **Nombres**: `generar-nombres-tierra.py` → `public/planeta/tierra-nombres.json`,
-    con la capa de Marte y la Luna (`montarNombres`). Primero salieron
-    países; el usuario los quitó: "quitamos los nombres de países. Dejamos
-    continentes y ponemos océanos, mares y accidentes geográficos que sean
-    interesantes". Ahora, 131 (listas elegidas a mano, de Natural Earth, en
-    castellano):
-    - **rótulo de región**: continentes (de ×1,2 a ×2,6, `zmax`) y océanos
-      (desde ×1,2); mares, golfos y canales (44) y regiones físicas (49:
-      desiertos, cordilleras, mesetas, penínsulas, cuencas) desde ×1,8
-      (`zmin`) y cuando miden 90 px;
-    - **visor** (las esquinas): estrechos (Gibraltar, Bósforo, Dardanelos,
-      Bab el-Mandeb, Malaca, Taiwán y Ormuz, este a mano: no viene en Natural
-      Earth) y picos (Everest, K2, Aconcagua, Kilimanjaro, Mont Blanc, Teide,
-      Mulhacén, Aneto…), desde ×3; marco de 0,7° como mínimo.
-    `marte-nombres.js` admite `zmin` y `zmax` opcionales (Marte y la Luna no
-    los usan).
-  - Fuentes (en `arte/tierra-fuentes/`, fuera de Git): costas de
-    Natural Earth 1:10m, geografía de Natural Earth (mares 1:10m, regiones
-    1:50m, picos 1:10m) y relieve ETOPO1 a 24
-    px/grado (72 trozos de la NOAA → `etopo24.i16` con `elevacion-fina.py`).
-  - Cómo regenerar: `python3 rasterizar.py --nivel 2` (máscara), luego
-    `python3 generar-tierra.py --canvas ../public/planeta/` (la base,
-    con `planeta-materiales.json`) y `python3 generar-tierra.py --nivel 2
-    ../public/planeta/ --relieve 3` (~2 min); subir `PLANETA_V`.
-  - La línea de costa del nivel fino es más fina que la de la base (2 celdas
-    de 16 px/grado); se le ofreció engordarla y eligió "la C" tal cual.
-- Commiteado con él: naves al 55 % y el RQ-4 sobre el globo.
-- Commiteado: `46eb6ba` (paso 6).
-- Commiteado y subido al cerrar (24-sep-2026): la web **carga de día de serie** (usuario: "que de serie
-  la página cargue en modo día"): `preloadTheme` en `Head.astro` usa el tema
-  elegido con el botón (localStorage) y, si no hay, día, aunque el sistema
-  esté en oscuro; ya no se sigue en vivo el tema del sistema.
-- **Siguiente (el usuario: "mañana seguimos con la noche")**: paso 7, la
-  noche sobre el globo entero. Hoy es provisional (`ponNoche` en
-  `tierra-gl.js`: LUT de noche, la luna, el suelo de la noche, halo y nubes de
-  noche). Faltan las luces de las ciudades (`planeta-luces.png`, ya en
-  `public/planeta/`), la aurora y el brillo de atmósfera, que en el horizonte
-  de antes pintaba `planeta.js` en CPU; y la X y la coordenada fijada en verde
-  de visión nocturna.
+Las fuentes pesan y no van en Git (`arte/tierra-fuentes/`, `ne_land.json`,
+`cities15000.txt`, `etopo.tiff`); cómo bajarlas está en el docstring de cada
+script.
 
-## Qué quiere el usuario (24-sep-2026)
+```bash
+cd arte
+python3 rasterizar.py --nivel 2                         # máscara fina (costas 1:10m)
+python3 generar-tierra.py                               # base -> public/planeta/
+python3 generar-tierra.py --nivel 2 ../public/planeta/ --relieve 3   # teselas n1 (~2 min)
+python3 generar-nombres-tierra.py                       # tierra-nombres.json
+cd .. && node arte/generar-tierra-quieto.mjs            # la Tierra quieta (Chrome sin ventana)
+node arte/generar-tierra-icono.mjs                      # la Tierra pequeña de /marte
+```
 
-"Ahora mismo la Tierra ocupa medio planeta, pero me gustaría hacer lo mismo
-que hemos hecho en Marte y Luna: hacer el círculo completo y que sea movible
-con el ratón. También me gustaría unificar los tamaños de los planetas para que
-sean los mismos. En la Tierra habrá que definir mejor el detalle de
-continentes y países cuando ampliemos zoom." Rama `earth-project` hasta que
-esté terminada.
+Después, subir `PLANETA_V` en `src/scripts/versiones.js` y el `?v=` de
+`tierra-quieto*.png` en `src/styles/portada.css`. Banco de pruebas:
+`arte/bancos/tierra.html` (con `?medir`).
 
-## Decisiones tomadas (usuario, 24-sep-2026)
+## Decisiones que hay que respetar
 
-- **Disco completo en la portada**, en vez del horizonte inclinado del
-  hemisferio norte (cambia la decisión de sept 2026). Se mantienen título,
-  naves, chapas, MGRS y astros pequeños.
-- **Tamaño común para los tres astros: uno intermedio**, ~70 % del alto de la
-  pantalla (la Luna tenía ~78 % y Marte 60 %).
-- **Píxel de la Tierra: radio 180 px de arte** (`RADIO_ARTE` en
-  `tierra-gl.js`), unos 360 cuadraditos de lado a lado, algo más grueso que el
-  de Marte y la Luna (serían 256). Se le enseñaron los dos: "no veo mucha
-  diferencia, pero la que pone radio 180 creo que mejor". **Marte y la Luna
-  conservan su píxel**: al unificar, solo cambia lo que ocupa el disco.
-- **La Tierra sigue girando sola** (90 s por vuelta, botón play/pausa) **y se
-  arrastra**: mientras se arrastra manda la mano; al soltar sigue girando.
-- **Al acercarse: nombres de continentes y países, sin fronteras** (sigue
-  "solo costas"): rótulos de región como en Marte, y más detalle de costa y
-  relieve.
-- **Primero el día, luego la noche**, las dos en esta rama.
-- **Banquisa austral estrecha** (borde a 62-69° S) frente a la ancha del
-  invierno austral (58-66° S), que tapaba la silueta del continente: "la
-  estrecha, dale".
-- **La Antártida conserva su relieve** (tierra con nieve por latitud y roca
-  en las montañas), no hielo liso: "me gusta la Antártida no blanca entera
-  sino con el relieve que tenía antes. Le da una personalidad más fuerte".
-  Se había probado como hielo (terreno 2, como Groenlandia) y se deshizo.
-- **Animación del título** (usuario, 24-sep-2026): "para aparecer, visor (al
-  lado contrario que ahora, como está en la web)" = las esquinas llegan desde
-  fuera y se cierran, como `marte-cierra`; "para desaparecer, visor pero que
-  se pliegue a la vez la caja que las letras"; "después, puede aparecer de
-  forma más minimalista arriba del globo. Dame opciones, cúrratelo". De las
-  primeras cuatro (visor, tele antigua, censura, teletipo) quedó el visor.
-- **Título, versión definitiva a probar** (usuario, 24-sep-2026, tras ver
-  las opciones): "algo tipo 2 rótulo, pero vamos a mejorarlo". (1) Entrada:
-  "con el censurado pero de derecha a izquierda, como en la web actual" y
-  "en la entrada no existen coordenadas, solo el título"; (2) salida: "el
-  bloque se cierra como atrapando las letras (los marcos del lado izquierdo
-  y derecho se van cerrando y con él cierran el título)"; (3) después, arriba
-  del globo: "tipo máquina de escribir … pondrá el blog de hegoi márquez"
-  (en minúscula), con cursor; "el resto como está" (lema y coordenada).
-  El marco de visor está puesto durante la censura (es el que atrapa las
-  letras).
-- **Cambio del usuario (24-sep-2026, después)**: "no existe animación de
-  entrada y salida en el globo. Todo directamente arriba, con máquina de
-  escribir como está ahora" y "el blog de hegoi márquez, las letras más
-  juntas". Se quitan el título grande, la censura y el cierre del marco (lo
-  de arriba queda como historia); el espaciado pasa de 0,6em a 0,28em.
-- **A los ~10 s se van el nombre y el lema** (usuario, 24-sep-2026: "con el
-  tiempo (unos 10 segundos) el blog de hegoi márquez e historia
-  inteligencia osint desaparece, solo dejando las coordenadas arriba"). Se
-  desvanecen (1,2 s); la coordenada no se mueve. El cursor sigue
-  parpadeando al final del nombre hasta ese momento y se va con él ("deja el
-  cursor moviéndose durante todo el tiempo hasta que desaparezca").
-- **Rótulo, se queda como está** (usuario, 24-sep-2026: "no me convence tu
-  propuesta, vamos a dejarlo así"; se le propuso nombre más grande, dos
-  grupos y un visor pequeño en la coordenada). Cambios: **a los 5 s**, no a
-  los 10, y la retirada "al unísono con un desvanecimiento medio rápido":
-  nombre, lema y cursor en un bloque que se desvanece entero en 0,6 s (antes
-  el lema se iba de golpe y el nombre en 1,2 s: la animación de salida del
-  lema pisaba la de entrada).
-- **Portada: maqueta A**, título encima del globo, "un poco más arriba y un
-  poco más pequeño" (usuario, 24-sep-2026; se le recomendó la B).
-- **Gestos en la portada** (usuario, 24-sep-2026): la rueda baja la página
-  y el zoom va con pellizco del trackpad o Ctrl + rueda; en el móvil, un dedo
-  baja la página y dos dedos acercan; ya con zoom, un dedo mueve el globo.
-- **Zoom hasta ×6**, como Marte y la Luna (usuario, 24-sep-2026: "¿sería
-  posible un x5 o x6?"). Hasta que haya teselas (paso 6) solo amplía el mapa
-  de 8 px/grado; con teselas harán falta niveles de 16 y 24 px/grado, como en
-  Marte (allí pesan 38 MB).
+- Disco completo; solo costas, sin fronteras políticas, con la línea de costa
+  oscura. Giro calmado.
+- Tamaño común de los tres astros: 70 svh (en vertical, el 88 % del ancho).
+- Luz del terminador y del limbo en escalones lisos de 1/3 (`LIGHT_SUB`).
+- Banquisa austral estrecha (borde a 62-69° S). La Antártida con su relieve
+  (tierra con nieve por latitud y roca en las montañas), no hielo liso.
+- Nubes: las 8 plantillas pixel art de siempre, a escala 1,0-1,3; más grandes
+  no quedan bien. "Más adelante le meteremos más mano."
+- Biomas por latitud más las cajas `DESIERTOS` y `SABANAS` de
+  `generar-tierra.py`: si una zona sale con el bioma equivocado, se corrige
+  con una caja.
+- Luces de noche: `LUZ_PAIS` (África subsahariana ×0,5, Corea del Norte a
+  oscuras, EE. UU. ×2,2, Canadá ×1,5). Con zoom, la huella de cada ciudad va
+  agarrada al terreno. Las luces flojas se pintan con un ámbar claro al 50 %
+  (con el ámbar oscuro el azul de la noche se volvía marrón).
+- Brillo de atmósfera de noche: 1,5 px al 55 % y 1,5 px más al 25 %, por
+  dentro del disco.
+- Naves de noche: la foto a la luz de la luna, más clara que el planeta, y
+  solo luces verde (ala derecha) y roja (izquierda). El Shahed-136 va a
+  oscuras y el satélite no lleva.
+- Sol y luna en el mismo sitio de día y de noche. Da igual que la fase de la
+  luna no cuadre con la luz del planeta.
+- Animaciones: nunca SVG animado con miles de formas (calienta la CPU en Zen);
+  canvas, WebGL o PNG.
 
-## Plan
+## Probado y rechazado (no reintentar salvo que se pida)
 
-- [x] 1. Banco: la Tierra entera en WebGL con los datos de ahora, girando
-      sola y arrastrable. Enseñar capturas.
-- [x] 2. Hemisferio sur: Antártida, banquisa austral y lo que salga mal al
-      verlo entero.
-- [x] 3. Nubes, chapas de bandera y X de blanco en el motor nuevo.
-- [x] 4. Portada: el globo sustituye al horizonte; sitio del título, MGRS,
-      naves y astros pequeños; vuelos a la Luna y a Marte.
-- [x] 5. Tamaño común: Luna y Marte al tamaño intermedio.
-- [x] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
-      continentes y países.
-- [x] 6b. Pulir el zoom: nieve en las montañas, nombres (Oceanía, China), Bab
-  el-Mandeb.
-- [ ] 7. Noche: luces de ciudades, brillo, aurora, X verde (hecho); falta la
-  foto quieta de noche (7.5).
-- [ ] 8. Probar en Zen y en el móvil; fusionar en `main`.
+**Pixel art del planeta**: punteado Bayer en el terminador (parecía una
+mosquitera); bordes de luz ondulados por ruido; franja cálida de atardecer;
+brillo especular en el mar; nubes de ruido fBm; fundido entre fotogramas de
+un sprite (iba a trompicones); transiciones a racimos de 1 px entre biomas;
+huellas de 3×3 en todos los pueblos (confeti); dejar que la suma de halos de
+luz subiera a niveles altos (Benelux e Inglaterra en una mancha naranja);
+quitar el halo a los pueblos pequeños (Europa perdía el velo); nieve
+ensanchada en los Pirineos a 0,2° ("déjalo como antes"); aurora con rayos
+apartados al azar (confeti) o con cuatro arcos (carriles de autopista); luna
+por la derecha de noche (contradecía la luz horneada de copas y relieve).
 
-## Decisiones pendientes
+**Título**: rótulo pixel art, título en el cielo bajando el planeta, cartela
+de expediente ("tapa mucho planeta"), sombra gruesa, negrita; cabecera de
+revista, rótulo curvado sobre el océano, cabecera de periódico y chincheta en
+la X; el rótulo a máquina de escribir encima del globo; la marca roja "NATO
+SECRET" arriba (queda solo el sello).
 
-(ninguna)
+**Otros**: parar el planeta al apuntar (la mira casi siempre está encima y
+no giraría nunca); coordenada flotando donde estaba el título, abajo en el
+centro o pegada a la mira (va en la esquina); recuadro oscuro con esquinas de
+visor (va del color del papel).
 
-## Registro
+## Ideas aparcadas
 
-### 24-sep-2026 — paso 1: la Tierra entera en WebGL
-
-- `tierra-gl.js` sale del esqueleto de `marte-gl.js` (vista con `lat0`/`lon0`,
-  mano de `montarMano`, zoom de `montarZoom`, lienzo a múltiplo entero ×3) con
-  las cuentas de `planeta.js`: material por celda (1529, R + G·256), mipmaps
-  en longitud por prioridad (desde el nivel 3 la costa no gana), hielo con
-  menos limbo, escalones de luz de 1/3, halo de atmósfera y borde suavizado.
-  Mapa y mipmaps en una textura R16UI de 2880 × 2880 (nivel 0 arriba, los
-  demás en fila debajo). Nubes: un punto de un píxel de arte por celda de las
-  plantillas de siempre, en orden inverso para que gane la primera.
-- El sol no se mueve respecto a quien mira (arriba a la izquierda, como
-  siempre): al ver la Tierra entera, el cuarto de abajo a la derecha cae en
-  la noche.
-- Giro a 30 fotogramas por segundo, como la portada; la mano y el zoom, a 60.
-  Mientras se arrastra no gira; al soltar sigue. Con zoom, el giro va más
-  despacio a la par (la superficie cruza la pantalla igual que a ×1).
-- Visto en Chrome sin ventana: Europa-África, polo sur (la Antártida ya sale
-  blanca, sin banquisa alrededor), Oceanía, Sudamérica y ×4 sobre Europa (el
-  mapa de 8 px/grado ampliado: franjas del mar y costas en bloques; hace falta
-  el paso 6).
-
-### 24-sep-2026 — paso 2: hemisferio sur
-
-- Radio de arte 180 elegido por el usuario (ver decisiones).
-- La Antártida era tierra con bioma de tundra y nieve por latitud: salía gris
-  con manchas de roca y, en sombra, casi negra. Ahora es hielo (terreno 2,
-  como Groenlandia), con su línea de costa.
-- Banquisa austral con las reglas de la ártica (borde por longitud roto en
-  témpanos, placas de hielo viejo y joven, ruido en coordenadas polares con
-  semillas propias). La primera, con el borde del invierno austral (58-66° S),
-  tapaba la silueta del continente; se hizo una más estrecha para comparar.
-- El generador tarda ~33 s.
-- El usuario eligió la estrecha y quiso la Antártida con el relieve de antes:
-  se deshizo el cambio de `rasterizar.py`/`mapa_tierra.py` y se regeneró
-  `public/planeta/` con la banquisa estrecha.
-
-### 24-sep-2026 — paso 3: chapas y X de blanco
-
-- Chapas, sombra y X como puntos de un píxel de arte (programa "sprites"),
-  con las reglas de `planeta.js`: la chapa y su sombra solo en la cara
-  iluminada y lejos del borde (`BAND_PZ`), apagándose hacia el terminador;
-  la X, blanca con contorno, a partir de `pz` 0,06. Orden: sombras, nubes,
-  chapas, X (el de siempre).
-- Los colores de chapas y X van en una paleta (G = 128, R = color, B = luz).
-  La sombra suma 128 al escalón de luz con mezcla aditiva solo en el azul, y
-  la pasada de color la oscurece a la mitad (+6 de azul), como antes.
-- El motor da `chapas()` (dónde queda cada chapa visible, en píxeles CSS de
-  la ventana, la esquina de su contorno como `alMoverBanderas`), `ponMarca`,
-  `posMarca`, `geo` y la opción `pausado` (no gira mientras dé true).
-- Las chapas y la X no crecen con el zoom (como las chapas de Marte).
-- En el banco, `window.tierra` era el `<canvas id="tierra">` hasta que
-  llegaba el motor (los elementos con id se ven como variables globales): el
-  primer pintado fallaba. Arreglado con una variable propia.
-- Un clic suelto ya no cierra la mano en la Tierra (usuario: "si se hace un
-  solo click, que no salga la mano cerrada de agarrar; si se hace click y se
-  mantiene para girar, sí"). `montarMano` tiene la opción `alArrastrar`: la
-  clase `agarrando` llega al pasar el umbral de arrastre. Marte y la Luna no
-  la usan (no se pidió allí).
-
-### 24-sep-2026 — paso 4: maquetas de la portada
-
-- Hechas inyectando el motor en la portada de `npm run dev` (hay que usar
-  `localhost:4321`, no `127.0.0.1`): se oculta el planeta de antes, sus
-  chapas y la mira, y se pone el globo a 70 svh. En las capturas el sol y la
-  luna salen a la vez por forzar el modo día a mano (no es un fallo de la
-  web), y la nave es la que toque al azar.
-- A: título donde está (45 %, encima del globo). Se lee peor: letras sobre
-  tierra y nubes.
-- B: globo 9 % más abajo y título arriba (13 %), en el cielo. El globo llega
-  justo a la flecha de bajar.
-- C: globo a la derecha (15 %) y título a la izquierda (22 %). La luna de
-  arriba a la izquierda cae detrás del título: habría que moverla.
-- El usuario eligió la A, más arriba y más pequeña, con una animación de
-  entrada y salida. Banco `titulo.html` con cuatro: **visor** (las esquinas
-  salen de un punto y se abren; el texto se descubre del centro a los lados;
-  al irse, al revés), **tele antigua** (se enciende como una pantalla de tubo,
-  una raya de luz que se abre, y se apaga en raya y punto), **censura** (las
-  líneas aparecen tachadas con barras negras que se retiran, como la carga de
-  la portada de hoy; al irse vuelven a tachar y todo se cierra en vertical) y
-  **teletipo** (el marco se abre y el texto se escribe letra a letra con
-  cursor de bloque; al irse, se borra hacia atrás y el marco se cierra).
-- Capturas: al lanzar muchos Chrome sin ventana a la vez, alguno sale en
-  negro (sin WebGL); de uno en uno, bien.
-- Segunda ronda del banco `titulo.html`: entrada con el visor desde fuera
-  (escala 1,5 → 1, como `marte-cierra`) y el texto descubriéndose del centro
-  a los lados; salidas A (todo el bloque encoge a un punto) y B (se aplasta en
-  una raya y la raya se recoge al centro); y cinco minimalistas encima del
-  globo, entre la cabecera y el borde de arriba: **1 línea** (nombre y lema en
-  una línea mono dentro de un visor pequeño, coordenada debajo), **2 rótulo**
-  (como los rótulos de región de Marte: letras muy separadas, sin marco; entra
-  cerrando el espaciado), **3 retícula** (raya de mira con marcas, el nombre en
-  el hueco del centro, lema y coordenada debajo; la raya se dibuja del centro
-  afuera), **4 mini visor** (el título grande en pequeño, solo el nombre) y
-  **5 arco** (nombre y lema siguiendo la curva del globo, justo por fuera del
-  borde, SVG `textPath`).
-- En las cinco la coordenada MGRS y el botón de giro siguen a la vista (en la
-  portada viven bajo el marco del título, que ya no está).
-- Tercera ronda de `titulo.html`, ya sin opciones: censura con las barras de
-  la portada (`transform-origin: left`, escalonadas); salida con el marco
-  (`inset` de 0 a 50 % a los lados) y el texto recortado a la par
-  (`clip-path`, misma curva: el relleno va en `.texto` para que midan igual);
-  rótulo con las letras puestas desde el principio (transparentes hasta que
-  les toca, así el texto centrado no se mueve al escribirse) y el cursor de
-  bloque en la casilla de la siguiente letra, que parpadea 1,5 s al acabar y
-  se apaga. Con `visibility` para ocultar las letras, el cursor asomaba antes
-  de tiempo (un hijo con `visible` se ve aunque el padre esté oculto).
-
-### 24-sep-2026 — paso 4: la portada
-
-- `index.astro`: `.hero-planet` pasa a ser la Tierra quieta (caja del disco,
-  centrada) y `.hero-tierra` lleva el lienzo WebGL a todo el hero con su
-  sonda (`--tierra-disco: min(70svh, 88vw)`). El título se sustituye por el
-  rótulo `.hero-rotulo` (h1 `rotulo-nombre`, lema, `.hero-lectura` con el
-  botón de giro a la izquierda de la coordenada y la hélice de "otro objeto" a
-  la derecha, 22 px; en táctil, sin coordenada, los dos botones juntos en el
-  eje). `montarRotulo()` escribe el nombre (75 ms por letra, cursor) y a los
-  5 s pone `.solo-lect`. Sin JS o con reduced-motion, entero y sin escribirse.
-- Script: `montarTierraGL` en vez de `montarPlaneta`; `montarMano(hero, …,
-  { alArrastrar, tactil: zoom > 1 })` y `montarZoom(hero, …, { soloCtrl })`;
-  la mira, la X y el giro, como antes, con un adaptador; las chapas se colocan
-  en píxeles del hero y miden 13 × 9 px de arte; el tema cambia la luz con
-  `ponNoche`. El vuelo aparta el lienzo (`.hero-tierra.lista`) o, si no ha
-  pintado, la Tierra quieta.
-- CSS: `.hero { touch-action: pan-y }` y `.con-zoom { touch-action: none }`;
-  la mano cerrada al girar; fuera el CSS del título viejo (barras de censura
-  al bajar, marco, velo, reglas de noche del marco y del lema, móvil). La
-  coordenada fijada de noche sigue en verde de visión nocturna.
-- Motor: noche provisional (`ponNoche`: LUT de noche, la luna, `N_NIGHT`,
-  halo y nubes de noche; sin luces de ciudades, aurora ni brillo de
-  atmósfera, que son el paso 7), `instantanea()`, opción `sinNubes`. Arreglado:
-  las listas de uniformes (`uNube[5]`) llegan como `uNube[0]` y las nubes
-  salían negras.
-- `generar-tierra-quieto.mjs` (nuevo): `public/planeta/tierra-quieto.png` y
-  `-noche`, 368 px de arte con el disco de 360, hechas con el motor en un
-  Chrome sin ventana. Las usan la portada mientras carga y los vuelos de
-  vuelta: `VUELO_TIERRA` pasa a 368/360 y `/marte` ya no monta el cuadrado de
-  1200 con el horizonte. `/luna` usa `.hero-planet` tal cual (su CSS nuevo).
-- La cabecera de Head.astro sigue buscando `.hero-titulo` para tachar el
-  título al bajar: ya no existe y no hace nada (se deja; limpiar al cerrar).
+Chapas que se "planten" al pasar por el centro, 120 s por vuelta, E-2 de
+perfil, ficha de bandera que se abra hacia arriba si la chapa está muy abajo.
+Antes del zoom grande (pixel art detallado de países) hay que sacar las
+teselas de Git: ver "Peso del repositorio" en `CLAUDE.md`.

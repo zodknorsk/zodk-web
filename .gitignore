@@ -26,8 +26,10 @@ arte/tierra-fuentes/
 arte/luna-fuentes/
 arte/marte-fuentes/
 
-# Salida intermedia de generar-estrellas.py (la buena va a public/)
+# Salida de generar-estrellas.py y generar-logo.py (lo bueno se copia a public/)
 arte/zodk-estrellas.png
+arte/zodk-estrellas-noche.png
+arte/zodk-logo-animado.svg
 
 # Renders de prueba de los generadores (comparar variantes)
 arte/pruebas/

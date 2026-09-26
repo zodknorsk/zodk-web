@@ -1,124 +1,103 @@
 # zodk-web
 
-Código de mi web personal, **[zodk.eu](https://zodk.eu)**. Hecha con
-[Astro](https://astro.build), partiendo de la plantilla
-[astro-nano](https://github.com/markhorn-dev/astro-nano) (licencia MIT).
-
-## Cómo funciona el contenido
-
-Las notas de la web NO se escriben aquí a mano. Se escriben en mi bóveda de
-Obsidian y se marcan con `publicar: true` en el frontmatter. El script
-`scripts/importar-notas.mjs` las copia a `src/content/notas/`, traduciendo el
-frontmatter en español y la sintaxis de Obsidian (`![[imagen]]`, `[[enlaces]]`)
-a Markdown estándar.
-
-**Tweets:** una URL de X sola en su línea se convierte en una tarjeta con el
-tweet ya descargado (autor, texto, fecha, imágenes) — ver `scripts/tweets.mjs`.
-Una URL de X dentro de una frase se queda como enlace normal. Las imágenes de
-los tweets se guardan en `public/tweets/` (esa carpeta la regenera el script;
-no se edita a mano).
-
-El resultado de esa importación **sí** se versiona en este repo, para que la web
-compile en GitHub Actions sin necesidad de la bóveda ni de X.
-
-**Eventos** (colección `eventos`): las notas dentro de `03 - Eventos/<carpeta>/`
-de la bóveda forman un evento jerárquico:
-
-- el `.md` que se llama igual que la carpeta  → página índice  `/eventos/<slug>`
-- `SEMANA N - ...`                            → `/eventos/<slug>/semana-0N`
-- cualquier otra nota de la carpeta           → página de análisis `/eventos/<slug>/<slug-nota>`
-
-Una nota suelta directamente en `03 - Eventos/` (sin carpeta propia) es un
-evento de una sola página: `/eventos/<slug-del-nombre-de-archivo>`.
-
-El importador traduce los `[[SEMANA 2]]` y los `[[...#30 de julio]]` a enlaces y
-anclas reales, y convierte los embeds de TikTok en una cita estática con enlace.
-
-**Notas del Proyecto Luna:** las que llevan la etiqueta `luna` se importan y se
-publican como cualquier otra, pero **no salen en `/notas`, ni en "últimas
-notas" de la portada, ni en el RSS**: pertenecen a la página de la Luna y solo
-se llega a ellas desde ahí (o desde `moon-project`, en la cabecera). Su botón
-de volver lleva a `/luna` en vez de al listado de notas.
-
-## La portada y la Luna
-
-La portada es un hero a pantalla completa con la **Tierra en pixel art** en un
-`<canvas>` (gira sola, cambia de día a noche con el tema, chapas de bandera en
-los países con artículos). Pulsando la luna del icono —o `moon-project` en la
-cabecera— se vuela a **`/luna`**, una segunda portada con la Luna, los 28
-alunizajes de la historia, los relés chinos de la cara oculta y la Orion de
-Artemis II orbitando.
-
-Los dibujos no se hacen a mano: los generan los scripts de Python de
-`arte/` y su salida vive en `public/planeta/` y `public/luna/`. El
-detalle, las decisiones y lo que se probó y descartó está en
-`arte/HERO-WIP.md` (la Tierra) y `arte/LUNA-WIP.md` (la Luna).
-
-## Estructura
-
-```
-src/
-  consts.ts              Configuración del sitio (nombre, email, nº de notas en portada)
-  content.config.ts      Esquemas de las colecciones "notas" y "eventos"
-  content/
-    notas/  eventos/     Contenido generado por el script (no editar a mano)
-  layouts/PageLayout.astro   Esqueleto HTML común (<head>, header, footer)
-  components/            Piezas reutilizables (Header, Footer, ArrowCard, EventoNav...)
-  data/
-    aeronaves.ts         Naves del hero (sprite, trayectoria y ficha)
-    paises.ts            Países con chapa de bandera sobre la Tierra
-    alunizajes.ts        Las 28 misiones de /luna, sus países y los relés
-  scripts/
-    planeta.js           Motor del canvas de la Tierra (giro, luz, chapas)
-    luna.js              Motor del canvas de la Luna (media vuelta entre caras)
-    viaje-luna.js        El vuelo Tierra <-> Luna, en los dos sentidos
-    mgrs.js              Coordenada MGRS del punto bajo el cursor
-  pages/
-    index.astro          Portada  (/)
-    luna.astro           La Luna  (/luna)
-    notas/               Listado y página de cada nota
-    eventos/             Listado de eventos y [...slug] (índice / semana / análisis)
-    rss.xml.ts           Feed RSS
-    robots.txt.ts        robots.txt
-  styles/global.css      Estilos base (Tailwind + los del hero y la Luna)
-scripts/
-  importar-notas.mjs     Puente bóveda de Obsidian -> src/content/{notas,eventos}/
-  tweets.mjs             Descarga tweets (en paralelo) y genera sus tarjetas HTML
-arte/
-  generar-*.py           Generan el pixel art (planeta, luna, naves, estrellas...)
-  HERO-WIP.md            Cómo funciona la Tierra del hero y qué se descartó
-  LUNA-WIP.md            Lo mismo para /luna
-  prototipo-*/           Bancos de pruebas sueltos (no se publican)
-.github/workflows/
-  deploy.yml             Build + publicación en GitHub Pages en cada push a main
-public/
-  CNAME                  Dominio personalizado para GitHub Pages
-  planeta/  luna/        Datos de los canvas (los generan los scripts de Python)
-  alunizajes/  tweets/   Fotos de las misiones e imágenes de los tweets
-```
+El código de mi web personal, **[zodk.eu](https://zodk.eu)**: un blog de
+historia, inteligencia y OSINT con una portada en pixel art (la Tierra) y dos
+páginas más para la Luna y Marte. Hecha con [Astro](https://astro.build) a
+partir de la plantilla [astro-nano](https://github.com/markhorn-dev/astro-nano)
+(MIT) y publicada en GitHub Pages.
 
 ## Comandos
 
-| Comando            | Qué hace                                                       |
-| ------------------ | ------------------------------------------------------------- |
-| `npm run dev`      | Servidor local de desarrollo en `localhost:4321`             |
-| `npm run importar` | Reimporta las notas marcadas `publicar: true` de la bóveda   |
-| `npm run build`    | Comprueba tipos (`astro check`) y compila el sitio a `dist/` |
-| `npm run preview`  | Previsualiza el `dist/` ya compilado                         |
-| `npm run lint`     | ESLint sobre `src/` y `scripts/` (`lint:fix` arregla lo obvio) |
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor de desarrollo en `localhost:4321` |
+| `npm run dev:network` | Lo mismo, visible desde el móvil en la misma wifi |
+| `npm run importar` | Trae de la bóveda de Obsidian las notas con `publicar: true` |
+| `npm run build` | Comprueba tipos (`astro check`) y compila a `dist/` |
+| `npm run preview` | Sirve el `dist/` ya compilado |
+| `npm run lint` | ESLint (`lint:fix` arregla lo obvio) |
 
-La ruta de la bóveda se puede cambiar con la variable `BOVEDA_PATH`:
+Cada push a `main` compila y publica la web sola
+(`.github/workflows/deploy.yml`). Las demás ramas no publican nada.
+
+## Documentación
+
+| Documento | De qué va |
+|---|---|
+| [`docs/contenido.md`](docs/contenido.md) | Cómo llegan las notas y los eventos desde Obsidian, y cómo publicar |
+| [`docs/tierra.md`](docs/tierra.md) | La portada: la Tierra, el título, la noche, qué se probó y rechazó |
+| [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
+| [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
+| [`docs/astros.md`](docs/astros.md) | Lo común a los tres: motores, gestos, vuelos, nombres, versiones de datos |
+| [`docs/rendimiento.md`](docs/rendimiento.md) | Que no caliente: cómo medir y qué se aprendió |
+| [`docs/logo.md`](docs/logo.md) | El logo animado y los iconos |
+| [`arte/README.md`](arte/README.md) | Qué genera cada script de pixel art |
+
+## Mapa del repositorio
 
 ```
-BOVEDA_PATH="/otra/ruta" npm run importar
+src/
+  pages/                   Las páginas (cada archivo es una URL)
+    index.astro              Portada: el hero con la Tierra y, debajo, el blog
+    luna.astro               /luna (con todo su JavaScript)
+    marte.astro              /marte (con todo su JavaScript)
+    notas/index.astro        /notas: todas las notas por años
+    notas/[...slug].astro    La página de cada nota
+    eventos/index.astro      /eventos
+    eventos/[...slug].astro  Índice, semanas y análisis de cada evento
+    404.astro                La página de las direcciones que no existen
+    rss.xml.ts, robots.txt.ts
+  layouts/PageLayout.astro   El esqueleto común: <head>, cabecera, pie
+  components/
+    Head.astro               <head>, estilos, fuentes, tema día/noche, cabecera
+                             que aparece al bajar, naves del hero y su hélice
+    Header.astro             La cabecera: logo y menú
+    ThemeToggle.astro        El botón de día/noche
+    Footer.astro, Container.astro, Link.astro, ArrowCard.astro (tarjeta de
+    nota), BackToPrev.astro (botón de volver), EventoNav.astro (semana
+    anterior/siguiente), FormattedDate.astro
+  scripts/                 El JavaScript de los astros
+    portada.ts               Todo lo de la portada (Tierra, acercamiento,
+                             título, coordenada, chapas, vuelos)
+    tierra-gl.js             Motor WebGL de la Tierra
+    marte-gl.js              Motor WebGL de Marte (y base del de la Luna)
+    luna-gl.js               La Luna sobre el motor de Marte
+    gestos.js                Arrastrar y zoom
+    nombres.js               Nombres de lugares y chapas sobre los astros
+    vuelos.js                Los vuelos entre páginas
+    versiones.js             Versión de los datos de cada astro
+    mgrs.js                  Coordenada MGRS
+  styles/                  Los estilos, en el orden en que se cargan
+    base.css                 Toda la web (Tailwind, cabecera, notas, tuits)
+    astros.css               Lo común a los tres astros
+    portada.css, luna.css, marte.css
+  data/                    Datos a mano
+    aeronaves.ts             Las naves del hero y sus fichas
+    paises.ts                Países con chapa sobre la Tierra
+    alunizajes.ts            Las 28 misiones de /luna, países y relés
+    amartizajes.ts           Las 17 misiones de /marte
+  lib/
+    contenido.ts             Qué notas son del blog y cuáles de la Luna o Marte
+    utils.ts                 Utilidades (clases CSS, tiempo de lectura)
+  content/                 Notas y eventos que escribe el importador (no tocar)
+  content.config.ts        El esquema de las notas y los eventos
+  consts.ts                Nombre de la web, textos, "hecho con" y contacto
+  types.ts, env.d.ts       Tipos de TypeScript
+scripts/
+  importar-notas.mjs       De la bóveda de Obsidian a src/content/
+  tweets.mjs               Descarga los tuits y hace sus tarjetas
+arte/                      Generadores del pixel art (no se publica)
+  bancos/                  Páginas de prueba de los motores
+docs/                      La documentación
+public/                    Lo que se sirve tal cual
+  planeta/  luna/  marte/  Datos de los tres astros (los hace arte/)
+  alunizajes/  amartizajes/  Fotos de las fichas
+  tweets/  adjuntos/       Imágenes de tuits y vídeos (los hace el importador)
+  zodk-*.png, zodk-*.svg   Naves, sol, luna, Marte, Tierra pequeña, estrellas, logo
+  CNAME                    El dominio zodk.eu para GitHub Pages
 ```
 
-## Flujo para publicar una nota nueva
+## Licencia
 
-1. En Obsidian, añade `publicar: true` al frontmatter de la nota.
-2. `npm run importar`
-3. `npm run dev` y revisa cómo queda. Si el servidor ya estaba abierto,
-   **reinícialo** (Ctrl+C y otra vez `npm run dev`): la importación regenera
-   `src/content/` y limpia la caché `.astro`, y el servidor en marcha se lía.
-4. `git add -A && git commit -m "notas: publica ..."` y `git push`.
-5. GitHub Actions compila y despliega solo.
+El código tiene licencia MIT (ver `LICENSE`): la plantilla de partida es de
+Mark Horn y el resto, de Hegoi Márquez.
