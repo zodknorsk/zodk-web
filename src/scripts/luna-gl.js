@@ -14,7 +14,7 @@
 // Lo prueba logo-files/prototipo-luna/giro-libre.html. Detalle en
 // logo-files/LUNA-WIP.md.
 
-import { LUNA_V } from "./luna.js";
+import { LUNA_V } from "./versiones.js";
 import { montarMarteGL } from "./marte-gl.js";
 
 const DEG = Math.PI / 180;

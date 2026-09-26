@@ -695,34 +695,6 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
      fotogramas y pulsando con el movimiento reducido. */
   .luna-nave-x, .luna-nave-y, .luna-nave, .luna-nave::before { animation-play-state: paused; }
 }
-/* Banco de pruebas de consumo de la Orion (luna.astro pone la clase con
-   ?orion=...). Sirve para atribuir vatios a cada parte sin adivinar:
-   - ?orion=quieta: para solo el movimiento; el sprite y la sombra siguen.
-   - ?orion=sin-z:  quita la animación de z-index (la nave va siempre delante).
-     En Firefox, si una animación del grupo no es componible —el z-index no lo
-     es— todo el grupo baja al hilo principal, también las de transform.
-   - ?orion=capa:   pide capa propia para el movimiento (will-change).
-   - ?orion=capa2:  pide capa propia para el elemento que PINTA el sprite, que
-     es lo que hay que cachear: si el dibujo se guarda en su capa, moverla es
-     gratis y no hay que rasterizar la tira en cada fotograma.
-   - ?orion=sin-sprite: la nave se mueve, pero pintada como un bloque de color
-     liso, sin la tira escalada. Si aquí baja el consumo, lo caro es rasterizar
-     el sprite en cada repintado.
-   Se puede borrar cuando el tema esté cerrado; está anotado en
-   temperatura-zen.md. */
-.prueba-orion-quieta :is(.luna-nave-x, .luna-nave-y) { animation-play-state: paused; }
-.prueba-orion-sin-z .luna-nave-x {
-  animation: nave-x var(--t) ease-in-out infinite alternate;
-  z-index: 3;
-}
-.prueba-orion-capa :is(.luna-nave-x, .luna-nave-y) { will-change: transform; }
-.prueba-orion-capa2 .luna-nave { will-change: transform; }
-.prueba-orion-sin-sprite .luna-nave::before {
-  background: #8a9099;
-  animation: none;
-  filter: none;
-}
-
 /* Rombo pequeño y lento, como la deriva de las naves "fijas" de la portada:
    ~6 px del lienzo a los lados y ~4 arriba y abajo (en % del propio sprite). */
 @keyframes luna-sat-deriva {
@@ -1033,10 +1005,12 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
 .luna-volver:is(:hover, :focus-visible):not(:disabled)::before,
 .luna-volver:is(:hover, :focus-visible):not(:disabled)::after { width: calc(100% - 2px); height: calc(100% - 2px); opacity: 1; }
 .luna-volver:disabled { cursor: default; opacity: 0.5; }
+/* La Tierra pequeña de /marte (56 px de arte, disco de 24) a x1: el disco
+   llena el botón y el halo se recorta. */
 .luna-volver-tierra {
   width: 26px;
   height: 26px;
-  background: url(/planeta/planeta-quieto-noche.png) center / contain no-repeat;
+  background: url(/zodk-tierra-noche.png) center / 56px 56px no-repeat;
   image-rendering: pixelated;
 }
 /* En /marte, si se llegó desde /luna: "volver a la Luna", con la Luna. */

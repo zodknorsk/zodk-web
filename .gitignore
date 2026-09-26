@@ -24,19 +24,10 @@ pnpm-debug.log*
 # planeta del hero: datos de origen y copias intermedias (regenerables, ver
 # logo-files/HERO-WIP.md). Lo que sirve la web vive en public/.
 logo-files/ne_land.json
-logo-files/pp10.json
 logo-files/cities15000.txt
 logo-files/etopo.tiff
-logo-files/zodk-planeta-sprite.png
-logo-files/zodk-planeta-noche.png
-logo-files/zodk-dron.svg
-logo-files/zodk-dron-noche.svg
 logo-files/zodk-estrellas.png
 
-# aeronaves en boceto (aún no aprobadas, generar-aeronaves.py las re-crea).
-# Se quitan de aquí y se commitean cuando el usuario dé el visto bueno.
-public/zodk-tb3.svg
-public/zodk-tb3-noche.svg
 
 # Proyecto Luna: fuentes de la NASA (~70 MB, se re-descargan con los curl de
 # logo-files/generar-luna.py) y la caché de su pasada lenta.
