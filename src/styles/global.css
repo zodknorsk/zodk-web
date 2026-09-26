@@ -1912,6 +1912,36 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: n
 .hero.titulo-fuera .hero-titulo h1,
 .hero.titulo-fuera .hero-titulo p,
 .hero.titulo-fuera .titulo-sello { opacity: 0; }
+/* El recuadro de la esquina (usuario, 26-sep-2026: "mejor en una esquina,
+   pero que resalte más, envolviéndolo en un cuadrado"; después, "quita las 4
+   esquinas y que sea un fondo claro"): con el documento retirado, play/pausa,
+   la coordenada y el aspa, abajo a la izquierda en una caja del color del
+   papel del título, con la tinta oscura. */
+.hero-hud {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 8px 12px;
+  background: #e9dec4;
+  border: 1px solid rgba(60, 45, 20, 0.35);
+  box-shadow: inset 0 0 10px rgba(115, 82, 36, 0.2), 0 6px 18px rgba(3, 4, 8, 0.5);
+  animation: rotulo-aparece-hud 0.35s ease-out both;
+}
+.hero-hud[hidden] { display: none; }
+@keyframes rotulo-aparece-hud { from { opacity: 0; transform: translateY(4px); } }
+.hero-hud .hero-lectura { position: relative; right: auto; bottom: auto; }
+.hero-hud .hero-cambio { position: relative; left: auto; bottom: auto; filter: none; }
+.hero-hud .hero-mgrs:not(.fijada) { color: #17150f; text-shadow: none; }
+.hero-hud .hero-giro { color: #2e2a21; filter: none; }
+.hero-hud .hero-giro:hover, .hero-hud .hero-giro:focus-visible { color: #b3261e; }
+.hero-hud .hero-cambio:not(:active) .btn-helice-giro [fill="#d3d3d3"] { fill: #2e2a21; }
+.hero-hud .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: #2e2a21; }
+@media (max-width: 640px) { .hero-hud { left: 12px; bottom: 16px; } }
+
 /* la nave, por debajo del papel; su ficha, por encima al pasar el ratón */
 .hero-craft:hover { z-index: 4; }
 @media (max-width: 640px) {

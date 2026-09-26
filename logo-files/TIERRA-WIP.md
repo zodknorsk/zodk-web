@@ -72,6 +72,15 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   con más zoom que el de llegada; vuelve 0,9 s después de soltar. La
   coordenada y los botones se quedan (el papel y las esquinas pasaron a
   `::before` para eso).
+- **La coordenada con el documento retirado** (usuario: se quedaba flotando
+  donde estaba el título). Se le enseñaron A (abajo en el centro), B
+  (esquinas de abajo) y C (pegada a la mira); eligió la esquina, "que resalte
+  más, envolviéndolo en un cuadrado": `.hero-hud`, abajo a la izquierda, con
+  play/pausa, la coordenada y el aspa. Primero oscura con esquinas de visor;
+  después (usuario: "quita las 4 esquinas y que sea un fondo claro"), del
+  color del papel del título con la tinta oscura. `montarTituloFuera` mueve los nodos (no se clonan: siguen sus
+  eventos) al recuadro al retirarse el documento y de vuelta al visor al
+  volver.
 - **Cabecera centrada de verdad**: el logo escondido seguía ocupando 78 px y
   empujaba la nav; ahora fuera del flujo, y el botón de tema cuelga a la
   derecha (el centro de la pantalla cae en el de los enlaces).
