@@ -74,6 +74,7 @@ precision highp float;
 precision highp int;
 precision highp usampler2D;
 uniform vec2 uTam;          // ancho y alto del arte
+uniform float uDes;         // el centro del disco, tantos píxeles de arte por debajo del centro del lienzo
 uniform float uR;           // radio del disco en píxeles de arte
 uniform vec3 uM0, uM1, uM2; // vista -> Tierra (filas de Ry(lon0)·Rx(lat0))
 uniform vec3 uS;            // sol en vista
@@ -104,7 +105,7 @@ int escalon(float lam, float dc, float limbMul) {
 }
 
 void main() {
-  vec2 q = (gl_FragCoord.xy - 0.5 * uTam) / uR;       // y hacia arriba
+  vec2 q = (gl_FragCoord.xy - vec2(0.5 * uTam.x, 0.5 * uTam.y - uDes)) / uR;   // y hacia arriba
   float rr0 = dot(q, q), dc = sqrt(rr0);
   float k0 = rr0 >= 0.9999 ? sqrt(0.9999 / rr0) : 1.0; // en el anillo del borde, el punto del borde
   vec3 U = vec3(q * k0, 0.0);
@@ -166,6 +167,7 @@ precision highp float;
 layout(location = 0) in vec2 aGeo;      // latitud y longitud del centro de la nube (radianes)
 layout(location = 1) in vec3 aCelda;    // desplazamiento desde el centro (px de arte, y abajo) y tono
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uR;
 uniform vec3 uM0, uM1, uM2;
 uniform vec3 uS;
@@ -183,7 +185,7 @@ void main() {
   vTono = int(aCelda.z);
   vLuz = 0.72 + 0.28 * bright;
   if (U.z <= 0.5 || bright < 0.12) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); return; }
-  float cx = U.x * uR + 0.5 * uTam.x - 0.5, cy = -U.y * uR + 0.5 * uTam.y - 0.5;
+  float cx = U.x * uR + 0.5 * uTam.x - 0.5, cy = -U.y * uR + 0.5 * uTam.y + uDes - 0.5;
   float x = floor(cx + aCelda.x * (0.72 + 0.28 * U.z) + 0.5), y = floor(cy + aCelda.y + 0.5);
   gl_Position = vec4((x + 0.5) / uTam.x * 2.0 - 1.0, 1.0 - (y + 0.5) / uTam.y * 2.0, 0.0, 1.0);
 }`;
@@ -204,6 +206,7 @@ precision highp float;
 layout(location = 0) in vec2 aGeo;      // latitud y longitud del punto (radianes)
 layout(location = 1) in vec3 aCelda;    // desplazamiento (px de arte, y abajo) y color de la paleta
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uR;
 uniform vec3 uM0, uM1, uM2;
 uniform vec3 uS;
@@ -223,7 +226,7 @@ void main() {
   vCol = int(aCelda.z);
   vLuz = uConLuz > 0.5 ? 0.72 + 0.28 * bright : 1.0;
   if (U.z <= uPzMin || bright < 0.12) { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); return; }
-  float cx = U.x * uR + 0.5 * uTam.x - 0.5, cy = -U.y * uR + 0.5 * uTam.y - 0.5;
+  float cx = U.x * uR + 0.5 * uTam.x - 0.5, cy = -U.y * uR + 0.5 * uTam.y + uDes - 0.5;
   float x = floor(cx + aCelda.x + 0.5), y = floor(cy + aCelda.y + 0.5);
   gl_Position = vec4((x + 0.5) / uTam.x * 2.0 - 1.0, 1.0 - (y + 0.5) / uTam.y * 2.0, 0.0, 1.0);
 }`;
@@ -254,6 +257,7 @@ const vertLuces = (D) => `#version 300 es
 precision highp float;
 layout(location = 0) in vec3 aLuz;      // latitud, longitud (radianes) y fuerza
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uR, uZ;                   // radio del disco (px de arte) y zoom
 uniform vec3 uM0, uM1, uM2;
 flat out vec2 vCentro;                  // centro de la huella, px de arte (y abajo)
@@ -275,7 +279,7 @@ void main() {
   // halo más fuerte (un máximo, no suma) no lo necesita.
   vK = min(1.0, U.z / 0.85);
   vTipo = aLuz.z >= LUZ_CORE2 ? 2 : aLuz.z >= LUZ_R2_MIN ? 1 : 0;
-  vec2 c = floor(vec2(U.x * uR + 0.5 * uTam.x, -U.y * uR + 0.5 * uTam.y)) + (vTipo == 2 ? 1.0 : 0.5);
+  vec2 c = floor(vec2(U.x * uR + 0.5 * uTam.x, -U.y * uR + 0.5 * uTam.y + uDes)) + (vTipo == 2 ? 1.0 : 0.5);
   vCentro = c;
   gl_PointSize = 2.0 * ceil(2.6 * uZ) + 4.0;
   gl_Position = vec4(c.x / uTam.x * 2.0 - 1.0, 1.0 - c.y / uTam.y * 2.0, 0.0, 1.0);
@@ -286,6 +290,7 @@ flat in vec2 vCentro;
 flat in float vA, vK;
 flat in int vTipo;
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uZ;
 out vec4 o;
 void main() {
@@ -361,6 +366,7 @@ const VERT_AURORA = `#version 300 es
 precision highp float;
 precision highp int;
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uR;
 uniform vec3 uM0, uM1, uM2;
 uniform float uT;           // segundos (los pliegues y haces se mueven)
@@ -387,7 +393,7 @@ vec3 punto(float al, float th) {
 }
 void fuera() { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 1.0; vVal = vec2(0.0); }
 void pon(vec2 xy, float v, bool vio) {
-  float x = floor(xy.x * uR + 0.5 * uTam.x), y = floor(-xy.y * uR + 0.5 * uTam.y);
+  float x = floor(xy.x * uR + 0.5 * uTam.x), y = floor(-xy.y * uR + 0.5 * uTam.y + uDes);
   gl_PointSize = 1.0;
   gl_Position = vec4((x + 0.5) / uTam.x * 2.0 - 1.0, 1.0 - (y + 0.5) / uTam.y * 2.0, 0.0, 1.0);
   vVal = vec2(v, vio ? v : 0.0);
@@ -443,6 +449,7 @@ uniform sampler2D uC;
 uniform sampler2D uLut;
 uniform vec2 uEscala;       // píxeles de arte por píxel del canvas
 uniform vec2 uTam;
+uniform float uDes;
 uniform float uR;
 uniform vec3 uS;
 uniform vec3 uAtmo;         // halo del borde: ATMO de día, N_ATMO de noche
@@ -490,7 +497,7 @@ vec4 aurora(ivec2 p, bool enDisco) {
   if (uConAurora == 0) return vec4(0.0);
   vec2 v = texelFetch(uAurora, p, 0).rg;
   if (enDisco && ${f(AUR.FRANJA_A)} > 0.0) {
-    vec2 q = (vec2(p) + 0.5 - 0.5 * uTam) / uR;
+    vec2 q = (vec2(p) + 0.5 - vec2(0.5 * uTam.x, 0.5 * uTam.y - uDes)) / uR;
     vec3 U = vec3(q, sqrt(max(0.0, 1.0 - dot(q, q))));
     v.r += aurFranja(vec3(dot(uM0, U), dot(uM1, U), dot(uM2, U)));
   }
@@ -547,7 +554,7 @@ void main() {
     col = floor(col * 255.0 + 0.5) / 255.0;
   }
   // Halo de atmósfera y borde suavizado, como el "post" de planeta.js.
-  vec2 q = (vec2(p) + 0.5 - 0.5 * uTam) / uR;
+  vec2 q = (vec2(p) + 0.5 - vec2(0.5 * uTam.x, 0.5 * uTam.y - uDes)) / uR;
   float dc = length(q);
   if (dc > 0.93) {
     vec2 qb = dc >= 0.99995 ? q * (0.99995 / dc) : q;
@@ -614,7 +621,10 @@ function filas(lat0, lon0) {
 
 // Monta la Tierra en `canvas` (WebGL2), que ocupa todo su contenedor, con el
 // disco centrado. `disco()` da el diámetro del disco a zoom x1 en píxeles CSS.
-// Devuelve { vista(), ponVista(lat0, lon0), ponZoom(z), zoom(factor, clientX,
+// `encuadre(zoom)`: cuántos píxeles CSS baja el centro del disco a ese zoom (la
+// portada: el horizonte del hemisferio norte al acercarse; sin él, centrado).
+// Devuelve { vista(), ponVista(lat0, lon0), ponZoom(z), acercar(z, ms, curva),
+// zoom(factor, clientX,
 // clientY), mueve(dx, dy), suelta(), ponParado(b), parado(), proyecta(lat,
 // lon), geo(clientX, clientY), medir(), desmontar() }, o null si el navegador
 // no tiene WebGL2. `mueve` y `suelta` son para montarMano (marte.js) y `zoom`
@@ -622,7 +632,7 @@ function filas(lat0, lon0) {
 /**
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
- *   disco?: () => number, alPintar?: () => void, zoomMax?: number,
+ *   disco?: () => number, encuadre?: (zoom: number) => number, alPintar?: () => void, zoomMax?: number,
  *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean, sinAurora?: boolean,
  *   ladoAtlas?: number }} [opciones]
  */
@@ -633,6 +643,7 @@ export async function montarTierraGL(canvas, {
   radio = RADIO_ARTE,
   vuelta = 90,                                   // segundos por vuelta (elegido por el usuario)
   disco = () => 0.7 * window.innerHeight,
+  encuadre = () => 0,                            // px CSS que baja el centro del disco a cada zoom
   alPintar = () => {},
   banderas = null,                               // códigos iso de las chapas a pintar (null = todas)
   pausado = () => false,                         // no gira mientras dé true (en la portada: ratón sobre una chapa o una nave)
@@ -924,6 +935,14 @@ export async function montarTierraGL(canvas, {
   // luz viene siempre del mismo lado, como en la portada de siempre.
 
   let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
+  // El centro del disco, `des` píxeles de arte por debajo del centro del
+  // lienzo (enteros: el disco no se sale de la rejilla del pixel art). Sale de
+  // encuadre() con el zoom de cada fotograma.
+  let des = 0;
+  const desArte = (z = zoom) => (px > 0 ? Math.round(encuadre(z) / px) : 0);
+  // El acercamiento de la portada (acercar): el zoom va de z0 a z1 en `ms`
+  // siguiendo `curva`, en escala logarítmica (la cámara avanza a ritmo parejo).
+  let tramo = null;                              // { t0, ms, z0, z1, curva, fin }
   let parado = false, agarrado = false, enVista = true;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -962,6 +981,7 @@ export async function montarTierraGL(canvas, {
   // que ya hay en el canvas con esa opacidad (el fundido de día a noche).
   function pintaCon(L, mezcla = null) {
     const M = filas(lat0, lon0), R = R0 * zoom, S = L.S;
+    des = desArte();
     const unidad = (i, t, loc) => { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(loc, i); };
     gl.disable(gl.BLEND);
     // (1) códigos
@@ -971,6 +991,7 @@ export async function montarTierraGL(canvas, {
     let u = progCod.u;
     gl.useProgram(progCod.p);
     gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uDes ?? null, des);
     gl.uniform1f(u.uR, R);
     gl.uniform3fv(u.uM0, M[0]);
     gl.uniform3fv(u.uM1, M[1]);
@@ -987,6 +1008,7 @@ export async function montarTierraGL(canvas, {
     gl.useProgram(progNubes.p);
     gl.bindVertexArray(vaoNubes);
     gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uDes ?? null, des);
     gl.uniform1f(u.uR, R);
     gl.uniform3fv(u.uM0, M[0]);
     gl.uniform3fv(u.uM1, M[1]);
@@ -998,6 +1020,7 @@ export async function montarTierraGL(canvas, {
     u = progSprites.u;
     gl.useProgram(progSprites.p);
     gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uDes ?? null, des);
     gl.uniform1f(u.uR, R);
     gl.uniform3fv(u.uM0, M[0]);
     gl.uniform3fv(u.uM1, M[1]);
@@ -1044,6 +1067,7 @@ export async function montarTierraGL(canvas, {
       u = luces.prog.u;
       gl.useProgram(luces.prog.p);
       gl.uniform2f(u.uTam, W, H);
+      gl.uniform1f(u.uDes ?? null, des);
       gl.uniform1f(u.uR, R);
       gl.uniform3fv(u.uM0, M[0]);
       gl.uniform3fv(u.uM1, M[1]);
@@ -1082,6 +1106,7 @@ export async function montarTierraGL(canvas, {
       u = aurora.prog.u;
       gl.useProgram(aurora.prog.p);
       gl.uniform2f(u.uTam, W, H);
+      gl.uniform1f(u.uDes ?? null, des);
       gl.uniform1f(u.uR, R);
       gl.uniform3fv(u.uM0, M[0]);
       gl.uniform3fv(u.uM1, M[1]);
@@ -1112,6 +1137,7 @@ export async function montarTierraGL(canvas, {
     unidad(1, L === LUZ.noche ? texLutNoche : texLut, u.uLut);
     gl.uniform2f(u.uEscala, W / canvas.width, H / canvas.height);
     gl.uniform2f(u.uTam, W, H);
+    gl.uniform1f(u.uDes ?? null, des);
     gl.uniform1f(u.uR, R);
     gl.uniform3fv(u.uS, S);
     gl.uniform3fv(u.uAtmo, L.atmo);
@@ -1169,14 +1195,15 @@ export async function montarTierraGL(canvas, {
     return { lat: Math.asin(Math.max(-1, Math.min(1, B[1]))), lon: Math.atan2(B[0], B[2]) };
   }
   // Al revés: dónde cae en la pantalla el punto (lat, lon), en grados.
-  // Píxeles CSS desde el centro del disco (y hacia abajo) y `z`, cuánto mira
-  // hacia quien mira (1 en el centro, 0 en el borde, negativo por detrás).
+  // Píxeles CSS desde el centro del lienzo (y hacia abajo; el del disco, si
+  // encuadre() no lo baja) y `z`, cuánto mira hacia quien mira (1 en el
+  // centro, 0 en el borde, negativo por detrás).
   function proyecta(lat, lon) {
     const la = lat * DEG, lo = lon * DEG, cl = Math.cos(la);
     const B = [cl * Math.sin(lo), Math.sin(la), cl * Math.cos(lo)];
     const M = filas(lat0, lon0), k = R0 * zoom * px;
     const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
-    return { x: U[0] * k, y: -U[1] * k, z: U[2] };
+    return { x: U[0] * k, y: -U[1] * k + desArte() * px, z: U[2] };
   }
   // Punto (lat, lon) en grados -> en la vista (U, y arriba), su luz (como el
   // sombreado de las chapas y la X en el shader) y su sitio en píxeles de arte
@@ -1188,7 +1215,7 @@ export async function montarTierraGL(canvas, {
     const U = [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
     const S = luz().S, l = U[0] * S[0] + U[1] * S[1] + U[2] * S[2];
     const a = D.TERM_A + 0.06, b = D.TERM_B + 0.2, t = Math.max(0, Math.min(1, (l - a) / (b - a)));
-    return { z: U[2], luz: t * t * (3 - 2 * t), cx: U[0] * R + W / 2 - 0.5, cy: -U[1] * R + H / 2 - 0.5 };
+    return { z: U[2], luz: t * t * (3 - 2 * t), cx: U[0] * R + W / 2 - 0.5, cy: -U[1] * R + H / 2 + desArte() - 0.5 };
   }
   // Chapas que se ven ahora: { iso, x, y } con la esquina de arriba a la
   // izquierda de su contorno en píxeles CSS de la ventana (como las que daba
@@ -1206,7 +1233,7 @@ export async function montarTierraGL(canvas, {
   // De píxeles CSS de la ventana a radios del disco.
   function aDisco(clientX, clientY, R = R0 * zoom) {
     const r = canvas.getBoundingClientRect();
-    return [((clientX - r.left) / px - W / 2) / R, -((clientY - r.top) / px - H / 2) / R];
+    return [((clientX - r.left) / px - W / 2) / R, -((clientY - r.top) / px - H / 2 - desArte(R / R0)) / R];
   }
   // Orientación (sin ladear) que deja el punto (lat, lon) bajo el punto (x, y)
   // del disco: la de marte-gl.js, para el zoom hacia el cursor.
@@ -1231,10 +1258,10 @@ export async function montarTierraGL(canvas, {
   let enVuelo = 0, cola = [];
   function planifica() {
     if (!finos.length) return;
-    const R = R0 * zoom, paso = 24, quiere = new Map();
+    const R = R0 * zoom, paso = 24, quiere = new Map(), d = desArte();
     for (let sy = paso / 2; sy < H; sy += paso) {
       for (let sx = paso / 2; sx < W; sx += paso) {
-        const x = (sx - W / 2) / R, y = -(sy - H / 2) / R;
+        const x = (sx - W / 2) / R, y = -(sy - H / 2 - d) / R;
         const g = geoDisco(x, y), gx = geoDisco(x + 1 / R, y), gy = geoDisco(x, y + 1 / R);
         if (!g || !gx || !gy) continue;
         const dlat = Math.max(Math.abs(gx.lat - g.lat), Math.abs(gy.lat - g.lat)) / DEG;
@@ -1293,11 +1320,19 @@ export async function montarTierraGL(canvas, {
     if (!vivo) return;
     const dt = tAnt ? Math.min(0.1, (ahora - tAnt) / 1000) : 0;
     let sigue = false;
+    if (tramo) {
+      const u = Math.max(0, Math.min(1, (ahora - tramo.t0) / tramo.ms)), a = Math.log(tramo.z0);
+      zoom = zoomObj = Math.exp(a + tramo.curva(u) * (Math.log(tramo.z1) - a));
+      sucio = true;
+      sigue = true;
+      if (u >= 1) acabaTramo();
+    }
     if (zoom !== zoomObj) {
       zoom += (zoomObj - zoom) * (1 - Math.exp(-(dt || 1 / 60) / TAU));
       if (Math.abs(zoomObj - zoom) < zoomObj * 1e-3) zoom = zoomObj;
       if (ancla) {
-        const o = orientaPara(ancla.x * ancla.z / zoom, ancla.y * ancla.z / zoom, ancla.lat, ancla.lon);
+        // el punto de la pantalla que se agarró, en el disco de ahora (el centro baja con el zoom)
+        const o = orientaPara(ancla.x * ancla.z / zoom, (ancla.y * ancla.z * R0 + desArte() - ancla.d) / (zoom * R0), ancla.lat, ancla.lon);
         if (o) { lat0 = o.lat0; lon0 = o.lon0; }
       }
       sucio = true;
@@ -1332,6 +1367,7 @@ export async function montarTierraGL(canvas, {
     if (sucio || sigue) raf = requestAnimationFrame(bucle);
   }
   const pide = () => { sucio = true; if (!raf && vivo) raf = requestAnimationFrame(bucle); };
+  function acabaTramo() { const f = tramo?.fin; tramo = null; f?.(); }
   const arranca = () => { if (!raf && vivo) raf = requestAnimationFrame(bucle); };
 
   function mueve(dx, dy) {
@@ -1347,13 +1383,14 @@ export async function montarTierraGL(canvas, {
   // Zoom hacia el cursor al acercarse; al alejarse, hacia el centro (como
   // Marte, ver marte-gl.js).
   function hazZoom(factor, clientX, clientY) {
+    acabaTramo();                                // quien usa el zoom manda sobre el acercamiento
     const nuevo = Math.max(1, Math.min(zoomMax, zoomObj * factor));
     if (nuevo === zoomObj) return;
     if (nuevo < zoomObj) ancla = null;
     else {
       const [x, y] = aDisco(clientX, clientY);
       const g = clientX == null ? null : geoDisco(x, y);
-      ancla = g ? { x, y, z: zoom, lat: g.lat, lon: g.lon } : null;
+      ancla = g ? { x, y, z: zoom, d: desArte(), lat: g.lat, lon: g.lon } : null;
     }
     zoomObj = nuevo;
     pide();
@@ -1381,10 +1418,22 @@ export async function montarTierraGL(canvas, {
     }),
     ponVista(la, lo) { lat0 = Math.max(-90, Math.min(90, la)); lon0 = lo; ancla = null; pide(); },
     ponZoom(z, ya = false) {
+      acabaTramo();
       zoomObj = Math.max(1, Math.min(zoomMax, z));
       if (ya) zoom = zoomObj;
       ancla = null;
       pide();
+    },
+    // Acercamiento de la portada: de donde esté a `z` en `ms`, con la curva
+    // dada (0..1 -> 0..1). Se repinta a 60 por segundo mientras dura. Acaba
+    // antes si se usa el zoom. Devuelve una promesa que se cumple al acabar.
+    acercar(z, ms, curva = (u) => u * u * (3 - 2 * u)) {
+      acabaTramo();
+      ancla = null;
+      return new Promise((fin) => {
+        tramo = { t0: performance.now(), ms, z0: zoom, z1: Math.max(1, Math.min(zoomMax, z)), curva, fin };
+        pide();
+      });
     },
     zoom: hazZoom,
     mueve,

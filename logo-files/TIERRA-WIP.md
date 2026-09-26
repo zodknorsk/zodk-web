@@ -5,7 +5,65 @@ paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Ley
 solo esto hay que poder retomarlo. El detalle del planeta de antes (horizonte
 de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 
-## Dónde estamos (26-sep-2026, sesión de mediodía)
+## Dónde estamos (26-sep-2026, tarde, sesión en la nube)
+
+- Rama **`earth-project`**. Commits de esta sesión, **sin subir** (el
+  usuario los sube con su orden): el apunte del peso del repositorio en
+  `CLAUDE.md`, la cabecera centrada y el acercamiento (abajo).
+- **Presencia de la portada** (usuario: "antes tenía mucha más presencia"):
+  con el disco entero al tamaño común, la Tierra ocupaba un 24 % de la
+  pantalla y el rótulo pequeño se iba a los 5 s. Se le enseñaron maquetas
+  con el motor real (A llegada de cerca, B globo grande, C mismo globo con el
+  título de antes, D tipo revista) y pidió **una animación: de la Tierra
+  entera al horizonte del hemisferio norte**. Vídeos fotograma a fotograma;
+  la primera, muy rápida (2,5 s) → "más pausada y natural": **aprobada** la
+  de 5 s. (El avión "hacía cosas raras" en el primer vídeo: era de la
+  grabación, su animación CSS corría a tiempo real mientras cada fotograma
+  tardaba ~0,6 s.)
+- **Hecho: el acercamiento** (`montarAcercamiento` en `index.astro`):
+  - Solo al cargar la portada. Tierra entera 1 s, y acercamiento de 5 s a
+    `ZOOM_CERCA` 2,8 con `cubic-bezier(0.45, 0.05, 0.2, 1)` (arranque suave,
+    frenada larga), el zoom en escala logarítmica. Es un zoom hacia un punto
+    fijo: el centro del disco baja a la par que crece (`encuadreLlegada`,
+    lineal con el zoom) y a 2,8 lo alto del disco queda al 12 % del alto
+    (22 % en vertical, para que el sol y Marte queden en el cielo).
+  - En el motor (`tierra-gl.js`): opción `encuadre(zoom)` (px CSS que baja
+    el centro del disco; uniforme `uDes` en todos los shaders, entero en px
+    de arte) y `acercar(z, ms, curva)` (a 60 fps mientras dura; lo corta
+    usar el zoom). Se pinta solo lo que se ve, sin lienzo gigante. El zoom
+    hacia el cursor tiene en cuenta que el centro se mueve. Al alejar se
+    vuelve solo al disco entero centrado.
+  - El sol, la luna y Marte se van a las esquinas (5 % como en `main`) a la
+    par (`.astros-esquina`, `.moviendo-astros`).
+  - **El título es el de `main`** (Serif con el visor y la barra de
+    censura; decisión del usuario, "el de los vídeos", mientras se decide
+    otro): entra 0,6 s antes de que pare la cámara, el visor se cierra desde
+    fuera y la censura se retira. Fuera el rótulo a máquina (`montarRotulo`
+    y su CSS). La hélice de "otro objeto" sigue a la derecha de la
+    coordenada, en espejo con play/pausa, como en la rama.
+  - La nave aparece al final (oculta hasta `.nave-lista`) y los nombres del
+    zoom esperan a que se use el zoom (`.sin-nombres`).
+  - **Al volver en vuelo** de la Luna o Marte: disco entero, sin
+    acercamiento, con el título encima (se detecta por las estrellas, que
+    llegan con `--estrellas-pos`). Con reduced-motion, directamente cerca.
+    Sin WebGL2, la foto quieta con el título.
+  - Probado en Chrome sin ventana: día, noche, móvil (390 × 844), zoom hacia
+    el cursor, alejar hasta el disco, arrastrar y la vuelta desde /luna.
+    `npm run build` bien. `npm run lint` da 2 errores que ya estaban antes
+    (un genérico de TypeScript en `index.astro` que el extractor no entiende
+    y unas comillas en `marte-nombres.js`).
+- **Cabecera de la portada centrada** (arriba del todo, sin logo); al bajar
+  al blog, como siempre.
+- **Títulos: sin decidir.** Rechazados el 26-sep (usuario: "no me gustan"):
+  cabecera de revista tras la Tierra, rótulo de mapa curvado sobre el
+  océano, cabecera de periódico y chincheta en la X. **Siguiente idea
+  suya**: "tipo documento antiguo (tal vez clasificado)", un rectángulo
+  blanco o color papel con las letras en negro. Ojo: se parece a la
+  "cartela de expediente" que rechazó en septiembre; avisarle.
+- **Lo que queda**, por este orden: el título; el paso 8 (Zen y móvil: el
+  acercamiento pinta a 60 fps 5 s, medirlo también); fusionar en `main`.
+
+## Dónde estábamos (26-sep-2026, sesión de mediodía, histórico)
 
 - Rama **`earth-project`**, commiteada en local con el 7.5 y **sin subir**
   (GitHub va hasta `6fa1c07`; sin fusionar: no publica nada). Nada sin
