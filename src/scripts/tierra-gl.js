@@ -298,6 +298,141 @@ void main() {
   o = w == 1.0 ? vec4(vA * vK, vA * vK, 0.0, 0.0) : vec4(vA * w * vK, 0.0, 0.0, vA * w);
 }`;
 
+// (1e) Aurora boreal (noche): la de aurora() de planeta.js, en la GPU.
+// Cortinas de rayos alrededor del polo norte geomagnético (el óvalo
+// auroral), de AUR_H0 a AUR_H1 radios terrestres de altura, que giran con la
+// Tierra. Cada punto de cada rayo sale de gl_VertexID: el vertex shader hace
+// las cuentas de planeta.js (pliegues, haces, estrías, alturas propias,
+// encendido "de serpiente") y suma su brillo en una textura (R = todo, G =
+// lo de arriba, violeta). Un punto se ve si está en la cara de delante o
+// fuera del disco (por encima del horizonte). Con zoom se ponen más rayos y
+// más puntos por rayo (`uF`) y cada uno pesa menos (`uW`), para que las
+// cortinas no se deshagan en puntos sueltos.
+const AUR = {
+  POLO: [80.7, -72.7],        // polo norte geomagnético (lat, lon)
+  R: 21, WOB: 2.2,            // radio del óvalo y ondulación, en grados
+  BARRIDO: 3.6,               // segundos que tarda la "serpiente" en cerrar el óvalo
+  // Alturas: hasta 0,08 radios (planeta.js, 0,05: en el globo, más pequeño,
+  // se quedaba corta de perfil; usuario, 26-sep-2026: "se ve pequeña").
+  N: 1000, K: 11, H0: 0.016, H1: 0.08,
+  ANCHO: 0,                   // cada rayo se aparta del arco hasta ±ANCHO/2 grados (probado: confeti; 0)
+  // arcos paralelos: desvío del principal (grados) y brillo; cada uno ondula
+  // por su cuenta (probados 4: "carriles"; se quedan los 2 de planeta.js)
+  ARCOS: [[0, 1], [1.3, 0.6]],
+  // resplandor de puntos de planeta.js (ND por rayo, de DIFUSO[0] a DIFUSO[1]
+  // grados, brillo DIF_A): con zoom se deshacía; lo sustituye la franja
+  ND: 0, DIFUSO: [0, 0], DIF_A: 0,
+  // franja sobre el suelo, por píxel (aurFranja en fragColor): de dónde a
+  // dónde (grados desde el arco), dónde es más fuerte y su brillo. Elegida
+  // entre la V6 (0,25) y la V7 (0,4): "V6 o un poco más intensa".
+  FRANJA: [-2.7, 3.7, 0.6],
+  FRANJA_A: 0.32,
+  R_ANTES: 292.5,             // radio del horizonte de planeta.js, con el que se ajustó el brillo
+  // niveles: [intensidad mínima, color, opacidad]; verde de la línea de 557 nm del oxígeno
+  NIV: [
+    [0.10, [30, 150, 105], 0.13], [0.22, [40, 190, 120], 0.22], [0.40, [60, 225, 140], 0.33],
+    [0.70, [100, 245, 165], 0.46], [1.15, [170, 255, 205], 0.6],
+  ],
+  VIOLETA: [140, 90, 240],
+};
+// Lo que comparten las cortinas (VERT_AURORA) y la franja (fragColor): el
+// ruido, el radio del óvalo (pliegues) y el brillo (haces) a lo largo de él.
+const AUR_GLSL = `
+float rnd(float i) { return fract(sin(i * 127.1 + 311.7) * 43758.5453); }
+float ruido(float x) {                     // ruido de valor 1D, periódico en 256
+  float i = floor(x), fr = x - i, t = fr * fr * (3.0 - 2.0 * fr);
+  return mix(rnd(mod(i, 256.0)), rnd(mod(i + 1.0, 256.0)), t);
+}
+// radio del óvalo (grados) en u (0..1 a lo largo) y t: los pliegues
+float aurTh0(float u, float t) {
+  return ${f(AUR.R)} + ${f(AUR.WOB)} * (ruido(u * 9.0 + t * 0.05) * 2.0 - 1.0) + 0.9 * (ruido(u * 31.0 - t * 0.09) * 2.0 - 1.0);
+}
+// brillo en u: los haces, y el encendido de serpiente (uFrente < 0: encendida)
+float aurA(float u, float t, float frente, float cola, float sentido) {
+  float A = 2.05 * max(0.0, ruido(u * 23.0 + t * 0.12) * 1.2 - 0.15) * (0.6 + 0.4 * ruido(u * 5.0 + 40.0 + t * 0.03));
+  if (frente >= 0.0) {
+    float d = frente - fract((u - cola) * sentido);
+    if (d <= 0.0) return 0.0;
+    A *= (d < 0.25 ? d / 0.25 : 1.0) * (d < 0.06 ? 1.8 : d < 0.13 ? 1.35 : 1.0);
+  }
+  return A;
+}`;
+const VERT_AURORA = `#version 300 es
+precision highp float;
+precision highp int;
+uniform vec2 uTam;
+uniform float uR;
+uniform vec3 uM0, uM1, uM2;
+uniform float uT;           // segundos (los pliegues y haces se mueven)
+uniform int uN, uK;         // rayos y puntos por rayo
+uniform float uW, uWd;      // peso de cada punto de las cortinas y del resplandor
+uniform float uFrente, uCola, uSentido;   // encendido (uFrente < 0: ya encendida)
+out vec2 vVal;
+const float PI = 3.141592653589793, DEG = PI / 180.0;
+const float POLO_LAT = ${f(AUR.POLO[0])} * DEG, POLO_LON = ${f(AUR.POLO[1])} * DEG;
+const float K0 = ${f(AUR.K - 1)}, N0 = ${f(AUR.N)};
+const int NA = ${AUR.ARCOS.length};
+const float ARC_D[NA] = float[NA](${AUR.ARCOS.map((a) => f(a[0])).join(", ")});
+const float ARC_F[NA] = float[NA](${AUR.ARCOS.map((a) => f(a[1])).join(", ")});
+${AUR_GLSL}
+// punto del óvalo a th (radianes) del polo, en el azimut al -> vista (y arriba)
+vec3 punto(float al, float th) {
+  float sfp = sin(POLO_LAT), cfp = cos(POLO_LAT), sth = sin(th), cth = cos(th);
+  float sl = sfp * cth + cfp * sth * cos(al), cl = sqrt(max(0.0, 1.0 - sl * sl));
+  float lon = POLO_LON + atan(sin(al) * sth * cfp, cth - sfp * sl);
+  vec3 B = vec3(cl * sin(lon), sl, cl * cos(lon));
+  return vec3(uM0.x * B.x + uM1.x * B.y + uM2.x * B.z,
+              uM0.y * B.x + uM1.y * B.y + uM2.y * B.z,
+              uM0.z * B.x + uM1.z * B.y + uM2.z * B.z);
+}
+void fuera() { gl_Position = vec4(2.0, 2.0, 0.0, 1.0); gl_PointSize = 1.0; vVal = vec2(0.0); }
+void pon(vec2 xy, float v, bool vio) {
+  float x = floor(xy.x * uR + 0.5 * uTam.x), y = floor(-xy.y * uR + 0.5 * uTam.y);
+  gl_PointSize = 1.0;
+  gl_Position = vec4((x + 0.5) / uTam.x * 2.0 - 1.0, 1.0 - (y + 0.5) / uTam.y * 2.0, 0.0, 1.0);
+  vVal = vec2(v, vio ? v : 0.0);
+}
+void main() {
+  int P = NA * uK + ${AUR.ND};              // por rayo: NA arcos de uK puntos y el resplandor
+  int i = gl_VertexID / P, r = gl_VertexID % P;
+  float u = float(i) / float(uN), al = u * 2.0 * PI, t = uT;
+  float j = floor(u * N0);                  // el rayo de planeta.js (estrías y alturas propias)
+  float th0 = aurTh0(u, t);                 // pliegues: el radio del óvalo ondula
+  float A = aurA(u, t, uFrente, uCola, uSentido);   // haces y encendido
+  if (A < 0.05) { fuera(); return; }
+  float jj = floor(u * 4000.0);             // azar estable al cambiar de zoom
+  if (r >= NA * uK) {                       // resplandor difuso sobre el suelo, a lo ancho del arco
+    float q = ${AUR.ND > 1 ? `(float(r - NA * uK) + (${AUR.ND > 2 ? "rnd(jj * 3.0 + float(r))" : "0.0"})) / ${f(AUR.ND - (AUR.ND > 2 ? 0 : 1))}` : "0.5"};
+    float dd = mix(${f(AUR.DIFUSO[0])}, ${f(AUR.DIFUSO[1])}, q);
+    vec3 b = punto(al, (th0 + dd) * DEG);
+    if (b.z <= 0.0) { fuera(); return; }
+    pon(b.xy, A * ${f(AUR.DIF_A)} * (1.0 - abs(dd) / 4.5) * uWd, false);
+    return;
+  }
+  int a = r / uK;
+  float kf = float(r % uK) * K0 / float(uK - 1);
+  float fa = ARC_F[a];
+  float Ai = A * fa * (0.3 + 0.7 * pow(rnd(float(a) * N0 + j + 1000.0), 2.0))
+    * (0.7 + 0.3 * ruido(u * 90.0 + float(a) * 17.0 - t * 0.4));
+  float tope = floor(${f(AUR.K)} * (0.35 + 0.65 * pow(rnd((float(a) * N0 + j) * 7.0 + 3.0), 0.8)) + 0.5);
+  if (kf > tope - 1.0) { fuera(); return; }
+  // cada arco con su propia ondulación, para que no vayan paralelos
+  float th = a == 0 ? th0 : th0 + ARC_D[a] + 0.8 * (ruido(u * 14.0 + float(a) * 50.0 + t * 0.07) * 2.0 - 1.0);
+  th += ${f(AUR.ANCHO)} * (rnd(jj * 5.0 + float(a) * 7.0 + 11.0) - 0.5);
+  vec3 b = punto(al, th * DEG);
+  float alto = 1.0 + ${f(AUR.H0)} + ${f(AUR.H1 - AUR.H0)} * kf / K0;
+  vec2 xy = b.xy * alto;
+  if (b.z <= 0.0 && dot(xy, xy) < 1.0) { fuera(); return; }   // tapado por la Tierra
+  float perfil = kf < 2.0 ? 0.55 - kf * 0.05 : exp(-(kf - 1.0) / 4.5) * 0.5;
+  float fin = kf >= tope - 3.0 ? (tope - kf) / 4.0 : 1.0;      // cada rayo se apaga en su punta
+  pon(xy, Ai * perfil * fin * uW, kf > tope * 0.62 && tope > ${f(AUR.K)} * 0.7);
+}`;
+const FRAG_AURORA = `#version 300 es
+precision highp float;
+in vec2 vVal;
+out vec4 o;
+void main() { o = vec4(vVal, 0.0, 0.0); }`;
+
 // (2) Color y ampliación al canvas.
 function fragColor(D, paleta) {
   const c3 = (c) => `vec3(${c.map((x) => f(x / 255)).join(", ")})`;
@@ -313,6 +448,10 @@ uniform vec3 uS;
 uniform vec3 uAtmo;         // halo del borde: ATMO de día, N_ATMO de noche
 uniform vec3 uNube[5];      // tonos de las nubes: C_NUBE / C_NUBE_NOCHE
 uniform float uGlow;        // 1 de noche: brillo de atmósfera en el borde
+uniform sampler2D uAurora;  // aurora (1e); solo de noche
+uniform int uConAurora;
+uniform vec3 uM0, uM1, uM2; // vista -> Tierra (para la franja de la aurora)
+uniform float uT, uFrente, uCola, uSentido;
 uniform sampler2D uLuces;   // luces de las ciudades (1d); solo de noche
 uniform int uConLuces;
 out vec4 o;
@@ -321,6 +460,47 @@ const float LUZ_UMB[${D.LUZ_UMBRAL.length}] = float[${D.LUZ_UMBRAL.length}](${D.
 const vec3 LUZ_COL[${D.LUZ_RAMPA.length}] = vec3[${D.LUZ_RAMPA.length}](${D.LUZ_RAMPA.map((r) => c3(r[0])).join(", ")});
 const float LUZ_T[${D.LUZ_RAMPA.length}] = float[${D.LUZ_RAMPA.length}](${D.LUZ_RAMPA.map((r) => f(r[1])).join(", ")});
 const vec3 LUZ_SUAVE = vec3(1.0, 0.75, 0.36);          // ámbar claro del halo (nivel 2)
+const float AUR_UMB[${AUR.NIV.length}] = float[${AUR.NIV.length}](${AUR.NIV.map((n) => f(n[0])).join(", ")});
+const vec3 AUR_COL[${AUR.NIV.length}] = vec3[${AUR.NIV.length}](${AUR.NIV.map((n) => c3(n[1])).join(", ")});
+const float AUR_A[${AUR.NIV.length}] = float[${AUR.NIV.length}](${AUR.NIV.map((n) => f(n[2])).join(", ")});
+${AUR_GLSL}
+// Franja de la aurora sobre el suelo, en el punto B de la Tierra: el
+// resplandor verde a lo ancho del óvalo, calculado por píxel (continuo a
+// cualquier zoom), con los mismos pliegues, haces y encendido que las
+// cortinas. Se suma a ellas antes de pasar a niveles.
+float aurFranja(vec3 B) {
+  const float DEG = 3.141592653589793 / 180.0;
+  float fp = ${f(AUR.POLO[0])} * DEG, lp = ${f(AUR.POLO[1])} * DEG;
+  float sfp = sin(fp), cfp = cos(fp), sl = B.y, cl = length(B.xz);
+  float dlon = atan(B.x, B.z) - lp;
+  float cth = sfp * sl + cfp * cl * cos(dlon);
+  float th = acos(clamp(cth, -1.0, 1.0)) / DEG;
+  if (th < ${f(AUR.R - AUR.WOB - 1 + AUR.FRANJA[0])} || th > ${f(AUR.R + AUR.WOB + 1 + AUR.FRANJA[1])}) return 0.0;
+  float al = atan(cl * sin(dlon), (sl - sfp * cth) / cfp);
+  float u = fract(al / (2.0 * 3.141592653589793) + 1.0);
+  float d = th - aurTh0(u, uT);
+  if (d < ${f(AUR.FRANJA[0])} || d > ${f(AUR.FRANJA[1])}) return 0.0;
+  float x = d < ${f(AUR.FRANJA[2])} ? (d - ${f(AUR.FRANJA[0])}) / ${f(AUR.FRANJA[2] - AUR.FRANJA[0])} : (${f(AUR.FRANJA[1])} - d) / ${f(AUR.FRANJA[1] - AUR.FRANJA[2])};
+  return ${f(AUR.FRANJA_A)} * aurA(u, uT, uFrente, uCola, uSentido) * smoothstep(0.0, 1.0, x);
+}
+// Aurora en el píxel p: color y opacidad (a = 0: nada). Por niveles, como
+// planeta.js; violeta arriba, donde lo alto de los rayos pesa más. enDisco:
+// si el píxel es de la Tierra (lleva la franja); fuera del disco, sin ella.
+vec4 aurora(ivec2 p, bool enDisco) {
+  if (uConAurora == 0) return vec4(0.0);
+  vec2 v = texelFetch(uAurora, p, 0).rg;
+  if (enDisco && ${f(AUR.FRANJA_A)} > 0.0) {
+    vec2 q = (vec2(p) + 0.5 - 0.5 * uTam) / uR;
+    vec3 U = vec3(q, sqrt(max(0.0, 1.0 - dot(q, q))));
+    v.r += aurFranja(vec3(dot(uM0, U), dot(uM1, U), dot(uM2, U)));
+  }
+  int l = -1;
+  for (int i = 0; i < ${AUR.NIV.length}; i++) if (v.r >= AUR_UMB[i]) l = i;
+  if (l < 0) return vec4(0.0);
+  vec3 c = AUR_COL[l];
+  if (v.g / max(v.r, 1e-6) > 0.45) c = mix(c, ${c3(AUR.VIOLETA)}, 0.65);
+  return vec4(c, AUR_A[l]);
+}
 int nivelLuz(float v) {
   int l = 0;
   for (int i = 0; i < ${D.LUZ_UMBRAL.length}; i++) if (v >= LUZ_UMB[i]) l = i + 1;
@@ -331,17 +511,22 @@ const vec3 PAL[${paleta.length}] = vec3[${paleta.length}](${paleta.map(c3).join(
 void main() {
   ivec2 p = ivec2(floor(gl_FragCoord.xy * uEscala));
   vec4 t = texelFetch(uC, p, 0);
-  if (t.a < 0.5) { o = vec4(0.0); return; }
+  if (t.a < 0.5) {                                    // fuera del disco: el cielo, o la aurora que asoma
+    vec4 au = aurora(p, false);
+    o = vec4(au.rgb * au.a, au.a);
+    return;
+  }
   int g = int(t.g * 255.0 + 0.5);
   if (g >= 128) {                                     // chapa o X: color de la paleta, apagado hacia el terminador
     o = vec4(mix(ESPACIO, PAL[int(t.r * 255.0 + 0.5)], t.b), 1.0);
     return;
   }
-  if (g >= 64) {                                      // nube: tono y luz (NUBE_T de planeta.js)
+  if (g >= 64) {                                      // nube: tono y luz (NUBE_T de planeta.js); la aurora, encima
     int k = g - 64;
     float l = t.b;
     float tt = k < 2 ? min(1.0, l + 0.1) : k < 4 ? l : max(0.7, l);
-    o = vec4(mix(ESPACIO, uNube[k], tt), 1.0);
+    vec4 au = aurora(p, true);
+    o = vec4(mix(mix(ESPACIO, uNube[k], tt), au.rgb, au.a), 1.0);
     return;
   }
   int m = int(t.r * 255.0 + 0.5) + g * 256, j = int(t.b * 255.0 + 0.5);
@@ -382,7 +567,8 @@ void main() {
     float rin = 1.0 - AA / uR, rout = 1.0 + AA / uR;
     if (dc > rin) col = mix(ESPACIO, col, 1.0 - smoothstep(rin, rout, dc));
   }
-  o = vec4(col, 1.0);
+  vec4 au = aurora(p, true);                          // la aurora, sobre todo menos chapas y X
+  o = vec4(mix(col, au.rgb, au.a), 1.0);
 }`;
 }
 
@@ -513,7 +699,7 @@ export async function montarTierraGL(canvas, {
   // Noche (Proyecto Tierra paso 7, en curso): la misma superficie con la LUT
   // de noche de generar-planeta-hero.py, la luna en vez del sol, el suelo de
   // la noche, el halo, las nubes de noche, las luces de las ciudades y el
-  // brillo de atmósfera del borde. Sin aurora todavía. La LUT y las luces se bajan la
+  // brillo de atmósfera del borde y la aurora. La LUT y las luces se bajan la
   // primera vez.
   let noche = false, texLutNoche = null, pidiendoNoche = null, luces = null;
   function cargaNoche() {
@@ -526,6 +712,7 @@ export async function montarTierraGL(canvas, {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, bm.width, bm.height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
         new Uint8Array(px.buffer, px.byteOffset, bm.width * bm.height * 4));
       if (lucesBm) luces = montaLuces(pixels(lucesBm));
+      aurora = montaAurora();
     });
     return pidiendoNoche;
   }
@@ -553,6 +740,41 @@ export async function montarTierraGL(canvas, {
     gl.bindVertexArray(null);
     const tex = textura(gl), fb = gl.createFramebuffer();
     return { va, n, tex, fb, prog: programa(gl, vertLuces(D), FRAG_LUCES), w: 0, h: 0 };
+  }
+  // Aurora: su textura se monta con la primera noche (también pinta en coma
+  // flotante). `aurInicio`: cuándo empieza a encenderse (ms); se pone al
+  // anochecer (ponNoche) y al montar de noche.
+  let aurora = null, aurInicio = null, aurCola = null, aurSentido = 1, aurT = 0, aurFrente = -1;
+  function montaAurora() {
+    if (!gl.getExtension("EXT_color_buffer_float")) return null;
+    return { tex: textura(gl), fb: gl.createFramebuffer(), prog: programa(gl, VERT_AURORA, FRAG_AURORA), w: 0, h: 0 };
+  }
+  // Cuánto lleva encendiéndose (s), o null si ya está encendida.
+  const aurEncendido = () => {
+    if (aurInicio === null || reduce.matches) return null;
+    const el = (performance.now() - aurInicio) / 1000;
+    return el < AUR.BARRIDO * 1.3 ? Math.max(0, el) : null;
+  };
+  // Encendido como una serpiente que se muerde la cola (como planeta.js):
+  // arranca en el punto del óvalo más a la izquierda de la cara de delante,
+  // avanza por delante y vuelve por el fondo hasta cerrar donde empezó.
+  function arrancaSerpiente(M) {
+    const fp = AUR.POLO[0] * DEG, lp = AUR.POLO[1] * DEG, th = AUR.R * DEG;
+    const punto = (al) => {
+      const sl = Math.sin(fp) * Math.cos(th) + Math.cos(fp) * Math.sin(th) * Math.cos(al), cl = Math.sqrt(1 - sl * sl);
+      const lon = lp + Math.atan2(Math.sin(al) * Math.sin(th) * Math.cos(fp), Math.cos(th) - Math.sin(fp) * sl);
+      const B = [cl * Math.sin(lon), sl, cl * Math.cos(lon)];
+      return [0, 1, 2].map((i) => M[0][i] * B[0] + M[1][i] * B[1] + M[2][i] * B[2]);
+    };
+    let mejor = 2, uMejor = 0;
+    for (let i = 0; i < AUR.N; i += 4) {
+      const b = punto((i / AUR.N) * 2 * Math.PI);
+      if (b[2] > 0.15 && b[0] < mejor) { mejor = b[0]; uMejor = i / AUR.N; }
+    }
+    // sentido: el que sigue por delante (más abajo en pantalla)
+    const ya = punto((uMejor + 0.02) * 2 * Math.PI)[1], yb = punto((uMejor - 0.02) * 2 * Math.PI)[1];
+    aurCola = uMejor;
+    aurSentido = ya < yb ? 1 : -1;
   }
   const aVec = (c) => c.map((x) => x / 255);
   const LUZ = {
@@ -635,14 +857,25 @@ export async function montarTierraGL(canvas, {
   }
   // La X de marca: blanca con contorno oscuro, como la de planeta.js.
   const X_ART = ["#...#", "##.##", ".###.", "##.##", "#...#"], XN = X_ART.length;
-  const celdasX = [];                            // sin la latitud y longitud: van al marcar
+  // De noche, en verde de visión nocturna con contorno verde muy oscuro, como
+  // X_CELLS_N de planeta.js (va con la coordenada fijada en verde, global.css).
+  const celdasX = [], celdasXN = [];            // sin la latitud y longitud: van al marcar
   const lleno = (y, x) => y >= 0 && y < XN && x >= 0 && x < XN && X_ART[y][x] === "#";
   for (let y = -1; y <= XN; y++) {
     for (let x = -1; x <= XN; x++) {
-      let c = null;
-      if (lleno(y, x)) c = y >= XN - 2 ? [214, 220, 228] : [246, 248, 250];
-      else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) c = [16, 19, 28];
-      if (c) celdasX.push([x - (XN >> 1), y - (XN >> 1), indice(c)]);
+      let c = null, cn = null;
+      if (lleno(y, x)) {
+        const bajo = y >= XN - 2;
+        c = bajo ? [214, 220, 228] : [246, 248, 250];
+        cn = bajo ? [104, 222, 126] : [141, 255, 158];
+      } else if (lleno(y - 1, x) || lleno(y + 1, x) || lleno(y, x - 1) || lleno(y, x + 1)) {
+        c = [16, 19, 28];
+        cn = [6, 20, 10];
+      }
+      if (c) {
+        celdasX.push([x - (XN >> 1), y - (XN >> 1), indice(c)]);
+        celdasXN.push([x - (XN >> 1), y - (XN >> 1), indice(cn)]);
+      }
     }
   }
   function capa(datos) {
@@ -659,7 +892,7 @@ export async function montarTierraGL(canvas, {
     return { va, bu, n: datos.length / 5 };
   }
   const capaChapas = capa(celdasChapas), capaSombras = capa(celdasSombras);
-  const capaX = capa([]);
+  const capaX = capa([]), capaXN = capa([]);
   let marca = null;                              // { lat, lon } en grados
   const progSprites = programa(gl, VERT_SPRITES, FRAG_SPRITES);
   const progColor = programa(gl, VERT, fragColor(D, paleta));
@@ -793,7 +1026,7 @@ export async function montarTierraGL(canvas, {
     u = progSprites.u;
     gl.useProgram(progSprites.p);
     sprites(capaChapas, D.BAND_PZ, 1, 0);
-    if (marca) sprites(capaX, 0.06, 0, 0);
+    if (marca) sprites(L === LUZ.noche ? capaXN : capaX, 0.06, 0, 0);
     // (1d) luces de las ciudades, de noche
     const conLuces = L === LUZ.noche && luces !== null;
     if (conLuces) {
@@ -823,6 +1056,51 @@ export async function montarTierraGL(canvas, {
       gl.blendEquation(gl.FUNC_ADD);
       gl.disable(gl.BLEND);
     }
+    // (1e) aurora, de noche
+    const conAurora = L === LUZ.noche && aurora !== null;
+    if (conAurora) {
+      if (aurora.w !== W || aurora.h !== H) {
+        aurora.w = W; aurora.h = H;
+        gl.bindTexture(gl.TEXTURE_2D, aurora.tex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, W, H, 0, gl.RGBA, gl.HALF_FLOAT, null);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, aurora.fb);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, aurora.tex, 0);
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, aurora.fb);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      if (aurInicio === null) aurInicio = performance.now() + 300;
+      const el = aurEncendido();
+      if (el === null) aurCola = null;
+      else if (aurCola === null) arrancaSerpiente(M);
+      // Con zoom, más rayos y más puntos por rayo (hasta x4), y cada uno pesa
+      // menos: así la densidad de puntos por píxel es la del horizonte de
+      // antes, con el que se ajustaron los niveles (radio AUR.R_ANTES).
+      const F = Math.max(1, Math.min(4, Math.ceil(R / AUR.R_ANTES)));
+      const nR = AUR.N * F, nK = (AUR.K - 1) * F + 1, e = R / AUR.R_ANTES;
+      u = aurora.prog.u;
+      gl.useProgram(aurora.prog.p);
+      gl.uniform2f(u.uTam, W, H);
+      gl.uniform1f(u.uR, R);
+      gl.uniform3fv(u.uM0, M[0]);
+      gl.uniform3fv(u.uM1, M[1]);
+      gl.uniform3fv(u.uM2, M[2]);
+      aurT = performance.now() / 1000;
+      aurFrente = el === null ? -1 : el / AUR.BARRIDO * 1.1;
+      gl.uniform1f(u.uT, aurT);
+      gl.uniform1i(u.uN, nR);
+      gl.uniform1i(u.uK, nK);
+      gl.uniform1f(u.uW, (AUR.N * AUR.K) / (nR * nK) * e * e);
+      gl.uniform1f(u.uWd, AUR.ND ? AUR.N / nR * e / 3 * 2 / AUR.ND : 0); // en planeta.js, 2 puntos en uno de cada tres rayos
+      gl.uniform1f(u.uFrente, aurFrente);
+      gl.uniform1f(u.uCola, aurCola ?? 0);
+      gl.uniform1f(u.uSentido, aurSentido);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE);
+      gl.bindVertexArray(vao);
+      gl.drawArrays(gl.POINTS, 0, nR * (AUR.ARCOS.length * nK + AUR.ND));
+      gl.disable(gl.BLEND);
+    }
     // (2) color, al canvas
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -839,6 +1117,17 @@ export async function montarTierraGL(canvas, {
     gl.uniform3fv(u.uNube, L.nube);
     gl.uniform1f(u.uGlow, L === LUZ.noche ? 1 : 0);
     unidad(2, conLuces ? luces.tex : trabajo, u.uLuces);
+    gl.uniform1i(u.uConAurora, conAurora ? 1 : 0);
+    if (conAurora) {
+      gl.uniform3fv(u.uM0, M[0]);
+      gl.uniform3fv(u.uM1, M[1]);
+      gl.uniform3fv(u.uM2, M[2]);
+      gl.uniform1f(u.uT, aurT);
+      gl.uniform1f(u.uFrente, aurFrente);
+      gl.uniform1f(u.uCola, aurCola ?? 0);
+      gl.uniform1f(u.uSentido, aurSentido);
+    }
+    unidad(3, conAurora ? aurora.tex : trabajo, u.uAurora);
     gl.uniform1i(u.uConLuces, conLuces ? 1 : 0);
     if (mezcla !== null) {
       gl.enable(gl.BLEND);
@@ -1014,6 +1303,11 @@ export async function montarTierraGL(canvas, {
       sigue = zoom !== zoomObj;
     }
     if (fundido) { sucio = true; sigue = true; }
+    if (noche && enVista && aurEncendido() !== null) {   // la aurora encendiéndose, a 30 por segundo
+      sigue = true;
+      const s30 = Math.floor(ahora / 1000 * 30);
+      if (s30 !== ultimo30) { ultimo30 = s30; sucio = true; }
+    }
     if (gira()) {
       // Con zoom el giro se ralentiza a la par: la superficie pasa por la
       // pantalla a la misma velocidad que a x1. Mientras el zoom va hacia el
@@ -1108,6 +1402,7 @@ export async function montarTierraGL(canvas, {
     // LUT (hasta entonces, de día).
     ponNoche(b) {
       if (b === noche) return;
+      if (b) aurInicio = performance.now() + 900;   // la aurora se enciende cuando ya es de noche
       const antes = luz();
       noche = b;
       const empieza = () => {
@@ -1137,11 +1432,14 @@ export async function montarTierraGL(canvas, {
     ponMarca(g) {
       marca = g;
       if (g) {
-        const la = g.lat * DEG, lo = g.lon * DEG, datos = [];
-        for (const [x, y, c] of celdasX) datos.push(la, lo, x, y, c);
-        gl.bindBuffer(gl.ARRAY_BUFFER, capaX.bu);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(datos), gl.DYNAMIC_DRAW);
-        capaX.n = celdasX.length;
+        const la = g.lat * DEG, lo = g.lon * DEG;
+        for (const [cx, celdas] of [[capaX, celdasX], [capaXN, celdasXN]]) {
+          const datos = [];
+          for (const [x, y, c] of celdas) datos.push(la, lo, x, y, c);
+          gl.bindBuffer(gl.ARRAY_BUFFER, cx.bu);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(datos), gl.DYNAMIC_DRAW);
+          cx.n = celdas.length;
+        }
       }
       pide();
     },
