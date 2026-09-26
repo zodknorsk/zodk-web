@@ -228,12 +228,12 @@ html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono :i
   width: var(--tierra-caja);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: url(/planeta/tierra-quieto.png?v=12) no-repeat 0 0 / 100% 100%;
+  background: url(/planeta/tierra-quieto.png?v=14) no-repeat 0 0 / 100% 100%;
   image-rendering: pixelated;
   pointer-events: none;
   z-index: 0;
 }
-html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?v=12); }
+html.dark .hero-planet { background-image: url(/planeta/tierra-quieto-noche.png?v=14); }
 .hero-planet.planeta-listo { visibility: hidden; }
 .hero-tierra {
   position: absolute;

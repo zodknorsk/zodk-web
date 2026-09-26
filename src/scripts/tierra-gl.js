@@ -623,7 +623,7 @@ function filas(lat0, lon0) {
  * @param {HTMLCanvasElement} canvas
  * @param {{ base?: string, lat0?: number, lon0?: number, radio?: number, vuelta?: number,
  *   disco?: () => number, alPintar?: () => void, zoomMax?: number,
- *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean,
+ *   banderas?: string[] | null, pausado?: () => boolean, noche?: boolean, sinNubes?: boolean, sinAurora?: boolean,
  *   ladoAtlas?: number }} [opciones]
  */
 export async function montarTierraGL(canvas, {
@@ -638,6 +638,7 @@ export async function montarTierraGL(canvas, {
   pausado = () => false,                         // no gira mientras dé true (en la portada: ratón sobre una chapa o una nave)
   noche: nocheIni = false,                       // a la luz de la luna (el tema oscuro); se cambia con ponNoche
   sinNubes = false,                              // sin nubes (la foto de tierra-quieto.png)
+  sinAurora = false,                             // sin aurora (ídem: se mueve y se enciende al anochecer)
   ladoAtlas = 8,                                 // huecos por lado del atlas de teselas
   zoomMax = 6,                                   // como Marte y la Luna (usuario, 24-sep-2026: "¿sería posible un x5 o x6?")
 } = {}) {
@@ -1057,7 +1058,7 @@ export async function montarTierraGL(canvas, {
       gl.disable(gl.BLEND);
     }
     // (1e) aurora, de noche
-    const conAurora = L === LUZ.noche && aurora !== null;
+    const conAurora = L === LUZ.noche && aurora !== null && !sinAurora;
     if (conAurora) {
       if (aurora.w !== W || aurora.h !== H) {
         aurora.w = W; aurora.h = H;

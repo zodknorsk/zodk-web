@@ -5,7 +5,43 @@ paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Ley
 solo esto hay que poder retomarlo. El detalle del planeta de antes (horizonte
 de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 
-## Dónde estamos (26-sep-2026, al cerrar la sesión)
+## Dónde estamos (26-sep-2026, sesión de mediodía)
+
+- Rama **`earth-project`**, commiteada en local con el 7.5 y **sin subir**
+  (GitHub va hasta `6fa1c07`; sin fusionar: no publica nada). Nada sin
+  commitear. En el otro ordenador: `git fetch` y
+  `git switch earth-project` (o `git pull` si ya está).
+- **Hecho**: pasos 1-6, el 6b (zoom: nieve, nombres, Bab el-Mandeb) y el 7
+  (noche) entero: 7.1 luces, 7.2 brillo de atmósfera, 7.3 aurora, 7.4 X
+  verde y 7.5 foto quieta de noche.
+- **7.5 Foto quieta de noche (26-sep-2026, commiteada)**: el usuario vio
+  que al volver a la Tierra desde la Luna "aparece apagada" (era la foto del
+  24-sep, sin luces ni brillo). Rehechas con
+  `node logo-files/generar-tierra-quieto.mjs`: la de día sale idéntica, la
+  de noche ya lleva luces y brillo. **Sin aurora** (como sin nubes: se mueve
+  y se enciende al anochecer; con la espera de 2 s del script salía a medio
+  encender): opción nueva `sinAurora` en `montarTierraGL` (`tierra-gl.js`),
+  que usa el script. `PLANETA_V` 13 → 14 y los `?v=` de `tierra-quieto*.png`
+  en `global.css` (estaban en 12) → 14. Enseñada la comparación antes/ahora.
+- **Lo que queda**, por este orden:
+  1. Push de la rama (orden suya).
+  2. **Paso 8: probar en Zen y en el móvil** lo que es nuevo en la GPU
+     (luces: un punto por ciudad, 34.091; aurora: hasta ~340.000 puntos a
+     x6): consumo y temperatura como dice la memoria
+     `zodk-web-medir-rendimiento` (el usuario mide en su portátil); si pesa,
+     menos puntos de aurora a x6 (`F` hasta 4 en `pintaCon`) o menos fps.
+  3. **Fusionar `earth-project` en `main`** y publicar, cuando dé el visto
+     bueno (commit y push son órdenes suyas, por separado).
+  - Opcional, ofrecido y sin decidir: que la vista de lejos (zoom < x3,6)
+    también neve los Pirineos con el relieve fino (hoy solo el zoom).
+  - Los nombres de la Tierra "se irán puliendo con el tiempo" (usuario).
+- Para ver cosas sin ventana: el script de capturas de las sesiones del
+  25 y 26-sep abría la portada del servidor de desarrollo en un Chrome sin
+  ventana y movía el globo con un `window.__tierra` temporal en
+  `index.astro` (solo en desarrollo; quitado en los commits). Las capturas
+  se le enseñan juntas en una página HTML.
+
+## Dónde estábamos (26-sep-2026, al cerrar la sesión de la mañana, histórico)
 
 - Rama **`earth-project`**, **commiteada y subida** a GitHub el
   26-sep-2026 (sin fusionar: no publica nada). En el otro ordenador:
