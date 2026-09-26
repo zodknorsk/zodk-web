@@ -7,11 +7,10 @@ import { SITE } from "@consts";
 type Props = {
   title: string;
   description: string;
-  // Portada a pantalla completa: el slot "hero" va a sangre entre la
-  // cabecera y <main>, y <html> lleva la clase "home" (cabecera transparente
-  // sobre el planeta hasta hacer scroll).
+  // Astro a pantalla completa (portada, /luna, /marte): el slot "hero" va a
+  // sangre antes de <main> y <html> lleva la clase "home".
   hero?: boolean;
-  // Sin cabecera: /luna y /marte, a pantalla completa con sus propios botones.
+  // Sin cabecera: la portada, /luna y /marte, con sus propios botones.
   cabecera?: boolean;
 };
 
@@ -19,7 +18,7 @@ const { title, description, hero = false, cabecera = true } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class={hero ? "home at-top" : undefined}>
+<html lang="es" class={hero ? "home" : undefined}>
   <head>
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
   </head>

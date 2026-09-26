@@ -734,70 +734,22 @@ html.js .hero:not(.nave-lista) .hero-craft { opacity: 0; pointer-events: none; }
   .hero-cambio { width: 24px; }
 }
 
-/* Cabecera de la portada, tres estados:
-   1. arriba del todo (.at-top, sin .scrolled) -> mínima: los enlaces y el
-      botón de tema, transparente, sin logo.
-   2. bajando por el planeta (sin .at-top, sin .scrolled) -> escondida arriba.
-   3. en el contenido del blog (.scrolled) -> sólida, con el logo bajando a su
-      sitio; entra deslizándose desde arriba. */
-html.home header {
-  transition: transform 0.3s ease, opacity 0.3s ease,
-    background-color 0.35s ease, backdrop-filter 0.35s ease;
-}
-
-html.home header a[href="/"] {
-  overflow: hidden;
-  max-height: 6.5rem;
-  transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
-}
-
-/* Estados 1 y 2: transparente y sin logo */
-html.home:not(.scrolled) header {
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-html.home:not(.scrolled) header a[href="/"] {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-0.5rem);
-  pointer-events: none;
-}
-
-html.home:not(.scrolled) header > div > div {
-  justify-content: center;   /* sin logo, la nav centrada */
-}
-/* Centrada de verdad: el logo escondido (altura 0) seguía ocupando su ancho
-   y empujaba la nav a la derecha; fuera del flujo. Y el botón de tema cuelga
-   a la derecha de la nav: el centro de la pantalla cae en el de los enlaces. */
-html.home:not(.scrolled) header a[href="/"] { position: absolute; }
-html.home:not(.scrolled) header nav { position: relative; }
-html.home:not(.scrolled) header nav + * { position: absolute; left: calc(100% + 0.5rem); }
-html.home:not(.scrolled) header > div > div > div { position: relative; }
-
-/* Estado 2: escondida mientras bajas por el hero */
-html.home:not(.at-top):not(.scrolled) header {
-  transform: translateY(-115%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-html.home:not(.scrolled) header a,
-html.home:not(.scrolled) header button,
-html.home:not(.scrolled) header span {
+/* Botón de día/noche de la portada (que no tiene cabecera), arriba a la
+   derecha: el mismo icono que en la cabecera, claro sobre el cielo. */
+.hero-tema {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 5;
   color: #cfd6de;
 }
+.hero-tema #theme-button:is(:hover, :focus-visible) { color: #fff; }
+.hero-tema #theme-button:is(:hover, :focus-visible) .tema-icono { stroke: #fff; }
+.hero-tema #theme-button:is(:hover, :focus-visible) .tema-icono :is(circle, path) { fill: #fff; }
+@media (max-width: 640px) { .hero-tema { top: 14px; right: 12px; } }
 
-html.home:not(.scrolled) header a:hover,
-html.home:not(.scrolled) header button:hover {
-  color: #ffffff;
-}
-
-/* Hueco arriba de <main>: en la portada el contenido empieza tras el hero, pero
-   la cabecera con logo (~140 px) ya está activa al llegar aquí, así que hay que
-   dejar sitio para que no lo tape. */
-html.home main { padding-top: 9.5rem; }
+/* Sin cabecera, el contenido de debajo del hero no necesita el hueco de arriba. */
+html.home main { padding-top: 5rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-planet,

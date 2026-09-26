@@ -49,9 +49,9 @@ src/
     rss.xml.ts, robots.txt.ts
   layouts/PageLayout.astro   El esqueleto común: <head>, cabecera, pie
   components/
-    Head.astro               <head>, estilos, fuentes, tema día/noche, cabecera
-                             que aparece al bajar, naves del hero y su hélice
-    Header.astro             La cabecera: logo y menú
+    Head.astro               <head>, estilos, fuentes, tema día/noche, naves
+                             del hero y su hélice
+    Header.astro             La cabecera: logo y día/noche (no sale en los astros)
     ThemeToggle.astro        El botón de día/noche
     Footer.astro, Container.astro, Link.astro, ArrowCard.astro (tarjeta de
     nota), BackToPrev.astro (botón de volver), EventoNav.astro (semana

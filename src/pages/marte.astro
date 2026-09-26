@@ -44,7 +44,6 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
       <span class="luna-volver-luna" aria-hidden="true"></span>
     </button>
   </section>
-  <div id="hero-sentinel" aria-hidden="true"></div>
 </PageLayout>
 
 <script>
@@ -179,14 +178,10 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   }
 
   // Al aterrizar (en la portada o en /luna), sus estrellas donde quedaron las
-  // del vuelo, y la cabecera de la portada (que /marte no tiene; /luna
-  // tampoco) entra con un fundido en vez de de golpe.
+  // del vuelo.
   document.addEventListener("astro:after-swap", () => {
     if (estrellasLlegada === null) return;
     document.querySelector<HTMLElement>(".hero:not(.marte-hero) .hero-stars")?.style.setProperty("--estrellas-pos", estrellasLlegada);
-    document.querySelector<HTMLElement>("body > header")?.animate(
-      [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: "ease-out" },
-    );
     estrellasLlegada = null;
   });
 

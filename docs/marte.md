@@ -34,7 +34,7 @@
 
 ## Cómo se llega
 
-Desde el Marte pequeño de la portada (o `mars-project` en la cabecera) y
+Desde el Marte pequeño de la portada, desde su bloque de debajo (sin vuelo) y
 desde el de `/luna`, siempre con un vuelo. `/luna` avisa con
 `sessionStorage` (`marte-desde`) para que salga "volver a la Luna"; `/marte`
 lo lee y lo borra al llegar.

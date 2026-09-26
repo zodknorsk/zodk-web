@@ -187,10 +187,5 @@ article .tiktok a {
 }
 html.dark #theme-button:is(:hover, :focus-visible) .tema-icono circle { fill: #fff; fill-opacity: 1; }
 html:not(.dark) #theme-button:is(:hover, :focus-visible) .tema-icono path { fill: #000; fill-opacity: 1; }
-/* Sobre el hero de la portada (cabecera transparente) el fondo es negro en
-   los dos temas: el icono al pasar el ratón, en blanco (el trazo negro de
-   group-hover:stroke-black lo hacía desaparecer). */
-html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono { stroke: #fff; }
-html.home:not(.scrolled) #theme-button:is(:hover, :focus-visible) .tema-icono :is(circle, path) { fill: #fff; }
 @keyframes tema-relleno { from { fill-opacity: 1; } }
 #theme-button.tema-pulsado .tema-icono :is(circle, path) { animation: tema-relleno 0.8s ease-in-out; }

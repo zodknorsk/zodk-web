@@ -270,31 +270,6 @@ const MARTE: Destino = {
 // Al aterrizar: en qué hero y dónde van las estrellas.
 let llegada: { hero: string; pos: string } | null = null;
 
-// Enlaces "moon-project" y "mars-project" de la cabecera (Header.astro): en
-// la portada se comportan como la luna y Marte del hero (disparan un clic
-// real sobre su enlace, así que reutilizan montarViaje sin duplicar nada).
-// La luna solo se ve de noche: de día, primero cambia a modo noche pulsando
-// el propio botón de tema (mismo camino que si lo pulsara el usuario) y
-// espera a que se vea la luna antes de volar. Marte se ve siempre.
-function montarEnlaceCabecera(d: Destino, deNoche: boolean) {
-  const enlace = document.querySelector<HTMLAnchorElement>(`header nav a[href='${d.ruta}']`);
-  const hero = document.querySelector<HTMLAnchorElement>(`.hero ${d.enlace}`);
-  if (!enlace || !hero) return () => {};
-  const clic = (e: MouseEvent) => {
-    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    e.preventDefault();
-    if (!deNoche || document.documentElement.classList.contains("dark")) {
-      hero.click();
-      return;
-    }
-    document.getElementById("theme-button")?.click();
-    const espera = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
-    setTimeout(() => hero.click(), espera);
-  };
-  enlace.addEventListener("click", clic);
-  return () => enlace.removeEventListener("click", clic);
-}
-
 // Un solo vuelo a la vez, vaya a donde vaya.
 let enVuelo = false;
 let quitaViajes: (() => void)[] = [];
@@ -366,10 +341,7 @@ document.addEventListener("astro:page-load", async () => {
   quitaViajes = [];
   const heroViaje = document.querySelector<HTMLElement>(".hero");
   if (heroViaje?.querySelector(".hero-planet")) {
-    quitaViajes = [
-      montarViaje(heroViaje, LUNA), montarEnlaceCabecera(LUNA, true),
-      montarViaje(heroViaje, MARTE), montarEnlaceCabecera(MARTE, false),
-    ];
+    quitaViajes = [montarViaje(heroViaje, LUNA), montarViaje(heroViaje, MARTE)];
   }
   const cv = document.querySelector<HTMLCanvasElement>(".hero-tierra-canvas");
   const hero = cv?.closest<HTMLElement>(".hero");

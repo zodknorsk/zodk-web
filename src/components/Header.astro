@@ -1,6 +1,5 @@
 ---
 import Container from "@components/Container.astro";
-import Link from "@components/Link.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
 import { SITE } from "@consts";
 ---
@@ -12,24 +11,8 @@ import { SITE } from "@consts";
            solo se baja el SVG del tema activo (88 KB el de día, 154 KB el de
            noche). -->
       <a href="/" aria-label={SITE.NAME} class="logo-home"></a>
-      <div class="flex items-center gap-2">
-        <!-- Sin cortes dentro de los enlaces (partía "moon-project" por el
-             guion); en pantallas estrechas la letra baja un poco, y desde
-             ~440 px es la normal. -->
-        <nav class="flex gap-1 whitespace-nowrap text-[clamp(0.72rem,3.6vw,1rem)]">
-          <Link href="/notas" underline={false}>notas</Link>
-          <span>{`/`}</span>
-          <Link href="/eventos" underline={false}>eventos</Link>
-          <span>{`/`}</span>
-          <!-- En la portada, portada.ts engancha estos dos enlaces (por su
-               href) para que hagan el mismo vuelo que la luna y Marte del
-               hero; en el resto de páginas son enlaces normales. -->
-          <Link href="/luna" underline={false}>moon-project</Link>
-          <span>{`/`}</span>
-          <Link href="/marte" underline={false}>mars-project</Link>
-        </nav>
-        <ThemeToggle />
-      </div>
+      <!-- Sin menú: a cada sección se llega desde la portada. -->
+      <ThemeToggle />
     </div>
   </Container>
 </header>

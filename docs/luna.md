@@ -48,10 +48,8 @@
 
 ## Cómo se llega
 
-Pulsando la luna del hero (solo de noche) o `moon-project` en la cabecera.
-Desde la portada ese enlace hace el mismo vuelo; si está de día, primero
-cambia a noche y después vuela. Desde el resto de páginas es un enlace
-normal.
+Pulsando la luna del hero (solo de noche), con un vuelo, o el bloque de
+Moon-project de debajo del planeta, que es un enlace normal.
 
 **Las notas etiquetadas `luna` viven solo en la Luna**: no salen en `/notas`,
 en la portada ni en el RSS, y su "volver" lleva a `/luna`

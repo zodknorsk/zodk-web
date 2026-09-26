@@ -104,7 +104,7 @@ const socialImageURL = new URL(image, Astro.site);
 <script is:inline>
   function init() {
     preloadTheme();
-    initHeader();
+    alScroll();
     initCraft();
     initObjeto();
     initHelice();
@@ -139,42 +139,11 @@ const socialImageURL = new URL(image, Astro.site);
     tEstrellas = setTimeout(() => html.classList.remove("estrellas-entrando"), 3200);
   }
 
-  // La cabecera "sólida" (con logo) se activa con la clase "scrolled".
-  // En la portada no salta al primer píxel: espera a que el contenido del blog
-  // llegue arriba, con un centinela invisible en el límite entre el hero y el
-  // contenido (#hero-sentinel). En el resto de páginas, al primer scroll.
-  // El escuchador del scroll se pone una sola vez (la web cambia de página
-  // sin recargar y init() se repite en cada cambio) y mira qué página hay.
-  let observador = null;
-  function initHeader() {
-    observador?.disconnect();
-    observador = null;
-    const sentinel = document.getElementById("hero-sentinel");
-    if (sentinel && "IntersectionObserver" in window) {
-      // "scrolled" se pone cuando el límite hero/contenido cruza el 48 % de la
-      // ventana, bajando o subiendo. Más negativo el margen -> más tarde.
-      observador = new IntersectionObserver(
-        ([e]) => {
-          document.documentElement.classList.toggle("scrolled", e.isIntersecting || e.boundingClientRect.top < 1);
-        },
-        { rootMargin: "0px 0px -52% 0px", threshold: 0 },
-      );
-      observador.observe(sentinel);
-    }
-    alScroll();
-  }
-  // En la portada: "at-top" (pegado arriba del todo, la cabecera mínima) y la
-  // censura del título según se baja (--redact de 0 a 1; el CSS la reparte
-  // por líneas). En las demás páginas, "scrolled" desde el primer píxel.
+  // En la portada, el título se tacha según se baja (--redact de 0 a 1; el
+  // CSS lo reparte por líneas).
   function alScroll() {
-    const html = document.documentElement;
-    if (document.getElementById("hero-sentinel")) {
-      html.classList.toggle("at-top", window.scrollY < 24);
-      const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
-      document.querySelector(".hero-titulo")?.style.setProperty("--redact", p.toFixed(3));
-    } else {
-      html.classList.toggle("scrolled", window.scrollY > 0);
-    }
+    const p = Math.min(1, window.scrollY / (window.innerHeight * 0.42));
+    document.querySelector(".hero-titulo")?.style.setProperty("--redact", p.toFixed(3));
   }
   let rafScroll = 0;
   document.addEventListener("scroll", () => {

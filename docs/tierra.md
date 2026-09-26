@@ -53,8 +53,10 @@ nombres "se irán puliendo con el tiempo".
   el otro y el planeta se funde de una luz a la otra en 1,5 s.
 - **Cada visita empieza de día.** El tema elegido va en `sessionStorage`:
   aguanta al navegar y al recargar, pero otra pestaña u otro día arranca de
-  día. Si no, el vuelo de `moon-project`, que pasa a noche, dejaba la web de
-  noche para siempre.
+  día. Si no, quien pasara a noche una vez se la encontraría de noche para
+  siempre.
+- **Sin cabecera.** El botón de día/noche va arriba a la derecha del hero
+  (`.hero-tema`); a las secciones se llega desde los bloques de debajo.
 
 ## Cómo funciona
 
