@@ -5,24 +5,55 @@ paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Ley
 solo esto hay que poder retomarlo. El detalle del planeta de antes (horizonte
 de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 
-## Dónde estamos (25-sep-2026)
+## Dónde estamos (26-sep-2026, al cerrar la sesión)
 
 - Rama **`earth-project`**, **commiteada y subida** a GitHub el
-  25-sep-2026 al cerrar la sesión (sin fusionar). En el otro ordenador:
+  26-sep-2026 (sin fusionar: no publica nada). En el otro ordenador:
   `git fetch` y `git switch earth-project` (o `git pull` si ya está).
+  Nada sin commitear.
+- **Hecho**: pasos 1-6, el 6b (zoom: nieve, nombres, Bab el-Mandeb) y del
+  7 (noche) el 7.1 luces, 7.2 brillo de atmósfera, 7.3 aurora y 7.4 X
+  verde, todos aprobados por el usuario (detalle abajo).
+- **PARA TERMINAR MAÑANA (usuario, 26-sep-2026: "apunta que queda para
+  terminar mañana")**, por este orden:
+  1. **7.5 Foto quieta de noche**: `node logo-files/generar-tierra-quieto.mjs`
+     (rehace `tierra-quieto.png` y `tierra-quieto-noche.png` con el motor
+     de ahora: la de noche aún es sin luces ni brillo) y subir `PLANETA_V`
+     en `src/scripts/planeta.js` (ahora 13). Enseñársela antes de commitear.
+     Ojo: la foto se hace sin nubes ni chapas; decidir con él si lleva la
+     aurora (se mueve) o no.
+  2. **Paso 8: probar en Zen y en el móvil** lo que es nuevo en la GPU
+     (luces: un punto por ciudad, 34.091; aurora: hasta ~340.000 puntos a
+     x6): consumo y temperatura como dice la memoria
+     `zodk-web-medir-rendimiento` (el usuario mide en su portátil); si pesa,
+     menos puntos de aurora a x6 (`F` hasta 4 en `pintaCon`) o menos fps.
+  3. **Fusionar `earth-project` en `main`** y publicar, cuando dé el visto
+     bueno (commit y push son órdenes suyas, por separado).
+  - Opcional, ofrecido y sin decidir: que la vista de lejos (zoom < x3,6)
+    también neve los Pirineos con el relieve fino (hoy solo el zoom).
+  - Los nombres de la Tierra "se irán puliendo con el tiempo" (usuario).
+- Para ver cosas sin ventana: el script de capturas de las sesiones del
+  25 y 26-sep abría la portada del servidor de desarrollo en un Chrome sin
+  ventana y movía el globo con un `window.__tierra` temporal en
+  `index.astro` (solo en desarrollo; quitado en los commits). Las capturas
+  se le enseñan juntas en una página HTML.
+
+## Dónde estábamos (25-sep-2026, histórico)
+
 - **Hecho**: pasos 1-6 y el 6b (abajo).
 - **26-sep-2026, paso 7 casi terminado**: 7.1 (luces), 7.2 (brillo), 7.3
   (aurora) y 7.4 (X verde) commiteados en local (sin subir). Falta 7.5 (la
   foto quieta de noche); el usuario no quiso hacerla aún ("no. Commit de lo
   que llevamos hasta ahora"):
-  - **7.1 Luces de las ciudades: hechas, falta su visto bueno.** En la GPU
+  - **7.1 Luces de las ciudades: hechas y aprobadas.** En la GPU
     (`tierra-gl.js`, pasada "(1d)", `VERT_LUCES`): cada ciudad de
     `planeta-luces.png` deja su huella (`HUELLA`, `HUELLA_R2`,
     `HUELLA_GRANDE`) en una textura RGBA16F con mezcla aditiva (R = suma,
     G = núcleos, A = halo más fuerte con mezcla MAX) y la pasada de color
     saca el nivel de ámbar como `luces()` de `planeta.js` (`LUZ_UMBRAL`,
-    `LUZ_RAMPA`, `LUZ_SUMA_MAX`), bajo nubes y chapas. Una llamada
-    instanciada por tipo de huella. Se bajan con la LUT de noche. Necesita
+    `LUZ_RAMPA`, `LUZ_SUMA_MAX`), bajo nubes y chapas. Un punto por
+    ciudad del tamaño de su huella (anillos, ver abajo). Se bajan con la
+    LUT de noche. Necesita
     `EXT_color_buffer_float`; sin él, noche sin luces. Hacia el borde las
     sumas pesan `U.z` (si no, las ciudades amontonadas por la perspectiva
     hacían un canto brillante alrededor del disco).
@@ -44,13 +75,13 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     `LUZ_SUAVE` = (255, 191, 92); los 4 fuertes, sin tocar. Puede pedir
     retoques sobre ella.
     Usuario: "lo voy viendo bien" (luces dadas por buenas de momento).
-  - **7.2 Brillo de atmósfera de noche: hecho, enseñado.** En la pasada de
+  - **7.2 Brillo de atmósfera de noche: hecho y aprobado.** En la pasada de
     color (`uGlow`): la franja de `AIRGLOW_PX` (1,5 / 3 px de arte) junto
     al borde, mezclada con `AIRGLOW` al 55 % / 25 %, alrededor de todo el
     disco, como `planeta.js`. Con zoom sigue midiendo lo mismo en píxeles.
     Probado más fino (1 y 2 px; 1 px) y el usuario lo quiere "como estaba":
     se queda con 1,5 / 3 px.
-  - **7.3 Aurora boreal: hecha, enseñada, SIN COMMITEAR.** En la GPU
+  - **7.3 Aurora boreal: hecha y aprobada.** En la GPU
     (`tierra-gl.js`, pasada "(1e)", `VERT_AURORA`, constantes `AUR`): cada
     punto de las cortinas sale de `gl_VertexID` y el vertex shader hace las
     cuentas de `aurora()` de `planeta.js` (óvalo alrededor del polo
@@ -78,7 +109,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     (más fuerte a +0,6), 2 cortinas, `H1` 0,08 (bloque `AUR`, comentado);
     el resplandor de puntos de antes (`ND`, `DIFUSO`) queda a 0.
     **Aprobada** ("okey").
-  - **7.4 La X de noche en verde: hecha, enseñada.** `celdasXN` / `capaXN`
+  - **7.4 La X de noche en verde: hecha.** `celdasXN` / `capaXN`
     en `tierra-gl.js` con los colores de `X_CELLS_N` de `planeta.js`
     (141, 255, 158 y 104, 222, 126; contorno 6, 20, 10); de noche se pinta
     esa. La coordenada fijada en verde ya la hacía el CSS de la página
@@ -343,9 +374,10 @@ esté terminada.
 - [x] 5. Tamaño común: Luna y Marte al tamaño intermedio.
 - [x] 6. Zoom con teselas (más detalle de costa y relieve) y nombres de
       continentes y países.
-- [ ] 6b. Pulir el zoom: nieve en las montañas, nombres (Oceanía, China), Bab
-  el-Mandeb. Hecho, aprobado, commiteado y subido.
-- [ ] 7. Noche: luces de ciudades, aurora, luz de luna.
+- [x] 6b. Pulir el zoom: nieve en las montañas, nombres (Oceanía, China), Bab
+  el-Mandeb.
+- [ ] 7. Noche: luces de ciudades, brillo, aurora, X verde (hecho); falta la
+  foto quieta de noche (7.5).
 - [ ] 8. Probar en Zen y en el móvil; fusionar en `main`.
 
 ## Decisiones pendientes
