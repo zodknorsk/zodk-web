@@ -521,11 +521,14 @@ const eventos = todosEventos
     };
     return { encuadre, quita: () => ro.disconnect() };
   }
-  // El documento se retira al mover o ampliar el planeta (.titulo-fuera en
-  // global.css; usuario, 26-sep-2026): mientras se arrastra o se pellizca, o
-  // con más zoom que el de llegada. Vuelve un momento después de soltar. No
-  // durante el acercamiento (el zoom cambia solo). Se mira en cada fotograma
-  // pintado y al soltar (quieto, el planeta no repinta). Devuelve { mira, quita }.
+  // El documento solo se ve en el encuadre de llegada (ZOOM_CERCA) y sin
+  // arrastrar; con cualquier otro zoom (también a x1, o al volver en vuelo)
+  // se retira y la coordenada pasa al recuadro de la esquina (.titulo-fuera
+  // en global.css; usuario, 26-sep-2026: "si amplío o lo pongo a x1 va
+  // saliendo el título"). Si solo se gira arrastrando, vuelve un momento
+  // después de soltar. No durante el acercamiento (el zoom cambia solo). Se
+  // mira en cada fotograma pintado y al soltar (quieto, el planeta no
+  // repinta). Devuelve { mira, quita }.
   function montarTituloFuera(hero: HTMLElement, zoom: () => number) {
     let t = 0;
     // la coordenada y sus botones: bajo el visor con el documento, en el
@@ -539,7 +542,8 @@ const eventos = todosEventos
       (si ? hud : marco).append(...piezas);
       hud.hidden = !si;
     };
-    const reposo = () => !hero.matches(".agarrando, .pellizcando") && zoom() <= ZOOM_CERCA + 0.05;
+    const reposo = () => hero.classList.contains("titulo-listo") && !hero.matches(".agarrando, .pellizcando")
+      && Math.abs(zoom() - ZOOM_CERCA) < 0.05;
     const mira = () => {
       if (hero.classList.contains("acercandose")) return;
       if (!reposo()) {
@@ -563,7 +567,7 @@ const eventos = todosEventos
     quitaAcercamiento = () => { tt.forEach(clearTimeout); quitaAcercamiento = null; };
     // al volver en vuelo, las estrellas llegan con su sitio puesto (astro:after-swap)
     const llegaVolando = !!hero.querySelector<HTMLElement>(".hero-stars")?.style.getPropertyValue("--estrellas-pos");
-    if (llegaVolando) { hero.classList.add("titulo-listo", "nave-lista"); return; }
+    if (llegaVolando) { hero.classList.add("nave-lista"); return; }   // disco entero: sin documento (montarTituloFuera)
     hero.classList.add("astros-esquina", "sin-nombres");
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
       tierra.ponZoom(ZOOM_CERCA, true);
@@ -571,8 +575,9 @@ const eventos = todosEventos
       return;
     }
     hero.classList.remove("astros-esquina");
+    hero.classList.add("acercandose");               // desde ya: el segundo de espera también cuenta
     luego(ESPERA, () => {
-      hero.classList.add("astros-esquina", "moviendo-astros", "acercandose");
+      hero.classList.add("astros-esquina", "moviendo-astros");
       tierra.acercar(ZOOM_CERCA, ACERCA, curvaCamara).then(() => hero.classList.remove("acercandose"));
     });
     luego(ESPERA + ACERCA - 600, () => hero.classList.add("titulo-listo", "titulo-entra"));

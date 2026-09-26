@@ -68,8 +68,14 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   esquina de abajo a la izquierda del visor, al otro lado de la coordenada,
   como en `main`. **Al arrastrar o ampliar el planeta el documento se
   retira** (papel, letras, sello y esquinas se desvanecen en 0,45 s;
-  `.titulo-fuera`, `montarTituloFuera`): mientras se arrastra o pellizca, o
-  con más zoom que el de llegada; vuelve 0,9 s después de soltar. La
+  `.titulo-fuera`, `montarTituloFuera`). **Corregido** (usuario, probándolo:
+  "si amplío o lo pongo a x1 va saliendo el título por la cara"): la primera
+  regla lo devolvía con cualquier zoom por debajo del de llegada. Ahora el
+  documento **solo** se ve en el encuadre de llegada (zoom 2,5 ± 0,05) y sin
+  arrastrar; si solo se gira, vuelve 0,9 s después de soltar. A x1, con otro
+  zoom y al volver en vuelo, nunca (la coordenada, en el recuadro de la
+  esquina). Probado paso a paso: carga, acercamiento, arrastrar/soltar,
+  ampliar, alejar a x1 y quedarse, zoom intermedio y vuelta desde /luna. La
   coordenada y los botones se quedan (el papel y las esquinas pasaron a
   `::before` para eso).
 - **La coordenada con el documento retirado** (usuario: se quedaba flotando

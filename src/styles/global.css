@@ -1898,12 +1898,11 @@ html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
 /* De noche, al fijar coordenada, el visor y los botones en verde; el lema
    sigue en tinta sobre el papel. */
 html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: none; }
-/* Al mover o ampliar el planeta el documento se retira (usuario, 26-sep-2026:
-   "al ampliar o mover el planeta, el título tiene que pasar algo con él"):
-   papel, letras, sello y esquinas se desvanecen y se quedan la coordenada y
-   los botones. Vuelve un momento después de soltar, si no se ha ampliado
-   más que en la llegada (.titulo-fuera lo pone montarTituloFuera en
-   index.astro). */
+/* El documento solo se ve en el encuadre de llegada (usuario, 26-sep-2026):
+   al arrastrar o con otro zoom (también a x1 y al volver en vuelo), papel,
+   letras, sello y esquinas se desvanecen y la coordenada y sus botones pasan
+   al recuadro de la esquina (.titulo-fuera lo pone montarTituloFuera en
+   index.astro). Si solo se ha girado, vuelve al soltar. */
 .hero-titulo::before, .hero-titulo h1, .hero-titulo p, .titulo-sello, .hero-marco::before {
   transition: opacity 0.45s ease;
 }
