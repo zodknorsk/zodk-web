@@ -62,6 +62,16 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   la derecha; el visor y la censura de siempre. Por encima de las naves
   (`z-index: 3`; la ficha de la nave, encima al pasar el ratón). De noche, al
   fijar coordenada, el lema sigue en tinta.
+- **Retoques (26-sep-2026, tarde)**: la cámara se acerca "un pelín menos"
+  (`ZOOM_CERCA` 2,8 → 2,5); el papel, más girado (−2,2°) y sin la marca roja
+  de arriba (queda el sello); el aspa de "otro objeto" vuelve bajo la
+  esquina de abajo a la izquierda del visor, al otro lado de la coordenada,
+  como en `main`. **Al arrastrar o ampliar el planeta el documento se
+  retira** (papel, letras, sello y esquinas se desvanecen en 0,45 s;
+  `.titulo-fuera`, `montarTituloFuera`): mientras se arrastra o pellizca, o
+  con más zoom que el de llegada; vuelve 0,9 s después de soltar. La
+  coordenada y los botones se quedan (el papel y las esquinas pasaron a
+  `::before` para eso).
 - **Cabecera centrada de verdad**: el logo escondido seguía ocupando 78 px y
   empujaba la nav; ahora fuera del flujo, y el botón de tema cuelga a la
   derecha (el centro de la pantalla cae en el de los enlaces).

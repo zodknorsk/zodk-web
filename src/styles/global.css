@@ -1345,6 +1345,13 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
   --c: rgba(255, 255, 255, 0.85);
   --l: 28px;
   --g: 1.5px;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+/* las cuatro esquinas, en su capa: se desvanecen sin la lectura (.titulo-fuera) */
+.hero-marco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background:
     linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
     linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
@@ -1354,7 +1361,6 @@ html.dark .marte-tierra { background-image: url(/zodk-tierra-noche.png); }
     linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
     linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
     linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
-  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
 }
 /* Ancho fijo, el de la coordenada más larga (18 caracteres, zona de 2 cifras):
    el botón queda anclado a la izquierda y no se mueve aunque la lectura
@@ -1836,16 +1842,21 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
 
 /* El título en papel (usuario, 26-sep-2026: "tipo documento antiguo, tal vez
-   clasificado"; "que ponga NATO SECRET"). Papel viejo algo girado: manchas
-   de humedad, fibra (un ruido SVG quieto), el doblez en horizontal y los
-   bordes más oscuros; las letras en negro, sin contorno. La marca de
-   clasificación arriba, centrada como en los documentos de verdad, y un
-   sello rojo de tinta (multiply) abajo a la derecha. La barra de censura y
-   el visor, los de siempre. Va por encima de las naves (z-index 3). */
+   clasificado"; "que ponga NATO SECRET"; "ládealo un pelín más"). Papel
+   viejo girado −2,2°: manchas de humedad, fibra (un ruido SVG quieto), el
+   doblez en horizontal y los bordes más oscuros; las letras en negro, sin
+   contorno, y un sello rojo de tinta (multiply) abajo a la derecha. La barra
+   de censura y el visor, los de siempre. Va por encima de las naves
+   (z-index 3). El papel va en ::before para poder desvanecerlo sin la
+   coordenada (.titulo-fuera, abajo). */
 .hero-titulo {
   z-index: 3;
-  padding: 34px 46px 40px;
-  transform: translate(-50%, -50%) rotate(-1.2deg);
+  padding: 26px 46px 40px;
+  transform: translate(-50%, -50%) rotate(-2.2deg);
+}
+.hero-titulo::before {
+  display: block;
+  inset: 0;
   background:
     linear-gradient(180deg, transparent 48.5%, rgba(95, 70, 35, 0.12) 49.6%, rgba(255, 250, 235, 0.35) 50.4%, transparent 51.5%),
     radial-gradient(ellipse 38% 55% at 12% 18%, rgba(140, 100, 45, 0.16), transparent 70%),
@@ -1858,7 +1869,6 @@ html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
     0 1px 0 rgba(0, 0, 0, 0.18),
     0 12px 32px rgba(3, 4, 8, 0.6);
 }
-.hero-titulo::before { display: none; }
 .hero-titulo h1 {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-weight: 500;
@@ -1868,17 +1878,6 @@ html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
   text-shadow: none;
 }
 .hero-titulo p { color: #2e2a21; text-shadow: none; }
-.titulo-marca {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 13px;
-  font: 700 9px/1 "IBM Plex Mono", ui-monospace, monospace;
-  letter-spacing: 0.4em;
-  text-indent: 0.4em;
-  text-transform: uppercase;
-  color: #8e2a1f;
-}
 .titulo-sello {
   position: absolute;
   right: 24px;
@@ -1899,10 +1898,24 @@ html.js .hero:not(.titulo-listo) .hero-titulo { display: none; }
 /* De noche, al fijar coordenada, el visor y los botones en verde; el lema
    sigue en tinta sobre el papel. */
 html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: none; }
+/* Al mover o ampliar el planeta el documento se retira (usuario, 26-sep-2026:
+   "al ampliar o mover el planeta, el título tiene que pasar algo con él"):
+   papel, letras, sello y esquinas se desvanecen y se quedan la coordenada y
+   los botones. Vuelve un momento después de soltar, si no se ha ampliado
+   más que en la llegada (.titulo-fuera lo pone montarTituloFuera en
+   index.astro). */
+.hero-titulo::before, .hero-titulo h1, .hero-titulo p, .titulo-sello, .hero-marco::before {
+  transition: opacity 0.45s ease;
+}
+.hero.titulo-fuera .hero-titulo::before,
+.hero.titulo-fuera .hero-marco::before { opacity: 0; }
+.hero.titulo-fuera .hero-titulo h1,
+.hero.titulo-fuera .hero-titulo p,
+.hero.titulo-fuera .titulo-sello { opacity: 0; }
 /* la nave, por debajo del papel; su ficha, por encima al pasar el ratón */
 .hero-craft:hover { z-index: 4; }
 @media (max-width: 640px) {
-  .hero-titulo { padding: 26px 22px 34px; }
+  .hero-titulo { padding: 20px 22px 34px; }
   .hero-titulo h1 { font-size: clamp(0.95rem, 4.8vw, 1.5rem); }
   .titulo-sello { right: 12px; bottom: 8px; font-size: 10px; }
 }
@@ -2005,15 +2018,14 @@ html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars::after { 
 }
 
 /* Botón "otro objeto": la hélice del E-2 del usuario (Excalidraw, heliceSvg en
-   index.astro), sola y sin recuadro, a la derecha de la coordenada (bajo la
-   esquina del visor), en espejo con play/pausa (desde el Proyecto Tierra;
-   antes, bajo el marco del título). Trae otro objeto al hero (initObjeto en Head.astro). Lo
+   index.astro), sola y sin recuadro, bajo la esquina de abajo a la
+   izquierda del visor, al otro lado de la coordenada (como en la portada
+   de antes; usuario, 26-sep-2026). Trae otro objeto al hero (initObjeto en Head.astro). Lo
    revela el JS (nace con [hidden]); sin JS no aparece. */
 .hero-cambio {
   position: absolute;
-  left: calc(100% + 0.6em);
-  top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  bottom: -26px;
   z-index: 3;
   width: 22px;
   padding: 0;
