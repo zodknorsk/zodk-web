@@ -848,6 +848,15 @@ html.home main { padding-top: 9.5rem; }
 .bloque-astro img { position: absolute; pointer-events: none; }
 .bloque-luna img { width: 250px; right: -30px; top: -10px; }
 .bloque-marte img { width: 240px; right: -20px; top: -5px; }
+/* Al pasar el ratón el astro no se mueve: el borde se ilumina con su color. */
+.bloque-luna { --halo: #d9dde3; }
+.bloque-marte { --halo: #e0824a; }
+.bloque-astro { transition: border-color 0.3s, box-shadow 0.3s; }
+.bloque-astro:hover, .bloque-astro:focus-visible {
+  border-color: color-mix(in srgb, var(--halo) 60%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--halo) 32%, transparent);
+  outline: none;
+}
 .bloque-astro > span { position: relative; }
 .bloque-titulo {
   font: 600 0.78rem/1 "IBM Plex Mono", ui-monospace, monospace;
@@ -981,7 +990,8 @@ html.dark .fila:hover { border-color: rgba(255, 255, 255, 0.3); }
   background: #e4e4e7;
 }
 html.dark .fila-foto { background: #2a2a2f; }
-.fila-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fila-foto img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.fila:hover .fila-foto img { transform: scale(1.05); }
 .fila-texto { display: flex; flex-direction: column; min-width: 0; }
 .fila-fecha {
   font: 600 0.66rem "IBM Plex Mono", ui-monospace, monospace;
