@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Nombres de la Tierra (Proyecto Tierra, TIERRA-WIP.md): continentes,
 océanos, mares y accidentes geográficos, en castellano, para la capa de
-nombres de la portada (la de Marte y la Luna, src/scripts/marte-nombres.js)
+nombres de la portada (la de Marte y la Luna, src/scripts/nombres.js)
 -> public/planeta/tierra-nombres.json.
 
 Decidido por el usuario (24-sep-2026): al acercarse salen nombres, SIN

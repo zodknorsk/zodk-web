@@ -4,9 +4,9 @@ dominio público) a 24 px/grado, de los 72 trozos de 30° x 30° bajados a
 tierra-fuentes/etopo24/, en un solo archivo de enteros de 16 bits (metros,
 little-endian), 8640 x 4320, fila 0 = 90° N:
   tierra-fuentes/etopo24.i16  (~75 MB, fuera de Git)
-Lo lee generar-planeta-hero.py con --nivel (el relieve de las teselas).
+Lo lee generar-tierra.py con --nivel (el relieve de las teselas).
 
-Bajar los trozos (desde logo-files/tierra-fuentes/etopo24/):
+Bajar los trozos (desde arte/tierra-fuentes/etopo24/):
   for lat0 in -90 -60 -30 0 30 60; do for lon0 in -180 -150 ... 150; do
     curl -o t_${lat0}_${lon0}.tiff "https://gis.ngdc.noaa.gov/arcgis/rest/services/DEM_mosaics/ETOPO1_ice_surface/ImageServer/exportImage?bbox=${lon0},${lat0},$((lon0+30)),$((lat0+30))&bboxSR=4326&imageSR=4326&size=720,720&format=tiff&pixelType=F32&interpolation=RSP_BilinearInterpolation&f=image"
   done; done

@@ -120,7 +120,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
 - **7.5 Foto quieta de noche (26-sep-2026, commiteada)**: el usuario vio
   que al volver a la Tierra desde la Luna "aparece apagada" (era la foto del
   24-sep, sin luces ni brillo). Rehechas con
-  `node logo-files/generar-tierra-quieto.mjs`: la de día sale idéntica, la
+  `node arte/generar-tierra-quieto.mjs`: la de día sale idéntica, la
   de noche ya lleva luces y brillo. **Sin aurora** (como sin nubes: se mueve
   y se enciende al anochecer; con la espera de 2 s del script salía a medio
   encender): opción nueva `sinAurora` en `montarTierraGL` (`tierra-gl.js`),
@@ -155,7 +155,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   verde, todos aprobados por el usuario (detalle abajo).
 - **PARA TERMINAR MAÑANA (usuario, 26-sep-2026: "apunta que queda para
   terminar mañana")**, por este orden:
-  1. **7.5 Foto quieta de noche**: `node logo-files/generar-tierra-quieto.mjs`
+  1. **7.5 Foto quieta de noche**: `node arte/generar-tierra-quieto.mjs`
      (rehace `tierra-quieto.png` y `tierra-quieto-noche.png` con el motor
      de ahora: la de noche aún es sin luces ni brillo) y subir `PLANETA_V`
      en `src/scripts/planeta.js` (ahora 13). Enseñársela antes de commitear.
@@ -289,7 +289,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
     4. (HECHA el 26-sep) **La X y la coordenada fijada en verde de visión nocturna**, como en
        el horizonte de antes (`src/styles/global.css` ~línea 1366).
     5. Rehacer `tierra-quieto-noche.png`
-       (`node logo-files/generar-tierra-quieto.mjs`) cuando la noche esté
+       (`node arte/generar-tierra-quieto.mjs`) cuando la noche esté
        terminada, y subir `PLANETA_V`.
   - Luego, paso 8: probar en Zen y en el móvil (consumo:
     `zodk-web-medir-rendimiento`) y fusionar en `main`.
@@ -306,7 +306,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   Hecho y **aprobado** (usuario, 25-sep-2026: "mejor. Con el tiempo iremos
   puliendo nombres pero mejor"; los nombres se seguirán ajustando):
   - **Nieve y roca del zoom con el relieve fino** (`_roca_nieve_fina` en
-    `generar-planeta-hero.py`, solo `--nivel 2`): antes salían de celdas de
+    `generar-tierra.py`, solo `--nivel 2`): antes salían de celdas de
     0,25° y en las cordilleras estrechas la media no llegaba a la línea de
     nieve. ETOPO a 2,5' suaviza las cumbres (Aneto ~2560 m), así que la
     línea va más baja que en la base (1960 m en los Pirineos, 1770 en los
@@ -348,7 +348,7 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
   con Linux: `git fetch` y `git switch earth-project`.
 - **Commiteado** (`e2dfc1d`): pasos 1 y 2. El motor `src/scripts/tierra-gl.js`
   (disco completo, gira sola a 90 s por vuelta, se arrastra, zoom hasta ×6,
-  nubes; radio de arte 180) y el banco `logo-files/prototipo-tierra/giro.html`;
+  nubes; radio de arte 180) y el banco `arte/prototipo-tierra/giro.html`;
   hemisferio sur (banquisa austral estrecha, la Antártida con su relieve),
   `public/planeta/` regenerado (`PLANETA_V` 11).
 - **Commiteado** (`1b4306b`): paso 3 (chapas y X en el motor), la mano que
@@ -399,13 +399,13 @@ de la portada, noche, nubes, chapas) sigue en `HERO-WIP.md`.
       Mulhacén, Aneto…), desde ×3; marco de 0,7° como mínimo.
     `marte-nombres.js` admite `zmin` y `zmax` opcionales (Marte y la Luna no
     los usan).
-  - Fuentes (en `logo-files/tierra-fuentes/`, fuera de Git): costas de
+  - Fuentes (en `arte/tierra-fuentes/`, fuera de Git): costas de
     Natural Earth 1:10m, geografía de Natural Earth (mares 1:10m, regiones
     1:50m, picos 1:10m) y relieve ETOPO1 a 24
     px/grado (72 trozos de la NOAA → `etopo24.i16` con `elevacion-fina.py`).
   - Cómo regenerar: `python3 rasterizar.py --nivel 2` (máscara), luego
-    `python3 generar-planeta-hero.py --canvas ../public/planeta/` (la base,
-    con `planeta-materiales.json`) y `python3 generar-planeta-hero.py --nivel 2
+    `python3 generar-tierra.py --canvas ../public/planeta/` (la base,
+    con `planeta-materiales.json`) y `python3 generar-tierra.py --nivel 2
     ../public/planeta/ --relieve 3` (~2 min); subir `PLANETA_V`.
   - La línea de costa del nivel fino es más fina que la de la base (2 celdas
     de 16 px/grado); se le ofreció engordarla y eligió "la C" tal cual.

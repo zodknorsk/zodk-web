@@ -9,10 +9,10 @@
 // luna sea capaz de moverse al hacer click, exactamente igual que Marte,
 // manteniendo el botón cara oculta / cara visible para centrar en las
 // caras"): motor src/scripts/luna-gl.js (el WebGL de Marte con los datos de
-// public/luna/, de logo-files/generar-luna.py --canvas y --teselas). El mando
+// public/luna/, de arte/generar-luna.py --canvas y --teselas). El mando
 // lleva a cada cara con un giro; las chapas salen según la zona que se ve, y
 // al adentrarse en la cara oculta se enciende China y salen los relés.
-// Detalle y decisiones en logo-files/LUNA-WIP.md.
+// Detalle y decisiones en arte/LUNA-WIP.md.
 import PageLayout from "@layouts/PageLayout.astro";
 import { getCollection } from "astro:content";
 import { ALUNIZAJES, PAISES_LUNA, RELES, ORION_NOTA, svgBandera } from "../data/alunizajes";
@@ -45,7 +45,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     <div class="luna-gl" aria-hidden="true">
       <canvas class="luna-canvas"></canvas>
       <div class="luna-sonda"></div>
-      <div class="marte-nombres luna-nombres"></div>
+      <div class="capa-nombres luna-nombres"></div>
     </div>
     <!-- Chapas de alunizaje: una por misión, encima del disco. El script las
          coloca (y esconde las de la otra cara) según la cara que se vea. -->
@@ -122,7 +122,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     <!-- Orion (Artemis II) orbitando la Luna, en las dos caras: por delante
          de derecha a izquierda y por detrás, tapada por el disco. Gira según
          va: tira de 32 fotogramas public/luna/zodk-orion-giro*.png, de
-         logo-files/generar-orion.py.
+         arte/generar-orion.py.
          Paleta de día en la cara visible y de noche en la oculta. Al pasar
          el ratón se para y sale su ficha, como las de los Queqiao. -->
     <div class="luna-orbitas">
@@ -214,8 +214,8 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
   import { montarLunaGL } from "../scripts/luna-gl.js";
   import { montarMano, montarZoom } from "../scripts/gestos.js";
   import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
-  import { montarNombres } from "../scripts/marte-nombres.js";
-  import { volarALuna, faseLunaHoy, inOutSine, VUELO_MARTE } from "../scripts/viaje-luna.js";
+  import { montarNombres } from "../scripts/nombres.js";
+  import { volarALuna, faseLunaHoy, inOutSine, VUELO_MARTE } from "../scripts/vuelos.js";
 
   type Luna = NonNullable<Awaited<ReturnType<typeof montarLunaGL>>>;
   // Lo que se quita al salir: el motor el primero (quitar[0]), luego la mano,

@@ -1,5 +1,5 @@
 // Nombres de lugares de /marte (Proyecto Marte): salen al acercarse. Lo mismo
-// que el banco logo-files/prototipo-marte/nombres.html, donde se decidió
+// que el banco arte/prototipo-marte/nombres.html, donde se decidió
 // (usuario, 22-sep-2026):
 // - Zonas (planicies, tierras, mesetas, y las medianas como Kasei Valles o
 //   Noctis Labyrinthus): rótulo de región, sin marco. Se van cuando ya no
@@ -8,14 +8,14 @@
 //   marco del título de la portada, ceñidas al lugar y crecen con él.
 // - A x1 no sale ningún nombre: al llegar, Marte limpio.
 // Los nombres son los oficiales de la UAI, de public/marte/marte-nombres.json
-// (logo-files/generar-nombres.py). La capa es HTML encima del lienzo, con el
+// (arte/generar-nombres.py). La capa es HTML encima del lienzo, con el
 // origen en el centro del disco; `coloca()` se llama tras cada fotograma del
 // lienzo (quieto no se repinta nada).
 // En la misma capa, las chapas de los amartizajes (src/data/amartizajes.ts):
 // la bandera en su sitio exacto, a cualquier zoom (a x1 son lo único que
 // sale), con su ficha al pasar el ratón; la de una misión que no llegó
 // entera, en blanco y negro.
-// Detalle y decisiones en logo-files/MARTE-WIP.md.
+// Detalle y decisiones en arte/MARTE-WIP.md.
 
 const MARGEN = 0.06;                         // aire del visor por fuera del lugar
 const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de aire
@@ -38,7 +38,7 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
   // Un elemento por nombre.
   const els = NOMBRES.map((n) => {
     const el = document.createElement("div");
-    el.className = `marte-nombre ${n.clase}${n.menor ? " menor" : ""}`;
+    el.className = `nombre-lugar ${n.clase}${n.menor ? " menor" : ""}`;
     el.hidden = true;
     el.innerHTML = n.clase === "region"
       ? `<span class="texto">${n.linea ? n.nombre : n.nombre.split(" ").join("<br>")}</span>`

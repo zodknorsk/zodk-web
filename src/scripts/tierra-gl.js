@@ -1,6 +1,6 @@
 // La Tierra entera en WebGL (Proyecto Tierra, rama earth-project): el mismo
 // planeta que el <canvas> de la portada (src/scripts/planeta.js), con los
-// mismos datos (public/planeta/, de logo-files/generar-planeta-hero.py), pero
+// mismos datos (public/planeta/, de arte/generar-tierra.py), pero
 // como disco completo que gira solo, se arrastra con la mano y se acerca, como
 // Marte y la Luna (src/scripts/marte-gl.js, de donde sale el esqueleto).
 //
@@ -16,8 +16,8 @@
 // atmósfera y borde suavizado, y ampliación sin suavizado al canvas, a un
 // múltiplo entero del arte (x3 como mucho, el arreglo para Zen).
 //
-// Lo usa logo-files/prototipo-tierra/giro.html. Detalle en
-// logo-files/TIERRA-WIP.md.
+// Lo usa arte/prototipo-tierra/giro.html. Detalle en
+// arte/TIERRA-WIP.md.
 
 import { PLANETA_V } from "./versiones.js";
 
@@ -61,7 +61,7 @@ const f = (x) => (Number.isInteger(x) ? `${x}.0` : `${x}`);
 // para una vista cualquiera. Sale R/G = material (bajo/alto), B = escalón,
 // A = 1 dentro del disco.
 // `finos`: los niveles de zoom en teselas ({ ppd, fila0, kmax }, de
-// generar-planeta-hero.py --nivel); `A`: teselas por lado del atlas.
+// generar-tierra.py --nivel); `A`: teselas por lado del atlas.
 function fragCodigos(D, off, lmax, finos, A) {
   const NF = finos.length;
   const lista = (xs, conv) => xs.map(conv).join(", ");
@@ -709,7 +709,7 @@ export async function montarTierraGL(canvas, {
     new Uint8Array(lp.buffer, lp.byteOffset, lutBm.width * lutBm.height * 4));
 
   // Noche (Proyecto Tierra paso 7, en curso): la misma superficie con la LUT
-  // de noche de generar-planeta-hero.py, la luna en vez del sol, el suelo de
+  // de noche de generar-tierra.py, la luna en vez del sol, el suelo de
   // la noche, el halo, las nubes de noche, las luces de las ciudades y el
   // brillo de atmósfera del borde y la aurora. La LUT y las luces se bajan la
   // primera vez.

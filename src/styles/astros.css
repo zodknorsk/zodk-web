@@ -1,0 +1,403 @@
+/* --- Portada: el hero del planeta ------------------------------------------
+   Fondo espacio negro siempre. El planeta cambia de día a noche con el tema:
+   al sol en modo claro, a la luz de la luna y con las ciudades encendidas en
+   modo oscuro (mismo canvas, ver abajo). */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #05060a;
+  isolation: isolate;
+}
+
+/* Gestos: la rueda y un dedo bajan la página (usuario, 24-sep-2026); con
+   dos dedos se acerca, y ya con zoom (.con-zoom) un dedo mueve el globo. La
+   mano cerrada, solo mientras se gira con el ratón (montarMano). */
+.hero { touch-action: pan-y; }
+.hero.con-zoom { touch-action: none; }
+.hero.agarrando, .hero.agarrando * { cursor: grabbing !important; user-select: none; }
+.hero.agarrando .hero-mira { visibility: hidden; }
+
+/* Sol (día) y luna (noche), arriba a la izquierda y en el mismo sitio en los
+   dos modos (decisión del usuario: simétricos). Detrás del planeta (va antes
+   en el DOM, mismo z-index). Pixel art de logo-files/generar-astros.py a 1 px
+   de arte = 1 px de imagen, escalado x3 (x2 en móvil) como el planeta. La
+   luna es una tira de 30 fases; index.astro elige la de hoy (sin JS, llena). */
+/* Sitio de los astros pequeños de la portada: cerca del borde de arriba del
+   globo, a la izquierda el sol y la luna, a la derecha Marte (usuario,
+   24-sep-2026: "los quiero cerquita, como estaban antes"; con el planeta de
+   antes, enorme, su borde les quedaba cerca aunque fueran en las esquinas).
+   Centro del icono a (±0,46, −0,41) diámetros del centro del globo: ~25 px de
+   cielo entre el disco del astro y el de la Tierra. En el móvil, en las
+   esquinas (ver el @media de abajo). */
+:root { --astro-dx: calc(var(--tierra-disco) * 0.46); --astro-dy: calc(var(--tierra-disco) * 0.41); }
+.hero-astro {
+  position: absolute;
+  left: calc(50% - var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
+  width: 168px;
+  height: 168px;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-astro > span {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.astro-sol { background-image: url(/zodk-sol.png); background-size: 100% 100%; }
+.astro-luna {
+  background-image: url(/zodk-luna-fases.png);
+  background-size: 3000% 100%;
+  background-position: 51.72% 0;   /* fase 15 de 30: llena */
+  opacity: 0;
+}
+html.dark .astro-sol { opacity: 0; }
+html.dark .astro-luna { opacity: 1; }
+/* Al cambiar de tema (no al cargar): el astro que se va baja y se esconde tras
+   el borde de la Tierra, y el otro sale de detrás y sube a su sitio (opción 1
+   de las transiciones; al usuario "le encanta"). Las clases .a-noche / .a-dia
+   las pone index.astro al detectar el cambio. Son animaciones y no
+   transiciones porque el botón de tema anula las transiciones al cambiar. */
+/* Con la Tierra entera, el astro va en diagonal hacia el centro del globo y
+   se esconde detrás de su disco (antes bajaba tras el horizonte): recorre el
+   45 % del camino, así acaba ~100 px dentro del borde. */
+.hero-astro { --astro-caida: translate(calc(var(--astro-dx) * 0.45), calc(var(--astro-dy) * 0.45)); }
+@keyframes astro-baja { from { transform: none; opacity: 1; } to { transform: var(--astro-caida); opacity: 1; } }
+@keyframes astro-sube { from { transform: var(--astro-caida); opacity: 1; } to { transform: none; opacity: 1; } }
+.hero-astro.a-noche .astro-sol,
+.hero-astro.a-dia .astro-luna { animation: astro-baja 1.5s cubic-bezier(0.5, 0, 0.9, 0.6) both; }
+.hero-astro.a-noche .astro-luna,
+.hero-astro.a-dia .astro-sol { animation: astro-sube 1.6s cubic-bezier(0.1, 0.4, 0.5, 1) 0.9s both; }
+
+/* Enlace a la Luna (Proyecto Luna): encima de la luna de arriba a la
+   izquierda, con su misma caja; solo de noche, que es cuando se ve la luna.
+   Al pulsarlo, index.astro hace el vuelo hasta /luna. */
+.hero-luna-enlace {
+  position: absolute;
+  left: calc(50% - var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
+  width: 168px;
+  height: 168px;
+  z-index: 2;
+  display: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+html.dark .hero-luna-enlace { display: block; }
+.hero-luna-enlace:focus-visible { outline: 2px dashed #a9c8ff; outline-offset: -40px; }
+
+/* Proyecto Marte: Marte arriba a la derecha, frente al sol y la luna (21-sep-
+   2026: "a la derecha, para que desde la tierra se viaje a un lado o se viaje
+   a otro"). Se ve de día y de noche. Pixel art de generar-marte.py --icono,
+   en el mismo lienzo que la luna (56 px de arte, x3; x2 en móvil) y algo más
+   pequeño que ella (radio 12 frente a 16). Detrás del planeta, como el sol y
+   la luna. Al pulsarlo, vuelo a /marte (index.astro). */
+.hero-marte {
+  position: absolute;
+  left: calc(50% + var(--astro-dx) - 84px);   /* en espejo con el sol y la luna */
+  top: calc(50% - var(--astro-dy) - 84px);
+  width: 168px;
+  height: 168px;
+  z-index: 0;
+  pointer-events: none;
+  background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
+.hero-marte-enlace {
+  position: absolute;
+  left: calc(50% + var(--astro-dx) - 84px);
+  top: calc(50% - var(--astro-dy) - 84px);
+  width: 168px;
+  height: 168px;
+  z-index: 2;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.hero-marte-enlace:focus-visible { outline: 2px dashed #ffb07a; outline-offset: -40px; }
+/* En /luna, tapado por la Luna acercada: el enlace no se lleva el clic. */
+.hero-marte-enlace.tapada { pointer-events: none; visibility: hidden; }
+/* En /luna, Marte arriba a la izquierda (el menú va a la derecha), en el sitio
+   del sol y la luna de la portada: se pulsa para el vuelo Luna → Marte. */
+.hero-marte--luna { right: auto; left: 5%; top: 5%; }
+
+/* Vuelo de la Tierra a la Luna: capa fija con la luna en varios niveles de
+   resolución (index.astro), que crece desde la luna del hero hasta donde queda
+   en /luna (.luna-disco). */
+.viaje-luna {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.viaje-luna > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  image-rendering: pixelated;
+  will-change: transform, opacity;
+}
+/* copia de la luna del hero (misma tira de fases; la fase la pone el JS) */
+.viaje-icono {
+  background: url(/zodk-luna-fases.png) no-repeat;
+  background-size: 3000% 100%;
+}
+/* y la de Marte, en el vuelo a /marte, y la de la Tierra, en el de /marte a
+   la Tierra */
+.viaje-icono-marte { background: url(/zodk-marte.png) no-repeat 0 0 / 100% 100%; }
+.viaje-icono-tierra { background: url(/zodk-tierra.png) no-repeat 0 0 / 100% 100%; }
+html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
+
+/* --- Ficha ------------------------------------------------------------- */
+.craft-dossier {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none; /* oculta NO capta el ratón (si no, saltaba al pasar
+                           por donde estaría el recuadro invisible) */
+  transition: opacity 0.15s ease;
+}
+
+.hero-craft:hover .craft-dossier { opacity: 1; pointer-events: auto; }
+
+.craft-linea {
+  position: absolute;
+  background: rgba(230, 192, 120, 0.7);
+  transform: scale(0);
+  transition: transform 0.24s ease;
+  pointer-events: none;
+}
+
+.hero-craft:hover .craft-linea { transform: scale(1); }
+
+.craft-specs {
+  position: absolute;
+  width: 16rem;
+  padding: 0.7rem 0.85rem;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.05s, transform 0.2s ease 0.05s;
+  background: rgba(6, 8, 12, 0.9);
+  border: 1px solid rgba(230, 192, 120, 0.35);
+  border-radius: 2px;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  text-align: left;
+}
+
+.hero-craft:hover .craft-specs { opacity: 1; }
+
+.craft-specs-titulo {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e6c078;
+}
+
+.craft-clase {
+  margin: 0.12rem 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(230, 192, 120, 0.22);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b93a0;
+}
+
+.craft-specs dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.16rem 0.8rem;
+  font-size: 0.68rem;
+}
+
+.craft-specs dt { color: #8b93a0; }
+.craft-specs dd { margin: 0; color: #dfe4ea; }
+.craft-flag {
+  margin-left: 0.15em;
+  font-size: 0.85rem;
+  vertical-align: -0.08em;
+  /* en Windows los emoji de bandera no se pintan */
+}
+
+/* --- Colocación de la ficha: igual para todas las trayectorias --------- */
+/* Siempre al lado (derecha; el JS pone .flip-x si no cabe), línea de 92px.
+   Antes cada trayectoria tenía su propia regla (al lado / abajo / arriba) y a
+   "fijo-arriba"/"fijo-arriba-der" (U-2, SR-71) directamente no les tocaba
+   ninguna, así que la ficha les salía pegada a la nave sin línea y se podía
+   salir de la pantalla por arriba. */
+.craft-linea {
+  top: 50%;
+  left: 100%;
+  width: 92px;
+  height: 1px;
+  transform-origin: left center;
+}
+.craft-specs {
+  top: 50%;
+  left: calc(100% + 92px);
+  transform: translateY(-50%) translateX(-6px);
+}
+.hero-craft:hover .craft-specs { transform: translateY(-50%) translateX(0); }
+.hero-craft.flip-x .craft-linea {
+  left: auto;
+  right: 100%;
+  transform-origin: right center;
+}
+.hero-craft.flip-x .craft-specs {
+  left: auto;
+  right: calc(100% + 92px);
+  transform: translateY(-50%) translateX(6px);
+}
+.hero-craft.flip-x:hover .craft-specs { transform: translateY(-50%) translateX(0); }
+
+/* Campo de estrellas: una baldosa PNG diminuta (public/zodk-estrellas.png, la
+   genera logo-files/generar-estrellas.py) repetida con background-repeat. Antes
+   eran ~50 gradientes radiales apilados en el CSS; la baldosa repetida pinta
+   mucho más barato. En oscuro, encima, una baldosa propia con muchas más. */
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url(/zodk-estrellas.png) repeat;
+  background-size: 320px 320px;
+  background-position: var(--estrellas-pos, 0 0);   /* el vuelo a la Luna las desplaza */
+  image-rendering: pixelated;
+  opacity: 0.7;
+}
+
+/* De noche, encima, una baldosa propia con bastantes más estrellas (95 por
+   baldosa de 480 px, casi todas tenues; generar-estrellas.py). */
+.hero-stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: url(/zodk-estrellas-noche.png?v=2) repeat;
+  background-size: 480px 480px;
+  background-position: var(--estrellas-pos, 0 0);
+  image-rendering: pixelated;
+}
+
+html.dark .hero-stars { opacity: 0.9; }
+html.dark .hero-stars::after { display: block; }
+/* En /luna y /marte siempre es de noche: las estrellas de más, también en
+   tema claro. */
+:is(.luna-hero, .marte-hero) .hero-stars { opacity: 0.9; }
+:is(.luna-hero, .marte-hero) .hero-stars::after { display: block; }
+/* Al pasar a noche (no al cargar), las estrellas de más se encienden poco a
+   poco: Head.astro pone html.estrellas-entrando mientras dura. Animación y no
+   transición porque el botón de tema anula las transiciones al cambiar. */
+@keyframes estrellas-entran { from { opacity: 0; } }
+@keyframes estrellas-suben { from { opacity: 0.7; } }
+html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars { animation: estrellas-suben 3s ease-in-out both; }
+html.estrellas-entrando .hero:not(.luna-hero, .marte-hero) .hero-stars::after { animation: estrellas-entran 3s ease-in-out both; }
+
+.hero-sparkle {
+  position: absolute;
+  left: 82%;
+  top: 24%;
+  width: 14px;
+  height: 14px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+  background:
+    linear-gradient(#fff, #fff) center / 2px 100% no-repeat,
+    linear-gradient(#fff, #fff) center / 100% 2px no-repeat;
+  animation: hero-twinkle 4s ease-in-out infinite;
+}
+
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.65); }
+  50% { opacity: 0.9; transform: scale(1); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  z-index: 1;
+  border-right: 2px solid #7c8794;
+  border-bottom: 2px solid #7c8794;
+  transform: rotate(45deg);
+  animation: hero-bob 2s ease-in-out infinite;
+}
+
+@keyframes hero-bob {
+  0%, 100% { transform: rotate(45deg) translate(-2px, -2px); opacity: 0.35; }
+  50% { transform: rotate(45deg) translate(2px, 2px); opacity: 0.9; }
+}
+
+/* Nombres de lugares de /marte (src/scripts/nombres.js; decididos en
+   el banco logo-files/prototipo-marte/nombres.html, 22-sep-2026). Capa
+   encima del lienzo, con el origen en el centro del disco: el script coloca
+   cada nombre con transform. No se lleva el ratón: se sigue arrastrando
+   Marte por encima. Por debajo de la Tierra pequeña. */
+.capa-nombres { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 1; pointer-events: none; }
+.nombre-lugar { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.35s ease; }
+.nombre-lugar.visto { opacity: var(--borde, 1); }
+.nombre-lugar[hidden] { display: none; }
+/* el texto lleva el contorno negro de 1 px del título de la portada */
+.nombre-lugar .texto {
+  position: absolute;
+  font: 600 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #eef1f4;
+  text-shadow: 1px 0 0 #05060a, -1px 0 0 #05060a, 0 1px 0 #05060a, 0 -1px 0 #05060a,
+    1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a;
+}
+.nombre-lugar.menor .texto { font-weight: 500; font-size: 10px; letter-spacing: 0.16em; color: #dfe4ea; }
+/* Visor: las cuatro esquinas del marco del título de la portada, ceñidas al
+   lugar, y el nombre bajo la esquina de abajo a la izquierda. Al aparecer,
+   las esquinas se cierran desde fuera. */
+.nombre-lugar .marco {
+  position: absolute;
+  left: 0;
+  top: 0;
+  --c: rgba(255, 255, 255, 0.85);
+  --l: 12px;
+  --g: 1.5px;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--g) var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--g) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--g) var(--l) no-repeat;
+  filter: drop-shadow(0 0 1px rgba(3, 4, 8, 0.9));
+}
+.nombre-lugar.menor .marco { --l: 7px; --c: rgba(255, 255, 255, 0.7); }
+.nombre-lugar.visor .marco-fuera { background: none; }   /* solo sitúa */
+.nombre-lugar .marco-dentro { position: absolute; inset: 0; }
+.nombre-lugar.visor.visto .marco-dentro { animation: nombre-cierra 0.4s cubic-bezier(0.3, 0, 0.2, 1) both; }
+@keyframes nombre-cierra { from { transform: scale(1.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.nombre-lugar.visor .texto { left: 0; top: calc(100% + 6px); }
+.nombre-lugar.visor.visto .texto { animation: nombre-entra 0.3s ease 0.25s both; }
+@keyframes nombre-entra { from { opacity: 0; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+/* Regiones: sin borde claro que enmarcar. Rótulo de mapa: letras muy
+   espaciadas, más finas y algo transparentes, en medio de la zona. */
+.nombre-lugar.region .texto {
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.6em;
+  text-indent: 0.6em;
+  color: rgba(238, 241, 244, 0.75);
+  text-shadow: 1px 0 0 rgba(5, 6, 10, 0.75), -1px 0 0 rgba(5, 6, 10, 0.75), 0 1px 0 rgba(5, 6, 10, 0.75), 0 -1px 0 rgba(5, 6, 10, 0.75);
+}

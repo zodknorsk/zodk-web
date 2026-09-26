@@ -8,7 +8,7 @@
 // Rehacerla cuando cambien los datos de la Tierra o el motor, y subir
 // PLANETA_V en src/scripts/versiones.js y el ?v= de tierra-quieto*.png en
 // global.css:
-//   node logo-files/generar-tierra-quieto.mjs
+//   node arte/generar-tierra-quieto.mjs
 import { fotosDelMotor } from "./fotos-del-motor.mjs";
 
 const LADO = 368;                                  // 2 x RADIO_ARTE (180) + margen para el borde suavizado

@@ -50,9 +50,9 @@ alunizajes de la historia, los relés chinos de la cara oculta y la Orion de
 Artemis II orbitando.
 
 Los dibujos no se hacen a mano: los generan los scripts de Python de
-`logo-files/` y su salida vive en `public/planeta/` y `public/luna/`. El
+`arte/` y su salida vive en `public/planeta/` y `public/luna/`. El
 detalle, las decisiones y lo que se probó y descartó está en
-`logo-files/HERO-WIP.md` (la Tierra) y `logo-files/LUNA-WIP.md` (la Luna).
+`arte/HERO-WIP.md` (la Tierra) y `arte/LUNA-WIP.md` (la Luna).
 
 ## Estructura
 
@@ -84,7 +84,7 @@ src/
 scripts/
   importar-notas.mjs     Puente bóveda de Obsidian -> src/content/{notas,eventos}/
   tweets.mjs             Descarga tweets (en paralelo) y genera sus tarjetas HTML
-logo-files/
+arte/
   generar-*.py           Generan el pixel art (planeta, luna, naves, estrellas...)
   HERO-WIP.md            Cómo funciona la Tierra del hero y qué se descartó
   LUNA-WIP.md            Lo mismo para /luna

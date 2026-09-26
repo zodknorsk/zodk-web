@@ -2,7 +2,7 @@
 // la portada, la luna se amplía mientras la cámara gira hacia ella y la Tierra
 // queda atrás, hasta quedar como en /luna. Lo usan src/pages/index.astro
 // (luego cambia de página) y el banco de pruebas
-// logo-files/prototipo-vuelo/ (para comparar variantes).
+// arte/prototipo-vuelo/ (para comparar variantes).
 // El mismo vuelo lleva a Marte (Proyecto Marte, 21-sep-2026): el Marte
 // pequeño de arriba a la derecha crece hasta el disco de /marte. Cambian el
 // destino (`tam`, `dy`), el icono (`iconoDisco`, `claseIcono`) y la imagen
@@ -19,7 +19,7 @@
 // La Tierra no va en la misma escena 3D (está entre la cámara y la Luna: el
 // trayecto la atravesaba); cómo sale de escena es una VARIANTE (`tierra`), y
 // cómo va apareciendo el detalle de la luna, otra (`pixeles`). Detalle en
-// logo-files/LUNA-WIP.md.
+// arte/LUNA-WIP.md.
 
 const ICONO_N = 56;                // lado del icono en px de arte (la luna y Marte, generar-astros.py y generar-marte.py)
 const ICONO_DISCO = 32 / 56;       // diámetro del disco en el icono de la luna (r = 16 en 56 px)
@@ -77,7 +77,7 @@ const rota = (v, k, ang) => {
 };
 
 // Fase de hoy para la tira de la luna del hero (public/zodk-luna-fases.png,
-// FASES fases en fila; logo-files/generar-astros.py): background-position.
+// FASES fases en fila; arte/generar-astros.py): background-position.
 // Edad de la luna desde una luna nueva conocida (6-ene-2000, 18:14 UTC) y mes
 // sinódico medio: basta para el día.
 export function faseLunaHoy() {

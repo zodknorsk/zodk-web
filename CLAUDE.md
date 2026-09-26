@@ -30,7 +30,7 @@ Desde el 24-sep-2026 la portada lleva **la Tierra entera** (disco que gira
 solo, se arrastra y se acerca hasta ×6, como Marte y la Luna) en vez del
 horizonte de abajo. Se trabaja en la rama **`earth-project`** (subida a
 GitHub, sin fusionar: `main` sigue publicando la portada de antes). **Antes de
-tocar nada, leer `logo-files/TIERRA-WIP.md`**: arriba dice en qué punto está
+tocar nada, leer `arte/TIERRA-WIP.md`**: arriba dice en qué punto está
 (se actualiza en cada paso, como el de Marte), qué decidió el usuario y qué
 queda. Hechos los pasos 1-7 (motor `src/scripts/tierra-gl.js`, hemisferio sur,
 chapas y X, tamaño común de los tres astros, zoom con detalle y nombres, la
@@ -39,24 +39,24 @@ Tierra entera se acerca en 5 s hasta el horizonte del hemisferio norte y
 entra el título: un documento clasificado en papel (NATO SECRET) con el
 visor y la censura de `main`; solo se ve en ese encuadre (al mover o ampliar
 se retira y la coordenada pasa a un recuadro de papel en la esquina).
-Pendiente: el paso 8 (Zen y móvil) y fusionar. La web carga de día de serie. Las fuentes de datos del zoom van en `logo-files/tierra-fuentes/`
+Pendiente: el paso 8 (Zen y móvil) y fusionar. La web carga de día de serie. Las fuentes de datos del zoom van en `arte/tierra-fuentes/`
 (fuera de Git; cómo bajarlas y regenerarlas, en el documento).
 
 ## El planeta de la portada (el de antes, en `main`)
 
-**Antes de tocarlo, leer `logo-files/HERO-WIP.md`** (punto 7 y "Modo noche"):
+**Antes de tocarlo, leer `arte/HERO-WIP.md`** (punto 7 y "Modo noche"):
 cómo funciona, qué se probó y descartó, y por qué. En la rama `earth-project`
 lo sustituye el Proyecto Tierra (arriba).
 
 Estado (13-sep-2026): publicado en `main` (merge de la rama
 `daylight-planet-v2`, que se deja en GitHub como registro). Planeta de día en
 `<canvas>` con giro continuo (`src/scripts/planeta.js`, 90 s por vuelta), datos
-en `public/planeta/` generados por `logo-files/generar-planeta-hero.py`.
+en `public/planeta/` generados por `arte/generar-tierra.py`.
 
-- Regenerar: `cd logo-files && python3 generar-planeta-hero.py`; después subir
+- Regenerar: `cd arte && python3 generar-tierra.py`; después subir
   `PLANETA_V` en `planeta.js` y el `?v=` de `planeta-quieto.png` en
   `src/styles/global.css` (van por 10). Un fotograma suelto para comparar:
-  `python3 generar-planeta-hero.py --frame N salida.png` (lon. central = −6·N°).
+  `python3 generar-tierra.py --frame N salida.png` (lon. central = −6·N°).
 - Ver la web: `npm run dev`; en el móvil (misma wifi): `npm run dev:network`.
 
 Decisiones que hay que respetar:
@@ -86,7 +86,7 @@ Decisiones que hay que respetar:
 Segunda "portada": la Luna en pixel art, con la historia de los alunizajes.
 **Fusionado en `main` y publicado el 20-sep-2026** (la rama `moon-project` se
 deja en GitHub como registro). **Antes de tocarlo, leer
-`logo-files/LUNA-WIP.md`**: ahí está el detalle de todo y, sobre todo, lo que
+`arte/LUNA-WIP.md`**: ahí está el detalle de todo y, sobre todo, lo que
 se probó y RECHAZÓ.
 
 Qué hay hoy en `/luna`:
@@ -96,7 +96,7 @@ Qué hay hoy en `/luna`:
   al acercarse. La luz va con la vista: más oscura y fría según domina la
   cara oculta. El mando de abajo en el centro lleva a cada cara con un giro
   de 2,8 s. Motor `src/scripts/luna-gl.js` (el WebGL de Marte,
-  `marte-gl.js`); datos en `public/luna/` de `logo-files/generar-luna.py
+  `marte-gl.js`); datos en `public/luna/` de `arte/generar-luna.py
   --canvas` y `--teselas`; nombres de `generar-nombres.py --luna`. Las dos
   caras aprobadas (`luna-visible.png`, `luna-oculta.png`) quedan para el
   aterrizaje del vuelo, sin WebGL2 y mientras carga. Al regenerar: subir
@@ -146,7 +146,7 @@ Pendiente (sin orden, lo decide él):
 Tercera "portada": Marte en pixel art con los amartizajes. Se hizo en la rama
 `mars-project`, fusionada en `main` el 23-sep-2026 (`b0ada47`); lo que se
 siga tocando va sobre `main` o en rama nueva (el push a `main` publica). **Antes de tocarlo, leer
-`logo-files/MARTE-WIP.md`**: arriba dice en qué punto está, y se actualiza en
+`arte/MARTE-WIP.md`**: arriba dice en qué punto está, y se actualiza en
 cada paso (lo pidió el usuario).
 
 Qué hay hoy en `/marte`:
@@ -154,13 +154,13 @@ Qué hay hoy en `/marte`:
   clic y arrastrar** (un dedo en el móvil) y se **acerca con la rueda, el
   trackpad o pellizcando** hasta ×6, ganando detalle. Motor WebGL
   `src/scripts/marte-gl.js` y la mano en `src/scripts/marte.js`; datos en
-  `public/marte/` de `logo-files/generar-marte.py` (las teselas `n1`-`n3`,
+  `public/marte/` de `arte/generar-marte.py` (las teselas `n1`-`n3`,
   38 MB, van en Git desde que el pixel art es definitivo, 23-sep-2026). Al
   regenerar: subir `MARTE_V` en `marte.js` y el `?v=` de `marte-quieto.png`
   en `global.css`.
 - **Nombres de lugares** que salen al acercarse (a ×1, ninguno): visor de
   esquinas para montes y cráteres, rótulo de región para llanuras y zonas.
-  Lista elegida a mano en `logo-files/generar-nombres.py` →
+  Lista elegida a mano en `arte/generar-nombres.py` →
   `public/marte/marte-nombres.json`; la capa, `src/scripts/marte-nombres.js`.
 - **17 chapas de amartizajes** (bandera en pixel art; las fallidas en blanco
   y negro) con ficha: foto, Lugar / Fecha / Estado y una frase. Datos en
@@ -264,10 +264,10 @@ no se usa, corregir código y dejar la documentación como está la web hoy.
   (`querySelectorAll<HTMLElement>(\n … \n)`) rompe el parser. Dejar el genérico
   y sus argumentos en una línea.
 - **Documentación al día**: este archivo, `README.md` (con el aviso de que las
-  notas etiquetadas `luna` no salen en los listados), `logo-files/HERO-WIP.md`
+  notas etiquetadas `luna` no salen en los listados), `arte/HERO-WIP.md`
   (describía el sprite PNG como el sistema actual, cuando es un canvas desde
-  sept 2026), `logo-files/LUNA-WIP.md` (decía "sin fusionar con main") y
-  `logo-files/README.md` (citaba cuatro ficheros que ya no existen). En los dos
+  sept 2026), `arte/LUNA-WIP.md` (decía "sin fusionar con main") y
+  `arte/README.md` (citaba cuatro ficheros que ya no existen). En los dos
   WIP se separó el **estado de hoy** del **registro histórico**, que se conserva
   entero: ahí está lo que se probó y el usuario RECHAZÓ.
 - **Borrado por no usarse**: `public/zodk-sat-recon{,-noche}.svg` (un satélite
@@ -283,7 +283,7 @@ no se usa, corregir código y dejar la documentación como está la web hoy.
   necesita. **`typescript` se queda en `dependencies` a propósito** (decisión
   del usuario, 20-sep): `npm run build` ejecuta `astro check`, así que es
   dependencia de compilación. No moverlo.
-- **Se conserva a propósito** `logo-files/prototipo-luna/` (12 MB de PNG de
+- **Se conserva a propósito** `arte/prototipo-luna/` (12 MB de PNG de
   comparación): es el registro visual de por qué la Luna quedó como quedó, y
   `LUNA-WIP.md` los cita por su nombre.
 - Comprobado al cerrar: `npm run build` OK (51 páginas), `npm run lint` limpio,

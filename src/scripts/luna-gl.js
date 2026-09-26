@@ -11,8 +11,8 @@
 // la fase del sol, la exposición y el tono frío van de los de una cara a los
 // de la otra.
 //
-// Lo prueba logo-files/prototipo-luna/giro-libre.html. Detalle en
-// logo-files/LUNA-WIP.md.
+// Lo prueba arte/prototipo-luna/giro-libre.html. Detalle en
+// arte/LUNA-WIP.md.
 
 import { LUNA_V } from "./versiones.js";
 import { montarMarteGL } from "./marte-gl.js";

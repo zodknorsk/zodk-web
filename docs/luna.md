@@ -41,7 +41,7 @@ commitear" de cada paso son de entonces: ya está todo commiteado).
   ("luna-"), `version`, `zoomMax` y `luz(lat0, lon0)` (fase y lado del sol,
   exposición en escalones, suelo de la noche y bloque de la LUT del tono
   frío). Con Marte no cambia nada (exposición 1, sin tono frío).
-- Banco `logo-files/prototipo-luna/giro-libre.html` (servir la raíz con
+- Banco `arte/prototipo-luna/giro-libre.html` (servir la raíz con
   `python3 -m http.server 4400`): a la izquierda los PNG aprobados de cada
   cara, a la derecha la Luna nueva (arrastrar y rueda); los botones de cara
   llevan las dos a esa cara (la nueva, girando 2,8 s, como el mando).
@@ -263,10 +263,10 @@ Qué hay en `/luna`:
 
 - **La Luna** en pixel art, dos caras fijas (visible luminosa, oculta más
   oscura y fría), media vuelta en canvas de 2,8 s entre ellas
-  (`src/scripts/luna.js`, datos de `logo-files/generar-luna.py`). Sube 3,5 svh
+  (`src/scripts/luna.js`, datos de `arte/generar-luna.py`). Sube 3,5 svh
   respecto al centro (`--luna-dy`) para dejar aire al mando.
 - **Vuelo** de ida desde la luna de la portada (de noche) y de vuelta con el
-  botón, aterrizando al píxel (`src/scripts/viaje-luna.js`). `/luna` no tiene
+  botón, aterrizando al píxel (`src/scripts/vuelos.js`). `/luna` no tiene
   cabecera: se funde al despegar y vuelve con fundido al aterrizar.
 - **28 alunizajes** con chapa (bandera en pixel art) y ficha con foto, texto y
   enlace a su nota del blog (`src/data/alunizajes.ts`; notas en
@@ -278,7 +278,7 @@ Qué hay en `/luna`:
   nave -> relé -> Tierra por turnos (paradas si se apaga China).
 - **Orion (Artemis II)** orbitando la Luna en las dos caras, 32 fotogramas
   que giran según va, ficha, y en la visible se oscurece al cruzar la línea
-  día/noche y en la sombra de la Luna (`logo-files/generar-orion.py`).
+  día/noche y en la sombra de la Luna (`arte/generar-orion.py`).
 - **Botones definitivos**: mando de cara en el centro (un solo botón, píldora
   dorada que se desliza con el giro, iconos de las dos caras) y "volver a la
   Tierra" en HUD abajo a la derecha.
@@ -345,7 +345,7 @@ enfoque de proyección, inclinación, resolución, sensación general), pero:
   cuando se tenga la lista real de sitios a marcar, no antes.
 
 ## Qué se puede reutilizar de la Tierra (`src/scripts/planeta.js` +
-`logo-files/generar-planeta-hero.py`)
+`arte/generar-tierra.py`)
 
 - El propio motor de canvas: proyección ortográfica con inclinación, giro
   continuo (o parado, ver arriba), luz/sombra por producto escalar con el
@@ -358,7 +358,7 @@ enfoque de proyección, inclinación, resolución, sensación general), pero:
   tripulada o no, y las etiquetas de artículo — un registro por alunizaje en
   vez de por país.
 - El patrón de "relieve real desde un modelo de elevación" que ya existe
-  para las montañas de la Tierra (`logo-files/etopo.tiff` + `elev.py` /
+  para las montañas de la Tierra (`arte/etopo.tiff` + `elev.py` /
   `elevacion.py`, sombreado con `MTN_CONTRAST` etc.): para la Luna hace falta
   el equivalente lunar de ETOPO. Candidato natural: el modelo de elevación
   LOLA de la sonda LRO (NASA), de dominio público, servido por el equipo de
@@ -402,13 +402,13 @@ oculta: la cuenca Polo Sur-Aitken (ahí alunizaron Chang'e 4 y 6).
 
 ### Cara visible — PRIMER BOCETO APROBADO (16-sep-2026)
 
-- Generador: `logo-files/generar-luna.py` (Python estándar, ~9 s). Imagen
+- Generador: `arte/generar-luna.py` (Python estándar, ~9 s). Imagen
   estática 600x600 (radio 292,5, como la Tierra), norte arriba, de frente.
   `python3 generar-luna.py --derecha --zoom` saca la aprobada:
   `prototipo-luna/luna-visible-derecha.png` (+ zoom x4 del centro).
-- Banco de pruebas: `logo-files/prototipo-luna/` (servir la raíz del repo con
-  `python3 -m http.server 4400`, abrir `/logo-files/prototipo-luna/`).
-- Fuentes (NASA, dominio público, en `logo-files/luna-fuentes/`, gitignored,
+- Banco de pruebas: `arte/prototipo-luna/` (servir la raíz del repo con
+  `python3 -m http.server 4400`, abrir `/arte/prototipo-luna/`).
+- Fuentes (NASA, dominio público, en `arte/luna-fuentes/`, gitignored,
   ~70 MB; los `curl` están en el docstring del script): relieve LOLA
   `ldem_16.img` (16 px/grado) y mosaico de color LROC WAC 4k del CGI Moon Kit
   (SVS 4720), pasado a BMP con `sips`.
@@ -513,8 +513,8 @@ llanos, no tenían relieve que diera bordes nítidos.
   `navigate("/luna")` (ClientRouter). La Luna de `/luna` arranca con la misma
   imagen en el mismo sitio. Las estrellas no se mueven (así casan con las de
   `/luna`). Siempre aterriza en la cara visible. Con reduced-motion, directo.
-- **Vuelo rehecho (17-sep-2026, tarde)**, en `src/scripts/viaje-luna.js`
-  (lo usa `index.astro`; banco `logo-files/prototipo-vuelo/` con botones para
+- **Vuelo rehecho (17-sep-2026, tarde)**, en `src/scripts/vuelos.js`
+  (lo usa `index.astro`; banco `arte/prototipo-vuelo/` con botones para
   combinar variantes y duración). Cámara simulada: avanza hasta la Luna con
   perspectiva (tamaño con 1/distancia: casi no crece al principio y se echa
   encima al final) y en el primer 60 % gira hacia ella (la Luna va al centro,
@@ -598,7 +598,7 @@ llanos, no tenían relieve que diera bordes nítidos.
 Hecho en `prototipo-luna/chapas.html` (banco aparte: **no se ha tocado
 `luna.astro` ni `luna.js`**, decisión del usuario: "primero en el banco de
 pruebas"). Servir la raíz del repo y abrir
-`/logo-files/prototipo-luna/chapas.html`.
+`/arte/prototipo-luna/chapas.html`.
 
 - **Qué se marca** (entonces; hoy son 28, ver arriba): los 20 alunizajes reales de la bóveda
   (`02 - Temas/moon-project/` en boveda-osint: 6 Apolo, 6 Luna soviéticas, 4
@@ -609,7 +609,7 @@ pruebas"). Servir la raíz del repo y abrir
   negro": ya no hay fracasos que pintar.
 - **Dibujo de la chapa: bandera del país**, en el mismo píxel art que la
   Tierra (filas de 11x7 + contorno de 1px, como `BANDERAS`/`_chapa()` en
-  `generar-planeta-hero.py`). La de EE. UU. es literalmente la de la Tierra;
+  `generar-tierra.py`). La de EE. UU. es literalmente la de la Tierra;
   Rusia, China, India y Japón son nuevas. **Aprobadas todas el 17-sep-2026**
   ("las banderas me gustan, go"); se revisan en `prototipo-luna/banderas.html`
   (cada una grande y al tamaño real). Ojo con China: el primer intento repartía
@@ -683,7 +683,7 @@ El banco ya está llevado a la página real. Lo que hay ahora:
 
 - **`src/data/alunizajes.ts`**: los 20 alunizajes (nombre, país, año, lat/lon,
   foto y texto) y los cinco países con su bandera en pixel art (filas de 11x7 +
-  paleta, mismo formato que `BANDERAS` en `generar-planeta-hero.py`), más
+  paleta, mismo formato que `BANDERAS` en `generar-tierra.py`), más
   `svgBandera()`. Añadir una misión = una línea ahí y su foto en
   `public/alunizajes/`.
 - **`luna.js`**: `sitio(lat, lon, cara?)` devuelve dónde cae un punto en la
@@ -800,7 +800,7 @@ Pasos 3 y 4 de la lista de abajo.
     espacio. Ciclo de **7 s** (la segunda, 3,5 s después): subida 0,45 s,
     salida 2,4 s. Paradas cuando no se ven. El pulso apunta al plato en
     reposo: con la deriva puede llegar unos px desviado.
-  - **Dibujos rehechos** con `logo-files/generar-queqiao.py` (antes eran SVG a
+  - **Dibujos rehechos** con `arte/generar-queqiao.py` (antes eran SVG a
     mano casi iguales entre sí). Referencias: los renders de Wikipedia que pasó
     el usuario. Queqiao = plato gris de malla enorme con varillas, caja dorada,
     ala corta y antenas finas; Queqiao-2 = plato dorado arriba con trípode,
@@ -892,7 +892,7 @@ Idea del usuario: la nave que rodeó la Luna en abril de 2026, en pixel art,
 **orbitando en las dos caras**, con paleta de día en la visible y de noche en
 la oculta (clase `cara-oculta` en `.luna-hero`, que pone `alTerminar`).
 
-- **Dibujo**: `logo-files/generar-orion.py`, un pequeño renderizador 3D: la
+- **Dibujo**: `arte/generar-orion.py`, un pequeño renderizador 3D: la
   Orion con medidas reales aproximadas (cápsula cónica de 5 m, anillo dorado,
   ESM blanco, tobera y cuatro alas en X de 5,2 m inclinadas 35° hacia atrás),
   iluminada desde arriba a la izquierda y rasterizada con z-buffer.

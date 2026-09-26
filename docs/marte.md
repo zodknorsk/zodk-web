@@ -53,7 +53,7 @@ Lo de abajo es el registro de lo hecho, sesión a sesión.
 
 **Hecho** (23-sep-2026, primera tanda):
 - **Los nombres de lugares salen en `/marte`** (antes solo estaban en el
-  banco): `src/scripts/marte-nombres.js`, `marte.astro`, `global.css` y la
+  banco): `src/scripts/nombres.js`, `marte.astro`, `global.css` y la
   letra IBM Plex Mono 500 en `Head.astro`.
 - **Un accidente geográfico para cada amartizaje**: 9 nombres nuevos en
   `generar-nombres.py` (58 en total). Ver "Un accidente geográfico para cada
@@ -278,7 +278,7 @@ la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
   **`mars-project`** en la cabecera; los dos hacen el **vuelo a `/marte`**.
 - **`/luna`**: **Marte pequeño** arriba a la izquierda, con **vuelo a
   `/marte`** (la Luna grande sale por abajo).
-- **Vuelos** (`src/scripts/viaje-luna.js`, el motor del de la Luna,
+- **Vuelos** (`src/scripts/vuelos.js`, el motor del de la Luna,
   generalizado): Tierra → Marte, Luna → Marte, Marte → Tierra (hacia delante;
   aterriza en el horizonte de la portada) y Marte → Luna (al revés, desde
   Marte tal como se dejó y sin pararse si estaba acercado). Los de la Luna no
@@ -297,7 +297,7 @@ la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
    (`1e4641b`), llanuras en dos tonos (`a907648`), zonas oscuras en
    "chocolate suave" (`105ff78`), vista inicial a 12,5° al norte (`3b31e39`);
    casquete y grano, como estaban.
-5. **Bancos de prueba** en `logo-files/prototipo-marte/` (`zoom.html` es el de
+5. **Bancos de prueba** en `arte/prototipo-marte/` (`zoom.html` es el de
    ahora).
 6. **Página `/marte`** (`1aa8175`). El título "mars project" animado se hizo,
    se pulió y **se quitó** (registro en "El título: esquinas que se cierran").
@@ -318,7 +318,7 @@ la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
     en modo oscuro), y colocada respecto a Marte. Ver "La Tierra pequeña de
     /marte".
 14. **Nombres de lugares en `/marte`** (23-sep-2026): la capa del banco
-    pasada a la página (`src/scripts/marte-nombres.js`, con
+    pasada a la página (`src/scripts/nombres.js`, con
     `montarNombres(capa, marte, chapas)`). Ver "Nombres de lugares".
 15. **Un accidente con nombre junto a cada amartizaje** (23-sep-2026): 9
     nombres más en `generar-nombres.py`.
@@ -332,15 +332,15 @@ la derecha, o `mars-project` en la cabecera), `http://localhost:4321/luna`
 
 - Las teselas (`public/marte/n1/`-`n3/`, 38 MB) **sí están en Git** desde
   el 23-sep-2026 (pixel art definitivo). Antes solo estaban en el Mac.
-- **Las fuentes** (`logo-files/marte-fuentes/`, ~1 GB: MOLA de 16 y 32
+- **Las fuentes** (`arte/marte-fuentes/`, ~1 GB: MOLA de 16 y 32
   px/grado y el mosaico Viking con sus reducciones a 8, 16 y 24).
 - Solo hacen falta para regenerar: bajar las fuentes (los `curl`/`sips`
-  están en el docstring de `generar-marte.py`) y `cd logo-files && python3
+  están en el docstring de `generar-marte.py`) y `cd arte && python3
   generar-marte.py --canvas ../public/marte/` (unos 4 min).
 - Lo que se genera y **sí** está en Git: `public/zodk-marte.png`
   (`generar-marte.py --icono`), `public/marte/marte-quieto.png` (`node
-  logo-files/generar-marte-quieto.mjs`) y `public/zodk-tierra*.png` (`node
-  logo-files/generar-tierra-icono.mjs`). Si cambian los datos de Marte o la
+  arte/generar-marte-quieto.mjs`) y `public/zodk-tierra*.png` (`node
+  arte/generar-tierra-icono.mjs`). Si cambian los datos de Marte o la
   Tierra de la portada, rehacerlos (y subir `MARTE_V` en `marte.js`).
 
 ### Pendiente (por orden)
@@ -379,7 +379,7 @@ sus notas en la bóveda.
   lienzo WebGL); tiene que estar delante. Las pruebas de vuelos se hicieron
   con Chrome sin ventana (`--headless=new` + CDP) y fotogramas.
 
-## Plan (pasos cortos, en un banco de pruebas `logo-files/prototipo-marte/`)
+## Plan (pasos cortos, en un banco de pruebas `arte/prototipo-marte/`)
 
 - [x] 1. Descargar las fuentes y sacar un **Marte provisional** con el mismo
       recorrido de `generar-luna.py` (sin pulir: el pixel art definitivo va
@@ -646,7 +646,7 @@ viajar, y la publicación (merge en `main`).
 - **Primera tanda de nombres: HECHA** (22-sep-2026; el usuario: "Ok me parece
   bien, no conozco marte, me fío, si crees que hay que meter más, mete"). Son
   **49**: 18 rótulos de región y 31 con visor.
-  - **`logo-files/generar-nombres.py`** lee el catálogo (el `.dbf` va en
+  - **`arte/generar-nombres.py`** lee el catálogo (el `.dbf` va en
     `marte-fuentes/`, sin trackear; el `curl` está en su docstring) y escribe
     **`public/marte/marte-nombres.json`** (14 KB, sí se commitea) con el
     centro, el diámetro, la caja y, por nombre, `clase` (region o visor), `px`
@@ -711,7 +711,7 @@ viajar, y la publicación (merge en `main`).
     Curiosity (2012), InSight (2018), Perseverance, Ingenuity y Zhurong
     (2021), más el índice "Amartizajes". Las chapas se harán cuando estén
     publicadas.
-- **Llevado a `/marte`** (23-sep-2026): `src/scripts/marte-nombres.js` hace
+- **Llevado a `/marte`** (23-sep-2026): `src/scripts/nombres.js` hace
   lo mismo que el banco (umbrales, visor cuadrado con 6 % de aire, rótulos,
   fundidos, reparto de sitio), con dos cambios de cocina: el tamaño de cada
   texto se mide una vez al montar (con la letra ya cargada) y el reparto de
@@ -832,15 +832,15 @@ primer grupo, que es el que lleva chapa:
 
 ## Marte provisional (paso 1, 21-sep-2026)
 
-- **Generador**: `logo-files/generar-marte.py` (Python estándar, como el de
+- **Generador**: `arte/generar-marte.py` (Python estándar, como el de
   la Luna; ~6 s por cara). Script nuevo: `generar-luna.py` no se ha tocado.
   `python3 generar-marte.py --zoom` saca las dos caras y un recorte ×4 del
   centro de cada una en `prototipo-marte/`.
-- **Banco**: `logo-files/prototipo-marte/index.html`. Servir la raíz del repo
+- **Banco**: `arte/prototipo-marte/index.html`. Servir la raíz del repo
   (`python3 -m http.server 4400`) y abrir
-  `http://127.0.0.1:4400/logo-files/prototipo-marte/`. Enseña el disco a 60
+  `http://127.0.0.1:4400/arte/prototipo-marte/`. Enseña el disco a 60
   svh sobre las estrellas de la portada, con botones de cara y de zoom ×4.
-- **Fuentes descargadas** en `logo-files/marte-fuentes/` (824 MB, en
+- **Fuentes descargadas** en `arte/marte-fuentes/` (824 MB, en
   `.gitignore`; los `curl` y el `sips` están en el docstring del script):
   MOLA de 16 px/grado y el mosaico Viking de 925 m, reducido con `sips` a
   8 px/grado (`viking_8.bmp`). Para el zoom ×4 habrá que reducirlo a 16.
@@ -922,7 +922,7 @@ primer grupo, que es el que lleva chapa:
     comparar a ojo si se echan de menos.
   - Pantallas táctiles: no hay barra espaciadora. **Pendiente de decidir**
     (el usuario, 21-sep-2026: "Móvil se queda por decidir").
-- **Prueba sin navegador**: `node logo-files/prototipo-marte/probar-en-node.mjs
+- **Prueba sin navegador**: `node arte/prototipo-marte/probar-en-node.mjs
   carpeta/` ejecuta `marte.js` con un canvas simulado y guarda en PNG varias
   vistas y dos fotogramas a mitad de arrastre, además de medir los ms. Sirvió
   para ver la raya de los 180° antes de enseñarlo.
@@ -1285,7 +1285,7 @@ primer grupo, que es el que lleva chapa:
   pequeña tierra y aparece el botón de volver a la luna. Si has ido desde la
   tierra: aparece directamente una pequeña tierra y no hay botón ninguno."
 - **La Tierra pequeña** (`public/zodk-tierra.png` y `zodk-tierra-noche.png`,
-  de `node logo-files/generar-tierra-icono.mjs`): la Tierra de la portada
+  de `node arte/generar-tierra-icono.mjs`): la Tierra de la portada
   (`planeta-quieto*.png`) reducida al lienzo del Marte pequeño (56 px de
   arte, ×3; radio 12), con halo azulado como el de la luna. Cada píxel es la
   media de los de la Tierra grande. De día o de noche según el tema. Se
@@ -1467,7 +1467,7 @@ Tierra pequeña (ver arriba). El vuelo es el mismo que se describe aquí.
     dos destinos (`LUNA` y `MARTE`); un solo vuelo a la vez.
 - **El aterrizaje sin saltos**:
   - `public/marte/marte-quieto.png` (de `node
-    logo-files/generar-marte-quieto.mjs`) es la vista inicial pintada por
+    arte/generar-marte-quieto.mjs`) es la vista inicial pintada por
     el propio motor (`marte.js` en Node), en píxeles de arte, 450 × 450.
   - Es la imagen que crece en el vuelo y el fondo de `.marte-disco` en
     `/marte` mientras carga el lienzo. Cuando el lienzo pinta, se oculta.
@@ -1633,4 +1633,4 @@ Detalles para cuando se programe:
   (64 px/grado, 23059 × 11530, 764 MB):
   `https://planetarymaps.usgs.gov/mosaic/Mars_Viking_ClrMosaic_global_925m.tif`
   (existe también a 232 m, 12 GB: no hace falta).
-- Irán a `logo-files/marte-fuentes/`, sin trackear, como `luna-fuentes/`.
+- Irán a `arte/marte-fuentes/`, sin trackear, como `luna-fuentes/`.

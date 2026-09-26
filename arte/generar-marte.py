@@ -42,7 +42,7 @@ Marte pequeño de la portada (arriba a la derecha; se pulsa para viajar a
     python3 generar-marte.py --icono ../public/zodk-marte.png
 
 Verlo: desde la raíz del repo, python3 -m http.server 4400 y abrir
-http://127.0.0.1:4400/logo-files/prototipo-marte/
+http://127.0.0.1:4400/arte/prototipo-marte/
 
 La pasada lenta (proyección, relieve, sombras proyectadas) se guarda en
 marte-fuentes/cache-<cara>.bin; si solo cambian paleta o umbrales, no se repite.

@@ -10,8 +10,8 @@
 // desde /luna, el botón "volver a la Luna" (el de /luna, abajo a la derecha),
 // con el vuelo de ida al revés.
 // Motor: src/scripts/marte-gl.js (WebGL) y la mano de src/scripts/marte.js;
-// datos en public/marte/, de logo-files/generar-marte.py. Detalle y
-// decisiones en logo-files/MARTE-WIP.md.
+// datos en public/marte/, de arte/generar-marte.py. Detalle y
+// decisiones en arte/MARTE-WIP.md.
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import { AMARTIZAJES } from "../data/amartizajes";
@@ -37,7 +37,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
          amartizajes (marte-nombres.js): encima del lienzo, con el origen en el
          centro del disco. data-publicadas: las notas de amartizajes que ya
          están en el blog. -->
-    <div class="marte-nombres" data-publicadas={JSON.stringify(notasPublicadas)}></div>
+    <div class="capa-nombres" data-publicadas={JSON.stringify(notasPublicadas)}></div>
     <!-- La Tierra pequeña (arriba a la derecha): se pulsa para ir a la
          Tierra. Sale cuando el script está listo, con un fundido. -->
     <div class="marte-tierra" aria-hidden="true" hidden></div>
@@ -59,11 +59,11 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { montarMarteGL } from "../scripts/marte-gl.js";
   import { montarMano, montarZoom } from "../scripts/gestos.js";
   import { PLANETA_V, LUNA_V, MARTE_V } from "../scripts/versiones.js";
-  import { montarNombres } from "../scripts/marte-nombres.js";
+  import { montarNombres } from "../scripts/nombres.js";
   import { AMARTIZAJES } from "../data/amartizajes";
   import { PAISES_MARTE } from "../data/amartizajes";
   import { svgBandera } from "../data/alunizajes";
-  import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/viaje-luna.js";
+  import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
 
   type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;
   let quitar: (() => void)[] = [];
@@ -210,7 +210,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
     const tierra = document.querySelector<HTMLElement>(".marte-tierra");
     const enlaceTierra = document.querySelector<HTMLAnchorElement>(".marte-tierra-enlace");
     const disco = document.querySelector<HTMLElement>(".marte-disco");
-    const capa = document.querySelector<HTMLElement>(".marte-nombres");
+    const capa = document.querySelector<HTMLElement>(".capa-nombres");
     if (!cv || !hero || !sonda || !boton || !tierra || !enlaceTierra || !disco || !capa) return;
     // ¿Se llegó desde /luna? Lo avisa /luna justo antes de venir; se lee una
     // vez y se borra, así que llegar de otro modo (o recargar) no saca el

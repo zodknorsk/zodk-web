@@ -1,5 +1,5 @@
 // Naves y satélites que sobrevuelan / orbitan la portada. El pixel art lo
-// genera logo-files/generar-aeronaves.py -> public/zodk-<id>[-noche].svg; aquí
+// genera arte/generar-aeronaves.py -> public/zodk-<id>[-noche].svg; aquí
 // van los datos que necesita la web (sprite, proporción, trayectoria y la
 // ficha que sale al pasar el ratón).
 //
@@ -17,7 +17,7 @@
 // Excepción de dibujo: ninguna sale ya del script salvo el Sentinel-2. El
 // TB3, el MQ-9, el RQ-4, el E-2, el U-2, el SR-71 y el Shahed-136 son fotos
 // PNG tal cual; su versión de noche (-noche.png, a la luz de la luna) la saca
-// logo-files/generar-naves-noche.py. Todas en public/zodk-<id>[-noche].{svg,png}.
+// arte/generar-naves-noche.py. Todas en public/zodk-<id>[-noche].{svg,png}.
 //
 // Luces de posición (solo de noche): puntos fijos encima de la nave, en % de
 // su imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala

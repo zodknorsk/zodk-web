@@ -13,7 +13,7 @@ continuo (no a saltos). No hay sprite: lo que se sirve son **datos**, en
 `public/planeta/` (`planeta-mapa.png` con el material de cada celda,
 `planeta-lut.png` con el color por material y escalón de luz, y
 `planeta-datos.json`), unos 255 KB frente a los 3,6 MB del sprite viejo. Los
-genera `logo-files/generar-planeta-hero.py`. Con el planeta quieto no gasta
+genera `arte/generar-tierra.py`. Con el planeta quieto no gasta
 CPU, y el detalle ya no depende del número de fotogramas.
 
 Encima del canvas van, en el DOM: el título con su marco de visor, la
@@ -36,7 +36,7 @@ iba horneado en la imagen. Se sustituyó porque a 60 fotogramas en 120 s el giro
 entonces (`zodk-planeta-sprite.png`, `zodk-planeta-noche.png`) están
 gitignorados y ya no los usa nadie.
 
-## Pipeline (`logo-files/`)
+## Pipeline (`arte/`)
 
 | Archivo | Qué |
 |---|---|
@@ -44,18 +44,18 @@ gitignorados y ya no los usa nadie.
 | `cities15000.txt` | GeoNames (gitignored, curl en el generador): las luces de noche. Sustituye a `densidad_luces.py`/`luces.py` (retirados). |
 | `mapa_tierra.py` | Salida de `rasterizar.py`. Es lo que consume el generador. |
 | `png8.py` | Escritor mínimo de PNG indexado. |
-| `generar-planeta-hero.py` | Todo junto → datos del canvas de día y de noche en `public/planeta/`. Parámetros arriba del archivo (geometría, sol, luna, paleta de noche) y en cada sección (`LUZ_*`, nubes, banderas…). |
+| `generar-tierra.py` | Todo junto → datos del canvas de día y de noche en `public/planeta/`. Parámetros arriba del archivo (geometría, sol, luna, paleta de noche) y en cada sección (`LUZ_*`, nubes, banderas…). |
 | `generar-estrellas.py` | Baldosa `public/zodk-estrellas.png` para el campo de estrellas del fondo (la web la repite con `background-repeat` en vez de apilar gradientes en el CSS). |
 
 Flujo de iteración (desde sept 2026 el planeta de DÍA es un canvas, ver punto 7):
 ```
-cd ~/Documents/zodk-web/logo-files
-python3 generar-planeta-hero.py            # -> public/planeta/ (datos del canvas + planeta-quieto.png)
-python3 generar-planeta-hero.py --frame 17 prueba.png   # un fotograma suelto para comparar
+cd ~/Documents/zodk-web/arte
+python3 generar-tierra.py            # -> public/planeta/ (datos del canvas + planeta-quieto.png)
+python3 generar-tierra.py --frame 17 prueba.png   # un fotograma suelto para comparar
 # tras regenerar: subir PLANETA_V en src/scripts/planeta.js y el ?v= de
 # planeta-quieto.png en global.css
 cd .. && npm run dev                       # o el banco de pruebas: python3 -m http.server 4400
-                                           #   -> http://127.0.0.1:4400/logo-files/prototipo-canvas/
+                                           #   -> http://127.0.0.1:4400/arte/prototipo-canvas/
 ```
 Los .geojson se re-descargan con los `curl` documentados en cada script.
 
@@ -119,7 +119,7 @@ Hecho y aprobado:
    "cemento" y otra índigo suave) y **luna llena casi de frente, algo arriba a
    la izquierda** (C). Luna por la derecha descartada: copas/dunas/relieve
    llevan la luz horneada desde el NO y la textura contradecía a la esfera.
-   Probar: `python3 generar-planeta-hero.py --frame 0 prueba.png --noche`
+   Probar: `python3 generar-tierra.py --frame 0 prueba.png --noche`
    (o `--ambos` para día y noche de una vez).
 
 2. **Luces de ciudades** (`light_cells()`, `LUZ_*` en el generador; "bastante
@@ -319,7 +319,7 @@ en que se escribió.
    - **Más fotogramas + más resolución a la vez**: `COLS` 280→400, `RADIUS`
      143→195, `MAPRES` 2→1 (resolución nativa del mapa, 0,25°), `FRAMES`
      28→60. Para que quepa en una textura razonable el sprite pasa de tira en
-     fila a REJILLA (`GRID_COLS`=15, `GRID_ROWS`=4, en `generar-planeta-hero.py`).
+     fila a REJILLA (`GRID_COLS`=15, `GRID_ROWS`=4, en `generar-tierra.py`).
    - **Paleta indexada → color real**: con tanto degradado nuevo, el PNG-8 de
      256 colores se quedó corto (colores "sucios", al más parecido que
      hubiera libre). Se pasó el sprite de DÍA a PNG truecolor (`png8.write_rgba`,
@@ -371,7 +371,7 @@ en que se escribió.
    cada cambio del PNG de día.
 6. **Pixel art "de ilustración" (13-sep-2026, misma rama)** — el usuario trajo
    de referencia una escena pixel art de monolitos con hierba y pidió acercar
-   el planeta a ese estilo. Hecho en `generar-planeta-hero.py` (aprobado paso a
+   el planeta a ese estilo. Hecho en `generar-tierra.py` (aprobado paso a
    paso con renders), **aún sin regenerar el sprite de 60 fotogramas ni
    copiarlo a `public/`**:
    - **Rampas con cambio de tono** (`ramp()`): sombrear ya no es mezclar hacia
@@ -400,7 +400,7 @@ en que se escribió.
      de 1 px y quedaba peor (ruido, bordes de recortable): descartado.
    - **Ciudades quitadas del sprite de día** (pedido del usuario: "de momento
      pasamos de ellas"). `city_cells()` sigue ahí para la noche congelada.
-   - `python3 generar-planeta-hero.py --frame N salida.png` genera un solo
+   - `python3 generar-tierra.py --frame N salida.png` genera un solo
      fotograma (~9 s) para probar sin rehacer los 60.
    - **Mar en franjas planas**: turquesa de costa → turquesa medio
      (`OCEAN_MID`) → plataforma → abisal, con los bordes ondulados por ruido
@@ -419,15 +419,15 @@ en que se escribió.
    pantalla (el planeta se pinta a ~4,6 px de pantalla por píxel del sprite).
    Opciones planteadas: **A** más fotogramas (120 → saltos de 1 s, ~7 MB; no
    recomendado) o **B** canvas girando píxel a píxel. **Eligió B.**
-   - **Prototipo**: `logo-files/prototipo-canvas/index.html` (fuera de
+   - **Prototipo**: `arte/prototipo-canvas/index.html` (fuera de
      `public/`, no se publica). Datos con
-     `python3 generar-planeta-hero.py --canvas prototipo-canvas` (gitignored):
+     `python3 generar-tierra.py --canvas prototipo-canvas` (gitignored):
      `planeta-mapa.png` (material por celda a 0,25°, R+G*256, B=hielo),
      `planeta-lut.png` (color por material y escalón de luz, rampas incluidas),
      `planeta-datos.json` (constantes, prioridades, nubes). ~255 KB en total
      frente a 3,6 MB del sprite. Para verlo: `cd ~/Documents/zodk-web &&
      python3 -m http.server 4400` y abrir
-     `http://127.0.0.1:4400/logo-files/prototipo-canvas/`. Botón para comparar
+     `http://127.0.0.1:4400/arte/prototipo-canvas/`. Botón para comparar
      con el sprite a saltos y botones de velocidad.
    - **Cómo funciona**: el sol/terminador no se mueven respecto al observador,
      así que por píxel se precalcula al cargar la celda del mapa, el escalón de

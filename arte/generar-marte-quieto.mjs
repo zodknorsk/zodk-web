@@ -7,7 +7,7 @@
 // Rehacerla cuando cambien los datos de Marte (generar-marte.py --canvas) y
 // subir MARTE_V en src/scripts/versiones.js y el ?v= de marte-quieto.png en
 // global.css:
-//   node logo-files/generar-marte-quieto.mjs
+//   node arte/generar-marte-quieto.mjs
 import fs from "node:fs";
 import path from "node:path";
 import { fotosDelMotor, REPO } from "./fotos-del-motor.mjs";
