@@ -216,10 +216,12 @@ function formatearTexto(tweet) {
     .replace(/\n/g, "<br>\n");
 }
 
+// La fecha del tuit se da en hora de Canarias, sea cual sea la zona horaria
+// del ordenador que importa (si no, un tuit de medianoche cambia de día).
 function formatearFecha(iso) {
   try {
     return new Date(iso).toLocaleDateString("es-ES",
-      { day: "numeric", month: "long", year: "numeric" });
+      { day: "numeric", month: "long", year: "numeric", timeZone: "Atlantic/Canary" });
   } catch {
     return "";
   }

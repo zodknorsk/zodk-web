@@ -49,11 +49,10 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
   zonas, código muerto fuera, comentarios y documentación al día) se hicieron
   en la rama `earth-project`, fusionada en `main`; la rama se deja en GitHub
   como registro. Lo nuevo va sobre `main` o en rama nueva.
-- **En el Mac y en el PC, tras el pull de la reorganización**: las fuentes de
-  datos que no están en Git se quedan en la carpeta vieja. Moverlas:
-  `mv logo-files/{luna-fuentes,marte-fuentes,tierra-fuentes,ne_land.json,cities15000.txt,etopo.tiff} arte/`
-  (las que haya). Lo que quede en `logo-files/` son cachés y renders de
-  prueba viejos: mirarlo y borrar la carpeta.
+- **Historial reescrito (26-sep-2026)** con `git filter-repo` para quitar
+  versiones viejas de imágenes y teselas (`.git` de 651 a 334 MB) y subido
+  con push forzado. El PC con Linux tiene que volver a clonar, no hacer
+  pull: pasos en `linux-pendiente.md`.
 - Pendiente del móvil real: que en táctil no salga la coordenada MGRS y que
   la noche no caliente (si calienta: 30 fps en táctil o sin los pueblos más
   pequeños).
