@@ -768,7 +768,7 @@ const eventos = todosEventos
     const colocaChapas = () => {
       if (!t) return;
       const r = hero.getBoundingClientRect(), px = t.pxArte();
-      const vistas = new Set<string>();
+      const vistas: Set<string> = new Set();
       for (const { iso, x, y } of t.chapas()) {
         const el = chapas.get(iso);
         if (!el) continue;
