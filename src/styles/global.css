@@ -1912,7 +1912,7 @@ html.home:not(.scrolled) header a[href="/"] {
 }
 
 html.home:not(.scrolled) header > div > div {
-  justify-content: flex-end;   /* sin logo, la nav a la derecha (cabe en móvil) */
+  justify-content: center;   /* sin logo, la nav centrada (usuario, 26-sep-2026; cabe en móvil) */
 }
 
 /* Estado 2: escondida mientras bajas por el hero */
