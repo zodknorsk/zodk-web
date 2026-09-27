@@ -46,10 +46,14 @@ const notasMarte = notasDe("marte");
 
 const todosEventos = await getCollection("eventos");
 
-// Hangar de UAS: cuántas fichas hay y la miniatura en pixel art de cada dron
-// que la tiene (arte/generar-uas-miniaturas.mjs), de la más nueva a la más vieja.
+// Hangar de UAS: cuántas fichas hay y la planta en pixel art de los drones
+// de la tira (arte/generar-uas-miniaturas.mjs).
 const fichasUas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
-const dronesHangar = fichasUas.filter((f) => fs.existsSync(`public/uas/${f.id}/miniatura-noche.png`));
+// De momento, siempre el X10D y, a su derecha, el MICH-2000 (al lado del
+// hangar solo caben dos puestos; más adelante se verá cómo entran los demás).
+const EN_HANGAR = ["skydio-x10d", "mich-2000"];
+const dronesHangar = EN_HANGAR.map((id) => fichasUas.find((f) => f.id === id))
+  .filter((f): f is (typeof fichasUas)[number] => !!f && fs.existsSync(`public/uas/${f.id}/planta.png`));
 // Tamaño de la planta de cada dron (a escala real entre ellos), del PNG.
 const tamPlanta = (id: string) => {
   const b = fs.readFileSync(`public/uas/${id}/planta.png`);

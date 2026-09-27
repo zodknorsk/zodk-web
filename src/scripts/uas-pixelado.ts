@@ -2,8 +2,8 @@
 // baja resolución, como pixel art. Cada pieza lleva una paleta corta (cuatro
 // tonos) y la luz se reparte en escalones, con tramado en el paso de uno a
 // otro; luego una pasada añade el contorno
-// de 1 px por fuera y oscurece donde la profundidad salta (separa el cuerpo
-// del ala). Se gira y se acerca como la maqueta, y al acercarse gana detalle.
+// de 1 px por fuera y oscurece donde la profundidad salta y en la junta entre
+// dos piezas (separa el cuerpo del ala). Se gira y se acerca como la maqueta, y al acercarse gana detalle.
 import {
   DepthTexture, Mesh, NearestFilter, OrthographicCamera, PlaneGeometry, Scene,
   ShaderMaterial, Vector2, Vector3, WebGLRenderTarget, DoubleSide,
@@ -22,11 +22,14 @@ const aVector = (hex: string) =>
   new Vector3(parseInt(hex.slice(1, 3), 16) / 255, parseInt(hex.slice(3, 5), 16) / 255, parseInt(hex.slice(5, 7), 16) / 255);
 
 // Material de una pieza: luz fija respecto a la cámara (arriba a la izquierda
-// y algo por delante), cuatro escalones.
-export function materialPixel(paleta: Paleta) {
+// y algo por delante), cuatro escalones. marca: número de la pieza, que va en
+// el canal alfa (de 0,55 a 1) para que la pasada final marque las juntas
+// entre piezas distintas; 1 = sin juntas (los anillos del fuselaje).
+export const marcaPieza = (i: number, sinJuntas = false) => (sinJuntas ? 1 : 0.55 + (i % 110) / 255);
+export function materialPixel(paleta: Paleta, marca = 1) {
   return new ShaderMaterial({
     side: DoubleSide,
-    uniforms: { paleta: { value: paleta.map(aVector) } },
+    uniforms: { paleta: { value: paleta.map(aVector) }, marca: { value: marca } },
     vertexShader: /* glsl */ `
       varying vec3 vNormal;
       void main() {
@@ -35,6 +38,7 @@ export function materialPixel(paleta: Paleta) {
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 paleta[4];
+      uniform float marca;
       varying vec3 vNormal;
       void main() {
         vec3 n = normalize(vNormal);
@@ -51,7 +55,7 @@ export function materialPixel(paleta: Paleta) {
         if (luz > 0.78) c = paleta[3];
         else if (luz > 0.5) c = paleta[2];
         else if (luz > 0.25) c = paleta[1];
-        gl_FragColor = vec4(c, 1.0);
+        gl_FragColor = vec4(c, marca);
       }`,
   });
 }
@@ -103,11 +107,20 @@ export function crearPixelado(renderer: WebGLRenderer) {
           gl_FragColor = vec4(0.0);
           return;
         }
+        // Salto de profundidad: línea fuerte en lo que queda detrás. Junta
+        // entre dos piezas (el ala que entra en el fuselaje): línea más
+        // suave, también en la que queda detrás.
         float d = distancia(vUv);
+        float mezcla = 0.0;
         for (int i = 0; i < 4; i++) {
           vec2 uv = vUv + v[i];
-          if (texture2D(tColor, uv).a > 0.5 && d - distancia(uv) > 0.2) { c.rgb = mix(c.rgb, contorno, 0.6); break; }
+          vec4 n = texture2D(tColor, uv);
+          if (n.a < 0.5) continue;
+          float dn = distancia(uv);
+          if (d - dn > 0.07) { mezcla = 0.6; break; }
+          if (c.a < 0.998 && n.a < 0.998 && abs(c.a - n.a) > 0.002 && d > dn) mezcla = 0.45;
         }
+        c.rgb = mix(c.rgb, contorno, mezcla);
         gl_FragColor = vec4(c.rgb, 1.0);
       }`,
   });

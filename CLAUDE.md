@@ -45,10 +45,10 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 
 ## Estado
 
-- **Proyecto UAS en la rama `uas-project`** (subida, sin fusionar): el
-  «Hangar de UAS» (fichas de drones en `/uas`, visor 3D y pixel, tira en la
-  portada). Receta y estado en `docs/uas.md` y `logo-files/UAS-WIP.md`;
-  para un dron nuevo, trabajar en esa rama mientras no se fusione.
+- **Proyecto UAS fusionado en `main` (27-sep-2026)**: el «Hangar de UAS»
+  (fichas de drones en `/uas`, visor 3D y pixel, tira en la portada). Receta,
+  estado y decisiones en `docs/uas.md`; un dron nuevo va en `main`. La rama
+  `uas-project` se deja en GitHub como registro.
 - **Los tres astros, publicados.** La Tierra entera en la portada y el
   repaso de todo el repositorio (carpetas `arte/` y `docs/`, CSS partido por
   zonas, código muerto fuera, comentarios y documentación al día) se hicieron

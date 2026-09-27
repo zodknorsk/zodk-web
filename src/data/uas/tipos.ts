@@ -13,14 +13,17 @@ export type Acabado = "negro" | "gris" | "metal" | "junta" | "mando" | "lente" |
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
-  | { tipo: "tubo"; id: string; perfil: Punto2[]; centro?: Punto2 }
+  // seccion: estira el corte [ancho x, alto y] (fuselajes más altos que anchos).
+  | { tipo: "tubo"; id: string; perfil: Punto2[]; centro?: Punto2; seccion?: Punto2 }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
   // simetrica (solo horizontal): la planta es media (x ≥ 0) y se completa con
   // su reflejo en una sola pieza. bisel: redondea los bordes.
+  // inclinacion (solo vertical): grados que se tumba hacia fuera, girando
+  // sobre la línea y = 0 del contorno (colas en V, winglets caídos).
   | { tipo: "placa"; id: string; plano: "horizontal"; planta: Punto2[]; y: number; grosor: number; espejo?: boolean; simetrica?: boolean; bisel?: number }
-  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; grosor: number; espejo?: boolean; bisel?: number }
+  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; grosor: number; espejo?: boolean; bisel?: number; inclinacion?: number }
   // Ala con perfil (grueso delante, afilado detrás), simétrica respecto a
   // x = 0. Estaciones de la raíz a la punta: [x, z del borde de ataque, z del
   // borde de salida, grosor máximo]. Dos estaciones seguidas en la misma x

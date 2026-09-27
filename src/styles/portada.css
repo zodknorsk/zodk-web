@@ -834,7 +834,7 @@ html.home main { padding-top: 5rem; }
     linear-gradient(rgb(255 255 255 / 0.35) 0 0) 73.8% 51.3% / 2px 2px no-repeat;
 }
 /* Hangar de UAS: una tira como la del blog, con el número de fichas y la
-   miniatura en pixel art de cada dron (arte/generar-uas-miniaturas.mjs). */
+   planta en pixel art de los drones (arte/generar-uas-miniaturas.mjs). */
 .tira-hangar {
   --mas-estrellas:
     linear-gradient(rgb(255 255 255 / 0.5) 0 0) 18.4% 22.5% / 1px 1px no-repeat,

@@ -1,7 +1,7 @@
 // Maqueta del MICH-2000 sacada de fotos públicas (Oboronka, el ejemplar «333»
 // en el lanzador y las alas del ZTK-150 en la fábrica china). No hay medidas
 // publicadas: las proporciones son a ojo. Las fotos, a tamaño completo, en
-// arte/uas-fuentes/mich-2000/ (fuera de Git; enlaces en logo-files/UAS-WIP.md).
+// arte/uas-fuentes/mich-2000/ (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta } from "./tipos";
 
 const OBORONKA = "https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/";

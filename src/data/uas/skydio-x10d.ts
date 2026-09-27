@@ -2,7 +2,7 @@
 // Tierra y de las medidas oficiales (desplegado, 79 x 65 x 14,5 cm con
 // hélices; plegado, 35 x 16,5 x 12 cm). 1 unidad ≈ 25 cm. Las formas son
 // simplificadas: el cuerpo real tiene más aristas, rejillas y tapas. Fotos a tamaño completo en
-// arte/uas-fuentes/skydio-x10d/ (fuera de Git; enlaces en logo-files/UAS-WIP.md).
+// arte/uas-fuentes/skydio-x10d/ (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta } from "./tipos";
 import { PAISES_LUNA } from "../alunizajes.ts";
 

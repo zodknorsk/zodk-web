@@ -7,13 +7,14 @@ import fs from "node:fs";
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
+import BackToPrev from "@components/BackToPrev.astro";
 import { porFecha } from "@lib/contenido";
 
 const fichas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
-const conGiro = (id: string) => fs.existsSync(`public/uas/${id}/giro-frente.png`);
+const conGiro = (id: string) => fs.existsSync(`public/uas/${id}/giro-planta.png`);
 // La tira de giro de cada dron (arte/generar-uas-miniaturas.mjs), de día y de
 // noche, como variables para el CSS.
-const giros = (id: string) => `--frente:url(/uas/${id}/giro-frente.png);--frente-noche:url(/uas/${id}/giro-frente-noche.png)`;
+const giros = (id: string) => `--giro:url(/uas/${id}/giro-planta.png);--giro-noche:url(/uas/${id}/giro-planta-noche.png)`;
 
 // Valores de un filtro con cuántas fichas tiene cada uno, de más a menos.
 function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
@@ -31,6 +32,9 @@ const paises = recuento((f) => f.data.pais);
 <PageLayout title="Hangar de UAS" description="La gran enciclopedia de los UAS: fichas de drones militares a partir de fuentes abiertas, con una maqueta para girarlos.">
   <Container>
     <div class="space-y-8">
+      <div class="animate">
+        <BackToPrev href="/">Volver a la portada</BackToPrev>
+      </div>
       <h1 class="animate font-semibold text-black dark:text-white">Hangar de UAS</h1>
 
       {fichas.length === 0 ? (
@@ -160,18 +164,19 @@ const paises = recuento((f) => f.data.pais);
       linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   }
-  /* El dron: primer fotograma de su tira de giro, al doble. Al pasar el
-     ratón gira hasta ponerse de frente y se queda; al quitarlo, vuelve. */
+  /* El dron: primer fotograma de su tira de giro (8 de 128x72), al doble.
+     Al pasar el ratón gira hasta verse de planta y se queda; al quitarlo,
+     vuelve. */
   .uas-giro {
     display: block;
-    width: 192px;
-    height: 112px;
-    background: var(--frente) 0 0 / 1152px 112px no-repeat;
+    width: 256px;
+    height: 144px;
+    background: var(--giro) 0 0 / 2048px 144px no-repeat;
     image-rendering: pixelated;
-    transition: background-position 0.5s steps(5);
+    transition: background-position 0.6s steps(7);
   }
-  :global(html.dark) .uas-giro { background-image: var(--frente-noche); }
-  .uas-tarjeta:hover .uas-giro { background-position: -960px 0; }
+  :global(html.dark) .uas-giro { background-image: var(--giro-noche); }
+  .uas-tarjeta:hover .uas-giro { background-position: -1792px 0; }
   @media (prefers-reduced-motion: reduce) { .uas-giro { transition: none; } }
   .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
   /* País: resalta al pasar el ratón y, con un filtro puesto, siempre. */

@@ -12,7 +12,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { Acabado, Maqueta } from "../data/uas/tipos";
 import { geometriaDe, VISTAS, type Vista } from "./uas-geometria";
-import { crearPixelado, materialPixel, ponerPaleta } from "./uas-pixelado";
+import { crearPixelado, marcaPieza, materialPixel, ponerPaleta } from "./uas-pixelado";
 import { PALETAS } from "./uas-paletas";
 
 type Pin = { x: number; y: number; tapado: boolean };
@@ -107,10 +107,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const materiales = new Map<string, { acabado: Acabado; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial }>();
   const mallas: Mesh[] = [];
   const aristas: LineSegments[] = [];
-  for (const p of maqueta.piezas) {
+  for (const [i, p] of maqueta.piezas.entries()) {
     const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const linea = new LineBasicMaterial();
-    materiales.set(p.id, { acabado: p.acabado ?? "negro", relleno, linea, pixel: materialPixel(PALETAS.dia.negro) });
+    materiales.set(p.id, { acabado: p.acabado ?? "negro", relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marcaPieza(i, p.acabado === "junta")) });
     for (const g of geometriaDe(p)) {
       const malla = new Mesh(g, relleno);
       mallas.push(malla);
@@ -177,7 +177,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       m.linea.color.copy(si ? (enTinta ? colores.arista : colores.resalteArista) : colores.arista);
       ponerPaleta(m.pixel, si ? paletas[enTinta ? "tinta" : "resalte"] : paletas[m.acabado]);
     }
-    pixelado.ponerContorno(paletas.contorno);
+    pixelado.ponerContorno(enTinta ? paletas.contornoClaro : paletas.contorno);
   };
 
   // Chinchetas (las pone el marco, una por parte): se colocan en la

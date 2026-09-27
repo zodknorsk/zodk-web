@@ -28,7 +28,7 @@ Cada push a `main` compila y publica la web sola
 | [`docs/tierra.md`](docs/tierra.md) | La portada: la Tierra, el título, la noche, qué se probó y rechazó |
 | [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
 | [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
-| [`docs/uas.md`](docs/uas.md) | El visor de los drones de la enciclopedia de UAS: qué tiene, medidas, colores y cómo se hace uno nuevo |
+| [`docs/uas.md`](docs/uas.md) | El Hangar de UAS: fichas de drones, el visor, la tira de la portada y cómo se hace un dron nuevo |
 | [`docs/astros.md`](docs/astros.md) | Lo común a los tres: motores, gestos, vuelos, nombres, versiones de datos |
 | [`docs/rendimiento.md`](docs/rendimiento.md) | Que no caliente: cómo medir y qué se aprendió |
 | [`docs/logo.md`](docs/logo.md) | El logo animado y los iconos |
@@ -56,6 +56,8 @@ src/
                              del hero y su hélice
     Header.astro             La cabecera: logo y día/noche (no sale en los astros)
     ThemeToggle.astro        El botón de día/noche
+    VisorUAS.astro           El visor de cada dron (maqueta 3D y pixel, partes,
+                             fuentes)
     Footer.astro, Container.astro, Link.astro, ArrowCard.astro (tarjeta de
     nota), BackToPrev.astro (botón de volver), EventoNav.astro (semana
     anterior/siguiente), FormattedDate.astro
@@ -70,6 +72,9 @@ src/
     vuelos.js                Los vuelos entre páginas
     versiones.js             Versión de los datos de cada astro
     mgrs.js                  Coordenada MGRS
+    visor-uas.ts             Motor del visor de los drones (Three.js)
+    uas-geometria.ts, uas-pixelado.ts, uas-paletas.ts
+                             Piezas, modo Pixel y paletas de las maquetas
   styles/                  Los estilos, en el orden en que se cargan
     base.css                 Toda la web (Tailwind, cabecera, notas, tuits)
     astros.css               Lo común a los tres astros
@@ -79,6 +84,8 @@ src/
     paises.ts                Países con chapa sobre la Tierra
     alunizajes.ts            Las 28 misiones de /luna, países y relés
     amartizajes.ts           Las 17 misiones de /marte
+    uas/                     Las maquetas de los drones (una por dron) y sus
+                             tipos
   lib/
     contenido.ts             Qué notas son del blog y cuáles de la Luna o Marte
     utils.ts                 Utilidades (clases CSS, tiempo de lectura)
@@ -95,6 +102,8 @@ docs/                      La documentación
 public/                    Lo que se sirve tal cual
   planeta/  luna/  marte/  Datos de los tres astros (los hace arte/)
   alunizajes/  amartizajes/  Fotos de las fichas
+  uas/                     Miniaturas y fotos de fuentes de cada dron, y el
+                           hangar de la portada (los hace arte/)
   tweets/  adjuntos/       Imágenes de tuits y vídeos (los hace el importador)
   zodk-*.png, zodk-*.svg   Naves, sol, luna, Marte, Tierra pequeña, estrellas, logo
   CNAME                    El dominio zodk.eu para GitHub Pages

@@ -9,11 +9,24 @@ tira «Hangar de UAS» de la portada. Las fichas con maqueta llevan un
 usuario): cabecera, maqueta, tira de siluetas, panel de partes y fuentes. En
 el código, el componente `VisorUAS`.
 
-Drones hechos: MICH-2000 (ala volante, Ucrania) y Skydio X10D (cuadricóptero,
-EE. UU., del Ejército de Tierra). La historia del proyecto, sesión a sesión y
-con lo que el usuario rechazó, está en `logo-files/UAS-WIP.md`. **Este
-documento es la receta**: con él se tiene que poder hacer un dron nuevo desde
-cero, sin más contexto.
+Drones hechos: MICH-2000 (ala volante, Ucrania), Skydio X10D (cuadricóptero,
+EE. UU., del Ejército de Tierra) y Wildfire (avión con cola en V, EE. UU.,
+hecho solo con renders del fabricante). **Este documento es la receta**: con
+él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
+final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
+fotos de cada maqueta.
+
+## Estado
+
+**Fusionado en `main` y publicado (27-sep-2026).** Se hizo en la rama
+`uas-project`, que se deja en GitHub como registro. Abierto, sin prisa:
+
+- **Probarlo en el iPhone**: el usuario lo mira ya publicado y avisa si sale
+  algún fallo.
+- **La tira de la portada** lleva dos drones fijos, el X10D y el MICH-2000
+  (al lado del hangar solo caben dos). Cómo entran los demás, más adelante.
+- Consumo del visor al girar en Zen: el usuario lo ve bien; no se ha medido
+  en vatios.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -23,12 +36,10 @@ art, las miniaturas y las fotos de fuentes**, probado en local, con capturas
 y, cuando lo diga, commit (y push si lo pide: `commit` y `push` son órdenes
 separadas).
 
-0. **Antes de empezar.** `git status` y rama en `~/Documents/zodk-web`.
-   Mientras el proyecto no esté fusionado, todo va en la rama
-   `uas-project`; si ya se fusionó, en `main` (el push a `main` publica
-   zodk.eu: nunca sin que lo pida). En esta rama el usuario decidió que **sí
-   van las notas importadas** de la enciclopedia (`src/content/uas/`).
-   `npm run dev` en marcha (`localhost:4321`).
+0. **Antes de empezar.** `git status` y rama en `~/Documents/zodk-web`. El
+   proyecto ya está en `main`: un dron nuevo va en `main` (el push a `main`
+   publica zodk.eu: nunca sin que lo pida). `npm run dev` en marcha
+   (`localhost:4321`).
 1. **Fuentes** (receta, paso 2): artículos (Infodefensa, medios que visitan
    la fábrica, la documentación del fabricante —Skydio tiene la suya—, Army
    Technology, drone-warfare.com si tiene ficha) y **fotos del dron real**:
@@ -44,8 +55,9 @@ separadas).
 5. **Comprobar y enseñar** (receta, pasos 6 a 8): la ficha, el visor en todas
    las vistas y en pixel, de día y de noche; la tarjeta de `/uas`; la tira de
    la portada. `npm run lint` y `npx astro check` sin errores nuevos.
-6. **Documentar**: `logo-files/UAS-WIP.md` (qué se hizo, fotos con sus
-   enlaces) y, si se añadió algo al visor (piezas, acabados), este documento.
+6. **Documentar**, en este documento: las fotos del dron con sus enlaces
+   («Fotos de las maquetas»), lo que el usuario decida o rechace y, si se
+   añadió algo al visor (piezas, acabados), la receta.
 7. **Commit** en zodk-web cuando lo pida, y en la bóveda (`~/Documents/boveda-osint`)
    la nota nueva.
 
@@ -80,8 +92,9 @@ del X10D).
   - `## Visor` con `*Aquí se inserta el visor creado para el blog*` (en la
     web se cambia por el visor; el título no sale).
   - `## CARACTERÍSTICAS`: tabla de dos columnas con **País** (con la
-    bandera delante: `🇺🇦 Ucrania`; es el país del **fabricante**, y lo usa
-    el filtro de `/uas`), Fabricante, Operador, **Categoría** (sale en las
+    bandera delante: `🇺🇦 Ucrania`; es **siempre el país del fabricante
+    oficial**, lo opere quien lo opere —lo decidió el usuario con el X10D,
+    que usa España—, y lo usa el filtro de `/uas`), Fabricante, Operador, **Categoría** (sale en las
     tarjetas, hasta la primera coma), Situación, Primer uso en combate,
     Envergadura / longitud / peso, Alcance, Carga, Motor, Origen (`[[…]]`).
     Lo que no se sepa, «No publicado»; lo del fabricante, «(fabricante)».
@@ -101,7 +114,9 @@ de detalle. Buenas fuentes: la web del fabricante (el X10D salió de las de
 skydio.com y de su ficha técnica), los medios que visitan la fábrica (el MICH,
 de Oboronka), fotos de ejércitos. Descartar dibujos o renders que no se
 parezcan. Guardar en `arte/uas-fuentes/<modelo>/` (fuera de Git) con un
-`FUENTES.md` (archivo, qué enseña, URL) y copiar la lista a `UAS-WIP.md`.
+`FUENTES.md` (archivo, qué enseña, URL) y copiar la lista a «Fotos de las
+maquetas», al final de este documento (lo que está fuera de Git no llega al
+PC con Linux).
 Para elegir entre muchas, una hoja de contactos con ffmpeg (`tile=9x9`).
 
 ### 3. Leer la forma
@@ -120,10 +135,13 @@ generadores de `arte/` leen estos archivos con Node.
 - **Ejes**: x hacia la punta del ala derecha, y arriba, z hacia el morro.
   Unidades libres; `escala` = metros por unidad (MICH 1, X10D 0,25): con
   ella los drones salen a escala real entre sí en la tira de la portada.
-- **Piezas** (`uas-geometria.ts`): `tubo` (fuselaje, torno a lo largo de z),
+- **Piezas** (`uas-geometria.ts`): `tubo` (fuselaje, torno a lo largo de z;
+  con `seccion` [ancho, alto], más alto que ancho),
   `ala` (perfil NACA, estaciones de raíz a punta), `placa` (canards,
   winglets, elevones, brazos y patas planos; con `simetrica` y `bisel`,
-  cuerpos vistos desde arriba con los bordes redondeados), `varilla`
+  cuerpos vistos desde arriba con los bordes redondeados; las verticales,
+  con `inclinacion`, se tumban hacia fuera: cola en V, winglets caídos),
+  `varilla`
   (antenas, motores, barras), `caja` (sensores; `redondeo`), `helice`
   (`eje: "y"` para multirrotores; `palas`), `disco` (insignias, objetivos,
   cámaras). `espejo` repite al otro lado.
@@ -141,10 +159,24 @@ generadores de `arte/` leen estos archivos con Node.
   blanco no se distingue). Por defecto, blanco papel.
 - **`pais`**: la chapa en pixel art 11x7 (las de `alunizajes.ts`,
   `amartizajes.ts`; si falta, se añade allí).
+- **Solo renders** (dron que aún no ha volado, como el Wildfire): las
+  partes que se ven en ellos van como `fabricante` («Dato del fabricante»),
+  no como `foto`, y la nota lo dice; lo que en los renders no se distingue,
+  `reconstruccion`.
 - **`partes`**: 5-8, en el orden de las letras: punto (`en`), piezas que
   resalta, respaldo (`foto`, `reconstruccion`, `fabricante`), fuentes (ids),
   texto y nota de lo supuesto.
 - **`fuentes`**: las fotos (con miniatura) y los artículos (sin ella).
+
+- **Trabajar la maqueta antes de enseñarla** (el usuario, tras el X10D y el
+  Wildfire: «si no te estoy corrigiendo, la primera versión es mala»). Hacer
+  varias vueltas comparando con las fotos **desde el mismo ángulo**: en la
+  captura, `--js` puede mandar teclas al lienzo (flechas giran 10°, `+`
+  acerca), por ejemplo
+  `--js="(()=>{const c=document.querySelector('.visor canvas');for(const k of ['ArrowUp','+','+'])c.dispatchEvent(new KeyboardEvent('keydown',{key:k,bubbles:true}))})()"`,
+  y ponerla al lado de la foto con ffmpeg (`hstack`). Mirar proporciones
+  (largo y alto del fuselaje, dónde cruza el ala), secciones, carenados,
+  tomas de aire, antenas y cómo van colgadas las armas.
 
 ### 5. Miniaturas de las fotos de fuentes
 
@@ -160,10 +192,13 @@ perfil.
 
 ### 7. Miniaturas del dron (generadas)
 
-`node arte/generar-uas-miniaturas.mjs <modelo>`: la miniatura 3D (día y
-noche), el giro hasta ponerse de frente de las tarjetas de `/uas`
-(`giro-frente*.png`) y la planta a escala para la tira de la portada
-(`planta.png`). Repetir si cambia la maqueta.
+`node arte/generar-uas-miniaturas.mjs <modelo>`: el giro hasta verse de planta de las tarjetas de `/uas`
+(`giro-planta*.png`, 8 fotogramas de 128x72) y la planta a escala para la
+tira de la portada (`planta.png`; los drones muy grandes se reducen hasta
+72x70, `PLANTA_MAX`). Pinta como el modo Pixel del visor: mismo contorno,
+líneas en los saltos de profundidad y en las juntas entre piezas, y
+tramado en las curvas (la planta de la portada, sin líneas ni tramado,
+como estaba). Repetir si cambia la maqueta o las paletas.
 
 ### 8. Capturas
 
@@ -246,6 +281,20 @@ El dron va en **su color real**. Paletas del pixel (cuatro tonos por
 acabado, de día y de noche) en `src/scripts/uas-paletas.ts`, que comparten el
 visor y los generadores de `arte/`.
 
+**Líneas del pixel** (lo que hace que se lea bien; el usuario vio el pixel
+del Wildfire y las tarjetas de noche «reguleros», con poco contraste):
+- Contorno de 1 px por fuera. De noche, los drones negros llevan un filo
+  claro (`contorno`), pero **los claros (`resalte: "tinta"`) lo llevan
+  oscuro** (`contornoClaro`): con el filo claro, las líneas se perdían sobre
+  el gris.
+- Línea fuerte (60 % del contorno) donde la profundidad salta más de 0,07
+  unidades (antes 0,2: en el Wildfire, con piezas finas, no salía nada).
+- Línea suave (45 %) en la **junta entre dos piezas** distintas, en la que
+  queda detrás (el ala que entra en el fuselaje): cada pieza lleva su número
+  en el canal alfa (`marcaPieza`). Los anillos `junta` del MICH, sin línea.
+- El gris tiene más recorrido (`#50555d` a `#dcdfe3`) para que se note la
+  luz.
+
 ## El hangar: la tira de la portada y el índice
 
 **La tira de la portada**, entre la Luna y Marte y la del blog: la
@@ -260,21 +309,27 @@ tarjetas; línea amarilla de rodadura).
   óvalo, «el arco completo») se ensancha y aviva. Lo dibuja
   `arte/generar-uas-hangar.mjs` (`ELEGIDO` dice color y forma; hay verde
   militar, aluminio, arena y carbón, con y sin anexo).
-- A la derecha, **hasta tres drones vistos desde arriba, a escala real entre
-  ellos**, en puestos con discontinuas, con recuadro y rótulo amarillos
-  (nombre y bandera). Con más de tres, van rotando cada 7 s.
+- A la derecha, **drones vistos desde arriba, a escala real entre ellos**,
+  en puestos con discontinuas, con recuadro y rótulo amarillos (nombre y
+  bandera). Al lado del hangar solo caben dos puestos: **de momento, siempre
+  el X10D y, a su derecha, el MICH-2000** (`EN_HANGAR` en `index.astro`,
+  decisión del usuario); cómo entran los demás está por decidir. (Se probó
+  el Wildfire reducido con «≈20 m» en el rótulo y dos puestos que rotaban;
+  el usuario prefirió dejarlo como estaba.)
 - Rechazado: drones en 3/4 quietos en fila, «hangar a oscuras», línea de
   barrido, números «01», «02», rótulo «Reconstrucción · drones a escala»,
   suelo claro, hangares vistos desde arriba («se ven FATAL»), luz del suelo
   hecha con CSS, silueta de dron dentro de la puerta (parecía una sombra),
   piloto rojo y dron que sale volando (no los eligió).
 
-**El índice `/uas`**: título «Hangar de UAS», filtro por país y tarjetas con
-el dron en pixel art sobre la cuadrícula del visor, país, nombre, categoría y
-el principio de la introducción. Al pasar el ratón, el dron **gira hasta
-ponerse de frente** (`giro-frente.png`) y el país resalta; con un filtro
-puesto, el país sale marcado en todas las tarjetas. (Se probó una vuelta
-completa; eligió «de frente». El filtro por tipo se quitó.)
+**El índice `/uas`**: «Volver a la portada», título «Hangar de UAS», filtro
+por país y tarjetas con el dron en pixel art (128x72 al doble) sobre la
+cuadrícula del visor, país, nombre, categoría y el principio de la
+introducción. Al pasar el ratón, el dron **gira hasta verse de planta**, con
+el morro arriba (`giro-planta.png`), y el país resalta; con un filtro puesto,
+el país sale marcado en todas las tarjetas. (Se probó una vuelta completa y
+luego «de frente», pero de frente los winglets y las hélices, de canto,
+desaparecían; el usuario pidió la planta. El filtro por tipo se quitó.)
 
 ## Las fichas en la web
 
@@ -309,22 +364,104 @@ del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
 | `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>` |
 | `src/pages/index.astro`, `src/styles/portada.css` | La tira «Hangar de UAS» (`.tira-sat`) |
 | `scripts/importar-notas.mjs` | Notas de la carpeta → `src/content/uas/` |
-| `arte/generar-uas-miniaturas.mjs` | Miniatura, giro y planta de cada dron |
+| `arte/generar-uas-miniaturas.mjs` | Giro de las tarjetas y planta de cada dron |
 | `arte/generar-uas-hangar.mjs` | El hangar y el asfalto de la tira |
 | `arte/capturas.mjs` | Capturas para enseñar al usuario |
 | `public/uas/<modelo>/` | Miniaturas, giro, planta y `fuentes/` |
 | `arte/uas-fuentes/<modelo>/` | Fotos a tamaño completo y `FUENTES.md` (fuera de Git) |
 | `00 - Meta/Plantilla UAS (Templater).md` (bóveda) | Esqueleto de la nota |
 
-## Lo que el usuario quiere (y lo que rechazó)
+## Decisiones que hay que respetar
 
-- **Diseño propio**: el primer visor calcaba el de drone-warfare.com («me
-  gusta la idea, pero no que le copiemos todo»).
-- **Sin acento de color** en el visor: rechazó el verde azulado («muy IA»),
-  el sello rojo y el código de ficha.
-- **El dron en su color real.**
-- **Pixel art con detalle y giro libre** (una tira de 39 dibujos fijos fue
-  rechazada).
-- **Solo detalles que se vean en las fuentes**, y decir de qué foto sale cada
-  cosa y qué es supuesto.
-- **Consumo**: al girar sube algo en Zen; está limitado, falta medirlo.
+- **Diseño propio**: la idea del «Airframe explorer» de drone-warfare.com
+  (https://drone-warfare.com/research/mich-2000/), pero ni su diseño ni su
+  código ni su geometría. El marco es una «tarjeta de identificación», como
+  los manuales de reconocimiento de aeronaves.
+- **Nombres**: «el visor» (el recuadro completo), «Hangar de UAS» (la
+  sección), fichas en **`/uas/<slug>`**. Crédito del visor: «Maqueta creada a
+  partir de fotos públicas. Hecho con» Three.js y Claude Code; se queda igual
+  también en drones hechos con renders (el usuario: «déjalo así»).
+- **«Tinta, sin color»**: tarjeta `#ebebee` de día y `#25252a` de noche, lo
+  elegido en tinta; el único color es la bandera.
+- **El dron en su color real**, en la maqueta y en el pixel.
+- **Pixel art con detalle y giro libre**, pintado en directo de la maqueta.
+- **Solo detalles que se vean en las fuentes**, discretos, y decir de qué
+  foto sale cada cosa y qué es supuesto.
+- **Maquetas trabajadas antes de enseñarlas**: comparadas con las fotos
+  desde el mismo ángulo (receta, paso 4).
+- **País = el del fabricante oficial**, lo opere quien lo opere (el X10D,
+  bajo Estados Unidos).
+- Ancho del visor en la ficha: 1040 px, más ancho que el texto (opción A).
+- El encuadre del visor se queda como está, aunque los drones de ala larga
+  (el Wildfire) salen pequeños (el usuario: «déjalo»).
+- La tira de la portada: dos drones fijos, X10D y MICH-2000.
+- Las notas de la enciclopedia van sin claves propias en el frontmatter; el
+  primer párrafo es una cita `>`, sin `## Introducción`.
+
+## Probado y rechazado (no reintentar salvo que se pida)
+
+- El primer visor, calcado del de drone-warfare («me gusta la idea, pero no
+  que le copiemos todo»). Sello rojo y código «Ficha UAS-UA-001».
+- Acento verde azulado `#2f8f8a` («muy IA»); también se descartaron el azul
+  del blog, el naranja de señalización y el rojo de sello.
+- Pixel art como tira de 39 dibujos fijos (poco detalle, giro a saltos) y en
+  el blanco del «333»: el MICH va en negro mate.
+- El hueco de la hélice en el ala del MICH (no se ve en ninguna foto) y las
+  juntas del fuselaje marcadas («son mucho más suaves»).
+- El X10D con el cuerpo de cajas y cilindros («demasiado cuadrado») y
+  hélices de dos palas.
+- La primera maqueta del Wildfire, «de bulto» (fuselaje de puro, sin toma de
+  aire ni carenados).
+- Ancho del visor B (720, panel debajo), C (720 compacto) y D (banda de lado
+  a lado).
+- Tarjetas de `/uas` que dan una vuelta completa o se ponen de frente al
+  pasar el ratón (de frente, winglets y hélices desaparecían); filtro por
+  tipo.
+- En la tira: el Wildfire reducido con «≈20 m» en el rótulo y dos puestos
+  que rotan; y todo lo del hangar que se lista en su apartado.
+- Como referencia del MICH, el dibujo de dronestrike.com (no se parece).
+
+## Fotos de las maquetas
+
+Las fotos a tamaño completo están en `arte/uas-fuentes/<modelo>/`, fuera de
+Git. Para bajarlas en otro ordenador:
+
+**MICH-2000.** Artículo principal: Oboronka,
+https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/ (visitó la
+fábrica). Otros: United24 Media, Ukrainska Pravda, Euromaidan Press,
+defence-blog, tvd.im. No hay medidas publicadas ni una buena vista cenital:
+la planta sale de las fotos de la fábrica china y del lanzador.
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| lanzador-333-a.jpg | Blanco en el lanzador, 3/4 trasero | https://img.mezha.ua/mezha/system/MediaPhoto/photo/a/a/321351/aabf8b394e34b359be32397c2c4aa4b51786538922.jpg |
+| lanzador-333-b.jpg | La misma escena | https://24tv.ua/resources/photos/news/202608/3122320.jpg |
+| lanzador-333-c.jpg | La misma escena, más grande | https://defence-blog.com/wp-content/uploads/2026/08/DB_image_2146.jpg |
+| morro-canard.jpg | Morro negro con canards | https://img.mezha.ua/mezha/system/MediaPhoto/photo/1/b/321326/1b01c51be0da403b311990a802e2aafa1786534016.jpg |
+| cola-winglets.jpg | Negros por detrás: winglets y hélices | https://img.mezha.ua/mezha/system/MediaPhoto/photo/b/4/321332/b415b6b4d35ef9b1fa5510349079f9ed1786534206.jpg |
+| fuselaje-secciones.jpg | Secciones del fuselaje | https://img.mezha.ua/mezha/system/MediaPhoto/photo/0/b/321334/0badf14ac7041fb4acf227d9e1c02e511786534297.jpg |
+| centro-ala-motor.jpg | Centro del ala y soporte del motor | https://img.mezha.ua/mezha/system/MediaPhoto/photo/c/7/321337/c749f73c418ea7150269e8dd965264391786534591.jpg |
+| ztk150-fabrica-china-a.jpg | ZTK-150 en China: planta completa | https://img.mezha.ua/mezha/system/MediaPhoto/photo/d/8/321349/d85dbea0c9b1a14fbac86d2689411b751786538636.jpeg |
+| ztk150-fabrica-china-b.jpg | La misma nave, más cerca | https://24tv.ua/resources/photos/news/202608/3122320_17882710.jpg |
+
+**Skydio X10D.** Medidas oficiales de la ficha técnica de Skydio (79 x 65 x
+14,5 cm desplegado).
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| desplegado.jpg | En vuelo, 3/4 desde arriba | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/99d884fbf52968d4e6b023c5a9f65b0f9376bc92-2930x1228.png |
+| frente.jpg | De frente, sensor y patas | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/3de3cab301639f41b671fbee417b7ef92f75a24d-768x411.png |
+| plegado.jpg | Plegado | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/34409812b6c1ae5b98614556dbd7e866d70b51ef-2352x1232.png |
+| ejercito-tierra.jpg | Militar del Ejército de Tierra con el dron | https://www.infodefensa.com/images/showid2/8152692?w=1200&zc=4 |
+
+**Wildfire.** Solo renders de General Atomics (el dron no ha volado) y sin
+medidas: proporciones del Reaper, unos 20 m de envergadura.
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| gaasi-comunicado.jpg | Enjambre sobre el mar, con JSM | https://www.ga-asi.com/images/BlogFeaturedImages/ga-asi-unveils-wildfire-uas.jpg |
+| twz-comparacion.jpg | Render junto a un MQ-9A | https://www.twz.com/wp-content/uploads/2026/09/wildfire-reaper-comparison.jpg |
+| twz-morro.jpg | Morro sin joroba y torreta | https://www.twz.com/wp-content/uploads/2026/09/wildfire-nose-end.jpg |
+| twz-jsm.jpg | Dos JSM en un soporte | https://www.twz.com/wp-content/uploads/2026/09/wildfire-jsm-cruise-missiles.jpg |
+| na-lrasm.jpg | Desde arriba, lanzando un LRASM (planta) | https://assets.newatlas.com/01/69/5b812ef848e48255875a40984a50/wildfire-media-graphics-scc-re-1290x726.jpg |
+| na-banda.jpg | Desde abajo, con cuatro JSM (perfil) | https://assets.newatlas.com/86/b8/98eff06a4272ab530fa0a87fe4a6/wildfire-media-graphics-scb-desktop-1920x600.jpg |

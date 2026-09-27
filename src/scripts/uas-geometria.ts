@@ -75,6 +75,7 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();
       const g = new LatheGeometry(puntos, 28);
       g.rotateX(Math.PI / 2);
+      if (p.seccion) g.scale(p.seccion[0], p.seccion[1], 1);
       g.translate(p.centro?.[0] ?? 0, p.centro?.[1] ?? 0, 0);
       return [g];
     }
@@ -98,9 +99,12 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           g.rotateX(Math.PI / 2);
           g.translate(0, p.y + d / 2, 0);
         } else {
-          // Contorno en [z, y]; el grosor, centrado en x.
+          // Contorno en [z, y]; el grosor, centrado en x. Inclinada: se
+          // tumba hacia fuera girando sobre su línea y = 0.
           g.rotateY(-Math.PI / 2);
-          g.translate(s * p.x + d / 2, 0, 0);
+          g.translate(d / 2, 0, 0);
+          if (p.inclinacion) g.rotateZ((-s * p.inclinacion * Math.PI) / 180);
+          g.translate(s * p.x, 0, 0);
         }
         return g;
       });
