@@ -6,6 +6,7 @@
 //   1. Recorre la bóveda y se queda con los .md que tienen `publicar: true`.
 //   2. Clasifica cada uno:
 //        - "03 - Eventos/<carpeta>/..."  -> colección "eventos" (jerárquica)
+//        - "…/La gran enciclopedia de los UAS./..." -> colección "uas" (/uas/<slug>)
 //        - el resto                      -> colección "notas" (plana)
 //   3. Traduce el frontmatter en español al que esperan las colecciones de Astro.
 //   4. Convierte la sintaxis de Obsidian a Markdown/HTML estándar:
@@ -57,10 +58,13 @@ const BOVEDA = CANDIDATAS_BOVEDA.find((p) => fs.existsSync(p))
 const RAIZ = process.cwd();
 const DESTINO_NOTAS = path.join(RAIZ, "src", "content", "notas");
 const DESTINO_EVENTOS = path.join(RAIZ, "src", "content", "eventos");
+const DESTINO_UAS = path.join(RAIZ, "src", "content", "uas");
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 
 const CARPETA_EVENTOS = "03 - Eventos";
+// La enciclopedia de drones: sus notas son fichas en /uas (docs/uas.md).
+const CARPETA_UAS = "La gran enciclopedia de los UAS.";
 const CARPETAS_IGNORADAS = new Set([
   ".git", ".obsidian", ".trash", "00 - Meta", "07 - Clippings", "Adjuntos",
 ]);
@@ -271,6 +275,7 @@ function extraerDescripcion(cuerpo) {
  */
 function clasificar(ruta) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
+  if (partes.includes(CARPETA_UAS)) return { tipo: "uas" };
   if (partes[0] !== CARPETA_EVENTOS || partes.length < 2) return { tipo: "nota" };
 
   // Nota suelta en `03 - Eventos/`: evento de una sola página (solo índice).
@@ -299,6 +304,60 @@ function clasificar(ruta) {
 }
 
 // --- Transformación del cuerpo ----------------------------------------
+
+/**
+ * Resaltados de Obsidian (`==texto==`) a `<mark>`, fuera del código (bloques
+ * con ``` y `código en línea`), donde un `==` es un operador.
+ */
+function resaltados(cuerpo) {
+  return cuerpo
+    .split(/(```[\s\S]*?```|`[^`\n]*`)/)
+    .map((trozo, i) => (i % 2 ? trozo : trozo.replace(/==([^=\n](?:[^\n]*?[^=\n])?)==/g, "<mark>$1</mark>")))
+    .join("");
+}
+
+/**
+ * País y categoría de una ficha de dron, de las filas «País» y «Categoría»
+ * de su tabla de características (`| **País** | 🇺🇦 Ucrania |`): la bandera
+ * (emoji), el nombre del país y la categoría, para los filtros de /uas.
+ */
+function paisDeFicha(cuerpo) {
+  const fila = (nombre) => cuerpo.match(new RegExp(`^\\|\\s*\\*\\*${nombre}\\*\\*\\s*\\|\\s*(.+?)\\s*\\|\\s*$`, "mu"))?.[1];
+  const datos = {};
+  const pais = fila("Pa[ií]s");
+  if (pais) {
+    const bandera = pais.match(/^(\p{Regional_Indicator}{2})\s*/u);
+    if (bandera) datos.bandera = bandera[1];
+    datos.pais = pais.slice(bandera ? bandera[0].length : 0).trim();
+  }
+  // La categoría, sin lo que vaya tras una coma o entre paréntesis
+  // («Ataque de un solo uso, largo alcance» → «Ataque de un solo uso»).
+  const categoria = fila("Categor[ií]a")?.split(/[,(]/)[0].trim();
+  if (categoria) datos.categoria = categoria;
+  return datos;
+}
+
+/**
+ * En Obsidian, la línea sangrada bajo un punto de lista (la descripción de
+ * cada fuente en las fichas de drones) sale debajo; en Markdown se pegaría a
+ * la línea anterior. Se fuerza el salto (dos espacios al final).
+ */
+function saltosEnListas(cuerpo) {
+  return cuerpo.replace(/^(\s*[-*+] .*\S)[ \t]*\n(?=[ \t]+\S)/gm, "$1  \n");
+}
+
+/**
+ * Sección `## Visor` de las notas de drones (enciclopedia de UAS): si hay
+ * maqueta para esta nota (src/data/uas/<slug>.ts), la sección (título
+ * incluido: en la web no sale) se cambia por un hueco donde la ficha pone el
+ * visor; si no hay maqueta, se quita. Ver docs/uas.md.
+ */
+function colocarVisor(cuerpo, slug) {
+  const seccion = /^##[ \t]+Visor[ \t]*\n[\s\S]*?(?=^##[ \t]|(?![\s\S]))/m;
+  if (!seccion.test(cuerpo)) return cuerpo;
+  const hayMaqueta = fs.existsSync(path.join(RAIZ, "src", "data", "uas", `${slug}.ts`));
+  return cuerpo.replace(seccion, hayMaqueta ? "<div class=\"visor-hueco\"></div>\n\n" : "");
+}
 
 /** Pone en su propia línea los `![](tweet)` que van pegados a un texto. */
 function separarTweetsDeLineas(cuerpo) {
@@ -357,7 +416,7 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasC
 function recogerTarjetasExistentes() {
   const cache = new Map();
   const RE_BLOCKQUOTE = /<blockquote class="tweet" data-tweet-id="(\d+)">[\s\S]*?<\/blockquote>/g;
-  for (const dir of [DESTINO_NOTAS, DESTINO_EVENTOS]) {
+  for (const dir of [DESTINO_NOTAS, DESTINO_EVENTOS, DESTINO_UAS]) {
     if (!fs.existsSync(dir)) continue;
     for (const archivo of buscarMarkdown(dir)) {
       const texto = fs.readFileSync(archivo, "utf8");
@@ -515,7 +574,7 @@ async function main() {
   // de caché de imágenes entre ejecuciones (bórrala a mano si quieres limpiarla).
   // public/adjuntos/ sí se regenera entera: son ficheros locales de la bóveda,
   // recopiarlos es barato y así no se acumulan vídeos huérfanos.
-  for (const d of [DESTINO_NOTAS, DESTINO_EVENTOS, PUBLICO_ADJUNTOS]) {
+  for (const d of [DESTINO_NOTAS, DESTINO_EVENTOS, DESTINO_UAS, PUBLICO_ADJUNTOS]) {
     fs.rmSync(d, { recursive: true, force: true });
     fs.mkdirSync(d, { recursive: true });
   }
@@ -555,6 +614,10 @@ async function main() {
       const slug = generarSlug(titulo);
       url = `/notas/${slug}`;
       carpetaDestino = path.join(DESTINO_NOTAS, slug);
+    } else if (clase.tipo === "uas") {
+      const slug = generarSlug(titulo);
+      url = `/uas/${slug}`;
+      carpetaDestino = path.join(DESTINO_UAS, slug);
     } else {
       url = clase.kind === "index"
         ? `/eventos/${clase.eventoSlug}`
@@ -630,7 +693,7 @@ async function main() {
   }
 
   // --- Pasada 2: escribir cada archivo ---
-  let nNotas = 0, nEventos = 0;
+  let nNotas = 0, nEventos = 0, nUas = 0;
 
   for (const it of items) {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
@@ -659,6 +722,8 @@ async function main() {
     for (const { marca, promesa } of fotos.values()) {
       cuerpo = cuerpo.replaceAll(marca, await promesa);
     }
+    cuerpo = resaltados(cuerpo);
+    if (it.clase.tipo === "uas") cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
 
     const fm = {
       title: it.titulo,
@@ -669,6 +734,7 @@ async function main() {
     const actualizado = parsearFechaActualizado(primero(it.data.actualizado));
     if (actualizado) fm.updated = aFechaISO(actualizado);
     if (Array.isArray(it.data.tags) && it.data.tags.length) fm.tags = it.data.tags.map(String);
+    if (it.clase.tipo === "uas") Object.assign(fm, paisDeFicha(it.content));
 
     if (it.clase.tipo === "evento") {
       fm.kind = it.clase.kind;
@@ -690,13 +756,16 @@ async function main() {
     if (it.clase.tipo === "evento") {
       nEventos++;
       console.log(`  ✓ evento  ${it.url}`);
+    } else if (it.clase.tipo === "uas") {
+      nUas++;
+      console.log(`  ✓ uas     ${it.url}`);
     } else {
       nNotas++;
       console.log(`  ✓ nota    ${it.url}`);
     }
   }
 
-  console.log(`\nListo: ${nNotas} nota(s), ${nEventos} archivo(s) de evento.`);
+  console.log(`\nListo: ${nNotas} nota(s), ${nEventos} archivo(s) de evento, ${nUas} ficha(s) de UAS.`);
 }
 
 main().catch((e) => {

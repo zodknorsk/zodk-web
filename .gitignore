@@ -25,6 +25,7 @@ arte/etopo.tiff
 arte/tierra-fuentes/
 arte/luna-fuentes/
 arte/marte-fuentes/
+arte/uas-fuentes/
 
 # Salida de generar-estrellas.py y generar-logo.py (lo bueno se copia a public/)
 arte/zodk-estrellas.png

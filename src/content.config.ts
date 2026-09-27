@@ -51,4 +51,24 @@ const eventos = defineCollection({
   }),
 });
 
-export const collections = { notas, eventos };
+// --- uas: la enciclopedia de drones. Una nota de la carpeta «La gran
+// enciclopedia de los UAS.» de la bóveda = una ficha en /uas/<slug>. Si hay
+// maqueta (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/uas.md).
+const uas = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/uas" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().optional(),
+    // Del «País» de la tabla de características: nombre y bandera (emoji).
+    pais: z.string().optional(),
+    bandera: z.string().optional(),
+    // De la «Categoría» de la tabla, hasta la primera coma o paréntesis.
+    categoria: z.string().optional(),
+  }),
+});
+
+export const collections = { notas, eventos, uas };

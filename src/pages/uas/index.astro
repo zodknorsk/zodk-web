@@ -1,0 +1,195 @@
+---
+// /uas: el hangar de UAS (la gran enciclopedia de los UAS). Una tarjeta por
+// ficha, con la miniatura en pixel art del dron (arte/generar-uas-miniaturas.mjs),
+// su país, nombre y categoría, y un filtro por país (sale de la tabla de
+// características de cada ficha).
+import fs from "node:fs";
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import BackToPrev from "@components/BackToPrev.astro";
+import { porFecha } from "@lib/contenido";
+
+const fichas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
+const conGiro = (id: string) => fs.existsSync(`public/uas/${id}/giro-planta.png`);
+// La tira de giro de cada dron (arte/generar-uas-miniaturas.mjs), de día y de
+// noche, como variables para el CSS.
+const giros = (id: string) => `--giro:url(/uas/${id}/giro-planta.png);--giro-noche:url(/uas/${id}/giro-planta-noche.png)`;
+
+// Valores de un filtro con cuántas fichas tiene cada uno, de más a menos.
+function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
+  const n = new Map<string, number>();
+  for (const f of fichas) {
+    const v = de(f);
+    if (v) n.set(v, (n.get(v) ?? 0) + 1);
+  }
+  return [...n].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"));
+}
+const banderas = new Map(fichas.map((f) => [f.data.pais, f.data.bandera]));
+const paises = recuento((f) => f.data.pais);
+---
+
+<PageLayout title="Hangar de UAS" description="La gran enciclopedia de los UAS: fichas de drones militares a partir de fuentes abiertas, con una maqueta para girarlos.">
+  <Container>
+    <div class="space-y-8">
+      <div class="animate">
+        <BackToPrev href="/">Volver a la portada</BackToPrev>
+      </div>
+      <h1 class="animate font-semibold text-black dark:text-white">Hangar de UAS</h1>
+
+      {fichas.length === 0 ? (
+        <p class="animate">Todavía no hay fichas.</p>
+      ) : (
+        <>
+          <div class="animate space-y-2">
+            <div class="uas-filtros" data-filtro="pais" role="group" aria-label="Filtrar por país">
+              <span class="uas-filtros-titulo">País</span>
+              <button type="button" data-valor="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
+              {paises.map(([p, n]) => (
+                <button type="button" data-valor={p} aria-pressed="false">
+                  {banderas.get(p) && <span class="uas-bandera">{banderas.get(p)}</span>}{p} <span>{n}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <ul class="animate uas-tarjetas">
+            {fichas.map((f) => (
+              <li data-pais={f.data.pais ?? ""} data-categoria={f.data.categoria ?? ""}>
+                <a href={`/uas/${f.id}`} class="uas-tarjeta">
+                  <span class="uas-tarjeta-foto">
+                    {conGiro(f.id) && <span class="uas-giro" style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
+                  </span>
+                  <span class="uas-tarjeta-texto">
+                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera">{f.data.bandera}</span> {f.data.pais}</span>
+                    <span class="uas-tarjeta-nombre">{f.data.title}</span>
+                    {f.data.categoria && <span class="uas-tarjeta-categoria">{f.data.categoria}</span>}
+                    {f.data.description && <span class="uas-tarjeta-desc">{f.data.description}</span>}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="animate uas-vacio" hidden>No hay fichas con esos filtros.</p>
+        </>
+      )}
+    </div>
+  </Container>
+</PageLayout>
+
+<script>
+  // Filtro por país (el código admite más grupos de filtros a la vez).
+  document.addEventListener("astro:page-load", () => {
+    const grupos = [...document.querySelectorAll<HTMLElement>(".uas-filtros")];
+    if (!grupos.length) return;
+    const elegido: Record<string, string> = {};
+    const aplicar = () => {
+      let quedan = 0;
+      document.querySelectorAll<HTMLElement>(".uas-tarjetas li").forEach((li) => {
+        const si = Object.entries(elegido).every(([filtro, valor]) => !valor || li.dataset[filtro] === valor);
+        li.hidden = !si;
+        if (si) quedan++;
+      });
+      const vacio = document.querySelector(".uas-vacio") as HTMLElement | null;
+      if (vacio) vacio.hidden = quedan !== 0;
+      // Con un país elegido, las tarjetas lo marcan.
+      document.querySelector(".uas-tarjetas")?.classList.toggle("uas-tarjetas--filtro", !!elegido.pais);
+    };
+    for (const g of grupos) {
+      g.addEventListener("click", (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button");
+        if (!b) return;
+        g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        elegido[g.dataset.filtro!] = b.dataset.valor ?? "";
+        aplicar();
+      });
+    }
+  });
+</script>
+
+<style>
+  .uas-filtros-titulo, .uas-tarjeta-pais, .uas-tarjeta-categoria {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .uas-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+  .uas-filtros-titulo { width: 3.2rem; font-size: 0.62rem; opacity: 0.6; }
+  .uas-filtros button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+  :global(html.dark) .uas-filtros button { border-color: rgba(255, 255, 255, 0.2); }
+  .uas-filtros button span:last-child { opacity: 0.55; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.72rem; }
+  .uas-filtros button[aria-pressed="true"] { background: #27272a; border-color: #27272a; color: #fafafa; }
+  :global(html.dark) .uas-filtros button[aria-pressed="true"] { background: #e4e4e7; border-color: #e4e4e7; color: #18181b; }
+  .uas-bandera { font-size: 0.95rem; line-height: 1; }
+
+  /* Tarjetas: la miniatura sobre la cuadrícula del visor y, debajo, el texto. */
+  .uas-tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+  .uas-tarjeta {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  :global(html.dark) .uas-tarjeta { border-color: rgba(255, 255, 255, 0.13); background: #25252a; }
+  .uas-tarjeta:hover { border-color: #27272a; box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.35); }
+  :global(html.dark) .uas-tarjeta:hover { border-color: #e4e4e7; }
+  .uas-tarjeta-foto {
+    display: grid;
+    place-items: center;
+    height: 9.5rem;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.13);
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: center;
+  }
+  :global(html.dark) .uas-tarjeta-foto {
+    border-bottom-color: rgba(255, 255, 255, 0.13);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
+  /* El dron: primer fotograma de su tira de giro (8 de 128x72), al doble.
+     Al pasar el ratón gira hasta verse de planta y se queda; al quitarlo,
+     vuelve. */
+  .uas-giro {
+    display: block;
+    width: 256px;
+    height: 144px;
+    background: var(--giro) 0 0 / 2048px 144px no-repeat;
+    image-rendering: pixelated;
+    transition: background-position 0.6s steps(7);
+  }
+  :global(html.dark) .uas-giro { background-image: var(--giro-noche); }
+  .uas-tarjeta:hover .uas-giro { background-position: -1792px 0; }
+  @media (prefers-reduced-motion: reduce) { .uas-giro { transition: none; } }
+  .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
+  /* País: resalta al pasar el ratón y, con un filtro puesto, siempre. */
+  .uas-tarjeta-pais { font-size: 0.62rem; opacity: 0.7; transition: opacity 0.2s; }
+  .uas-tarjeta-bandera { display: inline-block; transition: transform 0.2s; }
+  .uas-tarjeta:hover .uas-tarjeta-pais, .uas-tarjetas--filtro .uas-tarjeta-pais { opacity: 1; font-weight: 600; color: #18181b; }
+  :global(html.dark) .uas-tarjeta:hover .uas-tarjeta-pais, :global(html.dark) .uas-tarjetas--filtro .uas-tarjeta-pais { color: #f4f4f5; }
+  .uas-tarjeta:hover .uas-tarjeta-bandera, .uas-tarjetas--filtro .uas-tarjeta-bandera { transform: scale(1.35); }
+  .uas-tarjetas--filtro .uas-tarjeta-pais { align-self: flex-start; padding: 0.1rem 0.4rem; border-radius: 3px; background: #27272a; color: #fafafa; }
+  :global(html.dark) .uas-tarjetas--filtro .uas-tarjeta-pais { background: #e4e4e7; color: #18181b; }
+  .uas-tarjeta-nombre { font-size: 1.05rem; font-weight: 600; color: #18181b; }
+  :global(html.dark) .uas-tarjeta-nombre { color: #f4f4f5; }
+  .uas-tarjeta-categoria { font-size: 0.62rem; opacity: 0.7; }
+  .uas-tarjeta-desc { margin-top: 0.35rem; font-size: 0.82rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
+

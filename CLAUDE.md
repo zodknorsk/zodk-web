@@ -36,6 +36,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/tierra.md` | La portada (la Tierra) |
 | `docs/luna.md` | `/luna` |
 | `docs/marte.md` | `/marte` |
+| `docs/uas.md` | Hangar de UAS: fichas de drones, visor y tira de la portada. **Guion completo para hacer un dron nuevo desde cero** |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
 | `docs/contenido.md` | Importador de Obsidian, notas, eventos, tuits |
 | `docs/rendimiento.md` | Consumo en Zen: cómo medir |
@@ -44,6 +45,10 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 
 ## Estado
 
+- **Proyecto UAS fusionado en `main` (27-sep-2026)**: el «Hangar de UAS»
+  (fichas de drones en `/uas`, visor 3D y pixel, tira en la portada). Receta,
+  estado y decisiones en `docs/uas.md`; un dron nuevo va en `main`. La rama
+  `uas-project` se deja en GitHub como registro.
 - **Los tres astros, publicados.** La Tierra entera en la portada y el
   repaso de todo el repositorio (carpetas `arte/` y `docs/`, CSS partido por
   zonas, código muerto fuera, comentarios y documentación al día) se hicieron

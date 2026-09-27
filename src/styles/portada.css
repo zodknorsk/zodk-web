@@ -782,7 +782,8 @@ html.home main { padding-top: 5rem; }
   gap: 14px;
 }
 .bloque-astro,
-.tira-blog {
+.tira-blog,
+.tira-hangar {
   position: relative;
   overflow: hidden;
   border: 1px solid #000;
@@ -832,6 +833,109 @@ html.home main { padding-top: 5rem; }
     linear-gradient(rgb(255 255 255 / 0.5) 0 0) 53.4% 39.0% / 2px 2px no-repeat,
     linear-gradient(rgb(255 255 255 / 0.35) 0 0) 73.8% 51.3% / 2px 2px no-repeat;
 }
+/* Hangar de UAS: una tira como la del blog, con el número de fichas y la
+   planta en pixel art de los drones (arte/generar-uas-miniaturas.mjs). */
+.tira-hangar {
+  --mas-estrellas:
+    linear-gradient(rgb(255 255 255 / 0.5) 0 0) 18.4% 22.5% / 1px 1px no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.8) 0 0) 41.8% 71.0% / 2px 2px no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.35) 0 0) 63.7% 18.2% / 1px 1px no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.65) 0 0) 91.2% 64.4% / 1px 1px no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.5) 0 0) 29.6% 82.0% / 2px 2px no-repeat,
+    linear-gradient(rgb(255 255 255 / 0.95) 0 0) 77.5% 33.8% / 1px 1px no-repeat;
+  --halo: #c9ced6;
+  --halo-dia: #6b7079;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.1rem 1.3rem;
+  text-decoration: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.tira-hangar:is(:hover, :focus-visible) {
+  border-color: var(--halo-dia);
+  box-shadow: 0 0 0 1px var(--halo-dia), 0 12px 30px -8px color-mix(in srgb, var(--halo-dia) 60%, transparent);
+  outline: none;
+}
+html.dark .tira-hangar:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--halo) 60%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--halo) 32%, transparent);
+}
+.tira-hangar-texto { display: flex; flex-direction: column; flex: none; }
+.tira-hangar-num {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  font: 600 2.4rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  color: #fff;
+}
+.tira-hangar[hidden] { display: none; }
+.tira-hangar-texto { position: relative; z-index: 1; }
+.tira-hangar img { image-rendering: pixelated; }   /* al doble, sin suavizar */
+
+/* Hangar de UAS: la plataforma de noche (baldosa de asfalto de
+   arte/generar-uas-hangar.mjs, al doble), una línea amarilla de rodadura
+   abajo, el hangar de lado a la izquierda y los puestos de los drones,
+   vistos desde arriba, marcados con discontinuas, con el recuadro y el
+   rótulo de un analista sobre cada uno. */
+.tira-sat {
+  min-height: 236px;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem 1.3rem;
+  border-color: #000;
+  background:
+    linear-gradient(90deg, rgb(5 6 10 / 0.9) 0, rgb(5 6 10 / 0.45) 12rem, transparent 20rem),
+    linear-gradient(transparent calc(100% - 22px), #b58a17 calc(100% - 22px), #b58a17 calc(100% - 18px), transparent calc(100% - 18px)),
+    url(/uas/hangar/suelo-asfalto.png) 0 0 / 64px 64px repeat;
+}
+/* El hangar, de lado: una tira de fotogramas (arte/generar-uas-hangar.mjs)
+   al doble; al pasar el ratón, la puerta se abre fotograma a fotograma. */
+.sat-hangar {
+  position: relative;
+  z-index: 0;
+  flex: none;
+  align-self: flex-end;
+  width: var(--ancho);
+  height: var(--alto);
+  margin: 0 0 -0.3rem -3rem;
+  background: url(/uas/hangar/hangar-carbon-anexo.png) 0 0 / calc(var(--ancho) * var(--fotogramas)) var(--alto) no-repeat;
+  image-rendering: pixelated;
+  transition: background-position 0.6s steps(4);
+}
+.tira-sat:is(:hover, :focus-visible) .sat-hangar { background-position: calc(var(--ancho) * (1 - var(--fotogramas))) 0; }
+
+.sat-plataforma {
+  margin-left: auto;
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-end;
+}
+/* Un puesto por dron, abierto hacia la línea de rodadura. */
+.sat-puesto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  min-width: 8.5rem;
+  padding: 0 1rem 1.7rem;
+  border-left: 2px dashed rgb(255 255 255 / 0.22);
+  transition: opacity 0.4s;
+}
+.sat-puesto:last-child { border-right: 2px dashed rgb(255 255 255 / 0.22); }
+.sat-puesto[hidden] { display: none; }
+.sat-puesto--sale { opacity: 0; }
+.sat-caja { outline: 1px solid rgb(255 210 63 / 0.85); outline-offset: 5px; line-height: 0; }
+.sat-rotulo {
+  padding: 0.1rem 0.35rem;
+  background: rgb(0 0 0 / 0.65);
+  font: 500 0.62rem "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.06em;
+  color: #ffd23f;
+  white-space: nowrap;
+}
+
 .bloque-astro {
   display: flex;
   flex-direction: column;
@@ -1070,6 +1174,9 @@ html.dark .fila-entradilla { color: #a1a1aa; }
   .bloque-astro { height: 170px; }
   .bloque-luna :is(img, .bloque-giro), .bloque-marte :is(img, .bloque-giro) { width: 190px; right: -30px; top: -10px; }
   .tira-blog { flex-wrap: wrap; gap: 0.9rem; }
+  .tira-hangar { flex-wrap: wrap; }
+  .sat-plataforma { margin-left: 0; }
+  .sat-hangar { display: none; }
   .tira-hecho { margin-left: 0; width: 100%; }
   .tira-hecho-titulo { width: 100%; margin-bottom: 0.1rem; }
   .portada-dos { grid-template-columns: 1fr; gap: 3rem; }
