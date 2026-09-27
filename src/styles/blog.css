@@ -1,0 +1,89 @@
+/* /blog: la cabecera de estrellas (la de la tira del blog de la portada, con
+   su avatar y su "hecho con") y las entradas en tarjetas grandes con la
+   imagen arriba. Al pasar el ratón, el borde se ilumina con el turquesa de la
+   tira. */
+.blog-cab {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem 0.9rem 0.9rem;
+  overflow: hidden;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background: url(/zodk-estrellas.png) repeat, radial-gradient(circle at 30% 20%, #151a26, #05060a 70%);
+  color: #e6e8ec;
+}
+.blog-cab-texto p { margin: 0.4rem 0 0; font-size: 0.82rem; color: #9aa3ad; }
+
+.blog-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.blog-entrada {
+  --halo: #4fb3ad;
+  --halo-dia: #2f8f8a;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.blog-entrada:is(:hover, :focus-visible) {
+  border-color: var(--halo-dia);
+  box-shadow: 0 0 0 1px var(--halo-dia), 0 12px 30px -8px color-mix(in srgb, var(--halo-dia) 60%, transparent);
+  outline: none;
+}
+html.dark .blog-entrada { background: #202024; border-color: rgba(255, 255, 255, 0.1); }
+html.dark .blog-entrada:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--halo) 60%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--halo) 32%, transparent);
+}
+/* La imagen, recortada a lo ancho y desde arriba: en un diagrama alto se ve
+   su principio. */
+.blog-foto {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #e4e4e7;
+}
+html.dark .blog-foto { border-bottom-color: rgba(255, 255, 255, 0.08); background: #2a2a2f; }
+.blog-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.6s ease;
+}
+.blog-entrada:hover .blog-foto img { transform: scale(1.03); }
+.blog-texto { display: flex; flex-direction: column; padding: 1rem 1.2rem 1.1rem; }
+.blog-titulo {
+  margin-top: 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #18181b;
+  transition: color 0.2s;
+}
+.blog-entrada:hover .blog-titulo { color: #2576eb; }
+html.dark .blog-titulo { color: #f4f4f5; }
+html.dark .blog-entrada:hover .blog-titulo { color: #649fff; }
+.blog-entradilla { margin-top: 0.4rem; font-size: 0.9rem; line-height: 1.55; color: #71717a; }
+html.dark .blog-entradilla { color: #a1a1aa; }
+.blog-leer {
+  margin-top: 0.8rem;
+  font: 600 0.66rem "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--halo-dia);
+}
+html.dark .blog-leer { color: var(--halo); }

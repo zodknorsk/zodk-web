@@ -64,6 +64,9 @@ const CARPETA_EVENTOS = "03 - Eventos";
 const CARPETAS_IGNORADAS = new Set([
   ".git", ".obsidian", ".trash", "00 - Meta", "07 - Clippings", "Adjuntos",
 ]);
+// Dentro de una carpeta ignorada, las subcarpetas que sí se leen: en
+// 00 - Meta/Notas van las notas sobre la propia web (etiqueta "blog").
+const SUBCARPETAS_LEIDAS = { "00 - Meta": ["Notas"] };
 
 // URL de un tweet, opcionalmente envuelta en `![](...)` o entre `<...>`.
 const RE_TWEET_URL =
@@ -133,7 +136,12 @@ function buscarMarkdown(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) {
-      if (CARPETAS_IGNORADAS.has(e.name)) continue;
+      if (CARPETAS_IGNORADAS.has(e.name)) {
+        for (const sub of SUBCARPETAS_LEIDAS[e.name] ?? []) {
+          if (fs.existsSync(path.join(p, sub))) out.push(...buscarMarkdown(path.join(p, sub)));
+        }
+        continue;
+      }
       out.push(...buscarMarkdown(p));
     } else if (e.name.endsWith(".md")) {
       out.push(p);

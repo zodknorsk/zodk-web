@@ -25,7 +25,9 @@ Busca la bóveda en `BOVEDA_PATH` o, si no, en `~/Documents/boveda-osint`
 
 1. Borra y rehace `src/content/notas/`, `src/content/eventos/` y
    `public/adjuntos/`. `public/tweets/` no se borra: hace de caché.
-2. Se queda con los `.md` que llevan `publicar: true`.
+2. Se queda con los `.md` que llevan `publicar: true`. No mira en `.obsidian`,
+   `00 - Meta` (salvo `00 - Meta/Notas`, donde van las notas del blog),
+   `07 - Clippings` ni `Adjuntos`.
 3. Traduce el frontmatter: `creado` → `date`, `actualizado` → `updated`,
    `tags` igual. La descripción es el primer párrafo de la nota.
 4. Convierte lo de Obsidian a Markdown normal:
@@ -73,6 +75,10 @@ en las notas de la portada, en las chapas de bandera de la Tierra ni en
 el RSS: viven en su astro, y su botón de volver lleva a `/luna` o `/marte`.
 El filtro está en `src/lib/contenido.ts` (`esDelBlog`, `proyectoDe`). Las
 fichas de `/luna` y `/marte` solo enlazan a una nota si está publicada.
+
+Lo mismo con la etiqueta `blog` (notas sobre la propia web, en
+`00 - Meta/Notas`): salen en `/blog` como tarjetas grandes con su primera
+foto, la más nueva arriba, y su volver lleva a `/blog`.
 
 ## Dónde está cada cosa
 
