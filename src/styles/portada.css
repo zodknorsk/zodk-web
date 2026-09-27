@@ -904,27 +904,6 @@ html.dark .tira-hangar:is(:hover, :focus-visible) {
   transition: background-position 0.6s steps(4);
 }
 .tira-sat:is(:hover, :focus-visible) .sat-hangar { background-position: calc(var(--ancho) * (1 - var(--fotogramas))) 0; }
-/* La luz de dentro sobre el suelo: un abanico cálido que sale de la puerta
-   hacia la plataforma, en tres bandas (a lo pixel art), un poco inclinado
-   como el suelo en la vista. Tenue siempre; al abrir, fuerte. */
-.sat-luz {
-  position: absolute;
-  z-index: -1;
-  width: 190px;
-  height: 46px;
-  transform: translate(-4px, -45%) rotate(-5deg);
-  transform-origin: 0 50%;
-  background: radial-gradient(ellipse 100% 100% at 0 50%,
-    rgb(255 205 120 / 0.5) 0 22%,
-    rgb(255 175 80 / 0.28) 22% 46%,
-    rgb(255 155 60 / 0.14) 46% 70%,
-    rgb(255 150 60 / 0.06) 70% 88%,
-    transparent 88%);
-  opacity: 0.35;
-  transition: opacity 0.6s steps(4);
-  pointer-events: none;
-}
-.tira-sat:is(:hover, :focus-visible) .sat-luz { opacity: 1; }
 
 .sat-plataforma {
   margin-left: auto;

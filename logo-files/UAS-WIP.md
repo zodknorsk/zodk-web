@@ -4,20 +4,24 @@
 paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Leyendo
 solo esto hay que poder retomarlo, en el Mac o en el PC con Linux Mint.
 
-## Dónde estamos (27-sep-2026, ~17:15)
+## Dónde estamos (27-sep-2026, noche: todo commiteado y subido)
 
-**Rama `uas-project`**, subida a GitHub. Commits: `14322ea` (paso 1),
-`6069a83` (visor), `82dba25` (pixel y receta) y el de las fichas (pasos 4-6
-y el MICH-2000 importado). Nada fusionado: `main` y zodk.eu no tienen nada
-de esto.
+**Rama `uas-project`**, **subida a GitHub**, sin fusionar: `main` y zodk.eu
+no tienen nada de esto. Hechos: visor (3D y pixel), fichas en `/uas/<slug>`,
+índice `/uas` con filtro por país y tarjetas que giran hasta ponerse de
+frente, tira «Hangar de UAS» en la portada (hangar de arco en carbón con
+anexo), dos drones: **MICH-2000** y **Skydio X10D** (notas en la bóveda con
+`publicar: true`; su contenido importado va en esta rama por decisión del
+usuario). La bóveda también está commiteada y subida.
 
-**Decisión del usuario (27-sep-2026)**: en esta rama **sí** va el contenido
-importado del MICH-2000 (`src/content/uas/mich-2000/` y las imágenes de su
-tuit en `public/tweets/`), y la nota de la bóveda queda con `publicar:
-true`: «haz commit y deja desplegado en la rama uas-project todo lo
-relacionado con el MICH-2000, la nota, etc.». Lo mismo para el Skydio X10D.
-Ojo: si se importa en `main` antes de fusionar, estas fichas saldrían en
-zodk.eu sin el código del visor (`/uas` no existe en `main`).
+**Para hacer un dron nuevo**: `docs/uas.md`, «Pedir una ficha nueva: el
+guion completo». El usuario lo pedirá sin el contexto de estas sesiones.
+
+**Pendiente**: medir el consumo del visor al girar en Zen; probar todo en el
+iPhone; fusionar `uas-project` en `main` cuando el usuario lo diga
+(explicarle antes el merge; el push a `main` publica zodk.eu). Duda abierta:
+el X10D está bajo «Estados Unidos» (país del fabricante); el usuario no ha
+dicho si lo quiere bajo España.
 
 **Hangar de UAS, tercera vuelta (27-sep-2026, noche), sin commitear**: el
 usuario pidió más personalidad y tamaño («cúrratelo»: varias opciones de

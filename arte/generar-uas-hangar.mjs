@@ -76,7 +76,8 @@ const H = 100;
 const SUELO = 88;            // línea del suelo, en el lado cercano
 const LARGO = 92;            // cuánto mide a lo largo
 // Formas: el arco solo o con un anexo de chapa a la izquierda (más ancho).
-const FORMAS = { arco: { ancho: 148, x0: 14 }, anexo: { ancho: 176, x0: 42 } };
+// (Más ancho de la cuenta a la derecha: ahí cae la luz de la puerta.)
+const FORMAS = { arco: { ancho: 184, x0: 14 }, anexo: { ancho: 212, x0: 42 } };
 let W = 148, X0 = 14;
 const FONDO = [28, 14];      // cómo se proyecta la profundidad: [dx, dy hacia arriba]
 const PARED = 38, ARCO = 26; // alto de las paredes y del arco del tejado
@@ -233,13 +234,6 @@ function hangar(f, forma) {
     }
     enTestero(c, d, alto + 2, T[0]);  // raíl
   }
-  // Casi abierta: dentro, a contraluz, la silueta de un dron (un cuadricóptero).
-  if (f >= 0.75) {
-    const DRON = ["111.....111", ".1.......1.", ".111111111.", "..1111111..", "...1...1..."];
-    DRON.forEach((fila, j) => [...fila].forEach((b, i) => {
-      if (b === "1") enTestero(c, 0.39 + i * 0.02, 10 - j, "#3a2410");
-    }));
-  }
 
   // Bidones y una caja junto a la esquina, delante de la pared.
   const bidon = (x, y, color) => {
@@ -254,10 +248,31 @@ function hangar(f, forma) {
   c.rect(X0 + LARGO - 27, SUELO - 1, 1, 6, "#5c4a33");
 
   c.contorno("#121410");
-  // Sombra solo en la base (nada de mancha negra junto a la puerta). La luz
-  // que sale al suelo la pone la portada, fuera del dibujo, para que llegue
-  // lejos.
-  c.sombra(0, 2, 90);
+  c.sombra(0, 2, 90);  // solo en la base
+  // La luz que sale al suelo: medio óvalo apoyado en la base de la puerta
+  // (a lo largo de la pared del testero) y redondeado hacia la derecha, el
+  // «arco completo». Tres bandas, más clara junto a la puerta; con la puerta
+  // entreabierta es estrecho y tenue, y al abrir se ensancha y se aviva.
+  {
+    const base = aPixel(LARGO, 0.5, 0);
+    // La luz se abre al salir: más ancha que la puerta.
+    const [ax, ay] = aPixel(LARGO, 0.5 + 0.24 * (1 + 1.6 * f), 0);
+    const E1 = [ax - base[0], ay - base[1]];  // a lo largo de la base del testero
+    const E2 = [30 + 14 * f, 0];              // hacia fuera, sobre el suelo
+    const det = E1[0] * E2[1] - E1[1] * E2[0];
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++) {
+        const px = x + 0.5 - base[0], py = y + 0.5 - base[1];
+        const a = (px * E2[1] - py * E2[0]) / det;
+        const b = (E1[0] * py - E1[1] * px) / det;
+        const r = Math.hypot(a, b);
+        if (b < 0 || r > 1) continue;
+        const clave = y * W + x;
+        if (c.d[clave * 4 + 3] === 255) continue;  // no encima del hangar
+        const banda = r < 0.45 ? 0 : r < 0.75 ? 1 : 2;
+        c.px(x, y, mezcla(LUZ_TENUE[banda], LUZ_VIVA[banda], f), Math.round([200, 130, 65][banda] * (0.35 + 0.65 * f)));
+      }
+  }
   return c;
 }
 

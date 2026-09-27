@@ -1,29 +1,179 @@
-# UAS: la enciclopedia de drones y su visor
+# UAS: el hangar de drones, las fichas y el visor
 
-La enciclopedia de UAS de zodk.eu: una nota por dron en la bóveda
+La enciclopedia de UAS de zodk.eu («la gran enciclopedia de los UAS»; en la
+web, **«Hangar de UAS»**): una nota por dron en la bóveda
 (`02 - Temas/La gran enciclopedia de los UAS./`), que en la web es una
-**ficha** en `/uas/<slug>`, listada en el índice `/uas` con filtro por país.
-Las fichas con maqueta llevan un **visor**. **«El visor»** es el nombre del recuadro completo (lo eligió el
-usuario, 27-sep-2026): cabecera, maqueta, tira de siluetas, panel de partes y
-fuentes. En el código, el componente `VisorUAS`.
+**ficha** en `/uas/<slug>`, listada en el índice `/uas` y con acceso desde la
+tira «Hangar de UAS» de la portada. Las fichas con maqueta llevan un
+**visor**: **«el visor»** es el nombre del recuadro completo (lo eligió el
+usuario): cabecera, maqueta, tira de siluetas, panel de partes y fuentes. En
+el código, el componente `VisorUAS`.
 
-El primero fue el MICH-2000 (rama `uas-project`; historia completa en
-`logo-files/UAS-WIP.md`). Este documento es la receta para los siguientes.
+Drones hechos: MICH-2000 (ala volante, Ucrania) y Skydio X10D (cuadricóptero,
+EE. UU., del Ejército de Tierra). La historia del proyecto, sesión a sesión y
+con lo que el usuario rechazó, está en `logo-files/UAS-WIP.md`. **Este
+documento es la receta**: con él se tiene que poder hacer un dron nuevo desde
+cero, sin más contexto.
 
-## Pedir una ficha nueva
+## Pedir una ficha nueva: el guion completo
 
-El usuario pide «hazme la ficha del <dron>». **Lo que da él**: el nombre y,
-si los tiene, tuits o enlaces (para «En acción» y las fuentes). **Lo que se
-hace**, en este orden, enseñándole el resultado en cada paso:
+El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
+Hay que entregar: **la nota en Obsidian, la maqueta con su visor y su pixel
+art, las miniaturas y las fotos de fuentes**, probado en local, con capturas
+y, cuando lo diga, commit (y push si lo pide: `commit` y `push` son órdenes
+separadas).
 
-1. Buscar fuentes y fotos (receta, paso 2) y leer la forma (paso 3).
-2. Escribir la nota en la bóveda desde `00 - Meta/Plantilla UAS
-   (Templater).md` (paso 1), con `publicar: false`. Que la revise.
-3. Hacer la maqueta y las miniaturas (pasos 4 y 5), probar y enseñar
-   capturas (pasos 6 y 7). Iterar con él la forma.
-4. Publicar: `publicar: true`, `npm run importar`, revisar `/uas/<slug>` en
-   local y, en `main`, commit y push cuando lo pida. (Mientras el proyecto
-   viva en una rama, ver «Las fichas en la web».)
+0. **Antes de empezar.** `git status` y rama en `~/Documents/zodk-web`.
+   Mientras el proyecto no esté fusionado, todo va en la rama
+   `uas-project`; si ya se fusionó, en `main` (el push a `main` publica
+   zodk.eu: nunca sin que lo pida). En esta rama el usuario decidió que **sí
+   van las notas importadas** de la enciclopedia (`src/content/uas/`).
+   `npm run dev` en marcha (`localhost:4321`).
+1. **Fuentes** (receta, paso 2): artículos (Infodefensa, medios que visitan
+   la fábrica, la documentación del fabricante —Skydio tiene la suya—, Army
+   Technology, drone-warfare.com si tiene ficha) y **fotos del dron real**:
+   de perfil, desde arriba (la planta), de frente, en uso. Tuits del dron en
+   acción para «En acción» (buscar `"x.com" <dron>`).
+2. **La nota** (receta, paso 1), con `publicar: true`, en la bóveda.
+3. **La maqueta** (receta, pasos 3 y 4) y sus **miniaturas de fuentes**
+   (paso 5).
+4. **Importar y generar**: `npm run importar`, `node arte/generar-uas-miniaturas.mjs <modelo>`
+   y **reiniciar `npm run dev`** (no ve las notas nuevas; si el visor no
+   carga con «Outdated Optimize Dep» en la consola, parar, `rm -rf
+   node_modules/.vite` y arrancar de nuevo).
+5. **Comprobar y enseñar** (receta, pasos 6 a 8): la ficha, el visor en todas
+   las vistas y en pixel, de día y de noche; la tarjeta de `/uas`; la tira de
+   la portada. `npm run lint` y `npx astro check` sin errores nuevos.
+6. **Documentar**: `logo-files/UAS-WIP.md` (qué se hizo, fotos con sus
+   enlaces) y, si se añadió algo al visor (piezas, acabados), este documento.
+7. **Commit** en zodk-web cuando lo pida, y en la bóveda (`~/Documents/boveda-osint`)
+   la nota nueva.
+
+Cómo trabajar con el usuario en esto (lo ha dejado claro varias veces):
+- Enseñar **capturas en cada paso** (`arte/capturas.mjs`, abajo) y dejarle
+  mirar en local. Iterar en pasos cortos.
+- Si algo nuevo es **visual y admite varias lecturas** (un dibujo, una vista),
+  **preguntar antes de dibujar** o proponer un boceto. Cuando dice
+  «cúrratelo», quiere **varias opciones** (colores, formas, animaciones) con
+  un selector temporal en la página para comparar.
+- No calcar el diseño de otras webs; tomar la idea.
+- Escribir como una persona (ver «La nota»), nunca con calcos del inglés.
+
+## Receta
+
+### 1. La nota en la bóveda
+
+En `02 - Temas/La gran enciclopedia de los UAS./`, desde la plantilla
+`00 - Meta/Plantilla UAS (Templater).md` (modelos: las notas del MICH-2000 y
+del X10D).
+- **Archivo**: la bandera y el nombre (`🇺🇸 Skydio X10D.md`). El `titulo` da
+  la dirección (`Skydio X10D` → `/uas/skydio-x10d`) y **tiene que coincidir
+  con el nombre del archivo de la maqueta** (`src/data/uas/skydio-x10d.ts`).
+- **Frontmatter**: el de siempre (sin claves propias: lo decidió el usuario;
+  «las plantillas de Obsidian tienen todas el mismo formato»). `tipo:
+  objeto`, `estado: borrador`, `publicar: true`, `tags` con el país y `dron`.
+- **Cuerpo** (pedido por el usuario), sin reglas `---` entre apartados:
+  - Una **cita con `>`** justo bajo las propiedades, sin título: un párrafo
+    con qué es, quién lo usa y dónde ha destacado. **Cada hecho con su
+    enlace** a la foto, la noticia o el tuit. `==resaltado==` para lo clave.
+    Si las cifras son del fabricante, un aviso ⚠️ en un párrafo aparte.
+  - `## Visor` con `*Aquí se inserta el visor creado para el blog*` (en la
+    web se cambia por el visor; el título no sale).
+  - `## CARACTERÍSTICAS`: tabla de dos columnas con **País** (con la
+    bandera delante: `🇺🇦 Ucrania`; es el país del **fabricante**, y lo usa
+    el filtro de `/uas`), Fabricante, Operador, **Categoría** (sale en las
+    tarjetas, hasta la primera coma), Situación, Primer uso en combate,
+    Envergadura / longitud / peso, Alcance, Carga, Motor, Origen (`[[…]]`).
+    Lo que no se sepa, «No publicado»; lo del fabricante, «(fabricante)».
+  - `## Historia`: dos párrafos y uno corto de su uso reciente, con enlaces.
+  - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`).
+  - `## Fuentes`: `- **Nombre de la web** ([fuente](url))`, debajo una línea
+    sangrada con de qué habla, y una línea en blanco entre fuentes.
+- **Cómo se escribe**: castellano llano, como lo contaría una persona. Nada
+  de «el tipo», «la plataforma», «capacidades» ni frases de resumen. Nombrar
+  los hechos (qué se atacó, cuándo) en vez de resumirlos. Decir siempre lo
+  que solo afirma el fabricante.
+
+### 2. Fuentes y fotos
+
+Fotos reales del dron montado: de perfil, desde arriba o abajo, de frente y
+de detalle. Buenas fuentes: la web del fabricante (el X10D salió de las de
+skydio.com y de su ficha técnica), los medios que visitan la fábrica (el MICH,
+de Oboronka), fotos de ejércitos. Descartar dibujos o renders que no se
+parezcan. Guardar en `arte/uas-fuentes/<modelo>/` (fuera de Git) con un
+`FUENTES.md` (archivo, qué enseña, URL) y copiar la lista a `UAS-WIP.md`.
+Para elegir entre muchas, una hoja de contactos con ffmpeg (`tile=9x9`).
+
+### 3. Leer la forma
+
+De las fotos: planta, perfil, dónde van las piezas, **el color real** (el
+MICH es negro mate; el X10D, gris claro, también en la foto del Ejército de
+Tierra). Si hay medidas oficiales, usarlas (el X10D: 79 x 65 x 14,5 cm
+desplegado). Apuntar qué se ve y qué es supuesto.
+
+### 4. La maqueta: `src/data/uas/<modelo>.ts`
+
+Solo datos (tipos en `src/data/uas/tipos.ts`). Copiar `mich-2000.ts` (ala
+volante) o `skydio-x10d.ts` (cuadricóptero). Imports de valor con extensión
+`.ts` (`import { PAISES_LUNA } from "../alunizajes.ts"`), porque los
+generadores de `arte/` leen estos archivos con Node.
+- **Ejes**: x hacia la punta del ala derecha, y arriba, z hacia el morro.
+  Unidades libres; `escala` = metros por unidad (MICH 1, X10D 0,25): con
+  ella los drones salen a escala real entre sí en la tira de la portada.
+- **Piezas** (`uas-geometria.ts`): `tubo` (fuselaje, torno a lo largo de z),
+  `ala` (perfil NACA, estaciones de raíz a punta), `placa` (canards,
+  winglets, elevones, brazos y patas planos; con `simetrica` y `bisel`,
+  cuerpos vistos desde arriba con los bordes redondeados), `varilla`
+  (antenas, motores, barras), `caja` (sensores; `redondeo`), `helice`
+  (`eje: "y"` para multirrotores; `palas`), `disco` (insignias, objetivos,
+  cámaras). `espejo` repite al otro lado.
+- **No hacer el cuerpo con cajas y cilindros sueltos**: al usuario le
+  parecieron «demasiado cuadrados» (primera versión del X10D). Sacar la
+  silueta desde arriba de las fotos y hacerla `placa` simétrica con bisel,
+  en uno o dos pisos.
+- **Detalles solo si se ven en las fuentes** (escarapela, juntas…), y
+  discretos: las juntas marcadas le parecieron exageradas.
+- **`acabado`** de cada pieza: negro (por defecto), gris, junta, mando,
+  metal, lente, amarillo, azul. Colores nuevos: añadirlos a `Acabado`
+  (`tipos.ts`), a `PALETAS` (`uas-paletas.ts`) y, si van en color en la
+  maqueta, a `COLOR_MAQUETA` (`visor-uas.ts`).
+- **`resalte: "tinta"`** en drones claros (la parte elegida sale oscura; en
+  blanco no se distingue). Por defecto, blanco papel.
+- **`pais`**: la chapa en pixel art 11x7 (las de `alunizajes.ts`,
+  `amartizajes.ts`; si falta, se añade allí).
+- **`partes`**: 5-8, en el orden de las letras: punto (`en`), piezas que
+  resalta, respaldo (`foto`, `reconstruccion`, `fabricante`), fuentes (ids),
+  texto y nota de lo supuesto.
+- **`fuentes`**: las fotos (con miniatura) y los artículos (sin ella).
+
+### 5. Miniaturas de las fotos de fuentes
+
+`sips -Z 560 -s format jpeg -s formatOptions 72 <foto> --out
+public/uas/<modelo>/fuentes/<foto>.jpg` (~50 KB cada una).
+
+### 6. Probar
+
+En la ficha (`/uas/<slug>`). Atajos en la URL del visor:
+`?vista=arriba|lado|frente|detras`, `?parte=C`, `?pestana=fuentes`,
+`?estilo=pixel`. Comparar las siluetas con las fotos, sobre todo planta y
+perfil.
+
+### 7. Miniaturas del dron (generadas)
+
+`node arte/generar-uas-miniaturas.mjs <modelo>`: la miniatura 3D (día y
+noche), el giro hasta ponerse de frente de las tarjetas de `/uas`
+(`giro-frente*.png`) y la planta a escala para la tira de la portada
+(`planta.png`). Repetir si cambia la maqueta.
+
+### 8. Capturas
+
+`node arte/capturas.mjs URL salida.png [--ir=SELECTOR] [--raton=SELECTOR]
+[--noche] [--js=CÓDIGO] [--tam=1300x900]` (con `npm run dev` en marcha).
+Ejemplos: la ficha en pixel, `…/uas/<slug>?estilo=pixel`; la tarjeta con el
+ratón, `--ir=.uas-tarjetas --raton=.uas-tarjeta`; la tira de la portada con
+la puerta abierta, `--ir=.tira-sat --raton=.sat-hangar`. Recortar con
+ffmpeg (`crop=`) para enseñar solo lo que importa. Si cambia el motor del
+visor, medir el **consumo en Zen** (`docs/rendimiento.md`).
 
 ## Qué tiene el visor
 
@@ -43,31 +193,34 @@ hace**, en este orden, enseñándole el resultado en cada paso:
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-- **Cabecera**: bandera en pixel art (`svgBandera`, la de /luna y /marte),
-  país, nombre, subtítulo; a la derecha y a media altura, el crédito en tres
-  líneas: «Maqueta creada a partir de fotos públicas. Hecho con» / icono de
-  Three.js + Three.js / Clawd + Claude Code (iconos: Clawd de `STACK` en
-  `src/consts.ts`, Three.js de simple-icons).
+- **Cabecera**: bandera en pixel art (`svgBandera`), país, nombre,
+  subtítulo; a la derecha y a media altura, el crédito en tres líneas:
+  «Maqueta creada a partir de fotos públicas. Hecho con» / icono de Three.js
+  + Three.js / Clawd + Claude Code (Clawd de `STACK` en `src/consts.ts`;
+  Three.js de simple-icons).
 - **Lienzo**: la maqueta. Se gira arrastrando, se acerca con la rueda o
-  pellizcando. Letras en casillas cuadradas sobre cada parte; las tapadas
-  por el dron, apagadas. La parte elegida se pinta en blanco papel y sale un
-  rótulo unido por una línea.
+  pellizcando. Letras en casillas sobre cada parte; las tapadas, apagadas.
+  La parte elegida se pinta en blanco papel (o tinta) y sale un rótulo.
 - **Barra**: la tira de siluetas (Planta, Perfil, Frente, 3D) son los
   botones de vista; se dibujan solas de la maqueta. Luego Maqueta | Pixel,
-  Girar (giro automático, apagado al empezar), − y +.
-- **Panel**, dos pestañas:
-  - **Partes**: lista con letras; al elegir una, casilla rellena en tinta y
-    nombre en negrita, y debajo su ficha: qué la respalda («Se ve en las
-    fotos», «Reconstrucción», «Dato del fabricante»), texto, nota en cursiva
-    (lo supuesto) y «Ver sus fuentes (n) →».
-  - **Fuentes**: miniatura, medio, título, enlace al original y «Respalda:
-    A · C». Con una parte elegida, se apagan las que no la respaldan.
+  Girar (apagado al empezar), − y +.
+- **Modo Pixel** (`uas-pixelado.ts`): la misma escena pintada en directo a
+  2 px por píxel de arte, cuatro tonos por acabado, tramado solo en
+  superficies curvas y contorno de 1 px. Se gira libre.
+- **Panel**, dos pestañas: **Partes** (lista con letras; la elegida con la
+  casilla en tinta y el nombre en negrita; debajo su ficha: respaldo, texto,
+  nota y «Ver sus fuentes (n) →») y **Fuentes** (miniatura, medio, título,
+  enlace y «Respalda: A · C»; con una parte elegida, se apagan las que no la
+  respaldan).
+- Rendimiento: solo pinta cuando algo cambia, 60 fps como mucho, las letras
+  tapadas se miran cada 200 ms, suelta el contexto WebGL al cambiar de
+  página (si no, al ir atrás y adelante fallaba).
 
-## Medidas
+### Medidas
 
 | Qué | Valor |
 |---|---|
-| Ancho del visor en la ficha | `min(1040px, 100vw − 2.5rem)`, centrado sobre el texto de 720 px |
+| Ancho del visor en la ficha | `min(1040px, 100vw − 2.5rem)`, centrado sobre el texto de 720 px (el usuario prefirió esto a ajustarlo al texto) |
 | Borde y esquinas | 1 px, radio 4 px |
 | Cabecera | relleno 1rem 1.25rem, raya discontinua abajo |
 | Cuerpo | rejilla `1fr` + panel de 17rem |
@@ -75,232 +228,103 @@ hace**, en este orden, enseñándole el resultado en cada paso:
 | Cuadrícula | 24 px |
 | Casilla de letra | 1.25rem, radio 2 px, IBM Plex Mono 0.68rem |
 | Silueta | 64x32 px (44x24 en estrecho) |
-| Pixel | 2 px CSS por píxel de arte (`TAM_PIXEL` en `uas-pixelado.ts`) |
-| Estrecho (≤ 720 px) | una columna: panel debajo, lista en dos columnas |
+| Pixel | 2 px CSS por píxel de arte (`TAM_PIXEL`) |
 
-Tipografía: IBM Plex Mono en mayúsculas espaciadas (0.12em) para rótulos,
-pestañas y siluetas; IBM Plex Sans para el resto (la de la web).
+### Colores («tinta, sin color»)
 
-## Colores («tinta, sin color»)
-
-Elegidos por el usuario el 27-sep-2026 entre cuatro opciones. Variables
-`--visor-*` al principio del `<style>` de `VisorUAS.astro`.
+Variables `--visor-*` al principio del `<style>` de `VisorUAS.astro`.
 
 | Variable | Día | Noche |
 |---|---|---|
 | Fondo de la tarjeta | `#ebebee` (página `#fafafa`) | `#25252a` (página `#18181b`) |
 | Acento (lo elegido) | `#27272a` | `#e4e4e7` |
-| Texto sobre acento | `#fafafa` | `#18181b` |
 | Maqueta: relleno | `#454950` | `#2c2e33` |
 | Maqueta: aristas | `#a3a9b1` | `#9aa0a8` |
 | Parte elegida | `#f4f4f5` | `#f4f4f5` |
 
-El dron va en **su color real** (el MICH, negro mate de fábrica). El único
-color de la tarjeta es la bandera y las insignias reales del dron.
-
-Paletas del modo Pixel (cuatro tonos por acabado) en `PALETAS` de
-`visor-uas.ts`: negro, junta, mando (elevones), metal, amarillo, azul y
-resalte; de noche el negro sube un poco y el contorno es un filo claro
-(`#6b7079`) para que no se pierda en la tarjeta.
-
-## Archivos
-
-| Archivo | Qué es |
-|---|---|
-| `src/data/uas/tipos.ts` | Qué es una maqueta: piezas, acabados, partes, fuentes, país |
-| `src/data/uas/<modelo>.ts` | La maqueta de un dron, **solo datos** |
-| `src/scripts/uas-geometria.ts` | Vistas y mallas de cada tipo de pieza |
-| `src/scripts/visor-uas.ts` | El motor (Three.js): escena, cámara, letras, vistas, modos |
-| `src/scripts/uas-pixelado.ts` | El modo Pixel: materiales por escalones y pasada de contorno |
-| `src/components/VisorUAS.astro` | El marco, generado en el build: `<VisorUAS modelo="mich-2000" />` |
-| `public/uas/<modelo>/fuentes/` | Miniaturas de las fotos de referencia |
-| `arte/uas-fuentes/<modelo>/` | Fotos a tamaño completo y `FUENTES.md` (fuera de Git) |
-| `src/pages/uas/index.astro` | El índice `/uas`, con filtro por país |
-| `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>`, con el visor en su hueco |
-| `scripts/importar-notas.mjs` | Lleva las notas de la carpeta a `src/content/uas/` (`clasificar`, `paisDeFicha`, `colocarVisor`) |
-| `00 - Meta/Plantilla UAS (Templater).md` (bóveda) | Esqueleto de la nota de un dron |
-
-## Receta: un dron nuevo
-
-1. **La nota en la bóveda**, en `02 - Temas/La gran enciclopedia de los
-   UAS./`, desde la plantilla `00 - Meta/Plantilla UAS (Templater).md`. El
-   nombre del archivo lleva delante la bandera (`🇺🇦 MICH-2000.md`); el
-   `titulo` da la dirección (`MICH 2000` → `/uas/mich-2000`) y tiene que
-   coincidir con el nombre de la maqueta. Frontmatter de siempre (sin claves
-   propias: lo decidió el usuario) y este cuerpo, pedido por él (modelo: la
-   del MICH-2000):
-   una cita con `>` justo bajo las propiedades, sin título (un párrafo: qué
-   es, quién lo usa, dónde ha destacado, con un enlace a la foto, noticia o
-   tuit de cada hecho; en la web sale bajo las etiquetas), `## Visor` (vacío
-   en la bóveda: ahí va el visor en la web), `## CARACTERÍSTICAS` (tabla de
-   dos columnas: País, Fabricante, Operador, Categoría, Situación, Primer uso
-   en combate, Envergadura / longitud / peso, Alcance, Carga, Motor, Origen),
-   `## Historia` (dos párrafos y uno corto de su uso reciente), `## En
-   acción` (tuits del dron en uso) y `## Fuentes` (`- Web ([fuente](url))` y
-   debajo de qué habla, con el nombre en negrita y una línea en blanco
-   entre fuentes). Sin reglas `---` entre apartados. Lo que venga solo
-   del fabricante se dice. Castellano llano, sin calcos del inglés. La fila
-   «País» de la tabla, con su bandera delante (`🇺🇦 Ucrania`), es la que usa
-   el filtro de `/uas`.
-2. **Fuentes.** Buscar fotos reales del dron montado: de perfil, desde
-   arriba o abajo (la planta), de frente y de detalle (morro, cola, motor).
-   Los mejores sitios son los medios que visitan la fábrica (para el MICH,
-   Oboronka). Descartar dibujos o renders que no se parezcan (en el MICH,
-   el de dronestrike.com). Guardarlas en `arte/uas-fuentes/<modelo>/` con un
-   `FUENTES.md` (archivo, qué enseña, URL) y copiar la lista al WIP del
-   proyecto, que sí va en Git.
-3. **Leer la forma** de las fotos: planta, perfil, dónde van las piezas.
-   Apuntar qué se ve y qué es supuesto. Casi nunca hay medidas publicadas:
-   las proporciones van a ojo y el visor lo avisa.
-4. **La maqueta** en `src/data/uas/<modelo>.ts` (copiar la del MICH):
-   - Ejes: x hacia la punta del ala derecha, y arriba, z hacia el morro.
-     Unidades libres; el MICH mide ~2,5 de envergadura.
-   - Piezas: `tubo` (fuselaje, torno a lo largo de z), `ala` (con perfil,
-     estaciones de raíz a punta), `placa` (canards, winglets, elevones,
-     brazos y patas planos; con `simetrica` y `bisel`, cuerpos vistos desde
-     arriba con los bordes redondeados, como el del X10D), `varilla`
-     (antenas, motores, barras), `caja` (sensores; `redondeo` para las
-     esquinas),
-     `helice` (con `eje: "y"`, horizontal, para multirrotores), `disco`
-     (insignias, objetivos, cámaras). `espejo` repite al otro lado.
-   - Escala: la que convenga (el MICH, ~2,5 de envergadura; el X10D, 1
-     unidad ≈ 25 cm). El visor encuadra solo. Si hay medidas oficiales,
-     úsalas (el X10D sale de las de Skydio).
-   - `acabado` de cada pieza: negro (por defecto), gris, junta, mando,
-     metal, lente, amarillo, azul. Colores nuevos: añadirlos a `Acabado`, a
-     `PALETAS` y, si van en color en la maqueta, a `COLOR_MAQUETA`. El dron
-     va en su color real (MICH, negro; X10D, gris claro).
-   - `resalte: "tinta"` en drones claros (la parte elegida sale oscura; en
-     blanco no se distingue). Por defecto, blanco papel.
-   - `pais`: chapa de 11x7 como las de `alunizajes.ts`.
-   - `partes`: 5-8, en el orden de las letras. Cada una con su punto (`en`),
-     las piezas que resalta, el respaldo, las fuentes (ids), el texto y la
-     nota de lo supuesto.
-   - `fuentes`: las fotos (con miniatura) y los artículos (sin ella).
-   - Modelos a copiar: `mich-2000.ts` (ala volante) y `skydio-x10d.ts`
-     (cuadricóptero).
-   - Evitar cajas y cilindros sueltos para el cuerpo: el usuario los ve
-     «demasiado cuadrados» (primera versión del X10D). Mejor sacar la
-     silueta desde arriba de las fotos y hacerla `placa` simétrica con
-     bisel, en uno o dos pisos.
-5. **Miniaturas**: `sips -Z 560 -s format jpeg -s formatOptions 72
-   <foto> --out public/uas/<modelo>/fuentes/<foto>.jpg` (~50 KB cada una).
-6. **Probar** en `npm run dev`, en la ficha (`/uas/<slug>`, con la nota
-   importada) o poniendo `<VisorUAS modelo="…" />` en una página suelta. Atajos en la URL:
-   `?vista=arriba|lado|frente|detras`, `?parte=C`, `?pestana=fuentes`,
-   `?estilo=pixel`. Comparar las siluetas con las fotos, sobre todo planta
-   y perfil. `npm run lint` y `npx astro check`.
-7. **Miniatura**: `node arte/generar-uas-miniaturas.mjs <modelo>` (sale
-   de la maqueta; hay que repetirlo si la maqueta cambia). Sin ella, el
-   dron no sale en la tira de la portada ni tiene foto en su tarjeta.
-8. **Capturas** para el usuario (día y noche; ver abajo) antes de dar nada
-   por bueno, y **consumo en Zen** si cambia el motor (`docs/rendimiento.md`).
-
-### Capturas sin ventana
-
-Chrome sin ventana contra `npm run dev` (siempre `localhost:4321`):
-
-```bash
-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
-  --use-angle=metal --ignore-gpu-blocklist --hide-scrollbars \
-  --window-size=1200,900 --virtual-time-budget=5000 \
-  --screenshot=captura.png --user-data-dir=/tmp/chrome-captura \
-  "http://localhost:4321/uas/mich-2000?parte=B"
-```
-
-Chrome no termina solo: esperar a que exista el PNG y cerrarlo. La noche va
-en `sessionStorage`; para capturarla, un HTML temporal en `public/` que haga
-`sessionStorage.setItem("theme","dark")` y redirija a la página (y borrarlo
-después).
+El dron va en **su color real**. Paletas del pixel (cuatro tonos por
+acabado, de día y de noche) en `src/scripts/uas-paletas.ts`, que comparten el
+visor y los generadores de `arte/`.
 
 ## El hangar: la tira de la portada y el índice
 
-El usuario llamó a la sección **«Hangar de UAS»** (27-sep-2026).
-
 **La tira de la portada**, entre la Luna y Marte y la del blog: la
-plataforma de un aeródromo de noche (baldosa de asfalto oscuro, como el
-resto de tarjetas; una línea amarilla de rodadura abajo).
+plataforma de un aeródromo de noche (asfalto oscuro, como el resto de
+tarjetas; línea amarilla de rodadura).
 - A la izquierda, «HANGAR DE UAS», el número y «N drones en el hangar».
-- El **hangar de arco, de lado y un poco girado** (boceto del usuario), en
-  **carbón con anexo** (elegido entre verde militar, aluminio, arena y
-  carbón, con y sin anexo): la pared larga de frente con «UAS» pintado con
-  plantilla, ventanucos, óxido bajo el alero y una puerta de servicio con
-  farol; tejado curvo con respiraderos y antena; a la izquierda, un anexo de
-  chapa; a la derecha, el testero en perspectiva con la puerta en arco,
-  mirando a los drones; bidones y una caja en el suelo. Puerta entreabierta
-  con una rendija de luz tenue; al pasar el ratón se abre en 5 fotogramas
-  (la luz se aviva y dentro se ve la silueta de un dron). Lo dibuja
-  `arte/generar-uas-hangar.mjs` (una tira de fotogramas; `ELEGIDO` dice qué
-  color y forma). Sin sombra junto a la puerta (el usuario la quitó).
-- La **luz en el suelo** la pone la portada (`.sat-luz`): un abanico cálido
-  en bandas que sale de la puerta hacia la plataforma, tenue siempre y
-  fuerte al abrir. Se probaron y quitaron un piloto rojo parpadeando en la
-  antena y un dron que salía volando al pasar el ratón (no los eligió).
+- El **hangar de arco en carbón con anexo, de lado y un poco girado**
+  (boceto del usuario): «UAS» con plantilla, ventanucos, óxido, puerta de
+  servicio con farol, respiraderos, antena, bidones; a la derecha, el
+  testero con la puerta en arco mirando a los drones. Entreabierta con luz
+  tenue; al pasar el ratón se abre en 5 fotogramas y la luz del suelo (medio
+  óvalo, «el arco completo») se ensancha y aviva. Lo dibuja
+  `arte/generar-uas-hangar.mjs` (`ELEGIDO` dice color y forma; hay verde
+  militar, aluminio, arena y carbón, con y sin anexo).
 - A la derecha, **hasta tres drones vistos desde arriba, a escala real entre
-  ellos** (`planta.png` de `generar-uas-miniaturas.mjs`, con la `escala` de
-  cada maqueta), en puestos marcados con discontinuas, con un recuadro y un
-  rótulo amarillos (nombre y bandera). Si hay más de tres, cada 7 s uno se
-  funde y entra otro (solo con la tira a la vista).
-- Rechazado por el usuario: los drones en 3/4 quietos en fila («super
-  cutre»), la versión «hangar a oscuras», la línea de barrido al pasar el
-  ratón, los números «01», «02», el rótulo «Reconstrucción · drones a
-  escala», el suelo claro (desentonaba con las otras tarjetas oscuras) y
-  los hangares vistos desde arriba («se ven FATAL»; lo quería de lado).
+  ellos**, en puestos con discontinuas, con recuadro y rótulo amarillos
+  (nombre y bandera). Con más de tres, van rotando cada 7 s.
+- Rechazado: drones en 3/4 quietos en fila, «hangar a oscuras», línea de
+  barrido, números «01», «02», rótulo «Reconstrucción · drones a escala»,
+  suelo claro, hangares vistos desde arriba («se ven FATAL»), luz del suelo
+  hecha con CSS, silueta de dron dentro de la puerta (parecía una sombra),
+  piloto rojo y dron que sale volando (no los eligió).
 
-**El índice `/uas`**: título «Hangar de UAS», filtro por país (sale de la
-fila «País» de la tabla) y tarjetas con la miniatura 3D sobre la
-cuadrícula del visor, país, nombre, categoría y el principio de la
-introducción. El filtro por tipo se quitó (el usuario: «de momento solo
-por país»); el importador sigue sacando la categoría.
+**El índice `/uas`**: título «Hangar de UAS», filtro por país y tarjetas con
+el dron en pixel art sobre la cuadrícula del visor, país, nombre, categoría y
+el principio de la introducción. Al pasar el ratón, el dron **gira hasta
+ponerse de frente** (`giro-frente.png`) y el país resalta; con un filtro
+puesto, el país sale marcado en todas las tarjetas. (Se probó una vuelta
+completa; eligió «de frente». El filtro por tipo se quitó.)
 
 ## Las fichas en la web
 
 Toda nota de la carpeta de la enciclopedia es una ficha de la colección
 `uas` (`src/content/uas/`), en `/uas/<slug>`; no sale en `/notas` ni en el
-blog, y su «Volver» lleva a `/uas`. El importador la reconoce por la
-carpeta y saca el país de la fila «País» de la tabla (`pais` y `bandera` en
-el frontmatter importado, que usa el filtro de `/uas`).
+blog, y su «Volver» lleva a `/uas`. El importador (`scripts/importar-notas.mjs`)
+la reconoce por la carpeta y saca de la tabla el país (`pais`, `bandera`) y
+la categoría (`categoria`).
 
 Si existe `src/data/uas/<slug>.ts`, el importador (`colocarVisor`) cambia la
-sección `## Visor` (título incluido: en la web no sale) por un hueco
-(`<div class="visor-hueco">`) y la
-ficha pinta el visor y lo mueve a ese hueco, más ancho que el texto (hasta
-1040 px, centrado) y sin los estilos del texto (`not-prose`). Si no hay
-maqueta, la sección «Visor» no sale y el índice no le pone la marca
-«Visor».
+sección `## Visor` (título incluido) por un hueco (`<div class="visor-hueco">`)
+y la ficha pinta el visor en ese hueco, más ancho que el texto y sin sus
+estilos (`not-prose`). Si no hay maqueta, la sección no sale.
 
-En las fichas, la línea sangrada bajo un punto de lista (la descripción de
-cada fuente) sale debajo, como en Obsidian (`saltosEnListas`).
+También en el importador: la línea sangrada bajo un punto de lista (la
+descripción de cada fuente) sale debajo, como en Obsidian (`saltosEnListas`);
+los `==resaltados==` pasan a `<mark>` (rotulador amarillo); los tuits salen
+del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
 
-Los `==resaltados==` de Obsidian se convierten a `<mark>` (rotulador
-amarillo, texto oscuro); la del MICH fue la primera nota publicada que los
-usaba.
+## Archivos
 
-Tras `npm run importar`, el servidor de desarrollo no ve las notas nuevas
-hasta reiniciarlo (el importador borra y regenera `src/content/`).
-
-Mientras el proyecto está en una rama, la nota se prueba con `publicar:
-true` solo en local y luego se deja en `false` y se borra lo importado: las
-notas de la bóveda se publican siempre desde `main`.
+| Archivo | Qué es |
+|---|---|
+| `src/data/uas/tipos.ts` | Qué es una maqueta: piezas, acabados, partes, fuentes, país, escala |
+| `src/data/uas/<modelo>.ts` | La maqueta de un dron, **solo datos** |
+| `src/scripts/uas-geometria.ts` | Vistas y mallas de cada tipo de pieza |
+| `src/scripts/uas-paletas.ts` | Paletas del pixel art (visor y generadores) |
+| `src/scripts/visor-uas.ts` | El motor (Three.js): escena, cámara, letras, vistas, modos |
+| `src/scripts/uas-pixelado.ts` | El modo Pixel |
+| `src/components/VisorUAS.astro` | El marco del visor: `<VisorUAS modelo="mich-2000" />` |
+| `src/pages/uas/index.astro` | El índice `/uas` |
+| `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>` |
+| `src/pages/index.astro`, `src/styles/portada.css` | La tira «Hangar de UAS» (`.tira-sat`) |
+| `scripts/importar-notas.mjs` | Notas de la carpeta → `src/content/uas/` |
+| `arte/generar-uas-miniaturas.mjs` | Miniatura, giro y planta de cada dron |
+| `arte/generar-uas-hangar.mjs` | El hangar y el asfalto de la tira |
+| `arte/capturas.mjs` | Capturas para enseñar al usuario |
+| `public/uas/<modelo>/` | Miniaturas, giro, planta y `fuentes/` |
+| `arte/uas-fuentes/<modelo>/` | Fotos a tamaño completo y `FUENTES.md` (fuera de Git) |
+| `00 - Meta/Plantilla UAS (Templater).md` (bóveda) | Esqueleto de la nota |
 
 ## Lo que el usuario quiere (y lo que rechazó)
 
-- **Diseño propio.** El primer marco calcaba el de drone-warfare.com y lo
-  rechazó: «me gusta la idea, pero no que le copiemos todo». Tomar la idea
-  de otras webs, nunca su diseño.
-- **Sin acento de color**: rechazó el verde azulado (`#2f8f8a`, «muy IA»);
-  también se descartaron el azul del blog, el naranja y el rojo de sello.
-  Fuera el sello rojo y el código de ficha («UAS-UA-001»).
-- **El dron en su color real**, no en tinta ni en otro ejemplar.
-- **Pixel art con detalle y giro libre.** Una tira de 39 dibujos fijos fue
-  rechazada («hay que detallarlo más», «no me deja girarlo libremente»). Se
-  pinta en directo a 2 px con tramado.
-- **Solo detalles que se vean en las fuentes.** Preguntó si la escarapela
-  salía en las fotos (sí) y si las juntas eran reales (sí, pero su sitio es
-  a ojo, y así se dice). Los detalles, discretos: las juntas marcadas le
-  parecieron exageradas («son mucho más suaves»).
-- **Decir siempre de qué foto sale cada cosa** (respaldo y fuentes de cada
-  parte) y avisar de lo supuesto.
-- **Consumo**: al girar sube algo en Zen. Se limitó a 60 fps, las letras
-  tapadas se miran cada 200 ms y el rótulo se mide al cambiar de texto;
-  falta medirlo en vatios.
+- **Diseño propio**: el primer visor calcaba el de drone-warfare.com («me
+  gusta la idea, pero no que le copiemos todo»).
+- **Sin acento de color** en el visor: rechazó el verde azulado («muy IA»),
+  el sello rojo y el código de ficha.
+- **El dron en su color real.**
+- **Pixel art con detalle y giro libre** (una tira de 39 dibujos fijos fue
+  rechazada).
+- **Solo detalles que se vean en las fuentes**, y decir de qué foto sale cada
+  cosa y qué es supuesto.
+- **Consumo**: al girar sube algo en Zen; está limitado, falta medirlo.

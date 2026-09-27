@@ -55,8 +55,8 @@ const tamPlanta = (id: string) => {
   const b = fs.readFileSync(`public/uas/${id}/planta.png`);
   return { ancho: b.readUInt32BE(16), alto: b.readUInt32BE(20) };
 };
-// El hangar (carbón con anexo): tira de 5 fotogramas de la puerta abriéndose
-// y dónde cae la puerta, para la luz del suelo (arte/generar-uas-hangar.mjs).
+// El hangar (carbón con anexo): tira de 5 fotogramas de la puerta abriéndose,
+// con la luz en el suelo (arte/generar-uas-hangar.mjs), y su tamaño.
 const ph = JSON.parse(fs.readFileSync("public/uas/hangar/posiciones.json", "utf8")).anexo;
 const textoHangar = `${fichasUas.length === 1 ? "dron" : "drones"} en el hangar`;
 
@@ -256,7 +256,6 @@ const dos = (n: number) => String(n).padStart(2, "0");
             class="sat-hangar"
             aria-hidden="true"
             style={`--ancho:${ph.ancho * 2}px;--alto:${ph.alto * 2}px;--fotogramas:${ph.fotogramas}`}>
-            <span class="sat-luz" style={`left:${ph.puerta[0] * 2}px;top:${ph.puerta[1] * 2}px`}></span>
           </span>
           <span class="sat-plataforma">
             {dronesHangar.map((f, i) => {

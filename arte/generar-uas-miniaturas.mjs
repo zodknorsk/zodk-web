@@ -8,6 +8,9 @@
 // Escribe en public/uas/<modelo>/:
 //   miniatura.png, miniatura-noche.png  la vista 3D del visor, ajustada a
 //                                        96x56 (día y noche)
+//   giro-frente.png, giro-frente-noche.png
+//                                        tira de 6 fotogramas: de la vista 3D
+//                                        a ponerse de frente (tarjetas de /uas)
 //   planta.png                          desde arriba, con el morro hacia
 //                                        arriba, a escala real entre drones
 //                                        (PX_POR_METRO, con la «escala» de
@@ -136,6 +139,29 @@ for (const modelo of modelos) {
     const color = rasterizar(mallas, vista, W, H, escala, (o.max.x + o.min.x) / 2, (o.max.y + o.min.y) / 2);
     await guardar(pintar(color, W, H, PALETAS.dia), W, H, path.join(dir, "miniatura.png"));
     await guardar(pintar(color, W, H, PALETAS.noche), W, H, path.join(dir, "miniatura-noche.png"));
+  }
+
+  // Giro para las tarjetas (de la vista 3D a ponerse de frente): la misma
+  // escala en todos los fotogramas (la que hace caber al más grande) y
+  // centrados en el centro del dron, para que no bailen.
+  const giros = {
+    frente: [[38, 32], [30, 27], [22, 22], [14, 17], [7, 12], [0, 8]],
+  };
+  for (const [nombre, vistas] of Object.entries(giros)) {
+    const matrices = vistas.map((v) => camaraDesde(v, centro));
+    const escala = Math.min(...matrices.map((m) => {
+      const o = ocupacion(mallas, m);
+      return Math.min((W - 4) / (2 * Math.max(-o.min.x, o.max.x)), (H - 4) / (2 * Math.max(-o.min.y, o.max.y)));
+    }));
+    const colores = matrices.map((m) => rasterizar(mallas, m, W, H, escala, 0, 0));
+    for (const momento of ["dia", "noche"]) {
+      const tira = new Uint8Array(W * vistas.length * H * 4);
+      colores.forEach((color, f) => {
+        const img = pintar(color, W, H, PALETAS[momento]);
+        for (let y = 0; y < H; y++) tira.set(img.subarray(y * W * 4, (y + 1) * W * 4), (y * W * vistas.length + f * W) * 4);
+      });
+      await guardar(tira, W * vistas.length, H, path.join(dir, `giro-${nombre}${momento === "dia" ? "" : "-noche"}.png`));
+    }
   }
 
   // Planta a escala real, con sombra.

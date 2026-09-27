@@ -10,7 +10,10 @@ import Container from "@components/Container.astro";
 import { porFecha } from "@lib/contenido";
 
 const fichas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
-const conMiniatura = (id: string) => fs.existsSync(`public/uas/${id}/miniatura.png`);
+const conGiro = (id: string) => fs.existsSync(`public/uas/${id}/giro-frente.png`);
+// La tira de giro de cada dron (arte/generar-uas-miniaturas.mjs), de día y de
+// noche, como variables para el CSS.
+const giros = (id: string) => `--frente:url(/uas/${id}/giro-frente.png);--frente-noche:url(/uas/${id}/giro-frente-noche.png)`;
 
 // Valores de un filtro con cuántas fichas tiene cada uno, de más a menos.
 function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
@@ -51,15 +54,10 @@ const paises = recuento((f) => f.data.pais);
               <li data-pais={f.data.pais ?? ""} data-categoria={f.data.categoria ?? ""}>
                 <a href={`/uas/${f.id}`} class="uas-tarjeta">
                   <span class="uas-tarjeta-foto">
-                    {conMiniatura(f.id) && (
-                      <>
-                        <img class="uas-dia" src={`/uas/${f.id}/miniatura.png`} alt="" width="96" height="56" loading="lazy" />
-                        <img class="uas-noche" src={`/uas/${f.id}/miniatura-noche.png`} alt="" width="96" height="56" loading="lazy" />
-                      </>
-                    )}
+                    {conGiro(f.id) && <span class="uas-giro" style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
                   </span>
                   <span class="uas-tarjeta-texto">
-                    <span class="uas-tarjeta-pais">{f.data.bandera} {f.data.pais}</span>
+                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera">{f.data.bandera}</span> {f.data.pais}</span>
                     <span class="uas-tarjeta-nombre">{f.data.title}</span>
                     {f.data.categoria && <span class="uas-tarjeta-categoria">{f.data.categoria}</span>}
                     {f.data.description && <span class="uas-tarjeta-desc">{f.data.description}</span>}
@@ -90,6 +88,8 @@ const paises = recuento((f) => f.data.pais);
       });
       const vacio = document.querySelector(".uas-vacio") as HTMLElement | null;
       if (vacio) vacio.hidden = quedan !== 0;
+      // Con un país elegido, las tarjetas lo marcan.
+      document.querySelector(".uas-tarjetas")?.classList.toggle("uas-tarjetas--filtro", !!elegido.pais);
     };
     for (const g of grupos) {
       g.addEventListener("click", (e) => {
@@ -160,14 +160,31 @@ const paises = recuento((f) => f.data.pais);
       linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   }
-  .uas-tarjeta-foto img { grid-area: 1 / 1; width: 192px; height: 112px; image-rendering: pixelated; }
-  .uas-noche { display: none; }
-  :global(html.dark) .uas-noche { display: block; }
-  :global(html.dark) .uas-dia { display: none; }
+  /* El dron: primer fotograma de su tira de giro, al doble. Al pasar el
+     ratón gira hasta ponerse de frente y se queda; al quitarlo, vuelve. */
+  .uas-giro {
+    display: block;
+    width: 192px;
+    height: 112px;
+    background: var(--frente) 0 0 / 1152px 112px no-repeat;
+    image-rendering: pixelated;
+    transition: background-position 0.5s steps(5);
+  }
+  :global(html.dark) .uas-giro { background-image: var(--frente-noche); }
+  .uas-tarjeta:hover .uas-giro { background-position: -960px 0; }
+  @media (prefers-reduced-motion: reduce) { .uas-giro { transition: none; } }
   .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
-  .uas-tarjeta-pais { font-size: 0.62rem; opacity: 0.7; }
+  /* País: resalta al pasar el ratón y, con un filtro puesto, siempre. */
+  .uas-tarjeta-pais { font-size: 0.62rem; opacity: 0.7; transition: opacity 0.2s; }
+  .uas-tarjeta-bandera { display: inline-block; transition: transform 0.2s; }
+  .uas-tarjeta:hover .uas-tarjeta-pais, .uas-tarjetas--filtro .uas-tarjeta-pais { opacity: 1; font-weight: 600; color: #18181b; }
+  :global(html.dark) .uas-tarjeta:hover .uas-tarjeta-pais, :global(html.dark) .uas-tarjetas--filtro .uas-tarjeta-pais { color: #f4f4f5; }
+  .uas-tarjeta:hover .uas-tarjeta-bandera, .uas-tarjetas--filtro .uas-tarjeta-bandera { transform: scale(1.35); }
+  .uas-tarjetas--filtro .uas-tarjeta-pais { align-self: flex-start; padding: 0.1rem 0.4rem; border-radius: 3px; background: #27272a; color: #fafafa; }
+  :global(html.dark) .uas-tarjetas--filtro .uas-tarjeta-pais { background: #e4e4e7; color: #18181b; }
   .uas-tarjeta-nombre { font-size: 1.05rem; font-weight: 600; color: #18181b; }
   :global(html.dark) .uas-tarjeta-nombre { color: #f4f4f5; }
   .uas-tarjeta-categoria { font-size: 0.62rem; opacity: 0.7; }
   .uas-tarjeta-desc { margin-top: 0.35rem; font-size: 0.82rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
+

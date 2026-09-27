@@ -46,8 +46,9 @@ la variable `CHROME`, y opciones de más en `CHROME_ARGS`).
 | `generar-astros.py` | El sol y la tira de 30 fases de la luna del cielo de la portada | `public/zodk-sol.png`, `public/zodk-luna-fases.png` |
 | `generar-estrellas.py` | Las baldosas de estrellas del fondo | `zodk-estrellas.png` y `zodk-estrellas-noche.png` (aquí; se copian a `public/`) |
 | `generar-avatar.py` | Los fotogramas del avatar que se mueve en `/blog` y en la tira de la portada, sacados de `zodk-avatar.gif` (que no se toca) | `public/zodk-avatar-tira.png` y `-z.png` |
-| `generar-uas-miniaturas.mjs` | La miniatura en pixel art de cada dron de `/uas` (día y noche), de su maqueta, para la tira «Hangar de UAS» de la portada y las tarjetas de `/uas`. Uso: `node arte/generar-uas-miniaturas.mjs [modelo…]` | `public/uas/<modelo>/miniatura*.png` |
+| `generar-uas-miniaturas.mjs` | De la maqueta de cada dron de `/uas`: la miniatura 3D, el giro hasta ponerse de frente (tarjetas de `/uas`) y la planta a escala real (tira «Hangar de UAS» de la portada), en pixel art. Uso: `node arte/generar-uas-miniaturas.mjs [modelo…]` | `public/uas/<modelo>/miniatura*.png`, `giro-frente*.png`, `planta.png` |
 | `generar-uas-hangar.mjs` | El hangar de la tira «Hangar de UAS» (de lado, con la puerta entreabierta y abierta) y la baldosa de asfalto. Uso: `node arte/generar-uas-hangar.mjs` | `public/uas/hangar/` |
+| `capturas.mjs` | Capturas de la web sin ventana (bajar a un elemento, pasar el ratón, modo noche). Ver `docs/uas.md` | un PNG |
 | `generar-aeronaves.py` | El Sentinel-2, la única nave en pixel art (las demás son fotos) | `public/zodk-sat-sentinel*.svg` |
 | `generar-naves-noche.py` | La versión de noche de las fotos de las naves | `public/zodk-<nave>-noche.png` |
 | `generar-logo.py` | El logo animado de la cabecera (ver `docs/logo.md`) | `zodk-logo-animado.svg` (aquí) |
