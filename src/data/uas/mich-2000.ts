@@ -34,8 +34,24 @@ const maqueta: Maqueta = {
         [1.22, -0.44, -0.76, 0.035],
       ],
     },
+    // Juntas entre las secciones del fuselaje: la foto de las secciones
+    // enseña que se monta por tramos unidos con anillos; cuántas hay y dónde,
+    // no se ve en ningún dron montado (a ojo). Apenas asoman.
+    ...[1.02, 0.55, 0.05, -0.42].map((z) => ({
+      tipo: "tubo" as const, id: `junta-${z}`, acabado: "junta" as const, centro: [0, 0.02] as [number, number],
+      perfil: [[z + 0.005, 0.1612], [z - 0.005, 0.1612]] as [number, number][],
+    })),
+    // Escarapela ucraniana a cada lado del morro, tras los canards.
     {
-      tipo: "placa", id: "elevones", plano: "horizontal", y: 0.004, grosor: 0.016, espejo: true,
+      tipo: "disco", id: "escarapela", acabado: "amarillo", espejo: true,
+      en: [0.158, 0.03, 0.8], normal: [1, 0, 0], radio: 0.07, grosor: 0.008,
+    },
+    {
+      tipo: "disco", id: "escarapela-centro", acabado: "azul", espejo: true,
+      en: [0.164, 0.03, 0.8], normal: [1, 0, 0], radio: 0.042, grosor: 0.006,
+    },
+    {
+      tipo: "placa", id: "elevones", acabado: "mando", plano: "horizontal", y: 0.004, grosor: 0.016, espejo: true,
       planta: [[0.2, -0.762], [1.16, -0.762], [1.16, -0.85], [0.2, -0.85]],
     },
     {
@@ -47,9 +63,9 @@ const maqueta: Maqueta = {
       tipo: "placa", id: "winglets", plano: "vertical", x: 1.23, grosor: 0.015, espejo: true,
       planta: [[-0.46, 0.12], [-0.78, 0.16], [-0.8, -0.3], [-0.54, -0.26]],
     },
-    { tipo: "varilla", id: "motor", desde: [0, 0.02, -0.79], hasta: [0, 0.02, -0.9], radio: 0.045 },
-    { tipo: "helice", id: "helice", en: [0, 0.02, -0.92], radio: 0.28, palas: 2 },
-    { tipo: "varilla", id: "antena", desde: [0, 0.16, 0.82], hasta: [0, 0.28, 0.78], radio: 0.008 },
+    { tipo: "varilla", id: "motor", acabado: "metal", desde: [0, 0.02, -0.79], hasta: [0, 0.02, -0.9], radio: 0.045 },
+    { tipo: "helice", id: "helice", acabado: "metal", en: [0, 0.02, -0.92], radio: 0.28, palas: 2 },
+    { tipo: "varilla", id: "antena", acabado: "metal", desde: [0, 0.16, 0.82], hasta: [0, 0.28, 0.78], radio: 0.008 },
   ],
   partes: [
     {
@@ -89,11 +105,11 @@ const maqueta: Maqueta = {
     {
       nombre: "Fuselaje y cabeza de combate",
       en: [0.1, 0.16, 0.45],
-      piezas: ["fuselaje"],
+      piezas: ["fuselaje", "junta-1.02", "junta-0.55", "junta-0.05", "junta--0.42"],
       respaldo: "fabricante",
       fuentes: ["secciones", "morro", "oboronka"],
       texto: "Un tubo que sobresale por delante del ala; en la fábrica ucraniana se monta por secciones. El fabricante habla de una cabeza de combate de 25 a 60 kg y de depósitos de varios tamaños según el alcance, hasta 2.000 km.",
-      nota: "Dónde va cada cosa por dentro no se ha publicado.",
+      nota: "Dónde va cada cosa por dentro no se ha publicado. Las juntas entre secciones son reales, pero su número y su sitio son a ojo.",
     },
     {
       nombre: "Motor y hélice",

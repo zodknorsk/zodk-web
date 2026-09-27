@@ -44,10 +44,8 @@ const VISTAS = [
       <p class="visor-subtitulo">{m.subtitulo}</p>
     </div>
     <p class="visor-credito">
-      Maqueta de zodk.eu a partir de fotos públicas<br />
-      Hecho con
-      <a href="https://threejs.org" target="_blank" rel="noopener"><span class="visor-credito-icono" set:html={ICONO_THREE} />Three.js</a>
-      y
+      Maqueta creada a partir de fotos públicas. Hecho con<br />
+      <a href="https://threejs.org" target="_blank" rel="noopener"><span class="visor-credito-icono" set:html={ICONO_THREE} />Three.js</a><br />
       <a href="https://claude.com/claude-code" target="_blank" rel="noopener"><span class="visor-credito-icono" set:html={ICONO_CLAUDE} />Claude Code</a>
     </p>
   </div>
@@ -84,7 +82,7 @@ const VISTAS = [
         <div class="visor-herramientas">
           <div class="visor-estilo" role="group" aria-label="Estilo">
             <button type="button" data-estilo="maqueta" aria-pressed="true">Maqueta</button>
-            <button type="button" data-estilo="pixel" aria-pressed="false" disabled title="La versión en pixel art llegará más adelante">Pixel</button>
+            <button type="button" data-estilo="pixel" aria-pressed="false" title="Pixel art">Pixel</button>
           </div>
           <button type="button" data-accion="girar" aria-pressed="false" title="Girar solo">Girar</button>
           <button type="button" data-accion="alejar" aria-label="Alejar" title="Alejar">−</button>
@@ -179,7 +177,12 @@ const VISTAS = [
        noche. Sin color de acento: lo elegido va en tinta, como en un manual
        de reconocimiento; el único color es la bandera. */
     --visor-tinta: #27272a;
-    --visor-relleno: #f8f8f9;
+    /* La maqueta, negro mate como los ejemplares de la fábrica; la parte
+       elegida, en blanco papel. */
+    --visor-relleno: #454950;
+    --visor-arista: #a3a9b1;
+    --visor-resalte: #f4f4f5;
+    --visor-resalte-arista: #71717a;
     --visor-acento: #27272a;
     --visor-sobre-acento: #fafafa;
     --visor-borde: rgba(0, 0, 0, 0.13);
@@ -195,7 +198,10 @@ const VISTAS = [
   }
   html.dark .visor {
     --visor-tinta: #d4d4d8;
-    --visor-relleno: #313137;
+    --visor-relleno: #2c2e33;
+    --visor-arista: #9aa0a8;
+    --visor-resalte: #f4f4f5;
+    --visor-resalte-arista: #a1a1aa;
     --visor-acento: #e4e4e7;
     --visor-sobre-acento: #18181b;
     --visor-borde: rgba(255, 255, 255, 0.13);
@@ -218,6 +224,7 @@ const VISTAS = [
 
   /* Cabecera: país, nombre y, a la derecha, el crédito. */
   .visor-cab {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -229,8 +236,12 @@ const VISTAS = [
   .visor-bandera svg { display: block; width: 22px; height: auto; image-rendering: pixelated; shape-rendering: crispEdges; }
   .visor-titulo { font-size: 1.7rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
   .visor-subtitulo { font-size: 0.9rem; color: var(--visor-suave); }
+  /* A la derecha, a media altura de la cabecera. */
   .visor-credito {
-    flex: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0.75rem;
     font-size: 0.66rem;
     line-height: 1.6;
     text-align: right;
@@ -246,6 +257,7 @@ const VISTAS = [
 
   .visor-lienzo-caja {
     position: relative;
+    overflow: hidden;
     height: 26rem;
     background-image:
       linear-gradient(var(--visor-borde) 1px, transparent 1px),
@@ -380,7 +392,14 @@ const VISTAS = [
     text-align: left;
     color: var(--visor-texto);
   }
-  .visor-lista button:hover, .visor-lista button[aria-pressed="true"] { color: var(--visor-acento); }
+  .visor-lista button:hover { color: var(--visor-acento); }
+  /* La parte elegida: casilla rellena en tinta y nombre en negrita. */
+  .visor-lista button[aria-pressed="true"] { font-weight: 600; }
+  .visor-lista button[aria-pressed="true"] .visor-letra {
+    background: var(--visor-acento);
+    border-color: var(--visor-acento);
+    color: var(--visor-sobre-acento);
+  }
   .visor-ficha { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed var(--visor-borde); }
   .visor-respaldo { color: var(--visor-suave); }
   .visor-respaldo--foto { color: var(--visor-acento); }
@@ -424,7 +443,7 @@ const VISTAS = [
     .visor-lienzo-caja { height: 22rem; }
     .visor-lista { columns: 2; }
     .visor-hoja { position: static; }
-    .visor-credito { text-align: left; }
+    .visor-credito { position: static; transform: none; text-align: left; }
   }
   @container (max-width: 480px) {
     .visor-cab { flex-direction: column; align-items: flex-start; }

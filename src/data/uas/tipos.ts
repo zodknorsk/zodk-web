@@ -8,7 +8,10 @@ import type { Pais } from "../alunizajes";
 type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
-export type Pieza =
+// Acabado de una pieza: de qué color va (negro por defecto).
+export type Acabado = "negro" | "metal" | "junta" | "mando" | "amarillo" | "azul";
+
+export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
   | { tipo: "tubo"; id: string; perfil: Punto2[]; centro?: Punto2 }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
@@ -24,7 +27,11 @@ export type Pieza =
   // Varilla recta (mástiles, antenas).
   | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number }
   // Hélice mirando a lo largo de z.
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number };
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number }
+  // Disco plano (insignias): centro, hacia dónde mira, radio y grosor.
+  // espejo: se repite al otro lado (x → −x, la normal también).
+  | { tipo: "disco"; id: string; en: Punto3; normal: Punto3; radio: number; grosor: number; espejo?: boolean }
+) & { acabado?: Acabado };
 
 // Qué respalda lo que cuenta cada parte.
 export type Respaldo = "foto" | "reconstruccion" | "fabricante";

@@ -36,6 +36,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/tierra.md` | La portada (la Tierra) |
 | `docs/luna.md` | `/luna` |
 | `docs/marte.md` | `/marte` |
+| `docs/uas.md` | El visor de los drones (UAS): receta para uno nuevo |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
 | `docs/contenido.md` | Importador de Obsidian, notas, eventos, tuits |
 | `docs/rendimiento.md` | Consumo en Zen: cómo medir |

@@ -4,131 +4,54 @@
 // cambio de vista); el giro automático es lo único que pinta seguido, y se
 // para si la página no se ve.
 import {
-  BoxGeometry, BufferGeometry, Color, CylinderGeometry, DoubleSide, EdgesGeometry,
-  ExtrudeGeometry, Group, HemisphereLight, LatheGeometry, LineBasicMaterial,
-  LineSegments, Mesh, MeshLambertMaterial, PerspectiveCamera, Quaternion,
-  Raycaster, Scene, Shape, SphereGeometry, Spherical, Vector2, Vector3,
-  WebGLRenderer, DirectionalLight, Box3, MeshBasicMaterial, OrthographicCamera,
-  Float32BufferAttribute,
+  Color, DoubleSide, EdgesGeometry, Group, HemisphereLight, LineBasicMaterial,
+  LineSegments, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene,
+  Spherical, Vector3, WebGLRenderer, DirectionalLight, Box3, MeshBasicMaterial,
+  OrthographicCamera, type ShaderMaterial,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import type { Maqueta, Pieza } from "../data/uas/tipos";
+import type { Acabado, Maqueta } from "../data/uas/tipos";
+import { geometriaDe, VISTAS, type Vista } from "./uas-geometria";
+import { crearPixelado, materialPixel, ponerPaleta, type Paleta } from "./uas-pixelado";
 
-export type Vista = "3d" | "arriba" | "lado" | "frente" | "detras";
+type Pin = { x: number; y: number; tapado: boolean };
 
-// Ángulos de cada vista: [acimut, elevación] en grados. Acimut 0 = de frente
-// (desde el morro), 90 = desde el ala derecha.
-const VISTAS: Record<Vista, [number, number]> = {
-  "3d": [38, 32],
-  arriba: [180, 89.9],  // desde detrás, para que el morro quede arriba
-  lado: [90, 0],
-  frente: [0, 0],
-  detras: [180, 8],
+// Paletas del modo Pixel (de oscuro a claro), por acabado. El dron, negro
+// mate como los ejemplares de la fábrica; las juntas, un punto más oscuras;
+// los elevones, un punto más claros; motor, hélice y antena, metal gris; la
+// escarapela, sus colores. La parte elegida va en blanco papel. De noche, el
+// negro sube un poco para no perderse en la tarjeta oscura y el contorno
+// pasa a ser un filo claro.
+type Paletas = Record<Acabado | "resalte", Paleta> & { contorno: string };
+const COMUNES = {
+  metal: ["#3b3f45", "#5a5f67", "#7d838c", "#a3a9b1"],
+  amarillo: ["#8a6d00", "#b89200", "#e0b400", "#ffd500"],
+  azul: ["#0b2a66", "#12398a", "#1a4fb5", "#2f68d6"],
+} satisfies Record<string, Paleta>;
+const PALETAS: Record<"dia" | "noche", Paletas> = {
+  dia: {
+    ...COMUNES,
+    negro: ["#101114", "#1c1e22", "#2c2f35", "#43474f"],
+    junta: ["#0d0e11", "#18191d", "#27292e", "#3c4047"],
+    mando: ["#16181b", "#25282d", "#383c43", "#51565f"],
+    resalte: ["#9aa0a8", "#bfc4ca", "#dfe2e6", "#f7f8f9"],
+    contorno: "#08090b",
+  },
+  noche: {
+    ...COMUNES,
+    negro: ["#15161a", "#23252a", "#34373e", "#4c5058"],
+    junta: ["#121316", "#1f2125", "#2f3238", "#464a52"],
+    mando: ["#1b1d21", "#2b2e34", "#3f434a", "#5a5f67"],
+    resalte: ["#8f959d", "#b4b9c0", "#d6d9de", "#f1f2f4"],
+    contorno: "#6b7079",
+  },
 };
+// En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
+const COLOR_MAQUETA: Partial<Record<Acabado, string>> = { amarillo: "#e0b400", azul: "#1a4fb5" };
 
-type Colores = { tinta: Color; relleno: Color; acento: Color };
+export type { Vista };
 
-// Medio grosor de un perfil NACA de 4 cifras simétrico, en tanto por uno del
-// grosor máximo (0 en el borde de ataque, 0,5 hacia un tercio de la cuerda,
-// casi 0 en el de salida).
-const perfilNaca = (s: number) =>
-  5 * (0.2969 * Math.sqrt(s) - 0.126 * s - 0.3516 * s ** 2 + 0.2843 * s ** 3 - 0.1036 * s ** 4);
-
-// Ala con perfil: cada estación es un contorno de perfil (extradós abombado,
-// intradós más plano); las estaciones se unen a lo largo de la envergadura y
-// las puntas se cierran.
-function geometriaAla(y: number, mitad: [number, number, number, number][]): BufferGeometry {
-  const N = 14;  // puntos por cara, más juntos cerca del borde de ataque
-  const cuerda = Array.from({ length: N + 1 }, (_, i) => (1 - Math.cos((i / N) * Math.PI)) / 2);
-  // El contorno va del borde de salida por arriba hasta el de ataque y vuelve
-  // por abajo, sin repetir los extremos.
-  const contorno: [number, number][] = [
-    ...cuerda.slice().reverse().map((s): [number, number] => [s, 1]),
-    ...cuerda.slice(1, -1).map((s): [number, number] => [s, -0.55]),
-  ];
-  const M = contorno.length;
-  const estaciones = [
-    ...mitad.slice().reverse().map(([x, a, b, t]) => [-x, a, b, t] as const),
-    ...mitad.filter(([x]) => x > 0),
-  ];
-  const pos: number[] = [];
-  for (const [x, zBA, zBS, t] of estaciones)
-    for (const [s, lado] of contorno) pos.push(x, y + lado * t * perfilNaca(s), zBA + (zBS - zBA) * s);
-  const idx: number[] = [];
-  for (let e = 0; e < estaciones.length - 1; e++)
-    for (let k = 0; k < M; k++) {
-      const a = e * M + k, b = e * M + ((k + 1) % M), c = a + M, d = b + M;
-      idx.push(a, b, c, b, d, c);
-    }
-  // Tapas de las puntas: abanico desde el centro de cada contorno.
-  for (const e of [0, estaciones.length - 1]) {
-    const [x, zBA, zBS] = estaciones[e];
-    const centro = pos.length / 3;
-    pos.push(x, y, (zBA + zBS) / 2);
-    for (let k = 0; k < M; k++) idx.push(centro, e * M + k, e * M + ((k + 1) % M));
-  }
-  const g = new BufferGeometry();
-  g.setAttribute("position", new Float32BufferAttribute(pos, 3));
-  g.setIndex(idx);
-  g.computeVertexNormals();
-  return g;
-}
-
-function geometriaDe(p: Pieza): BufferGeometry[] {
-  switch (p.tipo) {
-    case "ala":
-      return [geometriaAla(p.y, p.estaciones)];
-    case "tubo": {
-      // El torno gira alrededor de y; luego se tumba para que el eje sea z.
-      const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();
-      const g = new LatheGeometry(puntos, 28);
-      g.rotateX(Math.PI / 2);
-      g.translate(p.centro?.[0] ?? 0, p.centro?.[1] ?? 0, 0);
-      return [g];
-    }
-    case "placa": {
-      const lados = p.espejo ? [1, -1] : [1];
-      return lados.map((s) => {
-        const forma = new Shape(p.planta.map(([a, b]) => new Vector2(p.plano === "horizontal" ? a * s : a, b)));
-        const g = new ExtrudeGeometry(forma, { depth: p.grosor, bevelEnabled: false });
-        if (p.plano === "horizontal") {
-          // Planta en [x, z]; el grosor queda hacia abajo desde y.
-          g.rotateX(Math.PI / 2);
-          g.translate(0, p.y + p.grosor / 2, 0);
-        } else {
-          // Contorno en [z, y]; el grosor, a lo largo de x.
-          g.rotateY(-Math.PI / 2);
-          g.translate(s * p.x + p.grosor / 2, 0, 0);
-        }
-        return g;
-      });
-    }
-    case "varilla": {
-      const a = new Vector3(...p.desde);
-      const b = new Vector3(...p.hasta);
-      const dir = b.clone().sub(a);
-      const g = new CylinderGeometry(p.radio, p.radio, dir.length(), 12);
-      g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), dir.clone().normalize()));
-      g.translate((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
-      return [g];
-    }
-    case "helice": {
-      const piezas: BufferGeometry[] = [];
-      for (let i = 0; i < p.palas; i++) {
-        const pala = new BoxGeometry(p.radio, 0.045, 0.008);
-        pala.translate(p.radio / 2, 0, 0);
-        pala.rotateX(0.35);  // paso de la pala
-        pala.rotateZ((i / p.palas) * Math.PI * 2);
-        pala.translate(...p.en);
-        piezas.push(pala);
-      }
-      const buje = new SphereGeometry(0.035, 12, 8);
-      buje.translate(...p.en);
-      piezas.push(buje);
-      return piezas;
-    }
-  }
-}
+type Colores = { relleno: Color; arista: Color; resalte: Color; resalteArista: Color };
 
 // Siluetas de la tira de vistas: la maqueta entera en un solo color, con
 // cámara ortográfica (planta, perfil, frente) o en perspectiva (3D). Se
@@ -192,10 +115,11 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     return () => {};
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const pixelado = crearPixelado(renderer);
 
   const escena = new Scene();
-  escena.add(new HemisphereLight(0xffffff, 0x9a9aa2, 2.2));
-  const sol = new DirectionalLight(0xffffff, 1.1);
+  escena.add(new HemisphereLight(0xffffff, 0x60606a, 1.7));
+  const sol = new DirectionalLight(0xffffff, 1.9);
   sol.position.set(2, 4, 3);
   escena.add(sol);
 
@@ -207,16 +131,23 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Piezas: relleno + aristas. Cada pieza guarda sus materiales para
   // resaltarla.
   const raiz = new Group();
-  const materiales = new Map<string, { relleno: MeshLambertMaterial; linea: LineBasicMaterial }>();
+  const materiales = new Map<string, { acabado: Acabado; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial }>();
   const mallas: Mesh[] = [];
+  const aristas: LineSegments[] = [];
   for (const p of maqueta.piezas) {
     const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const linea = new LineBasicMaterial();
-    materiales.set(p.id, { relleno, linea });
+    materiales.set(p.id, { acabado: p.acabado ?? "negro", relleno, linea, pixel: materialPixel(PALETAS.dia.negro) });
     for (const g of geometriaDe(p)) {
       const malla = new Mesh(g, relleno);
       mallas.push(malla);
-      raiz.add(malla, new LineSegments(new EdgesGeometry(g, 28), linea));
+      malla.userData.pieza = p.id;
+      raiz.add(malla);
+      // Las juntas, sin raya: solo un tono algo más oscuro.
+      if (p.acabado === "junta") continue;
+      const arista = new LineSegments(new EdgesGeometry(g, 28), linea);
+      aristas.push(arista);
+      raiz.add(arista);
     }
   }
   // Centrar la maqueta en el origen, que es donde mira la cámara.
@@ -251,18 +182,26 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const leerColores = () => {
     const css = getComputedStyle(caja);
     const c = (n: string) => new Color(css.getPropertyValue(n).trim() || "#888");
-    colores = { tinta: c("--visor-tinta"), relleno: c("--visor-relleno"), acento: c("--visor-acento") };
+    colores = {
+      relleno: c("--visor-relleno"), arista: c("--visor-arista"),
+      resalte: c("--visor-resalte"), resalteArista: c("--visor-resalte-arista"),
+    };
     pintarPiezas();
   };
 
   let elegida = -1;
   const pintarPiezas = () => {
     const resaltadas = new Set(elegida >= 0 ? maqueta.partes[elegida].piezas : []);
+    const paletas = PALETAS[document.documentElement.classList.contains("dark") ? "noche" : "dia"];
     for (const [id, m] of materiales) {
       const si = resaltadas.has(id);
-      m.relleno.color.copy(si ? colores.acento : colores.relleno);
-      m.linea.color.copy(si ? colores.acento.clone().multiplyScalar(0.6) : colores.tinta);
+      const color = COLOR_MAQUETA[m.acabado];
+      const base = m.acabado === "junta" ? colores.relleno.clone().multiplyScalar(0.8) : colores.relleno;
+      m.relleno.color.copy(si ? colores.resalte : color ? new Color(color) : base);
+      m.linea.color.copy(si ? colores.resalteArista : colores.arista);
+      ponerPaleta(m.pixel, si ? paletas.resalte : paletas[m.acabado]);
     }
+    pixelado.ponerContorno(paletas.contorno);
   };
 
   // Chinchetas (las pone el marco, una por parte): se colocan en la
@@ -273,22 +212,44 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
 
   const rayo = new Raycaster();
   const v = new Vector3();
-  const colocarPines = () => {
-    const ancho = lienzo.clientWidth;
-    const alto = lienzo.clientHeight;
-    pines.forEach(({ b, en }, i) => {
-      v.copy(en).project(camara);
-      const x = ((v.x + 1) / 2) * ancho;
-      const y = ((1 - v.y) / 2) * alto;
-      b.style.transform = `translate(${x}px, ${y}px)`;
-      // Tapada si algo de la maqueta queda entre la cámara y el punto.
+  // Qué chinchetas tapa la maqueta: lanzar un rayo contra todas las mallas
+  // es lo caro, así que mientras se gira se mira como mucho cada 200 ms y,
+  // al parar, una vez más.
+  const tapadas = pines.map(() => false);
+  let ultimaMirada = 0;
+  let miradaFinal = 0;
+  const mirarTapadas = () => {
+    ultimaMirada = performance.now();
+    pines.forEach(({ en }, i) => {
       const hasta = camara.position.distanceTo(en);
       rayo.set(camara.position, en.clone().sub(camara.position).normalize());
       const choque = rayo.intersectObjects(mallas, false)[0];
-      b.classList.toggle("visor-pin--tapado", !!choque && choque.distance < hasta - 0.04);
-      if (i === elegida) colocarRotulo(x, y, ancho, alto);
+      tapadas[i] = !!choque && choque.distance < hasta - 0.04;
     });
   };
+  const colocarPines = (repaso = false) => {
+    clearTimeout(miradaFinal);
+    if (repaso || performance.now() - ultimaMirada > 200) mirarTapadas();
+    else miradaFinal = window.setTimeout(() => colocarPines(true), 220);
+    const ancho = lienzo.clientWidth, alto = lienzo.clientHeight;
+    aplicarPines(pines.map(({ en }, i) => {
+      v.copy(en).project(camara);
+      return { x: ((v.x + 1) / 2) * ancho, y: ((1 - v.y) / 2) * alto, tapado: tapadas[i] };
+    }));
+  };
+  // Las chinchetas y el rótulo en su sitio (de la maqueta 3D o del pixel art).
+  const aplicarPines = (posiciones: Pin[]) => {
+    posiciones.forEach(({ x, y, tapado }, i) => {
+      const { b } = pines[i];
+      b.style.transform = `translate(${x}px, ${y}px)`;
+      b.classList.toggle("visor-pin--tapado", tapado);
+      if (i === elegida) colocarRotulo(x, y, lienzo.clientWidth, lienzo.clientHeight);
+    });
+  };
+
+  // Medido solo al cambiar de texto (medirlo en cada fotograma obliga al
+  // navegador a recalcular la página).
+  let tamRotulo = [0, 0];
 
   // Rótulo de la parte elegida: sale hacia fuera de la maqueta (desde el
   // centro del lienzo hacia la chincheta), unido a ella por una línea.
@@ -297,8 +258,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     let dy = y - alto / 2;
     const largo = Math.hypot(dx, dy) || 1;
     dx /= largo; dy /= largo;
-    const w = rotulo.offsetWidth;
-    const h = rotulo.offsetHeight;
+    const [w, h] = tamRotulo;
     const rx = Math.min(ancho - w - 8, Math.max(8, x + dx * 70 - (dx < 0 ? w : 0)));
     const ry = Math.min(alto - h - 8, Math.max(8, y + dy * 55 - h / 2));
     rotulo.style.transform = `translate(${rx}px, ${ry}px)`;
@@ -312,12 +272,18 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Pintar solo cuando haga falta.
   let pedido = 0;
   let ultimo = 0;
+  // Como mucho 60 fotogramas por segundo: en pantallas de 120 Hz (la del
+  // Mac) se pintaba el doble al girar.
+  let ultimoPintado = 0;
   const pintar = (t: number) => {
     pedido = 0;
+    if (t - ultimoPintado < 15) { pedir(); return; }
+    ultimoPintado = t;
     const dt = ultimo ? (t - ultimo) / 1000 : 1 / 60;
     ultimo = t;
     if (controles.autoRotate) controles.update(dt);
-    renderer.render(escena, camara);
+    if (modo === "pixel") pixelado.pintar(escena, camara);
+    else renderer.render(escena, camara);
     colocarPines();
     if (controles.autoRotate || animando) pedir();
     else ultimo = 0;
@@ -390,11 +356,29 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     caja.classList.toggle("visor--filtrando", !!parte);
     rotulo.hidden = !parte;
     guia.style.visibility = parte ? "visible" : "hidden";
-    if (parte) rotulo.textContent = `${String.fromCharCode(65 + elegida)} · ${parte.nombre}`;
+    if (parte) {
+      rotulo.textContent = `${String.fromCharCode(65 + elegida)} · ${parte.nombre}`;
+      tamRotulo = [rotulo.offsetWidth, rotulo.offsetHeight];
+    }
     pintarPiezas();
     pedir();
   };
   guia.style.visibility = "hidden";
+
+  // Modo «Pixel»: la misma escena, con los materiales de pixel art y sin
+  // aristas, pintada a baja resolución (uas-pixelado.ts).
+  let modo: "maqueta" | "pixel" = "maqueta";
+  const cambiarEstilo = (estilo: "maqueta" | "pixel") => {
+    modo = estilo;
+    caja.querySelectorAll<HTMLElement>("[data-estilo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.estilo === estilo)));
+    for (const malla of mallas) {
+      const m = materiales.get(malla.userData.pieza)!;
+      malla.material = estilo === "pixel" ? m.pixel : m.relleno;
+    }
+    for (const a of aristas) a.visible = estilo === "maqueta";
+    lienzo.classList.toggle("visor-lienzo--pixel", estilo === "pixel");
+    pedir();
+  };
 
   // Pestañas del panel: partes y fuentes.
   const cambiarPestana = (nombre: string) => {
@@ -408,6 +392,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     if (!b) return;
     if (b.dataset.pestana) cambiarPestana(b.dataset.pestana);
     else if (b.dataset.parte) elegir(Number(b.dataset.parte));
+    else if (b.dataset.estilo) cambiarEstilo(b.dataset.estilo as "maqueta" | "pixel");
     else if (b.dataset.vista) ponerVista(b.dataset.vista as Vista);
     else if (b.dataset.accion === "acercar") acercar(0.8);
     else if (b.dataset.accion === "alejar") acercar(1.25);
@@ -448,7 +433,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   medidor.observe(lienzo);
 
   // Día/noche.
-  const tema = new MutationObserver(() => { leerColores(); pedir(); });
+  const tema = new MutationObserver(() => {
+    leerColores();
+    pedir();
+  });
   tema.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
   // El giro automático se para si el visor no se ve o la pestaña está oculta.
@@ -464,7 +452,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
 
   leerColores();
   // ?vista=arriba (o lado, frente…) abre en esa vista; ?parte=C, con esa
-  // parte elegida; ?pestana=fuentes, en las fuentes.
+  // parte elegida; ?pestana=fuentes, en las fuentes; ?estilo=pixel, en pixel.
   const params = new URLSearchParams(location.search);
   const pedida = params.get("vista") as Vista | null;
   ajustar();
@@ -472,21 +460,24 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const parteInicial = (params.get("parte") ?? "").toUpperCase().charCodeAt(0) - 65;
   if (parteInicial >= 0 && parteInicial < maqueta.partes.length) elegir(parteInicial);
   if (params.get("pestana") === "fuentes") cambiarPestana("fuentes");
+  if (params.get("estilo") === "pixel") cambiarEstilo("pixel");
   caja.classList.add("visor-listo");
 
   return () => {
     cancelAnimationFrame(pedido);
+    clearTimeout(miradaFinal);
     medidor.disconnect();
     tema.disconnect();
     vigia.disconnect();
     document.removeEventListener("visibilitychange", alOcultar);
     caja.removeEventListener("click", alPulsar);
     lienzo.removeEventListener("keydown", alTeclear);
+    pixelado.dispose();
     controles.dispose();
     raiz.traverse((o) => {
       if (o instanceof Mesh || o instanceof LineSegments) o.geometry.dispose();
     });
-    for (const m of materiales.values()) { m.relleno.dispose(); m.linea.dispose(); }
+    for (const m of materiales.values()) { m.relleno.dispose(); m.linea.dispose(); m.pixel.dispose(); }
     renderer.dispose();
   };
 }

@@ -28,6 +28,7 @@ Cada push a `main` compila y publica la web sola
 | [`docs/tierra.md`](docs/tierra.md) | La portada: la Tierra, el título, la noche, qué se probó y rechazó |
 | [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
 | [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
+| [`docs/uas.md`](docs/uas.md) | El visor de los drones de la enciclopedia de UAS: qué tiene, medidas, colores y cómo se hace uno nuevo |
 | [`docs/astros.md`](docs/astros.md) | Lo común a los tres: motores, gestos, vuelos, nombres, versiones de datos |
 | [`docs/rendimiento.md`](docs/rendimiento.md) | Que no caliente: cómo medir y qué se aprendió |
 | [`docs/logo.md`](docs/logo.md) | El logo animado y los iconos |

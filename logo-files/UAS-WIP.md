@@ -6,20 +6,93 @@ solo esto hay que poder retomarlo, en el Mac o en el PC con Linux Mint.
 
 ## Dónde estamos (27-sep-2026, tarde)
 
-**Rama `uas-project`** (creada desde `main` el 27-sep-2026). Paso 1
-commiteado (`14322ea`), **sin subir** (la rama solo existe en el Mac).
-Nada fusionado: `main` y zodk.eu no tienen nada de esto.
+**Rama `uas-project`** (creada desde `main` el 27-sep-2026). Pasos 1 y 2
+commiteados (`14322ea`, `6069a83`), **sin subir** (la rama solo existe en
+el Mac). Nada fusionado: `main` y zodk.eu no tienen nada de esto.
 
-**Hecho**:
-- Paso 1: rama y este documento. Fotos de referencia del MICH-2000 en
-  `arte/uas-fuentes/mich-2000/` (fuera de Git; enlaces abajo, en «Fotos de
-  referencia»).
-- Paso 2, **visor con marco propio, forma trabajada, iconos y color
-  elegido; listo para commit**, en
-  `localhost:4321/uas/prueba` (`npm run dev`). Capturas comprobadas: día,
-  noche, vistas 3D, arriba, lado y detrás, parte elegida, pestaña de
-  fuentes. Sin probar aún: girar con el ratón, el giro automático, Zen y el
-  móvil real.
+**Paso 3, versión pixel art: segunda versión funcionando, sin commitear**,
+a la espera de que el usuario la vea (`localhost:4321/uas/prueba`, botón
+«Pixel»). Comprobado con capturas (maqueta y pixel, día y noche, con parte
+elegida). Sin probar: arrastrar, girar, zoom, Zen y el móvil.
+
+**Siguiente paso**: lo que diga el usuario del pixel art; después, el paso
+4 (campos de la nota en la bóveda).
+
+## El pixel art (paso 3)
+
+**Primera versión, rechazada (27-sep-2026)**: una tira de 39 dibujos de
+128x80 generada con un script (la vuelta cada 10° y planta, perfil y
+frente), en el blanco del «333». El usuario: «hay que detallarlo más, no
+podemos dejarlo así» y «no me deja girarlo libremente, tiene una serie de
+puntos predefinidos». Se borró (script y archivos; nunca llegó a commit).
+
+**Segunda versión (la actual)**: la misma escena 3D de la maqueta, pintada
+en directo a baja resolución (`src/scripts/uas-pixelado.ts`):
+- Cada píxel de arte son 3 px CSS (`TAM_PIXEL`): ~240x140 en el visor de
+  escritorio. Se gira y se acerca como la maqueta (libre, también arriba y
+  abajo), y al acercarse gana detalle.
+- Materiales propios: luz fija respecto a la cámara (arriba a la
+  izquierda), cuatro escalones de paleta por pieza. Una pasada final amplía
+  sin suavizar a un múltiplo entero exacto, pone el contorno de 1 px por
+  fuera y oscurece donde la profundidad salta (separa cuerpo y ala).
+- Solo pinta cuando algo cambia, como la maqueta. En «Pixel» se cambian los
+  materiales de las mallas y se ocultan las aristas; lo demás (vistas,
+  zoom, girar, chinchetas) es lo mismo.
+- `?estilo=pixel` en la URL abre en pixel (para capturas).
+
+**Color, pedido por el usuario (27-sep-2026)**: los dos modos en el
+**negro original** del dron (el negro mate de la fábrica ucraniana), no en
+el blanco del «333». Maqueta: relleno `#1d1f23` (noche `#1a1b1f`) con aristas
+grises. Pixel: paleta negra de cuatro tonos, motor/hélice/antena en metal
+gris, contorno casi negro de día y filo claro `#6b7079` de noche (si no, el
+negro se pierde en la tarjeta). La parte elegida pasa a blanco papel en los
+dos modos (en tinta negra no se vería sobre el dron negro).
+
+**Más detalle y contraste (27-sep-2026, tarde)**, pedido por el usuario
+(«haz el negro de la maqueta no tan oscuro, que se diferencien mejor las
+partes, sobre todo de día» y «detalla más el pixel»):
+- Maqueta: relleno `#454950` de día (noche `#2c2e33`) con aristas más claras,
+  y luz con más contraste (hemisférica 1,7, direccional 1,9).
+- Pixel: 2 px CSS por píxel de arte (antes 3; ~360x210 en escritorio) y
+  tramado 2x2 en el paso entre tonos.
+- Detalles de las fotos añadidos a la maqueta (salen en los dos modos):
+  escarapela ucraniana a cada lado del morro (foto del morro), juntas entre
+  las secciones del fuselaje (foto de las secciones) y elevones un tono más
+  claros que el ala. Para ello, las piezas tienen `acabado` (negro, metal,
+  junta, mando, amarillo, azul) y hay un tipo de pieza nuevo, `disco`. La
+  parte «Fuselaje» resalta también sus juntas.
+
+**Ajustes tras verlo el usuario (27-sep-2026, tarde)**: «ahora sí el
+pixel art está mucho mejor» y el contraste, bien.
+- Escarapela: el usuario preguntó si salía en las fuentes. Sí: en la foto
+  del morro con los canards y en la de las secciones (Oboronka). Se queda.
+- Juntas: son reales (la foto de las secciones enseña tramos unidos con
+  anillos), pero su número y sitio son a ojo; así lo dice ahora la nota de
+  la parte E. El usuario: «son mucho más suaves». Ahora apenas asoman
+  (0,0012), más finas, sin raya de arista en la maqueta y solo un tono algo
+  más oscuro que el cuerpo.
+- Crédito, pegado a la esquina de arriba a la derecha, en tres líneas:
+  «Maqueta creada a partir de fotos públicas. Hecho con» / Three.js /
+  Claude Code (con sus iconos).
+- **Consumo**: el usuario nota que sube algo al girar en Zen, sobre todo
+  «en plan lavadora». Sin medir, se quitaron tres gastos claros: pintar a
+  más de 60 fps (la pantalla del Mac va a 120 Hz), mirar en cada fotograma
+  qué chinchetas tapa la maqueta (rayos contra todas las mallas; ahora
+  cada 200 ms como mucho y una vez al parar) y medir el rótulo en cada
+  fotograma (ahora solo al cambiar de texto). **Falta medirlo en vatios**
+  (ThermalForge, sin grabar pantalla, `docs/rendimiento.md`): girar 20 s
+  antes y después.
+
+La geometría se separó del visor a `src/scripts/uas-geometria.ts` (vistas y
+constructores de piezas).
+
+**Nombre y receta (27-sep-2026)**: el usuario eligió **«el visor»** para el
+recuadro completo. Pidió registrar el proceso para los drones siguientes:
+está en `docs/uas.md` (qué tiene, medidas, colores, archivos, receta paso a
+paso, capturas y lo que quiere y rechazó). Último ajuste: en la lista de
+partes, la elegida lleva la casilla rellena en tinta y el nombre en negrita.
+
+## Decisiones del paso 2 que siguen vigentes
 
 **Color de la tarjeta, elegido por el usuario (27-sep-2026)**: opción
 «tinta, sin color». Tarjeta `#ebebee` de día y `#25252a` de noche (un poco
@@ -32,8 +105,6 @@ temporales de comparación ya están borradas.
 Hecho también: los iconos del crédito (Clawd, el de la tira «Hecho con»
 de la portada, sacado de `STACK` en `src/consts.ts`, y el oficial de
 Three.js de simple-icons).
-
-Después, el paso 3 (versión pixel, que activa el botón «Pixel»).
 
 ## El visor (paso 2)
 
@@ -115,10 +186,10 @@ sin escala».
 ## Plan
 
 - [x] 1. Rama `uas-project` y este documento.
-- [~] 2. Prototipo del visor en **boceto 3D** (Three.js) con el MICH-2000, en
+- [x] 2. Prototipo del visor en **boceto 3D** (Three.js) con el MICH-2000, en
       una página de prueba sin enlazar. Solo se redibuja al arrastrar (nada de
       bucle continuo: el usuario usa Zen/Firefox, ver `docs/rendimiento.md`).
-- [ ] 3. Del mismo modelo, versión **pixel art**: tira de sprites PNG con
+- [~] 3. Del mismo modelo, versión **pixel art**: tira de sprites PNG con
       ~36 ángulos; arrastrar cambia de fotograma. Poner las dos lado a lado
       y que el usuario elija (o combine).
 - [ ] 4. Campos de la nota de dron en la bóveda (proponer al usuario antes
@@ -208,3 +279,8 @@ fotos de la fábrica china y del lanzador.
   de la hélice.
 - 27-sep-2026, tarde: iconos de Three.js y Clawd en el crédito; color
   «tinta, sin color» elegido entre cuatro opciones.
+- 27-sep-2026, tarde: paso 3, primera versión del pixel art (blanco «333»,
+  39 fotogramas); rechazada por poco detalle y giro a saltos. Segunda
+  versión: pixelado en directo de la escena 3D. El dron pasa a negro mate
+  en los dos modos. Luego: negro de la maqueta más claro, pixel a 2 px con
+  tramado, escarapelas, juntas del fuselaje y elevones en otro tono.
