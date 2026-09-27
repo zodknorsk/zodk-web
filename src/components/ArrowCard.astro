@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
-  entry: CollectionEntry<"notas">;
+  entry: CollectionEntry<"notas"> | CollectionEntry<"uas">;
   // Título en azul al pasar el ratón (en la portada, como los eventos).
   tituloAzul?: boolean;
 };

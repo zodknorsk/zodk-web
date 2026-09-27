@@ -67,6 +67,15 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+/* Resaltado de Obsidian (==texto==): como un rotulador, fondo detrás y texto
+   oscuro, de día y de noche. */
+article mark {
+  padding: 0 0.15em;
+  border-radius: 2px;
+  background: #fde68a;
+  color: #18181b;
+}
+
 /* El plugin @tailwindcss/typography mete comillas automáticas en todos los
    blockquotes. Las quitamos: si una cita lleva comillas, van en el texto. */
 article blockquote p:first-of-type::before,
@@ -98,9 +107,12 @@ article blockquote p:last-of-type::after {
 /* --- Tarjetas de tweet ---------------------------------------------------
    Generadas por scripts/importar-notas.mjs. Son HTML fijo dentro del
    Markdown; aquí solo les damos aspecto de tarjeta. */
+/* Del ancho de un embed de X (~550 px) y centradas, como en Obsidian: a todo
+   el ancho del texto, un vídeo vertical medía más de 1.200 px de alto. */
 article .tweet {
   @apply not-italic font-sans font-normal;
-  @apply my-6 p-4 rounded-xl border;
+  @apply my-6 mx-auto p-4 rounded-xl border;
+  max-width: 34rem;
   @apply border-black/15 dark:border-white/20;
   @apply bg-black/[0.02] dark:bg-white/[0.03];
 }
@@ -126,12 +138,19 @@ article .tweet-text {
   @apply font-serif;
 }
 
+/* Foto o vídeo: como mucho 28rem (o el 70 % de la pantalla) de alto,
+   encajado entero sobre negro, como hace X con los verticales. */
 article .tweet-media {
-  @apply block mt-3 rounded-lg overflow-hidden;
+  @apply block mt-3 mb-0 rounded-lg overflow-hidden w-full;
+  max-height: min(28rem, 70vh);
+  object-fit: contain;
+  background: #000;
 }
 
 article .tweet-media img {
   @apply m-0 w-full;
+  max-height: min(28rem, 70vh);
+  object-fit: contain;
 }
 
 article .tweet-media-video {

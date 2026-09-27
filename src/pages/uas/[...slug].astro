@@ -1,0 +1,73 @@
+---
+// Ficha de un dron de la enciclopedia de UAS: /uas/<slug>. Es una nota de la
+// carpeta «La gran enciclopedia de los UAS.» de la bóveda. Si hay maqueta
+// (src/data/uas/<slug>.ts), el importador deja un hueco en su sección
+// «Visor» y aquí se pone el visor (docs/uas.md).
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import BackToPrev from "@components/BackToPrev.astro";
+import VisorUAS from "@components/VisorUAS.astro";
+import { readingTime } from "@lib/utils";
+
+export async function getStaticPaths() {
+  const fichas = (await getCollection("uas")).filter((f) => !f.data.draft);
+  return fichas.map((ficha) => ({ params: { slug: ficha.id }, props: ficha }));
+}
+type Props = CollectionEntry<"uas">;
+
+const ficha = Astro.props;
+const { Content } = await render(ficha);
+
+const maquetas = Object.keys(import.meta.glob("../../data/uas/*.ts"));
+const conVisor = (ficha.body ?? "").includes("visor-hueco") && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
+---
+
+<PageLayout title={ficha.data.title} description={ficha.data.description ?? ""}>
+  <Container>
+    <div class="animate">
+      <BackToPrev href="/uas">Volver a la enciclopedia</BackToPrev>
+    </div>
+    <div class="space-y-1 my-10">
+      <div class="animate flex items-center gap-1.5 font-mono">
+        <div class="text-sm">
+          <FormattedDate date={ficha.data.date} />
+        </div>
+        &bull;
+        <div class="text-sm">{readingTime(ficha.body ?? "")}</div>
+      </div>
+      <h1 class="animate text-2xl font-semibold text-black dark:text-white">
+        {ficha.data.title}
+      </h1>
+      {
+        ficha.data.tags.length > 0 && (
+          <div class="animate flex flex-wrap gap-1.5 pt-1 text-sm">
+            {ficha.data.tags.map((tag) => (
+              <span class="opacity-75">#{tag}</span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+    <article class="animate">
+      <Content />
+    </article>
+    {conVisor && (
+      <div class="visor-ancho not-prose" id="visor-nota">
+        <VisorUAS modelo={ficha.id} />
+      </div>
+    )}
+  </Container>
+</PageLayout>
+
+<style>
+  /* Más ancho que el texto (720 px), centrado sobre él, hasta 1040 px. */
+  .visor-ancho {
+    position: relative;
+    left: 50%;
+    width: min(1040px, calc(100vw - 2.5rem));
+    transform: translateX(-50%);
+    margin-block: 1.5rem 2rem;
+  }
+</style>

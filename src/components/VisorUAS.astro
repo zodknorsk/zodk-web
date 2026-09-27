@@ -153,22 +153,33 @@ const VISTAS = [
   import type { Maqueta } from "../data/uas/tipos";
   const maquetas = import.meta.glob<{ default: Maqueta }>(["../data/uas/*.ts", "!../data/uas/tipos.ts"]);
   let quitar: (() => void)[] = [];
-
-  document.addEventListener("astro:page-load", async () => {
+  // Cada llegada a una página tiene su número: un montaje que termina de
+  // cargar cuando ya se ha cambiado de página (atrás/adelante rápido) no se
+  // hace.
+  let visita = 0;
+  const desmontar = () => {
+    visita++;
     quitar.forEach((q) => q());
     quitar = [];
+  };
+
+  document.addEventListener("astro:page-load", async () => {
+    desmontar();
+    const esta = visita;
+    // En las fichas de /uas, el visor se pinta tras el texto y va a su hueco
+    // de la sección «Visor» antes de montarse.
+    const hueco = document.querySelector("article .visor-hueco");
+    const deLaFicha = document.getElementById("visor-nota");
+    if (hueco && deLaFicha) hueco.replaceWith(deLaFicha);
     for (const caja of document.querySelectorAll<HTMLElement>(".visor")) {
       const cargar = maquetas[`../data/uas/${caja.dataset.modelo}.ts`];
       if (!cargar) continue;
       const [{ montarVisor }, { default: maqueta }] = await Promise.all([import("../scripts/visor-uas"), cargar()]);
-      if (!caja.isConnected) return;  // se cambió de página mientras cargaba
+      if (esta !== visita || !caja.isConnected) return;
       quitar.push(montarVisor(caja, maqueta));
     }
   });
-  document.addEventListener("astro:before-swap", () => {
-    quitar.forEach((q) => q());
-    quitar = [];
-  });
+  document.addEventListener("astro:before-swap", desmontar);
 </script>
 
 <style is:global>

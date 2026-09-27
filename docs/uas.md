@@ -1,13 +1,29 @@
-# UAS: el visor de los drones
+# UAS: la enciclopedia de drones y su visor
 
 La enciclopedia de UAS de zodk.eu: una nota por dron en la bóveda
-(`02 - Temas/La gran enciclopedia de los UAS./`) y, en la web, un **visor**
-por dron. **«El visor»** es el nombre del recuadro completo (lo eligió el
+(`02 - Temas/La gran enciclopedia de los UAS./`), que en la web es una
+**ficha** en `/uas/<slug>`, listada en el índice `/uas` con filtro por país.
+Las fichas con maqueta llevan un **visor**. **«El visor»** es el nombre del recuadro completo (lo eligió el
 usuario, 27-sep-2026): cabecera, maqueta, tira de siluetas, panel de partes y
 fuentes. En el código, el componente `VisorUAS`.
 
 El primero fue el MICH-2000 (rama `uas-project`; historia completa en
 `logo-files/UAS-WIP.md`). Este documento es la receta para los siguientes.
+
+## Pedir una ficha nueva
+
+El usuario pide «hazme la ficha del <dron>». **Lo que da él**: el nombre y,
+si los tiene, tuits o enlaces (para «En acción» y las fuentes). **Lo que se
+hace**, en este orden, enseñándole el resultado en cada paso:
+
+1. Buscar fuentes y fotos (receta, paso 2) y leer la forma (paso 3).
+2. Escribir la nota en la bóveda desde `00 - Meta/Plantilla UAS
+   (Templater).md` (paso 1), con `publicar: false`. Que la revise.
+3. Hacer la maqueta y las miniaturas (pasos 4 y 5), probar y enseñar
+   capturas (pasos 6 y 7). Iterar con él la forma.
+4. Publicar: `publicar: true`, `npm run importar`, revisar `/uas/<slug>` en
+   local y, en `main`, commit y push cuando lo pida. (Mientras el proyecto
+   viva en una rama, ver «Las fichas en la web».)
 
 ## Qué tiene el visor
 
@@ -51,7 +67,7 @@ El primero fue el MICH-2000 (rama `uas-project`; historia completa en
 
 | Qué | Valor |
 |---|---|
-| Ancho de la página de prueba | `max-w-[1040px]`, `px-5` |
+| Ancho del visor en la ficha | `min(1040px, 100vw − 2.5rem)`, centrado sobre el texto de 720 px |
 | Borde y esquinas | 1 px, radio 4 px |
 | Cabecera | relleno 1rem 1.25rem, raya discontinua abajo |
 | Cuerpo | rejilla `1fr` + panel de 17rem |
@@ -99,12 +115,33 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
 | `src/components/VisorUAS.astro` | El marco, generado en el build: `<VisorUAS modelo="mich-2000" />` |
 | `public/uas/<modelo>/fuentes/` | Miniaturas de las fotos de referencia |
 | `arte/uas-fuentes/<modelo>/` | Fotos a tamaño completo y `FUENTES.md` (fuera de Git) |
+| `src/pages/uas/index.astro` | El índice `/uas`, con filtro por país |
+| `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>`, con el visor en su hueco |
+| `scripts/importar-notas.mjs` | Lleva las notas de la carpeta a `src/content/uas/` (`clasificar`, `paisDeFicha`, `colocarVisor`) |
+| `00 - Meta/Plantilla UAS (Templater).md` (bóveda) | Esqueleto de la nota de un dron |
 
 ## Receta: un dron nuevo
 
 1. **La nota en la bóveda**, en `02 - Temas/La gran enciclopedia de los
-   UAS./`. (Pendiente: campos del frontmatter y la página `/uas`, pasos 4-6
-   de `UAS-WIP.md`.)
+   UAS./`, desde la plantilla `00 - Meta/Plantilla UAS (Templater).md`. El
+   nombre del archivo lleva delante la bandera (`🇺🇦 MICH-2000.md`); el
+   `titulo` da la dirección (`MICH 2000` → `/uas/mich-2000`) y tiene que
+   coincidir con el nombre de la maqueta. Frontmatter de siempre (sin claves
+   propias: lo decidió el usuario) y este cuerpo, pedido por él (modelo: la
+   del MICH-2000):
+   una cita con `>` justo bajo las propiedades, sin título (un párrafo: qué
+   es, quién lo usa, dónde ha destacado, con un enlace a la foto, noticia o
+   tuit de cada hecho; en la web sale bajo las etiquetas), `## Visor` (vacío
+   en la bóveda: ahí va el visor en la web), `## CARACTERÍSTICAS` (tabla de
+   dos columnas: País, Fabricante, Operador, Categoría, Situación, Primer uso
+   en combate, Envergadura / longitud / peso, Alcance, Carga, Motor, Origen),
+   `## Historia` (dos párrafos y uno corto de su uso reciente), `## En
+   acción` (tuits del dron en uso) y `## Fuentes` (`- Web ([fuente](url))` y
+   debajo de qué habla, con el nombre en negrita y una línea en blanco
+   entre fuentes). Sin reglas `---` entre apartados. Lo que venga solo
+   del fabricante se dice. Castellano llano, sin calcos del inglés. La fila
+   «País» de la tabla, con su bandera delante (`🇺🇦 Ucrania`), es la que usa
+   el filtro de `/uas`.
 2. **Fuentes.** Buscar fotos reales del dron montado: de perfil, desde
    arriba o abajo (la planta), de frente y de detalle (morro, cola, motor).
    Los mejores sitios son los medios que visitan la fábrica (para el MICH,
@@ -132,8 +169,8 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
    - `fuentes`: las fotos (con miniatura) y los artículos (sin ella).
 5. **Miniaturas**: `sips -Z 560 -s format jpeg -s formatOptions 72
    <foto> --out public/uas/<modelo>/fuentes/<foto>.jpg` (~50 KB cada una).
-6. **Probar** en `npm run dev`, con la página de prueba o poniendo
-   `<VisorUAS modelo="…" />` donde toque. Atajos en la URL:
+6. **Probar** en `npm run dev`, en la ficha (`/uas/<slug>`, con la nota
+   importada) o poniendo `<VisorUAS modelo="…" />` en una página suelta. Atajos en la URL:
    `?vista=arriba|lado|frente|detras`, `?parte=C`, `?pestana=fuentes`,
    `?estilo=pixel`. Comparar las siluetas con las fotos, sobre todo planta
    y perfil. `npm run lint` y `npx astro check`.
@@ -149,13 +186,43 @@ Chrome sin ventana contra `npm run dev` (siempre `localhost:4321`):
   --use-angle=metal --ignore-gpu-blocklist --hide-scrollbars \
   --window-size=1200,900 --virtual-time-budget=5000 \
   --screenshot=captura.png --user-data-dir=/tmp/chrome-captura \
-  "http://localhost:4321/uas/prueba?parte=B"
+  "http://localhost:4321/uas/mich-2000?parte=B"
 ```
 
 Chrome no termina solo: esperar a que exista el PNG y cerrarlo. La noche va
 en `sessionStorage`; para capturarla, un HTML temporal en `public/` que haga
 `sessionStorage.setItem("theme","dark")` y redirija a la página (y borrarlo
 después).
+
+## Las fichas en la web
+
+Toda nota de la carpeta de la enciclopedia es una ficha de la colección
+`uas` (`src/content/uas/`), en `/uas/<slug>`; no sale en `/notas` ni en el
+blog, y su «Volver» lleva a `/uas`. El importador la reconoce por la
+carpeta y saca el país de la fila «País» de la tabla (`pais` y `bandera` en
+el frontmatter importado, que usa el filtro de `/uas`).
+
+Si existe `src/data/uas/<slug>.ts`, el importador (`colocarVisor`) cambia la
+sección `## Visor` (título incluido: en la web no sale) por un hueco
+(`<div class="visor-hueco">`) y la
+ficha pinta el visor y lo mueve a ese hueco, más ancho que el texto (hasta
+1040 px, centrado) y sin los estilos del texto (`not-prose`). Si no hay
+maqueta, la sección «Visor» no sale y el índice no le pone la marca
+«Visor».
+
+En las fichas, la línea sangrada bajo un punto de lista (la descripción de
+cada fuente) sale debajo, como en Obsidian (`saltosEnListas`).
+
+Los `==resaltados==` de Obsidian se convierten a `<mark>` (rotulador
+amarillo, texto oscuro); la del MICH fue la primera nota publicada que los
+usaba.
+
+Tras `npm run importar`, el servidor de desarrollo no ve las notas nuevas
+hasta reiniciarlo (el importador borra y regenera `src/content/`).
+
+Mientras el proyecto está en una rama, la nota se prueba con `publicar:
+true` solo en local y luego se deja en `false` y se borra lo importado: las
+notas de la bóveda se publican siempre desde `main`.
 
 ## Lo que el usuario quiere (y lo que rechazó)
 

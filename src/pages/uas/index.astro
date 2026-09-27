@@ -1,0 +1,120 @@
+---
+// /uas: la gran enciclopedia de los UAS. Todas las fichas de drones, con
+// botones de país para filtrar (el país sale de la tabla de características
+// de cada ficha). Las que tienen maqueta llevan la marca «Visor».
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+
+const fichas = (await getCollection("uas"))
+  .filter((f) => !f.data.draft)
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, "es"));
+
+const maquetas = Object.keys(import.meta.glob("../../data/uas/*.ts"));
+const tieneVisor = (id: string) => maquetas.some((m) => m.endsWith(`/${id}.ts`));
+
+// Países con cuántas fichas tiene cada uno, de más a menos.
+const paises = [...fichas.reduce((acc, f) => {
+  const nombre = f.data.pais ?? "Sin país";
+  const actual = acc.get(nombre) ?? { nombre, bandera: f.data.bandera ?? "", n: 0 };
+  actual.n++;
+  return acc.set(nombre, actual);
+}, new Map<string, { nombre: string; bandera: string; n: number }>()).values()]
+  .sort((a, b) => b.n - a.n || a.nombre.localeCompare(b.nombre, "es"));
+---
+
+<PageLayout title="La gran enciclopedia de los UAS" description="Fichas de drones militares: qué son, quién los usa, su historia y una maqueta para girarlos.">
+  <Container>
+    <div class="space-y-8">
+      <div class="animate space-y-2">
+        <h1 class="font-semibold text-black dark:text-white">La gran enciclopedia de los UAS</h1>
+        <p class="text-sm">Fichas de drones militares a partir de fuentes abiertas: qué son, quién los usa, su historia y, en algunos, una maqueta para girarlos.</p>
+      </div>
+
+      {fichas.length === 0 ? (
+        <p class="animate">Todavía no hay fichas.</p>
+      ) : (
+        <>
+          <div class="animate uas-filtros" role="group" aria-label="Filtrar por país">
+            <button type="button" data-pais="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
+            {paises.map((p) => (
+              <button type="button" data-pais={p.nombre} aria-pressed="false">
+                {p.bandera && <span class="uas-bandera">{p.bandera}</span>}
+                {p.nombre} <span>{p.n}</span>
+              </button>
+            ))}
+          </div>
+
+          <ul class="animate flex flex-col gap-4">
+            {fichas.map((f) => (
+              <li data-pais={f.data.pais ?? "Sin país"} class="relative">
+                <ArrowCard entry={f} tituloAzul />
+                <span class="uas-marcas" aria-hidden="true">
+                  {f.data.bandera && <span>{f.data.bandera}</span>}
+                  {tieneVisor(f.id) && <span class="uas-visor">Visor</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  </Container>
+</PageLayout>
+
+<script>
+  // Filtro por país: se esconden las fichas de los demás.
+  document.addEventListener("astro:page-load", () => {
+    const filtros = document.querySelector<HTMLElement>(".uas-filtros");
+    if (!filtros) return;
+    filtros.addEventListener("click", (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button");
+      if (!b) return;
+      const pais = b.dataset.pais ?? "";
+      filtros.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      document.querySelectorAll<HTMLElement>("li[data-pais]").forEach((li) => {
+        li.hidden = pais !== "" && li.dataset.pais !== pais;
+      });
+    });
+  });
+</script>
+
+<style>
+  .uas-filtros { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .uas-filtros button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+  :global(html.dark) .uas-filtros button { border-color: rgba(255, 255, 255, 0.2); }
+  .uas-filtros button span:last-child { opacity: 0.55; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.72rem; }
+  .uas-filtros button[aria-pressed="true"] { background: #27272a; border-color: #27272a; color: #fafafa; }
+  :global(html.dark) .uas-filtros button[aria-pressed="true"] { background: #e4e4e7; border-color: #e4e4e7; color: #18181b; }
+  .uas-bandera { font-size: 0.95rem; line-height: 1; }
+
+  /* Bandera y marca «Visor», arriba a la derecha de cada ficha. */
+  .uas-marcas {
+    position: absolute;
+    top: 0.75rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    pointer-events: none;
+  }
+  .uas-visor {
+    padding: 0.05rem 0.4rem;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+</style>

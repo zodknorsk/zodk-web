@@ -4,19 +4,66 @@
 paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Leyendo
 solo esto hay que poder retomarlo, en el Mac o en el PC con Linux Mint.
 
-## Dónde estamos (27-sep-2026, tarde)
+## Dónde estamos (27-sep-2026, ~17:15)
 
-**Rama `uas-project`** (creada desde `main` el 27-sep-2026). Pasos 1 y 2
-commiteados (`14322ea`, `6069a83`), **sin subir** (la rama solo existe en
-el Mac). Nada fusionado: `main` y zodk.eu no tienen nada de esto.
+**Rama `uas-project`**, subida a GitHub. Commits: `14322ea` (paso 1),
+`6069a83` (visor), `82dba25` (pixel y receta) y el de las fichas (pasos 4-6
+y el MICH-2000 importado). Nada fusionado: `main` y zodk.eu no tienen nada
+de esto.
 
-**Paso 3, versión pixel art: segunda versión funcionando, sin commitear**,
-a la espera de que el usuario la vea (`localhost:4321/uas/prueba`, botón
-«Pixel»). Comprobado con capturas (maqueta y pixel, día y noche, con parte
-elegida). Sin probar: arrastrar, girar, zoom, Zen y el móvil.
+**Decisión del usuario (27-sep-2026)**: en esta rama **sí** va el contenido
+importado del MICH-2000 (`src/content/uas/mich-2000/` y las imágenes de su
+tuit en `public/tweets/`), y la nota de la bóveda queda con `publicar:
+true`: «haz commit y deja desplegado en la rama uas-project todo lo
+relacionado con el MICH-2000, la nota, etc.». Lo mismo para el Skydio X10D.
+Ojo: si se importa en `main` antes de fusionar, estas fichas saldrían en
+zodk.eu sin el código del visor (`/uas` no existe en `main`).
 
-**Siguiente paso**: lo que diga el usuario del pixel art; después, el paso
-4 (campos de la nota en la bóveda).
+**En curso**: ficha del **Skydio X10D** (pedida por el usuario: ficha en
+Obsidian + visor + pixel art + textos; dron del Ejército de Tierra), hecha
+por Claude mientras el usuario no está, para dejarla commiteada sin push.
+
+**Pasos 5 y 6, las bases para pedir fichas (27-sep-2026, sin commitear)**.
+El usuario: «en la rama dejemos las bases preparadas para generar el visor y
+las fichas de los drones, para que al subirlo te vaya pidiendo fichas».
+Hecho y probado en local (con `publicar: true` solo durante la prueba):
+- Colección `uas`: las notas de la carpeta de la enciclopedia son fichas en
+  **`/uas/<slug>`** (dirección elegida por el usuario), fuera de `/notas` y
+  del blog. El importador las reconoce por la carpeta y saca el país de la
+  fila «País» de la tabla.
+- La ficha pone el visor en su sección «Visor» (hueco que deja el
+  importador), más ancho que el texto. Los `==resaltados==` pasan a `<mark>`.
+- Índice **`/uas`**: lista con filtro por país y marca «Visor».
+- Fuera la página de prueba `/uas/prueba`.
+- **Plantilla en la bóveda** (la pidió el usuario): `00 - Meta/Plantilla
+  UAS (Templater).md`, frontmatter de siempre y los apartados vacíos.
+- `docs/uas.md`: «Pedir una ficha nueva» y «Las fichas en la web».
+
+**Ajustes tras verlo (27-sep-2026, tarde)**:
+- El visor fallaba a veces al ir atrás y adelante (ClientRouter): los
+  contextos WebGL no se soltaban, el visor se movía a su hueco con un script
+  aparte y un montaje lento podía caer en la página vieja. Arreglado
+  (`forceContextLoss`, el visor se coloca y se monta en el mismo script, y
+  cada visita tiene su número). Falta que el usuario lo confirme.
+- Sin `## Introducción`: el primer párrafo es una cita `>` bajo las
+  propiedades (nota y plantilla).
+- Ancho del visor en la ficha: se probaron A (1040, más ancho que el texto),
+  B (720, panel debajo), C (720 compacto, dos columnas) y D (banda de lado a
+  lado) con un banco de pruebas temporal. El usuario se queda con **A**.
+- Tuits: tarjeta del ancho de un embed de X (34rem), centrada, y foto o
+  vídeo con alto máximo `min(28rem, 70vh)` sobre negro. Afecta a todas las
+  notas y eventos (el usuario lo pidió también por el hilo de los
+  incidentes fronterizos).
+- En las fichas, la descripción bajo cada fuente sale en su línea
+  (`saltosEnListas`).
+
+**Al fusionar en `main`**: poner `publicar: true` en la nota del MICH,
+`npm run importar`, revisar `/uas` y `/uas/mich-2000`, commit y push (con
+explicación previa al usuario del merge). Falta decidir si `/uas` se enlaza
+desde algún sitio (portada, cabecera): ahora no lo enlaza nada.
+
+**Pendiente, sin bloquear**: medir el consumo al girar en Zen; probar en el
+iPhone.
 
 ## El pixel art (paso 3)
 
@@ -189,18 +236,16 @@ sin escala».
 - [x] 2. Prototipo del visor en **boceto 3D** (Three.js) con el MICH-2000, en
       una página de prueba sin enlazar. Solo se redibuja al arrastrar (nada de
       bucle continuo: el usuario usa Zen/Firefox, ver `docs/rendimiento.md`).
-- [~] 3. Del mismo modelo, versión **pixel art**: tira de sprites PNG con
+- [x] 3. Del mismo modelo, versión **pixel art**: tira de sprites PNG con
       ~36 ángulos; arrastrar cambia de fotograma. Poner las dos lado a lado
       y que el usuario elija (o combine).
-- [ ] 4. Campos de la nota de dron en la bóveda (proponer al usuario antes
-      de tocar nada: `pais`, `fabricante`, `categoria`, `envergadura`,
-      `alcance`, `carga`, `motor`, `primer_uso`, `modelo3d`; `tipo: objeto`
-      es nuevo) y el orden en la regla `yaml-key-sort` del Linter.
-- [ ] 5. Importador: que entienda la carpeta de la enciclopedia. Comprobar el
+- [x] 4. Estructura de la nota de dron en la bóveda (sin claves nuevas en
+      el frontmatter: tabla de características en el cuerpo).
+- [x] 5. Importador: que entienda la carpeta de la enciclopedia. Comprobar el
       punto final del nombre de la carpeta (`UAS.`) y la bandera 🇺🇦 del
       nombre del archivo (la URL tiene que salir limpia).
-- [ ] 6. Página `/uas` con la lista y los filtros; ficha con el visor si la
-      nota tiene `modelo3d`.
+- [x] 6. Página `/uas` con la lista y el filtro por país; ficha `/uas/<slug>`
+      con el visor si hay maqueta.
 - [ ] 7. Explicar el merge al usuario y fusionar en `main`.
 
 ## Decisiones tomadas

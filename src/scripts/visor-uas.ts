@@ -479,5 +479,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     });
     for (const m of materiales.values()) { m.relleno.dispose(); m.linea.dispose(); m.pixel.dispose(); }
     renderer.dispose();
+    // Soltar el contexto WebGL: si no, al ir y volver entre páginas se
+    // acumulan y el navegador acaba tirando alguno (el visor sale mal).
+    renderer.forceContextLoss();
   };
 }

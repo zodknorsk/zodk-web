@@ -46,6 +46,8 @@ src/
     notas/[...slug].astro    La página de cada nota
     eventos/index.astro      /eventos
     eventos/[...slug].astro  Índice, semanas y análisis de cada evento
+    uas/index.astro          /uas: la enciclopedia de drones, con filtro por país
+    uas/[...slug].astro      La ficha de cada dron, con su visor (docs/uas.md)
     404.astro                La página de las direcciones que no existen
     rss.xml.ts, robots.txt.ts
   layouts/PageLayout.astro   El esqueleto común: <head>, cabecera, pie
