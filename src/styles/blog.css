@@ -29,7 +29,7 @@ html.dark .blog-autor { border-color: rgba(255, 255, 255, 0.1); background: #202
 .avatar-cara {
   position: absolute;
   inset: 0;
-  background: url(/zodk-avatar-tira.png) 0 0 / 800% 100% no-repeat;
+  background: url(/zodk-avatar-tira.png?v=2) 0 0 / 800% 100% no-repeat;
 }
 .avatar-z {
   position: absolute;

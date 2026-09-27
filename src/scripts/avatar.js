@@ -111,7 +111,7 @@ export function montarAvatar(caja) {
 
   // Se monta cuando la tira ya está cargada: sin hueco entre el GIF y ella.
   const tira = new Image();
-  tira.src = "/zodk-avatar-tira.png";
+  tira.src = "/zodk-avatar-tira.png?v=2";
   tira.decode().catch(() => {}).then(() => {
     if (!vivo) return;
     caja.append(cara);

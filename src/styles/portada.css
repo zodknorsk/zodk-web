@@ -903,7 +903,7 @@ html.dark .bloque-astro:is(:hover, :focus-visible), html.dark .tira-blog:is(:hov
   position: absolute;
   inset: 0;
   visibility: hidden;
-  background: url(/zodk-avatar-tira.png) calc(100% * 5 / 7) 0 / 800% 100% no-repeat;
+  background: url(/zodk-avatar-tira.png?v=2) calc(100% * 5 / 7) 0 / 800% 100% no-repeat;
 }
 .tira-blog:hover .tira-avatar-cabeceo { visibility: visible; animation: tira-cabecea 0.6s steps(1) infinite; }
 @keyframes tira-cabecea { 50% { background-position: 100% 0; } }

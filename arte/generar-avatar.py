@@ -9,6 +9,8 @@ píxel de arte y se cambian solo unos píxeles (ojos, cabeza, pantalla):
 
 Solo con la biblioteca estándar de Python:
   python3 arte/generar-avatar.py
+Al regenerar la tira, subir su ?v= en blog.css, portada.css y avatar.js
+(los navegadores guardan la vieja y la mezclan con el CSS nuevo).
 """
 import os
 import struct
