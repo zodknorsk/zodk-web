@@ -45,6 +45,7 @@ la variable `CHROME`, y opciones de más en `CHROME_ARGS`).
 |---|---|---|
 | `generar-astros.py` | El sol y la tira de 30 fases de la luna del cielo de la portada | `public/zodk-sol.png`, `public/zodk-luna-fases.png` |
 | `generar-estrellas.py` | Las baldosas de estrellas del fondo | `zodk-estrellas.png` y `zodk-estrellas-noche.png` (aquí; se copian a `public/`) |
+| `generar-avatar.py` | Los fotogramas del avatar que se mueve en `/blog` y en la tira de la portada, sacados de `zodk-avatar.gif` (que no se toca) | `public/zodk-avatar-tira.png`, `-nota.png`, `-z.png` |
 | `generar-aeronaves.py` | El Sentinel-2, la única nave en pixel art (las demás son fotos) | `public/zodk-sat-sentinel*.svg` |
 | `generar-naves-noche.py` | La versión de noche de las fotos de las naves | `public/zodk-<nave>-noche.png` |
 | `generar-logo.py` | El logo animado de la cabecera (ver `docs/logo.md`) | `zodk-logo-animado.svg` (aquí) |

@@ -24,7 +24,7 @@ const dos = (n: number) => String(n).padStart(2, "0");
   <Container>
     <div class="space-y-10">
       <div class="blog-autor animate">
-        <img class="blog-autor-avatar" src="/zodk-avatar.gif" alt="" width="192" height="208" />
+        <span class="blog-autor-avatar"><img src="/zodk-avatar.gif" alt="" width="192" height="208" /></span>
         <div>
           <h1 class="blog-autor-titulo">Blog</h1>
           <p>
@@ -64,3 +64,18 @@ const dos = (n: number) => String(n).padStart(2, "0");
     </div>
   </Container>
 </PageLayout>
+
+<script>
+  // El avatar se mueve solo (src/scripts/avatar.js); se monta en cada llegada.
+  import { montarAvatar } from "../scripts/avatar.js";
+  let quita = () => {};
+  document.addEventListener("astro:page-load", () => {
+    quita();
+    const caja = document.querySelector<HTMLElement>(".blog-autor-avatar");
+    quita = caja ? montarAvatar(caja) : () => {};
+  });
+  document.addEventListener("astro:before-swap", () => {
+    quita();
+    quita = () => {};
+  });
+</script>

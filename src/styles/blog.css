@@ -13,10 +13,48 @@
 }
 html.dark .blog-autor { border-color: rgba(255, 255, 255, 0.1); background: #202024; }
 .blog-autor-avatar {
+  position: relative;
   flex: none;
   width: 144px;
-  height: auto;
+  overflow: hidden;
   image-rendering: pixelated;
+}
+.blog-autor-avatar img { display: block; width: 100%; height: auto; }
+
+/* El avatar vivo (src/scripts/avatar.js): un fotograma de la tira encima del
+   GIF, y las notas y zetas, que suben y se desvanecen dentro del cuadro.
+   Tamaños en píxeles de arte del avatar (24 x 26). */
+.avatar-vivo { cursor: pointer; }
+.avatar-vivo img { visibility: hidden; }
+.avatar-cara {
+  position: absolute;
+  inset: 0;
+  background: url(/zodk-avatar-tira.png) 0 0 / 900% 100% no-repeat;
+}
+.avatar-nota, .avatar-z {
+  position: absolute;
+  background: 0 0 / 100% 100% no-repeat;
+  pointer-events: none;
+  animation: avatar-sube 1.5s ease-out forwards;
+}
+.avatar-nota {
+  top: 30%;
+  width: calc(100% * 5 / 24);
+  height: calc(100% * 6 / 26);
+  background-image: url(/zodk-avatar-nota.png);
+}
+.avatar-z {
+  top: 22%;
+  left: 68%;
+  width: calc(100% * 4 / 24);
+  height: calc(100% * 4 / 26);
+  background-image: url(/zodk-avatar-z.png);
+  animation-duration: 2.4s;
+}
+@keyframes avatar-sube {
+  from { opacity: 0; transform: translate(0, 0); }
+  15% { opacity: 1; }
+  to { opacity: 0; transform: translate(var(--dx, 0), -120%); }
 }
 .blog-autor-titulo {
   margin: 0 0 0.5rem;
