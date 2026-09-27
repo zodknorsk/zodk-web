@@ -1,11 +1,17 @@
-/* /blog: arriba el avatar en pixel art con quién escribe a su lado; debajo,
-   las entradas en tarjetas grandes con la imagen arriba. Al pasar el ratón, el
+/* /blog: arriba, en un recuadro, el avatar en pixel art con quién escribe a
+   su lado; debajo, el rótulo "Entradas" (como los de la portada) y las
+   entradas en tarjetas grandes con la imagen arriba. Al pasar el ratón, el
    borde se ilumina con el turquesa de la tira del blog de la portada. */
 .blog-autor {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  padding: 1.2rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: #f1f1f3;
 }
+html.dark .blog-autor { border-color: rgba(255, 255, 255, 0.1); background: #202024; }
 .blog-autor-avatar {
   flex: none;
   width: 144px;
@@ -23,9 +29,21 @@ html.dark .blog-autor-titulo { color: #f4f4f5; }
 .blog-autor p { margin: 0; line-height: 1.6; }
 
 @media (max-width: 520px) {
-  .blog-autor { gap: 1rem; }
+  .blog-autor { gap: 1rem; padding: 1rem; }
   .blog-autor-avatar { width: 96px; }
 }
+
+.blog-cab-entradas {
+  margin: 1rem 0 1.5rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font: 600 0.78rem/1 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #18181b;
+}
+.blog-cab-entradas span { margin-left: 0.5rem; font-weight: 500; letter-spacing: 0.1em; color: #a1a1aa; }
+html.dark .blog-cab-entradas { border-bottom-color: rgba(255, 255, 255, 0.14); color: #f4f4f5; }
 
 .blog-lista {
   display: flex;

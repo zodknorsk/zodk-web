@@ -1,7 +1,8 @@
 ---
 // /blog: sobre la propia web, qué es y cómo está hecha. Se llega desde la
-// tira del blog de la portada. Arriba, el avatar en pixel art y quién escribe;
-// debajo, las notas con la etiqueta "blog", la más nueva primero.
+// tira del blog de la portada. Arriba, en un recuadro, el avatar en pixel art
+// y quién escribe; debajo, "Entradas" con cuántas hay y las notas con la
+// etiqueta "blog", la más nueva primero.
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
@@ -16,6 +17,7 @@ const entradas = (await getCollection("notas"))
 // "27 sept 2026", como en las filas de la portada.
 const fechaCorta = (d: Date) =>
   d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(".", "");
+const dos = (n: number) => String(n).padStart(2, "0");
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
@@ -34,28 +36,31 @@ const fechaCorta = (d: Date) =>
         </div>
       </div>
 
-      {entradas.length > 0 ? (
-        <ul class="blog-lista animate">
-          {entradas.map((n) => {
-            const foto = primeraFoto(n);
-            return (
-              <li>
-                <a class="blog-entrada" href={`/notas/${n.id}`}>
-                  {foto && <span class="blog-foto"><Image src={foto} alt="" width={1200} /></span>}
-                  <span class="blog-texto">
-                    <span class="fila-fecha">{fechaCorta(n.data.date)}</span>
-                    <span class="blog-titulo">{n.data.title}</span>
-                    {n.data.description && <span class="blog-entradilla">{n.data.description}</span>}
-                    <span class="blog-leer">Leer →</span>
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p class="animate">Todavía no hay entradas.</p>
-      )}
+      <section class="animate" aria-label="Entradas">
+        <h2 class="blog-cab-entradas">Entradas<span>{dos(entradas.length)}</span></h2>
+        {entradas.length > 0 ? (
+          <ul class="blog-lista">
+            {entradas.map((n) => {
+              const foto = primeraFoto(n);
+              return (
+                <li>
+                  <a class="blog-entrada" href={`/notas/${n.id}`}>
+                    {foto && <span class="blog-foto"><Image src={foto} alt="" width={1200} /></span>}
+                    <span class="blog-texto">
+                      <span class="fila-fecha">{fechaCorta(n.data.date)}</span>
+                      <span class="blog-titulo">{n.data.title}</span>
+                      {n.data.description && <span class="blog-entradilla">{n.data.description}</span>}
+                      <span class="blog-leer">Leer →</span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p>Todavía no hay entradas.</p>
+        )}
+      </section>
     </div>
   </Container>
 </PageLayout>
