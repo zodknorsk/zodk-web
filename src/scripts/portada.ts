@@ -6,6 +6,7 @@
 // del hero, con el ratón sobre una nave o una chapa.
 import { navigate } from "astro:transitions/client";
 import { montarTierraGL } from "./tierra-gl.js";
+import { montarMarteGL } from "./marte-gl.js";
 import { montarMano, montarZoom } from "./gestos.js";
 import { montarNombres } from "./nombres.js";
 import { PLANETA_V, LUNA_V, MARTE_V } from "./versiones.js";
@@ -243,6 +244,80 @@ function montarAstro() {
   return () => { mo.disconnect(); clearTimeout(t); };
 }
 
+// Bloques de la Luna y Marte de debajo del hero: con el ratón encima, el
+// astro gira despacio con su motor (el de /luna y /marte), arrancando y
+// frenando suave; al salir se queda donde lo dejó. El motor se carga al pasar
+// el ratón la primera vez y, hasta que pinta, se ve la foto quieta, que es su
+// misma vista inicial. Sin ratón (táctil) no se monta.
+const GIRO_VEL = 12, GIRO_RAMPA = 0.8;           // grados/s y segundos hasta esa velocidad (y para parar)
+type MotorBloque = { vista(): { lat0: number; lon0: number }; ponVista(lat0: number, lon0: number): void; desmontar(): void };
+let quitaBloques: (() => void)[] = [];
+function montarGiroBloque(
+  bloque: HTMLElement,
+  motor: (cv: HTMLCanvasElement, o: { disco: () => number; alPintar: () => void }) => Promise<MotorBloque | null>,
+  discoFoto: number,                             // diámetro del disco / lado de la foto quieta
+) {
+  const foto = bloque.querySelector("img");
+  if (!foto) return () => {};
+  let m: MotorBloque | null = null, cargando = false, encima = false, vivo = true, vel = 0, raf = 0, t0 = 0;
+  const paso = (t: number) => {
+    if (!m) return;
+    const dt = Math.max(0, Math.min(0.1, (t - t0) / 1000));   // el primero puede llegar con hora anterior a t0
+    t0 = t;
+    const obj = encima ? GIRO_VEL : 0;
+    vel += Math.sign(obj - vel) * Math.min(Math.abs(obj - vel), (GIRO_VEL * dt) / GIRO_RAMPA);
+    const v = m.vista();
+    m.ponVista(v.lat0, v.lon0 - vel * dt);      // el terreno va hacia la derecha, como la Tierra
+    raf = encima || vel > 0 ? requestAnimationFrame(paso) : 0;
+  };
+  const arranca = () => {
+    if (raf || !m) return;
+    t0 = performance.now();
+    raf = requestAnimationFrame(paso);
+  };
+  const entra = async () => {
+    encima = true;
+    if (m) return arranca();
+    if (cargando) return;
+    cargando = true;
+    const caja = document.createElement("span");
+    caja.className = "bloque-giro";
+    const cv = document.createElement("canvas");
+    caja.append(cv);
+    foto.after(caja);
+    const r = await motor(cv, {
+      disco: () => caja.getBoundingClientRect().width * discoFoto,
+      alPintar: () => bloque.classList.add("girando"),   // ya pinta: fuera la foto
+    }).catch(() => null);
+    if (!vivo) return r?.desmontar();
+    if (!r) { caja.remove(); return; }
+    m = r;
+    if (encima) arranca();
+  };
+  const sale = () => { encima = false; };
+  bloque.addEventListener("mouseenter", entra);
+  bloque.addEventListener("mouseleave", sale);
+  return () => {
+    vivo = false;
+    cancelAnimationFrame(raf);
+    bloque.removeEventListener("mouseenter", entra);
+    bloque.removeEventListener("mouseleave", sale);
+    m?.desmontar();
+  };
+}
+function montarGiroBloques() {
+  if (!matchMedia("(hover: hover)").matches) return [];
+  const luna = document.querySelector<HTMLElement>(".bloque-luna");
+  const marte = document.querySelector<HTMLElement>(".bloque-marte");
+  const q: (() => void)[] = [];
+  // discos de las fotos: luna-llena.png, 585 de 600; marte-quieto.png, 2 x RADIUS de 450.
+  // La Luna, llena todo el giro: el sol detrás de quien mira (arte/generar-luna-llena.mjs).
+  const llena = () => ({ fase: 0, lado: 1, expo: 1, frio: 0 });
+  if (luna) q.push(montarGiroBloque(luna, (cv, o) => montarMarteGL(cv, { ...o, base: "/luna/", prefijo: "luna-", version: LUNA_V, lat0: 0, lon0: 0, luz: llena }), 585 / 600));
+  if (marte) q.push(montarGiroBloque(marte, (cv, o) => montarMarteGL(cv, o), 438.8 / 450));
+  return q;
+}
+
 // Vuelos a la Luna y a Marte (src/scripts/vuelos.js): al pulsar la luna
 // del hero (solo de noche) o Marte (arriba a la derecha), el astro se amplía
 // hasta quedar como en su página y entonces se cambia de página; las
@@ -337,6 +412,8 @@ document.addEventListener("astro:page-load", async () => {
   faseLuna();
   quitaAstro?.();
   quitaAstro = montarAstro();
+  for (const q of quitaBloques) q();
+  quitaBloques = montarGiroBloques();
   for (const q of quitaViajes) q();
   quitaViajes = [];
   const heroViaje = document.querySelector<HTMLElement>(".hero");
@@ -453,6 +530,8 @@ document.addEventListener("astro:before-swap", () => {
   quitaAcercamiento?.();
   quitaAstro?.();
   quitaAstro = null;
+  for (const q of quitaBloques) q();
+  quitaBloques = [];
   for (const q of quitaViajes) q();
   quitaViajes = [];
   planeta?.desmontar();

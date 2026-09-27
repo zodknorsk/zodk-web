@@ -797,10 +797,15 @@ html.home main { padding-top: 5rem; }
   padding: 1.2rem 1.3rem;
   text-decoration: none;
 }
-.bloque-astro img { position: absolute; pointer-events: none; }
-.bloque-luna img { width: 250px; right: -30px; top: -10px; }
-.bloque-marte img { width: 240px; right: -20px; top: -5px; }
-/* Al pasar el ratón el astro no se mueve: el borde se ilumina con su color.
+/* El astro: la foto quieta y, al pasar el ratón, el lienzo de su motor en la
+   misma caja (portada.ts), que la tapa en cuanto pinta y gira. */
+.bloque-astro :is(img, .bloque-giro) { position: absolute; pointer-events: none; }
+.bloque-luna :is(img, .bloque-giro) { width: 250px; right: -30px; top: -10px; }
+.bloque-marte :is(img, .bloque-giro) { width: 240px; right: -20px; top: -5px; }
+.bloque-giro { aspect-ratio: 1; }
+.bloque-giro canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); image-rendering: pixelated; }
+.bloque-astro.girando img { visibility: hidden; }
+/* Al pasar el ratón, además, el borde se ilumina con su color.
    De noche basta un halo suave; de día, sobre el fondo claro, un halo claro
    no se ve: va un tono más oscuro (--halo-dia), un filo marcado y sombra. */
 .bloque-luna { --halo: #d9dde3; --halo-dia: #8b95a3; }
@@ -1006,7 +1011,7 @@ html.dark .fila-entradilla { color: #a1a1aa; }
 @media (max-width: 760px) {
   .portada-astros { grid-template-columns: 1fr; }
   .bloque-astro { height: 170px; }
-  .bloque-luna img, .bloque-marte img { width: 190px; right: -30px; top: -10px; }
+  .bloque-luna :is(img, .bloque-giro), .bloque-marte :is(img, .bloque-giro) { width: 190px; right: -30px; top: -10px; }
   .tira-blog { flex-wrap: wrap; gap: 0.9rem; }
   .tira-hecho { margin-left: 0; width: 100%; }
   .tira-hecho-titulo { width: 100%; margin-bottom: 0.1rem; }

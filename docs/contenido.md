@@ -62,7 +62,8 @@ sello rojo de **EN CURSO** (`enCurso` en `src/lib/contenido.ts`).
 ## La portada, debajo del planeta
 
 Los bloques de la Luna y Marte (con cuántos alunizajes, amartizajes y notas
-hay), la tira del blog con las insignias de "hecho con" (`STACK` en
+hay; con el ratón encima, el astro gira despacio con su motor, cargado al
+pasar el ratón la primera vez: `montarGiroBloques` en `portada.ts`), la tira del blog con las insignias de "hecho con" (`STACK` en
 `src/consts.ts`, con el color de cada marca para el hover) y, en dos
 columnas, los tres últimos eventos y las cinco últimas notas. La foto de
 cada fila es la primera foto local del texto (`primeraFoto`); un evento sin

@@ -27,6 +27,7 @@ la variable `CHROME`, y opciones de más en `CHROME_ARGS`).
 | Archivo | Qué hace | Escribe |
 |---|---|---|
 | `generar-luna.py` | Las dos caras, los datos del motor (`--canvas`) y las teselas (`--teselas`) | `public/luna/` (pruebas en `pruebas/luna/`) |
+| `generar-luna-llena.mjs` | La Luna llena del bloque de la portada, pintada por el motor | `public/luna/luna-llena.png` |
 | `generar-orion.py` | La Orion en 32 fotogramas; con `--css`, la animación de su sombra | `public/luna/zodk-orion-giro*.png` |
 | `generar-queqiao.py` | Los relés Queqiao y Queqiao-2 | `public/luna/zodk-sat-queqiao*-noche.svg` |
 
