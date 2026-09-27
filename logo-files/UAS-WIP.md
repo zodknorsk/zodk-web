@@ -4,21 +4,95 @@
 paso: qué está hecho, qué no, qué está decidido y qué queda pendiente. Leyendo
 solo esto hay que poder retomarlo, en el Mac o en el PC con Linux Mint.
 
-## Dónde estamos (27-sep-2026)
+## Dónde estamos (27-sep-2026, tarde)
 
-**Rama `uas-project`** (creada desde `main` el 27-sep-2026). **Sin commitear**
-todavía: este documento y la línea `arte/uas-fuentes/` del `.gitignore`.
-Nada subido, nada fusionado: `main` y zodk.eu no tienen nada de esto.
+**Rama `uas-project`** (creada desde `main` el 27-sep-2026). Paso 1
+commiteado (`14322ea`), **sin subir** (la rama solo existe en el Mac).
+Nada fusionado: `main` y zodk.eu no tienen nada de esto.
 
 **Hecho**:
-- Paso 1: rama y este documento.
-- Fotos de referencia del MICH-2000 buscadas y guardadas en
-  `arte/uas-fuentes/mich-2000/` (fuera de Git, como `marte-fuentes/`; la
-  lista con los enlaces está abajo, en «Fotos de referencia», para poder
-  volver a bajarlas en el otro ordenador).
+- Paso 1: rama y este documento. Fotos de referencia del MICH-2000 en
+  `arte/uas-fuentes/mich-2000/` (fuera de Git; enlaces abajo, en «Fotos de
+  referencia»).
+- Paso 2, **visor con marco propio, forma trabajada, iconos y color
+  elegido; listo para commit**, en
+  `localhost:4321/uas/prueba` (`npm run dev`). Capturas comprobadas: día,
+  noche, vistas 3D, arriba, lado y detrás, parte elegida, pestaña de
+  fuentes. Sin probar aún: girar con el ratón, el giro automático, Zen y el
+  móvil real.
 
-**Siguiente paso**: paso 2, el prototipo del visor en boceto con el
-MICH-2000, en una página de prueba sin enlazar.
+**Color de la tarjeta, elegido por el usuario (27-sep-2026)**: opción
+«tinta, sin color». Tarjeta `#ebebee` de día y `#25252a` de noche (un poco
+más oscura / más clara que la página, idea suya); lo elegido va en tinta
+(negro de día, blanco de noche); el único color es la bandera. Rechazados:
+el verde azulado `#2f8f8a` («muy IA»), y comparados y descartados el azul
+del blog, el naranja de señalización y el rojo de sello. Las páginas
+temporales de comparación ya están borradas.
+
+Hecho también: los iconos del crédito (Clawd, el de la tira «Hecho con»
+de la portada, sacado de `STACK` en `src/consts.ts`, y el oficial de
+Three.js de simple-icons).
+
+Después, el paso 3 (versión pixel, que activa el botón «Pixel»).
+
+## El visor (paso 2)
+
+**Cambios del usuario sobre la tarjeta** (27-sep-2026, tarde): el panel
+lateral lleva dos pestañas, **Partes** y **Fuentes** (las fuentes se
+quitaron de debajo del visor para compactarlo); fuera el sello rojo y fuera
+«Ficha UAS-UA-001» (la cabecera empieza con la bandera y «Ucrania»); el
+crédito sube a la cabecera, a la derecha, donde estaba el sello; botón
+**Maqueta / Pixel** en la barra (Pixel desactivado hasta el paso 3). En la
+ficha de una parte, «Ver sus fuentes» salta a la pestaña de fuentes con
+las que la respaldan marcadas.
+
+**La forma** (misma tarde): el ala es ahora una pieza `ala` con perfil
+(NACA simétrico, intradós más plano), gruesa en la raíz (0,17) y fina en la
+punta (0,035), flecha de unos 41°; el fuselaje va medio hundido en ella. Se
+quitó el hueco de la hélice en el borde de salida: no se ve claro en
+ninguna foto (lo afirmaba drone-warfare) y sus escalones pintaban rayas
+sobre el ala. Borde de salida recto, elevones detrás, motor y hélice al
+final del cuerpo.
+
+**Aspecto: «tarjeta de identificación»** (27-sep-2026). El usuario rechazó
+la primera versión porque era «un calco» del visor de drone-warfare: quiere
+la idea, no su diseño. Se montó un marco propio inspirado en las tarjetas y
+manuales de reconocimiento de aeronaves:
+- Cabecera en letra mono con la chapa de la bandera en pixel art (la misma
+  función `svgBandera` que /luna y /marte) y el país.
+- Partes con **letras** (A, B, C…) en etiquetas cuadradas. Al elegir una:
+  la pieza se colorea, sale un rótulo unido por una línea a la chincheta, su
+  ficha en el panel (qué la respalda: foto, reconstrucción o fabricante) y,
+  en las fuentes, se apagan las que no la respaldan.
+- **Tira de siluetas** (planta, perfil, frente, 3D) que hacen de botones de
+  vista. Se pintan de la propia maqueta al cargar (cámara ortográfica
+  ajustada a lo que ocupa) y se usan como máscara CSS, así cambian de color
+  con el tema.
+- **Fuentes**: miniaturas de las fotos (en `public/uas/mich-2000/fuentes/`,
+  560 px, 316 KB en total) y dos artículos, con medio, enlace al original y
+  qué partes respalda cada una.
+- Crédito pedido por el usuario: «Maqueta de zodk.eu a partir de fotos
+  públicas · Hecho con Three.js y Claude Code».
+
+Archivos:
+- `src/data/uas/tipos.ts`: qué es una maqueta (código, país, piezas, partes,
+  fuentes).
+- `src/data/uas/mich-2000.ts`: la del MICH-2000, **solo datos**. Un dron
+  nuevo = un archivo nuevo aquí + sus miniaturas en `public/uas/<modelo>/`.
+- `src/scripts/visor-uas.ts`: el motor, con Three.js (`three` en
+  `package.json`). Tipos de pieza: tubo, ala (con perfil), placa, varilla,
+  hélice. Pinta solo cuando algo cambia; el giro automático
+  (botón «Girar», apagado al empezar) es lo único que pinta seguido y se
+  para si el visor no se ve. En la URL, `?vista=arriba|lado|frente|detras`,
+  `?parte=C` y `?pestana=fuentes` abren así (sirve para capturas).
+  Teclado: flechas y + −.
+- `src/components/VisorUAS.astro`: el marco, que se genera en el build con
+  los datos (`<VisorUAS modelo="mich-2000" />`). Colores «tinta»
+  (variables `--visor-*` al principio del `<style>`); sigue al botón de
+  día/noche; una columna si es estrecho.
+- `src/pages/uas/prueba.astro`: la página de prueba (no la enlaza nada).
+  Ojo al fusionar: `@astrojs/sitemap` la metería en el sitemap; quitarla o
+  sustituirla antes.
 
 ## Qué es el proyecto
 
@@ -41,7 +115,7 @@ sin escala».
 ## Plan
 
 - [x] 1. Rama `uas-project` y este documento.
-- [ ] 2. Prototipo del visor en **boceto 3D** (Three.js) con el MICH-2000, en
+- [~] 2. Prototipo del visor en **boceto 3D** (Three.js) con el MICH-2000, en
       una página de prueba sin enlazar. Solo se redibuja al arrastrar (nada de
       bucle continuo: el usuario usa Zen/Firefox, ver `docs/rendimiento.md`).
 - [ ] 3. Del mismo modelo, versión **pixel art**: tira de sprites PNG con
@@ -65,6 +139,9 @@ sin escala».
   mientras tanto se publican desde `main`, no desde esta rama.
 - 27-sep-2026, usuario: se empieza por el MICH-2000, como drone-warfare.
 - 27-sep-2026, usuario: el asistente busca las fotos de referencia.
+- 27-sep-2026, usuario: el visor no copia el diseño de drone-warfare; se
+  hace la «tarjeta de identificación» propuesta. Crédito con Three.js y
+  Claude Code. Sección de fuentes con las fotos OSINT y enlaces.
 
 ## Decisiones pendientes
 
@@ -121,3 +198,13 @@ fotos de la fábrica china y del lanzador.
 
 - 27-sep-2026: creada la rama `uas-project` desde `main`; fotos de
   referencia buscadas y guardadas; este documento.
+- 27-sep-2026, tarde: primer prototipo del visor en boceto (Three.js), en
+  `/uas/prueba`. Descartado el dibujo de dronestrike.com como referencia.
+- 27-sep-2026: el usuario rechaza el primer marco por parecer un calco de
+  drone-warfare; se cambia a la «tarjeta de identificación» con fuentes y
+  crédito (Three.js y Claude Code).
+- 27-sep-2026, tarde: pestañas Partes/Fuentes, crédito arriba, sin sello
+  ni código de ficha, botón Maqueta/Pixel; ala con perfil y sin el hueco
+  de la hélice.
+- 27-sep-2026, tarde: iconos de Three.js y Clawd en el crédito; color
+  «tinta, sin color» elegido entre cuatro opciones.
