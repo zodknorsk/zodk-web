@@ -9,6 +9,8 @@ const OBORONKA = "https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/";
 const maqueta: Maqueta = {
   nombre: "MICH-2000",
   subtitulo: "Dron de ataque de largo alcance",
+  // ~2,5 m de envergadura, como el Shahed-136 (no hay medidas publicadas).
+  escala: 1,
   pais: {
     codigo: "UA", nombre: "Ucrania", bandera: "🇺🇦",
     filas: ["aaaaaaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaaa",

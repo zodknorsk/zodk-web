@@ -19,6 +19,32 @@ relacionado con el MICH-2000, la nota, etc.». Lo mismo para el Skydio X10D.
 Ojo: si se importa en `main` antes de fusionar, estas fichas saldrían en
 zodk.eu sin el código del visor (`/uas` no existe en `main`).
 
+**Hangar de UAS, tercera vuelta (27-sep-2026, noche), sin commitear**: el
+usuario pidió más personalidad y tamaño («cúrratelo»: varias opciones de
+color, forma y animación). Hangar más grande y con detalles, 4 colores x 2
+formas x puerta en 5 fotogramas, piloto y dron que sale opcionales; eligió
+**carbón con anexo**, más a la izquierda, sin la sombra de la entrada y con
+una luz en el suelo mejor (abanico en bandas, en la portada). Detalle en
+`docs/uas.md`.
+
+**Hangar de UAS, segunda vuelta (27-sep-2026, noche)**: el
+usuario eligió la tira «satélite» (plataforma con los drones a escala) y
+pidió un hangar en pixel art a la izquierda. Tras rechazar tres hangares
+vistos desde arriba, mandó un boceto: hangar de arco de lado, girado para
+ver la puerta. Hecho así (`arte/generar-uas-hangar.mjs`), con luz tenue
+siempre y más al pasar el ratón (lo eligió él), suelo de asfalto oscuro,
+hasta tres drones que rotan y sin números ni rótulo de reconstrucción.
+Detalle y lo rechazado en `docs/uas.md`.
+
+**Hangar de UAS, primera vuelta (27-sep-2026, noche)**: con dos fichas, el usuario pidió acceso desde la portada
+(«otra tira debajo de los planetas») y un nombre; eligió **«Hangar de UAS»**
+(se propusieron HANGAR, UAS-PROJECT y UAS-INDEX). Hecho: miniaturas en pixel
+art de cada dron (`arte/generar-uas-miniaturas.mjs`, sin WebGL: imágenes
+fijas), la tira en la portada entre los planetas y el blog, y `/uas` con
+tarjetas y filtros de país y tipo (el importador saca también la
+categoría). Las paletas del pixel pasaron a `src/scripts/uas-paletas.ts`
+(las comparten el visor y el generador). Detalle en `docs/uas.md`.
+
 **Skydio X10D (27-sep-2026, tarde)**: ficha pedida por el usuario antes de
 irse una hora («ficha en Obsidian + visor + pixel art + textos; un dron que
 el Ejército de Tierra nos ha dotado»), hecha entera por Claude y

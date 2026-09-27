@@ -317,14 +317,24 @@ function resaltados(cuerpo) {
 }
 
 /**
- * País de una ficha de dron, de la fila «País» de su tabla de características
- * (`| **País** | 🇺🇦 Ucrania |`): la bandera (emoji) y el nombre.
+ * País y categoría de una ficha de dron, de las filas «País» y «Categoría»
+ * de su tabla de características (`| **País** | 🇺🇦 Ucrania |`): la bandera
+ * (emoji), el nombre del país y la categoría, para los filtros de /uas.
  */
 function paisDeFicha(cuerpo) {
-  const m = cuerpo.match(/^\|\s*\*\*Pa[ií]s\*\*\s*\|\s*(.+?)\s*\|\s*$/m);
-  if (!m) return {};
-  const bandera = m[1].match(/^(\p{Regional_Indicator}{2})\s*/u);
-  return bandera ? { bandera: bandera[1], pais: m[1].slice(bandera[0].length).trim() } : { pais: m[1].trim() };
+  const fila = (nombre) => cuerpo.match(new RegExp(`^\\|\\s*\\*\\*${nombre}\\*\\*\\s*\\|\\s*(.+?)\\s*\\|\\s*$`, "mu"))?.[1];
+  const datos = {};
+  const pais = fila("Pa[ií]s");
+  if (pais) {
+    const bandera = pais.match(/^(\p{Regional_Indicator}{2})\s*/u);
+    if (bandera) datos.bandera = bandera[1];
+    datos.pais = pais.slice(bandera ? bandera[0].length : 0).trim();
+  }
+  // La categoría, sin lo que vaya tras una coma o entre paréntesis
+  // («Ataque de un solo uso, largo alcance» → «Ataque de un solo uso»).
+  const categoria = fila("Categor[ií]a")?.split(/[,(]/)[0].trim();
+  if (categoria) datos.categoria = categoria;
+  return datos;
 }
 
 /**

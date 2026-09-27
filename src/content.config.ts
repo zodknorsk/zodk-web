@@ -66,6 +66,8 @@ const uas = defineCollection({
     // Del «País» de la tabla de características: nombre y bandera (emoji).
     pais: z.string().optional(),
     bandera: z.string().optional(),
+    // De la «Categoría» de la tabla, hasta la primera coma o paréntesis.
+    categoria: z.string().optional(),
   }),
 });
 

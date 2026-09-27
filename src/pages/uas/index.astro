@@ -1,62 +1,74 @@
 ---
-// /uas: la gran enciclopedia de los UAS. Todas las fichas de drones, con
-// botones de país para filtrar (el país sale de la tabla de características
-// de cada ficha). Las que tienen maqueta llevan la marca «Visor».
+// /uas: el hangar de UAS (la gran enciclopedia de los UAS). Una tarjeta por
+// ficha, con la miniatura en pixel art del dron (arte/generar-uas-miniaturas.mjs),
+// su país, nombre y categoría, y un filtro por país (sale de la tabla de
+// características de cada ficha).
+import fs from "node:fs";
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
+import { porFecha } from "@lib/contenido";
 
-const fichas = (await getCollection("uas"))
-  .filter((f) => !f.data.draft)
-  .sort((a, b) => a.data.title.localeCompare(b.data.title, "es"));
+const fichas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
+const conMiniatura = (id: string) => fs.existsSync(`public/uas/${id}/miniatura.png`);
 
-const maquetas = Object.keys(import.meta.glob("../../data/uas/*.ts"));
-const tieneVisor = (id: string) => maquetas.some((m) => m.endsWith(`/${id}.ts`));
-
-// Países con cuántas fichas tiene cada uno, de más a menos.
-const paises = [...fichas.reduce((acc, f) => {
-  const nombre = f.data.pais ?? "Sin país";
-  const actual = acc.get(nombre) ?? { nombre, bandera: f.data.bandera ?? "", n: 0 };
-  actual.n++;
-  return acc.set(nombre, actual);
-}, new Map<string, { nombre: string; bandera: string; n: number }>()).values()]
-  .sort((a, b) => b.n - a.n || a.nombre.localeCompare(b.nombre, "es"));
+// Valores de un filtro con cuántas fichas tiene cada uno, de más a menos.
+function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
+  const n = new Map<string, number>();
+  for (const f of fichas) {
+    const v = de(f);
+    if (v) n.set(v, (n.get(v) ?? 0) + 1);
+  }
+  return [...n].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"));
+}
+const banderas = new Map(fichas.map((f) => [f.data.pais, f.data.bandera]));
+const paises = recuento((f) => f.data.pais);
 ---
 
-<PageLayout title="La gran enciclopedia de los UAS" description="Fichas de drones militares: qué son, quién los usa, su historia y una maqueta para girarlos.">
+<PageLayout title="Hangar de UAS" description="La gran enciclopedia de los UAS: fichas de drones militares a partir de fuentes abiertas, con una maqueta para girarlos.">
   <Container>
     <div class="space-y-8">
-      <div class="animate space-y-2">
-        <h1 class="font-semibold text-black dark:text-white">La gran enciclopedia de los UAS</h1>
-        <p class="text-sm">Fichas de drones militares a partir de fuentes abiertas: qué son, quién los usa, su historia y, en algunos, una maqueta para girarlos.</p>
-      </div>
+      <h1 class="animate font-semibold text-black dark:text-white">Hangar de UAS</h1>
 
       {fichas.length === 0 ? (
         <p class="animate">Todavía no hay fichas.</p>
       ) : (
         <>
-          <div class="animate uas-filtros" role="group" aria-label="Filtrar por país">
-            <button type="button" data-pais="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
-            {paises.map((p) => (
-              <button type="button" data-pais={p.nombre} aria-pressed="false">
-                {p.bandera && <span class="uas-bandera">{p.bandera}</span>}
-                {p.nombre} <span>{p.n}</span>
-              </button>
-            ))}
+          <div class="animate space-y-2">
+            <div class="uas-filtros" data-filtro="pais" role="group" aria-label="Filtrar por país">
+              <span class="uas-filtros-titulo">País</span>
+              <button type="button" data-valor="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
+              {paises.map(([p, n]) => (
+                <button type="button" data-valor={p} aria-pressed="false">
+                  {banderas.get(p) && <span class="uas-bandera">{banderas.get(p)}</span>}{p} <span>{n}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
-          <ul class="animate flex flex-col gap-4">
+          <ul class="animate uas-tarjetas">
             {fichas.map((f) => (
-              <li data-pais={f.data.pais ?? "Sin país"} class="relative">
-                <ArrowCard entry={f} tituloAzul />
-                <span class="uas-marcas" aria-hidden="true">
-                  {f.data.bandera && <span>{f.data.bandera}</span>}
-                  {tieneVisor(f.id) && <span class="uas-visor">Visor</span>}
-                </span>
+              <li data-pais={f.data.pais ?? ""} data-categoria={f.data.categoria ?? ""}>
+                <a href={`/uas/${f.id}`} class="uas-tarjeta">
+                  <span class="uas-tarjeta-foto">
+                    {conMiniatura(f.id) && (
+                      <>
+                        <img class="uas-dia" src={`/uas/${f.id}/miniatura.png`} alt="" width="96" height="56" loading="lazy" />
+                        <img class="uas-noche" src={`/uas/${f.id}/miniatura-noche.png`} alt="" width="96" height="56" loading="lazy" />
+                      </>
+                    )}
+                  </span>
+                  <span class="uas-tarjeta-texto">
+                    <span class="uas-tarjeta-pais">{f.data.bandera} {f.data.pais}</span>
+                    <span class="uas-tarjeta-nombre">{f.data.title}</span>
+                    {f.data.categoria && <span class="uas-tarjeta-categoria">{f.data.categoria}</span>}
+                    {f.data.description && <span class="uas-tarjeta-desc">{f.data.description}</span>}
+                  </span>
+                </a>
               </li>
             ))}
           </ul>
+          <p class="animate uas-vacio" hidden>No hay fichas con esos filtros.</p>
         </>
       )}
     </div>
@@ -64,24 +76,42 @@ const paises = [...fichas.reduce((acc, f) => {
 </PageLayout>
 
 <script>
-  // Filtro por país: se esconden las fichas de los demás.
+  // Filtro por país (el código admite más grupos de filtros a la vez).
   document.addEventListener("astro:page-load", () => {
-    const filtros = document.querySelector<HTMLElement>(".uas-filtros");
-    if (!filtros) return;
-    filtros.addEventListener("click", (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button");
-      if (!b) return;
-      const pais = b.dataset.pais ?? "";
-      filtros.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-      document.querySelectorAll<HTMLElement>("li[data-pais]").forEach((li) => {
-        li.hidden = pais !== "" && li.dataset.pais !== pais;
+    const grupos = [...document.querySelectorAll<HTMLElement>(".uas-filtros")];
+    if (!grupos.length) return;
+    const elegido: Record<string, string> = {};
+    const aplicar = () => {
+      let quedan = 0;
+      document.querySelectorAll<HTMLElement>(".uas-tarjetas li").forEach((li) => {
+        const si = Object.entries(elegido).every(([filtro, valor]) => !valor || li.dataset[filtro] === valor);
+        li.hidden = !si;
+        if (si) quedan++;
       });
-    });
+      const vacio = document.querySelector(".uas-vacio") as HTMLElement | null;
+      if (vacio) vacio.hidden = quedan !== 0;
+    };
+    for (const g of grupos) {
+      g.addEventListener("click", (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>("button");
+        if (!b) return;
+        g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        elegido[g.dataset.filtro!] = b.dataset.valor ?? "";
+        aplicar();
+      });
+    }
   });
 </script>
 
 <style>
-  .uas-filtros { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .uas-filtros-titulo, .uas-tarjeta-pais, .uas-tarjeta-categoria {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .uas-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+  .uas-filtros-titulo { width: 3.2rem; font-size: 0.62rem; opacity: 0.6; }
   .uas-filtros button {
     display: inline-flex;
     align-items: center;
@@ -97,24 +127,47 @@ const paises = [...fichas.reduce((acc, f) => {
   :global(html.dark) .uas-filtros button[aria-pressed="true"] { background: #e4e4e7; border-color: #e4e4e7; color: #18181b; }
   .uas-bandera { font-size: 0.95rem; line-height: 1; }
 
-  /* Bandera y marca «Visor», arriba a la derecha de cada ficha. */
-  .uas-marcas {
-    position: absolute;
-    top: 0.75rem;
-    right: 2.5rem;
+  /* Tarjetas: la miniatura sobre la cuadrícula del visor y, debajo, el texto. */
+  .uas-tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
+  .uas-tarjeta {
     display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    pointer-events: none;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .uas-visor {
-    padding: 0.05rem 0.4rem;
-    border: 1px solid currentColor;
-    border-radius: 3px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.7;
+  :global(html.dark) .uas-tarjeta { border-color: rgba(255, 255, 255, 0.13); background: #25252a; }
+  .uas-tarjeta:hover { border-color: #27272a; box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.35); }
+  :global(html.dark) .uas-tarjeta:hover { border-color: #e4e4e7; }
+  .uas-tarjeta-foto {
+    display: grid;
+    place-items: center;
+    height: 9.5rem;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.13);
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: center;
   }
+  :global(html.dark) .uas-tarjeta-foto {
+    border-bottom-color: rgba(255, 255, 255, 0.13);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
+  .uas-tarjeta-foto img { grid-area: 1 / 1; width: 192px; height: 112px; image-rendering: pixelated; }
+  .uas-noche { display: none; }
+  :global(html.dark) .uas-noche { display: block; }
+  :global(html.dark) .uas-dia { display: none; }
+  .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
+  .uas-tarjeta-pais { font-size: 0.62rem; opacity: 0.7; }
+  .uas-tarjeta-nombre { font-size: 1.05rem; font-weight: 600; color: #18181b; }
+  :global(html.dark) .uas-tarjeta-nombre { color: #f4f4f5; }
+  .uas-tarjeta-categoria { font-size: 0.62rem; opacity: 0.7; }
+  .uas-tarjeta-desc { margin-top: 0.35rem; font-size: 0.82rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>

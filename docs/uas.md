@@ -190,7 +190,10 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
    `?vista=arriba|lado|frente|detras`, `?parte=C`, `?pestana=fuentes`,
    `?estilo=pixel`. Comparar las siluetas con las fotos, sobre todo planta
    y perfil. `npm run lint` y `npx astro check`.
-7. **Capturas** para el usuario (día y noche; ver abajo) antes de dar nada
+7. **Miniatura**: `node arte/generar-uas-miniaturas.mjs <modelo>` (sale
+   de la maqueta; hay que repetirlo si la maqueta cambia). Sin ella, el
+   dron no sale en la tira de la portada ni tiene foto en su tarjeta.
+8. **Capturas** para el usuario (día y noche; ver abajo) antes de dar nada
    por bueno, y **consumo en Zen** si cambia el motor (`docs/rendimiento.md`).
 
 ### Capturas sin ventana
@@ -209,6 +212,46 @@ Chrome no termina solo: esperar a que exista el PNG y cerrarlo. La noche va
 en `sessionStorage`; para capturarla, un HTML temporal en `public/` que haga
 `sessionStorage.setItem("theme","dark")` y redirija a la página (y borrarlo
 después).
+
+## El hangar: la tira de la portada y el índice
+
+El usuario llamó a la sección **«Hangar de UAS»** (27-sep-2026).
+
+**La tira de la portada**, entre la Luna y Marte y la del blog: la
+plataforma de un aeródromo de noche (baldosa de asfalto oscuro, como el
+resto de tarjetas; una línea amarilla de rodadura abajo).
+- A la izquierda, «HANGAR DE UAS», el número y «N drones en el hangar».
+- El **hangar de arco, de lado y un poco girado** (boceto del usuario), en
+  **carbón con anexo** (elegido entre verde militar, aluminio, arena y
+  carbón, con y sin anexo): la pared larga de frente con «UAS» pintado con
+  plantilla, ventanucos, óxido bajo el alero y una puerta de servicio con
+  farol; tejado curvo con respiraderos y antena; a la izquierda, un anexo de
+  chapa; a la derecha, el testero en perspectiva con la puerta en arco,
+  mirando a los drones; bidones y una caja en el suelo. Puerta entreabierta
+  con una rendija de luz tenue; al pasar el ratón se abre en 5 fotogramas
+  (la luz se aviva y dentro se ve la silueta de un dron). Lo dibuja
+  `arte/generar-uas-hangar.mjs` (una tira de fotogramas; `ELEGIDO` dice qué
+  color y forma). Sin sombra junto a la puerta (el usuario la quitó).
+- La **luz en el suelo** la pone la portada (`.sat-luz`): un abanico cálido
+  en bandas que sale de la puerta hacia la plataforma, tenue siempre y
+  fuerte al abrir. Se probaron y quitaron un piloto rojo parpadeando en la
+  antena y un dron que salía volando al pasar el ratón (no los eligió).
+- A la derecha, **hasta tres drones vistos desde arriba, a escala real entre
+  ellos** (`planta.png` de `generar-uas-miniaturas.mjs`, con la `escala` de
+  cada maqueta), en puestos marcados con discontinuas, con un recuadro y un
+  rótulo amarillos (nombre y bandera). Si hay más de tres, cada 7 s uno se
+  funde y entra otro (solo con la tira a la vista).
+- Rechazado por el usuario: los drones en 3/4 quietos en fila («super
+  cutre»), la versión «hangar a oscuras», la línea de barrido al pasar el
+  ratón, los números «01», «02», el rótulo «Reconstrucción · drones a
+  escala», el suelo claro (desentonaba con las otras tarjetas oscuras) y
+  los hangares vistos desde arriba («se ven FATAL»; lo quería de lado).
+
+**El índice `/uas`**: título «Hangar de UAS», filtro por país (sale de la
+fila «País» de la tabla) y tarjetas con la miniatura 3D sobre la
+cuadrícula del visor, país, nombre, categoría y el principio de la
+introducción. El filtro por tipo se quitó (el usuario: «de momento solo
+por país»); el importador sigue sacando la categoría.
 
 ## Las fichas en la web
 

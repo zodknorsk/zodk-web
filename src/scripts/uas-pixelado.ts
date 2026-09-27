@@ -13,7 +13,8 @@ import {
 // Tamaño de un píxel de arte, en píxeles CSS.
 export const TAM_PIXEL = 2;
 
-export type Paleta = [string, string, string, string];
+import type { Paleta } from "./uas-paletas";
+export type { Paleta };
 
 // Los hex van tal cual (sRGB) al shader, sin la conversión a lineal de Color:
 // la salida tampoco se convierte, así los tonos quedan exactos.

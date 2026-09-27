@@ -4,7 +4,7 @@
 // simplificadas: el cuerpo real tiene más aristas, rejillas y tapas. Fotos a tamaño completo en
 // arte/uas-fuentes/skydio-x10d/ (fuera de Git; enlaces en logo-files/UAS-WIP.md).
 import type { Maqueta } from "./tipos";
-import { PAISES_LUNA } from "../alunizajes";
+import { PAISES_LUNA } from "../alunizajes.ts";
 
 const SKYDIO = "https://www.skydio.com/x10d";
 const FICHA_TECNICA = "https://www.skydio.com/x10/technical-specs";
@@ -31,6 +31,7 @@ function brazo(x1: number, z1: number, x2: number, z2: number, ancho1: number, a
 const maqueta: Maqueta = {
   nombre: "Skydio X10D",
   subtitulo: "Microdrón de reconocimiento",
+  escala: 0.25,  // 1 unidad ≈ 25 cm (medidas oficiales)
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
   pais: PAISES_LUNA.find((p) => p.codigo === "US")!,

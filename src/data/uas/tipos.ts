@@ -74,6 +74,9 @@ export type Maqueta = {
   piezas: Pieza[];
   partes: Parte[];
   fuentes: Fuente[];
+  // Metros por unidad de la maqueta (para dibujar los drones a escala entre
+  // sí, como en la tira del hangar). Aproximado si no hay medidas oficiales.
+  escala: number;
   // Color de la parte elegida: blanco papel (por defecto, para drones
   // oscuros) o tinta (para drones claros, donde el blanco no se distingue).
   resalte?: "papel" | "tinta";
