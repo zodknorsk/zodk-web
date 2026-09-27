@@ -17,8 +17,10 @@ export type Pieza = (
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
-  | { tipo: "placa"; id: string; plano: "horizontal"; planta: Punto2[]; y: number; grosor: number; espejo?: boolean }
-  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; grosor: number; espejo?: boolean }
+  // simetrica (solo horizontal): la planta es media (x ≥ 0) y se completa con
+  // su reflejo en una sola pieza. bisel: redondea los bordes.
+  | { tipo: "placa"; id: string; plano: "horizontal"; planta: Punto2[]; y: number; grosor: number; espejo?: boolean; simetrica?: boolean; bisel?: number }
+  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; grosor: number; espejo?: boolean; bisel?: number }
   // Ala con perfil (grueso delante, afilado detrás), simétrica respecto a
   // x = 0. Estaciones de la raíz a la punta: [x, z del borde de ataque, z del
   // borde de salida, grosor máximo]. Dos estaciones seguidas en la misma x
@@ -31,7 +33,8 @@ export type Pieza = (
   // espejo: se repite al otro lado (x → −x).
   | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean }
   // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
-  | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean }
+  // redondeo: radio de las esquinas vistas desde arriba (y bisel arriba y abajo).
+  | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean; redondeo?: number }
   // Disco plano (insignias): centro, hacia dónde mira, radio y grosor.
   // espejo: se repite al otro lado (x → −x, la normal también).
   | { tipo: "disco"; id: string; en: Punto3; normal: Punto3; radio: number; grosor: number; espejo?: boolean }

@@ -156,8 +156,11 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
    - Ejes: x hacia la punta del ala derecha, y arriba, z hacia el morro.
      Unidades libres; el MICH mide ~2,5 de envergadura.
    - Piezas: `tubo` (fuselaje, torno a lo largo de z), `ala` (con perfil,
-     estaciones de raíz a punta), `placa` (canards, winglets, elevones),
-     `varilla` (antenas, motor, brazos, patas), `caja` (cuerpos, sensores),
+     estaciones de raíz a punta), `placa` (canards, winglets, elevones,
+     brazos y patas planos; con `simetrica` y `bisel`, cuerpos vistos desde
+     arriba con los bordes redondeados, como el del X10D), `varilla`
+     (antenas, motores, barras), `caja` (sensores; `redondeo` para las
+     esquinas),
      `helice` (con `eje: "y"`, horizontal, para multirrotores), `disco`
      (insignias, objetivos, cámaras). `espejo` repite al otro lado.
    - Escala: la que convenga (el MICH, ~2,5 de envergadura; el X10D, 1
@@ -176,6 +179,10 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
    - `fuentes`: las fotos (con miniatura) y los artículos (sin ella).
    - Modelos a copiar: `mich-2000.ts` (ala volante) y `skydio-x10d.ts`
      (cuadricóptero).
+   - Evitar cajas y cilindros sueltos para el cuerpo: el usuario los ve
+     «demasiado cuadrados» (primera versión del X10D). Mejor sacar la
+     silueta desde arriba de las fotos y hacerla `placa` simétrica con
+     bisel, en uno o dos pisos.
 5. **Miniaturas**: `sips -Z 560 -s format jpeg -s formatOptions 72
    <foto> --out public/uas/<modelo>/fuentes/<foto>.jpg` (~50 KB cada una).
 6. **Probar** en `npm run dev`, en la ficha (`/uas/<slug>`, con la nota

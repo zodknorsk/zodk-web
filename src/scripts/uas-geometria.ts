@@ -80,17 +80,27 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
     }
     case "placa": {
       const lados = p.espejo ? [1, -1] : [1];
+      // Simétrica: la planta es media (x ≥ 0) y se completa con su reflejo,
+      // en una sola pieza (sin costura en el centro).
+      const planta = p.plano === "horizontal" && p.simetrica
+        ? [...p.planta, ...p.planta.slice().reverse().filter(([x]) => x > 0).map(([x, z]): [number, number] => [-x, z])]
+        : p.planta;
+      // Bisel: bordes redondeados; el grosor total no cambia.
+      const b = Math.min(p.bisel ?? 0, p.grosor / 2.5);
+      const d = p.grosor - 2 * b;
       return lados.map((s) => {
-        const forma = new Shape(p.planta.map(([a, b]) => new Vector2(p.plano === "horizontal" ? a * s : a, b)));
-        const g = new ExtrudeGeometry(forma, { depth: p.grosor, bevelEnabled: false });
+        const forma = new Shape(planta.map(([u, v]) => new Vector2(p.plano === "horizontal" ? u * s : u, v)));
+        const g = new ExtrudeGeometry(forma, {
+          depth: d, bevelEnabled: b > 0, bevelThickness: b, bevelSize: b, bevelSegments: 2, curveSegments: 6,
+        });
         if (p.plano === "horizontal") {
-          // Planta en [x, z]; el grosor queda hacia abajo desde y.
+          // Planta en [x, z]; el grosor, centrado en y.
           g.rotateX(Math.PI / 2);
-          g.translate(0, p.y + p.grosor / 2, 0);
+          g.translate(0, p.y + d / 2, 0);
         } else {
-          // Contorno en [z, y]; el grosor, a lo largo de x.
+          // Contorno en [z, y]; el grosor, centrado en x.
           g.rotateY(-Math.PI / 2);
-          g.translate(s * p.x + p.grosor / 2, 0, 0);
+          g.translate(s * p.x + d / 2, 0, 0);
         }
         return g;
       });
@@ -108,7 +118,29 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
     }
     case "caja": {
       return (p.espejo ? [1, -1] : [1]).map((sx) => {
-        const g = new BoxGeometry(...p.tam);
+        const [ancho, alto, largo] = p.tam;
+        let g: BufferGeometry;
+        if (p.redondeo) {
+          // Esquinas redondeadas vistas desde arriba y un bisel arriba y abajo.
+          const r = Math.min(p.redondeo, ancho / 2, largo / 2);
+          const w = ancho / 2 - r, l = largo / 2 - r;
+          const forma = new Shape();
+          forma.moveTo(-w, -largo / 2);
+          forma.lineTo(w, -largo / 2);
+          forma.absarc(w, -l, r, -Math.PI / 2, 0, false);
+          forma.lineTo(ancho / 2, l);
+          forma.absarc(w, l, r, 0, Math.PI / 2, false);
+          forma.lineTo(-w, largo / 2);
+          forma.absarc(-w, l, r, Math.PI / 2, Math.PI, false);
+          forma.lineTo(-ancho / 2, -l);
+          forma.absarc(-w, -l, r, Math.PI, Math.PI * 1.5, false);
+          const b = Math.min(r * 0.5, alto / 4);
+          g = new ExtrudeGeometry(forma, { depth: alto - 2 * b, bevelEnabled: true, bevelThickness: b, bevelSize: 0, bevelSegments: 2, curveSegments: 6 });
+          g.rotateX(Math.PI / 2);
+          g.translate(0, (alto - 2 * b) / 2, 0);
+        } else {
+          g = new BoxGeometry(ancho, alto, largo);
+        }
         g.translate(p.centro[0] * sx, p.centro[1], p.centro[2]);
         return g;
       });

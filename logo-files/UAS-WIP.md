@@ -50,6 +50,16 @@ Cómo se hizo, paso a paso (sirve de ejemplo de la receta de `docs/uas.md`):
 6. `npm run importar`, reiniciar el servidor, capturas de maqueta y pixel
    (3D, planta, perfil, frente; día y noche; con partes elegidas).
 
+**Segunda versión de la forma del X10D (27-sep-2026, tarde)**: el usuario
+la vio «bastante bien» pero «demasiado cuadrado el cuerpo, etc.; hay muchas
+fotos en internet, mejóralo un poco». Mirando las fotos de Skydio: cuerpo
+en dos pisos con forma de hueso vista desde arriba (ancho donde se
+articulan los brazos, estrecho en medio) y bordes biselados; brazos planos
+que se estrechan; patas planas; **hélices de tres palas** (la primera
+versión tenía dos); sensor redondeado con un bloque de rejillas detrás.
+Para ello, el visor ganó `placa` con `simetrica` y `bisel`, y `caja` con
+`redondeo`. Sin commitear, a la espera de que lo vea.
+
 Fotos del X10D (en `arte/uas-fuentes/skydio-x10d/`, fuera de Git):
 
 | Archivo | Qué enseña | URL |
