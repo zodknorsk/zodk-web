@@ -12,7 +12,8 @@
   isolation: isolate;
 }
 
-/* Gestos: la rueda y un dedo bajan la página; con dos dedos se acerca, y ya con zoom (.con-zoom) un dedo mueve el globo. La
+/* Gestos: la rueda y un dedo en vertical bajan la página (en horizontal, un dedo gira el globo); con dos dedos se acerca, y
+   acercado más que en la llegada (.con-zoom) un dedo solo mueve el globo. La
    mano cerrada, solo mientras se gira con el ratón (montarMano). */
 .hero { touch-action: pan-y; }
 .hero.con-zoom { touch-action: none; }

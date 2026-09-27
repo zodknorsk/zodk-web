@@ -21,8 +21,9 @@ nombres "se irán puliendo con el tiempo".
 
 - La Tierra entera, centrada, que **gira sola** (90 s por vuelta, botón de
   play/pausa), **se arrastra** con el ratón y **se acerca** hasta ×6 con
-  pellizco o Ctrl + rueda. La rueda sola y un dedo bajan la página; con zoom,
-  un dedo mueve el globo.
+  pellizco o Ctrl + rueda. La rueda sola y un dedo en vertical bajan la página
+  (en horizontal, el dedo gira el globo); acercado más que en la llegada, un
+  dedo solo mueve el globo.
 - **Al cargar la portada**: un segundo de Tierra entera y luego la cámara se
   acerca en 5 s hasta el horizonte del hemisferio norte (zoom 2,5). Al acabar
   entra el título y después la nave. Al volver en vuelo desde la Luna o Marte

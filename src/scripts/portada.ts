@@ -388,8 +388,9 @@ document.addEventListener("astro:page-load", async () => {
     if (!t) return;
     quieta?.classList.add("planeta-listo");
     caja.classList.add("lista");
-    // con zoom, un dedo mueve el globo; sin él, baja la página (CSS)
-    hero.classList.toggle("con-zoom", t.vista().zoom > 1.01);
+    // acercado más allá de la llegada, un dedo solo mueve el globo; hasta
+    // ahí, deslizar en vertical baja la página y en horizontal lo gira (CSS)
+    hero.classList.toggle("con-zoom", t.vista().zoom > ZOOM_CERCA + 0.05);
     colocaChapas();
     colocaNombres?.();
     tituloFuera?.mira();
@@ -433,7 +434,7 @@ document.addEventListener("astro:page-load", async () => {
         n.coloca();
       }).catch(() => {});
   }
-  const quitaMano = montarMano(hero, tierra, { alArrastrar: true, tactil: () => tierra.vista().zoom > 1.01 });
+  const quitaMano = montarMano(hero, tierra, { alArrastrar: true });
   // al usar el zoom salen los nombres (tras el acercamiento esperan a esto)
   const conNombres = { ...tierra, zoom: (f: number, x?: number, y?: number) => { hero.classList.remove("sin-nombres"); tierra.zoom(f, x, y); } };
   const quitaZoom = montarZoom(hero, conNombres, { soloCtrl: true });

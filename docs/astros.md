@@ -36,7 +36,8 @@ falta un mapa más fino, que llega en teselas.
   clic). En la portada la rueda baja la página y el zoom va con
   pellizco o Ctrl + rueda; en `/luna` y `/marte` la rueda es el zoom.
 - Táctil: en `/luna` y `/marte`, un dedo gira y dos pellizcan. En la portada,
-  un dedo baja la página y dos acercan; con zoom, un dedo mueve el globo.
+  un dedo en vertical baja la página y en horizontal gira; dos acercan;
+  acercado más que en la llegada, un dedo solo mueve el globo.
 - Zoom hasta ×6, hacia el cursor al acercar y hacia el centro al alejar.
 
 ## Vuelos (`vuelos.js`)

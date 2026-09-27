@@ -16,15 +16,15 @@
 // Pone en `zona` la clase `arrastrable` siempre y `agarrando` mientras se
 // gira; el cursor lo pone el CSS de cada página. Con `alArrastrar`,
 // `agarrando` llega al empezar a girar y no al pinchar (un clic suelto no
-// cierra la mano). `tactil()` dice si un dedo agarra: en la portada solo con
-// zoom, porque sin él el dedo baja la página. Devuelve la función que lo
-// desmonta.
+// cierra la mano). Si el `touch-action` de `zona` deja al navegador el
+// deslizar vertical (la portada, para bajar la página), ese gesto llega como
+// pointercancel y no gira. Devuelve la función que lo desmonta.
 /**
  * @param {HTMLElement} zona
  * @param {{ mueve: (dx: number, dy: number) => void, suelta: () => void }} astro
- * @param {{ alArrastrar?: boolean, tactil?: () => boolean }} [opciones]
+ * @param {{ alArrastrar?: boolean }} [opciones]
  */
-export function montarMano(zona, astro, { alArrastrar = false, tactil = () => true } = {}) {
+export function montarMano(zona, astro, { alArrastrar = false } = {}) {
   const UMBRAL = 4;                               // px CSS antes de que cuente como arrastre
   const NO_AGARRA = "a, button, input, select, textarea, label, summary, [data-sin-arrastre]";
   let pulsado = null, arrastrado = false;         // pulsado: { id, x0, y0, x, y, activo }
@@ -41,7 +41,6 @@ export function montarMano(zona, astro, { alArrastrar = false, tactil = () => tr
   };
   const empieza = (e) => {
     if (e.button !== 0 || pulsado || (e.target instanceof Element && e.target.closest(NO_AGARRA))) return;
-    if (e.pointerType === "touch" && !tactil()) return;
     e.preventDefault();                           // sin selección de texto ni arrastrar imágenes
     pulsado = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, activo: false };
     arrastrado = false;
