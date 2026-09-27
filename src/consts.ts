@@ -14,6 +14,11 @@ export const HOME: Metadata = {
   DESCRIPTION: "Notas y análisis propios sobre actualidad, historia y OSINT.",
 };
 
+export const BLOG: Metadata = {
+  TITLE: "Blog",
+  DESCRIPTION: "Qué es esta web y cómo está hecha.",
+};
+
 export const NOTAS: Metadata = {
   TITLE: "Notas",
   DESCRIPTION: "Análisis y notas publicadas desde mi bóveda de trabajo.",

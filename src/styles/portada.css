@@ -800,14 +800,21 @@ html.home main { padding-top: 5rem; }
 .bloque-astro img { position: absolute; pointer-events: none; }
 .bloque-luna img { width: 250px; right: -30px; top: -10px; }
 .bloque-marte img { width: 240px; right: -20px; top: -5px; }
-/* Al pasar el ratón el astro no se mueve: el borde se ilumina con su color. */
-.bloque-luna { --halo: #d9dde3; }
-.bloque-marte { --halo: #e0824a; }
-.bloque-astro { transition: border-color 0.3s, box-shadow 0.3s; }
-.bloque-astro:hover, .bloque-astro:focus-visible {
+/* Al pasar el ratón el astro no se mueve: el borde se ilumina con su color.
+   De noche basta un halo suave; de día, sobre el fondo claro, un halo claro
+   no se ve: va un tono más oscuro (--halo-dia), un filo marcado y sombra. */
+.bloque-luna { --halo: #d9dde3; --halo-dia: #8b95a3; }
+.bloque-marte { --halo: #e0824a; --halo-dia: #d9703a; }
+.tira-blog { --halo: #4fb3ad; --halo-dia: #2f8f8a; }
+.bloque-astro, .tira-blog { transition: border-color 0.3s, box-shadow 0.3s; }
+.bloque-astro:is(:hover, :focus-visible), .tira-blog:is(:hover, :focus-within) {
+  border-color: var(--halo-dia);
+  box-shadow: 0 0 0 1px var(--halo-dia), 0 12px 30px -8px color-mix(in srgb, var(--halo-dia) 60%, transparent);
+  outline: none;
+}
+html.dark .bloque-astro:is(:hover, :focus-visible), html.dark .tira-blog:is(:hover, :focus-within) {
   border-color: color-mix(in srgb, var(--halo) 60%, transparent);
   box-shadow: 0 0 24px color-mix(in srgb, var(--halo) 32%, transparent);
-  outline: none;
 }
 .bloque-astro > span { position: relative; }
 .bloque-titulo {
@@ -830,6 +837,8 @@ html.home main { padding-top: 5rem; }
   gap: 1rem;
   padding: 0.75rem 1.1rem 0.75rem 0.75rem;
 }
+.tira-enlace { position: absolute; inset: 0; z-index: 1; }
+.tira-enlace:focus-visible { outline: none; }
 .tira-avatar {
   width: 48px;
   height: 52px;
@@ -838,6 +847,8 @@ html.home main { padding-top: 5rem; }
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 .tira-hecho {
+  position: relative;
+  z-index: 2;   /* por encima del enlace de la tira */
   margin-left: auto;
   display: flex;
   flex-wrap: wrap;

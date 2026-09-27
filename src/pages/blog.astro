@@ -1,0 +1,23 @@
+---
+// /blog: sobre la propia web, qué es y cómo está hecha. Se llega desde la
+// tira del blog de la portada. De momento, solo la presentación.
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import { BLOG } from "@consts";
+---
+
+<PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <div class="animate space-y-2">
+        <h1 class="font-semibold text-black dark:text-white">Blog</h1>
+        <p class="text-sm">{BLOG.DESCRIPTION}</p>
+      </div>
+      <p class="animate">
+        Aquí irán las entradas sobre cómo está hecha esta web: el planeta en
+        pixel art, los astros y el paso de las notas de Obsidian a la web. Está
+        en construcción.
+      </p>
+    </div>
+  </Container>
+</PageLayout>
