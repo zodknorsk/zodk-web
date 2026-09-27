@@ -3,15 +3,15 @@
 // queda debajo para cuando no hay JavaScript. De más a menos importante:
 // - Sin tocar nada 30 s, se duerme: cabeza caída, ojos cerrados y zetas. Con
 //   cualquier movimiento se despierta.
-// - Con el ratón encima, cabecea con los ojos cerrados, como con música.
-// - Al pincharle salen notas de los auriculares; si se repite enseguida,
-//   además guiña un ojo.
+// - Al pincharle, cabecea dos veces con los ojos cerrados, como con música.
 // - Cada 10-20 s, algo al azar: teclea, cabecea un momento o mira al texto.
-// - Pestañea cada 2-6 s y, con ratón, mira hacia donde está.
+// - Pestañea cada 2-6 s y, con el ratón cerca (CERCA), mira hacia él; más
+//   lejos o encima, al frente.
 // Quieto no gasta: solo temporizadores y el movimiento del ratón. Con
 // reduced-motion no se monta. Devuelve la función que lo desmonta.
-const FOTOS = ["frente", "izquierda", "derecha", "arriba", "abajo", "cerrados", "guino", "tecleando", "cabeceo"];
+const FOTOS = ["frente", "izquierda", "derecha", "arriba", "abajo", "cerrados", "tecleando", "cabeceo"];
 const SUENO = 30000, GOLPE = 300;               // ms sin tocar nada hasta dormirse; medio compás del cabeceo
+const CERCA = 1.2;                              // hasta dónde mira al ratón, en anchos del avatar desde su borde
 const azar = (a, b) => a + Math.random() * (b - a);
 
 /** @param {HTMLElement} caja */
@@ -20,14 +20,11 @@ export function montarAvatar(caja) {
   const cara = document.createElement("span");
   cara.className = "avatar-cara";
   cara.setAttribute("aria-hidden", "true");
-  const conRaton = matchMedia("(hover: hover)").matches;
 
-  let mirada = "frente", secuencia = null, parpadeo = false, encima = false, golpe = false, dormido = false;
-  let tSec = 0, tSueno = 0, tAzar = 0, tParpadeo = 0, cabeceo = 0, zetas = 0, ultimoClic = 0, vivo = true;
+  let mirada = "frente", secuencia = null, parpadeo = false, dormido = false;
+  let tSec = 0, tSueno = 0, tAzar = 0, tParpadeo = 0, zetas = 0, vivo = true;
   const pinta = () => {
-    const f = dormido ? "cabeceo"
-      : encima ? (golpe ? "cabeceo" : "cerrados")
-      : secuencia ?? (parpadeo ? "cerrados" : mirada);
+    const f = dormido ? "cabeceo" : secuencia ?? (parpadeo ? "cerrados" : mirada);
     cara.style.backgroundPosition = `${(FOTOS.indexOf(f) / (FOTOS.length - 1)) * 100}% 0`;
   };
 
@@ -44,7 +41,7 @@ export function montarAvatar(caja) {
   };
   const alterna = (a, b, ms, n) => Array.from({ length: n }, (_, i) => [i % 2 ? b : a, ms]);
 
-  // Partículas (notas, zetas): suben y se van dentro del cuadro.
+  // Las zetas: suben y se van dentro del cuadro.
   const suelta = (clase, estilo) => {
     const p = document.createElement("span");
     p.className = clase;
@@ -52,15 +49,6 @@ export function montarAvatar(caja) {
     Object.assign(p.style, estilo);
     p.addEventListener("animationend", () => p.remove());
     caja.append(p);
-  };
-  const notas = () => {
-    for (let i = 0; i < 3; i++) {
-      window.setTimeout(() => {
-        if (!vivo) return;
-        const izq = i % 2 === 0;
-        suelta("avatar-nota", { [izq ? "left" : "right"]: `${azar(0, 6)}%`, "--dx": `${(izq ? -1 : 1) * azar(0, 12)}%` });
-      }, i * 180);
-    }
   };
 
   const parpadea = () => {
@@ -80,7 +68,7 @@ export function montarAvatar(caja) {
 
   const algoAlAzar = () => {
     tAzar = window.setTimeout(() => {
-      if (!dormido && !encima && !secuencia) {
+      if (!dormido && !secuencia) {
         const cual = Math.floor(Math.random() * 3);
         if (cual === 0) haz(alterna("abajo", "tecleando", 250, 10));   // teclea
         else if (cual === 1) haz(alterna("cerrados", "cabeceo", GOLPE, 8));   // le gusta la canción
@@ -111,27 +99,14 @@ export function montarAvatar(caja) {
     if (e.pointerType !== "mouse") return;
     const r = caja.getBoundingClientRect();
     const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-    const dentro = Math.abs(dx) < r.width / 2 && Math.abs(dy) < r.height / 2;
-    const m = dentro ? "frente" : Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? "izquierda" : "derecha") : dy < 0 ? "arriba" : "abajo";
+    const fx = Math.abs(dx) - r.width / 2, fy = Math.abs(dy) - r.height / 2;   // fuera del borde, en px
+    const dentro = fx < 0 && fy < 0, lejos = Math.max(fx, fy) > CERCA * r.width;
+    const m = dentro || lejos ? "frente" : Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? "izquierda" : "derecha") : dy < 0 ? "arriba" : "abajo";
     if (m !== mirada) { mirada = m; pinta(); }
-  };
-  const entra = () => {
-    encima = true;
-    golpe = false;
-    pinta();
-    cabeceo = window.setInterval(() => { golpe = !golpe; pinta(); }, GOLPE);
-  };
-  const sale = () => {
-    encima = false;
-    clearInterval(cabeceo);
-    pinta();
   };
   const clic = () => {
     actividad();
-    const ahora = performance.now();
-    if (ahora - ultimoClic < 1200) haz([["guino", 600]]);
-    ultimoClic = ahora;
-    notas();
+    haz(alterna("cabeceo", "cerrados", GOLPE, 4));
   };
 
   // Se monta cuando la tira ya está cargada: sin hueco entre el GIF y ella.
@@ -149,26 +124,19 @@ export function montarAvatar(caja) {
     window.addEventListener("pointerdown", actividad);
     window.addEventListener("keydown", actividad);
     window.addEventListener("scroll", actividad, { passive: true });
-    if (conRaton) {
-      caja.addEventListener("mouseenter", entra);
-      caja.addEventListener("mouseleave", sale);
-    }
     caja.addEventListener("click", clic);
   });
 
   return () => {
     vivo = false;
     [tSec, tSueno, tAzar, tParpadeo].forEach(clearTimeout);
-    clearInterval(cabeceo);
     clearInterval(zetas);
     window.removeEventListener("pointermove", mueve);
     window.removeEventListener("pointerdown", actividad);
     window.removeEventListener("keydown", actividad);
     window.removeEventListener("scroll", actividad);
-    caja.removeEventListener("mouseenter", entra);
-    caja.removeEventListener("mouseleave", sale);
     caja.removeEventListener("click", clic);
     caja.classList.remove("avatar-vivo");
-    caja.querySelectorAll(".avatar-cara, .avatar-nota, .avatar-z").forEach((e) => e.remove());
+    caja.querySelectorAll(".avatar-cara, .avatar-z").forEach((e) => e.remove());
   };
 }

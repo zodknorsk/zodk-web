@@ -5,7 +5,6 @@ El GIF es pixel art de 24 x 26 a 8 px por píxel. Aquí se lee a 1 px por
 píxel de arte y se cambian solo unos píxeles (ojos, cabeza, pantalla):
 
   public/zodk-avatar-tira.png   los fotogramas en fila (FOTOGRAMAS, en ese orden)
-  public/zodk-avatar-nota.png   la nota musical que sale de los auriculares
   public/zodk-avatar-z.png      la "z" de cuando se duerme
 
 Solo con la biblioteca estándar de Python:
@@ -21,7 +20,7 @@ ESCALA = 8                        # px del GIF por píxel de arte
 OJOS = ((12, 9), (12, 14))        # (fila, columna) de arriba de cada ojo; miden 1 x 2
 PANTALLA = ((21, 11), (21, 12), (22, 11), (22, 12))   # el cuadrito blanco del portátil
 FOTOGRAMAS = ["frente", "izquierda", "derecha", "arriba", "abajo", "cerrados",
-              "guino", "tecleando", "cabeceo"]
+              "tecleando", "cabeceo"]
 
 
 def lee_gif(ruta):
@@ -141,7 +140,6 @@ def main():
         "arriba": ojos(copia(), -1, 0),
         "abajo": ojos(copia(), 1, 0),
         "cerrados": ojos(copia(), 0, 0, (True, True)),
-        "guino": ojos(copia(), 0, 0, (False, True)),
         "tecleando": tecleando,
         "cabeceo": cabeza_abajo(ojos(copia(), 0, 0, (True, True))),
     }
@@ -151,14 +149,6 @@ def main():
     blanco, nada = (0xF2, 0xF4, 0xF7, 255), (0, 0, 0, 0)
     def glifo(dibujo):
         return [[blanco if ch == "#" else nada for ch in fila] for fila in dibujo]
-    guarda_png(os.path.join(REPO, "public/zodk-avatar-nota.png"), glifo([
-        "..#..",
-        "..##.",
-        "..#.#",
-        "..#..",
-        "###..",
-        "###..",
-    ]))
     guarda_png(os.path.join(REPO, "public/zodk-avatar-z.png"), glifo([
         "####",
         "..#.",
