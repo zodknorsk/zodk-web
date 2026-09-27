@@ -157,16 +157,25 @@ resalte; de noche el negro sube un poco y el contorno es un filo claro
      Unidades libres; el MICH mide ~2,5 de envergadura.
    - Piezas: `tubo` (fuselaje, torno a lo largo de z), `ala` (con perfil,
      estaciones de raíz a punta), `placa` (canards, winglets, elevones),
-     `varilla` (antenas, motor), `helice`, `disco` (insignias). `espejo`
-     repite al otro lado.
-   - `acabado` de cada pieza: negro (por defecto), junta, mando, metal,
-     amarillo, azul. Colores nuevos: añadirlos a `Acabado`, a `PALETAS` y,
-     si van en color en la maqueta, a `COLOR_MAQUETA`.
+     `varilla` (antenas, motor, brazos, patas), `caja` (cuerpos, sensores),
+     `helice` (con `eje: "y"`, horizontal, para multirrotores), `disco`
+     (insignias, objetivos, cámaras). `espejo` repite al otro lado.
+   - Escala: la que convenga (el MICH, ~2,5 de envergadura; el X10D, 1
+     unidad ≈ 25 cm). El visor encuadra solo. Si hay medidas oficiales,
+     úsalas (el X10D sale de las de Skydio).
+   - `acabado` de cada pieza: negro (por defecto), gris, junta, mando,
+     metal, lente, amarillo, azul. Colores nuevos: añadirlos a `Acabado`, a
+     `PALETAS` y, si van en color en la maqueta, a `COLOR_MAQUETA`. El dron
+     va en su color real (MICH, negro; X10D, gris claro).
+   - `resalte: "tinta"` en drones claros (la parte elegida sale oscura; en
+     blanco no se distingue). Por defecto, blanco papel.
    - `pais`: chapa de 11x7 como las de `alunizajes.ts`.
    - `partes`: 5-8, en el orden de las letras. Cada una con su punto (`en`),
      las piezas que resalta, el respaldo, las fuentes (ids), el texto y la
      nota de lo supuesto.
    - `fuentes`: las fotos (con miniatura) y los artículos (sin ella).
+   - Modelos a copiar: `mich-2000.ts` (ala volante) y `skydio-x10d.ts`
+     (cuadricóptero).
 5. **Miniaturas**: `sips -Z 560 -s format jpeg -s formatOptions 72
    <foto> --out public/uas/<modelo>/fuentes/<foto>.jpg` (~50 KB cada una).
 6. **Probar** en `npm run dev`, en la ficha (`/uas/<slug>`, con la nota

@@ -40,9 +40,12 @@ export function materialPixel(paleta: Paleta) {
         if (!gl_FrontFacing) n = -n;
         float luz = 0.18 + 0.82 * max(dot(n, normalize(vec3(-0.45, 0.8, 0.4))), 0.0);
         // Tramado 2x2 (Bayer): cerca del paso entre dos tonos, los píxeles se
-        // alternan en damero en vez de cortar en seco.
+        // alternan en damero en vez de cortar en seco. Solo en superficies
+        // curvas (donde la luz cambia de un píxel a otro): en una cara plana
+        // que cae justo en el paso, dibujaría rayas.
         vec2 p = mod(floor(gl_FragCoord.xy), 2.0);
-        luz += (p.x == p.y ? (p.x == 0.0 ? -0.375 : 0.125) : (p.x == 0.0 ? 0.375 : -0.125)) * 0.09;
+        float curva = clamp(fwidth(luz) * 60.0, 0.0, 1.0);
+        luz += (p.x == p.y ? (p.x == 0.0 ? -0.375 : 0.125) : (p.x == 0.0 ? 0.375 : -0.125)) * 0.09 * curva;
         vec3 c = paleta[0];
         if (luz > 0.78) c = paleta[3];
         else if (luz > 0.5) c = paleta[2];

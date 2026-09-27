@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "metal" | "junta" | "mando" | "amarillo" | "azul";
+export type Acabado = "negro" | "gris" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -24,10 +24,14 @@ export type Pieza = (
   // borde de salida, grosor máximo]. Dos estaciones seguidas en la misma x
   // hacen un escalón (el hueco de la hélice).
   | { tipo: "ala"; id: string; y: number; estaciones: [number, number, number, number][] }
-  // Varilla recta (mástiles, antenas).
-  | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number }
-  // Hélice mirando a lo largo de z.
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number }
+  // Varilla recta (mástiles, antenas, brazos, patas).
+  | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean }
+  // Hélice: por defecto gira en el plano vertical (empuja a lo largo de z, como
+  // la del MICH); con eje "y", en el horizontal (multirrotores).
+  // espejo: se repite al otro lado (x → −x).
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean }
+  // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
+  | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean }
   // Disco plano (insignias): centro, hacia dónde mira, radio y grosor.
   // espejo: se repite al otro lado (x → −x, la normal también).
   | { tipo: "disco"; id: string; en: Punto3; normal: Punto3; radio: number; grosor: number; espejo?: boolean }
@@ -67,4 +71,7 @@ export type Maqueta = {
   piezas: Pieza[];
   partes: Parte[];
   fuentes: Fuente[];
+  // Color de la parte elegida: blanco papel (por defecto, para drones
+  // oscuros) o tinta (para drones claros, donde el blanco no se distingue).
+  resalte?: "papel" | "tinta";
 };

@@ -96,13 +96,22 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       });
     }
     case "varilla": {
-      const a = new Vector3(...p.desde);
-      const b = new Vector3(...p.hasta);
-      const dir = b.clone().sub(a);
-      const g = new CylinderGeometry(p.radio, p.radio, dir.length(), 12);
-      g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), dir.clone().normalize()));
-      g.translate((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
-      return [g];
+      return (p.espejo ? [1, -1] : [1]).map((sx) => {
+        const a = new Vector3(p.desde[0] * sx, p.desde[1], p.desde[2]);
+        const b = new Vector3(p.hasta[0] * sx, p.hasta[1], p.hasta[2]);
+        const dir = b.clone().sub(a);
+        const g = new CylinderGeometry(p.radio, p.radio, dir.length(), 12);
+        g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), dir.clone().normalize()));
+        g.translate((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
+        return g;
+      });
+    }
+    case "caja": {
+      return (p.espejo ? [1, -1] : [1]).map((sx) => {
+        const g = new BoxGeometry(...p.tam);
+        g.translate(p.centro[0] * sx, p.centro[1], p.centro[2]);
+        return g;
+      });
     }
     case "disco": {
       const lados = p.espejo ? [1, -1] : [1];
@@ -116,17 +125,24 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
     }
     case "helice": {
       const piezas: BufferGeometry[] = [];
-      for (let i = 0; i < p.palas; i++) {
-        const pala = new BoxGeometry(p.radio, 0.045, 0.008);
-        pala.translate(p.radio / 2, 0, 0);
-        pala.rotateX(0.35);  // paso de la pala
-        pala.rotateZ((i / p.palas) * Math.PI * 2);
-        pala.translate(...p.en);
-        piezas.push(pala);
+      for (const sx of p.espejo ? [1, -1] : [1]) {
+        const en: [number, number, number] = [p.en[0] * sx, p.en[1], p.en[2]];
+        const ancho = Math.max(0.045, p.radio * 0.16);
+        const hoja: BufferGeometry[] = [];
+        for (let i = 0; i < p.palas; i++) {
+          const pala = new BoxGeometry(p.radio, ancho, 0.008);
+          pala.translate(p.radio / 2, 0, 0);
+          pala.rotateX(0.35);  // paso de la pala
+          pala.rotateZ((i / p.palas) * Math.PI * 2);
+          hoja.push(pala);
+        }
+        hoja.push(new SphereGeometry(Math.max(0.035, p.radio * 0.08), 12, 8));
+        for (const g of hoja) {
+          if (p.eje === "y") g.rotateX(-Math.PI / 2);  // a plano horizontal
+          g.translate(...en);
+          piezas.push(g);
+        }
       }
-      const buje = new SphereGeometry(0.035, 12, 8);
-      buje.translate(...p.en);
-      piezas.push(buje);
       return piezas;
     }
   }

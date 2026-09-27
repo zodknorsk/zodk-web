@@ -19,9 +19,45 @@ relacionado con el MICH-2000, la nota, etc.». Lo mismo para el Skydio X10D.
 Ojo: si se importa en `main` antes de fusionar, estas fichas saldrían en
 zodk.eu sin el código del visor (`/uas` no existe en `main`).
 
-**En curso**: ficha del **Skydio X10D** (pedida por el usuario: ficha en
-Obsidian + visor + pixel art + textos; dron del Ejército de Tierra), hecha
-por Claude mientras el usuario no está, para dejarla commiteada sin push.
+**Skydio X10D (27-sep-2026, tarde)**: ficha pedida por el usuario antes de
+irse una hora («ficha en Obsidian + visor + pixel art + textos; un dron que
+el Ejército de Tierra nos ha dotado»), hecha entera por Claude y
+**commiteada sin push** (lo pidió así). Pendiente de que la revise.
+Cómo se hizo, paso a paso (sirve de ejemplo de la receta de `docs/uas.md`):
+1. Fuentes: Infodefensa (contrato de feb-2025, ampliación a 900, Letonia
+   sep-2026), la web y la ficha técnica de Skydio (el usuario apuntó que
+   Skydio tiene su propia documentación), Army Technology, el blog de
+   Skydio (sanciones chinas, SRR) y DroneDJ (pedido de 2.500). Tuit de
+   Army Recognition (pruebas en el Ejército francés) para «En acción».
+2. Fotos: las grandes de skydio.com/x10 y /x10d (81 candidatas en
+   `arte/uas-fuentes/skydio-x10d/cand/`, hoja de contactos para elegir) y
+   la del Ejército de Tierra en Infodefensa; elegidas 4 (lista en
+   `arte/uas-fuentes/skydio-x10d/FUENTES.md` y abajo). Miniaturas a 560 px.
+3. Forma: cuadricóptero gris claro (también el del Ejército de Tierra),
+   cuerpo alargado, sensor VT300 delante con una protección de carbono,
+   brazos traseros más altos que los delanteros, patas en la punta de cada
+   brazo, hélices bipala. Medidas oficiales: 79 x 65 x 14,5 cm desplegado.
+4. El visor necesitó: pieza `caja`, `helice` con `eje: "y"` y `espejo`,
+   `varilla` con `espejo`, acabados `gris` y `lente`, y `resalte: "tinta"`
+   (en gris claro, la parte elegida en blanco no se veía). De paso, el
+   tramado del pixel ya solo actúa en superficies curvas (en las caras
+   planas que caían justo en el paso entre tonos dibujaba rayas).
+5. Nota en la bóveda: `02 - Temas/La gran enciclopedia de los UAS./🇺🇸
+   Skydio X10D.md`, desde la plantilla, `publicar: true`. País =
+   Estados Unidos (el del fabricante, como en el MICH); España va en
+   Operador y en las etiquetas. **Pregunta para el usuario**: si prefiere
+   que en el índice salga bajo España.
+6. `npm run importar`, reiniciar el servidor, capturas de maqueta y pixel
+   (3D, planta, perfil, frente; día y noche; con partes elegidas).
+
+Fotos del X10D (en `arte/uas-fuentes/skydio-x10d/`, fuera de Git):
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| desplegado.jpg | En vuelo, 3/4 desde arriba | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/99d884fbf52968d4e6b023c5a9f65b0f9376bc92-2930x1228.png |
+| frente.jpg | De frente, sensor y patas | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/3de3cab301639f41b671fbee417b7ef92f75a24d-768x411.png |
+| plegado.jpg | Plegado | https://cdn.sanity.io/images/mgxz50fq/production-v3-red/34409812b6c1ae5b98614556dbd7e866d70b51ef-2352x1232.png |
+| ejercito-tierra.jpg | Militar del Ejército de Tierra con el dron | https://www.infodefensa.com/images/showid2/8152692?w=1200&zc=4 |
 
 **Pasos 5 y 6, las bases para pedir fichas (27-sep-2026, sin commitear)**.
 El usuario: «en la rama dejemos las bases preparadas para generar el visor y

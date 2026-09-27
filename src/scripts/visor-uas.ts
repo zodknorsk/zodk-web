@@ -22,9 +22,11 @@ type Pin = { x: number; y: number; tapado: boolean };
 // escarapela, sus colores. La parte elegida va en blanco papel. De noche, el
 // negro sube un poco para no perderse en la tarjeta oscura y el contorno
 // pasa a ser un filo claro.
-type Paletas = Record<Acabado | "resalte", Paleta> & { contorno: string };
+type Paletas = Record<Acabado | "resalte" | "tinta", Paleta> & { contorno: string };
 const COMUNES = {
   metal: ["#3b3f45", "#5a5f67", "#7d838c", "#a3a9b1"],
+  gris: ["#6c7179", "#8e949c", "#b3b8bf", "#d7dbe0"],
+  lente: ["#070a10", "#0f1622", "#1b2738", "#324a6e"],
   amarillo: ["#8a6d00", "#b89200", "#e0b400", "#ffd500"],
   azul: ["#0b2a66", "#12398a", "#1a4fb5", "#2f68d6"],
 } satisfies Record<string, Paleta>;
@@ -35,6 +37,7 @@ const PALETAS: Record<"dia" | "noche", Paletas> = {
     junta: ["#0d0e11", "#18191d", "#27292e", "#3c4047"],
     mando: ["#16181b", "#25282d", "#383c43", "#51565f"],
     resalte: ["#9aa0a8", "#bfc4ca", "#dfe2e6", "#f7f8f9"],
+    tinta: ["#0c0d10", "#17191d", "#24272c", "#363a41"],
     contorno: "#08090b",
   },
   noche: {
@@ -43,11 +46,14 @@ const PALETAS: Record<"dia" | "noche", Paletas> = {
     junta: ["#121316", "#1f2125", "#2f3238", "#464a52"],
     mando: ["#1b1d21", "#2b2e34", "#3f434a", "#5a5f67"],
     resalte: ["#8f959d", "#b4b9c0", "#d6d9de", "#f1f2f4"],
+    tinta: ["#0c0d10", "#17191d", "#24272c", "#363a41"],
     contorno: "#6b7079",
   },
 };
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
-const COLOR_MAQUETA: Partial<Record<Acabado, string>> = { amarillo: "#e0b400", azul: "#1a4fb5" };
+const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", lente: "#141b26",
+};
 
 export type { Vista };
 
@@ -190,6 +196,9 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   };
 
   let elegida = -1;
+  // Drones claros: la parte elegida en tinta (en blanco no se distinguiría).
+  const enTinta = maqueta.resalte === "tinta";
+  const TINTA = new Color("#1d1f23");
   const pintarPiezas = () => {
     const resaltadas = new Set(elegida >= 0 ? maqueta.partes[elegida].piezas : []);
     const paletas = PALETAS[document.documentElement.classList.contains("dark") ? "noche" : "dia"];
@@ -197,9 +206,9 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       const si = resaltadas.has(id);
       const color = COLOR_MAQUETA[m.acabado];
       const base = m.acabado === "junta" ? colores.relleno.clone().multiplyScalar(0.8) : colores.relleno;
-      m.relleno.color.copy(si ? colores.resalte : color ? new Color(color) : base);
-      m.linea.color.copy(si ? colores.resalteArista : colores.arista);
-      ponerPaleta(m.pixel, si ? paletas.resalte : paletas[m.acabado]);
+      m.relleno.color.copy(si ? (enTinta ? TINTA : colores.resalte) : color ? new Color(color) : base);
+      m.linea.color.copy(si ? (enTinta ? colores.arista : colores.resalteArista) : colores.arista);
+      ponerPaleta(m.pixel, si ? paletas[enTinta ? "tinta" : "resalte"] : paletas[m.acabado]);
     }
     pixelado.ponerContorno(paletas.contorno);
   };
