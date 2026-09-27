@@ -1,12 +1,12 @@
 ---
 // /blog: sobre la propia web, qué es y cómo está hecha. Se llega desde la
-// tira del blog de la portada. Arriba, la cabecera de estrellas con el
-// "hecho con"; debajo, las notas con la etiqueta "blog", la más nueva primero.
+// tira del blog de la portada. Arriba, el avatar en pixel art y quién escribe;
+// debajo, las notas con la etiqueta "blog", la más nueva primero.
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
-import { BLOG, STACK } from "@consts";
+import { BLOG } from "@consts";
 import { porFecha, proyectoDe, primeraFoto } from "@lib/contenido";
 
 const entradas = (await getCollection("notas"))
@@ -21,27 +21,18 @@ const fechaCorta = (d: Date) =>
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
   <Container>
     <div class="space-y-10">
-      <header class="blog-cab animate">
-        <img class="tira-avatar" src="/zodk-avatar.gif" alt="" width="48" height="52" />
-        <div class="blog-cab-texto">
-          <h1 class="bloque-titulo">Blog</h1>
-          <p>{BLOG.DESCRIPTION}</p>
+      <div class="blog-autor animate">
+        <img class="blog-autor-avatar" src="/zodk-avatar.gif" alt="" width="192" height="208" />
+        <div>
+          <h1 class="blog-autor-titulo">Blog</h1>
+          <p>
+            Soy Hegoi. Desde hace años sigo en directo los grandes sucesos de
+            política y actualidad, y aquí los trazo con notas propias desde mi
+            bóveda de Obsidian: historia, inteligencia y OSINT. En este blog
+            cuento cómo está hecha la web.
+          </p>
         </div>
-        <div class="tira-hecho">
-          <span class="tira-hecho-titulo">Hecho con</span>
-          {STACK.map((t) => (
-            <a class="chip" href={t.HREF} target="_blank" rel="noopener noreferrer" style={`--marca:${t.COLOR}`}>
-              <span class="chip-icono" set:html={t.ICONO} />
-              {t.NAME}
-            </a>
-          ))}
-        </div>
-      </header>
-
-      <p class="animate">
-        Entradas sobre cómo está hecha esta web: el planeta en pixel art, los
-        astros y el paso de las notas de Obsidian a la web.
-      </p>
+      </div>
 
       {entradas.length > 0 ? (
         <ul class="blog-lista animate">
