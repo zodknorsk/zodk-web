@@ -15,6 +15,7 @@ export interface Pais {
 export const PAISES: Pais[] = [
   { iso: "ES", nombre: "España", etiquetas: ["españa", "espana"] },
   { iso: "MA", nombre: "Marruecos", etiquetas: ["marruecos"] },
+  { iso: "EH", nombre: "Sáhara Occidental", etiquetas: ["sahara-occidental", "sáhara-occidental"] },
   { iso: "IR", nombre: "Irán", etiquetas: ["iran", "irán"] },
   { iso: "US", nombre: "EE. UU.", etiquetas: ["eeuu", "ee.uu.", "estados-unidos"] },
   { iso: "AF", nombre: "Afganistán", etiquetas: ["afganistan", "afganistán"] },

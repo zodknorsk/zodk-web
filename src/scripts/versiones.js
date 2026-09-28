@@ -4,6 +4,6 @@
 // el navegador deja de usar los viejos. Las fotos quietas que carga el CSS
 // llevan su propio ?v= en los CSS: subirlo también (tierra-quieto*.png en
 // portada.css, luna-visible.png en luna.css, marte-quieto.png en marte.css).
-export const PLANETA_V = 15;
+export const PLANETA_V = 16;
 export const LUNA_V = 5;
 export const MARTE_V = 7;

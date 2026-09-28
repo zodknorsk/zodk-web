@@ -8,7 +8,7 @@ description: >-
 updated: '2026-09-07'
 tags:
   - historia
-  - marruecos
+  - sahara-occidental
 ---
 ## Introducción al Sáhara
 

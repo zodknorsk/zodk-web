@@ -1455,7 +1455,7 @@ def cloud_cells(lon0, night=False):
 
 # ------------------------------------------------------------ banderas
 # Chapas pixel art (elegidas frente al banderín en mástil) sobre los países que
-# salen en el blog (opción C: de momento España, Marruecos, Irán y EE. UU.).
+# salen en el blog (opción C).
 # Bandera de 11x7 px con contorno oscuro de 1 px, esquinas recortadas y una
 # sombra de 1 px abajo a la derecha; centrada en el punto del país, gira con el
 # planeta, solo en la cara iluminada y lejos del borde, con la luz de las nubes.
@@ -1469,12 +1469,19 @@ BAND_PAL = {
     "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
     "k": (0x1a, 0x1a, 0x1a),                                                    # Afganistán
     "b": (0x00, 0x57, 0xb7), "y": (0xff, 0xd7, 0x00),                           # Ucrania
+    "K": (0x2c, 0x2c, 0x30),                                                    # Sáhara Occidental
 }
 BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
     ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
                             "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"]),
     ("MA", "Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
                                "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"]),
+    # Sáhara Occidental: la bandera de la RASD. Negro, blanco y verde, el
+    # triángulo rojo en el asta y la media luna (una C) con la estrella en el
+    # blanco. El negro va algo levantado (K): con el de verdad, la franja de
+    # arriba se fundía con el contorno y parecía un marco más gordo.
+    ("EH", "Sáhara Occidental", 24.5, -13.0, ["QKKKKKKKKKK", "QQKKKKKKKKK", "QQQWWQQWWWW", "QQQQWQWWQWW",
+                                         "QQQWWQQWWWW", "QQggggggggg", "Qgggggggggg"]),
     ("IR", "Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
                           "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
     ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
