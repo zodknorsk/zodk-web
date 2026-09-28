@@ -59,7 +59,7 @@ al visor el acabado `oliva` (las bombas) y la `y` de las placas verticales
 Reaper ya funciona (en una tabla, el alias va con la barra escapada:
 `[[🇺🇸 MQ-9 Reaper\|MQ-9 Reaper]]`).
 
-**28-sep-2026, Armamento** (commit en `main` y en la bóveda, sin subir). Pendiente: el usuario quiere cambiar el icono de la tira (la mira).
+**28-sep-2026, Armamento** (commit en `main` y en la bóveda, subido y publicado). El icono de la tira pasó de una mira a «AGM / GBU» en texto: el usuario eligió el texto «para ser igual que el glosario» entre la mira, un misil y una bomba en línea y un misil y una bomba en pixel art. Le gustaron los de pixel art; quedan para más adelante.
 Hecho: nota `Armamento.md` en la carpeta del Hangar (una sola nota con
 índice, fotos y no visor: decisión del usuario), con cinco municiones, las
 que llevan nuestros drones: Hellfire, JSM, LRASM, GBU-12 y GBU-38. En la web,
@@ -432,8 +432,9 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
   mismo componente del glosario, que ahora recibe las secciones ya leídas):
   `leerArmamento` (`src/lib/armamento.ts`) saca las `##`, las `###` y el
   «Tipo» de cada tabla, que sale en pequeño debajo del nombre.
-- **La tira de `/uas`**: debajo de la del glosario, mismo estilo, con una
-  mira en lugar de «A–Z», las cuatro primeras municiones y cuántas hay.
+- **La tira de `/uas`**: debajo de la del glosario, mismo estilo, con
+  «AGM / GBU» (los prefijos de misiles y bombas guiadas) en lugar de «A–Z»,
+  las cuatro primeras municiones y cuántas hay.
 - **Las fotos**: en `02 - Temas/Adjuntos/armamento-*.jpg`, de Wikimedia
   Commons, con licencia libre (dominio público del ejército de EE. UU., o
   CC BY-SA / OGL con su crédito en el pie).

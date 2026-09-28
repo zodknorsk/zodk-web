@@ -65,13 +65,7 @@ const paises = recuento((f) => f.data.pais);
 
           {armamento && (
             <a href={`/uas/${armamento.id}`} class="animate uas-glosario">
-              <span class="uas-glosario-letras" aria-hidden="true">
-                <svg class="uas-armamento-mira" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="16" cy="16" r="9" />
-                  <path d="M16 2v8M16 22v8M2 16h8M22 16h8" />
-                  <circle cx="16" cy="16" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </span>
+              <span class="uas-glosario-letras uas-armamento-letras" aria-hidden="true">AGM<br />GBU</span>
               <span class="uas-glosario-texto">
                 <span class="uas-glosario-titulo">{armamento.data.title}</span>
                 <span class="uas-glosario-desc">{municiones.slice(0, 4).join(", ")}{municiones.length > 4 && "…"}</span>
@@ -202,8 +196,9 @@ const paises = recuento((f) => f.data.pais);
   .uas-glosario-flecha { align-self: center; padding: 0 1.1rem; font-size: 1.1rem; transition: transform 0.2s; }
   .uas-glosario:hover .uas-glosario-flecha { transform: translateX(3px); }
   @media (max-width: 480px) { .uas-glosario-letras { width: 4rem; font-size: 0.95rem; } }
-  .uas-armamento-mira { width: 1.9rem; height: 1.9rem; }
-  @media (max-width: 480px) { .uas-armamento-mira { width: 1.6rem; height: 1.6rem; } }
+  /* Armamento: los prefijos de misiles (AGM) y bombas guiadas (GBU), en dos
+     líneas, como el «A–Z» del glosario. */
+  .uas-armamento-letras { line-height: 1.15; text-align: center; letter-spacing: 0.04em; }
 
   .uas-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
   .uas-filtros-titulo { width: 3.2rem; font-size: 0.62rem; opacity: 0.6; }
