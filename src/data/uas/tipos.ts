@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul";
+export type Acabado = "negro" | "gris" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -22,8 +22,10 @@ export type Pieza = (
   // su reflejo en una sola pieza. bisel: redondea los bordes.
   // inclinacion (solo vertical): grados que se tumba hacia fuera, girando
   // sobre la línea y = 0 del contorno (colas en V, winglets caídos).
+  // y (solo vertical): sube la placa ya inclinada; así el giro se hace
+  // alrededor del eje de un misil (aletas en X).
   | { tipo: "placa"; id: string; plano: "horizontal"; planta: Punto2[]; y: number; grosor: number; espejo?: boolean; simetrica?: boolean; bisel?: number }
-  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; grosor: number; espejo?: boolean; bisel?: number; inclinacion?: number }
+  | { tipo: "placa"; id: string; plano: "vertical"; planta: Punto2[]; x: number; y?: number; grosor: number; espejo?: boolean; bisel?: number; inclinacion?: number }
   // Ala con perfil (grueso delante, afilado detrás), simétrica respecto a
   // x = 0. Estaciones de la raíz a la punta: [x, z del borde de ataque, z del
   // borde de salida, grosor máximo]. Dos estaciones seguidas en la misma x

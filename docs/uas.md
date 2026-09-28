@@ -11,8 +11,9 @@ usuario): cabecera, maqueta, tira de siluetas, panel de partes y fuentes. En
 el código, el componente `VisorUAS`.
 
 Drones hechos: MICH-2000 (ala volante, Ucrania), Skydio X10D (cuadricóptero,
-EE. UU., del Ejército de Tierra) y Wildfire (avión con cola en V, EE. UU.,
-hecho solo con renders del fabricante). **Este documento es la receta**: con
+EE. UU., del Ejército de Tierra), Wildfire (avión con cola en V, EE. UU.,
+hecho solo con renders del fabricante) y MQ-9 Reaper (EE. UU., armado con
+cuatro Hellfire y dos GBU-12, con el tren fuera). **Este documento es la receta**: con
 él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
 final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
 fotos de cada maqueta.
@@ -34,6 +35,17 @@ importador la busca por ese nombre); se añadió el **glosario** (apartado
 «El glosario», abajo) y se arregló que el hangar de la portada y las
 tarjetas de `/uas` enseñaran fotogramas partidos al quitar el ratón a medias
 (ver «Animaciones por fotogramas»).
+
+**28-sep-2026, MQ-9 Reaper** (commit en `main` y en la bóveda, **sin
+subir**; el usuario lo revisa en local antes del push). Hecho: nota en la bóveda
+(`🇺🇸 MQ-9 Reaper.md`, con el tono intermedio que pidió: ni informe técnico
+ni redacción de colegio), maqueta `src/data/uas/mq-9-reaper.ts` con ocho
+partes, miniaturas de fuentes y del dron, importado. Para hacerlo se añadió
+al visor el acabado `oliva` (las bombas) y la `y` de las placas verticales
+(aletas en X alrededor de un misil). El enlace de la nota del Wildfire al
+Reaper ya funciona (en una tabla, el alias va con la barra escapada:
+`[[🇺🇸 MQ-9 Reaper\|MQ-9 Reaper]]`). Siguiente paso: que el usuario lo
+revise en local y, cuando lo pida, push en los dos repos.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -166,6 +178,20 @@ generadores de `arte/` leen estos archivos con Node.
   blanco no se distingue). Por defecto, blanco papel.
 - **`pais`**: la chapa en pixel art 11x7 (las de `alunizajes.ts`,
   `amartizajes.ts`; si falta, se añade allí).
+- **Escribir en metros** si hay medidas oficiales: el Reaper se escribe en
+  metros y al final pasa a unidades con `aUnidades` (1 unidad = `ESCALA`
+  m). Las unidades tienen que ser del orden de las del Wildfire (unas 2-3
+  de envergadura): la cámara ve hasta 50 y la línea fuerte del pixel salta
+  a 0,07 unidades.
+- **Los `tubo` no se reflejan** (no tienen `espejo`): un misil o una bomba
+  bajo cada ala se monta dos veces, con `x` y `-x` (en el Reaper, `LADOS`).
+  Con el primer Reaper salieron armas enteras en un ala y solo las aletas
+  en la otra.
+- **Aletas en X** alrededor de un misil: cuatro placas verticales con
+  `inclinacion` 45, −45, 135 y −135, el contorno en [z, distancia al eje] y
+  `x`, `y` en el eje (`aletasX` del Reaper).
+- **Carenados sobre una superficie inclinada** (cola en V): la misma placa,
+  con la misma inclinación, más gruesa y en una franja corta.
 - **Solo renders** (dron que aún no ha volado, como el Wildfire): las
   partes que se ven en ellos van como `fabricante` («Dato del fabricante»),
   no como `foto`, y la nota lo dice; lo que en los renders no se distingue,
@@ -181,7 +207,11 @@ generadores de `arte/` leen estos archivos con Node.
   captura, `--js` puede mandar teclas al lienzo (flechas giran 10°, `+`
   acerca), por ejemplo
   `--js="(()=>{const c=document.querySelector('.visor canvas');for(const k of ['ArrowUp','+','+'])c.dispatchEvent(new KeyboardEvent('keydown',{key:k,bubbles:true}))})()"`,
-  y ponerla al lado de la foto con ffmpeg (`hstack`). Mirar proporciones
+  y ponerla al lado de la foto con ffmpeg (`hstack`), o encima, a medias,
+  escalada para que el largo coincida (así se hizo el perfil del Reaper).
+  Ojo: al acercar, el visor tiene mucha perspectiva; lo que sale del plano
+  (la cola en V vista de lado, las bombas vistas de frente) se deforma, y
+  hay que comparar sobre todo el contorno del cuerpo. Mirar proporciones
   (largo y alto del fuselaje, dónde cruza el ala), secciones, carenados,
   tomas de aire, antenas y cómo van colgadas las armas.
 
@@ -505,3 +535,28 @@ medidas: proporciones del Reaper, unos 20 m de envergadura.
 | twz-jsm.jpg | Dos JSM en un soporte | https://www.twz.com/wp-content/uploads/2026/09/wildfire-jsm-cruise-missiles.jpg |
 | na-lrasm.jpg | Desde arriba, lanzando un LRASM (planta) | https://assets.newatlas.com/01/69/5b812ef848e48255875a40984a50/wildfire-media-graphics-scc-re-1290x726.jpg |
 | na-banda.jpg | Desde abajo, con cuatro JSM (perfil) | https://assets.newatlas.com/86/b8/98eff06a4272ab530fa0a87fe4a6/wildfire-media-graphics-scb-desktop-1920x600.jpg |
+
+**MQ-9 Reaper.** Medidas de la ficha de la Fuerza Aérea (20,1 x 11 x 3,8
+m). Todas de Wikimedia Commons: las de la Fuerza Aérea, de dominio público;
+las de la RAF, con licencia OGL. La de perfil en vuelo (casi sin
+perspectiva) da el contorno; las de frente con teleobjetivo, los soportes
+(a 1,3 y 2,25 m del centro), la vía del tren (3,5 m) y el ángulo de la cola
+(34°). El plano de tres vistas es orientativo: su cuerda del ala no
+coincide con las fotos. Ojo: `bajo-ala-armas.jpg` lleva GBU-38, no GBU-12.
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| perfil-vuelo-armado.jpg | De perfil en vuelo, con Hellfire y GBU-12 (RAF): el contorno | https://upload.wikimedia.org/wikipedia/commons/1/1d/Royal_Air_Force_MQ-9_Reaper_1_November_2010.jpg |
+| perfil-suelo.jpg | En tierra, de perfil | https://upload.wikimedia.org/wikipedia/commons/5/57/138th_Attack_Squadron_-_General_Atomics_MQ-9B_Reaper_09-4066.jpg |
+| planta-arriba-vuelo.jpg | Desde arriba, en vuelo | https://upload.wikimedia.org/wikipedia/commons/8/89/MQ-9_Reaper_UAV.jpg |
+| planta-abajo.jpg | Desde abajo, en vuelo | https://upload.wikimedia.org/wikipedia/commons/a/a9/MQ-9_Reaper.jpg |
+| abajo-armado.jpg | Desde abajo, armado (RAF) | https://upload.wikimedia.org/wikipedia/commons/8/81/Reaper_UAV_Takes_to_the_Skies_of_Southern_Afghanistan_MOD_45151418.jpg |
+| frente-armado.jpg | De frente, con Hellfire y GBU-12, 2007 | https://upload.wikimedia.org/wikipedia/commons/c/cd/MQ-9_Reaper_taxis.jpg |
+| frente-armado-2.jpg | De frente con teleobjetivo, con Hellfire y GBU-12 (RAF) | https://upload.wikimedia.org/wikipedia/commons/5/5b/Reaper_UAV_Taxis_at_Kandahar_Airfield_MOD_45151487.jpg |
+| frente-armado-3.jpg | De frente con teleobjetivo, con cuatro GBU-38 | https://upload.wikimedia.org/wikipedia/commons/4/44/U.S._Air_Force_MQ-9_Reaper_%2839807129124%29.jpg |
+| morro-armado.jpg | Morro, torreta, antena en gota y toma de aire partida (RAF) | https://upload.wikimedia.org/wikipedia/commons/3/3c/RAF_Reaper_MQ-9_Remotely_Piloted_Air_System_MOD_45152585.jpg |
+| bajo-ala-armas.jpg | Bajo el ala: soportes, GBU-38 y tren | https://upload.wikimedia.org/wikipedia/commons/4/48/An_MQ-9_Reaper_armed_with_four_GBU-38_JDAM_parks_on_a_flightline_on_Kandahar_Airfield%2C_Afghanistan_in_February_2018_-_3.jpg |
+| tres-vistas-medidas.png | Plano de tres vistas con medidas (orientativo) | https://upload.wikimedia.org/wikipedia/commons/d/d8/MQ-9_Reaper_dimensioned_sketch.png |
+
+Hay más en `arte/uas-fuentes/mq-9-reaper/FUENTES.md` (despegue, tres
+cuartos, cola y tren en París 2013).

@@ -19,7 +19,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", lente: "#141b26",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", lente: "#141b26", oliva: "#5e6743",
 };
 
 export type { Vista };

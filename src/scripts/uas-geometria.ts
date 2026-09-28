@@ -104,7 +104,7 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           g.rotateY(-Math.PI / 2);
           g.translate(d / 2, 0, 0);
           if (p.inclinacion) g.rotateZ((-s * p.inclinacion * Math.PI) / 180);
-          g.translate(s * p.x, 0, 0);
+          g.translate(s * p.x, p.y ?? 0, 0);
         }
         return g;
       });

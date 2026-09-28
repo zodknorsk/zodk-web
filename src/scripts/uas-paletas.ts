@@ -7,7 +7,7 @@ export type Paleta = [string, string, string, string];
 // Paletas del modo Pixel (de oscuro a claro), por acabado. El dron, negro
 // mate como los ejemplares de la fábrica; las juntas, un punto más oscuras;
 // los elevones, un punto más claros; motor, hélice y antena, metal gris; la
-// escarapela, sus colores. La parte elegida va en blanco papel. De noche, el
+// escarapela, sus colores; las bombas del Reaper, verde oliva. La parte elegida va en blanco papel. De noche, el
 // negro sube un poco para no perderse en la tarjeta oscura y el contorno
 // pasa a ser un filo claro. Los drones claros (resalte «tinta», como el X10D
 // o el Wildfire) llevan siempre contorno oscuro (contornoClaro): con el filo
@@ -19,6 +19,7 @@ const COMUNES = {
   lente: ["#070a10", "#0f1622", "#1b2738", "#324a6e"],
   amarillo: ["#8a6d00", "#b89200", "#e0b400", "#ffd500"],
   azul: ["#0b2a66", "#12398a", "#1a4fb5", "#2f68d6"],
+  oliva: ["#2c301f", "#434a2f", "#5e6743", "#7e885c"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

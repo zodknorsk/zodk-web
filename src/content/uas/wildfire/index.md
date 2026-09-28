@@ -32,7 +32,7 @@ categoria: Dron armado MALE
 | **Alcance** | Más de 8.000 millas náuticas (14.800 km) en vuelo de traslado (fabricante); el concurso pide un radio de combate de 2.300 millas náuticas (4.260 km) |
 | **Carga** | Cuatro misiles JSM o dos LRASM (fabricante); el concurso pide al menos 1.270 kg |
 | **Motor** | No publicado; hélice propulsora (probablemente un turbohélice) |
-| **Origen** | MQ-9 Reaper |
+| **Origen** | [MQ-9 Reaper](/uas/mq-9-reaper) |
 
 ## Historia
 
