@@ -7,6 +7,7 @@ import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
 import BackToPrev from "@components/BackToPrev.astro";
+import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import { proyectoDe, porFecha } from "@lib/contenido";
 
 // getStaticPaths le dice a Astro qué páginas generar en el build (sitio estático).
@@ -64,4 +65,5 @@ const proyecto = proyectoDe(nota.data.tags);
       <Content />
     </article>
   </Container>
+  <GlosarioTarjeta />
 </PageLayout>

@@ -1,0 +1,178 @@
+---
+// La tarjeta de los términos del glosario de UAS en los artículos: al pasar
+// el ratón por un término (los marca src/lib/glosario-enlaces.mjs), sale
+// junto a él con su definición y un enlace a su entrada. En táctil, el
+// primer toque la abre y el segundo va al glosario.
+---
+
+<script>
+  let tarjeta: HTMLElement | null = null;
+  let actual: HTMLAnchorElement | null = null;
+  let abrir = 0;
+  let cerrar = 0;
+
+  function crear() {
+    const t = document.createElement("div");
+    t.className = "gl-tarjeta";
+    t.id = "gl-tarjeta";
+    t.setAttribute("role", "tooltip");
+    t.hidden = true;
+    t.innerHTML =
+      '<p class="gl-t"></p><p class="gl-en"></p><p class="gl-def"></p><a class="gl-ir">Ver en el glosario →</a>';
+    t.addEventListener("pointerenter", () => clearTimeout(cerrar));
+    t.addEventListener("pointerleave", (e) => {
+      if (e.pointerType === "mouse") ocultarLuego();
+    });
+    document.body.append(t);
+    return t;
+  }
+
+  function mostrar(a: HTMLAnchorElement) {
+    clearTimeout(cerrar);
+    tarjeta ??= crear();
+    actual?.removeAttribute("aria-describedby");
+    actual = a;
+    a.setAttribute("aria-describedby", "gl-tarjeta");
+    const { glT = "", glEn = "", glDef = "" } = a.dataset;
+    tarjeta.querySelector(".gl-t")!.textContent = glT;
+    const en = tarjeta.querySelector<HTMLElement>(".gl-en")!;
+    en.textContent = glEn;
+    en.hidden = !glEn;
+    tarjeta.querySelector(".gl-def")!.textContent = glDef;
+    tarjeta.querySelector<HTMLAnchorElement>(".gl-ir")!.href = a.href;
+    tarjeta.hidden = false;
+
+    // Debajo de la palabra; encima si abajo no cabe. Nunca fuera de la
+    // pantalla por los lados.
+    const r = a.getBoundingClientRect();
+    const w = tarjeta.offsetWidth;
+    const h = tarjeta.offsetHeight;
+    const margen = 12;
+    const x = Math.min(Math.max(r.left, margen), innerWidth - w - margen);
+    const debajo = r.bottom + 8 + h <= innerHeight - margen || r.top - 8 - h < margen;
+    const y = debajo ? r.bottom + 8 : r.top - 8 - h;
+    tarjeta.style.left = `${x + scrollX}px`;
+    tarjeta.style.top = `${y + scrollY}px`;
+  }
+
+  function ocultar() {
+    clearTimeout(abrir);
+    if (tarjeta) tarjeta.hidden = true;
+    actual?.removeAttribute("aria-describedby");
+    actual = null;
+  }
+
+  function ocultarLuego() {
+    clearTimeout(abrir);
+    clearTimeout(cerrar);
+    cerrar = window.setTimeout(ocultar, 180);
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    tarjeta = null;
+    actual = null;
+    const terminos = document.querySelectorAll<HTMLAnchorElement>("article a.gl");
+    if (!terminos.length) return;
+
+    for (const a of terminos) {
+      a.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse") return;
+        clearTimeout(abrir);
+        abrir = window.setTimeout(() => mostrar(a), actual ? 0 : 120);
+      });
+      a.addEventListener("pointerleave", (e) => {
+        if (e.pointerType === "mouse") ocultarLuego();
+      });
+      // Con el teclado (Tab); al tocar, el foco llega antes que el clic.
+      a.addEventListener("focus", () => {
+        if (a.matches(":focus-visible")) mostrar(a);
+      });
+      a.addEventListener("blur", ocultarLuego);
+      // En táctil no hay «pasar por encima»: el primer toque abre la tarjeta.
+      a.addEventListener("click", (e) => {
+        if (actual === a) return;
+        if (matchMedia("(hover: none)").matches) {
+          e.preventDefault();
+          mostrar(a);
+        }
+      });
+    }
+
+    const fuera = (e: Event) => {
+      const t = e.target as Node;
+      if (actual && !actual.contains(t) && !tarjeta?.contains(t)) ocultar();
+    };
+    document.addEventListener("pointerdown", fuera);
+    const tecla = (e: KeyboardEvent) => {
+      if (e.key === "Escape") ocultar();
+    };
+    document.addEventListener("keydown", tecla);
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        document.removeEventListener("pointerdown", fuera);
+        document.removeEventListener("keydown", tecla);
+      },
+      { once: true },
+    );
+  });
+</script>
+
+<style is:global>
+  /* El término: subrayado de puntos en vez del de los enlaces normales. */
+  article a.gl {
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    cursor: help;
+  }
+
+  .gl-tarjeta {
+    position: absolute;
+    z-index: 60;
+    width: min(22rem, calc(100vw - 24px));
+    padding: 0.8rem 0.95rem 0.85rem;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    color: #3f3f46;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .gl-tarjeta[hidden] { display: none; }
+  html.dark .gl-tarjeta {
+    border-color: rgba(255, 255, 255, 0.13);
+    background: #25252a;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    color: #d4d4d8;
+  }
+  .gl-tarjeta p { margin: 0; }
+  .gl-t {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #18181b;
+  }
+  html.dark .gl-t { color: #f4f4f5; }
+  .gl-en { font-style: italic; font-size: 0.8rem; opacity: 0.7; }
+  .gl-def {
+    margin-top: 0.4rem !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    overflow: hidden;
+  }
+  .gl-ir {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.75;
+  }
+  .gl-ir:hover { text-decoration: underline; text-underline-offset: 2px; opacity: 1; }
+</style>

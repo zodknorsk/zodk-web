@@ -2,6 +2,8 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
+import { satteri } from "@astrojs/markdown-satteri";
+import glosario from "./src/lib/glosario-enlaces.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +14,13 @@ export default defineConfig({
   // serie: no hay integración de MDX porque no hay ningún .mdx.
   site: "https://zodk.eu",
   integrations: [sitemap()],
+
+  // Los términos del glosario de UAS enlazados en los artículos, con su
+  // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).
+  // Sätteri es el procesador de Markdown que Astro 7 usa de serie.
+  markdown: {
+    processor: satteri({ hastPlugins: [glosario] }),
+  },
 
   // Astro 7 quita por defecto los espacios con reglas de JSX: un salto de línea
   // entre dos etiquetas desaparece, y "<a>x</a>\n<span>y</span>" se vería "xy".

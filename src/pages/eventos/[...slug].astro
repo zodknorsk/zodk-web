@@ -8,6 +8,7 @@ import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import BackToPrev from "@components/BackToPrev.astro";
+import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import EventoNav from "@components/EventoNav.astro";
 
 export async function getStaticPaths() {
@@ -189,4 +190,5 @@ function diaCorto(texto: string) {
       )
     }
   </Container>
+  <GlosarioTarjeta />
 </PageLayout>

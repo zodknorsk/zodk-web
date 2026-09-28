@@ -412,6 +412,26 @@ desplegables por sección y una lista A–Z; el usuario eligió este («se ve
 todo»). Las entradas van **con espacio** entre ellas (probado sin espacio;
 decidido con espacio).
 
+**Los términos en los artículos** (29-sep-2026). En las notas, los eventos
+y las fichas del Hangar, la primera vez que sale un término del glosario
+(MALE, MTOW, jamming…) queda enlazado a su entrada con un subrayado de
+puntos, y al pasar el ratón sale una tarjeta con el término, su nombre
+completo, la definición (siete líneas como mucho) y «Ver en el glosario →».
+En táctil, el primer toque abre la tarjeta. Es automático: en la bóveda no
+se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).
+- `src/lib/glosario-enlaces.mjs`: plugin de Sätteri, el procesador de
+  Markdown de Astro 7 (va en `astro.config.mjs` con `markdown.processor`;
+  los `rehypePlugins` de siempre ya no los ejecuta). Lee los términos de la
+  nota del glosario importada. Siglas con mayúsculas exactas (LOS no es
+  «los»), palabras sin distinguir y plural con «s»; la sigla detrás de una
+  coma en el paréntesis también cuenta («…, OWA»). Salta títulos, enlaces,
+  código y tuits; un enlace a mano al glosario cuyo texto es un término
+  gana la tarjeta.
+- `src/components/GlosarioTarjeta.astro`: la tarjeta, en las páginas de
+  notas, eventos y UAS.
+- Al cambiar el plugin, `astro dev` no lo recarga: parar, borrar
+  `node_modules/.astro` y arrancar.
+
 
 ## El armamento
 

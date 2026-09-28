@@ -9,6 +9,7 @@ import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import BackToPrev from "@components/BackToPrev.astro";
+import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import VisorUAS from "@components/VisorUAS.astro";
 import GlosarioIndice from "@components/GlosarioIndice.astro";
 import { readingTime } from "@lib/utils";
@@ -81,6 +82,7 @@ const indice = ficha.data.glosario
       )}
     </article>
   </Container>
+  <GlosarioTarjeta />
 </PageLayout>
 
 <style>
