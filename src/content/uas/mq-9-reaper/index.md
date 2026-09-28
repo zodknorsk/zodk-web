@@ -29,7 +29,7 @@ categoria: Dron armado MALE
 | **Primer uso en combate** | 2007, en Afganistán |
 | **Envergadura / longitud / peso** | 20,1 m / 11 m / 4.760 kg de MTOW |
 | **Alcance** | 5.900 km; más de 27 horas de autonomía (fabricante) |
-| **Carga** | 1.700 kg, en siete soportes bajo las alas: misiles Hellfire y bombas guiadas GBU-12 y GBU-38 |
+| **Carga** | 1.700 kg, en siete soportes bajo las alas: misiles [Hellfire](/uas/armamento#agm-114-hellfire) y bombas guiadas [GBU-12](/uas/armamento#gbu-12-paveway-ii) y [GBU-38](/uas/armamento#gbu-38-jdam) |
 | **Motor** | Turbohélice Honeywell TPE331-10 de 900 CV, con hélice propulsora |
 | **Origen** | MQ-1 Predator |
 
@@ -77,7 +77,7 @@ Our story:</div>
 <blockquote class="tweet" data-tweet-id="2028364923835666535">
   <a class="tweet-author" href="https://x.com/Archer83Able/status/2028364923835666535" target="_blank" rel="noopener">
     <img class="tweet-avatar" src="/tweets/2096934026028457984-xa1ftcid_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">Status-6 (War &amp; Military News)</span>
+    <span class="tweet-name">Status-6</span>
     <span class="tweet-handle">@Archer83Able</span>
   </a>
   <div class="tweet-text">A video showing a US MQ-9 Reaper UCAV launching an AGM-114 Hellfire against a ground target somewhere in Iran.</div>

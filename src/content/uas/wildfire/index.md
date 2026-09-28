@@ -30,7 +30,7 @@ categoria: Dron armado MALE
 | **Primer uso en combate** | No |
 | **Envergadura / longitud / peso** | No publicados (la planta es casi la del Reaper, de unos 20 m de envergadura) |
 | **Alcance** | Más de 8.000 millas náuticas (14.800 km) de alcance de traslado (*ferry range*), según el fabricante; el concurso pide un radio de combate de 2.300 millas náuticas (4.260 km) |
-| **Carga** | Cuatro misiles JSM o dos LRASM (fabricante); el concurso pide al menos 1.270 kg |
+| **Carga** | Cuatro misiles [JSM](/uas/armamento#jsm) o dos [LRASM](/uas/armamento#agm-158c-lrasm) (fabricante); el concurso pide al menos 1.270 kg |
 | **Motor** | No publicado; hélice propulsora (probablemente un turbohélice) |
 | **Origen** | [MQ-9 Reaper](/uas/mq-9-reaper) |
 

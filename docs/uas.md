@@ -64,9 +64,10 @@ Hecho: nota `Armamento.md` en la carpeta del Hangar (una sola nota con
 índice, fotos y no visor: decisión del usuario), con cinco municiones, las
 que llevan nuestros drones: Hellfire, JSM, LRASM, GBU-12 y GBU-38. En la web,
 página `/uas/armamento` y tira debajo de la del glosario (ver «El
-armamento», abajo). Pendiente, a la espera del usuario: enlazar la fila
-«Carga» del MQ-9 y del Wildfire a su munición y llevar al glosario
-*semi-active laser*, *fire and forget* y *sea-skimming*.
+armamento», abajo). Después (sin commit): la fila «Carga» del MQ-9 y del
+Wildfire enlaza a cada munición (`[[Armamento#GBU-12 Paveway II\|GBU-12]]`),
+y el glosario tiene una sección nueva, «Municiones y guiado», con
+*semi-active laser*, *fire and forget* y *sea-skimming* (75 términos).
 
 ## Pedir una ficha nueva: el guion completo
 
