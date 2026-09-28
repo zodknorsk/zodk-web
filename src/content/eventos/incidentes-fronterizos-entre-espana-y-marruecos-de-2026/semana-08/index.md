@@ -572,7 +572,7 @@ Entrar irregularmente en España a través de Ceuta y Melilla no da derecho a ac
 
 <blockquote class="tweet" data-tweet-id="2101561679439941992">
   <a class="tweet-author" href="https://x.com/IssouAbdelilah/status/2101561679439941992" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2101425325519290368-ew6sfre0_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2104682505936773120-p9pv7jfd_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">Abdelilah Issou</span>
     <span class="tweet-handle">@IssouAbdelilah</span>
   </a>

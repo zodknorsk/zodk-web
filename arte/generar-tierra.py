@@ -1468,6 +1468,7 @@ BAND_PAL = {
     "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
     "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
     "k": (0x1a, 0x1a, 0x1a),                                                    # Afganistán
+    "b": (0x00, 0x57, 0xb7), "y": (0xff, 0xd7, 0x00),                           # Ucrania
 }
 BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
     ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
@@ -1483,6 +1484,10 @@ BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el
     # diagonal y dos puntos bajo la palabra de la derecha.
     ("AF", "Afganistán", 34.5553, 69.2075, ["WWWWWWWWWWW", "WWkWWWWkWkW", "WWkWWkWkWkW", "WkkWkkWkkkW",
                                       "WWWWkWWWWWW", "WWWkWWWkWkW", "WWWWWWWWWWW"]),
+    # Ucrania: con 7 filas no se puede partir por la mitad; el azul se queda
+    # con 3 y el amarillo con 4 (el usuario prefirió esto a una chapa de otro alto).
+    ("UA", "Ucrania", 48.9, 31.3, ["bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "yyyyyyyyyyy",
+                             "yyyyyyyyyyy", "yyyyyyyyyyy", "yyyyyyyyyyy"]),
 ]
 BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
 BAND_EDGE = (0x10, 0x13, 0x1c)

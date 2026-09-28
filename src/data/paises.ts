@@ -18,4 +18,5 @@ export const PAISES: Pais[] = [
   { iso: "IR", nombre: "Irán", etiquetas: ["iran", "irán"] },
   { iso: "US", nombre: "EE. UU.", etiquetas: ["eeuu", "ee.uu.", "estados-unidos"] },
   { iso: "AF", nombre: "Afganistán", etiquetas: ["afganistan", "afganistán"] },
+  { iso: "UA", nombre: "Ucrania", etiquetas: ["ucrania"] },
 ];
