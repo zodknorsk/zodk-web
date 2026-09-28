@@ -1,0 +1,151 @@
+---
+// Índice del glosario del Hangar de UAS (/uas/glosario-y-terminologia): sale
+// solo de la nota (secciones y términos), así que crece con ella. Al pulsar
+// un término, la página baja hasta él y lo marca un momento.
+// Todas las secciones con sus términos, en columnas (el usuario lo prefirió
+// a unos desplegables por sección y a una lista A–Z: «se ve todo»).
+import GithubSlugger from "github-slugger";
+import { anclaTermino, leerGlosario } from "@lib/glosario";
+
+interface Props {
+  cuerpo: string;
+}
+
+const slugger = new GithubSlugger();
+const secciones = leerGlosario(Astro.props.cuerpo).map((s) => ({
+  titulo: s.titulo,
+  ancla: slugger.slug(s.titulo),
+  terminos: s.terminos.map((t) => ({ t, ancla: anclaTermino(t) })),
+}));
+const nTerminos = secciones.reduce((n, s) => n + s.terminos.length, 0);
+---
+
+<nav class="gi not-prose" aria-label="Índice del glosario">
+  <div class="gi-caja">
+    <p class="gi-titulo">Índice <span>{nTerminos} términos</span></p>
+
+    <div class="gi-a">
+      {secciones.map((s) => (
+        <div class="gi-a-seccion">
+          <a class="gi-sec" href={`#${s.ancla}`}>{s.titulo}</a>
+          <ul>
+            {s.terminos.map((x) => <li><a href={`#${x.ancla}`}>{x.t}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<a class="gi-volver" href="#indice-glosario" aria-label="Volver al índice" hidden>↑ Índice</a>
+
+<script>
+  import { anclaTermino } from "@lib/glosario";
+
+  document.addEventListener("astro:page-load", () => {
+    const nav = document.querySelector<HTMLElement>(".gi");
+    if (!nav) return;
+    nav.id = "indice-glosario";
+
+    // Un ancla en cada término (el <li> de primer nivel de la nota).
+    document.querySelectorAll<HTMLElement>("article > ul > li").forEach((li) => {
+      const nombre = li.querySelector("strong")?.textContent;
+      if (nombre) li.id = anclaTermino(nombre);
+    });
+
+    const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ir = (hash: string) => {
+      const destino = document.getElementById(decodeURIComponent(hash.slice(1)));
+      if (!destino) return false;
+      destino.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
+      history.replaceState(null, "", hash);
+      if (destino.tagName === "LI") {
+        destino.classList.remove("gi-destino");
+        void destino.offsetWidth;
+        destino.classList.add("gi-destino");
+      }
+      return true;
+    };
+
+    nav.addEventListener("click", (e) => {
+      const enlace = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href^='#']");
+      if (enlace && ir(enlace.hash)) e.preventDefault();
+    });
+
+    // «↑ Índice» abajo a la derecha cuando el índice ya no se ve.
+    const volver = document.querySelector<HTMLAnchorElement>(".gi-volver");
+    if (volver) {
+      volver.addEventListener("click", (e) => {
+        e.preventDefault();
+        nav.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
+      });
+      const vigia = new IntersectionObserver(([en]) => {
+        volver.hidden = en.isIntersecting || en.boundingClientRect.top > 0;
+      });
+      vigia.observe(nav);
+      document.addEventListener("astro:before-swap", () => vigia.disconnect(), { once: true });
+    }
+
+    if (location.hash) ir(location.hash);
+  });
+</script>
+
+<style>
+  .gi { margin-block: 0 2.5rem; scroll-margin-top: 9.5rem; }
+
+  .gi-caja {
+    padding: 1rem 1.15rem 1.15rem;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+  }
+  :global(html.dark) .gi-caja { border-color: rgba(255, 255, 255, 0.13); background: #25252a; }
+  .gi-titulo, .gi-sec {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .gi-titulo { margin: 0 0 0.85rem; font-size: 0.68rem; font-weight: 600; color: #18181b; }
+  .gi-titulo span { margin-left: 0.5rem; font-weight: 400; opacity: 0.6; }
+  :global(html.dark) .gi-titulo { color: #f4f4f5; }
+  .gi a { text-decoration: none; }
+  .gi li a { color: #3f3f46; }
+  :global(html.dark) .gi li a { color: #d4d4d8; }
+  .gi li a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  .gi-sec { display: block; font-size: 0.6rem; font-weight: 600; color: #18181b; }
+  :global(html.dark) .gi-sec { color: #f4f4f5; }
+  .gi-sec:hover { text-decoration: underline; }
+
+  /* Todas las secciones con sus términos, en columnas. */
+  .gi-a { columns: 3 11rem; column-gap: 1.5rem; }
+  .gi-a-seccion { break-inside: avoid; margin-bottom: 1rem; }
+  .gi-a ul { margin: 0.3rem 0 0; padding: 0; list-style: none; }
+  .gi-a li { font-size: 0.82rem; line-height: 1.55; }
+
+  /* El término al que se salta: por debajo de la cabecera fija, y marcado
+     un momento. */
+  :global(article > ul > li[id]), :global(article h2) { scroll-margin-top: 9.5rem; }
+  :global(article li.gi-destino) { animation: gi-destello 1.8s ease-out; border-radius: 4px; }
+  @keyframes gi-destello {
+    0%, 35% { background: rgba(255, 210, 63, 0.35); box-shadow: 0 0 0 0.4rem rgba(255, 210, 63, 0.35); }
+    100% { background: transparent; box-shadow: 0 0 0 0.4rem transparent; }
+  }
+
+  .gi-volver {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 40;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    background: #fafafa;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.35);
+  }
+  :global(html.dark) .gi-volver { border-color: rgba(255, 255, 255, 0.2); background: #18181b; }
+  .gi-volver[hidden] { display: none; }
+</style>

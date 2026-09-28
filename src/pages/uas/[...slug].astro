@@ -9,6 +9,7 @@ import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import BackToPrev from "@components/BackToPrev.astro";
 import VisorUAS from "@components/VisorUAS.astro";
+import GlosarioIndice from "@components/GlosarioIndice.astro";
 import { readingTime } from "@lib/utils";
 
 export async function getStaticPaths() {
@@ -50,6 +51,7 @@ const conVisor = (ficha.body ?? "").includes("visor-hueco") && maquetas.some((m)
         )
       }
     </div>
+    {ficha.data.glosario && <GlosarioIndice cuerpo={ficha.body ?? ""} />}
     <article class="animate">
       <Content />
     </article>

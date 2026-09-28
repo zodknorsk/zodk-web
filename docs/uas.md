@@ -351,6 +351,15 @@ puntos de lista de primer nivel que empiezan en negrita). Las entradas del
 glosario van con el término en inglés delante y el castellano detrás
 (decisión del usuario).
 
+En la página, arriba, un **índice** (`GlosarioIndice.astro`): todas las
+secciones con sus términos en columnas; al pulsar uno, la página baja hasta
+él y lo marca un momento en amarillo, y abajo a la derecha sale «↑ Índice».
+Se construye solo de la nota (`src/lib/glosario.ts`): cada término lleva el
+ancla `#t-<término>` (`#t-kill-chain`). Se probaron también unos
+desplegables por sección y una lista A–Z; el usuario eligió este («se ve
+todo»). Las entradas van **con espacio** entre ellas (probado sin espacio;
+decidido con espacio).
+
 ## Animaciones por fotogramas
 
 La puerta del hangar (5 fotogramas) y el giro de las tarjetas (8) son tiras
