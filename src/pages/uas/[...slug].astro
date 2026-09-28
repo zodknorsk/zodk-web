@@ -1,6 +1,7 @@
 ---
 // Ficha de un dron de la enciclopedia de UAS: /uas/<slug>. Es una nota de la
-// carpeta «Hangar de UAS» de la bóveda (también el glosario). Si hay maqueta
+// carpeta «Hangar de UAS» de la bóveda (también el glosario y el armamento,
+// que llevan un índice en vez de visor). Si hay maqueta
 // (src/data/uas/<slug>.ts), el importador deja un hueco en su sección
 // «Visor» y aquí se pone el visor (docs/uas.md).
 import { type CollectionEntry, getCollection, render } from "astro:content";
@@ -11,6 +12,8 @@ import BackToPrev from "@components/BackToPrev.astro";
 import VisorUAS from "@components/VisorUAS.astro";
 import GlosarioIndice from "@components/GlosarioIndice.astro";
 import { readingTime } from "@lib/utils";
+import { leerGlosario } from "@lib/glosario";
+import { leerArmamento } from "@lib/armamento";
 
 export async function getStaticPaths() {
   const fichas = (await getCollection("uas")).filter((f) => !f.data.draft);
@@ -29,6 +32,12 @@ const HUECO = "<div class=\"visor-hueco\"></div>";
 const html = ficha.rendered?.html ?? "";
 const conVisor = html.includes(HUECO) && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
 const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
+const cuerpo = ficha.body ?? "";
+const indice = ficha.data.glosario
+  ? { secciones: leerGlosario(cuerpo), unidad: "términos" }
+  : ficha.data.armamento
+    ? { secciones: leerArmamento(cuerpo), unidad: "municiones" }
+    : null;
 ---
 
 <PageLayout title={ficha.data.title} description={ficha.data.description ?? ""}>
@@ -57,7 +66,7 @@ const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
         )
       }
     </div>
-    {ficha.data.glosario && <GlosarioIndice cuerpo={ficha.body ?? ""} />}
+    {indice && <GlosarioIndice {...indice} />}
     <article class="animate">
       {conVisor ? (
         <>

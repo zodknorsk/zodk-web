@@ -1,35 +1,37 @@
 ---
-// Índice del glosario del Hangar de UAS (/uas/glosario-y-terminologia): sale
-// solo de la nota (secciones y términos), así que crece con ella. Al pulsar
-// un término, la página baja hasta él y lo marca un momento.
+// Índice del glosario del Hangar de UAS (/uas/glosario-y-terminologia) y del
+// armamento (/uas/armamento): sale solo de la nota (secciones y términos o
+// municiones, ver @lib/glosario y @lib/armamento), así que crece con ella. Al
+// pulsar un término, la página baja hasta él y lo marca un momento.
 // Todas las secciones con sus términos, en columnas (el usuario lo prefirió
 // a unos desplegables por sección y a una lista A–Z: «se ve todo»).
 import GithubSlugger from "github-slugger";
-import { anclaTermino, leerGlosario } from "@lib/glosario";
+import { anclaTermino, type SeccionIndice } from "@lib/glosario";
 
 interface Props {
-  cuerpo: string;
+  secciones: SeccionIndice[];
+  unidad: string; // «términos», «municiones»
 }
 
 const slugger = new GithubSlugger();
-const secciones = leerGlosario(Astro.props.cuerpo).map((s) => ({
+const secciones = Astro.props.secciones.map((s) => ({
   titulo: s.titulo,
   ancla: slugger.slug(s.titulo),
-  terminos: s.terminos.map((t) => ({ t, ancla: anclaTermino(t) })),
+  terminos: s.terminos.map((x) => ({ ...x, ancla: x.ancla ?? anclaTermino(x.t) })),
 }));
 const nTerminos = secciones.reduce((n, s) => n + s.terminos.length, 0);
 ---
 
-<nav class="gi not-prose" aria-label="Índice del glosario">
+<nav class="gi not-prose" aria-label="Índice">
   <div class="gi-caja">
-    <p class="gi-titulo">Índice <span>{nTerminos} términos</span></p>
+    <p class="gi-titulo">Índice <span>{nTerminos} {Astro.props.unidad}</span></p>
 
     <div class="gi-a">
       {secciones.map((s) => (
         <div class="gi-a-seccion">
           <a class="gi-sec" href={`#${s.ancla}`}>{s.titulo}</a>
           <ul>
-            {s.terminos.map((x) => <li><a href={`#${x.ancla}`}>{x.t}</a></li>)}
+            {s.terminos.map((x) => <li><a href={`#${x.ancla}`}>{x.t}</a>{x.nota && <span class="gi-nota">{x.nota}</span>}</li>)}
           </ul>
         </div>
       ))}
@@ -59,7 +61,7 @@ const nTerminos = secciones.reduce((n, s) => n + s.terminos.length, 0);
       if (!destino) return false;
       destino.scrollIntoView({ behavior: reducido ? "auto" : "smooth", block: "start" });
       history.replaceState(null, "", hash);
-      if (destino.tagName === "LI") {
+      if (destino.tagName === "LI" || destino.tagName === "H3") {
         destino.classList.remove("gi-destino");
         void destino.offsetWidth;
         destino.classList.add("gi-destino");
@@ -121,11 +123,12 @@ const nTerminos = secciones.reduce((n, s) => n + s.terminos.length, 0);
   .gi-a-seccion { break-inside: avoid; margin-bottom: 1rem; }
   .gi-a ul { margin: 0.3rem 0 0; padding: 0; list-style: none; }
   .gi-a li { font-size: 0.82rem; line-height: 1.55; }
+  .gi-nota { display: block; margin-bottom: 0.25rem; font-size: 0.72rem; line-height: 1.3; opacity: 0.6; }
 
   /* El término al que se salta: por debajo de la cabecera fija, y marcado
      un momento. */
-  :global(article > ul > li[id]), :global(article h2) { scroll-margin-top: 9.5rem; }
-  :global(article li.gi-destino) { animation: gi-destello 1.8s ease-out; border-radius: 4px; }
+  :global(article > ul > li[id]), :global(article h2), :global(article h3) { scroll-margin-top: 9.5rem; }
+  :global(article .gi-destino) { animation: gi-destello 1.8s ease-out; border-radius: 4px; }
   @keyframes gi-destello {
     0%, 35% { background: rgba(255, 210, 63, 0.35); box-shadow: 0 0 0 0.4rem rgba(255, 210, 63, 0.35); }
     100% { background: transparent; box-shadow: 0 0 0 0.4rem transparent; }

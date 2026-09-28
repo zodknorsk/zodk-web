@@ -59,6 +59,15 @@ al visor el acabado `oliva` (las bombas) y la `y` de las placas verticales
 Reaper ya funciona (en una tabla, el alias va con la barra escapada:
 `[[🇺🇸 MQ-9 Reaper\|MQ-9 Reaper]]`).
 
+**28-sep-2026, Armamento** (commit en `main` y en la bóveda, sin subir). Pendiente: el usuario quiere cambiar el icono de la tira (la mira).
+Hecho: nota `Armamento.md` en la carpeta del Hangar (una sola nota con
+índice, fotos y no visor: decisión del usuario), con cinco municiones, las
+que llevan nuestros drones: Hellfire, JSM, LRASM, GBU-12 y GBU-38. En la web,
+página `/uas/armamento` y tira debajo de la del glosario (ver «El
+armamento», abajo). Pendiente, a la espera del usuario: enlazar la fila
+«Carga» del MQ-9 y del Wildfire a su munición y llevar al glosario
+*semi-active laser*, *fire and forget* y *sea-skimming*.
+
 ## Pedir una ficha nueva: el guion completo
 
 El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
@@ -401,6 +410,35 @@ ancla `#t-<término>` (`#t-kill-chain`). Se probaron también unos
 desplegables por sección y una lista A–Z; el usuario eligió este («se ve
 todo»). Las entradas van **con espacio** entre ellas (probado sin espacio;
 decidido con espacio).
+
+
+## El armamento
+
+La nota `Armamento.md` de la misma carpeta de la bóveda (el importador la
+reconoce porque empieza por «Armamento») recoge las **municiones** que llevan
+los drones del hangar: misiles y bombas guiadas. Como el glosario, no es un
+dron: sale en `/uas/armamento`, sin visor, con `armamento: true` en su
+frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
+
+- **La nota**: `## Misiles` y `## Bombas guiadas`, y dentro una `###` por
+  munición (sin bandera en el título, para que el enlace
+  `[[Armamento#AGM-114 Hellfire]]` quede limpio; la bandera va en la fila
+  «País»). Cada una lleva foto con pie y crédito, tabla (País, Fabricante,
+  Tipo, Guiado, Peso / longitud, Warhead, Alcance, En servicio, Lo llevan)
+  y dos párrafos. La bandera es la del fabricante, como en los drones. El
+  usuario pidió «munición», no «bomba», como palabra general.
+- **El índice**: la nota tiene uno propio (`## Índice`) para Obsidian; el
+  importador lo quita y la página monta el suyo con `GlosarioIndice` (el
+  mismo componente del glosario, que ahora recibe las secciones ya leídas):
+  `leerArmamento` (`src/lib/armamento.ts`) saca las `##`, las `###` y el
+  «Tipo» de cada tabla, que sale en pequeño debajo del nombre.
+- **La tira de `/uas`**: debajo de la del glosario, mismo estilo, con una
+  mira en lugar de «A–Z», las cuatro primeras municiones y cuántas hay.
+- **Las fotos**: en `02 - Temas/Adjuntos/armamento-*.jpg`, de Wikimedia
+  Commons, con licencia libre (dominio público del ejército de EE. UU., o
+  CC BY-SA / OGL con su crédito en el pie).
+- `[[#sección]]` sin texto se lee ahora «sección» en la web, como en
+  Obsidian (antes salía «#sección»).
 
 ## Animaciones por fotogramas
 

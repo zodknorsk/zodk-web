@@ -64,9 +64,11 @@ const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 
 const CARPETA_EVENTOS = "03 - Eventos";
 // El Hangar de UAS: sus notas son fichas de drones en /uas (docs/uas.md),
-// salvo el glosario (una nota que empieza por «Glosario»).
+// salvo el glosario y el armamento (notas que empiezan por «Glosario» y por
+// «Armamento»), que son páginas aparte.
 const CARPETA_UAS = "Hangar de UAS";
 const RE_GLOSARIO_UAS = /^Glosario\b/i;
+const RE_ARMAMENTO_UAS = /^Armamento\b/i;
 const CARPETAS_IGNORADAS = new Set([
   ".git", ".obsidian", ".trash", "00 - Meta", "07 - Clippings", "Adjuntos",
 ]);
@@ -278,7 +280,8 @@ function extraerDescripcion(cuerpo) {
 function clasificar(ruta) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
   if (partes.includes(CARPETA_UAS)) {
-    return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(path.basename(ruta, ".md")) };
+    const stem = path.basename(ruta, ".md");
+    return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(stem), armamento: RE_ARMAMENTO_UAS.test(stem) };
   }
   if (partes[0] !== CARPETA_EVENTOS || partes.length < 2) return { tipo: "nota" };
 
@@ -530,7 +533,8 @@ function transformarCuerpo(cuerpo, ctx) {
   s = s.replace(/\[\[([^\]|#]*)(#[^\]|]*)?(?:\|([^\]]*))?\]\]/g, (_, destino, ancla, texto) => {
     destino = (destino || "").trim();
     const anclaTxt = ancla ? "#" + generarAncla(ancla.slice(1).trim()) : "";
-    const etiqueta = (texto || (destino + (ancla || ""))).trim();
+    // [[#sección]] sin texto se lee «sección», como en Obsidian.
+    const etiqueta = (texto || (destino ? destino + (ancla || "") : ancla.slice(1))).trim();
     if (!destino) return `[${etiqueta}](${anclaTxt || "#"})`;
     const url = resolver(destino);
     if (url) return `[${etiqueta}](${url}${anclaTxt})`;
@@ -727,7 +731,11 @@ async function main() {
       cuerpo = cuerpo.replaceAll(marca, await promesa);
     }
     cuerpo = resaltados(cuerpo);
-    if (it.clase.tipo === "uas" && !it.clase.glosario) cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
+    const esDron = it.clase.tipo === "uas" && !it.clase.glosario && !it.clase.armamento;
+    if (esDron) cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
+    // El índice del armamento lo monta la página (ArmamentoIndice) con los
+    // encabezados; el de la nota, que sirve en Obsidian, sobra.
+    if (it.clase.armamento) cuerpo = cuerpo.replace(/^## Índice\n[\s\S]*?(?=^## )/m, "");
 
     const fm = {
       title: it.titulo,
@@ -739,7 +747,8 @@ async function main() {
     if (actualizado) fm.updated = aFechaISO(actualizado);
     if (Array.isArray(it.data.tags) && it.data.tags.length) fm.tags = it.data.tags.map(String);
     if (it.clase.glosario) fm.glosario = true;
-    else if (it.clase.tipo === "uas") Object.assign(fm, paisDeFicha(it.content));
+    else if (it.clase.armamento) fm.armamento = true;
+    else if (esDron) Object.assign(fm, paisDeFicha(it.content));
 
     if (it.clase.tipo === "evento") {
       fm.kind = it.clase.kind;
