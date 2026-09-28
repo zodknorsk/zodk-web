@@ -1,0 +1,67 @@
+---
+// Cabecera de /notas y /eventos: una tira como las del glosario y el
+// armamento de /uas (tarjeta tumbada con un cuadro a la izquierda), con el
+// título de la página, su descripción y cuántas entradas hay. Lo que va
+// dentro del cuadro lo pone cada página.
+interface Props {
+  titulo: string;
+  desc: string;
+  pie: string;
+}
+const { titulo, desc, pie } = Astro.props;
+---
+
+<div class="animate tc">
+  <div class="tc-cuadro" aria-hidden="true"><slot /></div>
+  <div class="tc-texto">
+    <h1 class="tc-titulo">{titulo}</h1>
+    <p class="tc-desc">{desc}</p>
+    <p class="tc-desc tc-pie">{pie}</p>
+  </div>
+</div>
+
+<style>
+  .tc {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+  }
+  :global(html.dark) .tc { border-color: rgba(255, 255, 255, 0.13); background: #25252a; }
+
+  /* El cuadro: la cuadrícula del visor, como en el glosario. */
+  .tc-cuadro {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 6rem;
+    min-height: 6.5rem;
+    border-right: 1px dashed rgba(0, 0, 0, 0.13);
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 600;
+    color: #18181b;
+  }
+  :global(html.dark) .tc-cuadro {
+    border-right-color: rgba(255, 255, 255, 0.13);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    color: #f4f4f5;
+  }
+
+  .tc-texto { display: flex; flex: 1; flex-direction: column; justify-content: center; gap: 0.2rem; padding: 0.85rem 1rem; }
+  .tc-titulo { margin: 0; font-size: 1.05rem; font-weight: 600; color: #18181b; }
+  :global(html.dark) .tc-titulo { color: #f4f4f5; }
+  .tc-desc { margin: 0; font-size: 0.82rem; line-height: 1.45; }
+  .tc-pie { opacity: 0.7; }
+  @media (max-width: 480px) { .tc-cuadro { width: 4.5rem; } }
+
+</style>

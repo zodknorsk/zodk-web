@@ -6,7 +6,8 @@ import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { EVENTOS } from "@consts";
-import { porFecha } from "@lib/contenido";
+import TiraCabecera from "@components/TiraCabecera.astro";
+import { enCurso, porFecha } from "@lib/contenido";
 
 const todos = await getCollection("eventos");
 
@@ -22,15 +23,26 @@ const eventos = todos
         !x.data.draft,
     ).length,
   }));
+const nSemanas = eventos.reduce((n, e) => n + e.semanas, 0);
+const nEnCurso = eventos.filter(({ ev }) => enCurso(ev.data.periodo)).length;
+const pie = [
+  `${eventos.length} evento${eventos.length === 1 ? "" : "s"}`,
+  nSemanas && `${nSemanas} semana${nSemanas === 1 ? "" : "s"} de seguimiento`,
+  nEnCurso && `${nEnCurso} en curso`,
+].filter(Boolean).join(" · ");
 ---
 
 <PageLayout title={EVENTOS.TITLE} description={EVENTOS.DESCRIPTION}>
   <Container>
     <div class="space-y-10">
-      <div class="animate space-y-2">
-        <h1 class="font-semibold text-black dark:text-white">Eventos</h1>
-        <p class="text-sm">{EVENTOS.DESCRIPTION}</p>
-      </div>
+      <TiraCabecera titulo="Eventos" desc="Seguimiento de eventos, actuales e históricos." pie={pie}>
+        {/* El piloto de «en curso», como el sello de la portada: late en rojo
+            si hay algún evento en curso. */}
+        <span class="ev-curso">
+          <i class={nEnCurso ? "ev-vivo" : undefined} />
+          {nEnCurso ? <>EN<br />CURSO</> : <>ARCHI<br />VO</>}
+        </span>
+      </TiraCabecera>
       <ul class="flex flex-col gap-4">
         {
           eventos.map(({ ev, semanas }) => (
@@ -65,3 +77,12 @@ const eventos = todos
     </div>
   </Container>
 </PageLayout>
+
+<style>
+  .ev-curso { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; font-size: 0.8rem; line-height: 1.15; text-align: center; letter-spacing: 0.06em; }
+  .ev-curso i { width: 10px; height: 10px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+  .ev-curso i.ev-vivo { background: #e5484d; opacity: 1; animation: ev-latido 1.6s ease-in-out infinite; }
+  @keyframes ev-latido { 50% { opacity: 0.25; } }
+  @media (prefers-reduced-motion: reduce) { .ev-curso i.ev-vivo { animation: none; } }
+</style>
+

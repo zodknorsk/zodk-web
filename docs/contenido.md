@@ -18,6 +18,17 @@ Al importar suele colarse algún cambio ajeno (el avatar de un tuit que X ha
 cambiado, notas que se tocaron en la bóveda): mirar `git status` y descartar
 lo que no toque con `git checkout -- <archivo>`.
 
+## Cabeceras de /notas y /eventos
+
+Arriba de cada listado, una tira como las del glosario y el armamento de
+`/uas` (`src/components/TiraCabecera.astro`): cuadro con la cuadrícula a la
+izquierda, título, descripción y cuántas hay, contado solo. En `/eventos`,
+«Seguimiento de eventos, actuales e históricos.» y en el cuadro un piloto
+rojo que late con «EN CURSO» si algún evento lo está (si no, gris y
+«ARCHIVO»); en `/notas`, el número de notas como un expediente («N.º 03»).
+Eligió estas entre tres opciones cada una (eventos: una línea de tiempo y
+un mes de calendario; notas: «¶» y una hoja de cuaderno).
+
 ## Términos y municiones con tarjeta
 
 En cualquier nota o evento, la primera vez que sale un término del glosario

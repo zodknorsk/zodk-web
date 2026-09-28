@@ -4,6 +4,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
+import TiraCabecera from "@components/TiraCabecera.astro";
 import { NOTAS } from "@consts";
 import { esDelBlog, porFecha } from "@lib/contenido";
 
@@ -26,7 +27,10 @@ const years = Object.keys(notasPorAno).sort((a, b) => parseInt(b) - parseInt(a))
 <PageLayout title={NOTAS.TITLE} description={NOTAS.DESCRIPTION}>
   <Container>
     <div class="space-y-10">
-      <h1 class="animate font-semibold text-black dark:text-white">Notas</h1>
+      <TiraCabecera titulo="Notas" desc={NOTAS.DESCRIPTION} pie={`${data.length} nota${data.length === 1 ? "" : "s"} publicada${data.length === 1 ? "" : "s"}`}>
+        {/* El número de notas, como un expediente. */}
+        <span class="no-numero">N.º<br />{String(data.length).padStart(2, "0")}</span>
+      </TiraCabecera>
       <div class="space-y-4">
         {
           years.map((year) => (
@@ -46,3 +50,8 @@ const years = Object.keys(notasPorAno).sort((a, b) => parseInt(b) - parseInt(a))
     </div>
   </Container>
 </PageLayout>
+
+<style>
+  .no-numero { font-size: 1.1rem; line-height: 1.15; text-align: center; letter-spacing: 0.04em; }
+</style>
+
