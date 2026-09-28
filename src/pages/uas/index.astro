@@ -1,6 +1,6 @@
 ---
-// /uas: el hangar de UAS (la gran enciclopedia de los UAS). Una tarjeta por
-// ficha, con la miniatura en pixel art del dron (arte/generar-uas-miniaturas.mjs),
+// /uas: el hangar de UAS (la gran enciclopedia de los UAS). La tira del
+// glosario y una tarjeta por ficha, con la miniatura en pixel art del dron (arte/generar-uas-miniaturas.mjs),
 // su país, nombre y categoría, y un filtro por país (sale de la tabla de
 // características de cada ficha).
 import fs from "node:fs";
@@ -10,7 +10,12 @@ import Container from "@components/Container.astro";
 import BackToPrev from "@components/BackToPrev.astro";
 import { porFecha } from "@lib/contenido";
 
-const fichas = (await getCollection("uas")).filter((f) => !f.data.draft).sort(porFecha);
+const todas = (await getCollection("uas")).filter((f) => !f.data.draft);
+const fichas = todas.filter((f) => !f.data.glosario).sort(porFecha);
+// El glosario: una tira encima del filtro, con cuántos términos tiene (cada
+// entrada es un punto de lista de primer nivel que empieza en negrita).
+const glosario = todas.find((f) => f.data.glosario);
+const nTerminos = glosario ? (glosario.body ?? "").match(/^- \*\*/gm)?.length ?? 0 : 0;
 const conGiro = (id: string) => fs.existsSync(`public/uas/${id}/giro-planta.png`);
 // La tira de giro de cada dron (arte/generar-uas-miniaturas.mjs), de día y de
 // noche, como variables para el CSS.
@@ -41,6 +46,18 @@ const paises = recuento((f) => f.data.pais);
         <p class="animate">Todavía no hay fichas.</p>
       ) : (
         <>
+          {glosario && (
+            <a href={`/uas/${glosario.id}`} class="animate uas-glosario">
+              <span class="uas-glosario-letras" aria-hidden="true">A–Z</span>
+              <span class="uas-glosario-texto">
+                <span class="uas-glosario-titulo">{glosario.data.title}</span>
+                <span class="uas-glosario-desc">UAS, MTOW, CCA, GPS-denied, one-way attack drone…</span>
+                <span class="uas-glosario-desc">{nTerminos} términos para leer las fichas.</span>
+              </span>
+              <span class="uas-glosario-flecha" aria-hidden="true">→</span>
+            </a>
+          )}
+
           <div class="animate space-y-2">
             <div class="uas-filtros" data-filtro="pais" role="group" aria-label="Filtrar por país">
               <span class="uas-filtros-titulo">País</span>
@@ -114,6 +131,52 @@ const paises = recuento((f) => f.data.pais);
     text-transform: uppercase;
   }
 
+  /* Tira del glosario: como una tarjeta tumbada, con la cuadrícula del
+     visor a la izquierda. */
+  .uas-glosario {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    background: #ebebee;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  :global(html.dark) .uas-glosario { border-color: rgba(255, 255, 255, 0.13); background: #25252a; }
+  .uas-glosario:hover { border-color: #27272a; box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.35); }
+  :global(html.dark) .uas-glosario:hover { border-color: #e4e4e7; }
+  .uas-glosario-letras {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 6rem;
+    border-right: 1px dashed rgba(0, 0, 0, 0.13);
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #18181b;
+  }
+  :global(html.dark) .uas-glosario-letras {
+    border-right-color: rgba(255, 255, 255, 0.13);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    color: #f4f4f5;
+  }
+  .uas-glosario-texto { display: flex; flex: 1; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem; }
+  .uas-glosario-titulo { font-size: 1.05rem; font-weight: 600; color: #18181b; }
+  :global(html.dark) .uas-glosario-titulo { color: #f4f4f5; }
+  .uas-glosario-desc { font-size: 0.82rem; line-height: 1.45; }
+  .uas-glosario-flecha { align-self: center; padding: 0 1.1rem; font-size: 1.1rem; transition: transform 0.2s; }
+  .uas-glosario:hover .uas-glosario-flecha { transform: translateX(3px); }
+  @media (max-width: 480px) { .uas-glosario-letras { width: 4rem; font-size: 0.95rem; } }
+
   .uas-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
   .uas-filtros-titulo { width: 3.2rem; font-size: 0.62rem; opacity: 0.6; }
   .uas-filtros button {
@@ -166,17 +229,19 @@ const paises = recuento((f) => f.data.pais);
   }
   /* El dron: primer fotograma de su tira de giro (8 de 128x72), al doble.
      Al pasar el ratón gira hasta verse de planta y se queda; al quitarlo,
-     vuelve. */
+     vuelve. Se anima el número de fotograma, entero, para que al quitar el
+     ratón a medias no salgan dos fotogramas partidos. */
+  @property --giro-fotograma { syntax: "<integer>"; inherits: false; initial-value: 0; }
   .uas-giro {
     display: block;
     width: 256px;
     height: 144px;
-    background: var(--giro) 0 0 / 2048px 144px no-repeat;
+    background: var(--giro) calc(-256px * var(--giro-fotograma)) 0 / 2048px 144px no-repeat;
     image-rendering: pixelated;
-    transition: background-position 0.6s steps(7);
+    transition: --giro-fotograma 0.6s linear;
   }
   :global(html.dark) .uas-giro { background-image: var(--giro-noche); }
-  .uas-tarjeta:hover .uas-giro { background-position: -1792px 0; }
+  .uas-tarjeta:hover .uas-giro { --giro-fotograma: 7; }
   @media (prefers-reduced-motion: reduce) { .uas-giro { transition: none; } }
   .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
   /* País: resalta al pasar el ratón y, con un filtro puesto, siempre. */

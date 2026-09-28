@@ -6,7 +6,7 @@
 //   1. Recorre la bóveda y se queda con los .md que tienen `publicar: true`.
 //   2. Clasifica cada uno:
 //        - "03 - Eventos/<carpeta>/..."  -> colección "eventos" (jerárquica)
-//        - "…/La gran enciclopedia de los UAS./..." -> colección "uas" (/uas/<slug>)
+//        - "…/Hangar de UAS/..."            -> colección "uas" (/uas/<slug>)
 //        - el resto                      -> colección "notas" (plana)
 //   3. Traduce el frontmatter en español al que esperan las colecciones de Astro.
 //   4. Convierte la sintaxis de Obsidian a Markdown/HTML estándar:
@@ -63,8 +63,10 @@ const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 
 const CARPETA_EVENTOS = "03 - Eventos";
-// La enciclopedia de drones: sus notas son fichas en /uas (docs/uas.md).
-const CARPETA_UAS = "La gran enciclopedia de los UAS.";
+// El Hangar de UAS: sus notas son fichas de drones en /uas (docs/uas.md),
+// salvo el glosario (una nota que empieza por «Glosario»).
+const CARPETA_UAS = "Hangar de UAS";
+const RE_GLOSARIO_UAS = /^Glosario\b/i;
 const CARPETAS_IGNORADAS = new Set([
   ".git", ".obsidian", ".trash", "00 - Meta", "07 - Clippings", "Adjuntos",
 ]);
@@ -275,7 +277,9 @@ function extraerDescripcion(cuerpo) {
  */
 function clasificar(ruta) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
-  if (partes.includes(CARPETA_UAS)) return { tipo: "uas" };
+  if (partes.includes(CARPETA_UAS)) {
+    return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(path.basename(ruta, ".md")) };
+  }
   if (partes[0] !== CARPETA_EVENTOS || partes.length < 2) return { tipo: "nota" };
 
   // Nota suelta en `03 - Eventos/`: evento de una sola página (solo índice).
@@ -723,7 +727,7 @@ async function main() {
       cuerpo = cuerpo.replaceAll(marca, await promesa);
     }
     cuerpo = resaltados(cuerpo);
-    if (it.clase.tipo === "uas") cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
+    if (it.clase.tipo === "uas" && !it.clase.glosario) cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
 
     const fm = {
       title: it.titulo,
@@ -734,7 +738,8 @@ async function main() {
     const actualizado = parsearFechaActualizado(primero(it.data.actualizado));
     if (actualizado) fm.updated = aFechaISO(actualizado);
     if (Array.isArray(it.data.tags) && it.data.tags.length) fm.tags = it.data.tags.map(String);
-    if (it.clase.tipo === "uas") Object.assign(fm, paisDeFicha(it.content));
+    if (it.clase.glosario) fm.glosario = true;
+    else if (it.clase.tipo === "uas") Object.assign(fm, paisDeFicha(it.content));
 
     if (it.clase.tipo === "evento") {
       fm.kind = it.clase.kind;

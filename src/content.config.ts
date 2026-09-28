@@ -51,9 +51,10 @@ const eventos = defineCollection({
   }),
 });
 
-// --- uas: la enciclopedia de drones. Una nota de la carpeta «La gran
-// enciclopedia de los UAS.» de la bóveda = una ficha en /uas/<slug>. Si hay
-// maqueta (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/uas.md).
+// --- uas: la enciclopedia de drones. Una nota de la carpeta «Hangar de UAS»
+// de la bóveda = una ficha en /uas/<slug>. Si hay maqueta
+// (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/uas.md). El
+// glosario vive en la misma carpeta, pero no es un dron (`glosario`).
 const uas = defineCollection({
   loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/uas" }),
   schema: z.object({
@@ -68,6 +69,8 @@ const uas = defineCollection({
     bandera: z.string().optional(),
     // De la «Categoría» de la tabla, hasta la primera coma o paréntesis.
     categoria: z.string().optional(),
+    // El glosario del hangar: página aparte, no sale entre las tarjetas.
+    glosario: z.boolean().optional(),
   }),
 });
 

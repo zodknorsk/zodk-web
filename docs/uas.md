@@ -2,7 +2,8 @@
 
 La enciclopedia de UAS de zodk.eu («la gran enciclopedia de los UAS»; en la
 web, **«Hangar de UAS»**): una nota por dron en la bóveda
-(`02 - Temas/La gran enciclopedia de los UAS./`), que en la web es una
+(`02 - Temas/Hangar de UAS/`; hasta el 28-sep-2026, «La gran enciclopedia
+de los UAS.»), que en la web es una
 **ficha** en `/uas/<slug>`, listada en el índice `/uas` y con acceso desde la
 tira «Hangar de UAS» de la portada. Las fichas con maqueta llevan un
 **visor**: **«el visor»** es el nombre del recuadro completo (lo eligió el
@@ -27,6 +28,12 @@ fotos de cada maqueta.
   (al lado del hangar solo caben dos). Cómo entran los demás, más adelante.
 - Consumo del visor al girar en Zen: el usuario lo ve bien; no se ha medido
   en vatios.
+
+**28-sep-2026**: la carpeta de la bóveda pasó a llamarse «Hangar de UAS» (el
+importador la busca por ese nombre); se añadió el **glosario** (apartado
+«El glosario», abajo) y se arregló que el hangar de la portada y las
+tarjetas de `/uas` enseñaran fotogramas partidos al quitar el ratón a medias
+(ver «Animaciones por fotogramas»).
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -75,7 +82,7 @@ Cómo trabajar con el usuario en esto (lo ha dejado claro varias veces):
 
 ### 1. La nota en la bóveda
 
-En `02 - Temas/La gran enciclopedia de los UAS./`, desde la plantilla
+En `02 - Temas/Hangar de UAS/`, desde la plantilla
 `00 - Meta/Plantilla UAS (Templater).md` (modelos: las notas del MICH-2000 y
 del X10D).
 - **Archivo**: la bandera y el nombre (`🇺🇸 Skydio X10D.md`). El `titulo` da
@@ -330,6 +337,30 @@ el morro arriba (`giro-planta.png`), y el país resalta; con un filtro puesto,
 el país sale marcado en todas las tarjetas. (Se probó una vuelta completa y
 luego «de frente», pero de frente los winglets y las hélices, de canto,
 desaparecían; el usuario pidió la planta. El filtro por tipo se quitó.)
+
+## El glosario
+
+La nota `Glosario y Terminología.md` de la misma carpeta de la bóveda (el
+importador reconoce como glosario la que empieza por «Glosario») no es un
+dron: sale en `/uas/glosario-y-terminologia`, sin visor, con `glosario: true`
+en su frontmatter de la web, y **no cuenta** entre las tarjetas de `/uas` ni
+entre los drones de la tira de la portada. En `/uas` tiene una tira propia
+encima del filtro de países: una tarjeta tumbada con «A–Z» sobre la
+cuadrícula, el título, unos ejemplos y cuántos términos tiene (cuenta los
+puntos de lista de primer nivel que empiezan en negrita). Las entradas del
+glosario van con el término en inglés delante y el castellano detrás
+(decisión del usuario).
+
+## Animaciones por fotogramas
+
+La puerta del hangar (5 fotogramas) y el giro de las tarjetas (8) son tiras
+de fotogramas. **No animarlas con `transition: background-position …
+steps()`**: si se quita el ratón a medias, la vuelta se hace en saltos del
+tramo recorrido, que no caen en fotogramas enteros, y se ven dos fotogramas
+partidos (medido: 2 → 1,5 → 1 → 0,5). Se anima un número de fotograma
+registrado como entero (`@property --hangar-fotograma` / `--giro-fotograma`,
+`syntax: "<integer>"`) y la posición se calcula con él: el navegador lo
+redondea siempre a un fotograma entero.
 
 ## Las fichas en la web
 

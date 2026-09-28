@@ -7,7 +7,6 @@ description: >-
 updated: '2026-09-27'
 tags:
   - eeuu
-  - españa
   - dron
 bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
@@ -15,7 +14,6 @@ categoria: Microdrón de reconocimiento
 ---
 > El Skydio X10D es un <mark>microdrón cuadricóptero de reconocimiento</mark> fabricado en Estados Unidos por Skydio: la versión militar del X10, con cámara térmica y seis cámaras que le permiten volar solo, esquivando obstáculos y sin GPS. El Ejército de Tierra lo [compró en febrero de 2025](https://www.infodefensa.com/texto-diario/mostrar/5196185/ejercito-tierra-formaliza-compra-drones-skydio-x10d): 114 sistemas de cuatro drones por 18 millones de euros, ampliables hasta [900 drones](https://www.infodefensa.com/texto-diario/mostrar/5895641/ejercito-tierra-espanol-recibira-900-unidades-microdron-x10d-estadounidense-skydio), que también llegarán al Ejército del Aire y del Espacio y a la Armada. Ya lo tienen la Brigada Guadarrama XII y otras unidades, y en septiembre de 2026 salió por primera vez de España, [a Letonia](https://www.infodefensa.com/texto-diario/mostrar/6026918/ejercito-avanza-incorporacion-dron-x10d-elige-letonia-despliegue-operaciones-exterior), con los militares españoles desplegados allí con la OTAN. También lo usan el [Ejército de EE. UU.](https://dronedj.com/2026/03/24/skydio-us-army-drone-order/), Noruega y los países de la [OTAN](https://www.infodefensa.com/texto-diario/mostrar/5390006/otan-elige-skydio-x10d-suministrar-drones-nano-ultima-generacion-paises-miembros).
 
-⚠️ Las prestaciones de la tabla son las que publica Skydio.
 
 <div class="visor-hueco"></div>
 
