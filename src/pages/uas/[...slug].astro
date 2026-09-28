@@ -22,7 +22,13 @@ const ficha = Astro.props;
 const { Content } = await render(ficha);
 
 const maquetas = Object.keys(import.meta.glob("../../data/uas/*.ts"));
-const conVisor = (ficha.body ?? "").includes("visor-hueco") && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
+// El visor va dentro del texto, en el hueco, desde el build. Antes lo subía
+// allí un script al cargar y la página crecía por encima de lo que se estaba
+// leyendo: al volver atrás, la lectura no quedaba donde estaba.
+const HUECO = "<div class=\"visor-hueco\"></div>";
+const html = ficha.rendered?.html ?? "";
+const conVisor = html.includes(HUECO) && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
+const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
 ---
 
 <PageLayout title={ficha.data.title} description={ficha.data.description ?? ""}>
@@ -53,13 +59,18 @@ const conVisor = (ficha.body ?? "").includes("visor-hueco") && maquetas.some((m)
     </div>
     {ficha.data.glosario && <GlosarioIndice cuerpo={ficha.body ?? ""} />}
     <article class="animate">
-      <Content />
+      {conVisor ? (
+        <>
+          <Fragment set:html={antesDelVisor} />
+          <div class="visor-ancho not-prose">
+            <VisorUAS modelo={ficha.id} />
+          </div>
+          <Fragment set:html={trasElVisor} />
+        </>
+      ) : (
+        <Content />
+      )}
     </article>
-    {conVisor && (
-      <div class="visor-ancho not-prose" id="visor-nota">
-        <VisorUAS modelo={ficha.id} />
-      </div>
-    )}
   </Container>
 </PageLayout>
 

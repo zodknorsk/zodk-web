@@ -4,7 +4,7 @@ date: '2026-09-21'
 description: >-
   El Wildfire es el dron armado que General Atomics propone para sustituir al
   MQ-9A Reaper en la Fuerza Aérea de EE. UU. La empresa lo anunció en agosto de…
-updated: '2026-09-27'
+updated: '2026-09-28'
 tags:
   - eeuu
   - dron
@@ -25,11 +25,11 @@ categoria: Dron armado MALE
 | **País** | 🇺🇸 Estados Unidos |
 | **Fabricante** | General Atomics Aeronautical Systems (San Diego) |
 | **Operador** | Ninguno (propuesto a la Fuerza Aérea de EE. UU.) |
-| **Categoría** | Dron armado MALE, de media altitud y gran autonomía |
+| **Categoría** | Dron armado MALE |
 | **Situación** | En desarrollo; compite en el concurso MMA |
 | **Primer uso en combate** | No |
 | **Envergadura / longitud / peso** | No publicados (la planta es casi la del Reaper, de unos 20 m de envergadura) |
-| **Alcance** | Más de 8.000 millas náuticas (14.800 km) en vuelo de traslado (fabricante); el concurso pide un radio de combate de 2.300 millas náuticas (4.260 km) |
+| **Alcance** | Más de 8.000 millas náuticas (14.800 km) de alcance de traslado (*ferry range*), según el fabricante; el concurso pide un radio de combate de 2.300 millas náuticas (4.260 km) |
 | **Carga** | Cuatro misiles JSM o dos LRASM (fabricante); el concurso pide al menos 1.270 kg |
 | **Motor** | No publicado; hélice propulsora (probablemente un turbohélice) |
 | **Origen** | [MQ-9 Reaper](/uas/mq-9-reaper) |
@@ -38,9 +38,9 @@ categoria: Dron armado MALE
 
 General Atomics fabrica desde los años noventa los grandes drones armados de EE. UU.: el Gnat, el Predator y el MQ-9A Reaper, que ya no se produce. La Fuerza Aérea ha intentado varias veces [buscarle un sustituto](https://www.twz.com/air/usaf-wants-mq-9-next-reaper-replacement-to-be-modular-cheap) sin conseguirlo, pero en 2026 ha perdido tantos Reaper en la guerra contra Irán, después de los que ya perdió frente a los hutíes en Yemen, que se ha dado prisa. «Los estamos gastando a un ritmo que nos preocupa», dijo el teniente general Christopher Niemi, según [Air & Space Forces Magazine](https://www.airandspaceforces.com/air-force-new-low-cost-drone-program-heavy-mq-9-losses-iran/). En julio, la Fuerza Aérea y la DIU abrieron el concurso MMA: un dron que haga lo mismo que el Reaper, vigilar y atacar, con al menos 200 nudos de velocidad, 1.270 kg de carga, 2.300 millas náuticas de radio de combate y 8.000 de traslado, que despegue de pistas de 1.830 m y que cueste [unos 10 millones de dólares](https://www.twz.com/air/usaf-wants-mq-9-reaper-successor-at-a-fraction-of-the-cost-at-10m-each) sin los sensores. Un Reaper completo cuesta entre 30 y 50 millones. La idea es tener los 20 primeros en 2031, o dos años antes, y comprar unos 180.
 
-General Atomics [anunció el Wildfire en agosto](https://www.twz.com/air/wildfire-is-general-atomics-successor-to-the-mq-9-reaper). Su portavoz, C. Mark Brinkley, lo resumió así: «Esa cosa es una bestia». Los [renders del 9 de septiembre](https://www.twz.com/air/first-look-at-general-atomics-wildfire-its-successor-to-the-mq-9-reaper) enseñan un dron casi igual que el Reaper, con la torreta bajo el morro, la antena de pala bajo la cola y la hélice detrás, pero sin la joroba donde el Reaper lleva la antena de satélite: se controlará a través de constelaciones en órbita baja, como Starlink. En uno lleva cuatro JSM, dos en cada ala, y en otro [lanza un misil antibuque LRASM](https://www.twz.com/wp-content/uploads/2026/09/wildfire-lrasm-launch-render.jpg). Según Brinkley, volará más de las 8.000 millas náuticas que pide el concurso, llevará dos LRASM (el doble de lo pedido) y podrá volar en grupos de decenas de drones casi sin piloto, con lo aprendido en el dron de combate FQ-42A y en el MQ-20 Avenger.
+General Atomics [anunció el Wildfire en agosto](https://www.twz.com/air/wildfire-is-general-atomics-successor-to-the-mq-9-reaper). Su portavoz, C. Mark Brinkley, lo resumió así: «Esa cosa es una bestia». Los [renders del 9 de septiembre](https://www.twz.com/air/first-look-at-general-atomics-wildfire-its-successor-to-the-mq-9-reaper) enseñan un dron casi igual que el Reaper, con la torreta bajo el morro, la antena de pala bajo la cola y la hélice detrás, pero sin la joroba donde el Reaper lleva la antena de satélite: se controlará a través de constelaciones en órbita baja, como Starlink. En uno lleva cuatro JSM, dos en cada ala, y en otro [lanza un misil antibuque LRASM](https://www.twz.com/wp-content/uploads/2026/09/wildfire-lrasm-launch-render.jpg). Según Brinkley, volará más de las 8.000 millas náuticas que pide el concurso, llevará dos LRASM (el doble de lo pedido) y podrá volar en enjambre, con decenas de drones casi sin piloto, con lo aprendido en el dron de combate FQ-42A y en el MQ-20 Avenger.
 
-El [comunicado del 10 de septiembre](https://www.ga-asi.com/ga-asi-unveils-wildfire-uas-for-military-civil-and-commercial-roles) lo presenta como un diseño nuevo que se puede perder sin gran drama, para usos militares, civiles y comerciales, y promete entregarlo años antes de 2031 y el doble de rápido de lo pedido. No compite solo: [otras empresas](https://www.airandspaceforces.com/air-force-seeks-new-ideas-for-cheap-mq-9-alternatives-by-year-end/) también se presentan al concurso. Cuánto costará, cuánto mide y qué motor lleva no se ha dicho.
+El [comunicado del 10 de septiembre](https://www.ga-asi.com/ga-asi-unveils-wildfire-uas-for-military-civil-and-commercial-roles) lo presenta como un diseño nuevo para usos militares, civiles y comerciales, lo bastante barato como para asumir que se perderán algunos. Promete entregarlo años antes de 2031 y el doble de rápido de lo pedido. No compite solo: [otras empresas](https://www.airandspaceforces.com/air-force-seeks-new-ideas-for-cheap-mq-9-alternatives-by-year-end/) también se presentan al concurso. Cuánto costará, cuánto mide y qué motor lleva no se ha dicho.
 
 ## En acción
 

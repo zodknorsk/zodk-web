@@ -36,16 +36,28 @@ importador la busca por ese nombre); se añadió el **glosario** (apartado
 tarjetas de `/uas` enseñaran fotogramas partidos al quitar el ratón a medias
 (ver «Animaciones por fotogramas»).
 
-**28-sep-2026, MQ-9 Reaper** (commit en `main` y en la bóveda, **sin
-subir**; el usuario lo revisa en local antes del push). Hecho: nota en la bóveda
+**28-sep-2026, fallos del iPhone y del PC** (en `main`, **sin commit**):
+hecho que al volver atrás desde un enlace la ficha quede donde se estaba
+leyendo (el visor ya se coloca en el build, ver «Las fichas en la web») y
+que el giro de las tarjetas de `/uas` no se deslice partido en Safari (ver
+«Animaciones por fotogramas»). Hecho también, en la bóveda (sin commit ni importar): las cuatro notas usan
+los términos del glosario que eligió el usuario (toda la tabla de
+características y cinco cambios en el texto: GPS-denied, RATO, SATCOM,
+enjambre, y fuera «se puede perder sin gran drama»). La tira de la portada en el móvil **se queda como estaba** (los dos
+drones, sin hangar): decisión del usuario del 28-sep-2026, después de ver
+maquetas con el hangar en lugar de los drones (a tamaño natural, al doble
+tapando el número, y a 4/3 más a la izquierda con el X10D al lado, con el
+texto donde está o arriba). Ninguna llegó al CSS.
+
+**28-sep-2026, MQ-9 Reaper** (commit en `main` y en la bóveda, subido).
+Hecho: nota en la bóveda
 (`🇺🇸 MQ-9 Reaper.md`, con el tono intermedio que pidió: ni informe técnico
 ni redacción de colegio), maqueta `src/data/uas/mq-9-reaper.ts` con ocho
 partes, miniaturas de fuentes y del dron, importado. Para hacerlo se añadió
 al visor el acabado `oliva` (las bombas) y la `y` de las placas verticales
 (aletas en X alrededor de un misil). El enlace de la nota del Wildfire al
 Reaper ya funciona (en una tabla, el alias va con la barra escapada:
-`[[🇺🇸 MQ-9 Reaper\|MQ-9 Reaper]]`). Siguiente paso: que el usuario lo
-revise en local y, cuando lo pida, push en los dos repos.
+`[[🇺🇸 MQ-9 Reaper\|MQ-9 Reaper]]`).
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -399,7 +411,12 @@ tramo recorrido, que no caen en fotogramas enteros, y se ven dos fotogramas
 partidos (medido: 2 → 1,5 → 1 → 0,5). Se anima un número de fotograma
 registrado como entero (`@property --hangar-fotograma` / `--giro-fotograma`,
 `syntax: "<integer>"`) y la posición se calcula con él: el navegador lo
-redondea siempre a un fotograma entero.
+redondea siempre a un fotograma entero. **Safari no**: lo anima con
+decimales (medido en WebKit: 0,72 → 1,5 → 2,09…) y la tira se desliza de
+lado con dos dibujos partidos. Por eso la posición lleva además
+`round(var(--giro-fotograma), 1)`. Hecho en las tarjetas (28-sep-2026, el
+usuario lo vio en el iPhone); la puerta del hangar de la portada usa lo
+mismo sin `round()`, pero en el móvil no se ve (el hangar está oculto).
 
 ## Las fichas en la web
 
@@ -412,7 +429,12 @@ la categoría (`categoria`).
 Si existe `src/data/uas/<slug>.ts`, el importador (`colocarVisor`) cambia la
 sección `## Visor` (título incluido) por un hueco (`<div class="visor-hueco">`)
 y la ficha pinta el visor en ese hueco, más ancho que el texto y sin sus
-estilos (`not-prose`). Si no hay maqueta, la sección no sale.
+estilos (`not-prose`). Si no hay maqueta, la sección no sale. El visor se
+coloca en el hueco **al construir la página** (`[...slug].astro` parte el
+HTML de la nota por el hueco). Hasta el 28-sep-2026 se pintaba al final y un
+script lo subía al cargar: la página crecía por encima de lo que se leía y,
+al volver atrás desde un enlace, la lectura no quedaba donde estaba (medido
+en Zen: de 1.200 px a 1.838). No volver a moverlo con JavaScript.
 
 También en el importador: la línea sangrada bajo un punto de lista (la
 descripción de cada fuente) sale debajo, como en Obsidian (`saltosEnListas`);

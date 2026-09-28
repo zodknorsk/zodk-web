@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   El Skydio X10D es un microdrón cuadricóptero de reconocimiento fabricado en
   Estados Unidos por Skydio: la versión militar del X10, con cámara térmica y…
-updated: '2026-09-27'
+updated: '2026-09-28'
 tags:
   - eeuu
   - dron
@@ -12,7 +12,7 @@ bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
 categoria: Microdrón de reconocimiento
 ---
-> El Skydio X10D es un <mark>microdrón cuadricóptero de reconocimiento</mark> fabricado en Estados Unidos por Skydio: la versión militar del X10, con cámara térmica y seis cámaras que le permiten volar solo, esquivando obstáculos y sin GPS. El Ejército de Tierra lo [compró en febrero de 2025](https://www.infodefensa.com/texto-diario/mostrar/5196185/ejercito-tierra-formaliza-compra-drones-skydio-x10d): 114 sistemas de cuatro drones por 18 millones de euros, ampliables hasta [900 drones](https://www.infodefensa.com/texto-diario/mostrar/5895641/ejercito-tierra-espanol-recibira-900-unidades-microdron-x10d-estadounidense-skydio), que también llegarán al Ejército del Aire y del Espacio y a la Armada. Ya lo tienen la Brigada Guadarrama XII y otras unidades, y en septiembre de 2026 salió por primera vez de España, [a Letonia](https://www.infodefensa.com/texto-diario/mostrar/6026918/ejercito-avanza-incorporacion-dron-x10d-elige-letonia-despliegue-operaciones-exterior), con los militares españoles desplegados allí con la OTAN. También lo usan el [Ejército de EE. UU.](https://dronedj.com/2026/03/24/skydio-us-army-drone-order/), Noruega y los países de la [OTAN](https://www.infodefensa.com/texto-diario/mostrar/5390006/otan-elige-skydio-x10d-suministrar-drones-nano-ultima-generacion-paises-miembros).
+> El Skydio X10D es un <mark>microdrón cuadricóptero de reconocimiento</mark> fabricado en Estados Unidos por Skydio: la versión militar del X10, con cámara térmica y seis cámaras que le permiten volar solo y esquivar obstáculos. Puede volar en entornos GPS-denied. El Ejército de Tierra lo [compró en febrero de 2025](https://www.infodefensa.com/texto-diario/mostrar/5196185/ejercito-tierra-formaliza-compra-drones-skydio-x10d): 114 sistemas de cuatro drones por 18 millones de euros, ampliables hasta [900 drones](https://www.infodefensa.com/texto-diario/mostrar/5895641/ejercito-tierra-espanol-recibira-900-unidades-microdron-x10d-estadounidense-skydio), que también llegarán al Ejército del Aire y del Espacio y a la Armada. Ya lo tienen la Brigada Guadarrama XII y otras unidades, y en septiembre de 2026 salió por primera vez de España, [a Letonia](https://www.infodefensa.com/texto-diario/mostrar/6026918/ejercito-avanza-incorporacion-dron-x10d-elige-letonia-despliegue-operaciones-exterior), con los militares españoles desplegados allí con la OTAN. También lo usan el [Ejército de EE. UU.](https://dronedj.com/2026/03/24/skydio-us-army-drone-order/), Noruega y los países de la [OTAN](https://www.infodefensa.com/texto-diario/mostrar/5390006/otan-elige-skydio-x10d-suministrar-drones-nano-ultima-generacion-paises-miembros).
 
 
 <div class="visor-hueco"></div>
@@ -28,14 +28,14 @@ categoria: Microdrón de reconocimiento
 | **Situación** | En servicio |
 | **Primer uso en combate** | No documentado (entregas desde 2024) |
 | **Envergadura / longitud / peso** | 79 x 65 x 14,5 cm desplegado con hélices; 35 x 16,5 x 12 cm plegado; 2,11 kg |
-| **Alcance** | 12 km de enlace en visión directa (10 km con la radio militar Connect MH) |
-| **Carga** | Sensor VT300-Z o VT300-L: térmica FLIR Boson+ (640 x 512) y cámaras de 48 a 64 MP |
-| **Motor** | Cuatro motores eléctricos; batería de 154 Wh; hasta 40 minutos de vuelo y 72 km/h |
+| **Alcance** | 12 km de enlace LOS (10 km con la radio militar Connect MH) |
+| **Carga** | Módulo EO/IR VT300-Z o VT300-L: térmica FLIR Boson+ (640 x 512) y cámaras de 48 a 64 MP |
+| **Motor** | Cuatro motores eléctricos; batería de 154 Wh; hasta 40 minutos de autonomía y 72 km/h |
 | **Origen** | Skydio X10 (versión civil, 2023) |
 
 ## Historia
 
-Skydio nació en 2014 en California, fundada por antiguos estudiantes del MIT, y se hizo conocida por sus drones que vuelan solos esquivando obstáculos. En septiembre de 2023 presentó el X10, pensado para policía, bomberos, inspecciones y ejércitos, y su versión militar, el X10D: la misma estructura con una radio que cambia de frecuencia si la interfieren, vuelo a oscuras sin GPS (NightSense), tarjetas de memoria cifradas y sin límites de zona. Está en la lista del Pentágono de drones de confianza (Blue UAS), la que deja fuera las piezas chinas. En octubre de 2024 China sancionó a Skydio por vender drones a los bomberos de Taiwán, su único proveedor de baterías dejó de servirle y tuvo que [dar una sola batería por dron](https://www.skydio.com/blog/chinas-sanctions-on-skydio) hasta la primavera de 2025.
+Skydio nació en 2014 en California, fundada por antiguos estudiantes del MIT, y se hizo conocida por sus drones que vuelan solos esquivando obstáculos. En septiembre de 2023 presentó el X10, pensado para policía, bomberos, inspecciones y ejércitos, y su versión militar, el X10D: la misma estructura con una radio que cambia de frecuencia si la interfieren, vuelo a oscuras en entornos GPS-denied (NightSense), tarjetas de memoria cifradas y sin límites de zona. Está en la lista del Pentágono de drones de confianza (Blue UAS), la que deja fuera las piezas chinas. En octubre de 2024 China sancionó a Skydio por vender drones a los bomberos de Taiwán, su único proveedor de baterías dejó de servirle y tuvo que [dar una sola batería por dron](https://www.skydio.com/blog/chinas-sanctions-on-skydio) hasta la primavera de 2025.
 
 En abril de 2025 el Ejército de EE. UU. empezó a recibirlo dentro de su programa de reconocimiento de corto alcance (SRR): fue [el primer dron entregado](https://www.skydio.com/blog/skydio-delivers-first-systems-for-army-srr-t2) de la segunda tanda, y a una unidad que se iba de despliegue le llegaron en cinco días. En marzo de 2026 encargó más de 2.500 por 52 millones de dólares, el mayor pedido de drones pequeños a un solo fabricante de su historia. Noruega lo compró en julio de 2025 y la agencia de compras de la OTAN lo eligió en agosto.
 

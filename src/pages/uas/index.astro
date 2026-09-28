@@ -230,13 +230,15 @@ const paises = recuento((f) => f.data.pais);
   /* El dron: primer fotograma de su tira de giro (8 de 128x72), al doble.
      Al pasar el ratón gira hasta verse de planta y se queda; al quitarlo,
      vuelve. Se anima el número de fotograma, entero, para que al quitar el
-     ratón a medias no salgan dos fotogramas partidos. */
+     ratón a medias no salgan dos fotogramas partidos. Safari (el iPhone) lo
+     anima con decimales aunque sea entero y la tira se deslizaba de lado:
+     round() lo lleva siempre a un fotograma entero. */
   @property --giro-fotograma { syntax: "<integer>"; inherits: false; initial-value: 0; }
   .uas-giro {
     display: block;
     width: 256px;
     height: 144px;
-    background: var(--giro) calc(-256px * var(--giro-fotograma)) 0 / 2048px 144px no-repeat;
+    background: var(--giro) calc(-256px * round(var(--giro-fotograma), 1)) 0 / 2048px 144px no-repeat;
     image-rendering: pixelated;
     transition: --giro-fotograma 0.6s linear;
   }

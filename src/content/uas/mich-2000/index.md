@@ -3,16 +3,16 @@ title: MICH 2000
 date: '2026-09-21'
 description: >-
   El MICH-2000 es un dron ucraniano de ataque de largo alcance y un solo uso: un
-  ala volante en delta con dos pequeños canards delante, hélice detrás y…
-updated: '2026-09-27'
+  ala volante en delta con dos pequeños canards delante, hélice propulsora y…
+updated: '2026-09-28'
 tags:
   - ucrania
   - dron
 bandera: "\U0001F1FA\U0001F1E6"
 pais: Ucrania
-categoria: Ataque de un solo uso
+categoria: Dron de ataque de un solo uso
 ---
-> El MICH-2000 es un <mark>dron ucraniano de ataque de largo alcance y un solo uso</mark>: un ala volante en delta con dos pequeños canards delante, hélice detrás y despegue con cohete, muy parecido al Shahed iraní. Solo lo usa el <mark>Centro de Operaciones Especiales «Alfa» del SBU</mark>, para atacar objetivos lejos de la frontera, dentro de Rusia. El fabricante dice que con él se destruyó el [Tu-95 de la base de Engels-2](https://www.pravda.com.ua/eng/news/2026/07/19/8044822/) en julio de 2026, que alcanzó el [almacén de Wildberries en Riazán](https://meduza.io/en/feature/2026/07/29/ukraine-resumes-strikes-on-wildberries-warehouses-in-russia-see-the-attack-on-ryazan) y que llegó con más de 20 drones al [puerto de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/). El 20 de septiembre de 2026, [Zelenski lo nombró](https://www.forcesnews.com/ukraine/flamingo-cruise-missiles-missile-drones-and-mystery-pelican-what-ukraine-used-its-moscow) entre los diez sistemas usados esa noche contra la región de Moscú, en los ataques a la [refinería de Gazprom Neft en Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/) y a una instalación logística.
+> El MICH-2000 es un <mark>dron ucraniano de ataque de largo alcance y un solo uso</mark>: un ala volante en delta con dos pequeños canards delante, hélice propulsora y despegue RATO, muy parecido al Shahed iraní. Solo lo usa el <mark>Centro de Operaciones Especiales «Alfa» del SBU</mark>, para atacar objetivos lejos de la frontera, dentro de Rusia. El fabricante dice que con él se destruyó el [Tu-95 de la base de Engels-2](https://www.pravda.com.ua/eng/news/2026/07/19/8044822/) en julio de 2026, que alcanzó el [almacén de Wildberries en Riazán](https://meduza.io/en/feature/2026/07/29/ukraine-resumes-strikes-on-wildberries-warehouses-in-russia-see-the-attack-on-ryazan) y que llegó con más de 20 drones al [puerto de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/). El 20 de septiembre de 2026, [Zelenski lo nombró](https://www.forcesnews.com/ukraine/flamingo-cruise-missiles-missile-drones-and-mystery-pelican-what-ukraine-used-its-moscow) entre los diez sistemas usados esa noche contra la región de Moscú, en los ataques a la [refinería de Gazprom Neft en Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/) y a una instalación logística.
 
 ⚠️ Casi todas sus cifras y ataques vienen del fabricante y <mark>no están verificados</mark> de forma independiente.
 
@@ -25,7 +25,7 @@ categoria: Ataque de un solo uso
 | **País** | 🇺🇦 Ucrania |
 | **Fabricante** | No público |
 | **Operador** | SBU, Centro de Operaciones Especiales «Alfa» (único usuario) |
-| **Categoría** | Ataque de un solo uso, largo alcance |
+| **Categoría** | Dron de ataque de un solo uso (OWA) |
 | **Situación** | En servicio |
 | **Primer uso en combate** | Octubre de 2024 |
 | **Envergadura / longitud / peso** | No publicados (a ojo, tamaño parecido al Shahed-136) |

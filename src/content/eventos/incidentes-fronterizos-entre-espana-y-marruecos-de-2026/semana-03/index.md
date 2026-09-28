@@ -105,7 +105,7 @@ En plena situación de especial vigilancia […]</div>
 
 <blockquote class="tweet" data-tweet-id="2087919864107119039">
   <a class="tweet-author" href="https://x.com/RadioGenoa/status/2087919864107119039" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1925910917482426368-vxanspxi_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2104459508965691392-a1dwaexv_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">RadioGenoa</span>
     <span class="tweet-handle">@RadioGenoa</span>
   </a>

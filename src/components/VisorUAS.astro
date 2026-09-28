@@ -166,11 +166,6 @@ const VISTAS = [
   document.addEventListener("astro:page-load", async () => {
     desmontar();
     const esta = visita;
-    // En las fichas de /uas, el visor se pinta tras el texto y va a su hueco
-    // de la sección «Visor» antes de montarse.
-    const hueco = document.querySelector("article .visor-hueco");
-    const deLaFicha = document.getElementById("visor-nota");
-    if (hueco && deLaFicha) hueco.replaceWith(deLaFicha);
     for (const caja of document.querySelectorAll<HTMLElement>(".visor")) {
       const cargar = maquetas[`../data/uas/${caja.dataset.modelo}.ts`];
       if (!cargar) continue;
