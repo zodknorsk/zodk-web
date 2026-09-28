@@ -1,7 +1,8 @@
 ---
 // La tarjeta de los términos del glosario de UAS en los artículos: al pasar
 // el ratón por un término (los marca src/lib/glosario-enlaces.mjs), sale
-// junto a él con su definición y un enlace a su entrada. En táctil, el
+// junto a él con su definición y un enlace a su entrada. Los enlaces al
+// armamento la llevan igual, con la munición. En táctil, el
 // primer toque la abre y el segundo va al glosario.
 ---
 
@@ -33,13 +34,15 @@
     actual?.removeAttribute("aria-describedby");
     actual = a;
     a.setAttribute("aria-describedby", "gl-tarjeta");
-    const { glT = "", glEn = "", glDef = "" } = a.dataset;
+    const { glT = "", glEn = "", glDef = "", glIr = "Ver en el glosario →" } = a.dataset;
     tarjeta.querySelector(".gl-t")!.textContent = glT;
     const en = tarjeta.querySelector<HTMLElement>(".gl-en")!;
     en.textContent = glEn;
     en.hidden = !glEn;
     tarjeta.querySelector(".gl-def")!.textContent = glDef;
-    tarjeta.querySelector<HTMLAnchorElement>(".gl-ir")!.href = a.href;
+    const ir = tarjeta.querySelector<HTMLAnchorElement>(".gl-ir")!;
+    ir.href = a.href;
+    ir.textContent = glIr;
     tarjeta.hidden = false;
 
     // Debajo de la palabra; encima si abajo no cabe. Nunca fuera de la

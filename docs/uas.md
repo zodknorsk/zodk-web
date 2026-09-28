@@ -143,6 +143,15 @@ del X10D).
   - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`).
   - `## Fuentes`: `- **Nombre de la web** ([fuente](url))`, debajo una línea
     sangrada con de qué habla, y una línea en blanco entre fuentes.
+- **Nombres que se enlazan solos**: en la web, la primera vez que sale un
+  término del glosario o una munición del armamento lleva su tarjeta, pero
+  solo si está escrito **igual que en su nota**. Términos: tal cual los
+  pone el glosario, con las siglas en mayúsculas («MTOW», «jamming», no
+  «peso máximo al despegue» ni «interferencia»). Municiones: el nombre de
+  su `###` en el armamento, su designación o su nombre («AGM-114 Hellfire»,
+  «AGM-114» o «Hellfire»; «GBU-38», no «GBU 38» ni «bomba JDAM de 500
+  libras»). Si hace falta un término o una munición que no está, se añade
+  a su nota en vez de explicarlo en la ficha.
 - **Cómo se escribe**: castellano llano, como lo contaría una persona. Nada
   de «el tipo», «la plataforma», «capacidades» ni frases de resumen. Nombrar
   los hechos (qué se atacó, cuándo) en vez de resumirlos. Decir siempre lo
@@ -412,9 +421,10 @@ desplegables por sección y una lista A–Z; el usuario eligió este («se ve
 todo»). Las entradas van **con espacio** entre ellas (probado sin espacio;
 decidido con espacio).
 
-**Los términos en los artículos** (29-sep-2026). En las notas, los eventos
-y las fichas del Hangar, la primera vez que sale un término del glosario
-(MALE, MTOW, jamming…) queda enlazado a su entrada con un subrayado de
+**Los términos y las municiones en los artículos** (29-sep-2026). En las
+notas, los eventos y las fichas del Hangar, la primera vez que sale un
+término del glosario (MALE, MTOW, jamming…) o una munición del armamento
+(Hellfire, GBU-38…) queda enlazado a su entrada con un subrayado de
 puntos, y al pasar el ratón sale una tarjeta con el término, su nombre
 completo, la definición (siete líneas como mucho) y «Ver en el glosario →».
 En táctil, el primer toque abre la tarjeta. Es automático: en la bóveda no
@@ -429,8 +439,19 @@ se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).
   gana la tarjeta.
 - `src/components/GlosarioTarjeta.astro`: la tarjeta, en las páginas de
   notas, eventos y UAS.
+- Las municiones salen de las `###` del armamento: vale el nombre entero
+  («AGM-114 Hellfire»), la designación («AGM-114») y el nombre de detrás
+  («Hellfire»). Su tarjeta lleva el «Tipo» de la tabla, el primer párrafo
+  de su ficha y «Ver en el armamento →». En la página del armamento no se
+  enlazan entre ellas. Los enlaces a mano (`[[Armamento#GBU-38 JDAM|GBU-38]]`)
+  también ganan la tarjeta.
+- **Para que enlace, hay que escribirlo igual** (lo pidió el usuario): en
+  cualquier nota, el término o la munición con el nombre exacto del
+  glosario o del armamento (ver «Nombres que se enlazan solos» en la
+  receta).
 - Al cambiar el plugin, `astro dev` no lo recarga: parar, borrar
-  `node_modules/.astro` y arrancar.
+  `node_modules/.astro` y `.astro/data-store.json` (ahí guarda el HTML de
+  las notas) y arrancar.
 
 
 ## El armamento
@@ -448,6 +469,12 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
   Tipo, Guiado, Peso / longitud, Warhead, Alcance, En servicio, Lo llevan)
   y dos párrafos. La bandera es la del fabricante, como en los drones. El
   usuario pidió «munición», no «bomba», como palabra general.
+- **Una munición nueva**: la `###` es «designación nombre» («AGM-114
+  Hellfire», «GBU-12 Paveway II»), o solo el nombre si no tiene designación
+  de EE. UU. («JSM»). De ahí salen los nombres con los que se enlaza sola en
+  las demás notas, así que las fichas y notas tienen que escribirla igual.
+  El primer párrafo es el que sale en la tarjeta: que empiece diciendo qué
+  es.
 - **El índice**: la nota tiene uno propio (`## Índice`) para Obsidian; el
   importador lo quita y la página monta el suyo con `GlosarioIndice` (el
   mismo componente del glosario, que ahora recibe las secciones ya leídas):

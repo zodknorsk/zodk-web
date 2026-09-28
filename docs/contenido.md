@@ -18,6 +18,14 @@ Al importar suele colarse algún cambio ajeno (el avatar de un tuit que X ha
 cambiado, notas que se tocaron en la bóveda): mirar `git status` y descartar
 lo que no toque con `git checkout -- <archivo>`.
 
+## Términos y municiones con tarjeta
+
+En cualquier nota o evento, la primera vez que sale un término del glosario
+de UAS (MALE, jamming…) o una munición del armamento (Hellfire, GBU-38…)
+se enlaza solo y enseña su tarjeta al pasar el ratón. **Solo si está escrito
+igual que en el glosario o el armamento**: al escribir notas en la bóveda,
+usar ese nombre exacto. Detalles en `docs/uas.md` («El glosario»).
+
 ## El importador (`scripts/importar-notas.mjs`)
 
 Busca la bóveda en `BOVEDA_PATH` o, si no, en `~/Documents/boveda-osint`
