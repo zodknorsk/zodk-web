@@ -1164,7 +1164,8 @@ html.dark .fila-entradilla { color: #a1a1aa; }
 .fila-grande .fila-foto { aspect-ratio: 16 / 10; }
 .fila-grande .fila-titulo { font-size: 1.3rem; line-height: 1.25; }
 .fila-grande .fila-entradilla { margin-top: 0.45rem; -webkit-line-clamp: 3; font-size: 0.86rem; }
-.fila-grande .sello-en-curso { left: 26px; top: 26px; margin-top: 0; font-size: 0.62rem; }
+/* En escritorio ya lo dice el piloto; el sello solo sale en móvil. */
+.fila-grande .sello-en-curso { display: none; }
 .fila-piloto {
   display: flex;
   flex-direction: column;
@@ -1276,11 +1277,11 @@ html.dark .portada-desc::before { color: #52525b; }
   html.dark .portada-col:last-child { border-top-color: rgba(255, 255, 255, 0.14); }
   .fila { grid-template-columns: 104px 1fr; }
   .fila-entradilla { display: none; }
-  /* En móvil, la fila del seguimiento como las demás y sin el piloto (el
-     sello de la foto ya dice que está en curso). */
+  /* En móvil, la fila del seguimiento como las demás y, en vez del piloto,
+     el sello sobre la foto. */
   .fila-grande { grid-template-columns: 104px 1fr; gap: 1rem; padding: 0.6rem; }
   .fila-grande .fila-foto { aspect-ratio: 4 / 3; }
   .fila-grande .fila-titulo { font-size: 1rem; }
-  .fila-grande .sello-en-curso { left: 18px; top: 50%; margin-top: -12px; font-size: 0.56rem; }
+  .fila-grande .sello-en-curso { display: block; }
   .fila-piloto { display: none; }
 }
