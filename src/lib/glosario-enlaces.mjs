@@ -1,5 +1,6 @@
 // Plugin de Sätteri (el procesador de Markdown de Astro 7) para el HTML: en
-// cada artículo (notas, eventos y fichas del Hangar), la primera vez que sale
+// cada artículo (análisis, operaciones, seguimientos, notas y fichas del
+// Hangar), la primera vez que sale
 // un término del glosario de UAS o una munición del armamento se convierte en
 // un enlace a su entrada, con su texto en atributos `data-gl-*`. La tarjeta
 // que sale al pasar el ratón la pone GlosarioTarjeta.astro.

@@ -1,10 +1,10 @@
 ---
-// Barra de navegación de una semana de un evento: volver al índice + semana
+// Barra de navegación de una semana de un seguimiento: volver al índice + semana
 // anterior / siguiente.
 type Enlace = { href: string; label: string } | null;
 
 interface Props {
-  indice: string; // URL del índice del evento
+  indice: string; // URL del índice del seguimiento
   anterior: Enlace;
   siguiente: Enlace;
 }
@@ -13,7 +13,7 @@ const { indice, anterior, siguiente } = Astro.props;
 ---
 
 <nav class="flex flex-wrap items-center justify-between gap-2 text-sm">
-  <a href={indice} class="opacity-75 hover:opacity-100">↑ Índice del evento</a>
+  <a href={indice} class="opacity-75 hover:opacity-100">↑ Índice del seguimiento</a>
   <div class="flex gap-3">
     {
       anterior ? (

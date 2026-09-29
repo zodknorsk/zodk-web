@@ -60,8 +60,9 @@ src/
     VisorUAS.astro           El visor de cada dron (maqueta 3D y pixel, partes,
                              fuentes)
     Footer.astro, Container.astro, Link.astro, ArrowCard.astro (tarjeta de
-    nota), BackToPrev.astro (botón de volver), EventoNav.astro (semana
-    anterior/siguiente), FormattedDate.astro
+    análisis u operación), BackToPrev.astro (botón de volver), EventoNav.astro
+    (semana anterior/siguiente de un seguimiento), ArticuloPagina.astro
+    (página de un análisis, una operación o una nota), Redireccion.astro, FormattedDate.astro
   scripts/                 El JavaScript de los astros
     portada.ts               Todo lo de la portada (Tierra, acercamiento,
                              título, coordenada, chapas, vuelos)

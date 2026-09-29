@@ -550,7 +550,7 @@ mismo sin `round()`, pero en el móvil no se ve (el hangar está oculto).
 ## Las fichas en la web
 
 Toda nota de la carpeta de la enciclopedia es una ficha de la colección
-`uas` (`src/content/uas/`), en `/uas/<slug>`; no sale en `/notas` ni en el
+`uas` (`src/content/uas/`), en `/uas/<slug>`; no sale en `/analisis` ni en el
 blog, y su «Volver» lleva a `/uas`. El importador (`scripts/importar-notas.mjs`)
 la reconoce por la carpeta y saca de la tabla el país (`pais`, `bandera`) y
 la categoría (`categoria`).

@@ -80,10 +80,10 @@ const seguimientos = defineCollection({
     tags: z.array(z.string()).default([]),
     draft: z.boolean().optional(),
     kind: z.enum(["index", "semana", "pagina"]).default("pagina"),
-    evento: z.string(), // slug del evento al que pertenece
+    evento: z.string(), // slug del seguimiento al que pertenece
     orden: z.number().default(0), // para ordenar las semanas
     rango: z.string().optional(), // periodo de una semana, p. ej. "30 julio – 5 agosto"
-    periodo: z.string().optional(), // solo "index": periodo del evento escrito a mano en la bóveda
+    periodo: z.string().optional(), // solo "index": periodo del suceso escrito a mano en la bóveda
   }),
 });
 

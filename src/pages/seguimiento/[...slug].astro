@@ -12,7 +12,7 @@ import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import EventoNav from "@components/EventoNav.astro";
 
 export async function getStaticPaths() {
-  // Los borradores no generan página (igual que en notas).
+  // Los borradores no generan página.
   const entradas = (await getCollection("seguimientos")).filter((e) => !e.data.draft);
   return entradas.map((entrada) => ({
     params: { slug: entrada.id },
@@ -114,7 +114,7 @@ function diaCorto(texto: string) {
           {paginas.length > 0 && (
             <div class="animate space-y-2">
               <div class="text-sm font-semibold text-black dark:text-white">
-                Análisis relacionado
+                Páginas relacionadas
               </div>
               <ul class="flex flex-col gap-1.5 text-sm">
                 {paginas.map((p) => (

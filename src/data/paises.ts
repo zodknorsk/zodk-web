@@ -1,5 +1,6 @@
 // Países con chapa de bandera sobre el planeta del hero. Una chapa aparece solo
-// si hay algún artículo (nota o evento) con una de sus etiquetas; al pasar el
+// si hay algún artículo (análisis, operación o seguimiento) con una de sus
+// etiquetas; al pasar el
 // ratón por ella se despliega una ficha con esos artículos, con el mismo estilo
 // que la de las naves.
 //

@@ -443,7 +443,7 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasC
 }
 
 /**
- * Antes de borrar src/content/{notas,eventos} para regenerarlo, recoge las
+ * Antes de borrar src/content/ para regenerarlo, recoge las
  * tarjetas de tweet (<blockquote class="tweet" data-tweet-id="...">) que ya
  * estaban horneadas ahí, indexadas por ID. Sirven de respaldo si en esta
  * ejecución X no responde por ese tweet.
@@ -496,7 +496,7 @@ function transformarCuerpo(cuerpo, ctx) {
   let s = cuerpo;
 
   // En las notas de "semana" quitamos la navegación manual y el "# Cronología":
-  // la página del evento ya pinta su propia navegación y el índice de días.
+  // la página del seguimiento ya pinta su propia navegación y el índice de días.
   if (esEventoSemana) {
     s = s.split("\n").filter((l) => {
       const t = l.trim();
@@ -682,9 +682,9 @@ async function main() {
   }
 
   // Vídeo autoalojado: activado por defecto, pero se puede desactivar con
-  // `videos_locales: false` en el frontmatter. En un evento se lee solo del
+  // `videos_locales: false` en el frontmatter. En un seguimiento se lee solo del
   // índice y se aplica a todas sus páginas/semanas (no hace falta repetirlo
-  // en cada una). Para esas notas/eventos, la tarjeta usa solo la fuente en
+  // en cada una). Para esas notas, la tarjeta usa solo la fuente en
   // vivo de X, sin descargar ni comprimir nada.
   const eventoVideoLocal = new Map();
   for (const it of items) {
@@ -793,7 +793,7 @@ async function main() {
       fm.orden = it.clase.orden;
       if (it.clase.rango) fm.rango = it.clase.rango;
       // "periodo": texto libre en la nota índice de la bóveda con las fechas
-      // reales del evento (no la de creación de la nota). Solo en el "index".
+      // reales del suceso (no la de creación de la nota). Solo en el "index".
       if (it.clase.kind === "index") {
         const periodo = primero(it.data.periodo);
         if (periodo) fm.periodo = String(periodo).trim();

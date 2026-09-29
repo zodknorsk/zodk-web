@@ -38,7 +38,7 @@ export function primeraFoto(entrada: Articulo): ImageMetadata | undefined {
   return FOTOS[`/${carpeta}${decodeURIComponent(m[1])}`];
 }
 
-// Un evento sigue abierto si su periodo lo dice ("… · en desarrollo").
+// Un seguimiento sigue abierto si su periodo lo dice ("… · en desarrollo").
 export function enCurso(periodo?: string): boolean {
   return /en (desarrollo|curso)/i.test(periodo ?? "");
 }

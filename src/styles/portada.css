@@ -769,7 +769,8 @@ html.home main { padding-top: 5rem; }
 
 /* ── Debajo del hero ─────────────────────────────────────────────────────
    Los bloques de la Luna y Marte (dos por fila), la tira del blog con el
-   "hecho con" y, debajo, eventos y notas en dos columnas separadas por una
+   "hecho con" y, debajo, seguimiento y operaciones a un lado y análisis al
+   otro, en dos columnas separadas por una
    línea fina. Los bloques son de espacio (oscuros) de día y de noche. */
 .portada-bajo {
   max-width: 980px;
@@ -1155,7 +1156,7 @@ html.dark .fila:hover .fila-titulo { color: #649fff; }
   color: #71717a;
 }
 html.dark .fila-entradilla { color: #a1a1aa; }
-/* El sello de los eventos abiertos, con la tinta del sello del título. */
+/* El sello de los seguimientos abiertos, con la tinta del sello del título. */
 .sello-en-curso {
   position: absolute;
   z-index: 1;
