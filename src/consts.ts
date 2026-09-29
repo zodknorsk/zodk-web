@@ -19,14 +19,20 @@ export const BLOG: Metadata = {
   DESCRIPTION: "Qué es esta web y cómo está hecha.",
 };
 
-export const NOTAS: Metadata = {
-  TITLE: "Notas",
-  DESCRIPTION: "Análisis y notas publicadas desde mi bóveda de trabajo.",
+// Las tres secciones (docs/contenido.md).
+export const ANALISIS: Metadata = {
+  TITLE: "Análisis",
+  DESCRIPTION: "Análisis y opiniones publicadas desde mi bóveda de trabajo.",
 };
 
-export const EVENTOS: Metadata = {
-  TITLE: "Eventos",
-  DESCRIPTION: "Seguimiento en profundidad de sucesos, semana a semana.",
+export const OPERACIONES: Metadata = {
+  TITLE: "Operaciones",
+  DESCRIPTION: "Crónicas de operaciones que ya han pasado, contadas de principio a fin.",
+};
+
+export const SEGUIMIENTO: Metadata = {
+  TITLE: "Seguimiento",
+  DESCRIPTION: "Sucesos abiertos, seguidos semana a semana.",
 };
 
 // "Hecho con", en la tira del blog de la portada. Cada insignia enlaza a la web

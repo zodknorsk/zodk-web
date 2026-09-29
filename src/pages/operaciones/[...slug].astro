@@ -1,0 +1,16 @@
+---
+// Cada operación: /operaciones/<slug>, con el periodo del suceso en lugar de
+// la fecha de la nota.
+import { type CollectionEntry, getCollection } from "astro:content";
+import ArticuloPagina from "@components/ArticuloPagina.astro";
+
+export async function getStaticPaths() {
+  const ops = (await getCollection("operaciones")).filter((o) => !o.data.draft);
+  return ops.map((op) => ({ params: { slug: op.id }, props: op }));
+}
+type Props = CollectionEntry<"operaciones">;
+
+const op = Astro.props;
+---
+
+<ArticuloPagina entrada={op} volver={{ href: "/operaciones", texto: "Volver a operaciones" }} periodo={op.data.periodo} />

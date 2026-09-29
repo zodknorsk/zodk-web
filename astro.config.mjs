@@ -13,7 +13,9 @@ export default defineConfig({
   // Todo el contenido lo genera el importador como .md, que Astro entiende de
   // serie: no hay integración de MDX porque no hay ningún .mdx.
   site: "https://zodk.eu",
-  integrations: [sitemap()],
+  // Sin las páginas que solo redirigen a la dirección nueva (/eventos/… y
+  // /notas, que pasaron a /seguimiento, /operaciones y /analisis).
+  integrations: [sitemap({ filter: (url) => !/\/eventos(\/|$)|\/notas\/$/.test(url) })],
 
   // Los términos del glosario de UAS enlazados en los artículos, con su
   // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).

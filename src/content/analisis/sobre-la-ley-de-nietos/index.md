@@ -7,6 +7,7 @@ description: >-
 updated: '2026-09-22'
 tags:
   - españa
+opinion: true
 ---
 ## Qué es la ley de nietos?
 

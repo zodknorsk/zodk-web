@@ -1,0 +1,15 @@
+---
+// Cada análisis: /analisis/<slug>.
+import { type CollectionEntry, getCollection } from "astro:content";
+import ArticuloPagina from "@components/ArticuloPagina.astro";
+
+export async function getStaticPaths() {
+  const notas = (await getCollection("analisis")).filter((n) => !n.data.draft);
+  return notas.map((nota) => ({ params: { slug: nota.id }, props: nota }));
+}
+type Props = CollectionEntry<"analisis">;
+
+const nota = Astro.props;
+---
+
+<ArticuloPagina entrada={nota} volver={{ href: "/analisis", texto: "Volver a análisis" }} opinion={nota.data.opinion} />

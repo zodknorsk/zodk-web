@@ -1,25 +1,25 @@
-// El RSS (/rss.xml): las notas del blog, sin borradores ni las de la Luna y Marte.
+// El RSS (/rss.xml): los análisis, sin borradores.
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { SITE, NOTAS } from "@consts";
-import { esDelBlog, porFecha } from "@lib/contenido";
+import { SITE, ANALISIS } from "@consts";
+import { porFecha } from "@lib/contenido";
 
 type Context = {
   site: string;
 };
 
 export async function GET(context: Context) {
-  const notas = (await getCollection("notas")).filter(esDelBlog).sort(porFecha);
+  const notas = (await getCollection("analisis")).filter((n) => !n.data.draft).sort(porFecha);
 
   return rss({
     title: SITE.NAME,
-    description: NOTAS.DESCRIPTION,
+    description: ANALISIS.DESCRIPTION,
     site: context.site,
     items: notas.map((nota) => ({
       title: nota.data.title,
       description: nota.data.description ?? "",
       pubDate: nota.data.date,
-      link: `/notas/${nota.id}/`,
+      link: `/analisis/${nota.id}/`,
     })),
   });
 }

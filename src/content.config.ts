@@ -15,7 +15,12 @@ import { z } from "astro/zod";
 // traduce esas claves al inglés y escribe el resultado en src/content/. Así la
 // web compila sin necesitar la bóveda.
 
-// --- notas: entradas sueltas del blog. Una nota = una página en /notas/<slug>.
+// Las secciones las decide el `tipo` de la nota en la bóveda (docs/contenido.md):
+// `analisis`, `operacion` y `seguimiento`. Las notas de la Luna, Marte y el
+// blog van por su etiqueta, y las del Hangar de UAS, por su carpeta.
+
+// --- notas: las de los proyectos (Luna, Marte y el blog). Una nota = una
+// página en /notas/<slug>, con su «volver» a /luna, /marte o /blog.
 const notas = defineCollection({
   loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/notas" }),
   schema: z.object({
@@ -28,14 +33,45 @@ const notas = defineCollection({
   }),
 });
 
-// --- eventos: seguimiento de un suceso. Jerárquico:
-//   incidentes-.../index.md          -> /eventos/incidentes-...          (kind: index)
-//   incidentes-.../semana-01.md      -> /eventos/incidentes-.../semana-01 (kind: semana)
-//   incidentes-.../ministros-...md   -> /eventos/incidentes-.../ministros-... (kind: pagina)
-// Cada archivo del evento vive en la misma colección; se relacionan por el
-// campo "evento" (slug del evento padre) y se ordenan las semanas por "orden".
-const eventos = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/eventos" }),
+// --- analisis: explicaciones y opiniones (`tipo: analisis`). Una nota = una
+// página en /analisis/<slug>.
+const analisis = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/analisis" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().optional(),
+    opinion: z.boolean().optional(), // `opinion` en el tipo: lleva la etiqueta «Opinión»
+  }),
+});
+
+// --- operaciones: crónicas de algo que ya pasó (`tipo: operacion`). Una nota
+// = una página en /operaciones/<slug>, ordenadas por la fecha del suceso.
+const operaciones = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/operaciones" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().optional(),
+    periodo: z.string().optional(), // las fechas del suceso, escritas a mano en la bóveda
+  }),
+});
+
+// --- seguimientos: un suceso abierto, semana a semana (`tipo: seguimiento`).
+// Jerárquico:
+//   incidentes-.../index.md          -> /seguimiento/incidentes-...          (kind: index)
+//   incidentes-.../semana-01.md      -> /seguimiento/incidentes-.../semana-01 (kind: semana)
+//   incidentes-.../ministros-...md   -> /seguimiento/incidentes-.../ministros-... (kind: pagina)
+// Cada archivo del seguimiento vive en la misma colección; se relacionan por
+// el campo "evento" (slug del índice) y se ordenan las semanas por "orden".
+const seguimientos = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/seguimientos" }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
@@ -78,4 +114,4 @@ const uas = defineCollection({
   }),
 });
 
-export const collections = { notas, eventos, uas };
+export const collections = { notas, analisis, operaciones, seguimientos, uas };

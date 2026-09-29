@@ -1,0 +1,50 @@
+---
+// Listado de operaciones: /operaciones. Van por la fecha del suceso (su
+// `periodo`), la más reciente arriba, no por la fecha en que se escribió la
+// nota.
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import TiraCabecera from "@components/TiraCabecera.astro";
+import { OPERACIONES } from "@consts";
+import { fechaDePeriodo } from "@lib/contenido";
+
+const ops = (await getCollection("operaciones"))
+  .filter((o) => !o.data.draft)
+  .map((op) => ({ op, cuando: fechaDePeriodo(op.data.periodo, op.data.date) }))
+  .sort((a, b) => b.cuando.valueOf() - a.cuando.valueOf());
+const anos = ops.map(({ cuando }) => cuando.getFullYear());
+const pie = `${ops.length} operaci${ops.length === 1 ? "ón" : "ones"}`;
+---
+
+<PageLayout title={OPERACIONES.TITLE} description={OPERACIONES.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <TiraCabecera titulo={OPERACIONES.TITLE} desc={OPERACIONES.DESCRIPTION} pie={pie}>
+        {/* Los años que abarcan, del más antiguo al más reciente. */}
+        <span class="op-anos">
+          {anos.length > 0 && (
+            <>
+              {Math.min(...anos)}
+              <i aria-hidden="true" />
+              {Math.max(...anos)}
+            </>
+          )}
+        </span>
+      </TiraCabecera>
+      <ul class="animate flex flex-col gap-4">
+        {ops.map(({ op }) => (
+          <li>
+            <ArrowCard entry={op} tituloAzul pie={op.data.periodo} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </Container>
+</PageLayout>
+
+<style>
+  .op-anos { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; font-size: 0.9rem; letter-spacing: 0.04em; }
+  .op-anos i { width: 1px; height: 0.9rem; background: currentColor; opacity: 0.4; }
+</style>

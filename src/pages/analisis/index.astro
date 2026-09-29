@@ -1,0 +1,57 @@
+---
+// Listado de los análisis, agrupados por año. Ruta: /analisis
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import TiraCabecera from "@components/TiraCabecera.astro";
+import { ANALISIS } from "@consts";
+import { porFecha } from "@lib/contenido";
+
+const data = (await getCollection("analisis")).filter((n) => !n.data.draft).sort(porFecha);
+
+type Acc = {
+  [year: string]: CollectionEntry<"analisis">[];
+};
+
+const notasPorAno = data.reduce((acc: Acc, nota) => {
+  const year = nota.data.date.getFullYear().toString();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(nota);
+  return acc;
+}, {});
+
+const years = Object.keys(notasPorAno).sort((a, b) => parseInt(b) - parseInt(a));
+---
+
+<PageLayout title={ANALISIS.TITLE} description={ANALISIS.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <TiraCabecera titulo={ANALISIS.TITLE} desc={ANALISIS.DESCRIPTION} pie={`${data.length} análisis publicado${data.length === 1 ? "" : "s"}`}>
+        {/* El número de análisis, como un expediente. */}
+        <span class="no-numero">N.º<br />{String(data.length).padStart(2, "0")}</span>
+      </TiraCabecera>
+      <div class="space-y-4">
+        {
+          years.map((year) => (
+            <section class="animate space-y-4">
+              <div class="font-semibold text-black dark:text-white">{year}</div>
+              <ul class="flex flex-col gap-4">
+                {notasPorAno[year].map((nota) => (
+                  <li>
+                    <ArrowCard entry={nota} tituloAzul etiqueta={nota.data.opinion ? "Opinión" : undefined} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</PageLayout>
+
+<style>
+  .no-numero { font-size: 1.1rem; line-height: 1.15; text-align: center; letter-spacing: 0.04em; }
+</style>
+

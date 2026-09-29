@@ -51,7 +51,7 @@
 Pulsando la luna del hero (solo de noche), con un vuelo, o el bloque de
 Moon-project de debajo del planeta, que es un enlace normal.
 
-**Las notas etiquetadas `luna` viven solo en la Luna**: no salen en `/notas`,
+**Las notas etiquetadas `luna` viven solo en la Luna**: no salen en `/analisis`,
 en la portada ni en el RSS, y su "volver" lleva a `/luna`
 (`src/lib/contenido.ts`). Sus páginas sí se generan.
 

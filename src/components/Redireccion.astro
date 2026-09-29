@@ -1,0 +1,23 @@
+---
+// Página de una dirección que se ha movido: lleva a la nueva al momento. La
+// web es estática (GitHub Pages), así que va con <meta refresh>; no se indexa
+// y dice cuál es la buena.
+interface Props {
+  a: string;
+}
+const { a } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Se ha movido</title>
+    <meta http-equiv="refresh" content={`0; url=${a}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL(a, Astro.site)} />
+  </head>
+  <body>
+    <p>Esta página se ha movido a <a href={a}>{a}</a>.</p>
+  </body>
+</html>

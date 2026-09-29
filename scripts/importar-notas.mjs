@@ -4,10 +4,14 @@
 // Puente entre la bóveda de Obsidian y la web.
 //
 //   1. Recorre la bóveda y se queda con los .md que tienen `publicar: true`.
-//   2. Clasifica cada uno:
-//        - "03 - Eventos/<carpeta>/..."  -> colección "eventos" (jerárquica)
+//   2. Clasifica cada uno (docs/contenido.md):
 //        - "…/Hangar de UAS/..."            -> colección "uas" (/uas/<slug>)
-//        - el resto                      -> colección "notas" (plana)
+//        - etiqueta luna, marte o blog   -> colección "notas" (/notas/<slug>)
+//        - el resto, por su `tipo`:
+//            seguimiento -> "seguimientos" (jerárquica, /seguimiento/…)
+//            operacion   -> "operaciones" (/operaciones/<slug>)
+//            analisis    -> "analisis" (/analisis/<slug>)
+//          Sin ninguno de esos tipos no se publica (y avisa).
 //   3. Traduce el frontmatter en español al que esperan las colecciones de Astro.
 //   4. Convierte la sintaxis de Obsidian a Markdown/HTML estándar:
 //        - ![[imagen.png]]  y  ![](<imagen.png>)   -> ![](./imagen.png) + copia reducida
@@ -16,7 +20,7 @@
 //        - [[Nota]] / [[Nota#sección|texto]]       -> enlace resuelto (o texto)
 //        - URL de tweet embebida (![](x.com/...))  -> tarjeta HTML ya descargada
 //        - <blockquote class="tiktok-embed">       -> cita estática con enlace
-//   5. Escribe el resultado en src/content/{notas,eventos}/ (se regenera entero
+//   5. Escribe el resultado en src/content/<colección>/ (se regenera entero
 //      cada vez), las imágenes de tweets en public/tweets/ y los vídeos
 //      locales de la bóveda en public/adjuntos/.
 //
@@ -57,12 +61,16 @@ const BOVEDA = CANDIDATAS_BOVEDA.find((p) => fs.existsSync(p))
 
 const RAIZ = process.cwd();
 const DESTINO_NOTAS = path.join(RAIZ, "src", "content", "notas");
-const DESTINO_EVENTOS = path.join(RAIZ, "src", "content", "eventos");
+const DESTINO_ANALISIS = path.join(RAIZ, "src", "content", "analisis");
+const DESTINO_OPERACIONES = path.join(RAIZ, "src", "content", "operaciones");
+const DESTINO_SEGUIMIENTOS = path.join(RAIZ, "src", "content", "seguimientos");
 const DESTINO_UAS = path.join(RAIZ, "src", "content", "uas");
+const DESTINOS = [DESTINO_NOTAS, DESTINO_ANALISIS, DESTINO_OPERACIONES, DESTINO_SEGUIMIENTOS, DESTINO_UAS];
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 
-const CARPETA_EVENTOS = "03 - Eventos";
+// Las notas de los proyectos van por su etiqueta, sea cual sea su tipo.
+const ETIQUETAS_PROYECTO = new Set(["luna", "marte", "blog"]);
 // El Hangar de UAS: sus notas son fichas de drones en /uas (docs/uas.md),
 // salvo el glosario y el armamento (notas que empiezan por «Glosario» y por
 // «Armamento»), que son páginas aparte.
@@ -270,44 +278,64 @@ function extraerDescripcion(cuerpo) {
   return undefined;
 }
 
-// --- Clasificación nota / evento ---------------------------------------
+// --- Clasificación por secciones ---------------------------------------
+
+const tiposDe = (data) => [].concat(data?.tipo ?? []).map((t) => String(t).trim().toLowerCase());
+
+const frontmatterIndices = new Map();
+function frontmatterDe(ruta) {
+  if (!frontmatterIndices.has(ruta)) {
+    frontmatterIndices.set(ruta, fs.existsSync(ruta) ? matter(fs.readFileSync(ruta, "utf8")).data : null);
+  }
+  return frontmatterIndices.get(ruta);
+}
 
 /**
- * Decide a qué colección va un archivo y, si es un evento, qué papel tiene.
- * Devuelve { tipo:"nota" }  ó
- *          { tipo:"evento", eventoSlug, kind, orden, rango, subSlug }
+ * Decide a qué colección va un archivo. Devuelve { tipo: "uas" | "nota" |
+ * "analisis" | "operacion" | "seguimiento" | null, … }; los seguimientos,
+ * además, { eventoSlug, kind, orden, rango, subSlug }.
  */
-function clasificar(ruta) {
+function clasificar(ruta, data) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
+  const stem = path.basename(ruta, ".md");
   if (partes.includes(CARPETA_UAS)) {
-    const stem = path.basename(ruta, ".md");
     return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(stem), armamento: RE_ARMAMENTO_UAS.test(stem) };
   }
-  if (partes[0] !== CARPETA_EVENTOS || partes.length < 2) return { tipo: "nota" };
-
-  // Nota suelta en `03 - Eventos/`: evento de una sola página (solo índice).
-  if (partes.length === 2) {
-    const eventoSlug = generarSlug(path.basename(ruta, ".md"));
-    return { tipo: "evento", eventoSlug, kind: "index", orden: 0, subSlug: "" };
+  if ([].concat(data.tags ?? []).some((t) => ETIQUETAS_PROYECTO.has(String(t).toLowerCase()))) {
+    return { tipo: "nota" };
   }
 
-  const carpetaEvento = partes[1];
-  const eventoSlug = generarSlug(carpetaEvento);
-  const stem = path.basename(ruta, ".md");
+  // Un seguimiento de varias páginas es una carpeta con una nota índice que
+  // se llama como ella y lleva `tipo: seguimiento`. Todo lo de dentro va con
+  // él: las semanas («SEMANA 4 - 20 AGOSTO…») y las páginas sueltas, sea
+  // cual sea su tipo.
+  const carpeta = path.basename(path.dirname(ruta));
+  const indice = path.join(path.dirname(ruta), `${carpeta}.md`);
+  if (tiposDe(frontmatterDe(indice)).includes("seguimiento")) {
+    const eventoSlug = generarSlug(carpeta);
+    if (stem === carpeta) {
+      return { tipo: "seguimiento", eventoSlug, kind: "index", orden: 0, subSlug: "" };
+    }
+    const mSemana = stem.match(/^SEMANA\s+(\d+)\s*[-–—]\s*(.+)$/i);
+    if (mSemana) {
+      const orden = parseInt(mSemana[1], 10);
+      return {
+        tipo: "seguimiento", eventoSlug, kind: "semana", orden,
+        rango: formatearRango(mSemana[2]),
+        subSlug: `semana-${String(orden).padStart(2, "0")}`,
+      };
+    }
+    return { tipo: "seguimiento", eventoSlug, kind: "pagina", orden: 0, subSlug: generarSlug(stem) };
+  }
 
-  if (stem === carpetaEvento) {
-    return { tipo: "evento", eventoSlug, kind: "index", orden: 0, subSlug: "" };
+  const tipos = tiposDe(data);
+  if (tipos.includes("seguimiento")) {
+    // Seguimiento de una sola página, sin carpeta.
+    return { tipo: "seguimiento", eventoSlug: generarSlug(stem), kind: "index", orden: 0, subSlug: "" };
   }
-  const mSemana = stem.match(/^SEMANA\s+(\d+)\s*[-–—]\s*(.+)$/i);
-  if (mSemana) {
-    const orden = parseInt(mSemana[1], 10);
-    return {
-      tipo: "evento", eventoSlug, kind: "semana", orden,
-      rango: formatearRango(mSemana[2]),
-      subSlug: `semana-${String(orden).padStart(2, "0")}`,
-    };
-  }
-  return { tipo: "evento", eventoSlug, kind: "pagina", orden: 0, subSlug: generarSlug(stem) };
+  if (tipos.includes("operacion")) return { tipo: "operacion" };
+  if (tipos.includes("analisis")) return { tipo: "analisis", opinion: tipos.includes("opinion") };
+  return { tipo: null };
 }
 
 // --- Transformación del cuerpo ----------------------------------------
@@ -423,7 +451,7 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasC
 function recogerTarjetasExistentes() {
   const cache = new Map();
   const RE_BLOCKQUOTE = /<blockquote class="tweet" data-tweet-id="(\d+)">[\s\S]*?<\/blockquote>/g;
-  for (const dir of [DESTINO_NOTAS, DESTINO_EVENTOS, DESTINO_UAS]) {
+  for (const dir of DESTINOS) {
     if (!fs.existsSync(dir)) continue;
     for (const archivo of buscarMarkdown(dir)) {
       const texto = fs.readFileSync(archivo, "utf8");
@@ -582,7 +610,9 @@ async function main() {
   // de caché de imágenes entre ejecuciones (bórrala a mano si quieres limpiarla).
   // public/adjuntos/ sí se regenera entera: son ficheros locales de la bóveda,
   // recopiarlos es barato y así no se acumulan vídeos huérfanos.
-  for (const d of [DESTINO_NOTAS, DESTINO_EVENTOS, DESTINO_UAS, PUBLICO_ADJUNTOS]) {
+  // src/content/eventos era la colección de antes (seguimientos y operaciones).
+  fs.rmSync(path.join(RAIZ, "src", "content", "eventos"), { recursive: true, force: true });
+  for (const d of [...DESTINOS, PUBLICO_ADJUNTOS]) {
     fs.rmSync(d, { recursive: true, force: true });
     fs.mkdirSync(d, { recursive: true });
   }
@@ -615,24 +645,26 @@ async function main() {
     if (data.publicar !== true) continue;
     const titulo = primero(data.titulo) || primero(data.title) || path.basename(ruta, ".md");
     const stem = path.basename(ruta, ".md");
-    const clase = clasificar(ruta);
+    const clase = clasificar(ruta, data);
+    if (!clase.tipo) {
+      console.warn(`  ⚠ sin sección (tipo seguimiento, operacion o analisis), no se publica: ${path.relative(BOVEDA, ruta)}`);
+      continue;
+    }
 
     let url, carpetaDestino;
-    if (clase.tipo === "nota") {
+    const plana = { nota: ["notas", DESTINO_NOTAS], uas: ["uas", DESTINO_UAS], analisis: ["analisis", DESTINO_ANALISIS], operacion: ["operaciones", DESTINO_OPERACIONES] };
+    if (plana[clase.tipo]) {
+      const [base, destino] = plana[clase.tipo];
       const slug = generarSlug(titulo);
-      url = `/notas/${slug}`;
-      carpetaDestino = path.join(DESTINO_NOTAS, slug);
-    } else if (clase.tipo === "uas") {
-      const slug = generarSlug(titulo);
-      url = `/uas/${slug}`;
-      carpetaDestino = path.join(DESTINO_UAS, slug);
+      url = `/${base}/${slug}`;
+      carpetaDestino = path.join(destino, slug);
     } else {
       url = clase.kind === "index"
-        ? `/eventos/${clase.eventoSlug}`
-        : `/eventos/${clase.eventoSlug}/${clase.subSlug}`;
+        ? `/seguimiento/${clase.eventoSlug}`
+        : `/seguimiento/${clase.eventoSlug}/${clase.subSlug}`;
       carpetaDestino = clase.kind === "index"
-        ? path.join(DESTINO_EVENTOS, clase.eventoSlug)
-        : path.join(DESTINO_EVENTOS, clase.eventoSlug, clase.subSlug);
+        ? path.join(DESTINO_SEGUIMIENTOS, clase.eventoSlug)
+        : path.join(DESTINO_SEGUIMIENTOS, clase.eventoSlug, clase.subSlug);
     }
     items.push({ ruta, data, content, titulo, stem, clase, url, carpetaDestino });
   }
@@ -656,11 +688,11 @@ async function main() {
   // vivo de X, sin descargar ni comprimir nada.
   const eventoVideoLocal = new Map();
   for (const it of items) {
-    if (it.clase.tipo === "evento" && it.clase.kind === "index") {
+    if (it.clase.tipo === "seguimiento" && it.clase.kind === "index") {
       eventoVideoLocal.set(it.clase.eventoSlug, it.data.videos_locales !== false);
     }
   }
-  const permiteVideoLocal = (it) => it.clase.tipo === "evento"
+  const permiteVideoLocal = (it) => it.clase.tipo === "seguimiento"
     ? eventoVideoLocal.get(it.clase.eventoSlug) ?? true
     : it.data.videos_locales !== false;
   const resolver = (destino) => mapaEnlaces.get(generarSlug(destino)) || null;
@@ -701,7 +733,7 @@ async function main() {
   }
 
   // --- Pasada 2: escribir cada archivo ---
-  let nNotas = 0, nEventos = 0, nUas = 0;
+  const cuenta = {};
 
   for (const it of items) {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
@@ -750,7 +782,12 @@ async function main() {
     else if (it.clase.armamento) fm.armamento = true;
     else if (esDron) Object.assign(fm, paisDeFicha(it.content));
 
-    if (it.clase.tipo === "evento") {
+    if (it.clase.opinion) fm.opinion = true;
+    if (it.clase.tipo === "operacion") {
+      const periodo = primero(it.data.periodo);
+      if (periodo) fm.periodo = String(periodo).trim();
+    }
+    if (it.clase.tipo === "seguimiento") {
       fm.kind = it.clase.kind;
       fm.evento = it.clase.eventoSlug;
       fm.orden = it.clase.orden;
@@ -767,19 +804,11 @@ async function main() {
     }
 
     fs.writeFileSync(path.join(it.carpetaDestino, "index.md"), matter.stringify(cuerpo, fm));
-    if (it.clase.tipo === "evento") {
-      nEventos++;
-      console.log(`  ✓ evento  ${it.url}`);
-    } else if (it.clase.tipo === "uas") {
-      nUas++;
-      console.log(`  ✓ uas     ${it.url}`);
-    } else {
-      nNotas++;
-      console.log(`  ✓ nota    ${it.url}`);
-    }
+    cuenta[it.clase.tipo] = (cuenta[it.clase.tipo] ?? 0) + 1;
+    console.log(`  ✓ ${it.clase.tipo.padEnd(11)} ${it.url}`);
   }
 
-  console.log(`\nListo: ${nNotas} nota(s), ${nEventos} archivo(s) de evento, ${nUas} ficha(s) de UAS.`);
+  console.log(`\nListo: ${Object.entries(cuenta).map(([t, n]) => `${n} ${t}`).join(", ")}.`);
 }
 
 main().catch((e) => {

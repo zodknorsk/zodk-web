@@ -783,23 +783,7 @@ Instead of stealing anything, the migrant entered the bedroom in his […]</div>
 
 
 
-<blockquote class="tweet" data-tweet-id="2090079048575652155">
-  <a class="tweet-author" href="https://x.com/_SalvaOrtega/status/2090079048575652155" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1696085081109012480-zeznj79k_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">Salva Ortega</span>
-    <span class="tweet-handle">@_SalvaOrtega</span>
-  </a>
-  <div class="tweet-text">En pleno agosto, esto son los parques infantiles en <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a>.<br>
-<br>
-Hay niños sin playas, sin parques, sin salir por el simple hecho de que su ciudad está invadida de ilegales.<br>
-<br>
-Un verano robado completamente.<br>
-<br>
-¿Y los derechos de nuestros menores dónde quedan?</div>
-  <img class="tweet-media" src="/tweets/media-hqfz0ouwuaeqig6.jpg" alt="Imagen del tweet" loading="lazy" />
-  <img class="tweet-media" src="/tweets/media-hqfz0onw8aaxcvo.jpg" alt="Imagen del tweet" loading="lazy" />
-  <a class="tweet-date" href="https://x.com/_SalvaOrtega/status/2090079048575652155" target="_blank" rel="noopener">19 de agosto de 2026</a>
-</blockquote>
+> ⚠️ [Publicación de X no disponible](https://x.com/i/status/2090079048575652155)
 
 
 

@@ -76,6 +76,20 @@ article mark {
   color: #18181b;
 }
 
+/* «Opinión»: los análisis de opinión propia (tipo `opinion` en la bóveda),
+   en la lista de /analisis y en la cabecera de la nota. */
+.etiqueta-opinion {
+  padding: 0.05rem 0.4rem;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
 /* El plugin @tailwindcss/typography mete comillas automáticas en todos los
    blockquotes. Las quitamos: si una cita lleva comillas, van en el texto. */
 article blockquote p:first-of-type::before,

@@ -9,9 +9,7 @@ tags:
   - osint
   - eeuu
   - afganistan
-kind: index
-evento: solo-al-amanecer-la-historia-de-john-chapman
-orden: 0
+periodo: 4 de marzo de 2002
 ---
 ![](./pasted-image-20260913155314.jpg) _Tech Sgt. John A. Chapman, 24th Special Tactics Squadron, Afganistán, un mes antes de Takur Ghar._
 

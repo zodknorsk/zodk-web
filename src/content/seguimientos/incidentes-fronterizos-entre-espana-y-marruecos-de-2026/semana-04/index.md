@@ -32,16 +32,7 @@ La Comisión Europea ha recordado este jueves que España tiene el «deber» de 
 
 
 
-<blockquote class="tweet" data-tweet-id="2090414604534812891">
-  <a class="tweet-author" href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1733980849383620608-2nrd0h81_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">Wall Street Wolverine</span>
-    <span class="tweet-handle">@wallstwolverine</span>
-  </a>
-  <div class="tweet-text">Enfrentamientos entre inmigrantes en Ceuta:</div>
-  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-sgflfbnplft8qrpl.jpg"><source src="https://video.twimg.com/amplify_video/2090414570779140096/vid/avc1/720x1280/z2wjVo6XhRAeTyOU.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/wallstwolverine/status/2090414604534812891" target="_blank" rel="noopener">20 de agosto de 2026</a>
-</blockquote>
+> ⚠️ [Publicación de X no disponible](https://x.com/i/status/2090414604534812891)
 
 
 
@@ -932,21 +923,7 @@ España acaba de entregar a Marruecos instalaciones militares de Ceuta.<br>
 
 
 
-<blockquote class="tweet" data-tweet-id="2092553205246787802">
-  <a class="tweet-author" href="https://x.com/_SalvaOrtega/status/2092553205246787802" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1696085081109012480-zeznj79k_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">Salva Ortega</span>
-    <span class="tweet-handle">@_SalvaOrtega</span>
-  </a>
-  <div class="tweet-text">¿Se puede ser más mentirosos que en la delegación del gobierno de Ceuta?<br>
-<br>
-Ayer publican un comunicado indicando que las instalaciones que se estaban difundiendo era un BULO.<br>
-<br>
-Hoy esas mismas instalaciones aparecen en el BOE de forma oficial para albergar a los invasores.</div>
-  <img class="tweet-media" src="/tweets/media-hqo-dgww4aa08wc.jpg" alt="Imagen del tweet" loading="lazy" />
-  <img class="tweet-media" src="/tweets/media-hqo-dgwxoaa2fww.jpg" alt="Imagen del tweet" loading="lazy" />
-  <a class="tweet-date" href="https://x.com/_SalvaOrtega/status/2092553205246787802" target="_blank" rel="noopener">26 de agosto de 2026</a>
-</blockquote>
+> ⚠️ [Publicación de X no disponible](https://x.com/i/status/2092553205246787802)
 
 
 

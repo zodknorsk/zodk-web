@@ -1,69 +1,31 @@
 ---
-// Página individual de cada nota. El [...slug] genera una ruta por nota:
-// /notas/ley-de-nietos, /notas/mi-opinion-sobre-la-53-provincia-espanola, etc.
-import { type CollectionEntry, getCollection, render } from "astro:content";
-import PageLayout from "@layouts/PageLayout.astro";
-import Container from "@components/Container.astro";
-import FormattedDate from "@components/FormattedDate.astro";
-import { readingTime } from "@lib/utils";
-import BackToPrev from "@components/BackToPrev.astro";
-import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
-import { proyectoDe, porFecha } from "@lib/contenido";
+// Las notas de los proyectos (Luna, Marte y el blog): /notas/<slug>, con su
+// «volver» a /luna, /marte o /blog. Las de /notas/<slug> que antes eran
+// análisis redirigen a /analisis/<slug>.
+import { type CollectionEntry, getCollection } from "astro:content";
+import ArticuloPagina from "@components/ArticuloPagina.astro";
+import Redireccion from "@components/Redireccion.astro";
+import { proyectoDe } from "@lib/contenido";
 
-// getStaticPaths le dice a Astro qué páginas generar en el build (sitio estático).
 export async function getStaticPaths() {
-  const notas = (await getCollection("notas"))
-    .filter((nota) => !nota.data.draft)
-    .sort(porFecha);
-  return notas.map((nota) => ({
-    params: { slug: nota.id },
-    props: nota,
-  }));
+  const notas = (await getCollection("notas")).filter((n) => !n.data.draft);
+  const analisis = (await getCollection("analisis")).filter((n) => !n.data.draft);
+  return [
+    ...notas.map((nota) => ({ params: { slug: nota.id }, props: { nota } })),
+    ...analisis.map((n) => ({ params: { slug: n.id }, props: { a: `/analisis/${n.id}` } })),
+  ];
 }
-type Props = CollectionEntry<"notas">;
+type Props = { nota?: CollectionEntry<"notas">; a?: string };
 
-const nota = Astro.props;
-const { Content } = await render(nota);
-
-// Las de Luna, Marte y el blog no salen en /notas: "volver" lleva a su página.
-const proyecto = proyectoDe(nota.data.tags);
+const { nota, a } = Astro.props;
+const VOLVER = {
+  luna: { href: "/luna", texto: "Volver a la Luna" },
+  marte: { href: "/marte", texto: "Volver a Marte" },
+  blog: { href: "/blog", texto: "Volver al blog" },
+};
+const proyecto = nota ? proyectoDe(nota.data.tags) : null;
 ---
 
-<PageLayout title={nota.data.title} description={nota.data.description ?? ""}>
-  <Container>
-    <div class="animate">
-      {proyecto === "luna"
-        ? <BackToPrev href="/luna">Volver a la Luna</BackToPrev>
-        : proyecto === "marte"
-          ? <BackToPrev href="/marte">Volver a Marte</BackToPrev>
-          : proyecto === "blog"
-            ? <BackToPrev href="/blog">Volver al blog</BackToPrev>
-            : <BackToPrev href="/notas">Volver a notas</BackToPrev>}
-    </div>
-    <div class="space-y-1 my-10">
-      <div class="animate flex items-center gap-1.5 font-mono">
-        <div class="text-sm">
-          <FormattedDate date={nota.data.date} />
-        </div>
-        &bull;
-        <div class="text-sm">{readingTime(nota.body ?? "")}</div>
-      </div>
-      <h1 class="animate text-2xl font-semibold text-black dark:text-white">
-        {nota.data.title}
-      </h1>
-      {
-        nota.data.tags.length > 0 && (
-          <div class="animate flex flex-wrap gap-1.5 pt-1 text-sm">
-            {nota.data.tags.map((tag) => (
-              <span class="opacity-75">#{tag}</span>
-            ))}
-          </div>
-        )
-      }
-    </div>
-    <article class="animate">
-      <Content />
-    </article>
-  </Container>
-  <GlosarioTarjeta />
-</PageLayout>
+{nota
+  ? <ArticuloPagina entrada={nota} volver={proyecto ? VOLVER[proyecto] : { href: "/", texto: "Volver a la portada" }} />
+  : <Redireccion a={a!} />}

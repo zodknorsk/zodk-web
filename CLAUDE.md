@@ -38,7 +38,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/marte.md` | `/marte` |
 | `docs/uas.md` | Hangar de UAS: fichas de drones, visor y tira de la portada. **Guion completo para hacer un dron nuevo desde cero** |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
-| `docs/contenido.md` | Importador de Obsidian, notas, eventos, tuits |
+| `docs/contenido.md` | Importador de Obsidian; secciones (análisis, operaciones, seguimiento) por el `tipo`; tuits |
 | `docs/rendimiento.md` | Consumo en Zen: cómo medir |
 | `docs/logo.md` | Logo e iconos |
 | `arte/README.md` | Los generadores de pixel art |

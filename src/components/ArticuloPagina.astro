@@ -1,0 +1,58 @@
+---
+// La página de un artículo suelto: los análisis, las operaciones y las notas
+// de los proyectos (Luna, Marte y el blog). Arriba, «volver»; debajo, la
+// fecha (o el periodo del suceso, en las operaciones) y lo que se tarda en
+// leer, el título, la etiqueta «Opinión» si la lleva y las etiquetas.
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import BackToPrev from "@components/BackToPrev.astro";
+import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
+import { readingTime } from "@lib/utils";
+
+interface Props {
+  entrada: CollectionEntry<"notas"> | CollectionEntry<"analisis"> | CollectionEntry<"operaciones">;
+  volver: { href: string; texto: string };
+  periodo?: string;
+  opinion?: boolean;
+}
+
+const { entrada, volver, periodo, opinion } = Astro.props;
+const { Content } = await render(entrada);
+---
+
+<PageLayout title={entrada.data.title} description={entrada.data.description ?? ""}>
+  <Container>
+    <div class="animate">
+      <BackToPrev href={volver.href}>{volver.texto}</BackToPrev>
+    </div>
+    <div class="space-y-1 my-10">
+      <div class="animate flex items-center gap-1.5 font-mono">
+        <div class="text-sm">
+          {periodo ?? <FormattedDate date={entrada.data.date} />}
+        </div>
+        &bull;
+        <div class="text-sm">{readingTime(entrada.body ?? "")}</div>
+      </div>
+      <h1 class="animate text-2xl font-semibold text-black dark:text-white">
+        {entrada.data.title}
+      </h1>
+      {
+        (opinion || entrada.data.tags.length > 0) && (
+          <div class="animate flex flex-wrap items-center gap-1.5 pt-1 text-sm">
+            {opinion && <span class="etiqueta-opinion">Opinión</span>}
+            {entrada.data.tags.map((tag) => (
+              <span class="opacity-75">#{tag}</span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+    <article class="animate">
+      <Content />
+    </article>
+  </Container>
+  <GlosarioTarjeta />
+</PageLayout>

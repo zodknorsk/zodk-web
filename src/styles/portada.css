@@ -1090,6 +1090,8 @@ html.dark .portada-col:last-child { border-left-color: rgba(255, 255, 255, 0.14)
 html.dark .portada-col-cab h2 { color: #f4f4f5; }
 html.dark .portada-col-cab a { color: #a1a1aa; }
 html.dark .portada-col-cab a:hover { color: #f4f4f5; }
+/* Operaciones, debajo de seguimiento en la misma columna. */
+.portada-col-otra { margin-top: 2rem; }
 .portada-col ul {
   display: flex;
   flex-direction: column;

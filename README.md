@@ -24,7 +24,7 @@ Cada push a `main` compila y publica la web sola
 
 | Documento | De qué va |
 |---|---|
-| [`docs/contenido.md`](docs/contenido.md) | Cómo llegan las notas y los eventos desde Obsidian, y cómo publicar |
+| [`docs/contenido.md`](docs/contenido.md) | Cómo llegan las notas desde Obsidian (análisis, operaciones y seguimiento, por su `tipo`), y cómo publicar |
 | [`docs/tierra.md`](docs/tierra.md) | La portada: la Tierra, el título, la noche, qué se probó y rechazó |
 | [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
 | [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
@@ -42,10 +42,11 @@ src/
     index.astro              Portada: el hero con la Tierra y, debajo, el blog
     luna.astro               /luna (con todo su JavaScript)
     marte.astro              /marte (con todo su JavaScript)
-    notas/index.astro        /notas: todas las notas por años
-    notas/[...slug].astro    La página de cada nota
-    eventos/index.astro      /eventos
-    eventos/[...slug].astro  Índice, semanas y análisis de cada evento
+    analisis/                /analisis: los análisis por años y la página de cada uno
+    operaciones/             /operaciones: por fecha del suceso y la página de cada una
+    seguimiento/             /seguimiento: índice, semanas y piezas de cada seguimiento
+    notas/[...slug].astro    Las notas de la Luna, Marte y el blog (y redirecciones)
+    eventos/, notas/index    Solo redirecciones a las direcciones nuevas
     uas/index.astro          /uas: la enciclopedia de drones, con filtro por país
     uas/[...slug].astro      La ficha de cada dron, con su visor (docs/uas.md)
     404.astro                La página de las direcciones que no existen
@@ -87,10 +88,10 @@ src/
     uas/                     Las maquetas de los drones (una por dron) y sus
                              tipos
   lib/
-    contenido.ts             Qué notas son del blog y cuáles de la Luna o Marte
+    contenido.ts             Proyecto de una nota, fotos y fechas
     utils.ts                 Utilidades (clases CSS, tiempo de lectura)
-  content/                 Notas y eventos que escribe el importador (no tocar)
-  content.config.ts        El esquema de las notas y los eventos
+  content/                 Lo que escribe el importador (no tocar)
+  content.config.ts        El esquema de las colecciones (análisis, operaciones, seguimientos, notas, uas)
   consts.ts                Nombre de la web, textos, "hecho con" y contacto
   types.ts, env.d.ts       Tipos de TypeScript
 scripts/

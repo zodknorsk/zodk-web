@@ -1,8 +1,9 @@
 ---
 // La portada: arriba, el hero con la Tierra (todo su JavaScript está en
 // src/scripts/portada.ts); debajo, los bloques de la Luna y Marte, la tira
-// del hangar de UAS, la del blog con el "hecho con", los últimos eventos y notas en dos columnas y
-// la barra de redes.
+// del hangar de UAS, la del blog con el "hecho con", en dos columnas lo
+// último de seguimiento y operaciones (a la izquierda) y de análisis (a la
+// derecha), y la barra de redes.
 import fs from "node:fs";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
@@ -15,7 +16,7 @@ import { PAISES } from "@data/paises";
 import { ALUNIZAJES } from "@data/alunizajes";
 import { AMARTIZAJES } from "@data/amartizajes";
 import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
-import { esDelBlog, porFecha, proyectoDe, primeraFoto, enCurso } from "@lib/contenido";
+import { porFecha, proyectoDe, primeraFoto, enCurso } from "@lib/contenido";
 
 // El hero lleva un objeto de AERONAVES a la vez (dron, avión o satélite),
 // cada uno con su trayectoria. Solo cambia con el botón .hero-cambio. Lo
@@ -38,13 +39,14 @@ const heliceSvg = botonSvg.replace(
 );
 
 const notasTodas = await getCollection("notas");
-const todasNotas = notasTodas.filter(esDelBlog).sort(porFecha);
+const todasNotas = (await getCollection("analisis")).filter((n) => !n.data.draft).sort(porFecha);
 const notas = todasNotas.slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
 const notasDe = (p: "luna" | "marte") => notasTodas.filter((n) => !n.data.draft && proyectoDe(n.data.tags) === p).length;
 const notasLuna = notasDe("luna");
 const notasMarte = notasDe("marte");
 
-const todosEventos = await getCollection("eventos");
+const todosEventos = await getCollection("seguimientos");
+const todasOps = (await getCollection("operaciones")).filter((o) => !o.data.draft).sort(porFecha);
 
 // Hangar de UAS: cuántas fichas hay y la planta en pixel art de los drones
 // de la tira (arte/generar-uas-miniaturas.mjs).
@@ -66,14 +68,15 @@ const textoHangar = `${fichasUas.length === 1 ? "dron" : "drones"} en el hangar`
 
 // Chapas de bandera sobre la Tierra: un país sale si algún artículo lleva una
 // de sus etiquetas (src/data/paises.ts), y su ficha lista esos artículos. Las
-// notas cuentan una a una; los eventos, por su página índice. Las notas de la
-// Luna y Marte ya vienen fuera (esDelBlog): llevan etiqueta de país, pero no
-// deben salir en la Tierra.
+// notas cuentan una a una; los seguimientos, por su página índice. Las notas
+// de la Luna y Marte no entran: llevan etiqueta de país, pero no deben salir
+// en la Tierra.
 const articulos = [
-  ...todasNotas.map((n) => ({ titulo: n.data.title, url: `/notas/${n.id}`, tipo: "Nota", fecha: n.data.date, tags: n.data.tags })),
+  ...todasNotas.map((n) => ({ titulo: n.data.title, url: `/analisis/${n.id}`, tipo: "Análisis", fecha: n.data.date, tags: n.data.tags })),
+  ...todasOps.map((o) => ({ titulo: o.data.title, url: `/operaciones/${o.id}`, tipo: "Operación", fecha: o.data.date, tags: o.data.tags })),
   ...todosEventos
-    .filter((e) => e.data.kind === "index" && esDelBlog(e))
-    .map((e) => ({ titulo: e.data.title, url: `/eventos/${e.data.evento}`, tipo: "Evento", fecha: e.data.date, tags: e.data.tags })),
+    .filter((e) => e.data.kind === "index" && !e.data.draft)
+    .map((e) => ({ titulo: e.data.title, url: `/seguimiento/${e.data.evento}`, tipo: "Seguimiento", fecha: e.data.date, tags: e.data.tags })),
 ];
 const banderasBlog = PAISES.map((p) => ({
   ...p,
@@ -82,7 +85,8 @@ const banderasBlog = PAISES.map((p) => ({
     .sort((a, b) => b.fecha.valueOf() - a.fecha.valueOf()),
 })).filter((p) => p.articulos.length > 0);
 const indicesEventos = todosEventos.filter((e) => e.data.kind === "index" && !e.data.draft).sort(porFecha);
-const eventos = indicesEventos.slice(0, 3).map((ev) => {
+// A la izquierda, el último seguimiento y, debajo, las dos últimas operaciones.
+const eventos = indicesEventos.slice(0, 1).map((ev) => {
   const semanas = todosEventos
     .filter((x) => x.data.evento === ev.data.evento && x.data.kind === "semana" && !x.data.draft)
     .sort((a, b) => b.data.orden - a.data.orden);
@@ -90,6 +94,7 @@ const eventos = indicesEventos.slice(0, 3).map((ev) => {
   const foto = primeraFoto(ev) ?? semanas.map(primeraFoto).find(Boolean);
   return { ev, semanas: semanas.length, foto, enCurso: enCurso(ev.data.periodo) };
 });
+const ops = todasOps.slice(0, 2);
 
 // "13 sept 2026": las fechas de las filas, cortas.
 const fechaCorta = (d: Date) =>
@@ -292,18 +297,20 @@ const dos = (n: number) => String(n).padStart(2, "0");
       </div>
     </div>
 
-    <!-- Eventos y notas, lado a lado con una línea fina en medio (en móvil,
-         una debajo de otra). Cada fila: foto, fecha, título y entradilla. -->
+    <!-- Seguimiento y operaciones (una encima de otra) a la izquierda y
+         análisis a la derecha, con una línea fina en medio (en móvil, una
+         debajo de otra). Cada fila: foto, fecha, título y entradilla. -->
     <div class="portada-dos animate">
-      <section class="portada-col" aria-label="Últimos eventos">
+      <div class="portada-col">
+      <section aria-label="Seguimiento">
         <div class="portada-col-cab">
-          <h2>Eventos<span>{dos(indicesEventos.length)}</span></h2>
-          <a href="/eventos">Ver todos</a>
+          <h2>Seguimiento<span>{dos(indicesEventos.length)}</span></h2>
+          <a href="/seguimiento">Ver todos</a>
         </div>
         <ul>
           {eventos.map(({ ev, semanas, foto, enCurso }) => (
             <li>
-              <a class="fila" href={`/eventos/${ev.data.evento}`}>
+              <a class="fila" href={`/seguimiento/${ev.data.evento}`}>
                 <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
                 {enCurso && <span class="sello-en-curso">En curso</span>}
                 <span class="fila-texto">
@@ -320,17 +327,41 @@ const dos = (n: number) => String(n).padStart(2, "0");
           ))}
         </ul>
       </section>
-      <section class="portada-col" aria-label="Últimas notas">
+      <section class="portada-col-otra" aria-label="Operaciones">
         <div class="portada-col-cab">
-          <h2>Notas<span>{dos(todasNotas.length)}</span></h2>
-          <a href="/notas">Ver todas</a>
+          <h2>Operaciones<span>{dos(todasOps.length)}</span></h2>
+          <a href="/operaciones">Ver todas</a>
+        </div>
+        <ul>
+          {ops.map((op) => {
+            const foto = primeraFoto(op);
+            return (
+              <li>
+                <a class="fila" href={`/operaciones/${op.id}`}>
+                  <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
+                  <span class="fila-texto">
+                    <span class="fila-fecha">{op.data.periodo ?? fechaCorta(op.data.date)}</span>
+                    <span class="fila-titulo">{op.data.title}</span>
+                    {op.data.description && <span class="fila-entradilla">{op.data.description}</span>}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+      </div>
+      <section class="portada-col" aria-label="Análisis">
+        <div class="portada-col-cab">
+          <h2>Análisis<span>{dos(todasNotas.length)}</span></h2>
+          <a href="/analisis">Ver todos</a>
         </div>
         <ul>
           {notas.map((nota) => {
             const foto = primeraFoto(nota);
             return (
               <li>
-                <a class="fila" href={`/notas/${nota.id}`}>
+                <a class="fila" href={`/analisis/${nota.id}`}>
                   <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
                   <span class="fila-texto">
                     <span class="fila-fecha">{fechaCorta(nota.data.date)}</span>

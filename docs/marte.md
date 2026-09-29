@@ -40,7 +40,7 @@ desde el de `/luna`, siempre con un vuelo. `/luna` avisa con
 lo lee y lo borra al llegar.
 
 Las notas etiquetadas `marte` tienen los mismos filtros que las de la Luna:
-no salen en `/notas`, la portada ni el RSS, y su "volver" lleva a `/marte`.
+no salen en `/analisis`, la portada ni el RSS, y su "volver" lleva a `/marte`.
 
 ## Cómo funciona
 

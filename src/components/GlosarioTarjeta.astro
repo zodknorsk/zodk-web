@@ -19,7 +19,7 @@
     t.setAttribute("role", "tooltip");
     t.hidden = true;
     t.innerHTML =
-      '<p class="gl-t"></p><p class="gl-en"></p><p class="gl-def"></p><a class="gl-ir">Ver en el glosario →</a>';
+      `<p class="gl-t"></p><p class="gl-en"></p><p class="gl-def"></p><a class="gl-ir">Ver en el glosario →</a>`;
     t.addEventListener("pointerenter", () => clearTimeout(cerrar));
     t.addEventListener("pointerleave", (e) => {
       if (e.pointerType === "mouse") ocultarLuego();

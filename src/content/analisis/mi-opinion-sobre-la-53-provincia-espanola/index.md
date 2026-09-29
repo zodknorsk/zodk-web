@@ -9,6 +9,7 @@ updated: '2026-09-07'
 tags:
   - historia
   - sahara-occidental
+opinion: true
 ---
 ## Introducción al Sáhara
 

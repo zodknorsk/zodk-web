@@ -2,12 +2,16 @@
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
-  entry: CollectionEntry<"notas"> | CollectionEntry<"uas">;
-  // Título en azul al pasar el ratón (en la portada, como los eventos).
+  entry: CollectionEntry<"analisis"> | CollectionEntry<"operaciones"> | CollectionEntry<"uas">;
+  // Título en azul al pasar el ratón (como las filas de la portada).
   tituloAzul?: boolean;
+  // Texto pequeño junto al título («Opinión» en los análisis de opinión).
+  etiqueta?: string;
+  // Una línea pequeña debajo (el periodo de una operación).
+  pie?: string;
 };
 
-const { entry, tituloAzul } = Astro.props;
+const { entry, tituloAzul, etiqueta, pie } = Astro.props;
 ---
 
 <a
@@ -15,14 +19,18 @@ const { entry, tituloAzul } = Astro.props;
   class="relative group flex flex-nowrap py-3 px-4 pr-10 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
 >
   <div class="flex flex-col flex-1 min-w-0">
-    <div class:list={["font-semibold truncate", tituloAzul && "group-hover:text-[#2576eb] dark:group-hover:text-[#649fff]"]}>
-      {entry.data.title}
+    <div class="flex items-center gap-2 min-w-0">
+      <div class:list={["font-semibold truncate", tituloAzul && "group-hover:text-[#2576eb] dark:group-hover:text-[#649fff]"]}>
+        {entry.data.title}
+      </div>
+      {etiqueta && <span class="etiqueta-opinion flex-none">{etiqueta}</span>}
     </div>
     {
       entry.data.description && (
         <div class="text-sm line-clamp-2">{entry.data.description}</div>
       )
     }
+    {pie && <div class="text-xs opacity-60 pt-1">{pie}</div>}
   </div>
   <svg
     xmlns="http://www.w3.org/2000/svg"
