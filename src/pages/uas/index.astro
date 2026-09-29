@@ -99,7 +99,7 @@ const paises = recuento((f) => f.data.pais);
                     {conGiro(f.id) && <span class="uas-giro" style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
                   </span>
                   <span class="uas-tarjeta-texto">
-                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera"><BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span> {f.data.pais}</span>
+                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera"><BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span> {f.data.pais}{f.data.tags.includes("prototipo") && <span class="uas-tarjeta-sello">Prototipo</span>}</span>
                     <span class="uas-tarjeta-nombre">{f.data.title}</span>
                     {f.data.categoria && <span class="uas-tarjeta-categoria">{f.data.categoria}</span>}
                     {f.data.description && <span class="uas-tarjeta-desc">{f.data.description}</span>}
@@ -306,6 +306,14 @@ const paises = recuento((f) => f.data.pais);
   .uas-tarjeta:hover .uas-tarjeta-bandera, .uas-tarjetas--filtro .uas-tarjeta-bandera { transform: scale(1.35); }
   .uas-tarjetas--filtro .uas-tarjeta-pais { align-self: flex-start; padding: 0.1rem 0.4rem; border-radius: 3px; background: #27272a; color: #fafafa; }
   :global(html.dark) .uas-tarjetas--filtro .uas-tarjeta-pais { background: #e4e4e7; color: #18181b; }
+  .uas-tarjeta-sello {
+    margin-left: 0.5rem;
+    padding: 0.08rem 0.4rem;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
   .uas-tarjeta-nombre { font-size: 1.05rem; font-weight: 600; color: #18181b; }
   :global(html.dark) .uas-tarjeta-nombre { color: #f4f4f5; }
   .uas-tarjeta-categoria { font-size: 0.62rem; opacity: 0.7; }

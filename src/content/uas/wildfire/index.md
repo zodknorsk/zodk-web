@@ -8,6 +8,7 @@ updated: '2026-09-29'
 tags:
   - eeuu
   - dron
+  - prototipo
 bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
 categoria: Dron armado MALE
