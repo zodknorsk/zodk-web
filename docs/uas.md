@@ -12,8 +12,9 @@ el código, el componente `VisorUAS`.
 
 Drones hechos: MICH-2000 (ala volante, Ucrania), Skydio X10D (cuadricóptero,
 EE. UU., del Ejército de Tierra), Wildfire (avión con cola en V, EE. UU.,
-hecho solo con renders del fabricante) y MQ-9 Reaper (EE. UU., armado con
-cuatro Hellfire y dos GBU-12, con el tren fuera). **Este documento es la receta**: con
+hecho solo con renders del fabricante), MQ-9 Reaper (EE. UU., armado con
+cuatro Hellfire y dos GBU-12, con el tren fuera) y RQ-11 Raven (EE. UU., de
+mano, con el morro de gimbal del Ejército de Tierra). **Este documento es la receta**: con
 él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
 final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
 fotos de cada maqueta.
@@ -68,6 +69,20 @@ armamento», abajo). Después (sin commit): la fila «Carga» del MQ-9 y del
 Wildfire enlaza a cada munición (`[[Armamento#GBU-12 Paveway II\|GBU-12]]`),
 y el glosario tiene una sección nueva, «Municiones y guiado», con
 *semi-active laser*, *fire and forget* y *sea-skimming* (75 términos).
+
+**29-sep-2026, RQ-11 Raven** (commit en `main` y en la bóveda, subido).
+Hecho: nota `🇺🇸 RQ-11 Raven.md` (la Historia, la mitad sobre España, como
+pidió el usuario), maqueta `src/data/uas/rq-11-raven.ts` con cinco partes,
+miniaturas de fuentes y del dron, importado. Versión elegida por el usuario:
+**el morro con gimbal** (el Raven digital que tiene el Ejército de Tierra
+desde 2016), no el de cámaras fijas de Afganistán. Para hacerlo, el `ala`
+admite ya **diedro** (quinto número de cada estación; ver la receta).
+Después, a petición del usuario: la junta de los pliegues del ala, la
+hélice que se vea en 3D, el gris del Ejército de Tierra (`gris-et`) y el
+estabilizador en trapecio, no rectangular. Falta:
+**tuits para «En acción»** (no se encontró ninguno del Raven; la sección no
+está en la nota). El usuario dio la maqueta por buena el 29-sep-2026, tras
+esos cuatro cambios.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -223,6 +238,33 @@ generadores de `arte/` leen estos archivos con Node.
   `x`, `y` en el eje (`aletasX` del Reaper).
 - **Carenados sobre una superficie inclinada** (cola en V): la misma placa,
   con la misma inclinación, más gruesa y en una franja corta.
+- **Diedro** (alas cuyas puntas suben, como las del Raven): cada estación
+  del `ala` admite un quinto número, lo que sube sobre `y`
+  (`[x, ba, bs, grosor, subida]`). En el Raven, el centro plano hasta 0,2 m
+  y las puntas a 10°.
+- **Ala en varias piezas, con la junta a la vista**: un `ala` cuya primera
+  estación no está en x = 0 salen dos piezas sueltas, una a cada lado. El
+  Raven lleva el centro (`ala`) y las puntas (`ala-puntas`) aparte, y entre
+  ellos se ve la línea del pliegue (en Maqueta, la arista; en Pixel, la
+  junta entre piezas). Lo pidió el usuario: «una línea en los pliegues para
+  que parezca que están como dobladas».
+- **Hélice parada en un ángulo** (`giro`, en grados): con las palas
+  tumbadas, la del Raven quedaba escondida bajo el ala en la vista 3D; a 60°
+  asoma una pala por encima.
+- **Color de un ejército concreto**: acabado nuevo si hace falta, sacado de
+  sus fotos. El `gris-et` (el gris algo verdoso de los Raven del Ejército
+  de Tierra, muestreado en la foto de la exposición) lo pidió el usuario.
+- **El `bisel` de una placa la hace crecer hacia fuera** lo que mide el
+  bisel (lo hace así Three.js): con biseles grandes, encoger antes el
+  contorno lo mismo (`encoger` del Raven) y no pasar de la mitad del grosor
+  más fino de la pieza, o salen picos. Una **placa horizontal con un bisel
+  grande** hace una pieza de bordes redondeados vista de lado y con la
+  planta que se quiera (la capucha del gimbal del Raven: media
+  circunferencia delante).
+- **Una foto de vuelo puede engañar**: en la de perfil del Raven, el ala más
+  cercana tapaba el pilón y parecía que el ala iba pegada a la barquilla;
+  las de tierra dieron la altura de verdad (5 cm). Contrastar cada medida
+  con otra foto.
 - **Solo renders** (dron que aún no ha volado, como el Wildfire): las
   partes que se ven en ellos van como `fabricante` («Dato del fabricante»),
   no como `foto`, y la nota lo dice; lo que en los renders no se distingue,
@@ -669,3 +711,24 @@ coincide con las fotos. Ojo: `bajo-ala-armas.jpg` lleva GBU-38, no GBU-12.
 
 Hay más en `arte/uas-fuentes/mq-9-reaper/FUENTES.md` (despegue, tres
 cuartos, cola y tren en París 2013).
+
+**RQ-11 Raven.** Medidas de la ficha del Ejército de Tierra (1,4 m de
+envergadura, 0,91 m de largo, 1,9 kg). Todas de Wikimedia Commons. La de
+perfil en vuelo da el contorno de la barquilla, el gimbal y la cola; las
+de tierra, la altura del pilón (5 cm); la de detrás, el diedro (10°). El
+estabilizador (0,40 m) es una reconstrucción.
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| perfil-vuelo.jpg | De perfil en vuelo, con gimbal y DDL (Fuerza Aérea de EE. UU., dominio público): el contorno | https://commons.wikimedia.org/wiki/File:52nd_SFS_trains_with_Raven_for_first_time_at_Spangdahlem_(6243202).jpg |
+| frente-manos.jpg | Desde detrás: centro del ala plano y puntas a unos 10° (Ejército de EE. UU., dominio público) | https://commons.wikimedia.org/wiki/File:Dark_Rifles_take_Battle_Group_Poland_Raven_training_to_new_heights_(6768246).jpg |
+| abajo-vuelo.jpg | Desde abajo en vuelo, cámaras fijas: planta del ala (dominio público) | https://commons.wikimedia.org/wiki/File:Raven_UAV_flying.jpg |
+| suelo-tres-cuartos.jpg | En la hierba, de tres cuartos: el pilón levanta el ala (Fuerza Aérea de EE. UU., dominio público) | https://commons.wikimedia.org/wiki/File:52nd_SFS_trains_with_Raven_for_first_time_at_Spangdahlem_(6243199).jpg |
+| perfil-soldado.jpg | De perfil en las manos de un soldado: altura del pilón y del motor (dominio público) | https://commons.wikimedia.org/wiki/File:U.S._Army_Spc._Corey_Lee,_a_military_policeman_assigned_to_the_603rd_Military_Police_Company,_displays_an_RQ-11_Raven_unmanned_aerial_vehicle_to_a_group_of_distinguished_visitors_at_Fort_Hunter_Liggett,_Calif_120615-A-XX999-111.jpg |
+| gimbal-tres-cuartos.jpg | Capucha y bola del gimbal desde abajo (CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:SUAV_Raven_(1).jpg |
+| gimbal-abajo.jpg | Raven checo colgado, desde abajo (CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:SUAV_Raven_(2).jpg |
+| ala-planta.jpg | El ala sola: las tres piezas y sus juntas (CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:SUAV_Raven_(3).jpg |
+| planta-suelo.jpg | Raven rumano sobre las mochilas, desde arriba: cola (dominio público) | https://commons.wikimedia.org/wiki/File:Romanian_RQ-11_Raven.jpg |
+| et-mesa.jpg | Raven del Ejército de Tierra en una exposición (CC BY-SA 3.0) | https://commons.wikimedia.org/wiki/File:RQ-11_Raven_E.T..JPG |
+| ea-lanzamiento.jpg | Lanzamiento a mano en un ejercicio del Ejército del Aire (CC BY-SA 2.0) | https://commons.wikimedia.org/wiki/File:Ejercicio_SIRIO_fase_Tormenta_(13147049315).jpg |
+| lanzamiento-irak.jpg | Lanzamiento en Irak (dominio público) | https://commons.wikimedia.org/wiki/File:RQ-11_Raven_2.jpg |

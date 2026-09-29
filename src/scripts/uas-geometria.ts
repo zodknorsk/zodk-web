@@ -28,8 +28,9 @@ const perfilNaca = (s: number) =>
 
 // Ala con perfil: cada estación es un contorno de perfil (extradós abombado,
 // intradós más plano); las estaciones se unen a lo largo de la envergadura y
-// las puntas se cierran.
-function geometriaAla(y: number, mitad: [number, number, number, number][]): BufferGeometry {
+// las puntas se cierran. Cada estación puede subir sobre y (el diedro).
+type Estacion = readonly [number, number, number, number, number];
+function geometriaAla(y: number, estaciones: Estacion[]): BufferGeometry {
   const N = 14;  // puntos por cara, más juntos cerca del borde de ataque
   const cuerda = Array.from({ length: N + 1 }, (_, i) => (1 - Math.cos((i / N) * Math.PI)) / 2);
   // El contorno va del borde de salida por arriba hasta el de ataque y vuelve
@@ -39,13 +40,9 @@ function geometriaAla(y: number, mitad: [number, number, number, number][]): Buf
     ...cuerda.slice(1, -1).map((s): [number, number] => [s, -0.55]),
   ];
   const M = contorno.length;
-  const estaciones = [
-    ...mitad.slice().reverse().map(([x, a, b, t]) => [-x, a, b, t] as const),
-    ...mitad.filter(([x]) => x > 0),
-  ];
   const pos: number[] = [];
-  for (const [x, zBA, zBS, t] of estaciones)
-    for (const [s, lado] of contorno) pos.push(x, y + lado * t * perfilNaca(s), zBA + (zBS - zBA) * s);
+  for (const [x, zBA, zBS, t, sube] of estaciones)
+    for (const [s, lado] of contorno) pos.push(x, y + sube + lado * t * perfilNaca(s), zBA + (zBS - zBA) * s);
   const idx: number[] = [];
   for (let e = 0; e < estaciones.length - 1; e++)
     for (let k = 0; k < M; k++) {
@@ -54,9 +51,9 @@ function geometriaAla(y: number, mitad: [number, number, number, number][]): Buf
     }
   // Tapas de las puntas: abanico desde el centro de cada contorno.
   for (const e of [0, estaciones.length - 1]) {
-    const [x, zBA, zBS] = estaciones[e];
+    const [x, zBA, zBS, , sube] = estaciones[e];
     const centro = pos.length / 3;
-    pos.push(x, y, (zBA + zBS) / 2);
+    pos.push(x, y + sube, (zBA + zBS) / 2);
     for (let k = 0; k < M; k++) idx.push(centro, e * M + k, e * M + ((k + 1) % M));
   }
   const g = new BufferGeometry();
@@ -68,8 +65,14 @@ function geometriaAla(y: number, mitad: [number, number, number, number][]): Buf
 
 export function geometriaDe(p: Pieza): BufferGeometry[] {
   switch (p.tipo) {
-    case "ala":
-      return [geometriaAla(p.y, p.estaciones)];
+    case "ala": {
+      // Media ala (x ≥ 0) y su reflejo. Si no empieza en x = 0 (las puntas de
+      // un ala en tres piezas), son dos piezas sueltas, sin unir por el centro.
+      const mitad = p.estaciones.map(([x, a, b, t, sube = 0]): Estacion => [x, a, b, t, sube]);
+      const reflejo = mitad.slice().reverse().map(([x, a, b, t, sube]): Estacion => [-x, a, b, t, sube]);
+      if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo), geometriaAla(p.y, mitad)];
+      return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
+    }
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();
@@ -169,7 +172,7 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           const pala = new BoxGeometry(p.radio, ancho, 0.008);
           pala.translate(p.radio / 2, 0, 0);
           pala.rotateX(0.35);  // paso de la pala
-          pala.rotateZ((i / p.palas) * Math.PI * 2);
+          pala.rotateZ((i / p.palas) * Math.PI * 2 + ((p.giro ?? 0) * Math.PI) / 180);
           hoja.push(pala);
         }
         hoja.push(new SphereGeometry(Math.max(0.035, p.radio * 0.08), 12, 8));

@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva";
+export type Acabado = "negro" | "gris" | "gris-et" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -29,14 +29,18 @@ export type Pieza = (
   // Ala con perfil (grueso delante, afilado detrás), simétrica respecto a
   // x = 0. Estaciones de la raíz a la punta: [x, z del borde de ataque, z del
   // borde de salida, grosor máximo]. Dos estaciones seguidas en la misma x
-  // hacen un escalón (el hueco de la hélice).
-  | { tipo: "ala"; id: string; y: number; estaciones: [number, number, number, number][] }
+  // hacen un escalón (el hueco de la hélice). Un quinto número opcional sube
+  // la estación sobre y (el diedro: las puntas del Raven suben). Si la
+  // primera estación no está en x = 0, salen dos piezas sueltas, una a cada
+  // lado (las puntas de un ala en tres piezas, con su junta).
+  | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[] }
   // Varilla recta (mástiles, antenas, brazos, patas).
   | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean }
   // Hélice: por defecto gira en el plano vertical (empuja a lo largo de z, como
   // la del MICH); con eje "y", en el horizontal (multirrotores).
-  // espejo: se repite al otro lado (x → −x).
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean }
+  // espejo: se repite al otro lado (x → −x). giro: grados que se giran las
+  // palas sobre su eje (0: la primera, tumbada hacia x).
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number }
   // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
   // redondeo: radio de las esquinas vistas desde arriba (y bisel arriba y abajo).
   | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean; redondeo?: number }
