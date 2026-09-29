@@ -2,9 +2,9 @@
 title: MICH 2000
 date: '2026-09-21'
 description: >-
-  El MICH-2000 es un dron ucraniano de ataque de largo alcance y un solo uso: un
-  ala volante en delta con dos pequeños canards delante, hélice propulsora y…
-updated: '2026-09-28'
+  El MICH-2000 es un dron ucraniano de ataque de largo alcance de un solo uso,
+  con hélice propulsora y despegue RATO, muy parecido al Shahed iraní. Solo lo…
+updated: '2026-09-29'
 tags:
   - ucrania
   - dron
@@ -12,9 +12,9 @@ bandera: "\U0001F1FA\U0001F1E6"
 pais: Ucrania
 categoria: Dron de ataque de un solo uso
 ---
-> El MICH-2000 es un <mark>dron ucraniano de ataque de largo alcance y un solo uso</mark>: un ala volante en delta con dos pequeños canards delante, hélice propulsora y despegue RATO, muy parecido al Shahed iraní. Solo lo usa el <mark>Centro de Operaciones Especiales «Alfa» del SBU</mark>, para atacar objetivos lejos de la frontera, dentro de Rusia. El fabricante dice que con él se destruyó el [Tu-95 de la base de Engels-2](https://www.pravda.com.ua/eng/news/2026/07/19/8044822/) en julio de 2026, que alcanzó el [almacén de Wildberries en Riazán](https://meduza.io/en/feature/2026/07/29/ukraine-resumes-strikes-on-wildberries-warehouses-in-russia-see-the-attack-on-ryazan) y que llegó con más de 20 drones al [puerto de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/). El 20 de septiembre de 2026, [Zelenski lo nombró](https://www.forcesnews.com/ukraine/flamingo-cruise-missiles-missile-drones-and-mystery-pelican-what-ukraine-used-its-moscow) entre los diez sistemas usados esa noche contra la región de Moscú, en los ataques a la [refinería de Gazprom Neft en Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/) y a una instalación logística.
+> El MICH-2000 es un <mark>dron ucraniano de ataque de largo alcance de un solo uso</mark>, con hélice propulsora y despegue RATO, muy parecido al Shahed iraní. Solo lo usa el <mark>Centro de Operaciones Especiales «Alfa» del SBU</mark>, para atacar objetivos en el interior de Rusia, lejos de la frontera. El fabricante dice que con él se destruyó el [Tu-95 de la base de Engels-2](https://www.pravda.com.ua/eng/news/2026/07/19/8044822/) en julio de 2026, que alcanzó el [almacén de Wildberries en Riazán](https://meduza.io/en/feature/2026/07/29/ukraine-resumes-strikes-on-wildberries-warehouses-in-russia-see-the-attack-on-ryazan) y que llegó con más de 20 drones al [puerto de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/). El 20 de septiembre de 2026, [Zelenski lo nombró](https://www.forcesnews.com/ukraine/flamingo-cruise-missiles-missile-drones-and-mystery-pelican-what-ukraine-used-its-moscow) entre los diez sistemas usados esa noche contra la región de Moscú, en los ataques a la [refinería de Gazprom Neft en Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/) y a una instalación logística.
 
-⚠️ Casi todas sus cifras y ataques vienen del fabricante y <mark>no están verificados</mark> de forma independiente.
+⚠️ Casi todas sus cifras y ataques vienen del fabricante y <mark>no están verificados</mark> de forma independiente. El reportaje que dio a conocer el dron, el de [Oboronka](https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/), se publicó con el visto bueno del fabricante y del SBU.
 
 <div class="visor-hueco"></div>
 
@@ -36,11 +36,11 @@ categoria: Dron de ataque de un solo uso
 
 ## Historia
 
-A finales de 2023, un equipo ucraniano viajó a China para comprar drones civiles y convertirlos en armas, como ya se hacía con el Mugin-5 PRO. Allí encontró una fábrica que hacía decenas de ZTK-150, iguales al Shahed salvo por los canards. Los intermediarios ofrecieron venderles la tecnología, pero la dirección de la fábrica se negó. El equipo aceptó entonces un curso de pilotos y, mientras lo hacía, <mark>fotografió toda la cadena de producción</mark>, «desde la fabricación hasta la colocación de las estanterías». Con esas fotos y ocho ZTK-150 comprados empezaron a fabricar su propio dron.
+A finales de 2023, un equipo ucraniano viajó a China para comprar drones civiles y convertirlos en armas, como ya se hacía con el Mugin-5 PRO. Allí encontró una fábrica que hacía decenas de ZTK-150, iguales al Shahed salvo por los canards. Los intermediarios ofrecieron venderles la tecnología, pero la dirección de la fábrica se negó. El equipo aceptó entonces un curso de pilotos y, mientras lo hacía, <mark>[fotografió toda la cadena de producción](https://defence-blog.com/ukraine-converts-chinese-drone-into-mich-2000-deep-striker/)</mark>, «desde la fabricación hasta la colocación de las estanterías». Con esas fotos y ocho ZTK-150 comprados empezaron a fabricar su propio dron.
 
-Las primeras pruebas, en el verano de 2024, salieron casi todas mal: el primero voló un kilómetro y cayó porque el peso estaba mal repartido, al segundo se le soltó la hélice por las vibraciones del motor y el tercero lo tumbó la guerra electrónica. En octubre de 2024 «Alfa» los mandó a combate: de tres, derribaron uno y los otros dos cayeron a unos 10 m del objetivo, y con eso se aprobó la producción. Hoy el motor, la cabeza de combate, el fuselaje y el cohete de lanzamiento se fabrican en Ucrania; el fabricante habla de unos 6.000 al año, ocho versiones (enlace analógico, digital o por Starlink; carga y depósito a elegir) y un precio de 48.000 $. Durante más de un año nadie supo cómo se llamaba: los analistas lo describían como un «Shahed con canards» desde julio de 2025, hasta que Oboronka publicó su nombre el 12 de agosto de 2026 tras visitar la fábrica. Ya preparan el MICH+, sin canards, con 70 kg de carga y hasta 600 km.
+Las primeras pruebas, en el verano de 2024, salieron casi todas mal: el primero voló un kilómetro y cayó porque el peso estaba mal repartido, al segundo se le soltó la hélice por las vibraciones del motor y el tercero lo tumbó la guerra electrónica. En octubre de 2024 «Alfa» los mandó a combate: de tres, derribaron uno y los otros dos cayeron a unos 10 m del objetivo, y con eso se aprobó la producción. Hoy el motor, la cabeza de combate, el fuselaje y el cohete de lanzamiento se fabrican en Ucrania; el fabricante habla de [unos 6.000 al año, ocho versiones](https://defence-blog.com/ukraine-converts-chinese-drone-into-mich-2000-deep-striker/) ([enlace analógico, digital o por Starlink; carga y depósito a elegir](https://drone-warfare.com/research/mich-2000/)) y un precio de 48.000 $. Durante más de un año nadie supo cómo se llamaba: los analistas lo describían como un «Shahed con canards» desde julio de 2025, hasta que Oboronka publicó su nombre el 12 de agosto de 2026 tras visitar la fábrica. Ya preparan el MICH+, sin canards, con 70 kg de carga y hasta 600 km.
 
-En 2026 ha aparecido en la campaña ucraniana contra el petróleo ruso: Zelenski lo incluyó entre los sistemas del ataque del 20 de septiembre a la [refinería de Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/), en Moscú, y los drones de «Alfa» atacaron en marzo la [terminal petrolera de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/), en el Báltico, a más de 900 km.
+En 2026 se ha usado en los ataques contra las refinerías rusas. En marzo, según el fabricante, los drones de «Alfa» atacaron la [terminal petrolera de Ust-Luga](https://euromaidanpress.com/2026/03/27/ukraine-hits-ust-luga-and-primorsk-for-the-third-time-in-five-days-the-pace-suggests-kyiv-is-trying-to-destroy-russias-baltic-oil-export-ports-beyond-repair/), en el Báltico, a más de 900 km. Y el 20 de septiembre Zelenski lo nombró entre los diez sistemas usados esa noche contra la región de Moscú, en los ataques a la [refinería de Kapotnya](https://kyivindependent.com/russia-says-dozens-of-ukrainian-drones-targeted-moscow-as-broader-attack-hit-multiple-regions/), en Moscú.
 
 ## En acción
 
@@ -61,23 +61,10 @@ For a long time, the MICH-2000 was one of Ukraine’s […]</div>
 
 ## Fuentes
 
-- **Oboronka** ([fuente](https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/))  
-  El reportaje en la fábrica que dio a conocer el dron: el viaje a China, las pruebas, la producción y los ataques que le atribuye el fabricante. En ucraniano. Se publicó con el visto bueno del fabricante y del SBU.
-
-- **drone-warfare.com** ([fuente](https://drone-warfare.com/research/mich-2000/))  
-  Ficha en inglés que repasa todo lo publicado y separa lo comprobado de lo que solo dice el fabricante. Incluye una maqueta 3D del dron.
-
-- **Ukrainska Pravda** ([fuente](https://www.pravda.com.ua/eng/articles/2026/08/15/8048826/))  
-  Cómo un dron civil chino acabó siendo un arma de largo alcance ucraniana.
-
-- **Euromaidan Press** ([fuente](https://euromaidanpress.com/2026/08/13/mich-2000/))  
-  El MICH-2000 como copia barata de un dron que China no quiso vender, y el Tu-95 de Engels.
-
-- **United24 Media** ([fuente](https://united24media.com/defense-tech/ukraine-secretly-built-a-shahed-like-drone-for-sbu-now-thousands-are-flying-deep-into-russia-21681))  
-  Resumen del reportaje de Oboronka, con fotos del dron en el lanzador.
-
-- **Defence Blog** ([fuente](https://defence-blog.com/ukraine-converts-chinese-drone-into-mich-2000-deep-striker/))  
-  La conversión del dron chino, las versiones y el precio, con una foto de Oboronka.
-
-- **Militarnyi** ([fuente](https://militarnyi.com/en/news/identified-ukrainian-mich-2000/))  
-  La identificación del dron «parecido al Shahed» que llevaba meses atacando Rusia.
+* **drone-warfare.com** - MICH 2000: Ukraine's SBU Alpha Deep-Strike Drone ([fuente](https://drone-warfare.com/research/mich-2000/))
+* **Oboronka**, agosto 2026 - Як китайський «літачок» став українським діпстрайком: історія таємничого безпілотника MICH 2000 ([fuente](https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/))
+* **Militarnyi**, agosto 2026 - Unknown Shahed-Like UAV That Attacked Targets in Russia Identified as Ukrainian MICH 2000 ([fuente](https://militarnyi.com/en/news/identified-ukrainian-mich-2000/))
+* **Euromaidan Press**, agosto 2026 - Ukraine's new Tu-95 killer is a $48,000 copy of a drone China refused to sell ([fuente](https://euromaidanpress.com/2026/08/13/mich-2000/))
+* **Defence Blog**, agosto 2026 - Ukraine converts Chinese drone into MICH 2000 deep striker ([fuente](https://defence-blog.com/ukraine-converts-chinese-drone-into-mich-2000-deep-striker/))
+* **United24 Media**, agosto 2026 - Ukraine Secretly Built a Shahed-Like Drone for SBU—Now Thousands Are Flying Deep Into Russia ([fuente](https://united24media.com/defense-tech/ukraine-secretly-built-a-shahed-like-drone-for-sbu-now-thousands-are-flying-deep-into-russia-21681))
+* **Ukrainska Pravda**, agosto 2026 - How a Chinese UAV has become a Ukrainian long-range weapon: the story of the mysterious MICH 2000 drone ([fuente](https://www.pravda.com.ua/eng/articles/2026/08/15/8048826/))
