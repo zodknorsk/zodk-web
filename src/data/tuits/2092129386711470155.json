@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092129386711470155",
+    "created_at": "2026-08-25T05:58:10.000Z",
+    "text": "🔪 Cuchillos, sierras, martillos… Estas son algunas de las armas incautadas por militares a inmigrantes.\n\nTijeras de poda, azadas, hierros, cristales rotos…\n\nLas imágenes difundidas por este periódico corresponden a los primeros diez días de la invasión, ahora, ese número se ha https://t.co/W9S1q9hxeq",
+    "note_tweet": true,
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/W9S1q9hxeq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092129340834091008/img/jFFtldnOnTg62-ab.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092129340834091008/pl/6PwcA6DNTFmydhr3.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092129340834091008/vid/avc1/320x568/FWmTzgt9v_ENj8RC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092129340834091008/vid/avc1/480x852/sYq82Dgiy9N-wlZR.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092129340834091008/vid/avc1/720x1280/k7jHrgZpdVQjyqDE.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2092129340834091008/vid/avc1/1080x1920/mw5wKjkHcTLk7eiy.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

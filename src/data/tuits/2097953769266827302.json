@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097953769266827302",
+    "created_at": "2026-09-10T07:42:11.000Z",
+    "text": "👉 El Gobierno busca magistrados afines en el Supremo para tratar de llevar al Pleno la suspensión de la Ley de Nietos. https://t.co/2355PteH3d",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/2355PteH3d",
+          "expanded_url": "https://okdiario.com/espana/gobierno-busca-magistrados-afines-supremo-tratar-llevar-pleno-suspension-ley-nietos-20258276?utm_medium=social&utm_source=Twitter#Echobox=1789020125-1",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

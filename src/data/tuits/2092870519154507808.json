@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092870519154507808",
+    "created_at": "2026-08-27T07:03:10.000Z",
+    "text": "🔴 Mandos de la Policía y la Guardia Civil alertaron a Marlaska desde principios de año del «riesgo de invasión» en Ceuta. \n\nLe informa Rosalina Moreno (@rosalina_mb).\n\nhttps://t.co/6Pb9mOZEO1",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/6Pb9mOZEO1",
+          "expanded_url": "https://okdiario.com/espana/mandos-policia-guardia-civil-alertaron-marlaska-desde-principios-ano-del-riesgo-invasion-ceuta-20173109?utm_medium=social&utm_source=Twitter#Echobox=1787810961-1",
+          "display_url": "okdiario.com/espana/mandos-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

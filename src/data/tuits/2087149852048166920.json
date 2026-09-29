@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087149852048166920",
+    "created_at": "2026-08-11T12:11:16.000Z",
+    "text": "💥 El periodista y escritor Chani estalla contra Sánchez por viajar a ver el eclipse tras la crisis migratoria en Ceuta.\n\n\"Es el presidente de una nación que ha visto invadidas y violadas sus fronteras, que tiene una ciudad en emergencia absoluta, y se viene a hacer el capullo https://t.co/6qS8fXmsif",
+    "note_tweet": true,
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/6qS8fXmsif",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2087148364869537792/pu/img/zIqYaJuhUSp7tStI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2087148364869537792/pu/pl/JB0zaW_8pyMlhGWg.m3u8?tag=12&v=c14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2087148364869537792/pu/vid/avc1/480x270/SI0ZkR0G-BNJV7jA.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2087148364869537792/pu/vid/avc1/640x360/fXrDbZ7QvtvBqkQn.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2087148364869537792/pu/vid/avc1/1280x720/P6esnJgGnWK0uSKe.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

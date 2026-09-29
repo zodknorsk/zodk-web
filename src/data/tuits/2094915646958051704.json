@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094915646958051704",
+    "created_at": "2026-09-01T22:29:46.000Z",
+    "text": "Que dice Intxaurrondo que lo de Ceuta es \"un ataque híbrido algorítmico\". Luego da un par de piruetas para encajar la palabra \"ultraderecha\" y remata diciendo que lo pensemos así porque ellos dan el enfoque que consideran más \"adecuado\".\n\n\"Ataque híbrido algorítmico\". No es coña https://t.co/QqpN9ay9fQ",
+    "note_tweet": true,
+    "user": {
+      "name": "Onvre Deconstruido",
+      "screen_name": "o_deconstruido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2101393038102716416/5DdG7Azh_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/QqpN9ay9fQ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094915614510907392/img/AdDlBRnUXO9i_w8T.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094915614510907392/pl/fnFrwOTQOLRRj7fM.m3u8?v=621"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2094915614510907392/vid/avc1/480x270/JIW9Le6hQIMgdDvH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2094915614510907392/vid/avc1/640x360/TIOKS5v7OL-uuAuM.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094915614510907392/vid/avc1/1280x720/LK3YJicSBuX55cHw.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094915614510907392/vid/avc1/1920x1080/bdsnvI4kx-K9KXlm.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100502908710129722",
+    "created_at": "2026-09-17T08:31:33.000Z",
+    "text": "🔴🚑 Dos militares que estaban en Ceuta han sido evacuados al hospital Gómez Ulla de Madrid tras ser agredidos por migrantes https://t.co/hsaumN50CJ",
+    "user": {
+      "name": "Antena 3 Noticias",
+      "screen_name": "A3Noticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1962456341521305600/g4VWKmAF_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/hsaumN50CJ",
+          "expanded_url": "https://atres.red/goa8z2",
+          "display_url": "atres.red/goa8z2"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

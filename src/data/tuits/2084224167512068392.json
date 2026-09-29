@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084224167512068392",
+    "created_at": "2026-08-03T10:25:39.000Z",
+    "text": "💥 Juan José Imbroda, presidente de Melilla, 'estalla' contra el Gobierno de Pedro Sánchez:\n\n\"¿Qué le debe el Gobierno nacional a Marruecos para que nos paguen así y aguantar? España está aquí mucho antes de que fuera un sueño la nación marroquí\" https://t.co/8sNv5gGaMI",
+    "user": {
+      "name": "Vozpópuli",
+      "screen_name": "voz_populi",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1539641919483133953/MY_0lmJL_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8sNv5gGaMI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084223404098383872/img/pInQDGHctmelNSh5.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084223404098383872/pl/Nl7H4refHLox128B.m3u8?v=2e3"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2084223404098383872/vid/avc1/480x270/DYOwHys0zF_d02rn.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2084223404098383872/vid/avc1/640x360/a5gW4j9id9zNxXE8.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2084223404098383872/vid/avc1/1280x720/6HXWPcFYjJpThpYT.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

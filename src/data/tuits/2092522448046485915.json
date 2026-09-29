@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092522448046485915",
+    "created_at": "2026-08-26T08:00:03.000Z",
+    "text": "◼️ Detenidos dos activistas de una ONG tras alentar a \"grupos violentos\" contra las fuerzas de seguridad\n\n#Ceuta #FronteraSur #Inmigración #Marruecos \n\nhttps://t.co/bxmZBoAZU6",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/bxmZBoAZU6",
+          "expanded_url": "https://elfarodeceuta.es/detenidos-activistas-ong-grupos-violentos-fuerzas-seguridad/",
+          "display_url": "elfarodeceuta.es/detenidos-acti…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

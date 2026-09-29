@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098788385603174686",
+    "created_at": "2026-09-12T14:58:39.000Z",
+    "text": "Queremos españoles con los mismos derechos. No españoles de primera y de segunda.\n\n🗳️ Vivas donde vivas, tienes derecho a votar. Pero el PP y Vox quieren impedir que miles de españoles puedan ejercerlo. https://t.co/etEAf5pF8E",
+    "user": {
+      "name": "PSOE",
+      "screen_name": "PSOE",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074088316748615680/07Xromh__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/etEAf5pF8E",
+        "media_url_https": "https://pbs.twimg.com/media/HSBhjNWW4Aw7XLN.jpg"
+      }
+    ]
+  }
+}

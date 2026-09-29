@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096128696927039773",
+    "created_at": "2026-09-05T06:50:00.000Z",
+    "text": "🔙🇲🇦 Un acuerdo vigente con Rabat firmado por González en 1992 permitía expulsar \"en 10 días\" a todos los asaltantes de Ceuta \n\n✍️ Por @ADPrietoEE https://t.co/QBZIq805hD",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/QBZIq805hD",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260905/acuerdo-vigente-rabat-firmado-gonzalez-permitia-expulsar-dias-asaltantes-ceuta/1003744369524_0.html",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

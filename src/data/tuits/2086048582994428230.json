@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086048582994428230",
+    "created_at": "2026-08-08T11:15:13.000Z",
+    "text": "#Últimahora | Grande-Marlaska comunica a la #UE el restablecimiento de los controles fronterizos en las conexiones aéreas y marítimas con #Italia. \n\n#España sigue con atención la evolución de la situación migratoria \ny, en particular,  la que afecta a la República Italiana. https://t.co/6RChry2T4H",
+    "user": {
+      "name": "Ministerio del Interior",
+      "screen_name": "interiorgob",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074043759075917825/QMlAHvzM_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/6RChry2T4H",
+        "media_url_https": "https://pbs.twimg.com/media/HPMiHlzX0AAJnKY.jpg"
+      }
+    ]
+  }
+}

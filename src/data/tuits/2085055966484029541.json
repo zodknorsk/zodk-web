@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085055966484029541",
+    "created_at": "2026-08-05T17:30:55.000Z",
+    "text": "Podemos reclama excluir a Marruecos de la organización del Mundial de 2030: \"Atenta contra la soberanía nacional\" https://t.co/7WzVmZiI88",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/7WzVmZiI88",
+          "expanded_url": "https://www.europapress.es/nacional/noticia-podemos-reclama-excluir-marruecos-organizacion-mundial-2030-atenta-contra-soberania-nacional-20260805190526.html#20260805190526",
+          "display_url": "europapress.es/nacional/notic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

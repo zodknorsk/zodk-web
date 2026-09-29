@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087419581635715551",
+    "created_at": "2026-08-12T06:03:05.000Z",
+    "text": "🔴 LA PORTADA DEL 12 AGOSTO \n\nOKDIARIO capta a los padres de Sánchez en La Mareta con camarero, escolta y coche oficial mientras 10.000 inmigrantes ilegales asedian Ceuta.\n\nhttps://t.co/COXbNxvKGs",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/COXbNxvKGs",
+          "expanded_url": "https://okdiario.com/espana/okdiario-capta-padres-sanchez-disfrutando-mareta-ano-mas-junto-begona-gomez-sus-hijas-19164914?utm_medium=social&utm_source=Twitter#Echobox=1786514584-1",
+          "display_url": "okdiario.com/espana/okdiari…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

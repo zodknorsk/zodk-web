@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087794027676545513",
+    "created_at": "2026-08-13T06:51:00.000Z",
+    "text": "España cifra en hasta 5.000 los migrantes de Ceuta que pueden ser acogidos: 2.500 menores y unos 2.500 potenciales solicitantes de asilo https://t.co/p3kupFZX1k",
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/p3kupFZX1k",
+          "expanded_url": "https://elpais.com/espana/2026-08-13/espana-cifra-en-hasta-5000-los-migrantes-de-ceuta-que-pueden-ser-acogidos.html?utm_source=twitter&utm_medium=social&utm_campaign=tw",
+          "display_url": "elpais.com/espana/2026-08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

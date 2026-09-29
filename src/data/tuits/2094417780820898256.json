@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094417780820898256",
+    "created_at": "2026-08-31T13:31:26.000Z",
+    "text": "Han dado la orden de ocultar el estado de los hospitales en Ceuta\n\n📹 @ElPueblodeCeuta https://t.co/SXrgVs7m5d",
+    "user": {
+      "name": "Willy Tolerdo",
+      "screen_name": "WillyTolerdoo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/581839453527941120/GGYbnx0T_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/SXrgVs7m5d",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094417639099478016/img/EUNzawVh9lsEAz_k.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094417639099478016/pl/-wQetEdCojFCO5sL.m3u8?v=e91"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2094417639099478016/vid/avc1/320x568/_qT75ulBtl8Vqv5s.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2094417639099478016/vid/avc1/480x852/2h_f4qk9_LXR7KCO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094417639099478016/vid/avc1/720x1280/qCbnO7uaE1gexVgg.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

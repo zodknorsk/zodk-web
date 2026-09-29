@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094691861453558114",
+    "created_at": "2026-09-01T07:40:31.000Z",
+    "text": "Esta semana empiezan a tramitarse los primeros 25 expedientes de repatriación de menores no acompañados.\n\nHa pasado un mes.\nUn mes.\n25.",
+    "user": {
+      "name": "Inés García",
+      "screen_name": "inesgcaballo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/971996213133262850/2GJ2xppF_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

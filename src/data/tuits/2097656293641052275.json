@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097656293641052275",
+    "created_at": "2026-09-09T12:00:07.000Z",
+    "text": "A good idea spreads like Wildfire.\n\n#UAS #Airpower https://t.co/eIONVDjZ1n",
+    "user": {
+      "name": "General Atomics Aeronautical Systems, Inc (GA-ASI)",
+      "screen_name": "GenAtomics_ASI",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1901652430825426945/GWRKmGdJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/eIONVDjZ1n",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2097655186692907008/pu/img/LWOehEZrZOBkwzsx.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2097655186692907008/pu/pl/J0e68CYxpZYjFZXw.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2097655186692907008/pu/vid/avc1/480x270/m4WAuB9cty3IcNU6.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2097655186692907008/pu/vid/avc1/640x360/sragpv3l0dsKu6OE.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2097655186692907008/pu/vid/avc1/1280x720/QKR639DWtGWY9rDd.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

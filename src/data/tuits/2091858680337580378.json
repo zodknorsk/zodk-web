@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091858680337580378",
+    "created_at": "2026-08-24T12:02:28.000Z",
+    "text": "‼️ La ministra portavoz dice que el Rey «es dueño de su agenda» para visitar Ceuta y Puente la corrige: «El Gobierno decide». https://t.co/zps8sYWOi7",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/zps8sYWOi7",
+          "expanded_url": "https://okdiario.com/espana/ministra-portavoz-dice-que-rey-dueno-agenda-visitar-ceuta-puente-corrige-gobierno-decide-20163791?utm_medium=social&utm_source=Twitter#Echobox=1787571054-1",
+          "display_url": "okdiario.com/espana/ministr…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

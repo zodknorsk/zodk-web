@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101638567978029107",
+    "created_at": "2026-09-20T11:44:15.000Z",
+    "text": "Estamos poniendo todos los recursos necesarios para devolver la normalidad en Ceuta.\n\nVamos a dar una respuesta digna.\n\nCon el compromiso rotundo del Gobierno de España y a pesar de la oposicion destructiva que solo busca la foto de la crisis y no resolverla. https://t.co/SzYddriDkS",
+    "user": {
+      "name": "Pedro Sánchez",
+      "screen_name": "sanchezcastejon",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074022871068721152/op9-nqtP_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/SzYddriDkS",
+        "media_url_https": "https://pbs.twimg.com/media/HSqE1cfXIAA3aWA.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101637191482920960/pl/H1ZABW8QeSPH7Ox8.m3u8?v=3b0"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2101637191482920960/vid/avc1/480x270/BiQzKd3u9s5Df5f6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2101637191482920960/vid/avc1/640x360/Fg2R7ce1R3qMSZYu.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101637191482920960/vid/avc1/1280x720/jRRCN_4Z1sZ1SowH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2101637191482920960/vid/avc1/1920x1080/aI5y4l0PIrKkiMAE.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

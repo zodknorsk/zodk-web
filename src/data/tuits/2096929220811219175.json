@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096929220811219175",
+    "created_at": "2026-09-07T11:50:59.000Z",
+    "text": "◼️La playa del Trampolín cada vez nos deja una estampa más impactante: la de todo un nuevo asentamiento chabolista, lleno de pequeños puestos de comida, ropa o zapatos\n\n📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio\n\n#Ceuta #Trampolín https://t.co/quUdfW8Muh",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/quUdfW8Muh",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096928367240998912/img/nK0ic5G_jnZw_F84.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096928367240998912/pl/SfFJirfsjw7CqAo8.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096928367240998912/vid/avc1/320x568/Unxz0UHfkPI1GZrz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096928367240998912/vid/avc1/480x852/niz4jbwsZtT0-E9H.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096928367240998912/vid/avc1/720x1280/PjFIIeMaz6QZ9OWA.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2096928367240998912/vid/avc1/1080x1920/2SVCJhgJ1gaFDPad.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

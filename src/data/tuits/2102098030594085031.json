@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102098030594085031",
+    "created_at": "2026-09-21T18:10:00.000Z",
+    "text": "Dos invasores  marroquíes arrastraron de madrugada a una menor de 17 años, también marroquí, hasta el muro de la desalinizadora de Ceuta y la agredieron sexualmente https://t.co/bmh2JqCp78",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/bmh2JqCp78",
+          "expanded_url": "https://okdiario.com/espana/dos-inmigrantes-ilegales-marroquies-agreden-menor-17-anos-junto-desalinizadora-20348026",
+          "display_url": "okdiario.com/espana/dos-inm…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

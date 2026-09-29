@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100542995028164736",
+    "created_at": "2026-09-17T11:10:50.000Z",
+    "text": "🔴 ÚLTIMA HORA | Un mena da positivo en tuberculosis «altamente contagiosa» e ingresa en el hospital de Ceuta.\n\nInforma Lidia Ramírez (@LidiaRamirezRol).\n\nhttps://t.co/q1AtKL45pW",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/q1AtKL45pW",
+          "expanded_url": "https://theobjective.com/sanidad/2026-09-17/mena-positivo-tuberculosis-altamente-contagiosa-ceuta/",
+          "display_url": "theobjective.com/sanidad/2026-0…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

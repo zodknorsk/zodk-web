@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089666458414391345",
+    "created_at": "2026-08-18T10:51:22.000Z",
+    "text": "Marlaska tiene a los policías desplegados en Ceuta durmiendo en el suelo, con un inodoro para 70 agentes y sin agua caliente. https://t.co/CU1Nl6wiBb",
+    "user": {
+      "name": "Eduardo Inda",
+      "screen_name": "eduardoinda",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/698106393526722560/hA9Itqr5_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/CU1Nl6wiBb",
+          "expanded_url": "https://okdiario.com/espana/marlaska-tiene-policias-desplegados-ceuta-durmiendo-suelo-inodoro-70-agentes-sin-agua-caliente-19596456?utm_campaign=inda&utm_medium=Social&utm_source=Twitter#Echobox=1787050281-3",
+          "display_url": "okdiario.com/espana/marlask…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

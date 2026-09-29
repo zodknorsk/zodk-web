@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100108016481612047",
+    "created_at": "2026-09-16T06:22:23.000Z",
+    "text": "🔴 El Gobierno envía a cárceles de la península a los 70 invasores más peligrosos por agresión sexual y robos con violencia. \n\n✍️ Informa Rosalina Moreno (@rosalina_mb).\n\nhttps://t.co/KQyFwbhNSW",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/KQyFwbhNSW",
+          "expanded_url": "https://okdiario.com/espana/gobierno-envia-carceles-peninsula-70-invasores-mas-peligrosos-agresion-sexual-robos-violencia-20298714?utm_medium=social&utm_source=Twitter#Echobox=1789539743-3",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

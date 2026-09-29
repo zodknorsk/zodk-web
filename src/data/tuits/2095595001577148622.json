@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095595001577148622",
+    "created_at": "2026-09-03T19:29:17.000Z",
+    "text": "Así han cazado una cría de delfín los inmigrantes en Ceuta: https://t.co/LtqwtWDyjN",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LtqwtWDyjN",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095594825827651584/img/OOzeN9g4mPo0_Gla.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095594825827651584/pl/lugudjGt9D55gDcy.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2095594825827651584/vid/avc1/320x568/pubpdE4VzXwL7KQf.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2095594825827651584/vid/avc1/480x852/4hQIHywo5KNkowHZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095594825827651584/vid/avc1/720x1280/YX7FStNQsQ_lv3GH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2095594825827651584/vid/avc1/1080x1920/fWGCO3VXi5j5b7t8.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

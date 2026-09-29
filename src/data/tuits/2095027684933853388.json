@@ -1,0 +1,56 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095027684933853388",
+    "created_at": "2026-09-02T05:54:58.000Z",
+    "text": "🔴 Susana Díaz se queda muda cuando está Sra pregunta por ella y le dice las verdades a la cara. \nMuy bien dicho Sra 💯👌🇪🇸 https://t.co/aLnLrEAZw8",
+    "user": {
+      "name": "Princess",
+      "screen_name": "vezapurpura",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1479201365922623493/u1JFY0XT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/aLnLrEAZw8",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095025598561128448/img/QGf87-JPl6XK-f2V.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/pl/gJTJ0reOxg2bysQL.m3u8?v=ccb"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/vid/avc1/480x270/BIoUMWsWN8m3wrAx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/vid/avc1/640x360/E9d791kITal68Y5o.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/vid/avc1/1280x720/bmoi1L0lkc2HQ19I.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/vid/avc1/1920x1080/O-vpSknzeqZMz6uN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2095025598561128448/vid/avc1/3840x2160/cDeidGrlUSEFRJXA.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100820086625808771",
+    "created_at": "2026-09-18T05:31:54.000Z",
+    "text": "🔴 Caos en el traslado de migrantes al puerto de Ceuta\n\n📹 Bárbara Ayuso\n\nSigue aquí la última hora 🔗 https://t.co/g5kTpmVnt3 https://t.co/1DD9SFzROk",
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/g5kTpmVnt3",
+          "expanded_url": "https://tinyurl.com/mrddd2ht",
+          "display_url": "tinyurl.com/mrddd2ht"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/1DD9SFzROk",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100819629820043264/img/SsTd0qoLE2vduxKB.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100819629820043264/pl/fO74elrJehZve0ip.m3u8?v=ed2"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100819629820043264/vid/avc1/480x270/EPp6qM__GflG0MjX.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100819629820043264/vid/avc1/640x360/GEdWpPBi0qa3l515.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100819629820043264/vid/avc1/1024x576/sHEOeYDRg4q537TX.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

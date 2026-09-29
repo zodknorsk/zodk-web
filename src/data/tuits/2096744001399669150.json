@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096744001399669150",
+    "created_at": "2026-09-06T23:35:00.000Z",
+    "text": "#LoMásLeído | Sánchez retrasa la visita del Rey a Ceuta hasta después de las elecciones generales de Marruecos el 23-S.\n\nhttps://t.co/tfdCG6rxpq",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/tfdCG6rxpq",
+          "expanded_url": "https://okdiario.com/espana/sanchez-retrasa-visita-del-rey-ceuta-hasta-despues-elecciones-generales-marruecos-23-s-20235921?utm_medium=social&utm_source=Twitter#Echobox=1788674445-3",
+          "display_url": "okdiario.com/espana/sanchez…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

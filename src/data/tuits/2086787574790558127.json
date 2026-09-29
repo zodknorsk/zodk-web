@@ -1,0 +1,32 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086787574790558127",
+    "created_at": "2026-08-10T12:11:43.000Z",
+    "text": "#ÚLTIMAHORA | El Gobierno eleva a 80.000 las personas que entraron en Ceuta los días 30 y 31 de julio. https://t.co/PIFskG3rZq",
+    "user": {
+      "name": "EFE Noticias",
+      "screen_name": "EFEnoticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1853443874607255552/yOQUhTMR_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "animated_gif",
+        "url": "https://t.co/PIFskG3rZq",
+        "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/HPXCOMEWoAADcBE.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "video/mp4",
+              "bitrate": 0,
+              "url": "https://video.twimg.com/tweet_video/HPXCOMEWoAADcBE.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

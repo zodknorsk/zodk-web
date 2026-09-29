@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097663875621462279",
+    "created_at": "2026-09-09T12:30:15.000Z",
+    "text": "Aclaración  de esa imagen satelite.\nSe trata de la parada de taxis en la frontera del Tarajal.\n\nHe comprado la imagen de uno de los días  relacionados y llegara en los próximos días. \n@Nacho_Abad https://t.co/o8crFNwGnJ",
+    "user": {
+      "name": "Estrategias Militares",
+      "screen_name": "EstrateMilitar",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2027344060101300224/b-SktSsc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/o8crFNwGnJ",
+        "media_url_https": "https://pbs.twimg.com/media/HRxmLAsWUAAYL05.jpg"
+      }
+    ]
+  }
+}

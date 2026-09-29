@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102285055695433825",
+    "created_at": "2026-09-22T06:33:10.000Z",
+    "text": "‼️ Familiares de los invasores entran a diario en Ceuta con dinero, comida y móviles para que resistan. \n\n✍️ Ángel Moya (@AngelMoyatv).\n\nhttps://t.co/RCsfWDJoKo",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/RCsfWDJoKo",
+          "expanded_url": "https://okdiario.com/espana/familiares-invasores-entran-diario-ceuta-dinero-comida-moviles-que-resistan-20352705?utm_medium=social&utm_source=Twitter#Echobox=1790058016-2",
+          "display_url": "okdiario.com/espana/familia…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

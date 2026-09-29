@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102186110830956702",
+    "created_at": "2026-09-22T00:00:00.000Z",
+    "text": "#LoMásLeído | El Gobierno anuncia que los 1.600 menas que entraron en Ceuta con la invasión «se van a quedar» en España. https://t.co/w3JqkWC2du",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/w3JqkWC2du",
+          "expanded_url": "https://okdiario.com/espana/gobierno-anuncia-que-1-600-menas-que-entraron-ceuta-invasion-van-quedar-espana-20347011?utm_medium=social&utm_source=Twitter#Echobox=1789986406-2",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

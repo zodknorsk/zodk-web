@@ -1,0 +1,74 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101362620544495622",
+    "created_at": "2026-09-19T17:27:44.000Z",
+    "text": "💢 Vicepresidenta y Presidente del Gobierno español hoy sábado mientras parte de su territorio está siendo invadido. https://t.co/hfv8IGjq7R",
+    "user": {
+      "name": "Pablo Cambronero 🇪🇦",
+      "screen_name": "PabloCamPiq",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1646193253715263493/7gxYp8Su_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/hfv8IGjq7R",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101362581776510978/img/PVPvcGu5v0XTotvL.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101362581776510978/pl/McX_eIl5xfOyK9_r.m3u8?v=e10"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2101362581776510978/vid/avc1/320x568/0a9gicipf4yIkHkp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2101362581776510978/vid/avc1/480x852/qaYvQzpfeA_6mutS.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101362581776510978/vid/avc1/576x1024/s5xlzSn0Zo9c2BRS.mp4"
+            }
+          ]
+        }
+      },
+      {
+        "type": "video",
+        "url": "https://t.co/hfv8IGjq7R",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101362581663318017/img/su9719xwmdwt-5y7.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101362581663318017/pl/AkDD8FhT_EbN41-D.m3u8?v=161"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2101362581663318017/vid/avc1/320x568/9In831BvCyBjHNJW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2101362581663318017/vid/avc1/480x852/Fz0Bj1pMI0E6XGpD.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101362581663318017/vid/avc1/576x1024/xjKAHNc1PexPOFmi.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

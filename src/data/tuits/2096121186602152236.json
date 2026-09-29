@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096121186602152236",
+    "created_at": "2026-09-05T06:20:09.000Z",
+    "text": "🗞️ La portada del 5 de septiembre.\n\nLa ONG alojada en un edificio público cedido por el Gobierno también gestiona las carpas para 900 inmigrantes ilegales junto a una guardería en Ceuta.\n\n🔗 Noticia completa https://t.co/Oxb8M1Rr3B https://t.co/pWtfFOOZj8",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Oxb8M1Rr3B",
+          "expanded_url": "https://okdiar.io/4heRERZ",
+          "display_url": "okdiar.io/4heRERZ"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/pWtfFOOZj8",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2096121154037600258/pu/img/gpQ4JnzpucWwziBE.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2096121154037600258/pu/pl/IBNOy5eUvobgQLC1.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2096121154037600258/pu/vid/avc1/480x270/RpeVJZJIOk3UkdRI.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2096121154037600258/pu/vid/avc1/640x360/VQAZTyHq-EcM8Lfm.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2096121154037600258/pu/vid/avc1/1280x720/7BJEMciYo2iqEsHL.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

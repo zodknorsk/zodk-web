@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090417438022131787",
+    "created_at": "2026-08-20T12:35:29.000Z",
+    "text": "FILTRADA la LISTA de ESPÍAS MARROQUÍS infiltrados en CEUTA \n\nJabaroot (Poderío), un grupo de juankers publica en Telegram un listado de los agentes de inteligencia marroquís, de los cuales una parte se habría infiltrado en Ceuta. \n\nMás info en el hilo\n\nhttps://t.co/4yHMX3xSdn https://t.co/crdcfrymGW",
+    "user": {
+      "name": "Forocoches",
+      "screen_name": "forocoches",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1968631394558484480/3aYkbf17_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/4yHMX3xSdn",
+          "expanded_url": "https://forocoches.com/foro/showthread.php?t=10782025",
+          "display_url": "forocoches.com/foro/showthrea…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/crdcfrymGW",
+        "media_url_https": "https://pbs.twimg.com/media/HQKnlK5XcAARmNR.jpg"
+      }
+    ]
+  }
+}

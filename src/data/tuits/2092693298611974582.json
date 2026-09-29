@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092693298611974582",
+    "created_at": "2026-08-26T19:18:57.000Z",
+    "text": "Se dedica a hacer fotos y vídeos a los  militares, policias ...y después los difunden en Marruecos . También se la ha visto repartiendo gas pimienta entre los invasores para que lo utilicen contra los militares y policías.#CeutaInvadida https://t.co/4RDCvQ907z",
+    "user": {
+      "name": "María ✝️🇪🇸",
+      "screen_name": "kita_Ruiz",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2094680657569980416/DZWudnRK_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/4RDCvQ907z",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092693282086125568/img/25j-JzOVHBUkpp7o.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092693282086125568/pl/KkXiN60S7uYFZH7R.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092693282086125568/vid/avc1/320x568/_LJn6Ud9cAN-jvsb.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092693282086125568/vid/avc1/480x852/LcrX7pffgDhtEEhk.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092693282086125568/vid/avc1/576x1024/c2RAf2yclkLUQfVu.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

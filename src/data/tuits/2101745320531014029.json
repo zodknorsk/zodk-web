@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101745320531014029",
+    "created_at": "2026-09-20T18:48:27.000Z",
+    "text": "🚩  Tensión en las protestas de ceutíes en el puerto ante la llegada del grupo Negu Gorriak desde Pamplona\n\n#Ceuta #FronteraSur #NeguGorriak https://t.co/IL0tzDeNUp",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/IL0tzDeNUp",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101745057069993984/img/p2rwiEAmMNO5OP4w.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101745057069993984/pl/StmhoaSKL3_V-hgE.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2101745057069993984/vid/avc1/320x568/_S8OxnTSrU7GmTQu.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2101745057069993984/vid/avc1/480x852/2jQJEfbzdTKo439G.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101745057069993984/vid/avc1/720x1280/dWorUuzpgnZq7dB8.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2101745057069993984/vid/avc1/1080x1920/YPI0i82wGF0FjOIh.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

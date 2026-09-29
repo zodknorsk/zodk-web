@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087482235536523761",
+    "created_at": "2026-08-12T10:12:03.000Z",
+    "text": "🇲🇦 El Gobierno marroqui dice que recuperará Ceuta y Melilla con paciencia y diálogo https://t.co/JSY1AT8YoG",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/JSY1AT8YoG",
+          "expanded_url": "https://www.larazon.es/espana/gobierno-marroqui-dice-que-recuperara-ceuta-melilla-paciencia-dialogo_202608126a7c3f86a5690f047375b07d.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202608126a79850078e57679fd2e258f",
+          "display_url": "larazon.es/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

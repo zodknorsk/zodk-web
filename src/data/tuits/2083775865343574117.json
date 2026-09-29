@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083775865343574117",
+    "created_at": "2026-08-02T04:44:15.000Z",
+    "text": "Aunque el Gobierno hable de vuelta a la normalidad y el Presidente se dedique a hacer tiktoks de recomendaciones musicales, esta es la situación de Ceuta durante la noche: https://t.co/Gqi5OFXoho",
+    "user": {
+      "name": "Juan Bravo Baena",
+      "screen_name": "juanBravoBaena",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1536651153181753345/H24KwFwz_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Gqi5OFXoho",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083775778395758592/img/gJgIeML8vZugkFvJ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083775778395758592/pl/t0m1HO94KmV0P2bB.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083775778395758592/vid/avc1/320x568/mEbUECVrEKYXb6mg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083775778395758592/vid/avc1/480x852/OyqxwMXnN2t6A13W.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083775778395758592/vid/avc1/720x1280/YvKWRaop-nuAhxgH.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

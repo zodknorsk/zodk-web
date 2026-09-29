@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083148997737304560",
+    "created_at": "2026-07-31T11:13:18.000Z",
+    "text": "El Ministerio de Juventud e Infancia trabaja para trasladar con la \"mayor celeridad posible\" a menores migrantes de Ceuta a las comunidades autónomas \"que se encuentran por debajo de su capacidad ordinaria de acogida\" https://t.co/aqoeA0uA0h",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/aqoeA0uA0h",
+          "expanded_url": "https://www.europapress.es/epsocial/infancia/noticia-juventud-trabaja-trasladar-mayor-celeridad-posible-menores-migrantes-ceuta-ccaa-20260731125307.html",
+          "display_url": "europapress.es/epsocial/infan…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090752019183145458",
+    "created_at": "2026-08-21T10:45:00.000Z",
+    "text": "🇪🇺🇲🇦 La UE ultima un acuerdo millonario con Marruecos para proteger las fronteras tras la invasión de Ceuta\n\n✍ @pabloojer \nhttps://t.co/T3LLl6zgcD",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/T3LLl6zgcD",
+          "expanded_url": "https://eldbt.com/cqaq6",
+          "display_url": "eldbt.com/cqaq6"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

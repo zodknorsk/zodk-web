@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089727162408460400",
+    "created_at": "2026-08-18T14:52:35.000Z",
+    "text": "Nadie que no sea un peligroso sociópata o tenga intereses económicos en ello puede tener una opinión distinta a la de esta señora. https://t.co/dCjqVezMy0",
+    "user": {
+      "name": "Philmore A. Mellows",
+      "screen_name": "PhilAMellows",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1648347665422249984/pRzmlGl9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/dCjqVezMy0",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2089727056103788544/img/EXuE-fWSAyaSuLGI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2089727056103788544/pl/Dy7IKtdtfOQPAW7M.m3u8?v=ebc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2089727056103788544/vid/avc1/320x568/6yR2dTLNEI9sCf6m.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2089727056103788544/vid/avc1/480x852/d1L-G3am-Epf_8F6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2089727056103788544/vid/avc1/720x1280/yrngf7UG3pzIF-jd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2089727056103788544/vid/avc1/1080x1920/XCW2iJLOn59wAaQP.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

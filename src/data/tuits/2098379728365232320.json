@@ -1,0 +1,64 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098379728365232320",
+    "created_at": "2026-09-11T11:54:47.000Z",
+    "text": "#EmergenciaCeuta El caos, el descontrol y la falta de medidas definitivas en #Ceuta provoca imágenes como las del #Video. Inmigrantes desarmando techos de las naves industriales del puerto ceutí @apceuta \n#InvasiónCeuta https://t.co/eZdVgQrtD7",
+    "user": {
+      "name": "CeutaAhora",
+      "screen_name": "ceuta_ahora",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1744263318900965376/hrOVyXlt_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/eZdVgQrtD7",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098379691531104257/img/7SQcKL-1a8YF9myC.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098379691531104257/pl/RcMaE9g7ZTxkRt7g.m3u8?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2098379691531104257/vid/avc1/320x568/He591Xg7-rICkQ9f.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2098379691531104257/vid/avc1/478x850/PouniEq6oG4MhKvF.mp4?tag=14"
+            }
+          ]
+        }
+      },
+      {
+        "type": "video",
+        "url": "https://t.co/eZdVgQrtD7",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098379691505623049/img/tkaEshBdUtae2rRO.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098379691505623049/pl/7qa5RBfxEQz23hn4.m3u8?tag=14&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2098379691505623049/vid/avc1/320x568/YjWCheFd_eC9NZeS.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2098379691505623049/vid/avc1/478x850/l9rYxraiFJ-Lsb-_.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

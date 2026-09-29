@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083153767164170326",
+    "created_at": "2026-07-31T11:32:15.000Z",
+    "text": "Moroccan traffic police keeps directing thousands of illegal migrants toward the Spanish border fence in Ceuta.\n\nThis is a state-orchestrated invasion of Spain.\n\n🇪🇸🇲🇦 https://t.co/PNZyAHEMMn",
+    "user": {
+      "name": "Visegrád 24",
+      "screen_name": "visegrad24",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1875625827674591232/OBzjRIZ4_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/PNZyAHEMMn",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083153738416467968/img/3Zsgern_GATMzvod.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083153738416467968/pl/VMDSxadI_zmVvBuA.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083153738416467968/vid/avc1/320x568/ukG5wINkWbTHEfRf.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083153738416467968/vid/avc1/480x852/a1rwzdZy0PIS0fWF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083153738416467968/vid/avc1/720x1280/gJgXV4Lj7o65Tc69.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099737878288888259",
+    "created_at": "2026-09-15T05:51:36.000Z",
+    "text": "🔴 La respuesta de Sánchez a un vecino de Ceuta: \"A lo mejor para una serie de Netflix están bien, pero la realidad se tiene que construir en base a hechos y no a bulos\"\n\nhttps://t.co/La9pmd9mRJ",
+    "user": {
+      "name": "Libertad Digital",
+      "screen_name": "libertaddigital",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1872197644967165952/Y3GFlRJI_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/La9pmd9mRJ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099590408212770816/img/vuuELvZrLlb0jOCX.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099590408212770816/pl/Y37ZYnpWIqltm4pS.m3u8?v=601"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099590408212770816/vid/avc1/480x270/DRXH3xLAR3ZDAYql.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099590408212770816/vid/avc1/640x360/bKDFbp0Kc9bwELIB.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099590408212770816/vid/avc1/1280x720/DaJnGhpfpKKISq-Q.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099590408212770816/vid/avc1/1920x1080/St7Uu3XP6pgkunzi.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "1866794019235541298",
+    "created_at": "2024-12-11T10:35:52.000Z",
+    "text": "🇺🇸🇫🇷US-made Skydio X10D micro-drone proves potential for urban warfare in French Army trials\nhttps://t.co/UgLSbPFhmk\n@SkydioHQ",
+    "user": {
+      "name": "Army Recognition",
+      "screen_name": "ArmyRecognition",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1786054478560382976/OIedrRTd_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/UgLSbPFhmk",
+          "expanded_url": "https://armyrecognition.com/news/army-news/army-news-2024/us-made-skydio-x10d-micro-drone-proves-potential-for-urban-warfare-in-french-army-trials",
+          "display_url": "armyrecognition.com/news/army-news…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

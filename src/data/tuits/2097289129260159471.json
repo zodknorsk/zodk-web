@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097289129260159471",
+    "created_at": "2026-09-08T11:41:08.000Z",
+    "text": "🔴 El Gobierno anuncia más plazas para alojar a los inmigrantes tras la invasión de Ceuta: «Llegaremos hasta las 6.000».\n\n🔗 Siga la actualidad política en directo: https://t.co/ILzMvI4vWz https://t.co/a6PiBw1k19",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ILzMvI4vWz",
+          "expanded_url": "https://okdiar.io/4heFYj0",
+          "display_url": "okdiar.io/4heFYj0"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/a6PiBw1k19",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2097289089468784640/pu/img/ka8Aju6SX9eANbA9.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2097289089468784640/pu/pl/ZqV7r5PpCpjiDkTT.m3u8?tag=12&v=182"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2097289089468784640/pu/vid/avc1/480x270/NkDeWIOAKoGsWeU7.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2097289089468784640/pu/vid/avc1/640x360/BmBy0HTO_Fkj8sgQ.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2097289089468784640/pu/vid/avc1/1280x720/Si_0H1ie-U4t8f62.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

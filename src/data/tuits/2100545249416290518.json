@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100545249416290518",
+    "created_at": "2026-09-17T11:19:48.000Z",
+    "text": "Aprobada la resolución sobre Ceuta en el Parlamento Europeo.\n\nEl mensaje es cristalino: Ceuta es España y Ceuta es Europa. Quien atente contra su integridad debe responder por ello. \n\nEl voto en contra del PSOE y el resto de la izquierda española los retrata. Antes con Marruecos https://t.co/v47GPiJbp6",
+    "note_tweet": true,
+    "user": {
+      "name": "Adrián Vázquez Lázara 🇪🇦🇪🇺",
+      "screen_name": "AdrianVL1982",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1707414235389493248/LVoltYpl_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/v47GPiJbp6",
+        "media_url_https": "https://pbs.twimg.com/media/HSaicMBWwAA54Wl.jpg"
+      }
+    ]
+  }
+}

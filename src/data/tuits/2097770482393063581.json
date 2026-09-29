@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097770482393063581",
+    "created_at": "2026-09-09T19:33:52.000Z",
+    "text": "3 minutos DEMOLEDORES que destrozan al Gobierno y sus mentiras. \n\n#EleccionesYA https://t.co/b5p5b8qls8",
+    "user": {
+      "name": "Hugo Manchón",
+      "screen_name": "hugomanchon",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2050101713952985088/XUPMsFIo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/b5p5b8qls8",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097769672057782283/img/sjlB9YhsdIMPaVKq.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097769672057782283/pl/cEqt-00eVbHkhG0m.m3u8?v=ca6"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097769672057782283/vid/avc1/480x270/WeLjifGnfUinxaaT.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097769672057782283/vid/avc1/640x360/0anmiTUa-d1Dfa1z.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097769672057782283/vid/avc1/1280x720/6PFpGs_6hPUOVC0d.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097769672057782283/vid/avc1/1920x1080/KHTXo6-cZfWn0HhL.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

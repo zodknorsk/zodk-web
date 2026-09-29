@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087225031243735465",
+    "created_at": "2026-08-11T17:10:00.000Z",
+    "text": "Mónica García anuncia que visitará Ceuta para abordar la crisis migratoria y descarta una \"catástrofe sanitaria\": \"Ni ha existido ni existe actualmente falta de atención alguna en el Área Sanitaria de Ceuta\" https://t.co/SajHtTT47j",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/SajHtTT47j",
+          "expanded_url": "https://www.infosalus.com/actualidad/noticia-monica-garcia-anuncia-visitara-ceuta-abordar-crisis-migratoria-descarta-catastrofe-sanitaria-20260811190138.html",
+          "display_url": "infosalus.com/actualidad/not…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

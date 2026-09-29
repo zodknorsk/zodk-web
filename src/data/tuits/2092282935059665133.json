@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092282935059665133",
+    "created_at": "2026-08-25T16:08:19.000Z",
+    "text": "◼️Los manifestantes intentan acceder al interior del hotel donde se aloja el ministro Ángel Víctor Torres\n\n📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio\n\n#Ceuta #Manifestación https://t.co/vnYR593Urf",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/vnYR593Urf",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092282578053058560/img/7pgr7lMPyijjj7zl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092282578053058560/pl/sjI2ECYiTGwT2pPs.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092282578053058560/vid/avc1/320x568/sN6saKlv4YjMZxuj.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092282578053058560/vid/avc1/480x852/bBBInpec71HPqt1H.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092282578053058560/vid/avc1/720x1280/8lbWTf54xjBhBR3a.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2092282578053058560/vid/avc1/1080x1920/mh7ymInl8Jaxw1V7.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

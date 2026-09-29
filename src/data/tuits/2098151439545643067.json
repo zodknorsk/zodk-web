@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098151439545643067",
+    "created_at": "2026-09-10T20:47:39.000Z",
+    "text": "📰 Portada de EL MUNDO del 11 de septiembre     \n\nYa disponible en Orbyt y en la edición digital con la mejor información https://t.co/AwjTpgDbYz",
+    "user": {
+      "name": "EL MUNDO",
+      "screen_name": "elmundoes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1854121701396852738/t89707ny_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/AwjTpgDbYz",
+        "media_url_https": "https://pbs.twimg.com/media/HR4hkH8WIAUtnT8.jpg"
+      }
+    ]
+  }
+}

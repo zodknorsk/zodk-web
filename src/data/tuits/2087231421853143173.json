@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087231421853143173",
+    "created_at": "2026-08-11T17:35:24.000Z",
+    "text": "Miles de marroquíes se AGRUPAN en la frontera con Ceuta\n\nEspero lo PEOR https://t.co/Opiv9vsPo9",
+    "user": {
+      "name": "Anonymous Tabarnia 🃏",
+      "screen_name": "Anonymous_TA",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/973300948822102016/49cLnIJN_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Opiv9vsPo9",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2087231377649397760/img/PDiNZL6E9e9i1PwB.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2087231377649397760/pl/scOkMvv0rlSJ667X.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2087231377649397760/vid/avc1/320x568/0WqhJhr19as4Z3uk.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2087231377649397760/vid/avc1/480x852/F4yHAt_1OPcnVNJV.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2087231377649397760/vid/avc1/576x1024/aK3XOwO2FSwINFi2.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

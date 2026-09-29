@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086472570614759632",
+    "created_at": "2026-08-09T15:20:00.000Z",
+    "text": "📚 En plena escalada de la crisis migratoria y con la atención mediática centrada en la gestión de las fronteras, Pedro Sánchez ha vuelto a activar sus redes sociales para recomendar \"tres libros para el verano\" https://t.co/IC3D6bV9oK",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/IC3D6bV9oK",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2086463912472363008/img/0dPV__hOvtneEGgl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2086463912472363008/pl/2NiPzhwOegVXXToo.m3u8?v=c4b"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2086463912472363008/vid/avc1/320x568/lzc6sRHIiWep3OII.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2086463912472363008/vid/avc1/480x852/hx_ogAulQkTfhCN3.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2086463912472363008/vid/avc1/720x1280/SWOJBz36EUp6y_mY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2086463912472363008/vid/avc1/1080x1920/mG0KrZhJ92s705tD.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

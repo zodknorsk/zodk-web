@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099258268111540379",
+    "created_at": "2026-09-13T22:05:48.000Z",
+    "text": "Ceuta: lo que no se vio\nLa Reflexión de Iker Jiménez en @CuartoMileniotv \n#CuartoMilenio https://t.co/p8c2U7d0Tn",
+    "user": {
+      "name": "Iker Jiménez",
+      "screen_name": "navedelmisterio",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1245856204821278721/lA5gcC7E_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/p8c2U7d0Tn",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099257260723625991/img/rOCvht3pBr_sKu8U.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099257260723625991/pl/OPoW5bRK4w0BaQCk.m3u8?v=840"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099257260723625991/vid/avc1/480x270/OiwGPqTOtak15Ryq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099257260723625991/vid/avc1/640x360/-xzdmr6oRhCSaTZU.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099257260723625991/vid/avc1/1280x720/A85ZcR0uxJQiOxxd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099257260723625991/vid/avc1/1920x1080/Mv2vv6lymuDTfUOB.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

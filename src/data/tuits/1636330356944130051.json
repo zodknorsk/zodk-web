@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "1636330356944130051",
+    "created_at": "2023-03-16T11:35:33.000Z",
+    "text": "Footage released on @DVIDSHub from the MQ-9 incident with Russian Su-27 Flankers. \n\nOur story: https://t.co/MzFpelRR9L https://t.co/VVWhmvSRVn",
+    "user": {
+      "name": "Task & Purpose",
+      "screen_name": "TaskandPurpose",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/468484928095535104/-7y8-9Pu_normal.png"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/MzFpelRR9L",
+          "expanded_url": "https://taskandpurpose.com/news/air-force-drone-russian-fighters-black-sea/",
+          "display_url": "taskandpurpose.com/news/air-force…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/VVWhmvSRVn",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1636330283950657536/pu/img/LlqnkJ1PD4SAF3wP.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1636330283950657536/pu/pl/uuIGCbcYpWwdDn-k.m3u8?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/1636330283950657536/pu/vid/480x270/mrJIt8aTl4PyjDbr.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/1636330283950657536/pu/vid/640x360/rJsj7UHme_nq5uwK.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1636330283950657536/pu/vid/1280x720/dHwnQ7UB7AoD9eji.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

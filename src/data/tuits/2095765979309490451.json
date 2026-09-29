@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095765979309490451",
+    "created_at": "2026-09-04T06:48:41.000Z",
+    "text": "En Marruecos ya están moviendo en redes sociales una gran marcha popular para el domingo 20 de septiembre.\n\n“Hacemos un llamado a la movilización popular para pedir la liberación de Ceuta, Melilla y las islas ocupadas por España” publica este Peridista marroquí. https://t.co/FXkVPTPQRO",
+    "user": {
+      "name": "Taleb Alisalem",
+      "screen_name": "TalebSahara",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2041519028427161600/MhFMldAc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/FXkVPTPQRO",
+        "media_url_https": "https://pbs.twimg.com/media/HRWoC_JbsAAfAU1.jpg"
+      }
+    ]
+  }
+}

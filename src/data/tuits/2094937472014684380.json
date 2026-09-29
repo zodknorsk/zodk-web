@@ -1,0 +1,38 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094937472014684380",
+    "created_at": "2026-09-01T23:56:30.000Z",
+    "text": "🔴 ÚLTIMA HORA | El ministro Grande-Marlaska exige al director de la Policía que aclare si Marruecos estuvo detrás de la entrada masiva de Ceuta\n\nInforma @JaviBanuelos \n\nhttps://t.co/Xm8SMT8bcO https://t.co/WZfF9Hproj",
+    "user": {
+      "name": "Cadena SER",
+      "screen_name": "La_SER",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1364858953230934017/4G6lyxVM_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Xm8SMT8bcO",
+          "expanded_url": "https://cadenaser.com/nacional/2026/09/01/el-ministro-grande-marlaska-exige-al-director-de-la-policia-que-aclare-si-marruecos-estuvo-detras-de-la-entrada-masiva-de-ceuta-cadena-ser/",
+          "display_url": "cadenaser.com/nacional/2026/…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "animated_gif",
+        "url": "https://t.co/WZfF9Hproj",
+        "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/HRK2hGQXoAQ6Bwy.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "video/mp4",
+              "bitrate": 0,
+              "url": "https://video.twimg.com/tweet_video/HRK2hGQXoAQ6Bwy.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

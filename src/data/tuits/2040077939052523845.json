@@ -1,0 +1,36 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2040077939052523845",
+    "created_at": "2026-04-03T14:44:18.000Z",
+    "text": "USAF HC-130 refueling a pair of HH-60G Pavehawks over Iran while searching for the downed F-15E aircrew today. https://t.co/V5Xgs5Ew5t",
+    "user": {
+      "name": "OSINTtechnical",
+      "screen_name": "Osinttechnical",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1191175818933932032/W4GF6Nbe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/V5Xgs5Ew5t",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2040077885113856001/img/DjtxoflxWsXf1y17.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2040077885113856001/pl/fxjyhMKIiUEQBjG-.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2040077885113856001/vid/avc1/208x480/PoOMVG-OKJV-R60z.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

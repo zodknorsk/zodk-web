@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099003182101807390",
+    "created_at": "2026-09-13T05:12:10.000Z",
+    "text": "Un cámara de laSexta sufre una agresión durante altercados en Ceuta: \"Me han tirado una piedra a la espalda\" https://t.co/nQnghDbsVE",
+    "user": {
+      "name": "laSexta Xplica",
+      "screen_name": "laSextaXplica",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1579436603570806784/mb2-736A_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/nQnghDbsVE",
+          "expanded_url": "https://atres.red/k50di1",
+          "display_url": "atres.red/k50di1"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

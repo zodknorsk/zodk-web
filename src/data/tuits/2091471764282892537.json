@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091471764282892537",
+    "created_at": "2026-08-23T10:25:00.000Z",
+    "text": "La Policía diseña un dispositivo para proteger a los alumnos ceutíes en el inicio del curso.\n\nInforma Teresa Gómez (@teresagomezgp). \n\n https://t.co/9UYOopyTO3",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/9UYOopyTO3",
+          "expanded_url": "https://theobjective.com/espana/2026-08-23/policia-dispositivo-proteger-menores-ceuties-curso/",
+          "display_url": "theobjective.com/espana/2026-08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

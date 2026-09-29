@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097218279504785414",
+    "created_at": "2026-09-08T06:59:36.000Z",
+    "text": "El miedo de los profesores de Ceuta: «No hay seguridad ni normalidad. Los niños no van a venir a clase» https://t.co/wfcyHQthSN vía @larazon_es",
+    "user": {
+      "name": "Joaquín Echeverría Alonso",
+      "screen_name": "Jea60930295",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1020332176011931649/Yu0714le_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/wfcyHQthSN",
+          "expanded_url": "https://www.larazon.es/espana/miedo-profesores-ceuta-hay-seguridad-normalidad-ninos-van-venir-clase_202609086a9f6cf73bfe5d1eff475168.html",
+          "display_url": "larazon.es/espana/miedo-p…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

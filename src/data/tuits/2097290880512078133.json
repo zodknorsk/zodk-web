@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097290880512078133",
+    "created_at": "2026-09-08T11:48:06.000Z",
+    "text": "🔴 #ÚLTIMAHORA El Supremo paraliza el censo de la ley de nietos\n\n✍️Informa Nati Villanueva https://t.co/p6iQZwGduc",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/p6iQZwGduc",
+          "expanded_url": "https://www.abc.es/espana/supremo-paraliza-censo-ley-nietos-20260908134440-nt.html",
+          "display_url": "abc.es/espana/supremo…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

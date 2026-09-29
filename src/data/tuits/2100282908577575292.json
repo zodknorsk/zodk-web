@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100282908577575292",
+    "created_at": "2026-09-16T17:57:21.000Z",
+    "text": "El Congreso convalida el decreto con 309 millones de euros para Ceuta, con Vox en contra y abstención de Junts https://t.co/9zbWfPuJCt",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/9zbWfPuJCt",
+          "expanded_url": "https://www.europapress.es/economia/finanzas-00340/noticia-congreso-convalida-decreto-309-millones-ceuta-vox-contra-abstencion-junts-20260916194130.html",
+          "display_url": "europapress.es/economia/finan…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

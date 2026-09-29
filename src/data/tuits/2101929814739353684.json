@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101929814739353684",
+    "created_at": "2026-09-21T07:01:34.000Z",
+    "text": "Los menores no van a volver a Marruecos porque no quieren https://t.co/WUyTwk0icp",
+    "user": {
+      "name": "D. Pedro Herrero",
+      "screen_name": "aparachiqui",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2050223681775738880/apj5Z0eN_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/WUyTwk0icp",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101929760670601216/img/mdSNjT6j6qReCFYb.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101929760670601216/pl/MsIBOluLoS1fjqfl.m3u8?v=c8f"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2101929760670601216/vid/avc1/582x270/LZQ1aDZCBdaFZvWD.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2101929760670601216/vid/avc1/778x360/TQjXEXsG6LYGAGG5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101929760670601216/vid/avc1/1280x592/PRznzyTriH7hhM9w.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

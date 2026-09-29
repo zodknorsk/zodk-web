@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091056041119129685",
+    "created_at": "2026-08-22T06:53:04.000Z",
+    "text": "💥 Los cadáveres de 80 ilegales tendrán que ser enterrados en España tras negarse Marruecos a hacerse cargo de ellos. https://t.co/6CSE8A0Opg",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/6CSE8A0Opg",
+          "expanded_url": "https://okdiario.com/espana/cadaveres-80-ilegales-tendran-que-ser-enterrados-espana-negarse-marruecos-hacerse-cargo-ellos-20141444?utm_medium=social&utm_source=Twitter#Echobox=1787379642-1",
+          "display_url": "okdiario.com/espana/cadaver…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093012981869056292",
+    "created_at": "2026-08-27T16:29:15.000Z",
+    "text": "🚨💥 AHORA MISMO, EN DIRECTO DESDE TIKTOK\n\nLos ceutíes están impidiendo que Cruz Roja pase a Ceuta.\n\nLa situación se calienta por momentos. 🚨\n\nCEUTA ESTÁ DICIENDO BASTA. https://t.co/3PiixVH4w1",
+    "user": {
+      "name": "Muy.Mona/🇪🇸💚",
+      "screen_name": "Capitana_espana",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2017512913032843264/eG3xTG02_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/3PiixVH4w1",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2093012801539244032/img/lmK20U4s638yl_fm.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2093012801539244032/pl/0FJXAa6Q4cjHuna4.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2093012801539244032/vid/avc1/320x598/8t6eb8c5Gfxy2Ho1.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2093012801539244032/vid/avc1/480x896/1v9D1csQcWPzHXQP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2093012801539244032/vid/avc1/720x1344/3tsTgLh8WkDNfavh.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2093012801539244032/vid/avc1/1284x2400/95jfpOV7RWNphdtL.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099040057151668665",
+    "created_at": "2026-09-13T07:38:42.000Z",
+    "text": "Publicar 40 informes sobre la crisis de Ceuta es un ejercicio de transparencia sin precedentes.\n\nY esos informes dejan algo claro: el Gobierno actuó con la información de la que disponía en cada momento.\n\nNadie alertó de la dimensión que finalmente tuvo la entrada en Ceuta.\n\nLa https://t.co/m2qXF6uYtx",
+    "note_tweet": true,
+    "user": {
+      "name": "patxilopez",
+      "screen_name": "patxilopez",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1635669343831818242/tbDYH1K6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/m2qXF6uYtx",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099039790549307393/img/rfBov4P2c0k_1rV6.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099039790549307393/pl/9HBZr2UjPFuuZw3q.m3u8?v=a25"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099039790549307393/vid/avc1/480x270/qIideHRMxjw9awNu.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099039790549307393/vid/avc1/640x360/TezoiyPOBsq1dTzM.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099039790549307393/vid/avc1/1280x720/KNABVeWblgSYHrFs.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

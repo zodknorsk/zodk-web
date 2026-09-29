@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089317912221761561",
+    "created_at": "2026-08-17T11:46:22.000Z",
+    "text": "🔴 #ÚLTIMAHORA | El Gobierno instalará carpas en Ceuta para alojar a 1.500 migrantes tras la crisis fronteriza \n\n➡️ Elma Saiz confirma en rueda de prensa que se habilitarán estructuras temporales para aliviar la saturación del sistema de acogida\n\nhttps://t.co/4egrZJKrGr",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/4egrZJKrGr",
+          "expanded_url": "https://www.larazon.es/espana/gobierno-instalara-carpas-ceuta-alojar-1500-migrantes-crisis-fronteriza_202608176a82f010a046ad6ebcb6432d.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202608176a801c809651b449c31e0263",
+          "display_url": "larazon.es/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

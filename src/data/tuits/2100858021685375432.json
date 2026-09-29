@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100858021685375432",
+    "created_at": "2026-09-18T08:02:39.000Z",
+    "text": "🔴 El Gobierno usa fondos europeos para instalar de «extrema urgencia» sensores en la valla de Ceuta que no puso en 2025. \n\n✍️ Información de Alba Martín (@alba_mrtn).\nhttps://t.co/sl5IZ5mSWD",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/sl5IZ5mSWD",
+          "expanded_url": "https://okdiario.com/espana/gobierno-usa-fondos-europeos-instalar-extrema-urgencia-sensores-valla-ceuta-que-no-puso-2025-20321971?utm_medium=social&utm_source=Twitter#Echobox=1789715821-2",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

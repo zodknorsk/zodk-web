@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100947197969760290",
+    "created_at": "2026-09-18T13:57:00.000Z",
+    "text": "🚩 Emboscada a pedradas a los Bomberos: en riesgo la vida del conductor del camión del retén de incendios\n\n#Ceuta \n\nhttps://t.co/CJH4ciCNKb",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/CJH4ciCNKb",
+          "expanded_url": "https://elfarodeceuta.es/emboscada-pedradas-bomberos-riesgo-vida-conductor-camion-reten-incendios/",
+          "display_url": "elfarodeceuta.es/emboscada-pedr…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

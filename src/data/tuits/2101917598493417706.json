@@ -1,0 +1,42 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101917598493417706",
+    "created_at": "2026-09-21T06:13:01.000Z",
+    "text": "#PUCHERAZO BRUTAL: Pablo Platas, CÓNSUL de España en Rosario (Argentina) DESCOJONADO, CONFESANDO que han regalado al día más de 1.000 NACIONALIZACIONES EXPRESS en su Consulado al margen del EXILIO exigido por la Ley de Memoria Democrática 😱👇🎯\n\nLa máquina del PUCHERAZO al https://t.co/2qRCryqD3q",
+    "note_tweet": true,
+    "user": {
+      "name": "Guillermo Rocafort",
+      "screen_name": "GuillermoRocaf1",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1248224421094912002/BmXYpdM1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/2qRCryqD3q",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101914833369096192/img/0Wet30OyB4iDyvUf.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101914833369096192/pl/hVfD4UqO8WOBRu34.m3u8?v=5dc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2101914833369096192/vid/avc1/480x270/NIslyF6N6Wq6yqZk.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2101914833369096192/vid/avc1/640x360/GouJtkojxbfenSky.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

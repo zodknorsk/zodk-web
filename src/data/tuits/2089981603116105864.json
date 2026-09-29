@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089981603116105864",
+    "created_at": "2026-08-19T07:43:38.000Z",
+    "text": "🏫 El Gobierno desoye a Bruselas y ya prepara el traslado de 500 menores desde Ceuta a la península https://t.co/V6YoW2GREo",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/V6YoW2GREo",
+          "expanded_url": "https://www.larazon.es/espana/gobierno-desoye-bruselas-ultima-traslado-500-menores-ceuta-peninsula_202608196a855af4a5690f04738217f1.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202608196a82bf801ff51242c0e02891",
+          "display_url": "larazon.es/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

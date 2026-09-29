@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "1937517719462535570",
+    "created_at": "2025-06-24T14:26:36.000Z",
+    "text": "Video from the Ukrainian Navy of a TB2 UCAV strike on a Russian landing craft on the west coast of Kherson oblast.\nhttps://t.co/iRuVldEFXA https://t.co/Ux3MKcKNX7",
+    "user": {
+      "name": "Rob Lee",
+      "screen_name": "RALee85",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/964497068424249345/Y6ce6atF_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/iRuVldEFXA",
+          "expanded_url": "https://t.me/ukrainian_navy/14594",
+          "display_url": "t.me/ukrainian_navy…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Ux3MKcKNX7",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1937517528168767488/img/BjLvMh1l_kKEgiKv.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1937517528168767488/pl/Rjx-SFkOc4leSjRH.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/1937517528168767488/vid/avc1/480x270/jN_AQrKsDKkzKcer.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1937517528168767488/vid/avc1/640x360/LIoj7OKOh_a7coGt.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1937517528168767488/vid/avc1/1280x720/Q0aGhfqZ4hIiMH2C.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/1937517528168767488/vid/avc1/1920x1080/LqwG_IRmqXOIMTg7.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

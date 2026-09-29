@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088897242694341030",
+    "created_at": "2026-08-16T07:54:47.000Z",
+    "text": "Así esta Ceuta despues de 18 dias de INVASIÓN, totalmente colapsada y miles de inmigrantes en las calles, peleandose, violando y okupando\n\nMientras tu preocupado por el Eclipse del 2027 de que gafas coger… País de pandereta https://t.co/G9ZvOGV3Pl",
+    "user": {
+      "name": "Anonymous Tabarnia 🃏",
+      "screen_name": "Anonymous_TA",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/973300948822102016/49cLnIJN_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/G9ZvOGV3Pl",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088897128877768704/img/rBfqSczYMmE-SOeX.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088897128877768704/pl/0belM5ULWyiJD44_.m3u8?v=70e"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2088897128877768704/vid/avc1/480x270/a_KufjPziYQi3XzO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2088897128877768704/vid/avc1/640x360/leroKvciETE_hwI0.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088897128877768704/vid/avc1/1024x576/H1scv3as6pb5YtFz.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

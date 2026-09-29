@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085647741330338071",
+    "created_at": "2026-08-07T08:42:25.000Z",
+    "text": "El Gobierno da 37 millones a los menas de Ceuta mientras 63.000 afectados por los incendios siguen esperando las ayudas.\n\n✍️ Informa Alba Martín (@alba_mrtn)\n\nhttps://t.co/P5jQ0l6tcW",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/P5jQ0l6tcW",
+          "expanded_url": "https://okdiario.com/economia/gobierno-olvida-63-000-victimas-del-incendio-avila-mientras-manda-37-millones-urgentes-1-000-menas-ceuta-19139625?utm_medium=social&utm_source=Twitter#Echobox=1786084367-1",
+          "display_url": "okdiario.com/economia/gobie…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

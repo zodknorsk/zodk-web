@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088355192857043195",
+    "created_at": "2026-08-14T20:00:52.000Z",
+    "text": "Mañana no espero un asalto masivo en Ceuta y eso no es una buena noticia. Os explico. https://t.co/1zGgCWCtQN",
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/1zGgCWCtQN",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088354988254703616/img/YAAdOsrsPXkjxNtm.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088354988254703616/pl/VHBgLEFRcULmaGrj.m3u8?v=c69"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088354988254703616/vid/avc1/320x568/5WMvImRnvR0x0pHQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088354988254703616/vid/avc1/480x852/2HBquzatux-AdlOc.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088354988254703616/vid/avc1/720x1280/NUNdZCxu-EefxmxM.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088354988254703616/vid/avc1/1080x1920/k8u4KIpHYANuXe12.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

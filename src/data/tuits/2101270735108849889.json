@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101270735108849889",
+    "created_at": "2026-09-19T11:22:37.000Z",
+    "text": "La izquierda radical llega a Ceuta “ante la violencia sin precedentes contra las personas refugiadas” https://t.co/ydvBFA2QWK vía @https://x.com/ElPueblodeCeuta",
+    "user": {
+      "name": "El Pueblo de Ceuta",
+      "screen_name": "ElPueblodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/702212395582824449/M9fVrL_R_normal.png"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ydvBFA2QWK",
+          "expanded_url": "https://www.elpueblodeceuta.es/sec/politica/inmigracion/izquierda-radical-llega-ceuta-violencia_1_1189864.html",
+          "display_url": "elpueblodeceuta.es/sec/politica/i…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

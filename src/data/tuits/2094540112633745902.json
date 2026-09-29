@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094540112633745902",
+    "created_at": "2026-08-31T21:37:32.000Z",
+    "text": "Que toda España vea estos 7 minutos sobre Sánchez y Ceuta. \n\nVergüenza de Gobierno. https://t.co/T2RpTOnqS7",
+    "user": {
+      "name": "Hugo Manchón",
+      "screen_name": "hugomanchon",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2050101713952985088/XUPMsFIo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/T2RpTOnqS7",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094539127572107264/img/ROvgRbvBkoONvKPD.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094539127572107264/pl/Y6je50UWlbGmoh2D.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2094539127572107264/vid/avc1/480x270/Tr3o36s3Ur9dxgq_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2094539127572107264/vid/avc1/640x360/aislfmmUkbb2E8_l.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094539127572107264/vid/avc1/1280x720/gVAa2lQrX-4GBCfy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094539127572107264/vid/avc1/1920x1080/JjVbd70E6V5Szrgi.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091473030102798566",
+    "created_at": "2026-08-23T10:30:02.000Z",
+    "text": "Tres inmigrantes son detenidos en Ceuta tras presuntamente agredir e intentar robar a un guardia civil fuera de servicio. El agente se negó a entregarles dinero y recibió golpes, patadas y puñetazos antes de que los tres huyeran del lugar https://t.co/8431FSHOa2",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/8431FSHOa2",
+          "expanded_url": "https://www.europapress.es/nacional/noticia-tres-inmigrantes-detenidos-agredir-intentar-robar-guardia-civil-fuera-servicio-ceuta-20260823122620.html",
+          "display_url": "europapress.es/nacional/notic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

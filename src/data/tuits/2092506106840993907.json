@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092506106840993907",
+    "created_at": "2026-08-26T06:55:07.000Z",
+    "text": "Robles y Marlaska dan versiones contradictorias de lo ocurrido en Ceuta.\nDefensa afirma que el CNI avisó un día antes de lo que iba a ocurrir, pero Interior lo niega y Moncloa lo respalda https://t.co/gQqRzK0bem\n\n#LaHora26A https://t.co/JAKouWseZV",
+    "user": {
+      "name": "La Hora de La 1",
+      "screen_name": "LaHoraTVE",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1832415745248051200/uj8DgmYt_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/gQqRzK0bem",
+          "expanded_url": "https://rtve.es/play/videos/directo/canales-lineales/la-1/",
+          "display_url": "rtve.es/play/videos/di…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/JAKouWseZV",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092506017254838272/img/0iZJov4kNmf638Le.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092506017254838272/pl/pcU5tpTBaZIRp89s.m3u8?tag=16&v=54d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2092506017254838272/vid/avc1/480x270/Rfoi3xARvD-roS-_.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2092506017254838272/vid/avc1/640x360/S3HiD2kZQ-2IfzIb.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092506017254838272/vid/avc1/1280x720/DyRMelUs508bUNKs.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2092506017254838272/vid/avc1/1920x1080/F2TdhgYnwetdC1wv.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

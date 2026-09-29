@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089597318618087666",
+    "created_at": "2026-08-18T06:16:38.000Z",
+    "text": "Los militantes socialistas que están manifestando públicamente sus críticas al Gobierno de Sánchez por la gestión de lo de Ceuta están siendo sancionados, coaccionados y amenazados. También los que se manifiestan en los chats internos del PSOE. \n\nhttps://t.co/JzIFSbmv9C https://t.co/mhWTX5BdHs",
+    "user": {
+      "name": "Javier Rubio Donzé",
+      "screen_name": "Sr_Donze",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2009397633983324160/ih32HP1y_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/JzIFSbmv9C",
+          "expanded_url": "https://okdiario.com/espana/psoe-amenaza-whatsapp-cargos-que-denuncian-verguenza-del-gobierno-ceuta-borra-ese-comentario-19392154",
+          "display_url": "okdiario.com/espana/psoe-am…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/mhWTX5BdHs",
+        "media_url_https": "https://pbs.twimg.com/media/HP-9r59WYAAn2C7.jpg"
+      }
+    ]
+  }
+}

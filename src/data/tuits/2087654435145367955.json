@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087654435145367955",
+    "created_at": "2026-08-12T21:36:18.000Z",
+    "text": "Casi un centenar de seres humanos muertos, un número indeterminado de niñas agredidas sexualmente (al parecer, también niños). Miles de familias encerradas durante días en sus casas muertas de miedo. Saqueos, palizas.\nY parace que no ha pasado nada. Ni un cese o dimisión. Nada.",
+    "user": {
+      "name": "Samuel",
+      "screen_name": "guidoprincesa",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2002890586743836672/4gjlI0EA_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

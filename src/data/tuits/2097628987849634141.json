@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097628987849634141",
+    "created_at": "2026-09-09T10:11:37.000Z",
+    "text": "ALUCINANTE 👉🏻 La última pregunta de Cintora en TelePedro #Mañaneros9S a su jefe es sobre sus listas musicales en Spotify 🤷🏻‍♂️\n\nNo se había visto nada tan duro desde el último combate de Ilia Topuria 😅😅 https://t.co/sqzwRRYnHe",
+    "user": {
+      "name": "Eduardo Carazo",
+      "screen_name": "educarazo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1563120173976002560/0qsj2Vzq_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/sqzwRRYnHe",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097628896703504385/img/iowZQV-Q6howvpAu.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097628896703504385/pl/3A8M2fr0Eh-Br9uH.m3u8?v=d70"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097628896703504385/vid/avc1/480x270/VT5bh7h8qjYpHwlm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097628896703504385/vid/avc1/640x360/0LQARu-3K7flayQD.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097628896703504385/vid/avc1/1280x720/RMiRgb9SjTLB1TvF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097628896703504385/vid/avc1/1920x1080/nxghe8j3hJ9HWshT.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

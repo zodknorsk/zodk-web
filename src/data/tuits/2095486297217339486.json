@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095486297217339486",
+    "created_at": "2026-09-03T12:17:20.000Z",
+    "text": "🔴 #URGENTE | Bloqueados los 32 millones de ayuda urgente de la UE a Ceuta por la falta de respuestas de España a preguntas de Bruselas\n\n✍️ Por @jsanhermelando https://t.co/ZkHAAjCf8H",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ZkHAAjCf8H",
+          "expanded_url": "https://www.elespanol.com/mundo/europa/20260903/gobierno-sanchez-retrasa-ayuda-ue-ceuta-no-responder-peticiones-aclaracion-bruselas/1003744371594_0.html",
+          "display_url": "elespanol.com/mundo/europa/2…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

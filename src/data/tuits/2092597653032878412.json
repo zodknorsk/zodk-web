@@ -1,0 +1,75 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092597653032878412",
+    "created_at": "2026-08-26T12:58:53.000Z",
+    "text": "🇪🇸 #Urgente | Desmantelan la hípica de Ceuta para instalar carpas de inmigrantes y suprimen las terapias con caballos para niños con discapacidad.\n\nLa pista principal del Centro Ecuestre de Ceuta, recién remodelada con una inversión cercana a los 200.000 euros, ha comenzado a ser https://t.co/xCUslcGECY",
+    "note_tweet": true,
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/xCUslcGECY",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092597617532321792/img/zbRlKOBDpYJ60ER2.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092597617532321792/pl/Cj8R1YN6XmHC2YfW.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092597617532321792/vid/avc1/320x568/djOrBi1VUCizHVlq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092597617532321792/vid/avc1/480x852/vwkBrj4OOC5OfsCR.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092597617532321792/vid/avc1/720x1280/U71M61Bz_gc0Pf1T.mp4"
+            }
+          ]
+        }
+      },
+      {
+        "type": "video",
+        "url": "https://t.co/xCUslcGECY",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092597617502920704/img/ywIyda9dAh-vcRFu.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092597617502920704/pl/SVFOtReu8BukTDAQ.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092597617502920704/vid/avc1/320x568/ccBx6CzW2FLUzzPp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092597617502920704/vid/avc1/480x852/BQNRQR8a5tktHJm7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092597617502920704/vid/avc1/720x1280/fCjWEG8N6h1aQFKE.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

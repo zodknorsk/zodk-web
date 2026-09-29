@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099626962113245464",
+    "created_at": "2026-09-14T22:30:51.000Z",
+    "text": "Sánchez presume de que Ceuta ha pasado de tener 500 plazas para acoger ilegales antes de la invasión a 6.000, y anuncia que se llegará a 10.000. https://t.co/7Tu4AOFrMD",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/7Tu4AOFrMD",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099618173666365440/img/e2jOwLhSbyELfYbz.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099618173666365440/pl/hAg7cCmX_oO-vIpM.m3u8?v=37c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099618173666365440/vid/avc1/480x270/vNnD0KZ0CHxrcZaD.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099618173666365440/vid/avc1/640x360/pvn9tq62UmxRbK-d.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099618173666365440/vid/avc1/1280x720/ZRtY2BjdbHGS3ftT.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

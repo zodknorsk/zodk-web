@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096991878717567196",
+    "created_at": "2026-09-07T15:59:58.000Z",
+    "text": "🇪🇸🇲🇦 | El testimonio de las operarias de limpieza en Ceuta refleja la insalubridad del campamento irregular: \n\nDenuncian que el olor es insoportable y que las papeleras están llenas de botellas de alcohol y botes de pegamento que consumen los inmigrantes. https://t.co/EbwCcMGgbR",
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/EbwCcMGgbR",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096991788368113664/img/w67EcZIESsmdNO8-.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096991788368113664/pl/kEe6lfmfBnssVINz.m3u8?v=710"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096991788368113664/vid/avc1/320x568/0vZO5aHfZ7gTu96i.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096991788368113664/vid/avc1/480x852/R12UFxw6n15Qtucz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096991788368113664/vid/avc1/720x1280/C8oiQG-H_dsYA5O3.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

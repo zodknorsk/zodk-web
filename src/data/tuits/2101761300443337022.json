@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101761300443337022",
+    "created_at": "2026-09-20T19:51:57.000Z",
+    "text": "🔴 La Policía de Marlaska reprime a golpes y con pelotas de goma a los ceutíes que impedían la entrada de una ONG proetarra. https://t.co/BYbwFQTweW",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/BYbwFQTweW",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2101761253777555457/pu/img/huboHX-uQ07cRevf.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2101761253777555457/pu/pl/v4tNViUJGE1EAzZ1.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2101761253777555457/pu/vid/avc1/480x270/24A3UMs5D_Ud_f0c.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2101761253777555457/pu/vid/avc1/640x360/RylcazpU6KnHS7gR.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2101761253777555457/pu/vid/avc1/1280x720/sgIHpVrVlYJyBQ7m.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

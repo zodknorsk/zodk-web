@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094321445715189830",
+    "created_at": "2026-08-31T07:08:37.000Z",
+    "text": "🔴 El cinismo de Sánchez tras la invasión en Ceuta.\n\n\"Necesitamos migrantes, mano de obra para una economía que está creciendo\". \nhttps://t.co/S0i42Ud7TT",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/S0i42Ud7TT",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094317076751982592/img/ikX_OUewBlQJUv3Y.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094317076751982592/pl/lqw6Lo-vTOlglDEL.m3u8?tag=16&v=d15"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2094317076751982592/vid/avc1/480x270/FC5YrjgeJduy2Ux4.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2094317076751982592/vid/avc1/640x360/bUK5_Q-3DTwo2XIn.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094317076751982592/vid/avc1/1280x720/ABcDMFnQQdCzJVDM.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094317076751982592/vid/avc1/1920x1080/X4240-XcLF5Pdccu.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101643606322798891",
+    "created_at": "2026-09-20T12:04:17.000Z",
+    "text": "🔥🛢️One of the most incredible sequences from today’s attack on Moscow: a Ukrainian MICH-2000 long-range strike drone pushes through a wall of Russian air-defense fire and successfully reaches the Moscow Oil Refinery grounds.\n\nFor a long time, the MICH-2000 was one of Ukraine’s https://t.co/RaEWmcADzh",
+    "note_tweet": true,
+    "user": {
+      "name": "Special Kherson Cat 🐈🇺🇦",
+      "screen_name": "bayraktar_1love",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1523605239458320385/jeI5XBkY_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/RaEWmcADzh",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101643523070058496/img/YxjeVPwCePYDtxCW.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101643523070058496/pl/x9bVsoXARK-LDjn0.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2101643523070058496/vid/avc1/320x568/1kSqiQ4fs_FlpWt_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2101643523070058496/vid/avc1/480x852/iTJnE9jaHGU5tXjq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101643523070058496/vid/avc1/720x1280/hX0pCrU5s4siMzka.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101611042371444907",
+    "created_at": "2026-09-20T09:54:53.000Z",
+    "text": "◼️ Puigdemont cree que #Ceuta y #Melilla \"son dos colonias dentro de #Marruecos\"\n\nhttps://t.co/TtvwHKmd4b",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/TtvwHKmd4b",
+          "expanded_url": "https://elfarodeceuta.es/puigdemont-ceuta-melilla-colonias-marruecos/",
+          "display_url": "elfarodeceuta.es/puigdemont-ceu…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102355557017653726",
+    "created_at": "2026-09-22T11:13:19.000Z",
+    "text": "Los órganos judiciales de Ceuta abrieron 37 procedimientos por agresión sexual entre el 30 de julio y el 14 de septiembre\n\n📄 Nota informativa: https://t.co/HBPBDBFU0s",
+    "user": {
+      "name": "Poder Judicial",
+      "screen_name": "PoderJudicialEs",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1269029716872347650/q_7C2bZt_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/HBPBDBFU0s",
+          "expanded_url": "https://www.poderjudicial.es/cgpj/es/Poder-Judicial/En-Portada/Los-organos-judiciales-de-Ceuta-abrieron-37-procedimientos-por-agresion-sexual-entre-el-30-de-julio-y-el-14-de-septiembre",
+          "display_url": "poderjudicial.es/cgpj/es/Poder-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

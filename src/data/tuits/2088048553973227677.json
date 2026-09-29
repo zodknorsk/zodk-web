@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088048553973227677",
+    "created_at": "2026-08-13T23:42:23.000Z",
+    "text": "Médico de Ceuta denuncia que las calles de su ciudad ahora están llenas de sarna, tuberculosis, cólera, sarampión y diarrea infecciosa, tras la invasión marroquí de la semana pasada. https://t.co/GQ0PRh8qIw",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/GQ0PRh8qIw",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088048500332191744/img/ymkLqNlik45nFeLQ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088048500332191744/pl/UnsT7gk1VwUEqUCG.m3u8?v=e2e"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2088048500332191744/vid/avc1/480x270/0FWLIRLxLQJWFRGC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2088048500332191744/vid/avc1/640x360/lfC6uuCom10Wd7uq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088048500332191744/vid/avc1/1280x720/fnwo0L1AU5pswc54.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088048500332191744/vid/avc1/1920x1080/p5PdaH8NRCS8QdI8.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

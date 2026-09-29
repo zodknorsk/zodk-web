@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100205783967228265",
+    "created_at": "2026-09-16T12:50:53.000Z",
+    "text": "Usar Ceuta para dividirnos es una política miserable que están pagando los y las ceutíes y las personas migrantes.\n\nEl gobierno de Ceuta tiene que hacerse cargo de sus competencias y las CCAA acoger a los niños y niñas que hoy siguen sin solución.\n\nCada uno tiene que asumir sus https://t.co/MTgFqkBiha",
+    "note_tweet": true,
+    "user": {
+      "name": "Pepe Álvarez",
+      "screen_name": "SG_UGT",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2071160697753632768/PDPgNX0p_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/MTgFqkBiha",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100204780991766529/img/6nc859kC6ztaj8ma.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/pl/0p4FwpJcfyVZe6RW.m3u8?v=782"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/480x270/0fSw6mLd4CfgD4AP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/640x360/wxHip1UkT4EUySd6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/1280x720/oChEu8YsJpQwNuiq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/1920x1080/MC0f6bLPowroG7yI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/3840x2160/e5fVCowAGwYRjfJl.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

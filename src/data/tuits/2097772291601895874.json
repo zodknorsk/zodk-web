@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097772291601895874",
+    "created_at": "2026-09-09T19:41:03.000Z",
+    "text": "El delegado del Gobierno en Ceuta se aferra al cargo y dice que los informes publicados del CNI «no fueron un aviso» https://t.co/pWbIaB8lPn https://t.co/e8WJye3mmd",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/pWbIaB8lPn",
+          "expanded_url": "https://www.abc.es/espana/delegado-gobierno-ceuta-aferra-cargo-dice-informes-20260909204356-nt.html",
+          "display_url": "abc.es/espana/delegad…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/e8WJye3mmd",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097770794151792640/img/D72HCjTSp8AFOnng.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097770794151792640/pl/88MurIVQlQ2yy1LR.m3u8?v=4de"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2097770794151792640/vid/avc1/320x568/H94nmTRmWy7_nO-9.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2097770794151792640/vid/avc1/480x852/L7hbdo44hzgctzSm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097770794151792640/vid/avc1/720x1280/WI6XC7FDI4gCQcDJ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097770794151792640/vid/avc1/1080x1920/AD_VJcEqqOlsTBaq.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

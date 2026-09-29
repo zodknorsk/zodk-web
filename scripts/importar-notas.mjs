@@ -20,11 +20,18 @@
 //        - [[Nota]] / [[Nota#sección|texto]]       -> enlace resuelto (o texto)
 //        - URL de tweet embebida (![](x.com/...))  -> tarjeta HTML ya descargada
 //        - <blockquote class="tiktok-embed">       -> cita estática con enlace
-//   5. Escribe el resultado en src/content/<colección>/ (se regenera entero
-//      cada vez), las imágenes de tweets en public/tweets/ y los vídeos
-//      locales de la bóveda en public/adjuntos/.
+//   5. Escribe el resultado en src/content/<colección>/, las imágenes de
+//      tweets en public/tweets/ y los vídeos locales de la bóveda en
+//      public/adjuntos/. Solo escribe lo que ha cambiado y borra lo que ya no
+//      se publica, así que `npm run dev` puede seguir abierto.
+//   6. Resume qué notas son nuevas, cuáles han cambiado y cuáles se retiran.
 //
-// Uso:   npm run importar          (BOVEDA_PATH=... para otra ruta)
+// Los tuits se piden a X una sola vez y se guardan en src/data/tuits/
+// (tweets.mjs, «Archivo de tuits»).
+//
+// Uso:   npm run importar                          (BOVEDA_PATH=... para otra ruta)
+//        npm run importar -- --refrescar-tuits     vuelve a pedir a X todos los tuits
+//        npm run importar -- --en-esta-rama        importa aunque no se esté en main
 // ---------------------------------------------------------------------------
 
 import fs from "node:fs";
@@ -34,8 +41,13 @@ import crypto from "node:crypto";
 import matter from "gray-matter";
 import GithubSlugger from "github-slugger";
 import sharp from "sharp";
+import { execFileSync } from "node:child_process";
 import {
   descargarTweet,
+  recortarTuit,
+  leerArchivo,
+  guardarEnArchivo,
+  archivosDeTuit,
   enParalelo,
   mediaDeTweet,
   descargarMedia,
@@ -68,6 +80,10 @@ const DESTINO_UAS = path.join(RAIZ, "src", "content", "uas");
 const DESTINOS = [DESTINO_NOTAS, DESTINO_ANALISIS, DESTINO_OPERACIONES, DESTINO_SEGUIMIENTOS, DESTINO_UAS];
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
+const ARCHIVO_TUITS = path.join(RAIZ, "src", "data", "tuits");
+
+const REFRESCAR_TUITS = process.argv.includes("--refrescar-tuits");
+const EN_ESTA_RAMA = process.argv.includes("--en-esta-rama");
 
 // Las notas de los proyectos van por su etiqueta, sea cual sea su tipo.
 const ETIQUETAS_PROYECTO = new Set(["luna", "marte", "blog"]);
@@ -115,10 +131,25 @@ const RE_YOUTUBE = new RegExp(
 
 /**
  * Copia una imagen de la bóveda a `carpeta` como `base` + extensión, reducida
- * a LADO_MAX_FOTO. Devuelve el nombre final (un PNG puede acabar en .jpg).
+ * a LADO_MAX_FOTO. Devuelve { nombre, nueva }: el nombre final (un PNG puede
+ * acabar en .jpg) y si se ha escrito ahora.
  */
 async function copiarFoto(origen, carpeta, base) {
   const ext = path.extname(origen).toLowerCase();
+  // Si ya está la copia y es más nueva que el original, no se rehace. Un PNG
+  // grande pudo acabar en .jpg, así que se miran los dos nombres.
+  for (const final of ext === ".png" ? [ext, ".jpg"] : [ext]) {
+    if (estaAlDia(origen, path.join(carpeta, base + final))) return { nombre: base + final, nueva: false };
+  }
+  return { nombre: await convertirFoto(origen, carpeta, base, ext), nueva: true };
+}
+
+/** El destino existe y es posterior al origen (no hace falta copiarlo otra vez). */
+function estaAlDia(origen, destino) {
+  return fs.existsSync(destino) && fs.statSync(destino).mtimeMs >= fs.statSync(origen).mtimeMs;
+}
+
+async function convertirFoto(origen, carpeta, base, ext) {
   const copiaTalCual = () => {
     fs.copyFileSync(origen, path.join(carpeta, base + ext));
     return base + ext;
@@ -415,7 +446,7 @@ function idsDeTweets(cuerpo) {
   return [...ids];
 }
 
-function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasCache }) {
+function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetas }) {
   const lineas = separarTweetsDeLineas(cuerpo).split("\n");
   for (let i = 0; i < lineas.length; i++) {
     const m = lineas[i].trim().match(RE_TWEET_SUELTO);
@@ -424,12 +455,10 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasC
     let html;
     if (tweet) {
       html = construirTarjeta(tweet, mediaMapa, videoMapa);
-    } else if (tarjetasCache.has(m[1])) {
-      // X no ha respondido por este tweet (borrado, cuenta suspendida, fallo
-      // puntual...) pero ya lo teníamos horneado de una ejecución anterior:
-      // se reutiliza esa tarjeta en vez de romper algo que ya funcionaba.
-      console.log(`  ↺ tweet ${m[1]}: X no responde, reuso la tarjeta ya guardada`);
-      html = tarjetasCache.get(m[1]);
+    } else if (tarjetas.has(m[1])) {
+      // Tuit que X ya había borrado cuando se hizo el archivo: solo queda su
+      // tarjeta, tal cual se hizo entonces.
+      html = tarjetas.get(m[1]);
     } else {
       html = `> ⚠️ [Publicación de X no disponible](https://x.com/i/status/${m[1]})`;
     }
@@ -443,22 +472,20 @@ function insertarTarjetasTweet(cuerpo, { tweets, mediaMapa, videoMapa, tarjetasC
 }
 
 /**
- * Antes de borrar src/content/ para regenerarlo, recoge las
- * tarjetas de tweet (<blockquote class="tweet" data-tweet-id="...">) que ya
- * estaban horneadas ahí, indexadas por ID. Sirven de respaldo si en esta
- * ejecución X no responde por ese tweet.
+ * Las tarjetas de tweet (<blockquote class="tweet" data-tweet-id="...">) que
+ * ya están hechas en src/content/, por ID. Solo se usan para un tuit que no
+ * está en el archivo y X ya no sirve: se guarda su tarjeta tal cual.
  */
 function recogerTarjetasExistentes() {
   const cache = new Map();
   const RE_BLOCKQUOTE = /<blockquote class="tweet" data-tweet-id="(\d+)">[\s\S]*?<\/blockquote>/g;
-  for (const dir of DESTINOS) {
-    if (!fs.existsSync(dir)) continue;
-    for (const archivo of buscarMarkdown(dir)) {
-      const texto = fs.readFileSync(archivo, "utf8");
-      let m;
-      while ((m = RE_BLOCKQUOTE.exec(texto))) {
-        if (!cache.has(m[1])) cache.set(m[1], m[0]);
-      }
+  const contenido = path.join(RAIZ, "src", "content");
+  if (!fs.existsSync(contenido)) return cache;
+  for (const archivo of buscarMarkdown(contenido)) {
+    const texto = fs.readFileSync(archivo, "utf8");
+    let m;
+    while ((m = RE_BLOCKQUOTE.exec(texto))) {
+      if (!cache.has(m[1])) cache.set(m[1], m[0]);
     }
   }
   return cache;
@@ -491,7 +518,7 @@ function convertirTikTok(cuerpo) {
  * o null. `copiarImagen(nombre)` copia la imagen y devuelve lo que va en el enlace.
  */
 function transformarCuerpo(cuerpo, ctx) {
-  const { resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache, esEventoSemana } = ctx;
+  const { resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas, esEventoSemana } = ctx;
 
   let s = cuerpo;
 
@@ -510,7 +537,7 @@ function transformarCuerpo(cuerpo, ctx) {
   }
 
   s = convertirTikTok(s);
-  s = insertarTarjetasTweet(s, { tweets, mediaMapa, videoMapa, tarjetasCache });
+  s = insertarTarjetasTweet(s, { tweets, mediaMapa, videoMapa, tarjetas });
 
   // Adjuntos embebidos de Obsidian: ![[archivo.png]] / ![[archivo.png|123]] /
   // ![[archivo.mp4]]. Los vídeos locales se renderizan como <video>, el resto
@@ -594,47 +621,86 @@ function transformarCuerpo(cuerpo, ctx) {
 
 // --- Programa principal ------------------------------------------------
 
+/** Rama de Git en la que está la web, o null si no se sabe. */
+function ramaActual() {
+  try {
+    return execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+      cwd: RAIZ, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+/** Todos los archivos que hay bajo `dir`, en cualquier subcarpeta. */
+function archivosBajo(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = path.join(dir, e.name);
+    return e.isDirectory() ? archivosBajo(p) : [p];
+  });
+}
+
+/** Borra las carpetas que se han quedado vacías bajo `dir`. */
+function borrarCarpetasVacias(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!e.isDirectory()) continue;
+    const p = path.join(dir, e.name);
+    borrarCarpetasVacias(p);
+    if (fs.readdirSync(p).length === 0) fs.rmdirSync(p);
+  }
+}
+
+/** Escribe `texto` en `ruta` solo si cambia. Devuelve "nueva", "cambiada" o null. */
+function escribirSiCambia(ruta, texto) {
+  const existe = fs.existsSync(ruta);
+  if (existe && fs.readFileSync(ruta, "utf8") === texto) return null;
+  fs.writeFileSync(ruta, texto);
+  return existe ? "cambiada" : "nueva";
+}
+
 async function main() {
   if (!fs.existsSync(BOVEDA)) {
     console.error(`No encuentro la bóveda en: ${BOVEDA}`);
     process.exit(1);
   }
+  // Las notas se publican desde main: en una rama de proyecto el contenido se
+  // mezclaría con el proyecto.
+  const rama = ramaActual();
+  if (rama && rama !== "main" && !EN_ESTA_RAMA) {
+    console.error(
+      `Estás en la rama «${rama}». Las notas se publican desde main:\n\n` +
+      "  git switch main\n\n" +
+      "Para importar aquí de todas formas: npm run importar -- --en-esta-rama",
+    );
+    process.exit(1);
+  }
   console.log(`Bóveda: ${BOVEDA}\n`);
 
-  // Antes de tirar el contenido generado, guardamos las tarjetas de tweet que
-  // ya había: si en esta pasada X no responde por alguna, se reutiliza en vez
-  // de romper una tarjeta que ya funcionaba.
-  const tarjetasCache = recogerTarjetasExistentes();
+  for (const d of [...DESTINOS, PUBLICO_ADJUNTOS]) fs.mkdirSync(d, { recursive: true });
 
-  // El contenido generado se regenera entero. public/tweets/ NO se borra: sirve
-  // de caché de imágenes entre ejecuciones (bórrala a mano si quieres limpiarla).
-  // public/adjuntos/ sí se regenera entera: son ficheros locales de la bóveda,
-  // recopiarlos es barato y así no se acumulan vídeos huérfanos.
-  // src/content/eventos era la colección de antes (seguimientos y operaciones).
-  fs.rmSync(path.join(RAIZ, "src", "content", "eventos"), { recursive: true, force: true });
-  for (const d of [...DESTINOS, PUBLICO_ADJUNTOS]) {
-    fs.rmSync(d, { recursive: true, force: true });
-    fs.mkdirSync(d, { recursive: true });
-  }
-  // Astro cachea el contenido en .astro/; si no se limpia, al regenerar las
-  // carpetas se queja de "Duplicate id". Se borran las dos ubicaciones.
-  for (const c of [".astro", "node_modules/.astro"]) {
-    fs.rmSync(path.join(RAIZ, c), { recursive: true, force: true });
-  }
+  // Lo que escribe (o deja como estaba) esta importación en src/content/ y
+  // public/adjuntos/. Al final se borra de ahí todo lo demás: es lo que ya
+  // no se publica.
+  const vigentes = new Set();
 
   const indiceImagenes = indexarImagenes();
 
   // Los vídeos van a una carpeta pública compartida (no a la del artículo,
-  // como las imágenes), así que el nombre lleva un hash de la ruta de origen
-  // para no colisionar si dos notas usan un vídeo con el mismo nombre.
+  // como las imágenes), así que el nombre lleva un hash de su ruta dentro de
+  // la bóveda para no colisionar si dos notas usan un vídeo con el mismo
+  // nombre. Dentro de la bóveda: así sale igual en el Mac y en el PC.
   const copiarVideo = (nombre) => {
     nombre = nombre.normalize("NFC");
     const origen = indiceImagenes.get(nombre) || indiceImagenes.get(path.basename(nombre));
     if (!origen) return null;
     const ext = path.extname(origen).toLowerCase();
-    const hash = crypto.createHash("sha1").update(origen).digest("hex").slice(0, 8);
+    const relativa = path.relative(BOVEDA, origen).split(path.sep).join("/").normalize("NFC");
+    const hash = crypto.createHash("sha1").update(relativa).digest("hex").slice(0, 8);
     const base = `${generarSlug(path.basename(origen, ext))}-${hash}${ext}`;
-    fs.copyFileSync(origen, path.join(PUBLICO_ADJUNTOS, base));
+    const destino = path.join(PUBLICO_ADJUNTOS, base);
+    if (!estaAlDia(origen, destino)) fs.copyFileSync(origen, destino);
+    vigentes.add(destino);
     return base;
   };
 
@@ -697,43 +763,59 @@ async function main() {
     : it.data.videos_locales !== false;
   const resolver = (destino) => mapaEnlaces.get(generarSlug(destino)) || null;
 
-  // --- Descarga de tweets: primero los JSON, luego todas sus imágenes ---
+  // --- Tuits: salen del archivo; a X solo se piden los que no están ---
+  const archivo = leerArchivo(ARCHIVO_TUITS);
   const idsTweets = [...new Set(items.flatMap((it) => idsDeTweets(it.content)))];
-  let tweets = new Map();
-  let mediaMapa = new Map();
-  let videoMapa = new Map();
-  if (idsTweets.length) {
-    console.log(`Descargando ${idsTweets.length} tweet(s) de X...`);
-    tweets = await enParalelo(idsTweets, 12, descargarTweet);
-    const validos = [...tweets.values()].filter(Boolean);
-    const fallidos = tweets.size - validos.length;
-    if (fallidos) console.log(`  ${fallidos} no disponibles (se pondrán como enlace).`);
-
-    const mediaUrls = validos.flatMap(mediaDeTweet);
-    console.log(`Descargando ${new Set(mediaUrls).size} imagen(es) de tweets...`);
-    mediaMapa = await descargarMedia(mediaUrls, PUBLICO_TWEETS, "/tweets");
-
-    const idsSinVideoLocal = new Set(
-      items.filter((it) => !permiteVideoLocal(it)).flatMap((it) => idsDeTweets(it.content)),
-    );
-    if (idsSinVideoLocal.size) {
-      console.log(`  ${idsSinVideoLocal.size} tweet(s) sin vídeo local (videos_locales: false): solo fuente en vivo de X.`);
-    }
-    const videoUrls = validos
-      .filter((t) => !idsSinVideoLocal.has(t.id_str))
-      .flatMap(videosDeTweet);
-    if (videoUrls.length) {
-      console.log(`Descargando y comprimiendo ${new Set(videoUrls).size} vídeo(s) de tweets...`);
-      videoMapa = await descargarVideos(videoUrls, PUBLICO_TWEETS, "/tweets");
-      const fallidosVideo = new Set(videoUrls).size - videoMapa.size;
-      if (fallidosVideo) {
-        console.log(`  ${fallidosVideo} no se pudieron comprimir (la tarjeta usará solo la fuente en vivo de X).`);
+  const pedir = idsTweets.filter((id) => REFRESCAR_TUITS || !archivo.has(id));
+  let tuitsNuevos = 0;
+  const noDisponibles = [];
+  if (pedir.length) {
+    console.log(`Pidiendo ${pedir.length} tuit(s) a X...`);
+    const descargados = await enParalelo(pedir, 12, descargarTweet);
+    const hoy = aFechaISO(new Date());
+    let tarjetasHechas = null;
+    for (const id of pedir) {
+      const tuit = descargados.get(id);
+      const previa = archivo.get(id);
+      let entrada = null;
+      if (tuit) {
+        entrada = { capturado: previa?.capturado ?? hoy, tuit: recortarTuit(tuit) };
+      } else if (!previa) {
+        // X ya no lo da, pero puede que su tarjeta esté hecha de antes.
+        tarjetasHechas ??= recogerTarjetasExistentes();
+        if (tarjetasHechas.has(id)) entrada = { capturado: hoy, tarjeta: tarjetasHechas.get(id) };
+      }
+      if (entrada) {
+        if (!previa) tuitsNuevos++;
+        archivo.set(id, entrada);
+        guardarEnArchivo(ARCHIVO_TUITS, id, entrada);
+      } else if (!previa) {
+        noDisponibles.push(id);
       }
     }
   }
 
+  const tweets = new Map();
+  const tarjetas = new Map();
+  for (const id of idsTweets) {
+    const entrada = archivo.get(id);
+    if (entrada?.tuit) tweets.set(id, entrada.tuit);
+    else if (entrada?.tarjeta) tarjetas.set(id, entrada.tarjeta);
+  }
+
+  // Imágenes y vídeos: solo se bajan los que no están ya en public/tweets/.
+  const mediaMapa = await descargarMedia([...tweets.values()].flatMap(mediaDeTweet), PUBLICO_TWEETS, "/tweets");
+  const idsSinVideoLocal = new Set(
+    items.filter((it) => !permiteVideoLocal(it)).flatMap((it) => idsDeTweets(it.content)),
+  );
+  const videoUrls = [...tweets.values()]
+    .filter((t) => !idsSinVideoLocal.has(t.id_str))
+    .flatMap(videosDeTweet);
+  const videoMapa = await descargarVideos(videoUrls, PUBLICO_TWEETS, "/tweets");
+
   // --- Pasada 2: escribir cada archivo ---
   const cuenta = {};
+  const resumen = { nueva: [], cambiada: [] };
 
   for (const it of items) {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
@@ -756,11 +838,15 @@ async function main() {
     };
 
     let cuerpo = transformarCuerpo(it.content, {
-      resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetasCache,
+      resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas,
       esEventoSemana: it.clase.kind === "semana",
     });
+    let fotoNueva = false;
     for (const { marca, promesa } of fotos.values()) {
-      cuerpo = cuerpo.replaceAll(marca, await promesa);
+      const { nombre, nueva } = await promesa;
+      cuerpo = cuerpo.replaceAll(marca, nombre);
+      vigentes.add(path.join(it.carpetaDestino, nombre));
+      fotoNueva ||= nueva;
     }
     cuerpo = resaltados(cuerpo);
     const esDron = it.clase.tipo === "uas" && !it.clase.glosario && !it.clase.armamento;
@@ -803,13 +889,55 @@ async function main() {
       if (it.clase.kind === "semana") fm.title = `Semana ${it.clase.orden}`;
     }
 
-    fs.writeFileSync(path.join(it.carpetaDestino, "index.md"), matter.stringify(cuerpo, fm));
+    const ruta = path.join(it.carpetaDestino, "index.md");
+    vigentes.add(ruta);
+    const estado = escribirSiCambia(ruta, matter.stringify(cuerpo, fm)) ?? (fotoNueva ? "cambiada" : null);
+    if (estado) resumen[estado].push(`${it.titulo}  (${it.url})`);
     cuenta[it.clase.tipo] = (cuenta[it.clase.tipo] ?? 0) + 1;
-    console.log(`  ✓ ${it.clase.tipo.padEnd(11)} ${it.url}`);
   }
 
-  console.log(`\nListo: ${Object.entries(cuenta).map(([t, n]) => `${n} ${t}`).join(", ")}.`);
+  // --- Limpieza: lo que ya no se publica ---
+  const retiradas = [];
+  for (const dir of [...DESTINOS, PUBLICO_ADJUNTOS]) {
+    for (const ruta of archivosBajo(dir)) {
+      if (vigentes.has(ruta)) continue;
+      if (path.basename(ruta) === "index.md") {
+        const titulo = matter(fs.readFileSync(ruta, "utf8")).data.title;
+        retiradas.push(`${titulo}  (${path.relative(path.join(RAIZ, "src", "content"), path.dirname(ruta))})`);
+      }
+      fs.rmSync(ruta);
+    }
+    borrarCarpetasVacias(dir);
+  }
+  // En public/tweets/ se queda todo lo de los tuits del archivo, aunque ya no
+  // salgan en ninguna nota, y lo que enlace alguna tarjeta. Lo demás (avatares
+  // que X cambió, restos de antes del archivo) sobra.
+  const enUso = new Set([...archivo.values()].flatMap(archivosDeTuit));
+  for (const ruta of DESTINOS.flatMap(archivosBajo)) {
+    if (!ruta.endsWith(".md")) continue;
+    for (const m of fs.readFileSync(ruta, "utf8").matchAll(/\/tweets\/([^"\s)]+)/g)) enUso.add(m[1]);
+  }
+  let tuitsSobrantes = 0;
+  for (const nombre of fs.readdirSync(PUBLICO_TWEETS)) {
+    if (enUso.has(nombre)) continue;
+    fs.rmSync(path.join(PUBLICO_TWEETS, nombre));
+    tuitsSobrantes++;
+  }
+
+  // --- Resumen ---
+  const lista = (titulos) => (titulos.length ? titulos.map((t) => `\n    ${t}`).join("") : " —");
+  console.log(`\nNuevas:${lista(resumen.nueva)}`);
+  console.log(`Cambiadas:${lista(resumen.cambiada)}`);
+  console.log(`Retiradas:${lista(retiradas)}`);
+  const guardados = idsTweets.length - tuitsNuevos - noDisponibles.length;
+  console.log(`Tuits: ${tuitsNuevos} nuevo(s) en el archivo, ${guardados} ya guardado(s).`);
+  if (noDisponibles.length) {
+    console.log(`  ${noDisponibles.length} que X ya no da y no se llegaron a guardar (salen como enlace): ${noDisponibles.join(", ")}`);
+  }
+  if (tuitsSobrantes) console.log(`  Borradas ${tuitsSobrantes} imagen(es) de public/tweets/ que ya no usa ningún tuit.`);
+  console.log(`\nEn la web: ${Object.entries(cuenta).map(([t, n]) => `${n} ${t}`).join(", ")}.`);
 }
+
 
 main().catch((e) => {
   console.error(e);

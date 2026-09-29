@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100172392534348022",
+    "created_at": "2026-09-16T10:38:12.000Z",
+    "text": "#SesiónDeDescontrol | La carcajada final: Sánchez se parte cuando le recuerdan sus vacaciones en plena crisis de Ceuta\n\n✍️ La crónica de @DanielRamirez99, desde el Congreso de los Diputados https://t.co/VBSFSOxNV6",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/VBSFSOxNV6",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260916/carcajada-final-sanchez-parte-recuerdan-vacaciones-plena-crisis-ceuta/1003744385148_0.html",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

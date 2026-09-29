@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096033145187373236",
+    "created_at": "2026-09-05T00:30:18.000Z",
+    "text": "🇲🇦🇪🇭 ATAQUE SOBRE MARRUECOS\n\nEl Frente Polisario lanza una andanada de ataques sobre \"El Muro\" -la gigantesca línea defensiva de Marruecos en el Sáhara Occidental.\n\nComo es habitual han recurrido al uso de lanzacohetes de artillería Grad de diseño soviético adaptados sobre https://t.co/LncN64siwj",
+    "note_tweet": true,
+    "user": {
+      "name": "The Political Room",
+      "screen_name": "Political_Room",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1244593976184840193/iPHLDwCB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LncN64siwj",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096032768040026112/img/sM_9QDVnMZMjm1yK.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096032768040026112/pl/sg8DtTP5-BR3fVfT.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2096032768040026112/vid/avc1/480x270/6EP-lPvhqdvRskPq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2096032768040026112/vid/avc1/640x360/dghYqx6i4eI3bKxZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096032768040026112/vid/avc1/1280x720/0qMYyKR0VYQTjJu2.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

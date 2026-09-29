@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083176746199761174",
+    "created_at": "2026-07-31T13:03:34.000Z",
+    "text": "No ha sido apaciguamiento, ha sido rendición a los marroquíes.\nA partir de ahora, yo bloqueaba la salida de dinero a Marruecos y bloqueaba completamente la frontera con ellos para estrangular su economía, como medida de disuasión.\nAdemas, denuncia a la UE para imponer sanciones. https://t.co/8a6AFodYEI",
+    "user": {
+      "name": "Capitán General de los Tercios",
+      "screen_name": "capTercio",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1680240098372190208/yHDBwVxW_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8a6AFodYEI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083176675160866817/img/9GptyXG5XhmM4pfY.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083176675160866817/pl/_A1Zjc8PrgUn12ow.m3u8?v=f7c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083176675160866817/vid/avc1/320x568/AUuF0nRRmsi5bf_g.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083176675160866817/vid/avc1/480x852/gZsgqafBPg_EjX31.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083176675160866817/vid/avc1/576x1024/XTi5az_DjLKaoEWV.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

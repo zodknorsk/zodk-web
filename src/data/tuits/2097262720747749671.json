@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097262720747749671",
+    "created_at": "2026-09-08T09:56:12.000Z",
+    "text": "Comunicado sobre la entrevista al Presidente del Gobierno en Mañaneros 360 https://t.co/nzrRhVJcFM",
+    "user": {
+      "name": "Consejo de Informativos TVE",
+      "screen_name": "CdItve",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1908200749722443776/IG6Zabu-_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/nzrRhVJcFM",
+        "media_url_https": "https://pbs.twimg.com/media/HRr5Un0WIAAcvtQ.jpg"
+      }
+    ]
+  }
+}

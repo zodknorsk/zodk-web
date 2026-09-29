@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095069709246878205",
+    "created_at": "2026-09-02T08:41:57.000Z",
+    "text": "#Comunicado:\n\nJUPOL EXIGE LA DIMISIÓN DEL DELEGADO DEL GOBIERNO EN CEUTA, DEL DIRECTOR GENERAL DE LA POLICÍA Y DE FERNANDO GRANDE-MARLASKA\n\nJUPOL, sindicato mayoritario de la Policía Nacional, exige responsabilidades políticas y la dimisión del delegado del Gobierno en Ceuta, del https://t.co/78qe0VmJmp",
+    "note_tweet": true,
+    "user": {
+      "name": "JUPOL",
+      "screen_name": "JupolNacional",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1674328202439716869/7jLu7P8G_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/78qe0VmJmp",
+        "media_url_https": "https://pbs.twimg.com/media/HRMuYhrWgAEz2_I.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/78qe0VmJmp",
+        "media_url_https": "https://pbs.twimg.com/media/HRMuZQ5WcAUfQgc.jpg"
+      }
+    ]
+  }
+}

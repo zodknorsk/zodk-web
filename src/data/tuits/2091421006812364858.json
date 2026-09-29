@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091421006812364858",
+    "created_at": "2026-08-23T07:03:19.000Z",
+    "text": "💢 La morgue de Ceuta, al límite: trabajadores reciben tratamiento psicológico tras semanas entre cadáveres. https://t.co/55WhcBdBa7",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/55WhcBdBa7",
+          "expanded_url": "https://okdiario.com/espana/morgue-ceuta-limite-trabajadores-reciben-tratamiento-psicologico-semanas-cadaveres-20141085?utm_medium=social&utm_source=Twitter#Echobox=1787464339-2",
+          "display_url": "okdiario.com/espana/morgue-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

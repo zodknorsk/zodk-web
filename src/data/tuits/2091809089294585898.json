@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091809089294585898",
+    "created_at": "2026-08-24T08:45:25.000Z",
+    "text": "El tipo que habla apesta a policía marroquí. Habla bien, maneja el grupo, tiene autoridad, conoce el número de inmigrantes de otros países….\n\nOs la están metiendo doblada.\n#EnBocaDeTodos https://t.co/qSrP6oNN5G",
+    "user": {
+      "name": "Astur Gladiator 🇪🇸",
+      "screen_name": "GladiatorAstur",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1330583617706336256/iBO53Prj_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/qSrP6oNN5G",
+        "media_url_https": "https://pbs.twimg.com/media/HQeZRwgWMAAvYmB.jpg"
+      }
+    ]
+  }
+}

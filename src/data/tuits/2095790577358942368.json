@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095790577358942368",
+    "created_at": "2026-09-04T08:26:26.000Z",
+    "text": "Patriot. https://t.co/ZM33R3y5Hy",
+    "user": {
+      "name": "Spainball",
+      "screen_name": "Espball",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2097120631762661376/DXEsdCCE_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ZM33R3y5Hy",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095790553699094528/img/Yod_kIwzSWkE2Ih8.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095790553699094528/pl/vgbQd6bd87GXnygS.m3u8?v=c4d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095790553699094528/vid/avc1/470x270/jRXhKTX6qSC_4Afd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095790553699094528/vid/avc1/628x360/lPGFCcej-y3NM-gf.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095790553699094528/vid/avc1/1256x720/Zod8fUgyqkHzNZhw.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

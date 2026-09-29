@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099461947200582128",
+    "created_at": "2026-09-14T11:35:08.000Z",
+    "text": "Ceuta.\n\nAcoso sexual de los magrebíes a chicas que pasean al lado de la playa. https://t.co/VxAtCIKWnf",
+    "user": {
+      "name": "RO-1",
+      "screen_name": "Undercover_Camo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/595683478852730883/BZNcHtID_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/VxAtCIKWnf",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099461908810395648/img/GfNpRRYVoOI5lIbY.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099461908810395648/pl/dsVeFf_wkBlWQg8i.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2099461908810395648/vid/avc1/320x532/v-dUDZQQf3uYhzOQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2099461908810395648/vid/avc1/480x800/cjkuJoN4tPCTkSDW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099461908810395648/vid/avc1/720x1200/RKeD2sXuTL7GUcvf.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097281329452704043",
+    "created_at": "2026-09-08T11:10:09.000Z",
+    "text": "Escucha bien esto:\nHoy son los gatos \nMañana serás tú y tus hijos https://t.co/E9Rg1zvGgM",
+    "user": {
+      "name": "ladyblue",
+      "screen_name": "MariaMu24417972",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1460267738493034503/DlZ0NChi_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/E9Rg1zvGgM",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097281266899189761/img/DOuIUJe43P9R83u4.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097281266899189761/pl/1tQNWfMrUotZmcjI.m3u8?v=7f3"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2097281266899189761/vid/avc1/320x568/kDTgCpwbdYeZ_nCi.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2097281266899189761/vid/avc1/480x852/ptCaOufwUim2Vfvd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097281266899189761/vid/avc1/720x1280/4auyOBec7AGPYO4E.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

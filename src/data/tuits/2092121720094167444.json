@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092121720094167444",
+    "created_at": "2026-08-25T05:27:42.000Z",
+    "text": "🇲🇦🇪🇸 Día nuevo, amenaza nueva de Marruecos. \n\nEsta vez en plena ceremonia del Mawlid ante el rey Mohamed VI, el ministro de Asuntos Religiosos Ahmed Toufiq ha sacado a relucir Ceuta y llama a movilizarse para “liberar los territorios ocupados”.  Refuerza las reivindicaciones de https://t.co/W93ZT7NKGI",
+    "note_tweet": true,
+    "user": {
+      "name": "The Political Room",
+      "screen_name": "Political_Room",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1244593976184840193/iPHLDwCB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/W93ZT7NKGI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092121680881623041/img/CageKSKOuZ2--gpz.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092121680881623041/pl/thzbouP2QdIa546M.m3u8?v=f83"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2092121680881623041/vid/avc1/398x270/DXf-AO5pej60ZOpr.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2092121680881623041/vid/avc1/532x360/-71sAS2kjh2K8PCI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092121680881623041/vid/avc1/1066x720/keZJtTbl1lsiz9dU.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2082778163797516353",
+    "created_at": "2026-07-30T10:39:45.000Z",
+    "text": "Una Nación sin fronteras es como un hogar sin puertas.\n\nEspaña ha renunciado a la Seguridad.\n\n📍Frontera del Tarajal, Ceuta. En estos momentos. https://t.co/96wtz8kCOs",
+    "user": {
+      "name": "Macarena Olona",
+      "screen_name": "Macarena_Olona",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1844882505188401153/TB1V2yNE_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/96wtz8kCOs",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2082777201313804288/img/tL4M9UDDYfL5HK9G.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2082777201313804288/pl/eoPYw8sIMlBP7x-e.m3u8?v=1ec"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2082777201313804288/vid/avc1/320x572/EwEjpoppXt40ZTbi.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2082777201313804288/vid/avc1/464x832/4FUi3mOmXN_3TCp0.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

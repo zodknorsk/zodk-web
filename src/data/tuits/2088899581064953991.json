@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088899581064953991",
+    "created_at": "2026-08-16T08:04:04.000Z",
+    "text": "⭕️ Escuchen como hemos dibujado la trazabilidad de 1.000 Millones de € de sus impuestos con destino MARRUECOS en los últimos 2 años.\n\nLo hablo aquí con @AlbertCastillon en #CastillonConfidencial https://t.co/jnXMR1i1lx",
+    "user": {
+      "name": "Pablo Cambronero 🇪🇦",
+      "screen_name": "PabloCamPiq",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1646193253715263493/7gxYp8Su_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/jnXMR1i1lx",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088899458557788161/img/WAOY-jFZ6Rc5arHp.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088899458557788161/pl/YDv3P3aTMvkePX-0.m3u8?v=506"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2088899458557788161/vid/avc1/466x270/-Ce8vkwpXNfW19tC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2088899458557788161/vid/avc1/620x360/Y6ylWKtbhbqJs6WC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088899458557788161/vid/avc1/1282x742/C-_8eCY8O35fw3yb.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

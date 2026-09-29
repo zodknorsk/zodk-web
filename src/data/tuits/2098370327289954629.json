@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098370327289954629",
+    "created_at": "2026-09-11T11:17:26.000Z",
+    "text": "🔴 DIRECTO | Detenido en Ceuta un condenado por terrorismo yihadista que tiene prohibida la entrada a España https://t.co/D1ZbngfzDl",
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/D1ZbngfzDl",
+          "expanded_url": "https://social.elpais.com/cw88p",
+          "display_url": "social.elpais.com/cw88p"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

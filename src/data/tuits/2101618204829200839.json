@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101618204829200839",
+    "created_at": "2026-09-20T10:23:20.000Z",
+    "text": "Ceuta en solo una Imagen.\n\nTodas esas marcas son las que les hacen en las cárceles marroquíes. Cualquier magrebí que lleve eso es que ha cometido un delito y no leve precisamente. https://t.co/DmCt4g2Buj",
+    "user": {
+      "name": "RO-1",
+      "screen_name": "Undercover_Camo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/595683478852730883/BZNcHtID_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/DmCt4g2Buj",
+        "media_url_https": "https://pbs.twimg.com/media/HSpynjSXgAAwNVg.jpg"
+      }
+    ]
+  }
+}

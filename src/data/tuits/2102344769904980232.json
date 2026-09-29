@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102344769904980232",
+    "created_at": "2026-09-22T10:30:27.000Z",
+    "text": "La barrera marítima de la frontera de Ceuta, colocada días después de la entrada masiva a la ciudad autónoma en julio, presenta hoy un visible deterioro.\n\n📹 @EnekoCarazoTVE https://t.co/EBIGImGvNO",
+    "user": {
+      "name": "RTVE Noticias",
+      "screen_name": "rtvenoticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1941768194177236992/7_noJtY6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/EBIGImGvNO",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2102343818674597888/img/lnAObR_oJozYGHQZ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2102343818674597888/pl/OQXcD7SRJAupaaeU.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2102343818674597888/vid/avc1/482x270/ec8R0tFFjusgP8da.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2102343818674597888/vid/avc1/848x474/Pbn_RLiCLJREhqhB.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

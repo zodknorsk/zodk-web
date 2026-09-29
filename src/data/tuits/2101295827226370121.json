@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101295827226370121",
+    "created_at": "2026-09-19T13:02:20.000Z",
+    "text": "Las playas del Trampolín y Benítez vuelven a estar llenas de personas que esperan que se abran nuevos centros.",
+    "user": {
+      "name": "RTVE Noticias",
+      "screen_name": "rtvenoticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1941768194177236992/7_noJtY6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

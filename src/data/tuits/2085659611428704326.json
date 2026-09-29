@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085659611428704326",
+    "created_at": "2026-08-07T09:29:35.000Z",
+    "text": "🇪🇸🇲🇦 IMPORTANTE Aparece un misterioso y extenso informe de 120 páginas que podría haber sido filtrado por el CNI. \n\nLa forma en que está montado el sitio web y la cantidad ingente de información que contiene apuntarían en esa dirección.\n\nEl informe además deja caer una idea",
+    "note_tweet": true,
+    "user": {
+      "name": "The Political Room",
+      "screen_name": "Political_Room",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1244593976184840193/iPHLDwCB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

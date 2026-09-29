@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088947562602541114",
+    "created_at": "2026-08-16T11:14:44.000Z",
+    "text": "🗣️Abuchean a Mónica García en Ceuta, que se niega a hablar con médicos: «¡Sinvergüenza, basura, y Sánchez de vacaciones!»\n\n📹 @SitoUcar, enviado especial a Ceuta https://t.co/T5a0nyBGbC",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/T5a0nyBGbC",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088947439596122112/img/Kj6WDLIMUs4tMJGH.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088947439596122112/pl/xIh52zlMfgzLY3zM.m3u8?v=4ff"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088947439596122112/vid/avc1/320x568/LWeNab_tAmBbgZx5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088947439596122112/vid/avc1/480x852/r-1TK0CSmpgHY-2m.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088947439596122112/vid/avc1/720x1280/c9BPFaVyr-MzF2AS.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088947439596122112/vid/avc1/1080x1920/A9KgWhYl61DE4hGh.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

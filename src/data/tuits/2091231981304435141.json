@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091231981304435141",
+    "created_at": "2026-08-22T18:32:12.000Z",
+    "text": "🔴 HISTÓRICO | El Ceuta FC se niega a jugar el primer minuto de partido como reivindicación y queja contra Sánchez por abandonarles tras la invasión.\n\nLes acompañan miles de aficionados con banderas de España y gritos de “¡Ceuta no se vende, se defiende!”. https://t.co/HBhZGNJURR",
+    "user": {
+      "name": "Unai Cano",
+      "screen_name": "unaicano10",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1666030541391421445/X_Bm9ryP_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/HBhZGNJURR",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091214006212067328/img/iKsdSDq-Zwbq-Blg.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091214006212067328/pl/yXQ7Xhi7PQaMg_D6.m3u8?v=948"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2091214006212067328/vid/avc1/480x270/4JzwpxZnC3oneNIi.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2091214006212067328/vid/avc1/640x360/xYMEpmgXtVELKvL_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2091214006212067328/vid/avc1/1280x720/SsG1Mn4WxyatkLT-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2091214006212067328/vid/avc1/1920x1080/EYQ0r5x3WWY2ifBC.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

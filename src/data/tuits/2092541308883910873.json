@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092541308883910873",
+    "created_at": "2026-08-26T09:15:00.000Z",
+    "text": "España ha desembolsado más de 2.000 millones de euros en la atención a los menas desde la llegada de Sánchez al poder, ha recibido cerca de 28.000 menores inmigrantes y ha devuelto tan solo 41, ninguno a Marruecos\n\nhttps://t.co/kxH0uTbebv",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/kxH0uTbebv",
+          "expanded_url": "https://www.libertaddigital.com/espana/2026-08-26/espana-lleva-gastados-mas-de-2-000-millones-en-atencion-a-los-menas-desde-la-llegada-de-sanchez-al-poder-7451413/",
+          "display_url": "libertaddigital.com/espana/2026-08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095757372509593651",
+    "created_at": "2026-09-04T06:14:29.000Z",
+    "text": "La portada del 4 de septiembre.\n\nEl Gobierno reduce de 12 a 8 los policías que vigilan el puesto fronterizo de Ceuta tras la invasión. \n\n✍🏻 Por Ángel Moya (@AngelMoyatv).\n\nhttps://t.co/mWv3UmGSKX",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/mWv3UmGSKX",
+          "expanded_url": "https://okdiario.com/espana/gobierno-reduce-12-8-policias-que-vigilan-puesto-fronterizo-ceuta-invasion-20225453?utm_medium=social&utm_source=Twitter#Echobox=1788502469-2",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

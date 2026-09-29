@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094561266429804957",
+    "created_at": "2026-08-31T23:01:35.000Z",
+    "text": "#Marruecos alienta el nacionalismo antiespañol y reactiva sus reivindicaciones sobre #Ceuta y #Melilla. En plena campaña electoral —las legislativas son el 23 de septiembre—, sirve para desviar la atención y hacer olvidar que los jóvenes marroquíes huyen de su país a la menor",
+    "note_tweet": true,
+    "user": {
+      "name": "Ignacio Cembrero",
+      "screen_name": "icembrero",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733242642207490048/3HzlSfQl_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

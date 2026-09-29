@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091698129783456235",
+    "created_at": "2026-08-24T01:24:30.000Z",
+    "text": "La influencer Wafae (que fingió ser una \"migrante\" que entró en Ceuta huyendo de Marruecos) habría sido vista reunida con agentes de la Policía marroquí en la cafetería El Puente (Ceuta). https://t.co/pSfwGDlhQX",
+    "user": {
+      "name": "Estela Gómez Berbegal",
+      "screen_name": "BerbegalEs33733",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1720267785794715648/s2wI_ZtZ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/pSfwGDlhQX",
+        "media_url_https": "https://pbs.twimg.com/media/HQc0WCTXsAEi7UW.jpg"
+      }
+    ]
+  }
+}

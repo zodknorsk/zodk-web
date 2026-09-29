@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089708338657337654",
+    "created_at": "2026-08-18T13:37:47.000Z",
+    "text": "El diputado ceutí del PSOE Melchor León denuncia haber sido amenazado por su partido con la expulsión inmediata por exponer la situación de Ceuta y negarse a seguir el relato oficial de Sánchez: “No se puede engañar como pretende parte del partido”. https://t.co/VZIWZqljAi",
+    "user": {
+      "name": "Sr.Liberal",
+      "screen_name": "SrLiberal",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2100323141851525120/ju7_AXE3_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/VZIWZqljAi",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2089708311251734528/img/8GZyma20RlD_vtpE.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2089708311251734528/pl/loa0sVlMOAuwephY.m3u8?v=757"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2089708311251734528/vid/avc1/464x270/EaSYIgO4d2CQAUHK.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2089708311251734528/vid/avc1/720x418/di4XbTcRpe8h25qf.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091845450500321341",
+    "created_at": "2026-08-24T11:09:54.000Z",
+    "text": "El delegado del Gobierno en Ceuta admite ahora que la ciudad está «lejos de la normalidad» https://t.co/IZV66jOIBe",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/IZV66jOIBe",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091845388789526528/img/_r8l16ZVFcYVgRSz.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091845388789526528/pl/R375zT0WRdCRQ7CX.m3u8?v=a06"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2091845388789526528/vid/avc1/320x568/GHGx-zIxrZjmc3fW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2091845388789526528/vid/avc1/480x852/2tR4FmOI8f1pgFc0.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2091845388789526528/vid/avc1/720x1280/f8V1P9HxDPhjmMOP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2091845388789526528/vid/avc1/1080x1920/MCIzCENyxjwFErps.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

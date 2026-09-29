@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084602006316962247",
+    "created_at": "2026-08-04T11:27:02.000Z",
+    "text": "⭕️ En el último año más de 1.000 millones de € públicos españoles fueron a proyectos (algunos absurdos) en MARRUECOS.\n\nLo he contado hace un momento en @EnBocaDe_Todos. @cuatro https://t.co/1ipF6mR6YI",
+    "user": {
+      "name": "Pablo Cambronero 🇪🇦",
+      "screen_name": "PabloCamPiq",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1646193253715263493/7gxYp8Su_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/1ipF6mR6YI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084599726263975936/img/Iw5ikxU4ckaQ0g7b.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084599726263975936/pl/eIgZ4EmVukRrgHuP.m3u8?v=6f6"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2084599726263975936/vid/avc1/478x270/0U50UWJ1Le2m6V5U.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2084599726263975936/vid/avc1/636x360/uvNh0IGSbJBJpdSo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2084599726263975936/vid/avc1/854x482/NOGiK3UWWWvpd7KF.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

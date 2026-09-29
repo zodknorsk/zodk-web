@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096219675830939884",
+    "created_at": "2026-09-05T12:51:31.000Z",
+    "text": "Margarita Robles, a mí me da que está cavando su tumba, políticamente hablando, por qué? Por decir la verdad.\n🇪🇸⚔️☠️ https://t.co/MPe2hbisUj",
+    "user": {
+      "name": "Gonzor",
+      "screen_name": "Gonzor_1212",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2021313523037388800/nUv0tsHw_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/MPe2hbisUj",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096219608189452292/img/yRbOpdYXI_v_-FKv.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096219608189452292/pl/r7wlgCFZw21lO-E_.m3u8?v=d1a"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096219608189452292/vid/avc1/320x568/XqvmPcg-rN0ZAr2l.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096219608189452292/vid/avc1/480x852/vGfSFk4jKlP4MQ1-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096219608189452292/vid/avc1/576x1024/aLYPVtUMzlIYIuqi.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

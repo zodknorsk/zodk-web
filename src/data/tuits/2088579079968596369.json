@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088579079968596369",
+    "created_at": "2026-08-15T10:50:31.000Z",
+    "text": "🚩 Cientos de subsaharianos intentan cruzar la frontera que separa Marruecos de España para llegar a Ceuta.\n\nEste 15 de agosto, los movimientos de masas no han tenido como protagonistas a nadadores marroquíes, pero sí a todos los subsaharianos que buscaban el pase.\n\n#Ceuta https://t.co/B2Hx2Sv2wP",
+    "note_tweet": true,
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/B2Hx2Sv2wP",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088578852322754560/img/jQc3nsWZZpLEzeLe.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088578852322754560/pl/SC0663XuhQdIpQ53.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088578852322754560/vid/avc1/320x568/55y0Lw2nbLCz_R5R.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088578852322754560/vid/avc1/480x852/-_xYrWGapffX62UJ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088578852322754560/vid/avc1/720x1280/a-hya7MJxlF4tMnY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088578852322754560/vid/avc1/1080x1920/DS7o0-EekVlyt6zN.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

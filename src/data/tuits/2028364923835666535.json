@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2028364923835666535",
+    "created_at": "2026-03-02T07:00:57.000Z",
+    "text": "A video showing a US MQ-9 Reaper UCAV launching an AGM-114 Hellfire against a ground target somewhere in Iran. https://t.co/H9jPebHXGJ",
+    "user": {
+      "name": "Status-6",
+      "screen_name": "Archer83Able",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2096934026028457984/xA1FTcid_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/H9jPebHXGJ",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2028364756336193536/pu/img/aBjjdfOrf-gqcQp0.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2028364756336193536/pu/pl/kmuoqe7ESEpaMiIO.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2028364756336193536/pu/vid/avc1/320x482/4CA15vzWY8wxnoJ7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2028364756336193536/pu/vid/avc1/480x724/cWYjXHLmA3mrdbvI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2028364756336193536/pu/vid/avc1/720x1086/FRrGHZIeqBWwfAoo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/ext_tw_video/2028364756336193536/pu/vid/avc1/848x1280/K4og71KTS7MptJWV.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

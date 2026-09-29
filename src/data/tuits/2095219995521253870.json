@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095219995521253870",
+    "created_at": "2026-09-02T18:39:08.000Z",
+    "text": "Delegación de Gobierno cifra en 50.000 los asistentes a la concentración en Madrid https://t.co/K9K3sEZJmS https://t.co/gnkIxCqIwP",
+    "user": {
+      "name": "EL MUNDO",
+      "screen_name": "elmundoes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1854121701396852738/t89707ny_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/K9K3sEZJmS",
+          "expanded_url": "https://shorturl.at/dUlAH",
+          "display_url": "shorturl.at/dUlAH"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gnkIxCqIwP",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2095219972846886912/pu/img/ILTUzKcpLNZkcn7a.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2095219972846886912/pu/pl/7P40HkD4L7D4FI5S.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2095219972846886912/pu/vid/avc1/320x568/J7vXECAN7MOhifbI.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2095219972846886912/pu/vid/avc1/480x852/ZS_DNniPjj9ZNSr6.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2095219972846886912/pu/vid/avc1/720x1280/S3iE9Hwynv7Mbtop.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098666859650220499",
+    "created_at": "2026-09-12T06:55:45.000Z",
+    "text": "“Sánchez ya ha visto como pasaba por los tribunales su hermano y en breve su mujer. Y muchos sueñan con verle a él sentado frente a Marchena y cía. El tiro de gracia se llama Ceuta. La oposición ha hecho strike y el asedio irá a más”\n(Ilustra @martintognola) https://t.co/LG6uhFNPxi",
+    "note_tweet": true,
+    "user": {
+      "name": "Jordi Évole",
+      "screen_name": "jordievole",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594403081663516674/ogl0Lfc0_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/LG6uhFNPxi",
+        "media_url_https": "https://pbs.twimg.com/media/HR_2YJBa4AAGe6T.jpg"
+      }
+    ]
+  }
+}

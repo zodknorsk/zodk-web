@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099082641546903869",
+    "created_at": "2026-09-13T10:27:55.000Z",
+    "text": "🔴 Un apuñalado en la playa del Trampolín durante una reyerta y varios detenidos por allanamiento, acoso sexual y tenencia de armas esta madrugada en Ceuta\nhttps://t.co/jQp9l1u854",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/jQp9l1u854",
+          "expanded_url": "https://www.europapress.es/nacional/noticia-apunalado-trampolin-varios-detenidos-allanamiento-tenencia-armas-madrugada-ceuta-20260913121819.html",
+          "display_url": "europapress.es/nacional/notic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

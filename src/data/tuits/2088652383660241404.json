@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088652383660241404",
+    "created_at": "2026-08-15T15:41:48.000Z",
+    "text": "‼️ Marruecos abre fuego en la frontera para disuadir a  subsaharianos que intentaban cruzar en un nuevo asalto.\n\nRabat está pidiendo que EFE y RTVE abandonen Castillejos. https://t.co/MoeiHSQMlX",
+    "user": {
+      "name": "Javier Negre",
+      "screen_name": "javiernegre10",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1991933540343111680/lEBfg4N5_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/MoeiHSQMlX",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088652280891392000/img/dNSnX0ApFDlpKr2P.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088652280891392000/pl/2VmAjcNEXkcp9x5H.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088652280891392000/vid/avc1/320x362/0Na2ysNNGQycp8pX.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088652280891392000/vid/avc1/480x544/ucvkIv4w1ek67wKi.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088652280891392000/vid/avc1/720x818/YP-Tf_acBpoTtUfO.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093072381044506758",
+    "created_at": "2026-08-27T20:25:17.000Z",
+    "text": "Llega el fin de semana y, como me decían el viernes pasado un grupo de jóvenes ceutíes, no podrán salir tranquilamente a hacer lo que hacían cada verano: «aprovechar el buen tiempo para salir a tomar algo con los amigos». En el CETI, en cambio, sí habrá fiesta, como ocurre casi https://t.co/Opa8Bd2HXq",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Opa8Bd2HXq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2093072210579611649/img/Uc9YstMs8Mbh_DbI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2093072210579611649/pl/xEAdRnC16S22jEdY.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2093072210579611649/vid/avc1/320x400/HCtbV7uU_P6TsZM2.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2093072210579611649/vid/avc1/480x600/_2UD4GWDTm956meO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2093072210579611649/vid/avc1/720x900/XIpyZgWwWQk27j-M.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2093072210579611649/vid/avc1/1080x1350/Fc_KVpeZmYTkAqB_.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

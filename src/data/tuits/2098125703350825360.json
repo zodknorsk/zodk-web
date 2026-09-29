@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098125703350825360",
+    "created_at": "2026-09-10T19:05:23.000Z",
+    "text": "Hoy vamos a hablar de la Ley de Nietos. https://t.co/Wqqv2mMejg",
+    "user": {
+      "name": "Félix Bolaños",
+      "screen_name": "felixbolanosg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074030128145850371/8gGW6wwg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Wqqv2mMejg",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098125608328757254/img/Ca6N07gDCLVlhRod.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098125608328757254/pl/tzuvng6ww2qcaveW.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2098125608328757254/vid/avc1/320x568/vh73PZh0BCBbwwJZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2098125608328757254/vid/avc1/480x852/bBWPCmVi7n26ccHY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2098125608328757254/vid/avc1/720x1280/cu0hGVD2z9wPH4iI.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

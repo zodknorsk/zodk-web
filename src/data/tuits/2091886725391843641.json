@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091886725391843641",
+    "created_at": "2026-08-24T13:53:55.000Z",
+    "text": "🔴 🇲🇦 Morocco: 70,000 intelligence services agents database posted on DarkForums by Jabaroot\nOn 24 Aug 2026, Jabaroot posted on DarkForums what it says is a 70,000-record database of Morocco's DGST and DGSN, tied to OP_CEUTA and the Ceuta migration crisis.\nhttps://t.co/Rsb9fdrxrh",
+    "user": {
+      "name": "breaches.africa",
+      "screen_name": "breachesafrica",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2084580861408677888/9zp3mKnR_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Rsb9fdrxrh",
+          "expanded_url": "https://breaches.africa/breaches/moroccan-dgst-general-directorate-for-territorial-surveillance-2026-08-24-8ba46e48",
+          "display_url": "breaches.africa/breaches/moroc…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

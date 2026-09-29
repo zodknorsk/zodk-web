@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100828132857053689",
+    "created_at": "2026-09-18T06:03:53.000Z",
+    "text": "🚩 Así ha sido la avalancha durante el traslado de miles de inmigrantes al nuevo asentamiento del puerto\n\n📍 Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio\n\n#Ceuta #Inmigracion #FronteraSur #Marruecos #Traslado #Asentamiento https://t.co/PeynHBGeci",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/PeynHBGeci",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100827897191653376/img/abpt8LDFJ602ZzU2.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100827897191653376/pl/Y440Zqwlm1IFMCR8.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2100827897191653376/vid/avc1/320x568/4sqeiJvo9TmPzpXr.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2100827897191653376/vid/avc1/480x852/y93AKYEBO213zfbL.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100827897191653376/vid/avc1/720x1280/00vcSDJq2w6ZTyV5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100827897191653376/vid/avc1/1080x1920/hJVosv8oYpEdnapr.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

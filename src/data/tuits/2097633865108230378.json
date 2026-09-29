@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097633865108230378",
+    "created_at": "2026-09-09T10:31:00.000Z",
+    "text": "¿Qué hubiera hecho otro Gobierno?\n¿Se hubiera liado a tiros contra niños, niñas, jóvenes?\n\nMe parece de una gravedad extrema.\n\nLa respuesta de las Fuerzas y Cuerpos de Seguridad del Estado fue inteligente y yo, por supuesto, la avalo. https://t.co/kRLFxcInlv",
+    "user": {
+      "name": "Pedro Sánchez",
+      "screen_name": "sanchezcastejon",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074022871068721152/op9-nqtP_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/kRLFxcInlv",
+        "media_url_https": "https://pbs.twimg.com/media/HRxIykSW0AAW-6h.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097630172044312576/pl/RRcTLurUQK4EBDDs.m3u8?v=212"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097630172044312576/vid/avc1/480x270/qwwI_grb3SPVRHq4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097630172044312576/vid/avc1/640x360/3_aHadbJyboiP3hZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097630172044312576/vid/avc1/1280x720/YT7eyfBB8Bq-I4AG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097630172044312576/vid/avc1/1920x1080/qIBQ0I60DYB2pWbr.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

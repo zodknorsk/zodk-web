@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098347951739265381",
+    "created_at": "2026-09-11T09:48:31.000Z",
+    "text": "💥 UNA IMAGEN VALE MÁS QUE MIL PALABRAS.\n\n⬅️ A la izquierda: así duermen algunos policías nacionales desplazados a Ceuta.\n\n➡️ A la derecha: así son las condiciones del campamento instalado para los inmigrantes que invadieron Ceuta el pasado 30 y 31 de julio.\n\n¿Quién está cuidando https://t.co/lNapb8LRHK",
+    "note_tweet": true,
+    "user": {
+      "name": "JUPOL",
+      "screen_name": "JupolNacional",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1674328202439716869/7jLu7P8G_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/lNapb8LRHK",
+        "media_url_https": "https://pbs.twimg.com/media/HR7UVkqbwAA95hU.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/lNapb8LRHK",
+        "media_url_https": "https://pbs.twimg.com/media/HR7UVkJWkAQAi18.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2040145805802106941",
+    "created_at": "2026-04-03T19:13:58.000Z",
+    "text": "Footage of Iranian police firing small arms at a pair of USAF HH-60Ws searching for the downed F-15E crew earlier today. https://t.co/9SwhyhY1Aw",
+    "user": {
+      "name": "OSINTtechnical",
+      "screen_name": "Osinttechnical",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1191175818933932032/W4GF6Nbe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/9SwhyhY1Aw",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2040145573580288000/img/MKipn_ScgEi03Bgj.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2040145573580288000/pl/sPO6Ey-LvXUN7tRt.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2040145573580288000/vid/avc1/320x566/DwbZCYkX6Y02idt5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2040145573580288000/vid/avc1/478x848/AOCYREfUR-PH8sqp.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

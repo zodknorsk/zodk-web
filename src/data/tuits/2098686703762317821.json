@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098686703762317821",
+    "created_at": "2026-09-12T08:14:36.000Z",
+    "text": "Dos apuñalados y ocho detenidos en una noche de reyertas y violencia en Ceuta #ceuta \n\nhttps://t.co/Mc8gYxCoSg",
+    "user": {
+      "name": "El Pueblo de Ceuta",
+      "screen_name": "ElPueblodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/702212395582824449/M9fVrL_R_normal.png"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Mc8gYxCoSg",
+          "expanded_url": "https://www.elpueblodeceuta.es/sec/sucesos/apunalados-ocho-detenidos-noche-reyertas_1_1188738.html",
+          "display_url": "elpueblodeceuta.es/sec/sucesos/ap…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

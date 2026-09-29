@@ -1,0 +1,56 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084613949933195508",
+    "created_at": "2026-08-04T12:14:30.000Z",
+    "text": "🔴 #URGENTE | Marlaska dice que 72.000 personas entraron de forma irregular en Ceuta y que 70.000 ya han regresado a Marruecos https://t.co/CaQfwoVWEE",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/CaQfwoVWEE",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084613815434444800/img/Eibzg283VKwmJiLl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/pl/Mf5evCXBFgipb_oG.m3u8?v=b81"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/320x568/TY1H07pjbtqNkuH9.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/480x852/TN8PsLWWKRmCcao-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/720x1280/KxbpN2jYv1hio5u2.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/1080x1920/yzwICa18WnBgoz42.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2084613815434444800/vid/avc1/2160x3840/7vUronhKkCGCpv9A.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

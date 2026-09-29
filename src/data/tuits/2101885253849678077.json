@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101885253849678077",
+    "created_at": "2026-09-21T04:04:30.000Z",
+    "text": "🇲🇦🇪🇸 | El marroquí que amenaza al Rey de España Felipe VI con la muerte si visita Ceuta es un ex-senador del régimen marroquí fugado de la justicia española por violencia doméstica y acusado de terrorismo. \n\nSu nombre es Yahya Yahya, un marroquí nacido en Ceuta en 1967 que se https://t.co/f0UPuiU4P8",
+    "note_tweet": true,
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/f0UPuiU4P8",
+        "media_url_https": "https://pbs.twimg.com/media/HStlf4FW0AE4vqD.jpg"
+      }
+    ]
+  }
+}

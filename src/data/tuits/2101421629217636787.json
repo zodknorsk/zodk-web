@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101421629217636787",
+    "created_at": "2026-09-19T21:22:13.000Z",
+    "text": "🗣️\"No se puede estigmatizar, ni tildar como invasores a migrantes que buscan un mundo mejor o una inseguridad jurídica que no tienen\"\n\n👉 Baltasar Garzón tajante sobre la situación de los migrantes en Ceuta, en #laSextaXplica. https://t.co/8ZaKDe3ury",
+    "user": {
+      "name": "laSexta Xplica",
+      "screen_name": "laSextaXplica",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1579436603570806784/mb2-736A_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8ZaKDe3ury",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101421116300378112/img/wz6UzhDs35_tnN9G.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101421116300378112/pl/HYKH8C_aTob1MInm.m3u8?tag=14&v=4ba"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2101421116300378112/vid/avc1/480x270/amBs_JHURQ4knz8b.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2101421116300378112/vid/avc1/640x360/7DPIu0y6flykC2sS.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2101421116300378112/vid/avc1/1280x720/AArvnX3LFuwQZxlI.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

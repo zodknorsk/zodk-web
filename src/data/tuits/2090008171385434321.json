@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090008171385434321",
+    "created_at": "2026-08-19T09:29:13.000Z",
+    "text": "Máxima tensión también en plató por la situación de Ceuta.\n\nEl debate se crispa mientras ponemos sobre la mesa el sentimiento de muchos vecinos que aseguran sentirse solos y abandonados.\n\n🔴 #EnBocaDeTodos en @cuatro con @davidalemantv\n ➡ https://t.co/OiGsSTHtqS https://t.co/lQQNB5d0HZ",
+    "user": {
+      "name": "En boca de todos",
+      "screen_name": "EnBocaDe_Todos",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1962445572389867520/fp5DvEj4_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/OiGsSTHtqS",
+          "expanded_url": "https://mdia.st/directo4",
+          "display_url": "mdia.st/directo4"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/lQQNB5d0HZ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2090007782002929664/img/dRaFYrLgMWf_WdcO.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2090007782002929664/pl/I8XpE1_UhIYqG_q9.m3u8?tag=14&v=6e4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2090007782002929664/vid/avc1/480x270/zQuJrvR-iOsVvi9w.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2090007782002929664/vid/avc1/640x360/PHqHMYqbs7582y6g.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2090007782002929664/vid/avc1/1280x720/3vZA_gTZLd0BrTPF.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

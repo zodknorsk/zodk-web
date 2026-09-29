@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091864831393472903",
+    "created_at": "2026-08-24T12:26:55.000Z",
+    "text": "🔴 #URGENTE | Sánchez convoca el Consejo de Seguridad Nacional para tratar la crisis de Ceuta casi un mes después del asalto masivo \n\n📲 Lee la noticia en https://t.co/3cuHntyPTo https://t.co/j3OHQpbuzF",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/3cuHntyPTo",
+          "expanded_url": "https://dozz.es/34jfs",
+          "display_url": "dozz.es/34jfs"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/j3OHQpbuzF",
+        "media_url_https": "https://pbs.twimg.com/media/HQfL-V5W4AAlIB_.jpg"
+      }
+    ]
+  }
+}

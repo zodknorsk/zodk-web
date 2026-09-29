@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096554261047869731",
+    "created_at": "2026-09-06T11:01:02.000Z",
+    "text": "🇪🇸🇲🇦 | El propagandista sanchista conocido como 'Perro andaluz', genera indignación entre los ceutíes al reírse de su miedo a la invasión:\n\n«No puede ser una invasión si los invasores quieren una manta y un caldito». https://t.co/EkF8pzx5IE",
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/EkF8pzx5IE",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096554183952396294/img/KcMm7NF8HhhTOqAI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096554183952396294/pl/clsnIXH7sYKmKh6P.m3u8?v=8d5"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096554183952396294/vid/avc1/320x446/EMqi3Bs5cJbOUeGW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096554183952396294/vid/avc1/480x670/sZirXIbZW8LvluOn.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

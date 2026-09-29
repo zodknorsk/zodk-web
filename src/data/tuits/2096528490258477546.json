@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096528490258477546",
+    "created_at": "2026-09-06T09:18:38.000Z",
+    "text": "Los espacios donde se está trabajando en Ceuta se aprobaron por unanimidad y en consenso con la Ciudad Autónoma. \n\nQuiero dejar claro que estas carpas son temporales. No son permanentes.\n\nY que, para que las personas migrantes puedan ser retornadas pronto, es necesario tener https://t.co/eM0uH1g4yv",
+    "note_tweet": true,
+    "user": {
+      "name": "Ángel Víctor Torres Pérez",
+      "screen_name": "avtorresp",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074026499808669696/D946OrrQ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/eM0uH1g4yv",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096528336365441024/img/ukttqM-CXhI77ia7.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096528336365441024/pl/vhlAn2UXk2GkIa1_.m3u8?v=3e9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2096528336365441024/vid/avc1/480x270/2amFfWkJE1rOP-X1.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2096528336365441024/vid/avc1/640x360/pkm3PbsrSQz0RtoI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096528336365441024/vid/avc1/1280x720/z-y48xh7V4vFhyTd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2096528336365441024/vid/avc1/1920x1080/4Gmzr-fOidkH0Kdg.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

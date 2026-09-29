@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2040060994781601841",
+    "created_at": "2026-04-03T13:36:58.000Z",
+    "text": "Iranian media has posted the remains of a separated ACES II ejection seat from the downed F-15E. \n\nIndicates at least one of the aircraft’s crew successfully punched out and is on the ground in southwest Iran. Combat search and rescue operations are ongoing. https://t.co/eo5rp9g45d",
+    "user": {
+      "name": "OSINTtechnical",
+      "screen_name": "Osinttechnical",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1191175818933932032/W4GF6Nbe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/eo5rp9g45d",
+        "media_url_https": "https://pbs.twimg.com/media/HE_AqdMXwAACTWz.jpg"
+      }
+    ]
+  }
+}

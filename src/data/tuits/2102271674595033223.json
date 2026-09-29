@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102271674595033223",
+    "created_at": "2026-09-22T05:40:00.000Z",
+    "text": "🔴Interior envía más policías antidisturbios a Ceuta y Melilla ante la posibilidad de nuevos asaltos masivos en la frontera\n\n✍️ Por @BraisCedeira https://t.co/0zwZF60dXt",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/0zwZF60dXt",
+          "expanded_url": "https://www.elespanol.com/espana/20260922/interior-envia-policias-antidisturbios-ceuta-melilla-posibilidad-nuevos-asaltos-masivos-frontera/1003744391693_0.html",
+          "display_url": "elespanol.com/espana/2026092…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

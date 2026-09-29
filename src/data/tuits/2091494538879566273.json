@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091494538879566273",
+    "created_at": "2026-08-23T11:55:30.000Z",
+    "text": "🇪🇸🇲🇦 | Feijóo pide a Sánchez decretar el confinamiento de Ceuta por «riesgo sanitario» tras conocerse cientos de casos de tuberculosis, sarna y más de 450 gastroenteritis. https://t.co/IiDCDIZNsD",
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/IiDCDIZNsD",
+        "media_url_https": "https://pbs.twimg.com/media/HQZ7MiRXgAAZGpV.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089387391274344759",
+    "created_at": "2026-08-17T16:22:27.000Z",
+    "text": "Interior rechaza por segunda vez el despliegue de Frontex en Ceuta\n\nhttps://t.co/MfD067pbGw",
+    "user": {
+      "name": "Cadena SER",
+      "screen_name": "La_SER",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1364858953230934017/4G6lyxVM_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/MfD067pbGw",
+          "expanded_url": "https://cadenaser.com/nacional/2026/08/17/interior-rechaza-por-segunda-vez-el-despliegue-de-frontex-en-ceuta-cadena-ser/",
+          "display_url": "cadenaser.com/nacional/2026/…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

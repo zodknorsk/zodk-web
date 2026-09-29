@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096914159887593949",
+    "created_at": "2026-09-07T10:51:09.000Z",
+    "text": "‼️ Sánchez evita hacer autocrítica y asegura que los reproches por la gestión en Ceuta son cosa de la \"internacional ultraderechista\" por su buena gestión: \"Por algo será\". \n\n🔗 https://t.co/UvLP5IBiCR https://t.co/2Jdx8mFEx2",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/UvLP5IBiCR",
+          "expanded_url": "https://okdiar.io/4csVxkz",
+          "display_url": "okdiar.io/4csVxkz"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/2Jdx8mFEx2",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096912513044545540/img/UInizTI934CgGSvA.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096912513044545540/pl/nIYOBsceGOHnoV6S.m3u8?v=abd"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2096912513044545540/vid/avc1/480x270/WARjAzm4MUbGYgcO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2096912513044545540/vid/avc1/640x360/zG0KzSOPJZGeM1-M.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096912513044545540/vid/avc1/1280x720/vWrykya9mj9rBEtm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2096912513044545540/vid/avc1/1920x1080/LhGJHrFC1FGZdxFU.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

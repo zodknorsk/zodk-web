@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094354095821705325",
+    "created_at": "2026-08-31T09:18:22.000Z",
+    "text": "🇪🇸 | GRAVE: El Ejecutivo aprueba blindar por ley la \"presunción de minoría de edad\", una medida que obligará a las administraciones a asumir la custodia inmediata de cualquier adulto indocumentado que afirme ser menor de 18 años.\n\nEl protocolo congela de forma automática los https://t.co/p195ihTbCr",
+    "note_tweet": true,
+    "user": {
+      "name": "Adais Cásares",
+      "screen_name": "adais_casares",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1645938529141243905/lJhW7XGK_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/p195ihTbCr",
+        "media_url_https": "https://pbs.twimg.com/media/HRCjq9vXMAAQ2FG.jpg"
+      }
+    ]
+  }
+}

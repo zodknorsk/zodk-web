@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083508710123409732",
+    "created_at": "2026-08-01T11:02:40.000Z",
+    "text": "Otra crisis más que resuelve Pedro Sánchez.",
+    "user": {
+      "name": "Óscar Puente",
+      "screen_name": "oscar_puente_",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2058905863763398656/ia4vBf7F_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

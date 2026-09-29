@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091051035020194192",
+    "created_at": "2026-08-22T06:33:11.000Z",
+    "text": "🔴 El Gobierno encarga a una ONG subvencionada con 100 millones montar los campamentos de los que escapan los invasores. \n\n✍🏻 Informa Rafael Molina (@RafaelMolinaTW).\nhttps://t.co/CWXdTSOLRI",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/CWXdTSOLRI",
+          "expanded_url": "https://okdiario.com/espana/gobierno-encarga-ong-subvencionada-100-millones-montar-campamentos-que-escapan-ilegales-20154416?utm_medium=social&utm_source=Twitter#Echobox=1787379520-3",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

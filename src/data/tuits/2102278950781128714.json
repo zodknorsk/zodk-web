@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102278950781128714",
+    "created_at": "2026-09-22T06:08:54.000Z",
+    "text": "🗞️ La portada del 22 de septiembre.\n\nEl audio de la líder del PSOE en Argentina pidiendo pasaportes de muertos para votar a Sánchez por correo en 2023.\n\n📲 Noticia completa https://t.co/5GRFUfszbj https://t.co/I7A0EZ6Ahj",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/5GRFUfszbj",
+          "expanded_url": "https://okdiar.io/4Alj9lj",
+          "display_url": "okdiar.io/4Alj9lj"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/I7A0EZ6Ahj",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2102278919126745088/pu/img/vRx-yMw7Y6OV58nl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2102278919126745088/pu/pl/MGk1z54UDVBdHETp.m3u8?tag=12&v=66d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2102278919126745088/pu/vid/avc1/480x270/uXmClh4jwJpXEiFV.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2102278919126745088/pu/vid/avc1/640x360/LENO6nu6zhfbjTSs.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2102278919126745088/pu/vid/avc1/1280x720/U9n0e4zBk_v2Fvd4.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

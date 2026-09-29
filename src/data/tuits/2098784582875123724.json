@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098784582875123724",
+    "created_at": "2026-09-12T14:43:32.000Z",
+    "text": "Los migrantes marroquíes extienden su asentamiento en la costa de Ceuta a la playa Benítez, situada al lado de la playa del Trampolín.\nhttps://t.co/myUWeYxF9g",
+    "user": {
+      "name": "EFE Noticias",
+      "screen_name": "EFEnoticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1853443874607255552/yOQUhTMR_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/myUWeYxF9g",
+          "expanded_url": "https://efe.com/espana/migrantes-ceuta-asentamiento-playa-benitez/",
+          "display_url": "efe.com/espana/migrant…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

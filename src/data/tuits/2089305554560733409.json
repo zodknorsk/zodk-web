@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089305554560733409",
+    "created_at": "2026-08-17T10:57:16.000Z",
+    "text": "◼️ La ministra Elma Saiz, abucheada a su llegada a la Delegación del Gobierno.\n\n📍 Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio.\n\n#Ceuta #Inmigración #FronteraSur #ElmaSaiz #DelegaciónDelGobierno https://t.co/Pbk4FYN8gc",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Pbk4FYN8gc",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2089305476529831936/img/zT9pwSI4qUQ7eJtX.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2089305476529831936/pl/SB7K9MDXXatP3jHH.m3u8?v=0d5"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2089305476529831936/vid/avc1/320x568/rzhatSxEAMbz-HOz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2089305476529831936/vid/avc1/480x852/HJ_qIiFn8ACKUbfo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2089305476529831936/vid/avc1/720x1280/qMXFOrljIt7Lohec.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2089305476529831936/vid/avc1/1080x1920/OZmcCTJdqhjQgMrZ.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

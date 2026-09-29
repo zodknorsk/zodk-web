@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102389636039393319",
+    "created_at": "2026-09-22T13:28:44.000Z",
+    "text": "‼️La Policía ha frenado este martes un nuevo intento de entrada irregular en Ceuta por la zona de Benzú, donde alrededor de 150 inmigrantes fueron detectados cerca de la valla fronteriza, según el Sindicato Unificado de Policía (SUP). https://t.co/xicwyzS7MJ",
+    "user": {
+      "name": "ViOne",
+      "screen_name": "viOnemedia",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1962074073934045184/Iy0V9oaB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/xicwyzS7MJ",
+        "media_url_https": "https://pbs.twimg.com/media/HS0wJIBW4AAB7zf.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089661434959454605",
+    "created_at": "2026-08-18T10:31:24.000Z",
+    "text": "🇲🇦Así funciona la estructura de la red de aparatos de la inteligencia de #Marruecos.\n\nAgencias, departamentos, lobbies, personalidades y organismos interconectados, que ponen los intereses geopolíticos de #Rabat en el centro de la ecuación. \n\n👉Más info: https://t.co/90IKvSETqZ https://t.co/xAZaSWmJXr",
+    "user": {
+      "name": "GEOPOL 21",
+      "screen_name": "Geopol21",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1746956499576901632/IM_XkiM7_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/90IKvSETqZ",
+          "expanded_url": "https://f.mtr.cool/jrldtibnpr",
+          "display_url": "f.mtr.cool/jrldtibnpr"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/xAZaSWmJXr",
+        "media_url_https": "https://pbs.twimg.com/media/HP_33tyXcAA1lUH.jpg"
+      }
+    ]
+  }
+}

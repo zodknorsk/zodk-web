@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101262941211259134",
+    "created_at": "2026-09-19T10:51:39.000Z",
+    "text": "«Llegar a un acuerdo para devolver Ceuta y Melilla a Marruecos sería un gesto histórico y realista. No es normal que la frontera europea esté en territorio africano.»\n\nLo País, siempre echando una mano a los intereses de España. https://t.co/El1d4BN5pI",
+    "user": {
+      "name": "Antonio Camuñas",
+      "screen_name": "ManhattanManOne",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2094910547934199808/oyYYci7I_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/El1d4BN5pI",
+        "media_url_https": "https://pbs.twimg.com/media/HSkvgXKW8AAFN_Y.jpg"
+      }
+    ]
+  }
+}

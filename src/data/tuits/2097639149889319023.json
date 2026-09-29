@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097639149889319023",
+    "created_at": "2026-09-09T10:52:00.000Z",
+    "text": "Más Madrid pedirá al Defensor del Pueblo llevar al Constitucional la decisión del Supremo sobre la 'ley de nietos' https://t.co/rx4NhKOm8z",
+    "user": {
+      "name": "elDiario.es",
+      "screen_name": "eldiarioes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1677814602992701441/jStj6omO_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/rx4NhKOm8z",
+          "expanded_url": "https://www.eldiario.es/politica/ultima-hora-actualidad-politica-directo_6_13496455_1124825.html",
+          "display_url": "eldiario.es/politica/ultim…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

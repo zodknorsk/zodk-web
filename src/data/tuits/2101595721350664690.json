@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101595721350664690",
+    "created_at": "2026-09-20T08:54:00.000Z",
+    "text": "Radiografía del votante del PSOE (según Tezanos): no trabaja, cobra pensión y es fiel a Pedro Sánchez\n\nSegún el último barómetro del CIS, entre quienes votaron al PSOE en 2023:\n\n-Solo trabaja el 45,5%, y es el único gran partido en el que los ocupados son minoría\n-El 35,4% es https://t.co/oE9DFLguRZ",
+    "note_tweet": true,
+    "user": {
+      "name": "Santiago Calvo",
+      "screen_name": "SantiCalvo_Eco",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1567792751701381120/PtiI23lV_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/oE9DFLguRZ",
+        "media_url_https": "https://pbs.twimg.com/media/HSomZxZWEAAgei0.jpg"
+      }
+    ]
+  }
+}

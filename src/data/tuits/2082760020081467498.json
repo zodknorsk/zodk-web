@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2082760020081467498",
+    "created_at": "2026-07-30T09:27:39.000Z",
+    "text": "Un criminal marroquí que acaba de entrar ilegalmente en Ceuta, admite que lo expulsaron de Holanda para no cumplir una pena de 5 años y le quitaron el pasaporte español.\n\nAdemás, dice que tiene hepatitis C.\n\nVienen criminales y enfermos. https://t.co/Jbtdph3GTI",
+    "user": {
+      "name": "David Santos",
+      "screen_name": "davidsantosvlog",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1728348204662403072/ZXRMcVJ7_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Jbtdph3GTI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2082759939915759616/img/3hwKP15lHZlH-b7x.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2082759939915759616/pl/GHT9Yb9a4l8Zfdj3.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2082759939915759616/vid/avc1/480x270/eDYooD_tow-CWK3l.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2082759939915759616/vid/avc1/640x360/dYlZVTrmVPlfbmpJ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2082759939915759616/vid/avc1/1280x720/jnO5CSvctFT-WwcA.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

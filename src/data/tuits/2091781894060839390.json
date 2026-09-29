@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091781894060839390",
+    "created_at": "2026-08-24T06:57:21.000Z",
+    "text": "Noche de disturbios en Loman del Colmenar, Ceuta.\n\nInmigrantes ilegales se enfrentan a vecinos y policía. https://t.co/gJXLq82BlX",
+    "user": {
+      "name": "La Bandera",
+      "screen_name": "labanderaes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1637054802797502465/F4Ubv7TT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gJXLq82BlX",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091781871738753024/img/zn7yqfoIQ0y43JJM.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091781871738753024/pl/J7yJS9kM8qmWF5wQ.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2091781871738753024/vid/avc1/320x568/xCBCh6J9GUliKKDH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2091781871738753024/vid/avc1/480x852/OG4ug6fLEofW1O-P.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2091781871738753024/vid/avc1/576x1024/n5Vn-nWzrXNNCQR8.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

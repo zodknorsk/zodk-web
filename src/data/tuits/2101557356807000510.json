@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101557356807000510",
+    "created_at": "2026-09-20T06:21:33.000Z",
+    "text": "La Guardia Civil investiga si 95 menores han entrado en los últimos días en Ceuta por un nuevo túnel.\n\nIdentifica a un grupo de niños en el Monte García Aldave que no habrían llegado el 30 y 31 de julio y busca cómo han entrado en la Ciudad. https://t.co/8G0z75R3eH",
+    "user": {
+      "name": "Diosa Khali",
+      "screen_name": "DiosaKhalinda",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2006625622664019968/zXEE0ST__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8G0z75R3eH",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2101557346409250816/img/kW2MAQi6exwW_Ev9.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2101557346409250816/pl/zq1ZPeBMqDPOc5H0.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2101557346409250816/vid/avc1/480x270/EHNx5BPytv_kRFvg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2101557346409250816/vid/avc1/848x476/UgdJjqvh9_gaQd8Y.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

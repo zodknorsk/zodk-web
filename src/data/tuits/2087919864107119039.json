@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087919864107119039",
+    "created_at": "2026-08-13T15:11:01.000Z",
+    "text": "Ceuta is an Islamic hell. https://t.co/YLJPIypT5R",
+    "user": {
+      "name": "RadioGenoa",
+      "screen_name": "RadioGenoa",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2104866023987896320/_uydnwYr_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/YLJPIypT5R",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2087919776219779072/img/WI8fl6qiKcMEKcMi.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2087919776219779072/pl/wjqn0o6OrPtvfKTh.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2087919776219779072/vid/avc1/320x408/EhlM0trMWOSngKoY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2087919776219779072/vid/avc1/480x612/MK6oFwCud2wBun8G.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2087919776219779072/vid/avc1/720x918/jRX9KqQf6P0tzdaq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2087919776219779072/vid/avc1/1080x1378/mRzIQVufBup9y6i9.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

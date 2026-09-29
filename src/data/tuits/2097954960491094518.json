@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097954960491094518",
+    "created_at": "2026-09-10T07:46:55.000Z",
+    "text": "🚩 Bomberos ha sofocado las llamas en varios vehículos frente al colegio Reina Sofía la madrugada de este jueves\n\n#Ceuta #Incendios https://t.co/ywOMNXO2Lc",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ywOMNXO2Lc",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097954707243511808/img/y_fUJ-3jhAvzSgnB.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097954707243511808/pl/n41nvAhXFPM6FDJv.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2097954707243511808/vid/avc1/320x568/gK4TwsMihqMuOrtW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2097954707243511808/vid/avc1/480x852/lezHyhSO50JqUtAJ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097954707243511808/vid/avc1/720x1280/LtqMoVRUH4gSTjop.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097954707243511808/vid/avc1/1080x1920/lC8YqoiYM-imsVAK.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

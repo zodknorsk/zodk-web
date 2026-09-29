@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089425686171660530",
+    "created_at": "2026-08-17T18:54:37.000Z",
+    "text": "Esto que pasó en el 2021 en un pleno en Ceuta ha envejecido regular.  https://t.co/0Yt9uG6goZ",
+    "user": {
+      "name": "Moscardó",
+      "screen_name": "moscardol",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1610821680657473537/OmmWD7Jf_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/0Yt9uG6goZ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1397863570558255105/img/uYTSvxHy5GvngiGV.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1397863570558255105/pl/eng9IdhTkkMEkXiG.m3u8?tag=14&v=970"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/1397863570558255105/vid/480x270/qZrvhWnrMfpKaGhE.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1397863570558255105/vid/640x360/gOhJW3RFkDMC0B5V.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1397863570558255105/vid/1280x720/eBbkQxJ6QMN0YbYn.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

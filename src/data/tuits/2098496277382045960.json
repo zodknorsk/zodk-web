@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098496277382045960",
+    "created_at": "2026-09-11T19:37:55.000Z",
+    "text": "No os lo vais a creer pero Interior ha subido a nivel 2 la protección del Puerto de Ceuta tras altercados entre invasores, viajeros y trabajadores en la zona de embarque\n\nhttps://t.co/Kj45ji39VT",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Kj45ji39VT",
+          "expanded_url": "https://www.elmundo.es/espana/2026/09/11/6aa42d0ae9cf4a13048b4584.html",
+          "display_url": "elmundo.es/espana/2026/09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

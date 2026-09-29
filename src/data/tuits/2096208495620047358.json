@@ -1,0 +1,28 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096208495620047358",
+    "created_at": "2026-09-05T12:07:05.000Z",
+    "text": "El gobierno de Ceuta continúa entorpeciendo las soluciones al grave problema de la ciudad.\n\nNi admite traslados a la península (la prioridad), ni facilita terrenos donde acoger a los inmigrantes en Ceuta y sacarlos de las calles.\n\nTodas las personas merecen un trato digno. https://t.co/woxwntG5hQ",
+    "user": {
+      "name": "Enrique Santiago",
+      "screen_name": "EnriqueSantiago",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1985777448055615488/xMK381Md_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/woxwntG5hQ",
+        "media_url_https": "https://pbs.twimg.com/media/HRc6gW0a4AAtHIV.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/woxwntG5hQ",
+        "media_url_https": "https://pbs.twimg.com/media/HRc6g5VWgAE12IK.jpg"
+      }
+    ]
+  }
+}

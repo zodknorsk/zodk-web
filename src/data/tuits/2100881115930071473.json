@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100881115930071473",
+    "created_at": "2026-09-18T09:34:25.000Z",
+    "text": "🔴 La realidad paralela de Silvia Intxaurrondo: \"Un traslado pacífico, están entrando con total normalidad\" https://t.co/jRLqTdC6q2",
+    "user": {
+      "name": "Libertad Digital",
+      "screen_name": "libertaddigital",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1872197644967165952/Y3GFlRJI_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/jRLqTdC6q2",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100881052155670528/img/EbhPC3_HCzn2-Sl1.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100881052155670528/pl/-uro4hwEPVPu4A8n.m3u8?v=100"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100881052155670528/vid/avc1/480x270/98P8CTuas6KfRAZo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100881052155670528/vid/avc1/640x360/NCwQLZqWzqjlhS4d.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100881052155670528/vid/avc1/1280x720/qk9B1Mm0eUMQli9h.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100881052155670528/vid/avc1/1920x1080/v5DMXqoKvLpYwo08.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

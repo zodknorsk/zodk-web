@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087545476971106522",
+    "created_at": "2026-08-12T14:23:21.000Z",
+    "text": "Margarita Robles, minstra de Defensa, tras su reunión con el presidente de Ceuta: “Lo que pasó el día 30 no puede volver a ocurrir. Tiene que quedar muy claro que Ceuta y Melilla no son españolas, son españolísimas. No se las toca” https://t.co/PJrOOhrWmC",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/PJrOOhrWmC",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2087506536931196928/img/-tNrY4dDU04pt4_K.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2087506536931196928/pl/QTcPj0QTVh9r4pWa.m3u8?v=e65"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2087506536931196928/vid/avc1/480x270/R1E_wGs8XRC27ZDE.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2087506536931196928/vid/avc1/640x360/fBZ5M_dS7f5U6K4X.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2087506536931196928/vid/avc1/1280x720/RsPOHC7Ferabc-an.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2087506536931196928/vid/avc1/1920x1080/duHT_T7pcfsLLbuo.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

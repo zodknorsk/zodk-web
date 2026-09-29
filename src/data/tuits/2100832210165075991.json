@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100832210165075991",
+    "created_at": "2026-09-18T06:20:05.000Z",
+    "text": "Lo que te duele todavía es el baño que te dio Pedro. El rencor es un veneno que te tomas tú, creyendo que vas a matar al otro. Pero el otro está vivito y coleando y es Presidente del Gobierno. Y tú andas de tertuliano exhibiendo tu rencor cada mañana. ¡Para lo que has quedado!",
+    "user": {
+      "name": "Óscar Puente",
+      "screen_name": "oscar_puente_",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2058905863763398656/ia4vBf7F_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

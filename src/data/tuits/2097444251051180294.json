@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097444251051180294",
+    "created_at": "2026-09-08T21:57:32.000Z",
+    "text": "Sánchez contra Robles: desclasificará un informe de la inteligencia militar del 30 de julio para culparla de que avisó tarde. https://t.co/Ig2LdO9CGh",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Ig2LdO9CGh",
+          "expanded_url": "https://okdiario.com/espana/sanchez-contra-robles-desclasificara-informe-inteligencia-militar-del-30-julio-culparla-que-aviso-tarde-20250930?utm_medium=social&utm_source=Twitter#Echobox=1788893244-1",
+          "display_url": "okdiario.com/espana/sanchez…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

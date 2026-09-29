@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100893712976949435",
+    "created_at": "2026-09-18T10:24:28.000Z",
+    "text": "🔴Visto ahora mismo en TikTok 👇🏻👇🏻👇🏻 https://t.co/qKLIPV96c9",
+    "user": {
+      "name": "Susana Burgos",
+      "screen_name": "burgosusana",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2078965273105678336/3S1aJc3P_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/qKLIPV96c9",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100893687727128576/img/b7-S6Msk6pNYxUcP.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100893687727128576/pl/-68UaLZ707JdfkLf.m3u8?v=d88"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2100893687727128576/vid/avc1/320x568/FVWli45IAZH5W89P.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2100893687727128576/vid/avc1/480x852/eJ8hHF41j41lIj_K.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100893687727128576/vid/avc1/576x1024/xyZUCLPt36Wi8iUC.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

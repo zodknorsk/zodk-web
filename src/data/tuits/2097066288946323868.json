@@ -1,0 +1,28 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097066288946323868",
+    "created_at": "2026-09-07T20:55:39.000Z",
+    "text": "La portada y la Dos de ABC. Pronto, en\n@Kioskoymas https://t.co/FCrCKnC9bi",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/FCrCKnC9bi",
+        "media_url_https": "https://pbs.twimg.com/media/HRpGo3jaEAAw_31.png"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/FCrCKnC9bi",
+        "media_url_https": "https://pbs.twimg.com/media/HRpGo3ZaUAEYgkv.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097706601729626342",
+    "created_at": "2026-09-09T15:20:02.000Z",
+    "text": "🔴 ÚLTIMA HORA\n\nEl CNI avisó a Marlaska y a Marruecos un día antes de la invasión de Ceuta.\n\nInforma Antonio Rodríguez (@antonioRG9).\n\nhttps://t.co/6zZaR3Q8cv",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/6zZaR3Q8cv",
+          "expanded_url": "https://theobjective.com/espana/2026-09-09/cni-marlaska-marruecos-ceuta/",
+          "display_url": "theobjective.com/espana/2026-09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

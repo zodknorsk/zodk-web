@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084313251702055042",
+    "created_at": "2026-08-03T16:19:38.000Z",
+    "text": "🇮🇹🇪🇸 Aeropuertos en Italia empiezan a separar a las personas que llegan desde España de las demás, tras la invasión africana de Ceuta. https://t.co/WZwTOYLwv0",
+    "user": {
+      "name": "Progresismo Out Of Context",
+      "screen_name": "OOCprogresismo2",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2007958831708393473/mr61htz9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/WZwTOYLwv0",
+        "media_url_https": "https://pbs.twimg.com/media/HOz3o0JXkAEKzfz.jpg"
+      }
+    ]
+  }
+}

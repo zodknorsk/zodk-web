@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087937840701231452",
+    "created_at": "2026-08-13T16:22:27.000Z",
+    "text": "◼️ El ministro del Interior, Fernando Grande-Marlaska, ha sido abucheado e insultado durante su llegada al Ayuntamiento, donde se reunió con Juan Vivas\n\n📍Tienes toda la información en El Faro de Ceuta a través de nuestro enlace en bio\n\n#Ceuta #Marlaska https://t.co/S83LzMTpIq",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/S83LzMTpIq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2087937629425639425/img/eQlajexUGfO6X6or.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2087937629425639425/pl/mfTNIImqZGE4dKn7.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2087937629425639425/vid/avc1/320x568/dS2aP8hcPoUSmyFW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2087937629425639425/vid/avc1/480x852/4Lz4tb9yH6DNeBYL.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2087937629425639425/vid/avc1/720x1280/1DwjmDJzlg8P0MRt.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2087937629425639425/vid/avc1/1080x1920/R-YiIlyp0yJm5fHn.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

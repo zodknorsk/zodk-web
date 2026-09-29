@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095376965804929249",
+    "created_at": "2026-09-03T05:02:53.000Z",
+    "text": "🔴 OJO A ESTO\n\nLa ley de nietos hace que 162 pueblos tengan más votantes en el extranjero que habitantes\n\nPor ejemplo, el municipio Ventrosa de La Rioja, el censo CERA multiplica por 6,5 a los vecinos que viven allí https://t.co/SXZcAwcEDT",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/SXZcAwcEDT",
+          "expanded_url": "https://theobjective.com/espana/2026-09-03/ley-de-nietos-pueblos-votantes-extranjero-habitantes/",
+          "display_url": "theobjective.com/espana/2026-09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

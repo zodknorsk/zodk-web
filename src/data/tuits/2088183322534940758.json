@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088183322534940758",
+    "created_at": "2026-08-14T08:37:55.000Z",
+    "text": "🇪🇸 In Spain’s North African enclave of Ceuta, outbreaks of tuberculosis, measles, scabies, and infectious diarrhea have begun amid a surge of migrants.\n\nLocal doctors are warning of worsening sanitary conditions and the risk of cholera spreading.\n\nRoughly 10,000 migrants remain https://t.co/JUPewGhpqm",
+    "note_tweet": true,
+    "user": {
+      "name": "Visegrád 24",
+      "screen_name": "visegrad24",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1875625827674591232/OBzjRIZ4_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/JUPewGhpqm",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088182739505758208/img/HwzAeAloWzUl4Fwt.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088182739505758208/pl/gXGq8w93H1dzJHKE.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088182739505758208/vid/avc1/320x432/AlIit_J04maBknK7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088182739505758208/vid/avc1/480x648/qjdQWLnzVbhyi-GV.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088182739505758208/vid/avc1/720x974/dEzNz_XPEOrY52OH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088182739505758208/vid/avc1/946x1280/7OG1nkGEvsUZQgjU.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

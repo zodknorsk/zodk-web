@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089786695621218365",
+    "created_at": "2026-08-18T18:49:09.000Z",
+    "text": "A Moroccan woman with Dutch citizenship living in Ceuta gets booed when she tells locals that she supports the invasion of Ceuta by illegal migrants from Morocco\n\nShe says Europe is at fault and the migrants have a right to be there\n\nShe finishes by saying: “It’s time for Africa” https://t.co/XnNHGxLCAR",
+    "user": {
+      "name": "Visegrád 24",
+      "screen_name": "visegrad24",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1875625827674591232/OBzjRIZ4_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/XnNHGxLCAR",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2089786527731658752/img/vYfTLndQaGt17EJx.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2089786527731658752/pl/bqjOqSGNqR0Vkini.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2089786527731658752/vid/avc1/320x482/IoP8LxiooMjL-VL9.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2089786527731658752/vid/avc1/480x724/Zk_XLWDzLwEDTrRF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2089786527731658752/vid/avc1/720x1088/L1616vTWf0EzxrBS.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

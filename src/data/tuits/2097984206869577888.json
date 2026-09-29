@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097984206869577888",
+    "created_at": "2026-09-10T09:43:08.000Z",
+    "text": "⚠️ Los policías advierten del crecimiento de la tensión en Ceuta: “Se lanza el mensaje de que no pasa nada y los inmigrantes están cada vez más crecidos” https://t.co/t8wWwWPqad",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/t8wWwWPqad",
+          "expanded_url": "https://www.larazon.es/espana/policias-advierten-crecimiento-tension-ceuta-lanza-mensaje-que-pasa-nada-inmigrantes-estan-cada-vez-mas-crecidos_202609106aa271a46e80d3110846bd84.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202609106a9fc080a565e715fcb8df5e",
+          "display_url": "larazon.es/espana/policia…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

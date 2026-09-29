@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092246870022119522",
+    "created_at": "2026-08-25T13:45:00.000Z",
+    "text": "🔴 ÚLTIMA HORA | El Gobierno convierte Ceuta en un centro de menas gigante: todos los polideportivos, la fábrica de harinas de Otero y el Hospital Militar serán para inmigrantes\n\nhttps://t.co/7ZBWXOPUfi",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/7ZBWXOPUfi",
+          "expanded_url": "https://gaceta.es/espana/el-gobierno-convierte-ceuta-en-un-centro-de-menas-gigante-todos-los-polideportivos-la-fabrica-de-harinas-de-otero-y-el-hospital-militar-seran-para-inmigrantes-20260825-1537/",
+          "display_url": "gaceta.es/espana/el-gobi…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

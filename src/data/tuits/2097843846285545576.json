@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097843846285545576",
+    "created_at": "2026-09-10T00:25:23.000Z",
+    "text": "En este caso, @geoestratego tiene razón en un punto importante: hemos revelado parte de nuestras capacidades de inteligencia.\n\nUtilizamos grupos y llamadas de WhatsApp para tratar asuntos de Seguridad Nacional, a través de servidores externos. Además, hemos expuesto que contamos",
+    "note_tweet": true,
+    "user": {
+      "name": "Estrategias Militares",
+      "screen_name": "EstrateMilitar",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2027344060101300224/b-SktSsc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

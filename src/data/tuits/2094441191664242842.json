@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094441191664242842",
+    "created_at": "2026-08-31T15:04:27.000Z",
+    "text": "🔴 Más eventos de normalidad en Ceuta.\n\n💥 A guantazo limpio —y lo que no son guantazos—, conflicto originado entre invasores de origen argelino, sirio, saudita y marroquí. Así me lo manifiestan fuentes de las FCSE.\n\n⚠️ Hay hasta 26 nacionalidades diferentes sobre la ciudad. https://t.co/69T9zfd0c7",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/69T9zfd0c7",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094440893738549248/img/0k_vMqlF7ImSgSXu.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094440893738549248/pl/oA-bDVs9GQ33TWlB.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2094440893738549248/vid/avc1/320x400/XhIZjsOnb8KBUksY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2094440893738549248/vid/avc1/480x600/FPGbsvzbWwEg7-vr.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094440893738549248/vid/avc1/720x900/31vZxB4PogZ91Odg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094440893738549248/vid/avc1/1080x1350/grtZf5RE9hZmxOXb.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

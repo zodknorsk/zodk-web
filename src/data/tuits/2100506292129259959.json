@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100506292129259959",
+    "created_at": "2026-09-17T08:45:00.000Z",
+    "text": "Los invasores queman y vandalizan el Fuerte del Príncipe Alfonso de Ceuta, declarado Bien de Interés Cultural\nhttps://t.co/AMnCS4CCRV",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/AMnCS4CCRV",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2100495306156634112/pu/img/pNiRNa4vrePhYpMi.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2100495306156634112/pu/pl/FWZjvT5O_ZRz078r.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2100495306156634112/pu/vid/avc1/480x270/49e_N9ax_oZA4ste.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2100495306156634112/pu/vid/avc1/640x360/Ycr8AgXgHyksN2h1.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2100495306156634112/pu/vid/avc1/1280x720/CgkUwMDZGg9GMtr5.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

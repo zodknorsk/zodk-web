@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099416794481975727",
+    "created_at": "2026-09-14T08:35:43.000Z",
+    "text": "Interior rebaja la vigilancia sobre la Inteligencia marroquí: apartan a tres policías tras investigar a un súbdito vinculado a Mohamed VI https://t.co/L3TA1GDcSR",
+    "user": {
+      "name": "EL MUNDO",
+      "screen_name": "elmundoes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1854121701396852738/t89707ny_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/L3TA1GDcSR",
+          "expanded_url": "https://www.elmundo.es/espana/2026/09/14/6aa68febe9cf4ad23e8b457c.html?utm_medium=Social&utm_source=Twitter#Echobox=1789374263",
+          "display_url": "elmundo.es/espana/2026/09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096888485097426997",
+    "created_at": "2026-09-07T09:09:07.000Z",
+    "text": "🔴 Noche de violencia en Ceuta: decenas de inmigrantes apedrean a guardias civiles y bomberos al apagar un incendio\n\n✍️Informa @Borjamendez https://t.co/oma2toHmFF",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/oma2toHmFF",
+          "expanded_url": "https://www.abc.es/espana/noche-violencia-ceuta-decenas-inmigrantes-apedrean-guardias-20260907110111-nt.html",
+          "display_url": "abc.es/espana/noche-v…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

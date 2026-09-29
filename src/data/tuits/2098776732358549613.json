@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098776732358549613",
+    "created_at": "2026-09-12T14:12:21.000Z",
+    "text": "Un militar con fractura de peroné y un guardia civil con múltiples traumatismos tras ser atacados por los invasores https://t.co/HF6piQgsQO",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/HF6piQgsQO",
+          "expanded_url": "https://okdiario.com/espana/inseguridad-subjetiva-marlaska-ceuta-militar-fractura-perone-guardia-civil-multiples-traumatismos-20277406?utm_term=Autofeed&utm_medium=social&utm_source=Twitter#Echobox=1789222211",
+          "display_url": "okdiario.com/espana/insegur…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101210279627407827",
+    "created_at": "2026-09-19T07:22:23.000Z",
+    "text": "💢 Mi artículo hoy en @TheObjective_es. Sección #FugasDelErario #LeanPaganUstedes \n\nEl Gobierno ha entregado 100 millones de euros a MARRUECOS en «cooperación policial» que se suma a los 500 dados por la UE. \n\nhttps://t.co/Go5wJfFASD vía @TheObjective_es https://t.co/LWTNtYMdHp",
+    "user": {
+      "name": "Pablo Cambronero 🇪🇦",
+      "screen_name": "PabloCamPiq",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1646193253715263493/7gxYp8Su_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Go5wJfFASD",
+          "expanded_url": "https://theobjective.com/opinion/2026-09-19/gobierno-100-millones-marruecos-cooperacion-policial/",
+          "display_url": "theobjective.com/opinion/2026-0…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/LWTNtYMdHp",
+        "media_url_https": "https://pbs.twimg.com/media/HSj_nAwWcAA7-hU.jpg"
+      }
+    ]
+  }
+}

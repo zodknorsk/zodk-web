@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097670462230720833",
+    "created_at": "2026-09-09T12:56:25.000Z",
+    "text": "‼️ El Gobierno instala en el centro de inmigrantes de Ceuta una antena para que dispongan de wifi. https://t.co/vj7GDOua6v",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/vj7GDOua6v",
+          "expanded_url": "https://okdiario.com/espana/gobierno-instala-centro-inmigrantes-ceuta-antena-que-dispongan-wifi-20256405?utm_medium=social&utm_source=Twitter#Echobox=1788956137-1",
+          "display_url": "okdiario.com/espana/gobiern…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093660476177592466",
+    "created_at": "2026-08-29T11:22:10.000Z",
+    "text": "En las próximas horas o días veremos un levantamiento y escalada por parte de los centenares de inmigrantes que deambulan por Ceuta.\n\nSegún la información que me llega, Marruecos ordenó a su gente dentro, escalar y tensar la situación con los vecinos lo máximo posible.",
+    "user": {
+      "name": "Taleb Alisalem",
+      "screen_name": "TalebSahara",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2041519028427161600/MhFMldAc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

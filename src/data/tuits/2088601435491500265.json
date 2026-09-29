@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088601435491500265",
+    "created_at": "2026-08-15T12:19:21.000Z",
+    "text": "Marruecos frustra un primer intento de asalto de la frontera en Ceuta mientras siguen reagrupándose y llegando más. https://t.co/Tlih4191F1",
+    "user": {
+      "name": "Alt Right España 𝕏",
+      "screen_name": "AltRightEspan",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2028178342026084352/irWQPkK2_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Tlih4191F1",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088601358471495680/img/eSYga7xZxwPKK_Dq.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088601358471495680/pl/yzK4drKTGoyz30pt.m3u8?v=b31"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088601358471495680/vid/avc1/320x568/sifoZ_3PW0vmhQiO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088601358471495680/vid/avc1/480x852/ApkEp8Rpe54xRyCP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088601358471495680/vid/avc1/576x1024/2okT3tdaZTGfmiIV.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

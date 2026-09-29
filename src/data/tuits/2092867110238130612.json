@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092867110238130612",
+    "created_at": "2026-08-27T06:49:37.000Z",
+    "text": "🔴 LA NOTICIA PARA RADICALIZARTE HOY\n\n12 detenidos por una emboscada a militares en Ceuta: entre 30 y 50 inmigrantes lanzaron piedras grandes a cuatro soldados desarmados, les persiguieron y les golpearon al bajar del coche destrozado\nhttps://t.co/CA7KvUcXEd",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/CA7KvUcXEd",
+          "expanded_url": "https://elfarodeceuta.es/detenidos-emboscada-militares-grupo-inmigrantes-apedreados-golpeados/",
+          "display_url": "elfarodeceuta.es/detenidos-embo…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

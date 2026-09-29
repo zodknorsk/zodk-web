@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086360665459994731",
+    "created_at": "2026-08-09T07:55:20.000Z",
+    "text": "🇮🇹🇪🇸🇲🇦 | Los servicios de inteligencia italianos temen que el asalto a Ceuta previsto para el 15 de agosto pueda adelantarse:\n\nSegún medios locales, los servicios de inteligencia italianos consideran que la fecha difundida en redes sociales para un supuesto nuevo asalto a la https://t.co/0yLcxMRh0X",
+    "note_tweet": true,
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/0yLcxMRh0X",
+        "media_url_https": "https://pbs.twimg.com/media/HPQ99uZWIAAnWhQ.jpg"
+      }
+    ]
+  }
+}

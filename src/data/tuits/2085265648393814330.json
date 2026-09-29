@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085265648393814330",
+    "created_at": "2026-08-06T07:24:07.000Z",
+    "text": "Meloni presiona a la UE para que censure formalmente la regularización masiva de más de un millón de inmigrantes que Sánchez aprobó sin previo aviso, generando el efecto llamada que desató la crisis de Ceuta https://t.co/8GkwnvdzoZ",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/8GkwnvdzoZ",
+          "expanded_url": "https://theobjective.com/espana/politica/2026-08-06/italia-reproche-formal-ue-regularizacion-masiva-sanchez/",
+          "display_url": "theobjective.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

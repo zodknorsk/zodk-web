@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095760873415405646",
+    "created_at": "2026-09-04T06:28:24.000Z",
+    "text": "Hay que quitarse el maricomplejinismo. https://t.co/TFs5f9tUxb",
+    "user": {
+      "name": "Camarada Sinsoles ♱ 🦁 🇪🇦🟥⬛🟥❌",
+      "screen_name": "CSinsoles",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2090381501636415488/RM3xA3qt_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/TFs5f9tUxb",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095647262567260164/img/_0_-9QNUv5Cjta78.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095647262567260164/pl/gHpirtePxRZsXl3C.m3u8?v=67c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095647262567260164/vid/avc1/480x270/nKLQ0RYimI0iJVE6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095647262567260164/vid/avc1/640x360/t8nkCUBmSKo4zGmy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095647262567260164/vid/avc1/1280x720/DPv1Xtdfv8biahlr.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

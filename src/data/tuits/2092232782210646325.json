@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092232782210646325",
+    "created_at": "2026-08-25T12:49:01.000Z",
+    "text": "🔴 El Gobierno promueve una Ley de Asilo y una reforma de la Ley de Extranjería para que las solicitudes de protección internacional puedan resolverse en 12 semanas  https://t.co/SFZEaaUGFh",
+    "user": {
+      "name": "EL MUNDO",
+      "screen_name": "elmundoes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1854121701396852738/t89707ny_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/SFZEaaUGFh",
+          "expanded_url": "https://www.elmundo.es/espana/2026/08/25/6a8d5cdce85ece581b8b456e.html?utm_medium=Social&utm_source=Twitter#Echobox=1787662141",
+          "display_url": "elmundo.es/espana/2026/08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

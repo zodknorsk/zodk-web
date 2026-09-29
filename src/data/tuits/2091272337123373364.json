@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091272337123373364",
+    "created_at": "2026-08-22T21:12:33.000Z",
+    "text": "Russia is using the situation in Ceuta to wage hybrid warfare. Over 2,000 fake articles and over 6,000 fake posts on social media have originated from Russian actors and they concern the situation in Ceuta and Morocco\n\nhttps://t.co/0S2xdFxdjO",
+    "user": {
+      "name": "Philip Obaji Jr.",
+      "screen_name": "PhilipObaji",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1849774552403902464/AZnzq3BY_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/0S2xdFxdjO",
+          "expanded_url": "https://www.dr.dk/nyheder/udland/militaeranalytiker-efter-boedskovs-melding-om-russisk-indblanding-i-migrantkrisen-jeg-ville-ikke",
+          "display_url": "dr.dk/nyheder/udland…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

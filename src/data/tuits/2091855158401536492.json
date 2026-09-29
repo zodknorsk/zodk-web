@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091855158401536492",
+    "created_at": "2026-08-24T11:48:29.000Z",
+    "text": "Cosas que pasan. Ceuta. \nEspañola para al ejército al presenciar la agresión de un hombre a una mujer: “La está pegando. Mírale la cara como la tiene”\nEl agresor se enfrenta al ejército: “Es mi mujer. Estoy casado” \nSin comentarios, no? Silencio, si decimos algo somos racistas. https://t.co/NwPwtrXcV6",
+    "user": {
+      "name": "Isabel Rábago🇪🇸",
+      "screen_name": "RABAGOISABEL",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2073873534347075584/wyyEchRM_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/NwPwtrXcV6",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091855115250528256/img/jTe67zruO2u9eZh8.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091855115250528256/pl/MbirAy6ZpbmJo4J1.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2091855115250528256/vid/avc1/320x432/Pk4chNBewOJ7aknl.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2091855115250528256/vid/avc1/480x648/mtf5_Rmx46_U6e5e.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2091855115250528256/vid/avc1/720x972/F-s0ieBvJblr9QqV.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

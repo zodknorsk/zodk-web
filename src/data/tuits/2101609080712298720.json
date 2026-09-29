@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101609080712298720",
+    "created_at": "2026-09-20T09:47:05.000Z",
+    "text": "Una inmigrante acusa a las niñas violadas en Ceuta de “busconas” y reivindica entre lágrimas a Pedro Sánchez: “En Marruecos todo el mundo le quiere” https://t.co/3dEHsJ1djh",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/3dEHsJ1djh",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100956969712365568/img/d3J7TOSvJjHA1K9O.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100956969712365568/pl/tQf_aDrnptilsxOo.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100956969712365568/vid/avc1/480x270/JxQrAyWF6jnnew8A.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100956969712365568/vid/avc1/640x360/ApMlmE9KXQLzFjd2.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100956969712365568/vid/avc1/1280x720/pCkCITIiezlA6GEr.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100956969712365568/vid/avc1/1920x1080/B4TbYOpLkp7So4Pt.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

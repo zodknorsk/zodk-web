@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087781944608055805",
+    "created_at": "2026-08-13T06:02:59.000Z",
+    "text": "🔴 #DIRECTO | Infancia reúne a las comunidades para aprobar una transferencia de 25 millones para la acogida de menores en Ceuta https://t.co/rZG9GcfWbl https://t.co/8a6ewKzm2k",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/rZG9GcfWbl",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260813/ultima-hora-politica-directo-infancia-reune-comunidades-aprobar-presupuesto-millones-acogida-menores-ceuta/1003744351777_10.html?utm_cmp_rs=breaking",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/8a6ewKzm2k",
+        "media_url_https": "https://pbs.twimg.com/media/HPlKm8wXAAACn5J.jpg"
+      }
+    ]
+  }
+}

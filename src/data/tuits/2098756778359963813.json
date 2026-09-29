@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098756778359963813",
+    "created_at": "2026-09-12T12:53:03.000Z",
+    "text": "‼️Una patrulla de militares hostiga durante dos horas a voluntarias de una ONG obstaculizando el reparto de comida a migrantes\nhttps://t.co/7y4nPplGgo Por @Gabriela_Schz",
+    "user": {
+      "name": "elDiario.es",
+      "screen_name": "eldiarioes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1677814602992701441/jStj6omO_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/7y4nPplGgo",
+          "expanded_url": "https://www.eldiario.es/desalambre/patrulla-militares-hostiga-durante-horas-voluntarias-ong-obstaculizando-reparto-comida-migrantes_1_13505249.html",
+          "display_url": "eldiario.es/desalambre/pat…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101925644485460368",
+    "created_at": "2026-09-21T06:45:00.000Z",
+    "text": "El Gobierno y Ferraz niegan cualquier vinculación entre la ley de nietos y un interés electoral del PSOE\n\n📰❌ El Debate revela documentos de la dirección socialista para «recuperar el espacio político perdido» y su «expansión política» en el exterior https://t.co/qaspgvlIkl",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/qaspgvlIkl",
+        "media_url_https": "https://pbs.twimg.com/media/HSuGLMRWAAAiZjC.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/qaspgvlIkl",
+        "media_url_https": "https://pbs.twimg.com/media/HSuGLZpXsAAMxsE.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089305603873141146",
+    "created_at": "2026-08-17T10:57:28.000Z",
+    "text": "🗣️ El PSOE apercibe a los dos diputados ceutíes que han criticado al partido\n\n«Que se vayan si quieren»\nhttps://t.co/qSjpzyyBPI",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/qSjpzyyBPI",
+          "expanded_url": "https://www.eldebate.com/espana/20260817/psoe-apercibe-diputados-ceuties-han-criticado-partido-vayan-quieren_449998.html",
+          "display_url": "eldebate.com/espana/2026081…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

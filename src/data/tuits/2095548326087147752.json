@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095548326087147752",
+    "created_at": "2026-09-03T16:23:49.000Z",
+    "text": "Por cierto, que la cámara del capó del coche dejase de funcionar podría no ser casual. El dispositivo —que opera por wifi— pudo haber sido inhibido deliberadamente por los drones marroquíes que operaban sobre el terreno. Había uno grabándonos sin el menor pudor. ¿Cómo tolera https://t.co/z0E9joeIjz",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/z0E9joeIjz",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095548146575106049/img/jh410TENvPb-4kYZ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095548146575106049/pl/kuQ9pjP3UgJSkbdi.m3u8?v=17a"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095548146575106049/vid/avc1/480x270/j9ENDoyPILvlNPi7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095548146575106049/vid/avc1/640x360/jN1PL-vAqKYVQE1v.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095548146575106049/vid/avc1/1280x720/_39a-DIuE8Am9zdQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2095548146575106049/vid/avc1/1920x1080/Di6c8dqvpKpYFAEu.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

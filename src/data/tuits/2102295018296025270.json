@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102295018296025270",
+    "created_at": "2026-09-22T07:12:45.000Z",
+    "text": "🇲🇦 Mohamed VI reaparece, visiblemente desmejorado y con dificultades para caminar, para presidir los actos religiosos por el 28º aniversario de la muerte de su padre, Hasan II.\n\nEl rey apenas tiene actividad pública y solo ha tenido una decena de apariciones públicas en 2026. https://t.co/AqxgTVrXsX",
+    "user": {
+      "name": "Néstor",
+      "screen_name": "nestorpa99",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2071324427036315649/1k5XLAIr_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/AqxgTVrXsX",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2102294944014602240/img/AEoShbY1dor96l17.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2102294944014602240/pl/k_MV7YXvNJ35O71H.m3u8?tag=14&v=92c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2102294944014602240/vid/avc1/320x568/D8vTmvIeDcwj7hvQ.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2102294944014602240/vid/avc1/480x852/PDZ942UeRsAk7bSy.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2102294944014602240/vid/avc1/720x1280/cpV7jImu2dSllflf.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

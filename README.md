@@ -12,7 +12,7 @@ partir de la plantilla [astro-nano](https://github.com/markhorn-dev/astro-nano)
 |---|---|
 | `npm run dev` | Servidor de desarrollo en `localhost:4321` |
 | `npm run dev:network` | Lo mismo, visible desde el móvil en la misma wifi |
-| `npm run importar` | Trae de la bóveda de Obsidian las notas con `publicar: true` |
+| `npm run importar` | Trae de la bóveda de Obsidian las notas con `publicar: true` (solo en `main`) y dice qué ha cambiado |
 | `npm run build` | Comprueba tipos (`astro check`) y compila a `dist/` |
 | `npm run preview` | Sirve el `dist/` ya compilado |
 | `npm run lint` | ESLint (`lint:fix` arregla lo obvio) |
@@ -81,13 +81,15 @@ src/
     base.css                 Toda la web (Tailwind, cabecera, notas, tuits)
     astros.css               Lo común a los tres astros
     portada.css, luna.css, marte.css
-  data/                    Datos a mano
+  data/                    Datos a mano (y el archivo de tuits)
     aeronaves.ts             Las naves del hero y sus fichas
     paises.ts                Países con chapa sobre la Tierra
     alunizajes.ts            Las 28 misiones de /luna, países y relés
     amartizajes.ts           Las 17 misiones de /marte
     uas/                     Las maquetas de los drones (una por dron) y sus
                              tipos
+    tuits/                   El archivo de tuits: cada uno, tal como estaba
+                             al citarlo (lo escribe el importador)
   lib/
     contenido.ts             Proyecto de una nota, fotos y fechas
     utils.ts                 Utilidades (clases CSS, tiempo de lectura)
@@ -97,7 +99,7 @@ src/
   types.ts, env.d.ts       Tipos de TypeScript
 scripts/
   importar-notas.mjs       De la bóveda de Obsidian a src/content/
-  tweets.mjs               Descarga los tuits y hace sus tarjetas
+  tweets.mjs               Descarga los tuits, los guarda y hace sus tarjetas
 arte/                      Generadores del pixel art (no se publica)
   bancos/                  Páginas de prueba de los motores
 docs/                      La documentación

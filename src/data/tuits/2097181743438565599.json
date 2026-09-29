@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097181743438565599",
+    "created_at": "2026-09-08T04:34:26.000Z",
+    "text": "⚠️ El equipo de Marlaska elaboró un dosier secreto de decenas de periodistas 'fichados' por su ideología\nAparte del evidente ataque a la #LibertadDeExpresión, está prohibido tratar datos personales sobre ideología \nhttps://t.co/Ph3CYK3AMG \nPor @Alex_Requeijo en @elconfidencial 🔒",
+    "user": {
+      "name": "Borja Adsuara Varela ⚖️",
+      "screen_name": "adsuara",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1742065463692054528/_s-ZWu7v_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Ph3CYK3AMG",
+          "expanded_url": "https://www.elconfidencial.com/espana/2026-09-08/equipo-marlaska-dosier-secreto-periodistas-ideologia_4419190/?utm_source=twitter&utm_medium=social&utm_campaign=BotoneraWeb",
+          "display_url": "elconfidencial.com/espana/2026-09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

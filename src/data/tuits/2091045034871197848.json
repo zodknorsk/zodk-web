@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091045034871197848",
+    "created_at": "2026-08-22T06:09:20.000Z",
+    "text": "🗞️ La portada del 22 de agosto.\n\n‼️ Sanidad abrió para los inmigrantes ilegales una sala de última generación que llevaba años \"cerrada a cal y canto\" a los ceutíes.\n\n https://t.co/WFLkClYOR3",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/WFLkClYOR3",
+          "expanded_url": "https://okdiario.com/espana/sanidad-abrio-inmigrantes-ilegales-sala-ultima-generacion-que-llevaba-anos-cerrada-cal-canto-ceuties-20148338?utm_medium=social&utm_source=Twitter#Echobox=1787378960-3",
+          "display_url": "okdiario.com/espana/sanidad…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

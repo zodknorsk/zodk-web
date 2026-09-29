@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099450347341201618",
+    "created_at": "2026-09-14T10:49:03.000Z",
+    "text": "🔴 El PSOE cae dos puntos en el CIS tras la crisis de Ceuta, pero mantiene 5,9 puntos de ventaja sobre PP, con Vox al alza https://t.co/aHJW37dsqp https://t.co/VnhgmVkowF",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/aHJW37dsqp",
+          "expanded_url": "https://www.europapress.es/nacional/noticia-psoe-cae-dos-puntos-cis-crisis-ceuta-mantiene-59-puntos-ventaja-pp-vox-alza-20260914124449.html",
+          "display_url": "europapress.es/nacional/notic…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/VnhgmVkowF",
+        "media_url_https": "https://pbs.twimg.com/media/HSK-9lRX0AEqsAz.jpg"
+      }
+    ]
+  }
+}

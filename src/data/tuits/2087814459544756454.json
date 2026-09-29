@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087814459544756454",
+    "created_at": "2026-08-13T08:12:11.000Z",
+    "text": "Los grandes logros del Sanchismo: convertir Ceuta en un vertedero.  https://t.co/VHFpGnlv0C",
+    "user": {
+      "name": "Alber",
+      "screen_name": "albernap",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/714770096464510977/WblXxxB__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/VHFpGnlv0C",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2085743082981470208/img/yQZhJgp7qT2ZgLkn.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2085743082981470208/pl/2ewf5TlqsBvoKSjA.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2085743082981470208/vid/avc1/320x426/Pj5aIGAdhHTzGhEe.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2085743082981470208/vid/avc1/480x640/ifiOo7M-zdgcAE8p.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2085743082981470208/vid/avc1/720x960/l8tvukcvqkn3ew0s.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

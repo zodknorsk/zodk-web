@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091425318200283149",
+    "created_at": "2026-08-23T07:20:27.000Z",
+    "text": "‼️ Interior tiene en ruinas los calabozos de la Policía de Ceuta donde se custodia a los ilegales antes de su expulsión.  https://t.co/1Yi3Qb3MFS",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/1Yi3Qb3MFS",
+          "expanded_url": "https://okdiario.com/espana/interior-tiene-ruinas-calabozos-policia-ceuta-donde-custodia-ilegales-antes-expulsion-20152830?utm_medium=social&utm_source=Twitter#Echobox=1787464464-2",
+          "display_url": "okdiario.com/espana/interio…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

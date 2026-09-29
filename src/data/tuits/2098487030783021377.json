@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098487030783021377",
+    "created_at": "2026-09-11T19:01:10.000Z",
+    "text": "¿Por qué no se van? ¿Por qué la Playa del Trampolín sigue extendiéndose? ¿Por qué las zonas adyacentes no paran de crecer en asentamientos? Pues aquí tenéis gran parte de la respuesta. La trata institucionalizada a un paso de generar más beneficios que el narcotráfico. https://t.co/zQB0ZxaLUV",
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/zQB0ZxaLUV",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098486781377449984/img/SxvJgVawY8KyI9mm.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098486781377449984/pl/eDOlOYIRpJEfLfvq.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2098486781377449984/vid/avc1/480x270/yuFyHS5nVLLcRf1M.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2098486781377449984/vid/avc1/640x360/2VH3HjA-eNBSdysd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2098486781377449984/vid/avc1/1280x720/ZNYPjMMcxtOjHj0d.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2098486781377449984/vid/avc1/1920x1080/_pPUXN2pHOOAtyVT.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

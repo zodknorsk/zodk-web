@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092590155831927034",
+    "created_at": "2026-08-26T12:29:06.000Z",
+    "text": "Lo que dije ayer en @davidsantosvlog \nEspaña acaba de entregar a Marruecos instalaciones militares de Ceuta.\n\n#Ceuta , esta es la primera fase del traspaso de poder.\n\n#noticias https://t.co/aSehKJYZ8q",
+    "user": {
+      "name": "Estrategias Militares",
+      "screen_name": "EstrateMilitar",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2027344060101300224/b-SktSsc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/aSehKJYZ8q",
+        "media_url_https": "https://pbs.twimg.com/media/HQpfp93XAAAs4ea.jpg"
+      }
+    ]
+  }
+}

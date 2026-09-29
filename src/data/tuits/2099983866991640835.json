@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099983866991640835",
+    "created_at": "2026-09-15T22:09:04.000Z",
+    "text": "Queda prácticamente un mes para el próximo partido en el Santiago Bernabéu y desde el club se va a iniciar una campaña para salvarle el culo a estos dos perros sarracenos.\n\nMe encargaré de tuitear este vídeo cada día para que no quede en el olvido el insulto a la afición que les",
+    "note_tweet": true,
+    "user": {
+      "name": "•",
+      "screen_name": "yipikayei7",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2056455424442761216/in4gnaSe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/dObjH9Yr64",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099946036441550848/img/k0UrWSiJuM9A5zI2.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099946036441550848/pl/aZaFN7VElOen_0My.m3u8?v=aa8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099946036441550848/vid/avc1/480x270/tarncTi0eISYbhLQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099946036441550848/vid/avc1/640x360/UEudCE49wFp1DIFl.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099946036441550848/vid/avc1/1280x720/-6y3kS9BONQ47QbT.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099946036441550848/vid/avc1/1920x1080/_UwAvd4rvBsaSUKR.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

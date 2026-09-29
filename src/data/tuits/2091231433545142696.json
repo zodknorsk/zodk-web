@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091231433545142696",
+    "created_at": "2026-08-22T18:30:01.000Z",
+    "text": "El estadio Alfonso Murube corea el himno nacional antes del Ceuta - Las Palmas, y a continuación todo el público estalla: \"¡Pedro Sánchez, hijo de put*!\" y \"¡Ceuta no se vende!\".\n\nPor lo que sea, esos cánticos no los veréis en \"canales oficiales\" . \nhttps://t.co/UdupVh7Q76",
+    "user": {
+      "name": "Guaje Salvaje",
+      "screen_name": "GuajeSalvaje",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/918501506097311755/uqEJjgtg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/UdupVh7Q76",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091210999994990592/img/IMtDl_oUOSVpWH4u.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091210999994990592/pl/wMkRrfNtJ6P6n8gm.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2091210999994990592/vid/avc1/320x568/fjwvyL469_NvIK9O.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2091210999994990592/vid/avc1/480x852/wcJLX9-GRalIQZKp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2091210999994990592/vid/avc1/720x1280/oC3DQRn3YxUIXWV1.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2091210999994990592/vid/avc1/1080x1920/t0s88SEHiqnkluRI.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

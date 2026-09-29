@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099381210115981770",
+    "created_at": "2026-09-14T06:14:19.000Z",
+    "text": "#EXCLUSIVA El delegado del Gobierno en Ceuta estuvo desaparecido 9 horas tras recibir la llamada del CNI que insistió en la avalancha. Duarte las horas más críticas, Miguel Ángel Pérez Triano estuvo «inoperativo, totalmente incomunicado». https://t.co/Yow5cSARUW",
+    "user": {
+      "name": "Alejandro Entrambasaguas",
+      "screen_name": "entrammbasaguas",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1974454015539675136/gwXCn8of_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Yow5cSARUW",
+          "expanded_url": "https://www.eldebate.com/espana/20260914/delegado-gobierno-ceuta-estuvo-desaparecido-9-horas-recibir-llamada-cni-insistio-avalancha_457597.html",
+          "display_url": "eldebate.com/espana/2026091…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

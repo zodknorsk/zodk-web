@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093673470890545564",
+    "created_at": "2026-08-29T12:13:48.000Z",
+    "text": "🔴 #URGENTE | Un sargento herido en una nueva emboscada contra los militares desplegados en Ceuta: \"La ciudad es un polvorín\"\n\n✍️ Iranzu G. Vergara\n\nhttps://t.co/4lYHCJFdFz",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/4lYHCJFdFz",
+          "expanded_url": "https://www.elespanol.com/reportajes/20260829/militar-herido-nueva-emboscada-ceuta-polvorin/1003744366543_0.html",
+          "display_url": "elespanol.com/reportajes/202…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

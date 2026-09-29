@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095421208351175066",
+    "created_at": "2026-09-03T07:58:41.000Z",
+    "text": "Alguien NO aplaude el anuncio de Sánchez de “publicar todos los informes” https://t.co/70aUmPODiD",
+    "user": {
+      "name": "Eduardo Carazo",
+      "screen_name": "educarazo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1563120173976002560/0qsj2Vzq_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/70aUmPODiD",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095421186603905024/img/NxNV0DIfm4OysK_i.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095421186603905024/pl/kGA3zbdAzjHGJS6i.m3u8?v=33a"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095421186603905024/vid/avc1/494x270/ND8YHLqHPArdkmgj.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095421186603905024/vid/avc1/660x360/C0UqNTyl-JFNz3AD.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095421186603905024/vid/avc1/1056x576/HQ4pCJg8_sJBJLni.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

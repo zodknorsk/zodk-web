@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092567738053255204",
+    "created_at": "2026-08-26T11:00:01.000Z",
+    "text": "🔴 ÚLTIMA HORA | La movilización de miles de ceutíes contra el Gobierno paraliza la decisión de habilitar todos los polideportivos a los invasores\n\nhttps://t.co/QRh5ga7o0h",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/QRh5ga7o0h",
+          "expanded_url": "https://gaceta.es/espana/la-movilizacion-de-miles-de-ceuties-contra-el-gobierno-paraliza-la-decision-de-habilitar-todos-los-polideportivos-a-los-invasores-20260826-1219/",
+          "display_url": "gaceta.es/espana/la-movi…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

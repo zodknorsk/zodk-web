@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092708207663706587",
+    "created_at": "2026-08-26T20:18:12.000Z",
+    "text": "Tensión en aumento en Ceuta. Centenares de ceutíes han ido a la playa del Trampolín para desalojar a los inmigrantes y destruir sus casetas. La Policía ha tenido que intervenir e incluso hacer algún disparo disuasorio al aire. Y el ministro habla de final de año… es insostenible https://t.co/uJE7fumBU5",
+    "user": {
+      "name": "José Antonio Rivero",
+      "screen_name": "joseriverof",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1523945809292705793/J5wS-Pkg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/uJE7fumBU5",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092708196854951937/img/IUWPEDgigvPfUtB_.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092708196854951937/pl/vKFT-7R6w8AhouUJ.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092708196854951937/vid/avc1/320x574/KeTFgEzUG0Bz_CSC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092708196854951937/vid/avc1/356x640/jvta1NSpSXBwVwp0.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

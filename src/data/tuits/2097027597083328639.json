@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097027597083328639",
+    "created_at": "2026-09-07T18:21:54.000Z",
+    "text": "Marlaska dice que ningún informe constata autoría en la crisis de Ceuta: \"Manifiesto mi confianza en Marruecos\" https://t.co/kBn3JUJZ3w https://t.co/sXVJlNnDJU",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/kBn3JUJZ3w",
+          "expanded_url": "https://shorturl.at/3R5n3",
+          "display_url": "shorturl.at/3R5n3"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/sXVJlNnDJU",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097026470485143552/img/M1hKKBKEtFy3B3oY.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097026470485143552/pl/BIXc2kRUIFENA-AS.m3u8?v=2fa"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2097026470485143552/vid/avc1/320x568/mvnQ2n5zRQkYTSUE.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2097026470485143552/vid/avc1/480x852/ZnVWlp_fmUnVJ_Vy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097026470485143552/vid/avc1/720x1280/wL-ZMhr5-ebb3g7C.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097026470485143552/vid/avc1/1080x1920/UfWhVUJpS7u5PQWt.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094714423545848116",
+    "created_at": "2026-09-01T09:10:11.000Z",
+    "text": "Sánchez dijo, en una ridícula declaración, que “no hay pruebas para acusar a Marruecos” acto seguido procedió a acusar a Rusia, sin pruebas.\n\nNormal que pase esto ahora.\nRusia quiere pruebas.",
+    "user": {
+      "name": "Taleb Alisalem",
+      "screen_name": "TalebSahara",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2041519028427161600/MhFMldAc_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

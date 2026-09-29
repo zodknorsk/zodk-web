@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094326834854858875",
+    "created_at": "2026-08-31T07:30:02.000Z",
+    "text": "💥 Sánchez saca pecho de su legislatura y carga contra el Rey Felipe VI:\n\n\"El Rey lleva reinando más de 20 años. ¿Cuántas veces ha ido a Ceuta y Melilla?\" https://t.co/FKHH691mBA",
+    "user": {
+      "name": "Vozpópuli",
+      "screen_name": "voz_populi",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1539641919483133953/MY_0lmJL_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/FKHH691mBA",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094322965487779841/img/BvWCt6wUwwDZp5JI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094322965487779841/pl/GDks-sjZaBjKZUbh.m3u8?tag=16&v=d03"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2094322965487779841/vid/avc1/480x270/-pTdGCaedea6-5Up.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2094322965487779841/vid/avc1/640x360/UEUMtGirTaA08D4v.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094322965487779841/vid/avc1/1280x720/3fyvsz1D9d9_sg5u.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094322965487779841/vid/avc1/1920x1080/6sJF4JlP-mJ4N-SH.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

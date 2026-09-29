@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102266944124817773",
+    "created_at": "2026-09-22T05:21:12.000Z",
+    "text": "🔴El Gobierno avisa al Supremo de que los cónsules no tendrán tiempo de certificar qué 'nietos' han probado su derecho al voto\n\n✍️ Por @Maria_peral https://t.co/6SyJyvQDH4",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/6SyJyvQDH4",
+          "expanded_url": "https://www.elespanol.com/espana/tribunales/20260922/gobierno-avisa-supremo-consules-no-tiempo-certificar-nietos-probado-derecho-voto/1003744391724_0.html",
+          "display_url": "elespanol.com/espana/tribuna…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101561679439941992",
+    "created_at": "2026-09-20T06:38:44.000Z",
+    "text": "MUY GRAVE - Marruecos esta movilizando material militar pesado y misiles hacia el norte del país según exmilitar jovenlandes Abdelilah Issou - Cuatro\n https://t.co/ddjVIQJCYr",
+    "user": {
+      "name": "Abdelilah Issou",
+      "screen_name": "IssouAbdelilah",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2104682505936773120/P9Pv7Jfd_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ddjVIQJCYr",
+          "expanded_url": "https://www.burbuja.info/inmobiliaria/temas/muy-grave-marruecos-esta-movilizando-material-militar-pesado-y-misiles-hacia-el-norte-del-pais-segun-exmilitar-jovenlandes-abdelilah-issou-cuatro.2362383/",
+          "display_url": "burbuja.info/inmobiliaria/t…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

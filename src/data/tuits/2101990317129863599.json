@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101990317129863599",
+    "created_at": "2026-09-21T11:01:59.000Z",
+    "text": "When I was in Ceuta, it shocked me how so many invaders had brand new iPhones, braces and even apple watches.\n\nThey are not escaping a war or severe poverty.\n\nThey were sent to Spain to deliberately invade our nation.  https://t.co/q2NZl81dJT",
+    "user": {
+      "name": "Ada Lluch",
+      "screen_name": "AdaLluch",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2078623299446190080/0Dsl3KQB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/q2NZl81dJT",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100513830933581824/img/ZuKYrZRqsY6C7kRZ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100513830933581824/pl/jkMQG0NUl9AmX0bQ.m3u8?v=678"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100513830933581824/vid/avc1/480x270/1L6Lx-OlLIe0-1l0.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100513830933581824/vid/avc1/640x360/SWG4p7dahF3Z2UYP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100513830933581824/vid/avc1/1280x720/gxPjE0hTDJDLyVXA.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100513830933581824/vid/avc1/1920x1080/tEGCfhg1DwF5EB1n.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

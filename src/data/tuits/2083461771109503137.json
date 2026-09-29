@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083461771109503137",
+    "created_at": "2026-08-01T07:56:09.000Z",
+    "text": "Ze zijn vertrokken, volgens de regimepers https://t.co/ViT7gw3njn",
+    "user": {
+      "name": "Dré 🖤💛💔",
+      "screen_name": "Dreetje8400",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1403616984412078080/AzjyhchH_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ViT7gw3njn",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083433111598026752/img/L1QHuQ_oYtp5vR_H.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083433111598026752/pl/9TRTTwyeE8--N7Kr.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083433111598026752/vid/avc1/320x426/EsRnGPYKFi3J0pBg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083433111598026752/vid/avc1/480x640/3zSmx4EZV0QeJTFn.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083433111598026752/vid/avc1/576x768/gsCO9PIb0fLoPnnN.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

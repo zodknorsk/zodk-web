@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083891471627776485",
+    "created_at": "2026-08-02T12:23:38.000Z",
+    "text": "Marroquís cruzan a Ceuta por el hueco entre el espigón y “la boya” instalada por el gobierno.\n\nSeguir: @elalcazar_es  https://t.co/OBHy6v3CnK",
+    "user": {
+      "name": "El Alcázar",
+      "screen_name": "elalcazar_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2011714026481340416/qyw_Ug8c_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/OBHy6v3CnK",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083842471411257344/img/5prn2QxFfTUQl-o5.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083842471411257344/pl/iVwlmGGyU7iaQMg0.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083842471411257344/vid/avc1/320x568/K9XJXM96_pwB4HYp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083842471411257344/vid/avc1/480x852/P0QBR2Be07OfRinH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083842471411257344/vid/avc1/720x1280/kxPOponRxK04erqA.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2083842471411257344/vid/avc1/1080x1920/6Avl883Itlr93hGd.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091246371630121295",
+    "created_at": "2026-08-22T19:29:23.000Z",
+    "text": "Continúan las concentraciones en Ceuta. Difícil que se vean por TV, no quieren que se sepa.\nCeuta no se vende. https://t.co/FxOC6iEKkz",
+    "user": {
+      "name": "Ramón Rouco ®️",
+      "screen_name": "Ramon_Rouco_",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1488503399071064068/z-HHOlFz_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/FxOC6iEKkz",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2091246353624043520/img/QOL7IWU-evT5TP6C.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2091246353624043520/pl/MAY8vY-fnakDrus1.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2091246353624043520/vid/avc1/320x512/ZU0mIblzAQTZwDun.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2091246353624043520/vid/avc1/400x640/C7wQ7tmROsYDGaVW.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

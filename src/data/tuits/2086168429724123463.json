@@ -1,0 +1,42 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086168429724123463",
+    "created_at": "2026-08-08T19:11:27.000Z",
+    "text": "Según la Ordenanza Municipal de uso y aprovechamiento de playas de la Ciudad Autónoma de Ceuta: queda prohibida, durante todo el año y a cualquier hora, la instalación de tiendas de campaña y las acampadas de cualquier duración en todas las playas del litoral ceutí. Las sanciones",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/AiP3TIYoCw",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2086160079317827584/img/SLGJccZr81KjkJaC.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2086160079317827584/pl/R-wAHbk98NTiV_DI.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2086160079317827584/vid/avc1/320x574/GyRJjpxDxAMEKpp6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2086160079317827584/vid/avc1/356x640/g9LDjzfZ2aRhY5rL.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

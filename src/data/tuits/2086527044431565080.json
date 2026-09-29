@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086527044431565080",
+    "created_at": "2026-08-09T18:56:27.000Z",
+    "text": "Manifestación masiva contra la lamentable gestión de Pedro Sánchez en Ceuta https://t.co/BHl8uQjirq",
+    "user": {
+      "name": "Willy Tolerdo",
+      "screen_name": "WillyTolerdoo",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/581839453527941120/GGYbnx0T_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/BHl8uQjirq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2086526995844792320/img/WDxTxamkgnK4CvSz.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2086526995844792320/pl/TDqgNu4f4B9HYGVy.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2086526995844792320/vid/avc1/320x568/WuI0JYKZoI51ePmV.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2086526995844792320/vid/avc1/480x852/yrphVltpvBAbadT4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2086526995844792320/vid/avc1/720x1280/bHHLu12n-BbZdJwW.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2086726536183333067",
+    "created_at": "2026-08-10T08:09:10.000Z",
+    "text": "The Telegraph pone de vuelta y media a Sánchez. \n\nQue acaba el artículo basado en el inicio en Ceuta con la reflexión de que Sánchez es un París internacional, cada vez más aislado en el escenario mundial.\n\nYa le van conociendo fuera. https://t.co/AxN5T1jTVE",
+    "user": {
+      "name": "Jose Vizner",
+      "screen_name": "Josevizner",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1882314597329182720/wpGEFxB9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/AxN5T1jTVE",
+        "media_url_https": "https://pbs.twimg.com/media/HPWKuVyXgAAyKfT.jpg"
+      }
+    ]
+  }
+}

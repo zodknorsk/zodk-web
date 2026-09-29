@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093033608097247678",
+    "created_at": "2026-08-27T17:51:13.000Z",
+    "text": "🔴#ÚLTIMAHORA Vecinos de Ceuta rompen el cordón policial, entran a la playa de el Trampolín y queman el campamento de los inmigrantes del asalto\n\n🔗 https://t.co/uPg0ANav2l https://t.co/65JJXbCWNo",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/uPg0ANav2l",
+          "expanded_url": "https://www.abc.es/espana/ultima-hora-crisis-migratoria-ceuta-directo-comparecencia-congreso-20260827132126-di.html",
+          "display_url": "abc.es/espana/ultima-…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/65JJXbCWNo",
+        "media_url_https": "https://pbs.twimg.com/media/HQvy1SiWoAAjlNj.jpg"
+      }
+    ]
+  }
+}

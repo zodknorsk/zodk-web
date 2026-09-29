@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088159698696462700",
+    "created_at": "2026-08-14T07:04:02.000Z",
+    "text": "Buenos días España , esta es la normalidad que tenemos en #Ceuta , sigue el caos y los delincuentes campan a sus anchas , todo es mentira nadie actúa , nadie interviene en la periferia de la ciudad 🚨🚨🚨#Inmigracion https://t.co/2SrkRSeE8v",
+    "user": {
+      "name": "KARIM PRIM",
+      "screen_name": "KARIMPRIM",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1825676493147545600/I1rR5kAn_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/2SrkRSeE8v",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088159637929431040/img/t1OStBRnp41G3Vjt.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088159637929431040/pl/qZ_wT3cT8U1imy36.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088159637929431040/vid/avc1/320x464/c6ct6glhHPBDoI1w.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088159637929431040/vid/avc1/440x640/ISLx0Im0CElTApXi.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

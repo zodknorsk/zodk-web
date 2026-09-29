@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099274295146877102",
+    "created_at": "2026-09-13T23:09:29.000Z",
+    "text": "Le han roto parte de la panadería y le van a robar todo el pan.\n\nMenos mal que llega la policía justo a tiempo.\n\n🔴Imágenes impactantes. https://t.co/luRVEJ1jva",
+    "user": {
+      "name": "Mr. Jones",
+      "screen_name": "Mr_Jones_k",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2039469784882941952/ps1UzPa3_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/luRVEJ1jva",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099273427802824704/img/2L-d57_rnq1dO4uD.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099273427802824704/pl/6YK6pzuJ9yaVP6oh.m3u8?v=6e5"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2099273427802824704/vid/avc1/320x408/wvNSngGpgMfhfghQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2099273427802824704/vid/avc1/480x612/ShIxLEU1dPxQTty3.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

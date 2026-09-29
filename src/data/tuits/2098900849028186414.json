@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098900849028186414",
+    "created_at": "2026-09-12T22:25:32.000Z",
+    "text": "🔴Advertencia. Este es el sonido de una violación en Ceuta. Dejo en tus manos el querer oírlo o no.\n\nLos violadores próximamente estarán en tus calles. https://t.co/LX2qJYgV9F",
+    "user": {
+      "name": "Mr. Jones",
+      "screen_name": "Mr_Jones_k",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2039469784882941952/ps1UzPa3_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LX2qJYgV9F",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098899544394158091/img/1DyMthnQ_3_S5IFg.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098899544394158091/pl/X6QAfmV5xqx_039s.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2098899544394158091/vid/avc1/320x334/VIcKDnmBu2EMZLp5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2098899544394158091/vid/avc1/480x502/dDYjLpVzVoY7SCgj.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101296316039008586",
+    "created_at": "2026-09-19T13:04:16.000Z",
+    "text": "La Policía evita que un inmigrante marroquí ataque con una navaja a un ceutí al que habían robado en un gimnasio\n\rhttps://t.co/QnHWQeHplc",
+    "user": {
+      "name": "La Bandera",
+      "screen_name": "labanderaes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1637054802797502465/F4Ubv7TT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/QnHWQeHplc",
+          "expanded_url": "https://labandera.es/inmigrante-marroqui-navaja-ceuti-puente-quemadero/",
+          "display_url": "labandera.es/inmigrante-mar…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

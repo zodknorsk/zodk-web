@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083118427217027437",
+    "created_at": "2026-07-31T09:11:50.000Z",
+    "text": "🔴“Tenemos hambre, volvemos a casa”\n¡Curiosa imagen, la que estamos viendo ahora mismo en Ceuta!\n\nCientos de inmigrantes están regresando a Marruecos por sus propios pies y sin ser coaccionados por nadie.\nCabe recordar que hoy es viernes y la ciudad está prácticamente cerrada. https://t.co/BV3StU5vuZ",
+    "user": {
+      "name": "Bertrand Ndongo",
+      "screen_name": "bertrandmyd",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1715335744770723840/qJYL0EdX_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/BV3StU5vuZ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083117939914379264/img/gsqWU0oOSKTg2NdX.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083117939914379264/pl/2tH7c9xaesBSUnQs.m3u8?v=2a1"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2083117939914379264/vid/avc1/480x270/tECbYsBOIlqkc5lY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2083117939914379264/vid/avc1/640x360/Vhx7r4daPT8-a6h1.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083117939914379264/vid/avc1/1280x720/Ne4xUY6s4yxkINcd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2083117939914379264/vid/avc1/1920x1080/WDnA86Dx7-dxHbAh.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

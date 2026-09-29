@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096157673402056880",
+    "created_at": "2026-09-05T08:45:08.000Z",
+    "text": "🔴 Frontex manda al Canal de la Mancha la patrullera que Marlaska pidió para Ceuta\n\nEl barco de la Guardia Civil 'Duque de Ahumada' es de gestión compartida entre España y la Unión Europea, seis meses cada uno\n\n✍️ @pabloojer  https://t.co/LtGtCU0l9S",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/LtGtCU0l9S",
+          "expanded_url": "https://eldbt.com/0vsmw",
+          "display_url": "eldbt.com/0vsmw"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

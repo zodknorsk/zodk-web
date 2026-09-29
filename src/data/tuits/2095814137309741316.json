@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095814137309741316",
+    "created_at": "2026-09-04T10:00:03.000Z",
+    "text": "🔴 ÚLTIMA HORA | Guerra psicológica contra el Ejército en Ceuta: canales marroquíes difunden fotos de militares españoles y los «fichan»\n\nhttps://t.co/mFJTbbLL12",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/mFJTbbLL12",
+          "expanded_url": "https://gaceta.es/espana/guerra-psicologica-contra-el-ejercito-en-ceuta-canales-marroquies-difunden-fotos-de-militares-espanoles-y-los-fichan-20260904-1034/",
+          "display_url": "gaceta.es/espana/guerra-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

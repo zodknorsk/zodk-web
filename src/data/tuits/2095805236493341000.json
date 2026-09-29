@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095805236493341000",
+    "created_at": "2026-09-04T09:24:41.000Z",
+    "text": "ÚLTIMA HORA: El think tank más cercano a Trump se pone del lado de España en Ceuta.\n\nKevin Roberts, presidente de la Heritage Foundation y cara visible del Project 2025, lo llama por su nombre: \"una invasión por parte de Marruecos, que está usando a personas como peones para sus https://t.co/fNhnFN5hRu",
+    "note_tweet": true,
+    "user": {
+      "name": "Jose Vizner",
+      "screen_name": "Josevizner",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1882314597329182720/wpGEFxB9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/fNhnFN5hRu",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095804912198443008/img/BDNmuN_UAEiCSoMq.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095804912198443008/pl/YqsPq6HPz2JkD-DB.m3u8?v=2b9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095804912198443008/vid/avc1/480x270/rCmvo7RFMRY2JScN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095804912198443008/vid/avc1/640x360/rawSmCrp6aeCuEO4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095804912198443008/vid/avc1/1024x576/E7ydGSuudGrjyUvE.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088173768329904416",
+    "created_at": "2026-08-14T07:59:57.000Z",
+    "text": "VÍDEO: 🔊 Los vecinos de Loma Colmenar denuncian otra noche de peleas y gritos entre inmigrantes en plena madrugada #ceuta #elpueblodeceuta #marruecos #inmigrantes #peleas https://t.co/gaWUyz38cz",
+    "user": {
+      "name": "El Pueblo de Ceuta",
+      "screen_name": "ElPueblodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/702212395582824449/M9fVrL_R_normal.png"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gaWUyz38cz",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088173693444722688/img/N-dmNj1jkdRVnS1M.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088173693444722688/pl/1Md4VQK4ECGaUH8m.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088173693444722688/vid/avc1/320x572/jU10_FUM2aWL2hqs.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088173693444722688/vid/avc1/480x860/mIITrk_7ytWI1aSF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088173693444722688/vid/avc1/714x1280/zYs2YegzM9AcJTg5.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

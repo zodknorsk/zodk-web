@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097712292183888077",
+    "created_at": "2026-09-09T15:42:38.000Z",
+    "text": "La mentira, en política, no puede utilizarse como argumento para  desprestigiar la profesionalidad de los miembros del CNI, que nunca ha recibido informe alguno de la CIA sobre la invasión en Ceuta, como se ha afirmado en sede parlamentaria aprovechando la inmunidad de ese marco. https://t.co/X8rhMbOhsl",
+    "user": {
+      "name": "Ministerio Defensa",
+      "screen_name": "Defensagob",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2014473667485323264/Z21ddDla_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/X8rhMbOhsl",
+        "media_url_https": "https://pbs.twimg.com/media/HRySNVSboAAFp4y.jpg"
+      }
+    ]
+  }
+}

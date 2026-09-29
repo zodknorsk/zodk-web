@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093419569658409188",
+    "created_at": "2026-08-28T19:24:53.000Z",
+    "text": "⭕️ ÚLTIMA HORA | Un grupo de inmigrantes ilegales lanza una botella con sustancias químicas contra manifestantes españoles en Ceuta. https://t.co/q37u4veHLv",
+    "user": {
+      "name": "David Santos",
+      "screen_name": "davidsantosvlog",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1728348204662403072/ZXRMcVJ7_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/q37u4veHLv",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2093419493112348672/img/n6EGkVQ-PqPrSb0x.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2093419493112348672/pl/4WIk5d3YcTMT8E0r.m3u8?v=4b6"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2093419493112348672/vid/avc1/320x568/79dAu2Y--MsOR4Oz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2093419493112348672/vid/avc1/480x852/hzjl81Kc_YHRbhgy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2093419493112348672/vid/avc1/720x1280/h598HLbILkXG78gv.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2093419493112348672/vid/avc1/1080x1920/FOG8fOsB7i1eTD8n.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

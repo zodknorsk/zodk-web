@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090061962667303217",
+    "created_at": "2026-08-19T13:02:58.000Z",
+    "text": "‼️ Las enfermeras «devastadas» llevan a Trabajo su situación en Ceuta: sin refuerzos, jornadas extra y órdenes por WhatsApp. https://t.co/vQVebRTcb5",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/vQVebRTcb5",
+          "expanded_url": "https://okdiario.com/salud/enfermeras-devastadas-llevan-trabajo-situacion-ceuta-sin-refuerzos-jornadas-extra-ordenes-whatsapp-20129638?utm_medium=social&utm_source=Twitter#Echobox=1787142317-1",
+          "display_url": "okdiario.com/salud/enfermer…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

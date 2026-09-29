@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090906373085176134",
+    "created_at": "2026-08-21T20:58:21.000Z",
+    "text": "This is an iron lung for polio victims.\n\nRemember these?\n\nMe neither. \n\nI saw this in a MUSEUM..where it belongs \n\nWhy?\n\nBecause vaccines work https://t.co/c9P0tqmN7U",
+    "user": {
+      "name": "Neil Stone",
+      "screen_name": "DrNeilStone",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1769032559235604480/2TYrIeka_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/c9P0tqmN7U",
+        "media_url_https": "https://pbs.twimg.com/media/HQRkQ3vWQAAQkBC.jpg"
+      }
+    ]
+  }
+}

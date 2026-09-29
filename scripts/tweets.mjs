@@ -22,6 +22,15 @@
 // viva) y después la copia comprimida ya alojada aquí. Si la primera falla en
 // el navegador (tweet borrado, cuenta suspendida...), el <video> pasa solo a
 // la segunda: el vídeo se sigue viendo aunque X ya no lo sirva.
+//
+// Archivo de tuits (src/data/tuits/<id>.json): cada tuit se pide a X una sola
+// vez y se guarda tal como estaba ese día (texto, autor, avatar, fotos). Las
+// importaciones siguientes lo sacan de ahí sin preguntar a X, así que un tuit
+// que X borre después sigue saliendo entero. Cada archivo lleva:
+//   { capturado: "AAAA-MM-DD", tuit: {…} }      los datos, para hacer la tarjeta
+//   { capturado: "AAAA-MM-DD", tarjeta: "<…>" }  solo la tarjeta ya hecha, de
+//                                                 tuits que X borró antes de
+//                                                 que existiera el archivo
 // ---------------------------------------------------------------------------
 
 import fs from "node:fs";
@@ -46,6 +55,65 @@ export async function descargarTweet(id) {
   } catch {
     return null;
   }
+}
+
+// --- Archivo de tuits ----------------------------------------------------
+
+/** Lo que usa la tarjeta, sin el resto de lo que manda X (likes, etc.). */
+export function recortarTuit(t) {
+  return {
+    id_str: t.id_str,
+    created_at: t.created_at,
+    text: t.text,
+    ...(t.note_tweet ? { note_tweet: true } : {}),
+    user: {
+      name: t.user?.name,
+      screen_name: t.user?.screen_name,
+      profile_image_url_https: t.user?.profile_image_url_https,
+    },
+    entities: {
+      urls: (t.entities?.urls || []).map(({ url, expanded_url, display_url }) =>
+        ({ url, expanded_url, display_url })),
+    },
+    mediaDetails: (t.mediaDetails || []).map((m) => ({
+      type: m.type,
+      url: m.url,
+      media_url_https: m.media_url_https,
+      ...(m.video_info ? {
+        video_info: {
+          variants: (m.video_info.variants || []).map(({ content_type, bitrate, url }) =>
+            ({ content_type, bitrate, url })),
+        },
+      } : {}),
+    })),
+  };
+}
+
+/** Todo el archivo: Map id -> { capturado, tuit } o { capturado, tarjeta }. */
+export function leerArchivo(dir) {
+  const archivo = new Map();
+  if (!fs.existsSync(dir)) return archivo;
+  for (const nombre of fs.readdirSync(dir)) {
+    if (!nombre.endsWith(".json")) continue;
+    archivo.set(path.basename(nombre, ".json"), JSON.parse(fs.readFileSync(path.join(dir, nombre), "utf8")));
+  }
+  return archivo;
+}
+
+export function guardarEnArchivo(dir, id, entrada) {
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify(entrada, null, 2) + "\n");
+}
+
+/** Nombres de los archivos de public/tweets/ que usa la tarjeta de un tuit. */
+export function archivosDeTuit(entrada) {
+  if (entrada.tarjeta) {
+    return [...entrada.tarjeta.matchAll(/\/tweets\/([^"\s]+)/g)].map((m) => m[1]);
+  }
+  return [
+    ...mediaDeTweet(entrada.tuit).map(nombreDesdeUrl),
+    ...videosDeTweet(entrada.tuit).map(nombreVideoDesdeUrl),
+  ];
 }
 
 /** Ejecuta `fn` sobre cada item con como mucho `limite` en paralelo. */

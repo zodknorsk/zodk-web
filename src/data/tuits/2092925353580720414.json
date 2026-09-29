@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092925353580720414",
+    "created_at": "2026-08-27T10:41:03.000Z",
+    "text": "Mónica García: «Los ceutíes pueden estar contentos por la gestión que están teniendo» https://t.co/Pkrkc3N96H",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Pkrkc3N96H",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092925271355604992/img/6gD3eoOoKocxNtpG.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092925271355604992/pl/dN-OwVqoqYzl1YAT.m3u8?v=35e"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092925271355604992/vid/avc1/320x568/mE_y-oZTgg_3BcjS.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092925271355604992/vid/avc1/480x852/0mz6G0He0CyAAvGy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092925271355604992/vid/avc1/720x1280/xIzqq6xQpK28Yutw.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2092925271355604992/vid/avc1/1080x1920/Wrz4HqcjKzD1vcDq.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

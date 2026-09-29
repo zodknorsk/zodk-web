@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095896935945097505",
+    "created_at": "2026-09-04T15:29:04.000Z",
+    "text": "🇪🇸🇲🇦 Marruecos comienza una campaña informativa de cara al 20 de septiembre.\n\nRecordar que el 20 de septiembre hay convocada una gran marcha popular para exigir la “liberación” de Ceuta, Melilla y “las islas bajo soberanía española” 👇\nhttps://t.co/BFRNEsGHOr",
+    "user": {
+      "name": "Guillermo Pulido",
+      "screen_name": "will_pulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1443699317424934915/bQqN79X7_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/BFRNEsGHOr",
+          "expanded_url": "https://www.diariodesevilla.es/espana/marruecos-redes-marcha-liberar-ceuta-elecciones_0_2007874005.html",
+          "display_url": "diariodesevilla.es/espana/marruec…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

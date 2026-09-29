@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2091430489445851272",
+    "created_at": "2026-08-23T07:41:00.000Z",
+    "text": "\"Seis millones de euros para la emergencia desde las primeras horas han permitido que comieran al día más de 4.000 personas\", afirma la ministra. \"Imaginemos qué consecuencias hubiera desencadenado no hacerlo. Ser un Estado de derecho no es un eslogan, es un compromiso\"",
+    "note_tweet": true,
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

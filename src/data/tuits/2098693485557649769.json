@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098693485557649769",
+    "created_at": "2026-09-12T08:41:33.000Z",
+    "text": "Hoy nos enteramos de que el jefe de Gabinete del delegado del Gobierno en Ceuta asegura que tiene pruebas de que él avisó y que hubo una orden de Marlaska para no hacer nada. \n\n🚨 Exigimos al Gobierno explicaciones inmediatas. https://t.co/I4qhryMKZB",
+    "note_tweet": true,
+    "user": {
+      "name": "ESTER MUÑOZ",
+      "screen_name": "EsterMunoz85",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2072753821168619520/AMSIsgYe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/I4qhryMKZB",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2098693376514117633/img/-W67uEG4aNPHsaG5.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2098693376514117633/pl/Vps_zM12In0nI8kt.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 432000,
+              "url": "https://video.twimg.com/amplify_video/2098693376514117633/vid/avc1/320x320/j2rYNjyyq8o8iJTN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2098693376514117633/vid/avc1/540x540/f7UUp5wG1d-rxFMN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 1280000,
+              "url": "https://video.twimg.com/amplify_video/2098693376514117633/vid/avc1/720x720/YlsBsCO0ofowL9Yz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 8768000,
+              "url": "https://video.twimg.com/amplify_video/2098693376514117633/vid/avc1/1080x1080/T38YPLogE5-idtrL.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

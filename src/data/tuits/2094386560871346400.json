@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094386560871346400",
+    "created_at": "2026-08-31T11:27:22.000Z",
+    "text": "ÚLTIMA HORA | Abascal pide al PP sus votos para activar el artículo 102 de la Constitución y juzgar a Sánchez por traición\nhttps://t.co/xrED4nAqeb",
+    "user": {
+      "name": "El Confidencial",
+      "screen_name": "elconfidencial",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2067124495630966784/a1gymTzc_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/xrED4nAqeb",
+          "expanded_url": "https://www.elconfidencial.com/espana/2026-08-31/abascal-pide-al-pp-sus-votos-para-activar-el-articulo-102-de-la-constitucion-y-juzgar-a-sanchez-por-traicion_4415208/?utm_source=twitter&utm_medium=social&utm_campaign=ECDiarioManual",
+          "display_url": "elconfidencial.com/espana/2026-08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

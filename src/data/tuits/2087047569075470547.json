@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087047569075470547",
+    "created_at": "2026-08-11T05:24:50.000Z",
+    "text": "🇪🇸🇲🇦 España-Marruecos: la confianza frente a la desestabilización https://t.co/b44aUfyXIj",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/b44aUfyXIj",
+          "expanded_url": "https://www.larazon.es/espana/espanamarruecos-confianza-frente-desestabilizacion_202608116a79e9b371b42a0b5de7e7c2.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202608116a78338078e57679fd2d84d8",
+          "display_url": "larazon.es/espana/espanam…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

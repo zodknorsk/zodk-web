@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097818712422109330",
+    "created_at": "2026-09-09T22:45:31.000Z",
+    "text": "Otros dos minutos estupefacientes sobre el famoso post de “Otra crisis más que resuelve Pedro Sánchez” y la fuga vacacional de Sánchez.\n\nPardo le lleva al huerto, y Puente cae como un cochino.\n\nAy la hemeroteca. https://t.co/3XgVs2jRbp",
+    "user": {
+      "name": "El Equidistante",
+      "screen_name": "elequidistante",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1813878293663244288/tgFSFixv_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/3XgVs2jRbp",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097818428610576384/img/xX2dWqI6P5LQ_pYN.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097818428610576384/pl/Pzeswq_mOhG2iMSz.m3u8?v=9bf"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/478x270/w59Ts_vuVPCN9hKx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/638x360/mNdGRz99Rdqot4DO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/1276x720/flaiqO8-T75Uz3L4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097818428610576384/vid/avc1/2288x1290/OEqZQ9EAJir2I_gL.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

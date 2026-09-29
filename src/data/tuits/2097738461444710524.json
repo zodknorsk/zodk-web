@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097738461444710524",
+    "created_at": "2026-09-09T17:26:37.000Z",
+    "text": "🇪🇸🇲🇦🛡️Efectivamente, el Regimiento de Guerra Electrónica Nº 32 alertó del evento inminente. https://t.co/FgEQ5C4Hsc",
+    "user": {
+      "name": "The Political Room",
+      "screen_name": "Political_Room",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1244593976184840193/iPHLDwCB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/FgEQ5C4Hsc",
+        "media_url_https": "https://pbs.twimg.com/media/HRyqA3hXEAArWTd.jpg"
+      }
+    ]
+  }
+}

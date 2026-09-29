@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083617779366625620",
+    "created_at": "2026-08-01T18:16:05.000Z",
+    "text": "Hoy ha comenzado la instalación de las barreras de contención en el espigón del Tarajal (Ceuta), en un operativo conjunto de la Guardia Civil, la @Armada_esp  y @salvamentogob Marítimo (Sasemar). \n\n✔️ El dispositivo consta de una barrera neumática de 500 metros, reforzada con una https://t.co/gRlBK2kk7D",
+    "note_tweet": true,
+    "user": {
+      "name": "Guardia Civil",
+      "screen_name": "guardiacivil",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2018588222943535105/H8Cb4aLV_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gRlBK2kk7D",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083617730406608896/img/t2NgvRxItlH8jpkA.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083617730406608896/pl/380k8VhvZz27YKs7.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2083617730406608896/vid/avc1/480x270/Qndqn9e8-qJRLzba.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2083617730406608896/vid/avc1/640x360/9T6VdTW3VE9yWv8b.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083617730406608896/vid/avc1/1024x576/ffizJyaeBDnphjTp.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

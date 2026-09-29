@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097594274208416200",
+    "created_at": "2026-09-09T07:53:41.000Z",
+    "text": "Cómo de mal está la cosa para que Pedro Sánchez le haya metido esta vacilada a Abascal. https://t.co/vk9bpsSZjp",
+    "user": {
+      "name": "Chopenawer",
+      "screen_name": "dchopenawer",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1677073142152327168/kjvYt_EG_normal.png"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/vk9bpsSZjp",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097594228562153472/img/iozYkzF7a_oV4fB2.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097594228562153472/pl/MqwtPmH9yMCqykl1.m3u8?v=576"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2097594228562153472/vid/avc1/320x432/78k4IF0QWK4VQukA.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2097594228562153472/vid/avc1/480x648/SfK-rJ84XGKlpltp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097594228562153472/vid/avc1/720x972/IZ66_1XkAIU1NRxK.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097594228562153472/vid/avc1/800x1080/DajJggIAwh3ghoIe.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

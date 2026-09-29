@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100911902943486106",
+    "created_at": "2026-09-18T11:36:45.000Z",
+    "text": "El Parlamento Europeo señala a Sánchez como responsable en la \"invasión\" de Ceuta y plantea sanciones a Marruecos https://t.co/0bJtFhcudk",
+    "user": {
+      "name": "EL MUNDO",
+      "screen_name": "elmundoes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1854121701396852738/t89707ny_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/0bJtFhcudk",
+          "expanded_url": "https://www.elmundo.es/espana/2026/09/18/6aac08cbfc6c8359438b45b1.html?utm_medium=Social&utm_source=Twitter#Echobox=1789716568",
+          "display_url": "elmundo.es/espana/2026/09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099157282055491867",
+    "created_at": "2026-09-13T15:24:31.000Z",
+    "text": "🚩 Una mujer ha denunciado una agresión sexual en pleno centro de Ceuta tras ser abordada y sujetada por un hombre. Su pareja persiguió y redujo al sujeto en la calle hasta la llegada de los efectivos policiales\n\n#Ceuta #AgresiónSexual https://t.co/bhCjWN1dms",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/bhCjWN1dms",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099157107325235200/img/HkkLuEa4z1OYx0Hw.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099157107325235200/pl/WwlwNqlTadPnWtwE.m3u8?v=dfd"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2099157107325235200/vid/avc1/320x568/HR1PlQ2Ihy8VlWWu.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2099157107325235200/vid/avc1/480x852/uI09TQYYszbpN5hJ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099157107325235200/vid/avc1/720x1280/TqnmSiNMHqUUFEUC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099157107325235200/vid/avc1/1080x1920/SCSuRIEbIPBcrxpB.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

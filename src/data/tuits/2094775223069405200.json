@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094775223069405200",
+    "created_at": "2026-09-01T13:11:46.000Z",
+    "text": "Sexual assaults happening almost every day in Ceuta, prosecutors say https://t.co/emTVTIbJqI",
+    "user": {
+      "name": "BBC News (World)",
+      "screen_name": "BBCWorld",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1529107170448523264/q3VwEx38_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/emTVTIbJqI",
+          "expanded_url": "https://bbc.in/4qWhOxe",
+          "display_url": "bbc.in/4qWhOxe"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

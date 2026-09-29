@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2098114540202324403",
+    "created_at": "2026-09-10T18:21:02.000Z",
+    "text": "🔴 La sensación de inseguridad entre los vecinos de Ceuta permanece en aumento\n\n➡️ Ya han llegado dos migrantes a Urgencias con las orejas arrancadas\n https://t.co/8eGc0px0jE",
+    "user": {
+      "name": "Antena 3 Noticias",
+      "screen_name": "A3Noticias",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1962456341521305600/g4VWKmAF_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/8eGc0px0jE",
+          "expanded_url": "https://atres.red/2fide2",
+          "display_url": "atres.red/2fide2"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

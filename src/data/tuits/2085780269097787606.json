@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085780269097787606",
+    "created_at": "2026-08-07T17:29:02.000Z",
+    "text": "🔴 EXCLUSIVA | La inteligencia militar informó al Gobierno tres días antes del asalto a Ceuta https://t.co/vhjpxDYHfb",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/vhjpxDYHfb",
+          "expanded_url": "https://theobjective.com/espana/2026-08-07/inteligencia-militar-gobierno-asalto-ceuta/",
+          "display_url": "theobjective.com/espana/2026-08…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

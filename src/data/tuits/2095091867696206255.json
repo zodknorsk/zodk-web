@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095091867696206255",
+    "created_at": "2026-09-02T10:10:00.000Z",
+    "text": "Ceuta hoy. #Horizonte https://t.co/IN2OL21wuu",
+    "user": {
+      "name": "Iker Jiménez",
+      "screen_name": "navedelmisterio",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1245856204821278721/lA5gcC7E_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/IN2OL21wuu",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095091816030711809/img/9UKRTzopM5uTUAYv.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095091816030711809/pl/sqlSNhq66euZEaYs.m3u8?v=679"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095091816030711809/vid/avc1/480x270/t747uvedg1hIOqRm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095091816030711809/vid/avc1/640x360/a3Q0lz31yg8wXy0V.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095091816030711809/vid/avc1/1280x720/ARwq_7_FZlrOOMSR.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

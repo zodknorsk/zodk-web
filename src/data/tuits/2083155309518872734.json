@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083155309518872734",
+    "created_at": "2026-07-31T11:38:23.000Z",
+    "text": "La cooperación con Marruecos es fundamental para seguir luchando contra las mafias que trafican con seres humanos. \n\nEl Gobierno agradece la colaboración de las autoridades marroquíes para reforzar la cooperación y facilitar la repatriación de las personas migrantes que han https://t.co/zGLRDICw4e",
+    "note_tweet": true,
+    "user": {
+      "name": "PSOE",
+      "screen_name": "PSOE",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074088316748615680/07Xromh__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/zGLRDICw4e",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083155112826925056/img/kJKcoKYjFRf3aMMA.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083155112826925056/pl/TOgrIcW17foCJXtX.m3u8?v=03d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2083155112826925056/vid/avc1/480x270/I1YoOiDFVprYJnvi.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2083155112826925056/vid/avc1/640x360/vIMe2dDVkK1Zsr3l.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083155112826925056/vid/avc1/1280x720/mN-m-gRy0KvkCoMB.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2083155112826925056/vid/avc1/1920x1080/YD_-AhreIsbWkYEj.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

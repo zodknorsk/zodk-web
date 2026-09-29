@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097931828317589931",
+    "created_at": "2026-09-10T06:15:00.000Z",
+    "text": "⭕️ #EXCLUSIVA |  La red que Marruecos usó para invadir Ceuta recoge mensajes que amenazan con «una guerra civil»\n\n«Habrá más víctimas que supervivientes»\n\nSigue leyendo la investigación de @entrammbasaguas en El Debate: https://t.co/mjiEtXaRdH https://t.co/FpfGgnQgnN",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/mjiEtXaRdH",
+          "expanded_url": "https://eldbt.com/2sdz2",
+          "display_url": "eldbt.com/2sdz2"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/FpfGgnQgnN",
+        "media_url_https": "https://pbs.twimg.com/media/HR1USBFbIAAsgXH.jpg"
+      }
+    ]
+  }
+}

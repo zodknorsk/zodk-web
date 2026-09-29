@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084934970351493574",
+    "created_at": "2026-08-05T09:30:07.000Z",
+    "text": "🗣️ Juan Jesús Vivas, presidente de la ciudad autónoma:\n\n«Ceuta está viviendo una situación límite, pedimos socorro a quien tiene las capacidades ejecutivas, que es el Gobierno».\n https://t.co/5YPF17iKTu",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/5YPF17iKTu",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084912165530603520/img/CbfEgmKML1GgQ3o6.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084912165530603520/pl/3Vt50TL-4n_cefhO.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2084912165530603520/vid/avc1/480x270/3LkDS9lAPTjl6xyB.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2084912165530603520/vid/avc1/640x360/g7394NE3XKkhFdlA.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2084912165530603520/vid/avc1/1280x720/-GSwt3kEhhYVmjMd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2084912165530603520/vid/avc1/1920x1080/sz-NdQI58xlB4lxy.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

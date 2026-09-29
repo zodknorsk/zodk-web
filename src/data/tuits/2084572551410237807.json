@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084572551410237807",
+    "created_at": "2026-08-04T09:30:00.000Z",
+    "text": "🔴 Los médicos de Ceuta desmienten a Mónica García: «Que venga y nos diga a la cara que no hay colapso sanitario». https://t.co/pwV2gbxJ2E",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/pwV2gbxJ2E",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084534936585785344/img/0d19-NUpznQkDfLP.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084534936585785344/pl/Ww7qSONLhKRM7qx3.m3u8?v=7f9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2084534936585785344/vid/avc1/480x270/Ggv1WwhY9skfp8En.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2084534936585785344/vid/avc1/640x360/meopzQpZqIVXnDwX.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2084534936585785344/vid/avc1/1280x720/QPBx9JzlXHXrbFiS.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2084534936585785344/vid/avc1/1920x1080/L-R1A_Zt6JaDoLpb.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

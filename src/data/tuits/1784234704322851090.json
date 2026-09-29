@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "1784234704322851090",
+    "created_at": "2024-04-27T14:54:37.000Z",
+    "text": "The Houthi movement has published video of them shooting down an American MQ-9 Reaper drone with a surface-to-air missile, showing them using aerial reconnaissance drones of their own to track the American military hardware before taking it out of the sky. https://t.co/rc3lKvlxFo",
+    "user": {
+      "name": "Séamus Malekafzali",
+      "screen_name": "Seamus_Malek",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2064073881120288768/iSSg21Vo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/rc3lKvlxFo",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1784234388894486528/pu/img/gc95HDnNax9thHHI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1784234388894486528/pu/pl/lCQo-jenxW7qS4FY.m3u8?tag=12&v=b4c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/1784234388894486528/pu/vid/avc1/480x270/GW3BNVXAyOERUbqE.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/1784234388894486528/pu/vid/avc1/640x360/TLwGvYQW7ADyIJTu.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102286774110183621",
+    "created_at": "2026-09-22T06:40:00.000Z",
+    "text": "🔴Sira Rego dice que los menores de Ceuta irán a la Península, Torres que a Marruecos y Moncloa que ambos aciertan\n\n✍️ Por @rubenfdez https://t.co/0tOMboU2PB",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/0tOMboU2PB",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260922/sira-rego-dice-menores-ceuta-iran-peninsula-torres-marruecos-moncloa-ambos-aciertan/1003744391796_0.html",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

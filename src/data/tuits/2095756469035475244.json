@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095756469035475244",
+    "created_at": "2026-09-04T06:10:54.000Z",
+    "text": "💥 Vicente Vallés retrata una vez más a Pedro Sánchez y al Gobierno tras sus explicaciones en el Congreso sobre la invasión de Ceuta:\n\n“Moncloa ya ha hecho lecturas falaces de otros informes que no confirmaban las tesis del Gobierno” https://t.co/rXUu9shULJ",
+    "user": {
+      "name": "Vozpópuli",
+      "screen_name": "voz_populi",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1539641919483133953/MY_0lmJL_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/rXUu9shULJ",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2095499423941861376/pu/img/hWiKxXXeQmhO5V8C.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2095499423941861376/pu/pl/LHKTyjZp0Mr7s1NX.m3u8?tag=12&v=d28"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2095499423941861376/pu/vid/avc1/320x568/0fbQdkJJlyPR-qKH.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2095499423941861376/pu/vid/avc1/480x852/hSW3GJPHMeBvnllp.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2095499423941861376/pu/vid/avc1/720x1280/h2_Ss8wPbcm9P2IH.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

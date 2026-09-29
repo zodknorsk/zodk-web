@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092206628363731079",
+    "created_at": "2026-08-25T11:05:06.000Z",
+    "text": "🔴 TVE borra de la red social X el vídeo que deja en evidencia la sumisión del Gobierno ante las provocaciones de Marruecos.\n\nLa Hora de La 1 ha borrado de la red social X el corte donde exponía las contradicciones de Moncloa: mientras el Gobierno califica a Marruecos de aliado https://t.co/zBixWFgrZ3",
+    "note_tweet": true,
+    "user": {
+      "name": "La Bandera",
+      "screen_name": "labanderaes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1637054802797502465/F4Ubv7TT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/zBixWFgrZ3",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092206580720640001/img/JlYlhU2tJtII_wNG.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092206580720640001/pl/DkQknwuPKRoZxDIf.m3u8?v=f4b"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2092206580720640001/vid/avc1/480x270/HdVQnn8tR04Pyv8M.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2092206580720640001/vid/avc1/640x360/IyNWA8aFqNBk5h5o.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092206580720640001/vid/avc1/1280x720/2hXF86YJTEqb_PXK.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2092206580720640001/vid/avc1/1920x1080/WsamuREbQi_rsLq0.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

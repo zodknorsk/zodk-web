@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090408383568371754",
+    "created_at": "2026-08-20T11:59:31.000Z",
+    "text": "🇪🇺🇪🇸🇲🇦 | #ÚltimaHora Bruselas advierte a Sánchez que espera que «todos» los invasores de Ceuta vuelvan a Marruecos:\n\nLa Comisión Europea ha recordado este jueves que España tiene el «deber» de garantizar la protección de los menores migrantes no acompañados que entraron en Ceuta, https://t.co/58EL3XZyrn",
+    "note_tweet": true,
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/58EL3XZyrn",
+        "media_url_https": "https://pbs.twimg.com/media/HQKfWC5XYAAt-p_.jpg"
+      }
+    ]
+  }
+}

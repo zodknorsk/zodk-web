@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2069370079205007816",
+    "created_at": "2026-06-23T10:40:48.000Z",
+    "text": "🚨Es que es de locos. De verdad, no doy crédito. Y hay cero reacción popular a esta nueva estafa. \n\nEscucha bien: con la Ley de Nietos nacionalizan gente a mansalva con tu dinero (consulados, trámites, etc.) para que voten PSOE desde fuera en provincias pequeñas y decidan el https://t.co/gDCR4dh4YV",
+    "note_tweet": true,
+    "user": {
+      "name": "Capitán Bitcoin",
+      "screen_name": "CapitanBitcoin",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1506583148955586561/lwY5pQ9r_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gDCR4dh4YV",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2069369728636956672/img/nSrg4qxlxCAgReBc.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/pl/RwSasURluBuQOqPZ.m3u8?v=1db"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/492x270/o-dg9JJBNyVOOfKN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/658x360/02WSPOfRcsF1-7Ib.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/1316x720/h5er7F9DxVz3a53A.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/1974x1080/NkZgwM36LMTPQ_Lx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2069369728636956672/vid/avc1/3950x2160/m7F1lLEIY2MZ2ZGB.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

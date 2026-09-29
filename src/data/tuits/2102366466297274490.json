@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102366466297274490",
+    "created_at": "2026-09-22T11:56:40.000Z",
+    "text": "¿Qué ha hecho el presidente de Ceuta para ayudar a normalizar la situación más allá de protestar?\n\nQue deje de seguir las directrices de Génova para montar la bronca permanente y empiece a trabajar por las soluciones que necesita Ceuta.\n\nLa ciudad necesita cooperación y diálogo, https://t.co/qmaEf67EYK",
+    "note_tweet": true,
+    "user": {
+      "name": "patxilopez",
+      "screen_name": "patxilopez",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1635669343831818242/tbDYH1K6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/qmaEf67EYK",
+        "media_url_https": "https://pbs.twimg.com/media/HS0blg_WgAAwM0F.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2102364283958960128/pl/Z5x9Y_PnB6guNCU0.m3u8?v=091"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2102364283958960128/vid/avc1/480x270/9Hdz-at6g_Dg8D6n.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2102364283958960128/vid/avc1/640x360/SDxolGhQo28K34UX.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2102364283958960128/vid/avc1/1280x720/vrxqbpvlnsfXDEER.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

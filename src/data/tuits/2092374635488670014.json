@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092374635488670014",
+    "created_at": "2026-08-25T22:12:42.000Z",
+    "text": "Pedro Sánchez se vuelve a ir de vacaciones a Andorra horas después de presidir el consejo de seguridad nacional. https://t.co/oRDx4qpv0N",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/oRDx4qpv0N",
+        "media_url_https": "https://pbs.twimg.com/media/HQmbo2jXwAAyfzG.jpg"
+      }
+    ]
+  }
+}

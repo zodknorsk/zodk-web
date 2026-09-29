@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094705556757848484",
+    "created_at": "2026-09-01T08:34:57.000Z",
+    "text": "Esta es la situación en toda España a 1 de julio de 2026:\n\n• 451 municipios tienen un CERA equivalente al menos al 50 % de toda su población residente.\n• 220 municipios alcanzan al menos el 75 %.\n• 123 municipios tienen tantos o más electores CERA que habitantes residentes.\n• https://t.co/NDGlJzE9zM",
+    "note_tweet": true,
+    "user": {
+      "name": "Gabriel Araújo",
+      "screen_name": "GabrielAraujoES",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552614072226570241/GgCVz_P3_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/NDGlJzE9zM",
+        "media_url_https": "https://pbs.twimg.com/media/HRHjSuFWsAA8fV7.jpg"
+      }
+    ]
+  }
+}

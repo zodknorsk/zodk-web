@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100571191895335141",
+    "created_at": "2026-09-17T13:02:53.000Z",
+    "text": "Acabamos de recibir el auto de la Audiencia Nacional que levanta la suspensión del traslado de 1.700 personas migrantes a espacios habilitados en el Puerto de Ceuta.\n\nUna magnífica noticia, que nos permite seguir trabajando para alcanzar, lo antes posible, la normalidad en la https://t.co/VO77nkVzoy",
+    "note_tweet": true,
+    "user": {
+      "name": "Ángel Víctor Torres Pérez",
+      "screen_name": "avtorresp",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074026499808669696/D946OrrQ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/VO77nkVzoy",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100570967290318849/img/XzmW_B3lqkkiL5TH.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100570967290318849/pl/4wFLF2ninnYqbYC4.m3u8?v=acd"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100570967290318849/vid/avc1/480x270/IDPeBlMO5TRJuq2u.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100570967290318849/vid/avc1/640x360/kvior74pw0vOVqUo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100570967290318849/vid/avc1/1280x720/1liOeaImFAlDzmFn.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

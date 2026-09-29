@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2095247403569823774",
+    "created_at": "2026-09-02T20:28:03.000Z",
+    "text": "🔴¡Tremendo lo que acabo de grabar en Cibeles!\nLos agentes de Marlaska absolutamente desatados, están disparando sin control y sin razón alguna.\n\nEn Ceuta se les arrugan los cojones pero con chavales, de repente son todos súper hombres.\n\n¡Qué le pasa a la policía últimamente! https://t.co/ooO3Glxa2c",
+    "user": {
+      "name": "Bertrand Ndongo",
+      "screen_name": "bertrandmyd",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1715335744770723840/qJYL0EdX_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ooO3Glxa2c",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2095246946760101888/img/QbIkaRfyQZpCLk8X.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2095246946760101888/pl/cVBJP01RJdgb88mD.m3u8?v=bcb"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2095246946760101888/vid/avc1/480x270/pmecrq0qQ91xtTuC.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2095246946760101888/vid/avc1/640x360/-tJV7q2deBJtQ744.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2095246946760101888/vid/avc1/1280x720/t192G4jcmxVOIPwp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2095246946760101888/vid/avc1/1920x1080/WV3aDKU9WqaShrPv.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

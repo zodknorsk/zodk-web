@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2093958607742156872",
+    "created_at": "2026-08-30T07:06:50.000Z",
+    "text": "🗣🇪🇸 #HablandoSobreEspaña | \"El lunes 27 llamé a Moncloa y me dijeron que estuviera tranquilo, el martes pedí al Gobierno el Estado de Alarma, el miércoles me dijeron que no había fundamento, el jueves llegó la avalancha\"\n\n📲 Sigue leyendo en https://t.co/rEx7As3bWp https://t.co/osJsTsZAFC",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/rEx7As3bWp",
+          "expanded_url": "https://dozz.es/gds8d",
+          "display_url": "dozz.es/gds8d"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/osJsTsZAFC",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2093958320725884928/img/bOIxzISnTqPCbm42.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2093958320725884928/pl/Yq0lRT3gbwbA2OTR.m3u8?v=82c"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2093958320725884928/vid/avc1/320x568/q2-YIwpPxF-79hMI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2093958320725884928/vid/avc1/480x852/cRF60AfFNO3RJEvQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2093958320725884928/vid/avc1/720x1280/FSuflvfFcI28JOaU.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2093958320725884928/vid/avc1/1080x1920/dFgq1DWaYGyzb21S.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

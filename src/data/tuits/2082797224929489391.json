@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2082797224929489391",
+    "created_at": "2026-07-30T11:55:29.000Z",
+    "text": "🔴 ÚLTIMA HORA | Así se encuentra Castillejos, municipio marroquí cercano a Ceuta, con miles de inmigrantes ilegales rumbo a España\n\nhttps://t.co/w4jOWi4Ahp https://t.co/R7SpEQyZUB",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/w4jOWi4Ahp",
+          "expanded_url": "https://gaceta.es/espana/invasion-en-ceuta-cientos-de-marroquies-la-gran-mayoria-menas-asaltan-la-frontera-y-entran-en-la-ciudad-autonoma-20260730-1156/",
+          "display_url": "gaceta.es/espana/invasio…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/R7SpEQyZUB",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2082796884347731969/img/9FxM_Uu0D3tvwXxJ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2082796884347731969/pl/gRZev4CttQPVhdb-.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2082796884347731969/vid/avc1/478x270/4o0CxGk2MFIe7K49.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2082796884347731969/vid/avc1/848x478/1gawOrByimHEd_XR.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

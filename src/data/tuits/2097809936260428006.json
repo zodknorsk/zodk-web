@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097809936260428006",
+    "created_at": "2026-09-09T22:10:38.000Z",
+    "text": "Os pongo estos 7 minutos de la entrevista bochornosa de Óscar Puente con Cristina Pardo, desarmado ante la realidad.\n\nEs lo que pasa cuando no vas a tus medios de confianza. \n\nLo disfrutaría más, si no fuera porque estamos en manos de estos desgraciados. https://t.co/LVMcG69D5R",
+    "user": {
+      "name": "El Equidistante",
+      "screen_name": "elequidistante",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1813878293663244288/tgFSFixv_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LVMcG69D5R",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097809135391907840/img/dxhwyKqsM3Gmx-QK.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097809135391907840/pl/PE9M5sUyJGiXf1Vt.m3u8?v=14d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/480x270/HeB0zi6iduK0GmAx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/640x360/22GM30ChX4dQmGVc.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/1280x720/CFbei7pZJgnYyfKW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097809135391907840/vid/avc1/2290x1288/Hn__VbvMG_-7cewJ.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

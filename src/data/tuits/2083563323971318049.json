@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083563323971318049",
+    "created_at": "2026-08-01T14:39:41.000Z",
+    "text": "🔴 Sánchez llega a Lanzarote en Falcon y queda restringida la navegación frente a La Mareta\n\nEl presidente ha aterrizado a las 13:07 horas en el aeropuerto César Manrique\n\n✍️ @AnaMellado \nhttps://t.co/fqOt42bFib",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/fqOt42bFib",
+          "expanded_url": "https://www.eldebate.com/gente/20260801/sanchez-llega-lanzarote-falcon-queda-restringida-navegacion-frente-mareta_445984.html",
+          "display_url": "eldebate.com/gente/20260801…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

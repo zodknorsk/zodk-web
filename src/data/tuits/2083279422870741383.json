@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083279422870741383",
+    "created_at": "2026-07-31T19:51:34.000Z",
+    "text": "⭕️ÚLTIMA HORA| Cientos de marroquíes asalta el CETI de Ceuta.\n\nEl gobierno nos miente, no hay una situación de normalidad. https://t.co/Fk8TWXLvFN",
+    "user": {
+      "name": "David Santos",
+      "screen_name": "davidsantosvlog",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1728348204662403072/ZXRMcVJ7_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Fk8TWXLvFN",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083279365937242113/img/7PMTjTlblnoiYVK-.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083279365937242113/pl/rFfNbISu3Zlvyn-i.m3u8?v=a09"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2083279365937242113/vid/avc1/320x438/bgFy6mYH3qs5DKcb.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2083279365937242113/vid/avc1/480x658/MDYgAzt8mXRLJKt3.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083279365937242113/vid/avc1/720x988/TwjRbrNTJ3-RqqfN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2083279365937242113/vid/avc1/1080x1484/lDacx948aIt5trPq.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101310433931972836",
+    "created_at": "2026-09-19T14:00:22.000Z",
+    "text": "1/4\nℹ️Información importante:\nEntrar irregularmente en España a través de Ceuta y Melilla no da derecho a acceder a la Península, a permanecer en España o a circular libremente por la #UE. https://t.co/iRnHRtbByB",
+    "user": {
+      "name": "Embajada de España en Marruecos",
+      "screen_name": "EmbEspanaRabat",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1925059308170936320/J74texlW_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/iRnHRtbByB",
+        "media_url_https": "https://pbs.twimg.com/media/HSlas1mWYAAvgWX.jpg"
+      }
+    ]
+  }
+}

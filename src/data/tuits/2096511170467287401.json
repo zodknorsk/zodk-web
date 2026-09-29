@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096511170467287401",
+    "created_at": "2026-09-06T08:09:48.000Z",
+    "text": "#EmergenciaCeuta La presión en el Puerto de Ceuta es cada vez mayor. El video fue grabado ayer tarde desde el Ferry. Abrir un campamento de 1.000  inmigrantes cerca de la Estación Marítima, mas pareciera la intención del Gobierno Sánchez de colapsar Ceuta por sus cuatro esquinas. https://t.co/r7JeZmSybs",
+    "user": {
+      "name": "CeutaAhora",
+      "screen_name": "ceuta_ahora",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1744263318900965376/hrOVyXlt_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/r7JeZmSybs",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096511104998608896/img/UWmwb0PMqpRlSits.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096511104998608896/pl/bVLD3izeXNQFzwIG.m3u8?tag=14&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096511104998608896/vid/avc1/320x568/j-8OahjHKY3ArKLo.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096511104998608896/vid/avc1/478x850/vi5qd3BhyCQFpsjC.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097356256272892203",
+    "created_at": "2026-09-08T16:07:53.000Z",
+    "text": "El Gobierno de España no comparte la posición del Tribunal Supremo sobre la Ley de Nietos, porque supone suspender el derecho de voto de miles de españoles.\n\nEs urgente dar prioridad a esta cuestión y encontrar una solución antes de los procesos electorales de 2027.\n\nEstamos https://t.co/ozysyb36Tp",
+    "note_tweet": true,
+    "user": {
+      "name": "PSOE",
+      "screen_name": "PSOE",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074088316748615680/07Xromh__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ozysyb36Tp",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097343504624336897/img/FnDrimtKI7KXOMyC.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097343504624336897/pl/aGb_ae3r2JjI8Ln7.m3u8?v=fd2"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097343504624336897/vid/avc1/480x270/WMZbqs29E2XKMBu-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097343504624336897/vid/avc1/640x360/C3HtHaJF3wSiY7Oy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097343504624336897/vid/avc1/1280x720/546x_0u2BDpYT-7Q.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2097343504624336897/vid/avc1/1920x1080/IKWYyITenROAmjCZ.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

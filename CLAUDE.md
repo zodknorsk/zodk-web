@@ -75,9 +75,11 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
   cinco veces seguidas.
 - **Capturas sin ventana**: Chrome con `localhost:4321` (no `127.0.0.1`). Al
   lanzar muchos a la vez, alguno sale sin WebGL.
-- **Importar** (`npm run importar`) regenera `src/content/` entero y suele
-  traer cambios ajenos (el avatar de un tuit, notas tocadas en la bóveda):
-  mirarlos y descartar lo que no toque.
+- **Importar** (`npm run importar`) solo escribe lo que ha cambiado y al
+  final dice qué notas son nuevas, cuáles cambian y cuáles se retiran. Se
+  niega fuera de `main`. Los tuits salen del archivo `src/data/tuits/` y
+  solo se piden a X los nuevos: no borrar ese archivo, es lo único que queda
+  de los tuits que X borra (`docs/contenido.md`, «Tuits»).
 - **ESLint y los `<script>` de los `.astro`**: el extractor no entiende una
   llamada con genérico partida en varias líneas
   (`querySelectorAll<HTMLElement>(\n … \n)`) ni `new Set<string>()`. Dejar el
@@ -112,9 +114,8 @@ Decidido: **seguir con Astro y GitHub Pages**. Descartados: WordPress/Ghost
 framework o de hosting (no arregla el historial). Por orden, cuando toque:
 
 1. ~~Terminar el Proyecto Tierra~~: hecho y publicado.
-2. **Que `scripts/importar-notas.mjs` reduzca las fotos** antes de copiarlas
-   (máx. ~2400 px de ancho, JPG/WebP de buena calidad). En Obsidian siguen a
-   tamaño completo.
+2. ~~Que `scripts/importar-notas.mjs` reduzca las fotos~~: hecho (máx.
+   2400 px; los PNG grandes, a JPG).
 3. **Antes del zoom grande de la Tierra** (pixel art detallado de países),
    sacar las teselas (y los vídeos) de Git a Cloudflare R2 con un subdominio
    tipo `media.zodk.eu`, o pintar el pixel art al vuelo en la GPU. Cuentas:

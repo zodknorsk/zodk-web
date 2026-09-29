@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100495655961538597",
+    "created_at": "2026-09-17T08:02:44.000Z",
+    "text": "Vivas no colabora para que la normalidad vuelva a Ceuta, y Marruecos sí.\n\nPalabra de Puente. https://t.co/wD9QBGz8VF",
+    "user": {
+      "name": "David Martínez",
+      "screen_name": "davidmartinezg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1986192020440772608/ZWrbP3HU_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/wD9QBGz8VF",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100495607219531776/img/57XARIbxCy8vrIuC.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100495607219531776/pl/aSX4VmLX4RWsZ2Iv.m3u8?v=f29"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100495607219531776/vid/avc1/490x270/3AamUcyIGWRRQ-ga.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100495607219531776/vid/avc1/652x360/aTeRscAPSVu79vZj.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100495607219531776/vid/avc1/1180x650/4x_fnxd0D5cTdORk.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

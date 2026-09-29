@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090028834460496277",
+    "created_at": "2026-08-19T10:51:19.000Z",
+    "text": "🇪🇸 Algunos vecinos ceutíes denuncian que inmigrantes ilegales matan a gatos y perros para luego comerlos https://t.co/Azh2yliDsh",
+    "user": {
+      "name": "Actualidad Noticias",
+      "screen_name": "Actualidad_Pol",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1983212073833148416/g83lULIf_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/Azh2yliDsh",
+        "media_url_https": "https://pbs.twimg.com/media/HQFGJQiXkAEg-f9.jpg"
+      }
+    ]
+  }
+}

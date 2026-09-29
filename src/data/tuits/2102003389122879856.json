@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2102003389122879856",
+    "created_at": "2026-09-21T11:53:55.000Z",
+    "text": "🚨 Confirma @amoncope la información de Radio Marca Valladolid\n\n🚌 En el trayecto de vuelta del Valladolid desde Ceuta, un menor de 17 años se coló entre el eje de las ruedas y el chasis\n\n🛣️ Consiguió aguantar hasta Jerez\n\n🐕 Los perros de la Guardia Civil no detectaron al joven https://t.co/cMXLuKhYak",
+    "note_tweet": true,
+    "user": {
+      "name": "El Partidazo de COPE",
+      "screen_name": "partidazocope",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1800148692520910848/WSCGWkUV_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/cMXLuKhYak",
+        "media_url_https": "https://pbs.twimg.com/media/HSvQDsjW4AAlGex.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088576692742693357",
+    "created_at": "2026-08-15T10:41:02.000Z",
+    "text": "🔴 #ÚLTIMAHORA Cientos de inmigrantes se preparan para asaltar Ceuta. Desde Castillejos, cientos de inmigrantes se dirigen hacia Ceuta para volver a cruzar el espigón del Tarajal.\n\n📍Informa @joanguirado  desde la ciudad autónoma \n\n🔗 https://t.co/94ygyUMWWY https://t.co/RJDbU2cufI",
+    "user": {
+      "name": "ABC.es",
+      "screen_name": "abc_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2023769418250285060/TIouigrT_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/94ygyUMWWY",
+          "expanded_url": "https://www.abc.es/espana/centenares-inmigrantes-entran-ceuta-nado-marruecos-directo-20260815130610-di.html",
+          "display_url": "abc.es/espana/centena…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/RJDbU2cufI",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088576590531760128/img/0DDuB-BwBjG7-qUr.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088576590531760128/pl/CDeMWHyDPCTiustz.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088576590531760128/vid/avc1/320x568/KUDWDXmw-Z1BhAMI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088576590531760128/vid/avc1/480x852/J--2F5pYOaQjGJVc.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088576590531760128/vid/avc1/720x1280/MP90VBiv8AwQx-mU.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088576590531760128/vid/avc1/1080x1920/FC-lOrh1evK5B0LR.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

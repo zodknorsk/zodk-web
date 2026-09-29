@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100143904305848693",
+    "created_at": "2026-09-16T08:45:00.000Z",
+    "text": "🔴 OJO A ESTO\n\nEl ejército marroquí habría sacado a 68 niñas de un orfanato para enviarlas a Ceuta https://t.co/PQ3RrdJwyK",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/PQ3RrdJwyK",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100141002799353857/img/HurWpbgZr6abGm7n.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100141002799353857/pl/clM3UDrw58F2KwNU.m3u8?v=260"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2100141002799353857/vid/avc1/320x568/2imAuJYmgFLf-cEV.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2100141002799353857/vid/avc1/480x852/-Fco0KHFaTXfI99O.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100141002799353857/vid/avc1/576x1024/Y75AjSNBgQdKugKy.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

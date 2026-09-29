@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099865821145071803",
+    "created_at": "2026-09-15T14:20:00.000Z",
+    "text": "📺 TV en DIRECTO | Albares, ministro de Exteriores, sobre la crisis en Ceuta: \"En 48 horas, este Gobierno ha retornado más irregulares que prácticamente toda la Unión Europea junta en 2025. El 90% retornó en las primeras 48 horas\" https://t.co/26Bql27xBe https://t.co/MfcVqjcH47",
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/26Bql27xBe",
+          "expanded_url": "https://tinyurl.com/mrx6v6f7",
+          "display_url": "tinyurl.com/mrx6v6f7"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/MfcVqjcH47",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099865467766591488/img/S-Ii7SN_eXOvQvtT.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099865467766591488/pl/eOAWF2gfq4wMWmes.m3u8?v=d96"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099865467766591488/vid/avc1/480x270/yJOR2eSHOmXJALxY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099865467766591488/vid/avc1/640x360/BKnDvNy6_z3HTvKH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099865467766591488/vid/avc1/1280x720/4_LtEYjy7xfoOzkU.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099865467766591488/vid/avc1/1920x1080/QDLxDuWq_b_VNtoU.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092187042956398752",
+    "created_at": "2026-08-25T09:47:16.000Z",
+    "text": "🔴 Moncloa difunde imágenes del Consejo de Seguridad sin el Rey para vender que Sánchez se pone al frente de la crisis de Ceuta.\n\n🔗 https://t.co/S0uAmL2mqD https://t.co/QVBgUiaxnV",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/S0uAmL2mqD",
+          "expanded_url": "https://okdiar.io/4xjnJi2",
+          "display_url": "okdiar.io/4xjnJi2"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/QVBgUiaxnV",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2092187022974656512/pu/img/ePmDEg2CoA4sUs2m.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2092187022974656512/pu/pl/MzWF0iPfMj3ikWaO.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2092187022974656512/pu/vid/avc1/480x270/7vJvN5FBcWBh7HBo.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2092187022974656512/pu/vid/avc1/640x360/4juucKrRMJH3dFTe.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2092187022974656512/pu/vid/avc1/1280x720/VJGrRhsZVl8qRLlE.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

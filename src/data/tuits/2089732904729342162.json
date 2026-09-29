@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089732904729342162",
+    "created_at": "2026-08-18T15:15:24.000Z",
+    "text": "🛡️🇪🇸🇲🇦  El Ejército de Tierra informa de que hay 24  \ncontagiados por sarna\nen la Comandancia de Ceuta.  \n\nDos de los casos son anteriores al ataque híbrido.",
+    "user": {
+      "name": "The Political Room",
+      "screen_name": "Political_Room",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1244593976184840193/iPHLDwCB_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

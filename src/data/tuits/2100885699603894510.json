@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100885699603894510",
+    "created_at": "2026-09-18T09:52:38.000Z",
+    "text": "🔴 La última exigencia de Bolaños: «Los ciudadanos de Ceuta deben confiar en aquellos que aportamos soluciones y no en los que están poniendo palos en la rueda».\n\n📲 Sigue el directo político https://t.co/2lAnzDTWQP https://t.co/nBCasKz5Nm",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/2lAnzDTWQP",
+          "expanded_url": "https://okdiar.io/4rlFXNQ",
+          "display_url": "okdiar.io/4rlFXNQ"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/nBCasKz5Nm",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2100885666439544832/pu/img/hFfgfit33VJ9RY-f.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2100885666439544832/pu/pl/R1est-Y_GU9P_Dzq.m3u8?tag=12&v=fcb"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2100885666439544832/pu/vid/avc1/480x270/8hlY6-VcRBzsB3bC.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2100885666439544832/pu/vid/avc1/640x360/csjvTtJ7dFyyK-Xm.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2100885666439544832/pu/vid/avc1/1280x720/rt9ER0iwQgvKC9BY.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

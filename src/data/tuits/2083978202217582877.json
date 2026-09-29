@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083978202217582877",
+    "created_at": "2026-08-02T18:08:16.000Z",
+    "text": "🇪🇸🇲🇦 | El ex-Ministro de Defensa Federico Trillo sobre la posición de los EEUU cuando Marruecos ocupó Perejil en 2002 durante el gobierno de Aznar: \n\n«Los americanos ya entonces apoyaban a Marruecos».  https://t.co/ILdvOUzxD8",
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ILdvOUzxD8",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2083613166622097408/img/84UWlm8QiYgQR1TL.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2083613166622097408/pl/I0epCyMMMC1L-Ji0.m3u8?v=e1d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2083613166622097408/vid/avc1/480x270/QDHuKSbJQJO972DL.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2083613166622097408/vid/avc1/640x360/1Cx-kGpT7sHoPqqh.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2083613166622097408/vid/avc1/1280x720/sCey1TvYEebz_kvp.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

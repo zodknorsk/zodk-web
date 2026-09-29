@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090099518368837811",
+    "created_at": "2026-08-19T15:32:12.000Z",
+    "text": "🔴 Marlaska mintió hace una semana: «Ninguna persona que entre en Ceuta y Melilla de manera irregular va a ir a la Península».\n\n👉 El Gobierno trabaja en un plan para trasladar a la Península a 500 menas: https://t.co/FU0hX1qOgh https://t.co/ftj5uOalZP",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/FU0hX1qOgh",
+          "expanded_url": "https://okdiar.io/4g5O6C5",
+          "display_url": "okdiar.io/4g5O6C5"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ftj5uOalZP",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2090099495115575296/pu/img/tFANHSOtmmqMmWhO.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2090099495115575296/pu/pl/_psqMfskpB4hJUPu.m3u8?tag=12&v=962"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2090099495115575296/pu/vid/avc1/480x270/p3IN2wQcNOawpAab.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2090099495115575296/pu/vid/avc1/640x360/8108LF0WCJNX5oVC.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2090099495115575296/pu/vid/avc1/1280x720/ttiQ0hUrrKYVrsV3.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

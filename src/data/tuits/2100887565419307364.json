@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100887565419307364",
+    "created_at": "2026-09-18T10:00:02.000Z",
+    "text": "La ministra de Juventud e Infancia, \"profundamente agradecida\" con los jugadores del Real Madrid que no se pusieron la camiseta en apoyo de Ceuta: \"Tiene un valor extraordinario como sociedad\" https://t.co/moXvcsKalQ",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/moXvcsKalQ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2100883174574153728/img/x2u95xNkQFPFb_pu.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2100883174574153728/pl/Wvzk1erEhg6GRSR_.m3u8?v=ad9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2100883174574153728/vid/avc1/480x270/ngySQkoEhvS9aJNR.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2100883174574153728/vid/avc1/640x360/mFr3pysJaVIJQ_6Z.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2100883174574153728/vid/avc1/1280x720/N8GY4U5IhDqzmv7X.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2100883174574153728/vid/avc1/1920x1080/9YNeF18V9FNWMDJC.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

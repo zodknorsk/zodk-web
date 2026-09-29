@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "1498006827459657740",
+    "created_at": "2022-02-27T18:47:13.000Z",
+    "text": "Ukrainian Bayraktar TB2 airstrike\n\nVideo source \nhttps://t.co/fmxMKITUK8 https://t.co/KIfVSy4jAG",
+    "user": {
+      "name": "MilitaryAviationInUa",
+      "screen_name": "MilAviaUA",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/882124993055928321/GCV8HqBc_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/fmxMKITUK8",
+          "expanded_url": "https://m.facebook.com/story.php?story_fbid=679362330162214&id=100037998992937&m_entstream_source=permalink",
+          "display_url": "m.facebook.com/story.php?stor…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/KIfVSy4jAG",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1498006718210527232/pu/img/pYzZ7F-njJYW_kjV.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1498006718210527232/pu/pl/LhKboPm9s9QLB-6g.m3u8?tag=12&v=78f"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/1498006718210527232/pu/vid/320x564/FpB_sn1L32FR164L.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/1498006718210527232/pu/vid/362x640/HwQbwrcEahzlJhUT.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

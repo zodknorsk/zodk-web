@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097589797321683049",
+    "created_at": "2026-09-09T07:35:53.000Z",
+    "text": "La Ley de Nietos no es solo un trámite legal, es justicia histórica y un abrazo de nuestro país a quienes tuvieron que marcharse.\n\n¿Por qué el PP celebra la sentencia del TS que les niega el derecho a voto?\n\nHace 2 años exigía este derecho, y ahora celebra que no puedan votar. https://t.co/HjZKCgesaW",
+    "note_tweet": true,
+    "user": {
+      "name": "patxilopez",
+      "screen_name": "patxilopez",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1635669343831818242/tbDYH1K6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/HjZKCgesaW",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2097589717386530816/img/WhaeuqBq7tJ_fKij.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2097589717386530816/pl/5vw5HK4RTqLBfMDG.m3u8?v=146"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2097589717386530816/vid/avc1/480x270/U1RyqEQCz4_i1Qav.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2097589717386530816/vid/avc1/640x360/tAGsy7_JZweiJrtG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2097589717386530816/vid/avc1/1280x720/necavcdMKh-_LtIj.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

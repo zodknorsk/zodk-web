@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092952442384077213",
+    "created_at": "2026-08-27T12:28:42.000Z",
+    "text": "@rubnpulido Muchas gracias @rubnpulido por tu trabajo.\n\nBuscando gracias a tu información,  he podido localizar este vídeo. \n\nAquí se le puede ver dando instrucciones. https://t.co/SBfCgs0MKU",
+    "user": {
+      "name": "Canario Today",
+      "screen_name": "CanarioToday",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1890482954226270208/uPDmpS0-_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/SBfCgs0MKU",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092952382728478720/img/LaJrJRGVXrHZSC5n.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092952382728478720/pl/fkRV03fFCryiurpO.m3u8?v=7c1"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2092952382728478720/vid/avc1/378x270/wSLvLfzwIk6qRoif.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2092952382728478720/vid/avc1/504x360/CLfQanHrRuTT34NF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2092952382728478720/vid/avc1/672x480/1c3r1UfyueZ1pSox.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

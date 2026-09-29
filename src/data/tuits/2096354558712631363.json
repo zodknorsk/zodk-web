@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096354558712631363",
+    "created_at": "2026-09-05T21:47:29.000Z",
+    "text": "Playa del Trampolín, \nCeuta, 2026. https://t.co/1l7TvVpfAe",
+    "user": {
+      "name": "Javier Pérez Campos",
+      "screen_name": "JaviPerezCampos",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1942542781261459456/ZfdfEpkT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/1l7TvVpfAe",
+        "media_url_https": "https://pbs.twimg.com/media/HRe_W2fXkAM6AEw.jpg"
+      }
+    ]
+  }
+}

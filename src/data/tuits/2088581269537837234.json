@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2088581269537837234",
+    "created_at": "2026-08-15T10:59:13.000Z",
+    "text": "🇪🇸🇲🇦 #ÚltimaHora | Cientos de inmigrantes ilegales se coordinan a la carrera por el monte en Fnideq para intentar asaltar la frontera de Ceuta. https://t.co/2gKPFVX6xq",
+    "user": {
+      "name": "ʜᴇʀQʟᴇs",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/2gKPFVX6xq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2088581190949257217/img/K6D2_1QG_DPnnVWr.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2088581190949257217/pl/ZhflU6STaRhmvzvt.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2088581190949257217/vid/avc1/320x528/nL1szHLiAy2rDj8e.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2088581190949257217/vid/avc1/480x792/XoelmJLlI8bZZvd4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2088581190949257217/vid/avc1/720x1188/Ueaysyl2-djdaoAK.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2088581190949257217/vid/avc1/1080x1782/Y_e6jAnIPEJCxa2y.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

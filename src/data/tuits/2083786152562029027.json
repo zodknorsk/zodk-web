@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2083786152562029027",
+    "created_at": "2026-08-02T05:25:08.000Z",
+    "text": "El Gobierno admitió en el BOE (año 2024) el uso de «olas incontroladas de inmigrantes» para «desestabilizar» España. Y luego va y aplaude a Marruecos, dice que es un país amigo, que no es ninguna amenaza para España, agradece su colaboración y rinde pleitesía a su rey. De locos. https://t.co/7aQ6RHUnNA",
+    "note_tweet": true,
+    "user": {
+      "name": "Javier Rubio Donzé",
+      "screen_name": "Sr_Donze",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2009397633983324160/ih32HP1y_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/7aQ6RHUnNA",
+        "media_url_https": "https://pbs.twimg.com/media/HOsYdfGXwAAIY5S.jpg"
+      }
+    ]
+  }
+}

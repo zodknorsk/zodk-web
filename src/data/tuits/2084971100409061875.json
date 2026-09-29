@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2084971100409061875",
+    "created_at": "2026-08-05T11:53:41.000Z",
+    "text": "Si Marruecos tiene capacidad para organizar el Mundial de fútbol 2030 y gastarse miles de millones en construir un estadio para 115.000 espectadores, tiene dinero para acoger de vuelta a los menores que han saltado a Ceuta. https://t.co/8qz67EnDsH",
+    "user": {
+      "name": "Xavier García Albiol",
+      "screen_name": "Albiol_XG",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955194331553218561/9NQdYbFY_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8qz67EnDsH",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2084970732572876800/img/PxEQChborrlPsJXy.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2084970732572876800/pl/y0gpj0lYEEqGKSo1.m3u8?v=6b8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2084970732572876800/vid/avc1/490x270/c7yXEH4K5Iv81uG3.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2084970732572876800/vid/avc1/640x352/dHXunjRuiZ5yIN_t.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

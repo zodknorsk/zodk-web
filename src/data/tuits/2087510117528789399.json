@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087510117528789399",
+    "created_at": "2026-08-12T12:02:50.000Z",
+    "text": "‼️ \"¡Tengo miedo, he tenido que coger un cuchillo!\".\n\nUna vecina de Ceuta ha estallado este miércoles ante la presencia de la ministra de Defensa, Margarita Robles, por el abandono del Gobierno que preside Pedro Sánchez a Ceuta.\n\nVía: AlRojoVivo\n\n📲 Todos los detalles: https://t.co/exLxY2A0U9",
+    "note_tweet": true,
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/exLxY2A0U9",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2087510074038091776/pu/img/tACeZ1fws4hFhfUx.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2087510074038091776/pu/pl/LN64CK_Dngh5nA7C.m3u8?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2087510074038091776/pu/vid/avc1/320x568/1i9AfWWDIqMNMwTO.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2087510074038091776/pu/vid/avc1/480x852/fJQsgtXo5QU09KFJ.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2087510074038091776/pu/vid/avc1/720x1280/vDG9SohCEm1dHDZJ.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

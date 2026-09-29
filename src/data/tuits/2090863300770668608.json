@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090863300770668608",
+    "created_at": "2026-08-21T18:07:11.000Z",
+    "text": "🔴El ministro de Justicia marroquí dice que las ciudades de Ceuta y Melilla constituyen un derecho \"histórico y geográfico\" de Marruecos y que el objetivo es que \"retornen al seno de la patria\"\n\n▪️Asegura que es esencial la creación de un foro u organismo de diálogo https://t.co/JdAjViBHox",
+    "user": {
+      "name": "24 horas de RNE",
+      "screen_name": "24horas_rne",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1566826453190205442/EWGUZmdC_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/JdAjViBHox",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2090862889112330240/img/tV39pbOtQC_IY4ne.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2090862889112330240/pl/8bTN8GChTGfkie5K.m3u8?tag=16&v=0d1"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/2090862889112330240/vid/avc1/480x270/M5s-E-9lZ_KzH09G.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2090862889112330240/vid/avc1/640x360/tvsM8RhAP9zydZoW.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2090862889112330240/vid/avc1/1280x720/frFwJDo4vBFugxrf.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2090862889112330240/vid/avc1/1920x1080/ZEdrw_BeBoqoh8bP.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

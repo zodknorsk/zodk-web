@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099497840741429592",
+    "created_at": "2026-09-14T13:57:46.000Z",
+    "text": "💥 «No nos dejan defendernos». \n\n📲 Noticia completa: https://t.co/4D5l4HQCgJ https://t.co/dRdAvtLL1U",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/4D5l4HQCgJ",
+          "expanded_url": "https://okdiar.io/3SYOQQM",
+          "display_url": "okdiar.io/3SYOQQM"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/dRdAvtLL1U",
+        "media_url_https": "https://pbs.twimg.com/media/HSLqKG_X0AAAqY3.jpg"
+      }
+    ]
+  }
+}

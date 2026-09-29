@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092751919731061140",
+    "created_at": "2026-08-26T23:11:53.000Z",
+    "text": "Una ceutí denuncia que una ONG se ha dedicado a dar sprays pimienta a los inmigrantes ilegales: https://t.co/mN7cVVWSCl",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/mN7cVVWSCl",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2092751867000332288/img/NHIei9jxT0MocyQN.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2092751867000332288/pl/7IhTGPjPQPYvbDPH.m3u8?v=ef1"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2092751867000332288/vid/avc1/320x568/wJoUDSOHcmhHVrnr.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2092751867000332288/vid/avc1/360x640/heV4TGdcbvfn5rJG.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

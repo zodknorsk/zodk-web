@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100652820366024762",
+    "created_at": "2026-09-17T18:27:15.000Z",
+    "text": "Mónica García huye por la puerta de atrás y se esconde en un coche de sus escoltas para evitar los insultos en Ceuta. https://t.co/jPK3YrELli",
+    "user": {
+      "name": "Eduardo Inda",
+      "screen_name": "eduardoinda",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/698106393526722560/hA9Itqr5_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/jPK3YrELli",
+          "expanded_url": "https://okdiario.com/espana/monica-garcia-huye-puerta-atras-esconde-coche-sus-escoltas-evitar-insultos-ceuta-20322326?utm_campaign=inda&utm_medium=Social&utm_source=Twitter#Echobox=1789669634-1",
+          "display_url": "okdiario.com/espana/monica-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

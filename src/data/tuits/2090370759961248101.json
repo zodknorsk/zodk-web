@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090370759961248101",
+    "created_at": "2026-08-20T09:30:01.000Z",
+    "text": "🔴 ÚLTIMA HORA | La Policía Nacional denuncia que la Cruz Roja entrega más agua y alimentos a inmigrantes ilegales que a los propios agentes.\n\n\"Es indignante, no puede ser que estemos peor atendidos nosotros\".\n\n\"Les dan una botella para cada uno, nosotros la compartimos\". https://t.co/hbsLM7PSnA",
+    "user": {
+      "name": "Unai Cano",
+      "screen_name": "unaicano10",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1666030541391421445/X_Bm9ryP_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/hbsLM7PSnA",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2090367416375078912/img/QTUSCNeyea6SAYsJ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2090367416375078912/pl/8nspJmddoZn00gOZ.m3u8?v=b9b"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2090367416375078912/vid/avc1/480x270/Cy27HphcOEtIsdKX.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2090367416375078912/vid/avc1/640x360/XxXgw3ZkpWkfN5V_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2090367416375078912/vid/avc1/1280x720/N-KdubdKjqMZM3eP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2090367416375078912/vid/avc1/1920x1080/glTDDlXptdqUTcKh.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

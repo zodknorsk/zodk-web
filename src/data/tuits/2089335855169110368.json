@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2089335855169110368",
+    "created_at": "2026-08-17T12:57:40.000Z",
+    "text": "📍La Guardia Civil dice que ha habido 15 violaciones en #Ceuta y Mónica García lo desmiente rebajando la cifra a 5. Cuando esta mañana le han preguntado, ha contestado que si son más y ella no lo sabía es porque “no han acudido a los puntos contra la violencia machista”. https://t.co/Kw3MqbDhnD",
+    "user": {
+      "name": "Susana Burgos",
+      "screen_name": "burgosusana",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2078965273105678336/3S1aJc3P_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Kw3MqbDhnD",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2089335766438612992/img/D3io3Ztnus4byjqE.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2089335766438612992/pl/J0FtOGfj2UNAVzko.m3u8?v=ec2"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2089335766438612992/vid/avc1/320x568/jc33_WaQ0pJ3k9Ud.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2089335766438612992/vid/avc1/480x852/CAPJOGWJ0qFoNMDg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2089335766438612992/vid/avc1/720x1280/kyA4NY-TGwE2fucm.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

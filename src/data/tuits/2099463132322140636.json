@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099463132322140636",
+    "created_at": "2026-09-14T11:39:51.000Z",
+    "text": "‼️ Marlaska insiste en que «no hubo alertas» en Ceuta pese a quedar en evidencia tras confirmarse los avisos previos.\n\n«Respecto a las alertas, cualquier alerta que se diera era una alerta de las operativas y normales, atendiendo a las circunstancias» https://t.co/qQhTl5VBzZ",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/qQhTl5VBzZ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2099435370433691648/img/loMBOFoHKp0mExZ8.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2099435370433691648/pl/4OLh_zk7lLMalY6s.m3u8?v=125"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2099435370433691648/vid/avc1/480x270/k2QasKDwtrxbdeWs.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2099435370433691648/vid/avc1/640x360/vFFA816Vb_FFqhJp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2099435370433691648/vid/avc1/1280x720/gsOey8cmo0ZLlXTI.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2099435370433691648/vid/avc1/1920x1080/TOGTIYiSei1O1mJQ.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

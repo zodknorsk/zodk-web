@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099524825186230773",
+    "created_at": "2026-09-14T15:45:00.000Z",
+    "text": "El Gobierno de Sánchez prepara en Rabat un gran foro empresarial para impulsar inversiones españolas en Marruecos\n\nhttps://t.co/Gejf4F4isP",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Gejf4F4isP",
+          "expanded_url": "https://gaceta.es/espana/el-gobierno-de-sanchez-prepara-en-rabat-un-gran-foro-empresarial-para-impulsar-inversiones-espanolas-en-marruecos-20260914-1321/",
+          "display_url": "gaceta.es/espana/el-gobi…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

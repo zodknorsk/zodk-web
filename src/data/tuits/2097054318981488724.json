@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2097054318981488724",
+    "created_at": "2026-09-07T20:08:05.000Z",
+    "text": "💥 Los militares desalojan las ‘toperas’ donde se escondían inmigrantes ilegales tras ver el programa de Iker Jiménez y los devuelven a Marruecos.\n\n🔗 https://t.co/n6TiGmbfr0 https://t.co/Shk6zuA55N",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/n6TiGmbfr0",
+          "expanded_url": "https://okdiar.io/3UWEIsb",
+          "display_url": "okdiar.io/3UWEIsb"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Shk6zuA55N",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2097054279345258497/pu/img/vQZZKTZjLmTAbB8c.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2097054279345258497/pu/pl/Sst0l42IXo53Ehbj.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2097054279345258497/pu/vid/avc1/480x270/v9bDTzXDEi4WkEWj.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2097054279345258497/pu/vid/avc1/640x360/jFTEYJe-Hrgp1grE.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2097054279345258497/pu/vid/avc1/1280x720/eSLgM1AalmJSdRk7.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

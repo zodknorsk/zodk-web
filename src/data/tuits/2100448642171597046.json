@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100448642171597046",
+    "created_at": "2026-09-17T04:55:55.000Z",
+    "text": "Los asentamientos y campamentos de invasores que son un peligro para Ceuta por el riesgo de sabotajes, ataques e incendios, QUE YA ESTÁN SUCEDIENDO\nLa Audiencia ha paralizado el campamento del puerto donde hay depósitos con 42.000 toneladas de combustible\nhttps://t.co/kov00LQork",
+    "user": {
+      "name": "Política basura y analfabetismo político",
+      "screen_name": "gfernandez32573",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1869668630440361984/lyYQlGk-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/kov00LQork",
+          "expanded_url": "https://okdiario.com/espana/asentamientos-campamentos-invasores-que-son-peligro-ceuta-riesgo-sabotajes-ataques-incendios-20309180",
+          "display_url": "okdiario.com/espana/asentam…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2087471550500856285",
+    "created_at": "2026-08-12T09:29:35.000Z",
+    "text": "Se registra un incendio en parques de Ceuta provocado por inmigrantes. https://t.co/FmwIVvkYDG",
+    "user": {
+      "name": "Wall Street Wolverine",
+      "screen_name": "wallstwolverine",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1733980849383620608/2NrD0H81_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/FmwIVvkYDG",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2087275126177792001/img/DmH5TozTs0LDOPaV.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2087275126177792001/pl/9L4Vf0un7xGmBKf7.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2087275126177792001/vid/avc1/320x568/ah_7NctyN8cZ2wHa.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2087275126177792001/vid/avc1/480x852/mtc7VDz3R_Yx4MQG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2087275126177792001/vid/avc1/720x1280/8Fs-KogpR2Sf4zlZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2087275126177792001/vid/avc1/1080x1920/SWRoooXEtzjxyXDC.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

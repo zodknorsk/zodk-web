@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2094713306082619648",
+    "created_at": "2026-09-01T09:05:44.000Z",
+    "text": "No nos engañemos. La única forma de devolver a los habitantes de Ceuta la normalidad a corto plazo es la solidaridad entre las comunidades autónomas. Y las derechas se niegan, manteniendo así la bomba de relojería encendida. https://t.co/jpChmGLsaq",
+    "user": {
+      "name": "Alberto Garzón🔻",
+      "screen_name": "agarzon",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1795038555229519872/nCijQG94_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/jpChmGLsaq",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2094712839713775616/img/NhFuqTswhJpdH55g.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2094712839713775616/pl/PGEcPkZShC0QC8Hz.m3u8?v=794"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2094712839713775616/vid/avc1/484x270/wjU0ntciuFNAoSAO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2094712839713775616/vid/avc1/646x360/L_9K_TopOTf6oKWw.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2094712839713775616/vid/avc1/1292x720/9ir6W9F9gZ-7ZMm7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2094712839713775616/vid/avc1/2180x1214/VmPzSnSnLwCeE6Rn.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2096522801490399345",
+    "created_at": "2026-09-06T08:56:02.000Z",
+    "text": "🔴 #ÚLTIMAHORA || Motos acuáticas, lanchas rápidas y el espigón de Benzú: así se planifica en Marruecos un nuevo asalto fronterizo a Ceuta el 23 de septiembre.\n\n🗳️ Coincidiendo con las elecciones legislativas marroquíes.\n\nhttps://t.co/JrdxDHhi5S",
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/JrdxDHhi5S",
+          "expanded_url": "https://gaceta.es/espana/motos-acuaticas-lanchas-rapidas-y-el-espigon-de-benzu-asi-se-planifica-en-marruecos-un-nuevo-asalto-fronterizo-a-ceuta-el-23-de-septiembre-20260906-0022/",
+          "display_url": "gaceta.es/espana/motos-a…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092564105341137329",
+    "created_at": "2026-08-26T10:45:35.000Z",
+    "text": "🔴 #DIRECTO | Patxi López, sobre las contradicciones sobre el papel del CNI en Ceuta: \"Es posible que las dos cosas sean verdad a la vez\" https://t.co/KHQWjXSaqj https://t.co/Pt7UsFqXAs",
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/KHQWjXSaqj",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260826/ultima-hora-politica-directo-feijoo-vuelve-pedir-comision-secretos-oficiales-desbarajuste-versiones-robles-marlaska-ocurrido-ceuta/1003744363051_10.html?utm_cmp_rs=breaking",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/Pt7UsFqXAs",
+        "media_url_https": "https://pbs.twimg.com/media/HQpH29DWMAAatPE.png"
+      }
+    ]
+  }
+}

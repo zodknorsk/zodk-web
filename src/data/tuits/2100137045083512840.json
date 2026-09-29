@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100137045083512840",
+    "created_at": "2026-09-16T08:17:44.000Z",
+    "text": "🔴 ÚLTIMA HORA | La Policía Nacional detiene a un inmigrante marroquí acusado de rajarle la cara con un arma blanca a un menor de 17 años en Ceuta \n\nhttps://t.co/k9heCCvIOl",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/k9heCCvIOl",
+          "expanded_url": "https://elfarodeceuta.es/detenido-inmigrante-marroqui-rajarle-cara-menor-trampolin/",
+          "display_url": "elfarodeceuta.es/detenido-inmig…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

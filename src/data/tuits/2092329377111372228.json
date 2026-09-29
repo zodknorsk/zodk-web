@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2092329377111372228",
+    "created_at": "2026-08-25T19:12:51.000Z",
+    "text": "Comunicado del Gobierno de España contra una Ministra del Gobierno de España.  Si Margarita Robles no dimite hoy confirmará que sus ataques de dignidad son una pantomima para mejorar su imagen, que es exactamente lo que parece. https://t.co/dMBBLmGSDV",
+    "user": {
+      "name": "Pilar Losantos",
+      "screen_name": "pirlosantos",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2093996670618923008/mA9AaebS_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/dMBBLmGSDV",
+        "media_url_https": "https://pbs.twimg.com/media/HQlyesaXwAABxBs.jpg"
+      }
+    ]
+  }
+}

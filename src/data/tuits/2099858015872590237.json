@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2099858015872590237",
+    "created_at": "2026-09-15T13:48:59.000Z",
+    "text": "✈️ Italia prorroga otros 15 días, por segunda vez, los controles a viajes desde España por la crisis de Ceuta\nhttps://t.co/tKdUZwynqB",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/tKdUZwynqB",
+          "expanded_url": "https://www.eldebate.com/internacional/20260915/italia-prorroga-otros-15-dias-segunda-vez-controles-viajes-desde-espana-crisis-ceuta_459002.html",
+          "display_url": "eldebate.com/internacional/…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

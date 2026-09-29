@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2100318050956271825",
+    "created_at": "2026-09-16T20:17:00.000Z",
+    "text": "BREAKING: Morocco and Israel have agreed to upgrade diplomatic ties to full embassy level and exchange ambassadors, according to a joint US-Moroccan-Israeli statement.\n\n🔴 More on https://t.co/OwhgaIGyGh https://t.co/q5KYLbjbBL",
+    "user": {
+      "name": "Al Jazeera Breaking News",
+      "screen_name": "AJENews",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015737777850048512/3aZL7gnK_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/OwhgaIGyGh",
+          "expanded_url": "https://Aljazeera.com",
+          "display_url": "Aljazeera.com"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/q5KYLbjbBL",
+        "media_url_https": "https://pbs.twimg.com/media/HSXT2KuWYAAye6e.jpg"
+      }
+    ]
+  }
+}

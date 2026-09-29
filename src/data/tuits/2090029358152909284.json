@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2090029358152909284",
+    "created_at": "2026-08-19T10:53:24.000Z",
+    "text": "🏝️ Sánchez pretende abandonar La Mareta sin acudir a Ceuta https://t.co/Sy0cUsNYmm",
+    "user": {
+      "name": "La Razón",
+      "screen_name": "larazon_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2015117885245431808/BzBp5B5M_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Sy0cUsNYmm",
+          "expanded_url": "https://www.larazon.es/espana/sanchez-pretende-abandonar-mareta-acudir-ceuta_202608196a8585bca046ad6ebcba1061.html?utm_campaign=mrf-twitter-larazon_es&utm_source=twitter&utm_medium=social&mrfcid=202608196a82bf801ff51242c0e028a4",
+          "display_url": "larazon.es/espana/sanchez…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

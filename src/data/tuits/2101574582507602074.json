@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2101574582507602074",
+    "created_at": "2026-09-20T07:30:00.000Z",
+    "text": "Un piso patera en el que están escondiendo a invasores de Ceuta es de una trabajadora del consulado español en Marruecos\n\nhttps://t.co/8IHzXRJtbp",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/8IHzXRJtbp",
+          "expanded_url": "https://gaceta.es/espana/un-piso-patera-en-el-que-estan-escondiendo-a-invasores-de-ceuta-es-de-una-trabajadora-del-consulado-espanol-en-marruecos-20260920-0109/",
+          "display_url": "gaceta.es/espana/un-piso…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

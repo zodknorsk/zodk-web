@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2082438225352618415",
+    "created_at": "2026-07-29T12:08:57.000Z",
+    "text": "🎥📣 El presidente de la Ciudad, Juan Vivas, en el contexto actual de situación de emergencia migratoria en Ceuta, explica el por qué los migrantes adultos o menores de edad no pueden regresar a su país de origen\n\n➡️ Toda la información https://t.co/hgOMEy6PAI\n\n#ceuta https://t.co/uPMu0FSFpH",
+    "user": {
+      "name": "Gobierno de Ceuta",
+      "screen_name": "GobiernodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2075524751783538688/GNAPk8LP_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/hgOMEy6PAI",
+          "expanded_url": "https://acortar.link/CBWjBG",
+          "display_url": "acortar.link/CBWjBG"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/uPMu0FSFpH",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2082438047371579392/img/1iZWGX7Q4yNLf-40.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2082438047371579392/pl/Kbbur8ryYeAIKXmi.m3u8?v=142"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2082438047371579392/vid/avc1/320x568/7Kj4BkHaXXcmcvs2.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2082438047371579392/vid/avc1/480x852/xKKYkUypJCNkwKKd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2082438047371579392/vid/avc1/720x1280/JLQSOjxl7LeLJNfc.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-09-29",
+  "tuit": {
+    "id_str": "2085624390494933006",
+    "created_at": "2026-08-07T07:09:38.000Z",
+    "text": "Los ministros del Interior, Exteriores, Defensa y yo compareceremos en el Congreso a petición propia en agosto para informar sobre la gestión de los hechos ocurridos en Ceuta el 30 de julio. \n\nFrente a los bulos, el odio y la xenofobia, hechos y transparencia.",
+    "user": {
+      "name": "Félix Bolaños",
+      "screen_name": "felixbolanosg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074030128145850371/8gGW6wwg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}
