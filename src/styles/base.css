@@ -112,13 +112,7 @@ article blockquote p:last-of-type::after {
 
 @layer utilities {
   article a {
-    @apply font-sans text-current underline underline-offset-2;
-    @apply decoration-black/15 dark:decoration-white/30;
-    @apply transition-colors duration-300 ease-in-out;
-  }
-  article a:hover {
-    @apply text-black dark:text-white;
-    @apply decoration-black/25 dark:decoration-white/50;
+    @apply font-sans text-[#2576eb] dark:text-[#649fff] no-underline;
   }
 }
 
