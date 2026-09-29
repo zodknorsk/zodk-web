@@ -4,6 +4,7 @@ import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import { satteri } from "@astrojs/markdown-satteri";
 import glosario from "./src/lib/glosario-enlaces.mjs";
+import banderasTablas from "./src/lib/banderas-tablas.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,9 +20,10 @@ export default defineConfig({
 
   // Los términos del glosario de UAS enlazados en los artículos, con su
   // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).
-  // Sätteri es el procesador de Markdown que Astro 7 usa de serie.
+  // Sätteri es el procesador de Markdown que Astro 7 usa de serie. En las
+  // tablas del hangar, las banderas en pixel art (src/lib/banderas-tablas.mjs).
   markdown: {
-    processor: satteri({ hastPlugins: [glosario] }),
+    processor: satteri({ hastPlugins: [glosario, banderasTablas] }),
   },
 
   // Astro 7 quita por defecto los espacios con reglas de JSX: un salto de línea

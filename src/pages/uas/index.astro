@@ -8,6 +8,7 @@ import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import BackToPrev from "@components/BackToPrev.astro";
+import BanderaUAS from "@components/BanderaUAS.astro";
 import { porFecha } from "@lib/contenido";
 import { leerArmamento } from "@lib/armamento";
 
@@ -35,6 +36,8 @@ function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
   return [...n].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "es"));
 }
 const banderas = new Map(fichas.map((f) => [f.data.pais, f.data.bandera]));
+// Una ficha de cada país, para sacar la bandera en pixel art de su maqueta.
+const modeloDe = new Map(fichas.map((f) => [f.data.pais, f.id]));
 const paises = recuento((f) => f.data.pais);
 ---
 
@@ -82,7 +85,7 @@ const paises = recuento((f) => f.data.pais);
               <button type="button" data-valor="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
               {paises.map(([p, n]) => (
                 <button type="button" data-valor={p} aria-pressed="false">
-                  {banderas.get(p) && <span class="uas-bandera">{banderas.get(p)}</span>}{p} <span>{n}</span>
+                  {banderas.get(p) && <span class="uas-bandera"><BanderaUAS modelo={modeloDe.get(p)!} emoji={banderas.get(p)} /></span>}{p} <span>{n}</span>
                 </button>
               ))}
             </div>
@@ -96,7 +99,7 @@ const paises = recuento((f) => f.data.pais);
                     {conGiro(f.id) && <span class="uas-giro" style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
                   </span>
                   <span class="uas-tarjeta-texto">
-                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera">{f.data.bandera}</span> {f.data.pais}</span>
+                    <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera"><BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span> {f.data.pais}</span>
                     <span class="uas-tarjeta-nombre">{f.data.title}</span>
                     {f.data.categoria && <span class="uas-tarjeta-categoria">{f.data.categoria}</span>}
                     {f.data.description && <span class="uas-tarjeta-desc">{f.data.description}</span>}
@@ -212,7 +215,7 @@ const paises = recuento((f) => f.data.pais);
     font-size: 0.8rem;
   }
   :global(html.dark) .uas-filtros button { border-color: rgba(255, 255, 255, 0.2); }
-  .uas-filtros button span:last-child { opacity: 0.55; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.72rem; }
+  .uas-filtros button > span:last-child { opacity: 0.55; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.72rem; }
   .uas-filtros button[aria-pressed="true"] { background: #27272a; border-color: #27272a; color: #fafafa; }
   :global(html.dark) .uas-filtros button[aria-pressed="true"] { background: #e4e4e7; border-color: #e4e4e7; color: #18181b; }
   .uas-bandera { font-size: 0.95rem; line-height: 1; }

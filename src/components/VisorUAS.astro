@@ -6,7 +6,7 @@
 // el build; src/scripts/visor-uas.ts pone la maqueta y la interacción.
 // La maqueta se elige por su nombre de archivo en src/data/uas/ (p. ej. "mich-2000").
 import type { Maqueta } from "../data/uas/tipos";
-import { svgBandera } from "../data/alunizajes";
+import BanderaUAS from "./BanderaUAS.astro";
 import { STACK } from "@consts";
 
 type Props = { modelo: string };
@@ -37,7 +37,7 @@ const VISTAS = [
   <div class="visor-cab">
     <div>
       <p class="visor-expediente">
-        <span class="visor-bandera" set:html={svgBandera(m.pais)} />
+        <span class="visor-bandera"><BanderaUAS modelo={modelo} /></span>
         <span>{m.pais.nombre}</span>
       </p>
       <h2 class="visor-titulo">{m.nombre}</h2>

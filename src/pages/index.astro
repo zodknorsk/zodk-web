@@ -10,6 +10,7 @@ import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
+import BanderaUAS from "@components/BanderaUAS.astro";
 import { SITE, HOME, STACK, CONTACTO, SEGUIMIENTO, OPERACIONES, ANALISIS } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 import { PAISES } from "@data/paises";
@@ -279,7 +280,7 @@ const dos = (n: number) => String(n).padStart(2, "0");
               const { ancho, alto } = tamPlanta(f.id);
               return (
                 <span class="sat-puesto" hidden={i >= 3}>
-                  <span class="sat-rotulo">{f.data.title} {f.data.bandera}</span>
+                  <span class="sat-rotulo">{f.data.title} <BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span>
                   <span class="sat-caja"><img src={`/uas/${f.id}/planta.png`} alt={f.data.title} width={ancho * 2} height={alto * 2} loading="lazy" decoding="async" /></span>
                 </span>
               );
