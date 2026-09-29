@@ -1,16 +1,16 @@
 ---
 // La portada: arriba, el hero con la Tierra (todo su JavaScript está en
 // src/scripts/portada.ts); debajo, los bloques de la Luna y Marte, la tira
-// del hangar de UAS, la del blog con el "hecho con", en dos columnas lo
-// último de seguimiento y operaciones (a la izquierda) y de análisis (a la
-// derecha), y la barra de redes.
+// del hangar de UAS, la del blog con el "hecho con", el último seguimiento a
+// todo el ancho, lo último de operaciones y de análisis en dos columnas, y la
+// barra de redes.
 import fs from "node:fs";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
-import { SITE, HOME, STACK, CONTACTO } from "@consts";
+import { SITE, HOME, STACK, CONTACTO, SEGUIMIENTO, OPERACIONES, ANALISIS } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 import { PAISES } from "@data/paises";
 import { ALUNIZAJES } from "@data/alunizajes";
@@ -85,7 +85,8 @@ const banderasBlog = PAISES.map((p) => ({
     .sort((a, b) => b.fecha.valueOf() - a.fecha.valueOf()),
 })).filter((p) => p.articulos.length > 0);
 const indicesEventos = todosEventos.filter((e) => e.data.kind === "index" && !e.data.draft).sort(porFecha);
-// A la izquierda, el último seguimiento y, debajo, las dos últimas operaciones.
+// Arriba, el último seguimiento; debajo, tantas operaciones como análisis
+// para que las dos columnas acaben a la misma altura.
 const eventos = indicesEventos.slice(0, 1).map((ev) => {
   const semanas = todosEventos
     .filter((x) => x.data.evento === ev.data.evento && x.data.kind === "semana" && !x.data.draft)
@@ -94,7 +95,14 @@ const eventos = indicesEventos.slice(0, 1).map((ev) => {
   const foto = primeraFoto(ev) ?? semanas.map(primeraFoto).find(Boolean);
   return { ev, semanas: semanas.length, foto, enCurso: enCurso(ev.data.periodo) };
 });
-const ops = todasOps.slice(0, 2);
+const ops = todasOps.slice(0, SITE.NUM_NOTAS_ON_HOMEPAGE);
+
+// La descripción de cada sección, bajo su título.
+const DESC = {
+  seguimiento: "Sucesos abiertos, seguidos día a día. Cuando terminan, se archivan.",
+  operaciones: "Operaciones militares narradas de principio a fin.",
+  analisis: "Opinión propia y análisis a fondo sobre diversos temas.",
+};
 
 // "13 sept 2026": las fechas de las filas, cortas.
 const fechaCorta = (d: Date) =>
@@ -297,41 +305,45 @@ const dos = (n: number) => String(n).padStart(2, "0");
       </div>
     </div>
 
-    <!-- Seguimiento y operaciones (una encima de otra) a la izquierda y
-         análisis a la derecha, con una línea fina en medio (en móvil, una
+    <!-- El último seguimiento, a todo el ancho: foto, texto y, a la derecha,
+         el piloto de «en curso» de /seguimiento. Debajo, operaciones y
+         análisis en dos columnas con una línea fina en medio (en móvil, una
          debajo de otra). Cada fila: foto, fecha, título y entradilla. -->
+    <section class="portada-seg animate" aria-label="Seguimiento">
+      <div class="portada-col-cab">
+        <h2>Seguimiento<span>{dos(indicesEventos.length)}</span></h2>
+        <a href="/seguimiento">Ver todos</a>
+      </div>
+      <p class="portada-desc">{DESC.seguimiento}</p>
+      {eventos.map(({ ev, semanas, foto, enCurso }) => (
+        <a class="fila fila-grande" href={`/seguimiento/${ev.data.evento}`}>
+          <span class="fila-foto">{foto && <Image src={foto} alt="" width={600} height={375} fit="cover" />}</span>
+          {enCurso && <span class="sello-en-curso">En curso</span>}
+          <span class="fila-texto">
+            <span class="fila-fecha">
+              {semanas === 0 && ev.data.periodo
+                ? ev.data.periodo
+                : `Desde ${fechaCorta(ev.data.date)}${semanas > 0 ? ` · ${semanas} semana${semanas === 1 ? "" : "s"}` : ""}`}
+            </span>
+            <span class="fila-titulo">{ev.data.title}</span>
+            {ev.data.description && <span class="fila-entradilla">{ev.data.description}</span>}
+          </span>
+          <span class="fila-piloto" aria-hidden="true">
+            <i class={enCurso ? "vivo" : undefined} />
+            <span>{enCurso ? "EN CURSO" : "ARCHIVO"}</span>
+            {semanas > 0 && <span class="piloto-extra">Semana {semanas}</span>}
+          </span>
+        </a>
+      ))}
+    </section>
+
     <div class="portada-dos animate">
-      <div class="portada-col">
-      <section aria-label="Seguimiento">
-        <div class="portada-col-cab">
-          <h2>Seguimiento<span>{dos(indicesEventos.length)}</span></h2>
-          <a href="/seguimiento">Ver todos</a>
-        </div>
-        <ul>
-          {eventos.map(({ ev, semanas, foto, enCurso }) => (
-            <li>
-              <a class="fila" href={`/seguimiento/${ev.data.evento}`}>
-                <span class="fila-foto">{foto && <Image src={foto} alt="" width={264} height={198} fit="cover" />}</span>
-                {enCurso && <span class="sello-en-curso">En curso</span>}
-                <span class="fila-texto">
-                  <span class="fila-fecha">
-                    {semanas === 0 && ev.data.periodo
-                      ? ev.data.periodo
-                      : `Desde ${fechaCorta(ev.data.date)}${semanas > 0 ? ` · ${semanas} semana${semanas === 1 ? "" : "s"}` : ""}`}
-                  </span>
-                  <span class="fila-titulo">{ev.data.title}</span>
-                  {ev.data.description && <span class="fila-entradilla">{ev.data.description}</span>}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section class="portada-col-otra" aria-label="Operaciones">
+      <section class="portada-col" aria-label="Operaciones">
         <div class="portada-col-cab">
           <h2>Operaciones<span>{dos(todasOps.length)}</span></h2>
           <a href="/operaciones">Ver todas</a>
         </div>
+        <p class="portada-desc">{DESC.operaciones}</p>
         <ul>
           {ops.map((op) => {
             const foto = primeraFoto(op);
@@ -350,12 +362,12 @@ const dos = (n: number) => String(n).padStart(2, "0");
           })}
         </ul>
       </section>
-      </div>
       <section class="portada-col" aria-label="Análisis">
         <div class="portada-col-cab">
           <h2>Análisis<span>{dos(todasNotas.length)}</span></h2>
           <a href="/analisis">Ver todos</a>
         </div>
+        <p class="portada-desc">{DESC.analisis}</p>
         <ul>
           {notas.map((nota) => {
             const foto = primeraFoto(nota);

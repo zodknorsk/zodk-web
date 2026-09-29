@@ -6,7 +6,7 @@ import type { Site, Metadata } from "@types";
 export const SITE: Site = {
   NAME: "zodk.eu",
   EMAIL: "zodknorsk@gmail.com",
-  NUM_NOTAS_ON_HOMEPAGE: 5, // cuántas notas se muestran en la portada
+  NUM_NOTAS_ON_HOMEPAGE: 2, // cuántas operaciones y cuántos análisis salen en la portada
 };
 
 export const HOME: Metadata = {
