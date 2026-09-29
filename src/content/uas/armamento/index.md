@@ -4,11 +4,12 @@ date: '2026-09-28'
 description: >-
   Las municiones que llevan los drones del Hangar: misiles y bombas guiadas,
   cada una con su foto, sus datos y dónde se ha usado. Se irá ampliando según…
-updated: '2026-09-28'
+updated: '2026-09-29'
 tags:
   - dron
   - eeuu
   - noruega
+  - turquia
 armamento: true
 ---
 > Las municiones que llevan los drones del Hangar: misiles y bombas guiadas, cada una con su foto, sus datos y dónde se ha usado. Se irá ampliando según entren drones nuevos. Los términos técnicos están en el [glosario](/uas/glosario-y-terminologia).
@@ -121,6 +122,48 @@ JDAM (*Joint Direct Attack Munition*) es un kit de Boeing: una cola con GPS, INS
 
 Al Reaper llegó tarde. Los pilotos la [pedían desde hacía años](https://www.twz.com/10046/usaf-reaper-drones-can-finally-drop-gps-guided-joint-direct-attack-munitions); las pruebas acabaron en 2016 y al año siguiente ya la [lanzaban en combate](https://newatlas.com/jdam-gbu-38-guided-bombs-mq-9-reaper-uav/49646/) contra el Estado Islámico. Además de servir con mal tiempo, es mucho más barata: el kit cuesta unos 18.000 dólares, cuando un Hellfire [pasaba de los 100.000](https://newatlas.com/jdam-gbu-38-guided-bombs-mq-9-reaper-uav/49646/).
 
+### MAM-L
+
+![](./armamento-mam-l.jpg)
+*Una MAM-L en la feria Teknofest de 2019, en Estambul (foto: Kingbjelica, CC BY-SA 4.0).*
+
+| | |
+|---|---|
+| **País** | 🇹🇷 Turquía |
+| **Fabricante** | Roketsan |
+| **Tipo** | Bomba pequeña guiada por láser |
+| **Guiado** | Láser semiactivo; hay una versión con INS y GPS |
+| **Peso / longitud** | 22 kg / 1 m |
+| **Warhead** | Explosiva con metralla, termobárica o en tándem contra tanques |
+| **Alcance** | Hasta 15 km (fabricante) |
+| **En servicio** | Desde 2016 |
+| **Lo llevan** | [Bayraktar TB2](/uas/bayraktar-tb2) y otros drones turcos, como el Akıncı y el Anka |
+
+La MAM-L es una bomba pequeña que Roketsan hizo para los drones turcos, que cargan poco peso. MAM son las siglas de *Mini Akıllı Mühimmat*, «munición inteligente pequeña». Roketsan cogió su misil antitanque L-UMTAS, le quitó el motor y lo dejó en una bomba de 22 kg que [cae planeando](https://en.wikipedia.org/wiki/MAM_(Smart_Micro_Munition)) hasta el punto que ilumina el láser de la torreta del dron. Un TB2 la soltó por primera vez en pruebas en [diciembre de 2015](https://en.wikipedia.org/wiki/Baykar_Bayraktar_TB2), y desde 2016 la usan el Ejército, la Gendarmería y la Policía turcos ([Defence Turkey](https://www.defenceturkey.com/en/content/roketsan-s-smart-micro-munition-product-family-continues-to-prove-itself-in-the-field-3462)).
+
+Ha ido con el TB2 a todas sus guerras: Siria, Libia, Nagorno Karabaj, Etiopía y Ucrania. El 26 de octubre de 2021, una MAM-L soltada por un TB2 ucraniano [destruyó un obús de los separatistas](https://www.dailysabah.com/business/defense/in-ukraines-1st-combat-use-bayraktar-tb2-destroys-russian-armament) en el Donbás: fue el primer ataque de Ucrania con el dron. En Tigray, en Etiopía, se encontraron [restos de MAM-L](https://en.wikipedia.org/wiki/Baykar_Bayraktar_TB2) después de los bombardeos de la guerra civil. Y en junio de 2025, otra [hundió una lancha de desembarco rusa](https://united24media.com/latest-news/ukraines-bayraktar-tb2-returns-to-combat-why-now-and-where-has-it-been-the-full-story-of-a-wartime-legend-9433) cerca de Jersón, con la que los TB2 ucranianos volvieron a atacar después de casi tres años.
+
+### MAM-C
+
+![](./armamento-mam-c.jpg)
+*Una MAM-C en la feria Eurosatory de 2022, en París (foto: NeeXxXoR, CC BY-SA 4.0).*
+
+| | |
+|---|---|
+| **País** | 🇹🇷 Turquía |
+| **Fabricante** | Roketsan |
+| **Tipo** | Bomba muy pequeña guiada por láser |
+| **Guiado** | Láser semiactivo |
+| **Peso / longitud** | 6,5 kg / 0,97 m |
+| **Warhead** | Explosiva con metralla, con una carga perforante e incendiaria |
+| **Alcance** | 8 km (fabricante) |
+| **En servicio** | Desde 2016 |
+| **Lo llevan** | [Bayraktar TB2](/uas/bayraktar-tb2) y drones turcos más pequeños, como el Karayel |
+
+La MAM-C es la hermana pequeña de la [MAM-L](#mam-l). Sale del Cirit, el cohete guiado de 70 mm que Roketsan hizo para los helicópteros de ataque, al que también se le quitó el motor ([Wikipedia](https://en.wikipedia.org/wiki/MAM_(Smart_Micro_Munition))). Pesa 6,5 kg, menos de un tercio que la MAM-L, y está pensada para blancos pequeños: personas, camionetas o blindados ligeros ([Roketsan](https://www.roketsan.com.tr/en/products/mam-c-smart-micro-munition)).
+
+Lo que gana es el peso. Con ella pueden atacar drones que no pueden con una MAM-L, como el Karayel de Vestel, y un TB2 puede llevarla en un soporte y una MAM-L en otro, según el blanco. Lo que pierde es alcance, 8 km frente a los 15 de su hermana, y fuerza: contra un tanque no sirve.
+
 ## Fuentes
 
 - **Designation-Systems.net** ([fuente](https://www.designation-systems.net/dusrm/m-114.html))
@@ -173,3 +216,18 @@ Al Reaper llegó tarde. Los pilotos la [pedían desde hacía años](https://www.
 
 - **New Atlas** ([fuente](https://newatlas.com/jdam-gbu-38-guided-bombs-mq-9-reaper-uav/49646/))
   El alcance y el precio de la GBU-38 frente al Hellfire.
+
+- **Roketsan** ([fuente](https://www.roketsan.com.tr/en/products/mam-l-smart-micro-munition))
+  La ficha de la MAM-L: medidas, peso, alcance y cabezas de guerra.
+
+- **Roketsan** ([fuente](https://www.roketsan.com.tr/en/products/mam-c-smart-micro-munition))
+  La ficha de la MAM-C: medidas, peso, alcance y cabeza de guerra.
+
+- **Wikipedia** ([fuente](https://en.wikipedia.org/wiki/MAM_(Smart_Micro_Munition)))
+  La familia MAM: de qué misil o cohete sale cada una, sus medidas y los drones que las llevan.
+
+- **Defence Turkey** ([fuente](https://www.defenceturkey.com/en/content/roketsan-s-smart-micro-munition-product-family-continues-to-prove-itself-in-the-field-3462))
+  Las MAM en servicio desde 2016 con el Ejército, la Gendarmería y la Policía turcos.
+
+- **Daily Sabah** ([fuente](https://www.dailysabah.com/business/defense/in-ukraines-1st-combat-use-bayraktar-tb2-destroys-russian-armament))
+  El primer ataque de un TB2 ucraniano, con una MAM-L, en octubre de 2021.
