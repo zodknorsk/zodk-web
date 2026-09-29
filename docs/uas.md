@@ -13,8 +13,9 @@ el código, el componente `VisorUAS`.
 Drones hechos: MICH-2000 (ala volante, Ucrania), Skydio X10D (cuadricóptero,
 EE. UU., del Ejército de Tierra), Wildfire (avión con cola en V, EE. UU.,
 hecho solo con renders del fabricante), MQ-9 Reaper (EE. UU., armado con
-cuatro Hellfire y dos GBU-12, con el tren fuera) y RQ-11 Raven (EE. UU., de
-mano, con el morro de gimbal del Ejército de Tierra). **Este documento es la receta**: con
+cuatro Hellfire y dos GBU-12, con el tren fuera), RQ-11 Raven (EE. UU., de
+mano, con el morro de gimbal del Ejército de Tierra) y Bayraktar TB2
+(Turquía, con cuatro MAM-L). **Este documento es la receta**: con
 él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
 final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
 fotos de cada maqueta.
@@ -84,6 +85,37 @@ estabilizador en trapecio, no rectangular. Falta:
 está en la nota). El usuario dio la maqueta por buena el 29-sep-2026, tras
 esos cuatro cambios.
 
+**29-sep-2026, Bayraktar TB2** (commit en `main` y en la bóveda, subido;
+el usuario la vio «bastante bien» y pidió dos retoques, hechos: el borde de salida del
+ala, que junto al cuerpo se curva hacia atrás hasta el motor, y la parte
+de atrás del cuerpo, con el cono largo y la hélice de 1,7 m del plano). Orden pedido por el usuario: TB2 y
+después Shahed-136. Hecho: nota `🇹🇷 Bayraktar TB2.md` (`completa`), maqueta `src/data/uas/bayraktar-tb2.ts` con seis partes y
+cuatro MAM-L, bandera turca en pixel art (en `src/data/banderas-uas.ts`), miniaturas de fuentes y del dron, importado. La
+maqueta se comparó con el plano de cinco vistas de Commons (a escala con
+12 m y 6,5 m) superponiéndola en ortográfica (`arte/superponer-plano.mjs`) y con
+fotos. Para hacerlo, el `tubo` admite ya
+**eje que sube y alto propio en cada punto** (ver la receta). **Armamento**: el usuario
+pidió crear la MAM-L y la MAM-C («tienes todo lo necesario»), hechas en
+`Armamento.md` (siete municiones; fotos `armamento-mam-l.jpg` y
+`armamento-mam-c.jpg`, de Commons, CC BY-SA 4.0), y la fila «Carga» del TB2
+ya enlaza a las dos.
+
+**29-sep-2026, banderas en pixel art** (commit en `main`, subido). El usuario
+comparó en local, con un botón temporal (ya quitado), las banderas emoji y
+las de pixel art, y eligió **pixel art «definitivamente»**. `BanderaUAS.astro`
+pinta la chapa de la maqueta de cada dron (`svgBandera`) en los filtros y
+las tarjetas de `/uas`, la cabecera del visor y los rótulos de la tira de
+la portada; sin maqueta, el emoji. Después pidió lo mismo **en las tablas**
+de las notas del hangar (la fila «País» de los drones y de las municiones):
+lo hace el plugin `src/lib/banderas-tablas.mjs` (Sätteri, como el del
+glosario), que cambia el emoji del principio de una celda por la chapa; en
+la bóveda sigue el emoji. Las chapas están todas en
+`src/data/banderas-uas.ts` (EE. UU., Ucrania, Turquía y Noruega), las usan
+las maquetas y se buscan por su emoji: **un país nuevo, una entrada ahí**.
+El tamaño, en `base.css` (`.bandera-uas svg`). De paso: la regla que
+atenúa el número de cada filtro pasó a `button > span:last-child` (con la
+bandera dentro, la apagaba). Windows, además, no pinta las banderas emoji.
+
 ## Pedir una ficha nueva: el guion completo
 
 El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
@@ -107,7 +139,10 @@ separadas).
 4. **Importar y generar**: `npm run importar`, `node arte/generar-uas-miniaturas.mjs <modelo>`
    y **reiniciar `npm run dev`** (no ve las notas nuevas; si el visor no
    carga con «Outdated Optimize Dep» en la consola, parar, `rm -rf
-   node_modules/.vite` y arrancar de nuevo).
+   node_modules/.vite` y arrancar de nuevo). Ojo: `astro dev` se queda
+   corriendo en segundo plano y, si el 4321 está ocupado, arranca otro en el
+   4322, 4323…: el navegador sigue viendo el viejo. Antes de arrancar,
+   `lsof -nP -iTCP:4321 -sTCP:LISTEN` y cerrar ese proceso (`kill <pid>`).
 5. **Comprobar y enseñar** (receta, pasos 6 a 8): la ficha, el visor en todas
    las vistas y en pixel, de día y de noche; la tarjeta de `/uas`; la tira de
    la portada. `npm run lint` y `npx astro check` sin errores nuevos.
@@ -239,6 +274,20 @@ generadores de `arte/` leen estos archivos con Node.
   `x`, `y` en el eje (`aletasX` del Reaper).
 - **Carenados sobre una superficie inclinada** (cola en V): la misma placa,
   con la misma inclinación, más gruesa y en una franja corta.
+- **Fuselaje que cambia de sección y con el morro caído** (el TB2): cada
+  punto del perfil de un `tubo` admite dos números más, `[z, medio ancho,
+  sube, medio alto]`. `sube` mueve el eje en esa z (el morro del TB2 queda
+  0,27 m por debajo del lomo); `alto`, el medio alto (el morro es el doble
+  de ancho que de alto y detrás el cuerpo es casi redondo). Las z no se
+  repiten. Se sacan del plano de perfil (arriba y abajo en cada z) y del
+  de planta (el ancho). Con estos números, `aUnidades` tiene que pasar
+  todos los números del punto (`q.map(u)`), no solo dos.
+- **Comparar con un plano en ortográfica**: el visor tiene perspectiva y
+  engaña con las piezas que salen del plano (el diedro del TB2, de lado, se
+  ve como un trapecio oscuro sobre el cuerpo). Con un plano a escala, mejor
+  proyectar los triángulos de la maqueta sobre él, en rojo a medias
+  (`arte/superponer-plano.mjs`: modelo, vista, plano, origen y píxeles
+  por metro).
 - **Diedro** (alas cuyas puntas suben, como las del Raven): cada estación
   del `ala` admite un quinto número, lo que sube sobre `y`
   (`[x, ba, bs, grosor, subida]`). En el Raven, el centro plano hasta 0,2 m
@@ -611,6 +660,8 @@ del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
   foto sale cada cosa y qué es supuesto.
 - **Maquetas trabajadas antes de enseñarlas**: comparadas con las fotos
   desde el mismo ángulo (receta, paso 4).
+- **Banderas del hangar en pixel art** (`BanderaUAS.astro`), no emoji, en
+  `/uas`, el visor y la portada (el usuario, 29-sep-2026).
 - **País = el del fabricante oficial**, lo opere quien lo opere (el X10D,
   bajo Estados Unidos).
 - Ancho del visor en la ficha: 1040 px, más ancho que el texto (opción A).
@@ -733,3 +784,24 @@ estabilizador (0,40 m) es una reconstrucción.
 | et-mesa.jpg | Raven del Ejército de Tierra en una exposición (CC BY-SA 3.0) | https://commons.wikimedia.org/wiki/File:RQ-11_Raven_E.T..JPG |
 | ea-lanzamiento.jpg | Lanzamiento a mano en un ejercicio del Ejército del Aire (CC BY-SA 2.0) | https://commons.wikimedia.org/wiki/File:Ejercicio_SIRIO_fase_Tormenta_(13147049315).jpg |
 | lanzamiento-irak.jpg | Lanzamiento en Irak (dominio público) | https://commons.wikimedia.org/wiki/File:RQ-11_Raven_2.jpg |
+
+**Bayraktar TB2.** Medidas de Baykar (12 m de envergadura, 6,4 m de largo,
+700 kg). La forma, del plano de cinco vistas de Commons (a escala con 12 m
+y 6,5 m): de ahí salen las secciones del cuerpo, el carenado del ala, las
+vigas a ±1,14 m, la cola en V invertida (1,04 m sobre las vigas, a 47,5°),
+los soportes a 1,7 y 2,16 m y el diedro (0,27 m en la punta). El plano
+tiene la pata del morro en gris, pero en las fotos en vuelo se ve fuera.
+Hay 46 fotos más de Commons en `arte/uas-fuentes/bayraktar-tb2/todas/`
+(con `indice.txt`).
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| plano-cinco-vistas.jpg | Plano de cinco vistas a escala, con una MAM-L y una MAM-C (Alexpl, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar-TB2-draw.svg |
+| vuelo-armado.jpg | En vuelo desde arriba, con cuatro MAM-L (ArmyInform, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2.jpg |
+| arriba-ucrania.jpg | Desde arriba y detrás, en una base ucraniana: planta y cola (Ministerio de Defensa de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_of_UAF,_2019,_01.jpg |
+| detras-ucrania.jpg | Desde detrás: cola, hélice de dos palas y tren (Ministerio de Defensa de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_of_UAF,_2019,_06.jpg |
+| perfil-ucrania.jpg | De lado: viga, cola y motor (Ministerio de Defensa de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_of_UAF,_2019,_07.jpg |
+| radom-armado.jpg | TB2 polaco armado, de tres cuartos (Boevaya mashina, CC BY-SA 3.0) | https://commons.wikimedia.org/wiki/File:PAF_Bayraktar_TB2_at_Radom-2023.jpg |
+| kiev-morro.jpg | El morro de cerca: sonda y aletas de los lados (Zinnsoldat, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2,_Kyiv,_2019_03.jpg |
+| frente-teknofest.jpg | De frente (Kingbjelica, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-%C4%B0HA,_Teknofest_2019.jpg |
+| despegue-armado.jpg | Despegando, armado, con el tren fuera (Fuerza Aérea de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Ukrainian_bayraktar.jpg |

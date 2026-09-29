@@ -14,7 +14,11 @@ export type Acabado = "negro" | "gris" | "gris-et" | "metal" | "junta" | "mando"
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
   // seccion: estira el corte [ancho x, alto y] (fuselajes más altos que anchos).
-  | { tipo: "tubo"; id: string; perfil: Punto2[]; centro?: Punto2; seccion?: Punto2 }
+  // Cada punto admite dos números más, [z, radio, sube, alto]: sube (o baja,
+  // en negativo) el eje en esa z, para un morro que cae por debajo del lomo;
+  // y alto es el medio alto en esa z (el radio queda como medio ancho), para
+  // un cuerpo que cambia de sección a lo largo. Las z no se repiten.
+  | { tipo: "tubo"; id: string; perfil: (Punto2 | [number, number, number] | [number, number, number, number])[]; centro?: Punto2; seccion?: Punto2 }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).

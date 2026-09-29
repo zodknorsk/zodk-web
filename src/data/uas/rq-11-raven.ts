@@ -232,7 +232,7 @@ const u3 = ([a, b, c]: [number, number, number]): [number, number, number] => [u
 const aUnidades = (p: Pieza): Pieza => {
   switch (p.tipo) {
     case "tubo":
-      return { ...p, perfil: p.perfil.map(u2), ...(p.centro && { centro: u2(p.centro) }) };
+      return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }

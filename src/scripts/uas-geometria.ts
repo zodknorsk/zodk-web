@@ -78,6 +78,20 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();
       const g = new LatheGeometry(puntos, 28);
       g.rotateX(Math.PI / 2);
+      // Puntos con eje que sube o baja (el morro caído del TB2) o con su
+      // propio alto (un cuerpo más ancho que alto en el morro y casi redondo
+      // detrás): cada anillo del torno está a la z de su punto del perfil.
+      if (p.perfil.some((q) => q[2] || q[3] !== undefined)) {
+        const pos = g.getAttribute("position");
+        for (let i = 0; i < pos.count; i++) {
+          const q = p.perfil.find(([z]) => Math.abs(z - pos.getZ(i)) < 1e-4);
+          if (!q) continue;
+          const [, r, sube = 0, alto] = q;
+          const y = alto !== undefined && r > 0 ? (pos.getY(i) * alto) / r : pos.getY(i);
+          pos.setY(i, y + sube);
+        }
+        g.computeVertexNormals();
+      }
       if (p.seccion) g.scale(p.seccion[0], p.seccion[1], 1);
       g.translate(p.centro?.[0] ?? 0, p.centro?.[1] ?? 0, 0);
       return [g];
