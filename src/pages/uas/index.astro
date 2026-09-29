@@ -60,7 +60,7 @@ const paises = recuento((f) => f.data.pais);
               <span class="uas-glosario-texto">
                 <span class="uas-glosario-titulo">{glosario.data.title}</span>
                 <span class="uas-glosario-desc">UAS, MTOW, CCA, GPS-denied, one-way attack drone…</span>
-                <span class="uas-glosario-desc">{nTerminos} términos para leer las fichas.</span>
+                <span class="uas-glosario-desc"><span class="uas-cuenta" data-n={nTerminos} style={`--cifras:${String(nTerminos).length}`}>{nTerminos}</span> términos para leer las fichas.</span>
               </span>
               <span class="uas-glosario-flecha" aria-hidden="true">→</span>
             </a>
@@ -72,7 +72,7 @@ const paises = recuento((f) => f.data.pais);
               <span class="uas-glosario-texto">
                 <span class="uas-glosario-titulo">{armamento.data.title}</span>
                 <span class="uas-glosario-desc">{municiones.slice(0, 4).join(", ")}{municiones.length > 4 && "…"}</span>
-                <span class="uas-glosario-desc">{municiones.length} municiones que llevan los drones del hangar.</span>
+                <span class="uas-glosario-desc"><span class="uas-cuenta" data-n={municiones.length} style={`--cifras:${String(municiones.length).length}`}>{municiones.length}</span> bombas o misiles disponibles en la armería.</span>
               </span>
               <span class="uas-glosario-flecha" aria-hidden="true">→</span>
             </a>
@@ -116,6 +116,22 @@ const paises = recuento((f) => f.data.pais);
 </PageLayout>
 
 <script>
+  // Cuántos términos y municiones hay, en una chapa que cuenta desde 0 al
+  // cargar la página, en 1,6 s (lo eligió el usuario el 29-sep-2026 entre
+  // varias velocidades). Sin animación si se piden menos movimientos.
+  document.addEventListener("astro:page-load", () => {
+    const cuentas = [...document.querySelectorAll<HTMLElement>(".uas-cuenta")];
+    if (!cuentas.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t0 = performance.now();
+    const paso = (t: number) => {
+      const k = Math.min(1, (t - t0) / 1600);
+      const suave = 1 - (1 - k) ** 3;
+      for (const el of cuentas) el.textContent = String(Math.round(Number(el.dataset.n) * suave));
+      if (k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  });
+
   // Filtro por país (el código admite más grupos de filtros a la vez).
   document.addEventListener("astro:page-load", () => {
     const grupos = [...document.querySelectorAll<HTMLElement>(".uas-filtros")];
@@ -153,6 +169,16 @@ const paises = recuento((f) => f.data.pais);
   }
 
   .uas-tiras { display: flex; flex-direction: column; gap: 0.75rem; }
+  /* La chapa del número de términos y de municiones, como el filtro elegido;
+     cuenta desde 0 al cargar (el script de abajo), con el ancho fijo del
+     número final (--cifras) para que no baile. */
+  .uas-cuenta {
+    display: inline-block; min-width: calc(var(--cifras, 1) * 1ch + 0.8em); margin-right: 0.1rem; padding: 0.05rem 0.4rem; border-radius: 3px;
+    background: #27272a; color: #fafafa; font: 600 0.78rem/1.3 "IBM Plex Mono", monospace; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  :global(html.dark) .uas-cuenta { background: #e4e4e7; color: #18181b; }
+
 
   /* Tiras del glosario y del armamento: como una tarjeta tumbada, con la cuadrícula del
      visor a la izquierda. */

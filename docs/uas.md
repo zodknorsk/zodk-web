@@ -574,7 +574,12 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
   «Tipo» de cada tabla, que sale en pequeño debajo del nombre.
 - **La tira de `/uas`**: debajo de la del glosario, mismo estilo, con
   «AGM / GBU» (los prefijos de misiles y bombas guiadas) en lugar de «A–Z»,
-  las cuatro primeras municiones y cuántas hay.
+  las cuatro primeras municiones y cuántas hay («7 bombas o misiles
+  disponibles en la armería», texto del usuario del 29-sep-2026). El número
+  de las dos tiras va en una chapa en tinta que cuenta desde 0 al cargar,
+  en 1,6 s (el usuario la eligió entre seis opciones y luego la velocidad,
+  probando de 0,9 a 3,5 s; descartadas: casillas de dígitos, punto verde que
+  late, número grande a la derecha y rotulador amarillo).
 - **Las fotos**: en `02 - Temas/Adjuntos/armamento-*.jpg`, de Wikimedia
   Commons, con licencia libre (dominio público del ejército de EE. UU., o
   CC BY-SA / OGL con su crédito en el pie).
