@@ -76,8 +76,8 @@ Busca la bóveda en `BOVEDA_PATH` o, si no, en `~/Documents/boveda-osint`
 (Mac) o `~/Documentos/boveda-osint` (Linux Mint). Cada vez:
 
 1. Se queda con los `.md` que llevan `publicar: true`. No mira en `.obsidian`,
-   `00 - Meta` (salvo `00 - Meta/Notas`, donde van las notas del blog),
-   `07 - Clippings` ni `Adjuntos`.
+   `00 - Meta` (salvo `00 - Meta/Notas`, donde hay notas sobre la web sin
+   publicar), `07 - Clippings` ni `Adjuntos`.
 2. Traduce el frontmatter: `creado` → `date`, `actualizado` → `updated`,
    `tags` igual. La descripción es el primer párrafo de la nota.
 3. Convierte lo de Obsidian a Markdown normal:
@@ -95,9 +95,18 @@ Busca la bóveda en `BOVEDA_PATH` o, si no, en `~/Documents/boveda-osint`
    seguir abierto (antes lo rehacía todo y había que reiniciarlo).
 5. Resume qué notas son nuevas, cuáles han cambiado y cuáles se retiran.
 
-Las fotos se reducen al copiarlas (lado largo de 2400 px como mucho; los PNG
-grandes pasan a JPG). En Obsidian siguen a tamaño completo. Una foto ya
-copiada solo se rehace si el original de la bóveda es más nuevo.
+Las fotos se reducen al copiarlas a 2400 px de **ancho** como mucho (el alto
+no se limita, para que un esquema largo no quede con la letra ilegible). Los
+PNG grandes pasan a JPG, o a WebP si tienen transparencia. En Obsidian siguen
+a tamaño completo. Una foto ya copiada solo se rehace si el original de la
+bóveda es más nuevo.
+
+**Imágenes de día y de noche.** Si una nota lleva `![[algo-claro.png]]` y en
+la bóveda hay también `algo-oscuro.png` (o `.jpg`, `.webp`), el importador
+pone las dos seguidas y el CSS (`base.css`) enseña la clara con el tema de día
+y la oscura con el de noche. En Obsidian se ve solo la clara. Una `-claro` sin
+pareja se ve siempre. La primera fue el esquema de «Cómo funciona el
+importador» (29-sep-2026).
 
 Los vídeos de la bóveda llevan en el nombre un código sacado de su ruta
 **dentro** de la bóveda, así que salen igual importando desde el Mac o desde
@@ -184,8 +193,9 @@ Son la colección `notas` (el importador las separa por la etiqueta;
 fichas de `/luna` y `/marte` solo enlazan a una nota si está publicada.
 
 Lo mismo con la etiqueta `blog` (notas sobre la propia web, en
-`00 - Meta/Notas`): salen en `/blog` como tarjetas grandes con su primera
-foto, la más nueva arriba, y su volver lleva a `/blog`.
+`02 - Temas/blog/` de la bóveda, con sus imágenes en `blog/Adjuntos/`): salen
+en `/blog` como tarjetas grandes con su primera foto, la más nueva arriba, y
+su volver lleva a `/blog`. Manda la etiqueta, no la carpeta.
 
 ## Dónde está cada cosa
 

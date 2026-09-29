@@ -97,7 +97,8 @@ const CARPETAS_IGNORADAS = new Set([
   ".git", ".obsidian", ".trash", "00 - Meta", "07 - Clippings", "Adjuntos",
 ]);
 // Dentro de una carpeta ignorada, las subcarpetas que sí se leen: en
-// 00 - Meta/Notas van las notas sobre la propia web (etiqueta "blog").
+// 00 - Meta/Notas hay notas sobre la propia web que se pueden publicar. Las
+// del blog van en 02 - Temas/blog.
 const SUBCARPETAS_LEIDAS = { "00 - Meta": ["Notas"] };
 
 // URL de un tweet, opcionalmente envuelta en `![](...)` o entre `<...>`.
@@ -109,11 +110,13 @@ const RE_TWEET_SUELTO = new RegExp(
 const EXT_IMAGEN = /\.(png|jpe?g|webp|gif|svg|avif)$/i;
 
 // Fotos de los artículos. Astro las sirve con los píxeles que tengan, así que
-// se reducen al copiarlas: lado largo máximo LADO_MAX_FOTO. Los PNG opacos que
-// pesan más de PNG_A_JPG_DESDE (fotos y capturas grandes) pasan a JPG; los
-// pequeños se quedan en PNG para que el texto salga nítido. Los originales de
-// la bóveda no se tocan.
-const LADO_MAX_FOTO = 2400;
+// se reducen al copiarlas: ancho máximo ANCHO_MAX_FOTO (el alto no se limita:
+// un esquema largo quedaría con la letra ilegible). Los PNG que pesan más de
+// PNG_A_JPG_DESDE (fotos y capturas grandes) pasan a JPG si son opacos y a
+// WebP si tienen transparencia (el JPG no la guarda); los pequeños se quedan
+// en PNG para que el texto salga nítido. Los originales de la bóveda no se
+// tocan.
+const ANCHO_MAX_FOTO = 2400;
 const PNG_A_JPG_DESDE = 500 * 1024;
 const CALIDAD_JPG = 88;
 const EXT_VIDEO = /\.(mp4|mov|webm)$/i;
@@ -131,14 +134,14 @@ const RE_YOUTUBE = new RegExp(
 
 /**
  * Copia una imagen de la bóveda a `carpeta` como `base` + extensión, reducida
- * a LADO_MAX_FOTO. Devuelve { nombre, nueva }: el nombre final (un PNG puede
- * acabar en .jpg) y si se ha escrito ahora.
+ * a ANCHO_MAX_FOTO. Devuelve { nombre, nueva }: el nombre final (un PNG puede
+ * acabar en .jpg o .webp) y si se ha escrito ahora.
  */
 async function copiarFoto(origen, carpeta, base) {
   const ext = path.extname(origen).toLowerCase();
   // Si ya está la copia y es más nueva que el original, no se rehace. Un PNG
-  // grande pudo acabar en .jpg, así que se miran los dos nombres.
-  for (const final of ext === ".png" ? [ext, ".jpg"] : [ext]) {
+  // grande pudo acabar en .jpg o .webp, así que se miran los tres nombres.
+  for (const final of ext === ".png" ? [ext, ".jpg", ".webp"] : [ext]) {
     if (estaAlDia(origen, path.join(carpeta, base + final))) return { nombre: base + final, nueva: false };
   }
   return { nombre: await convertirFoto(origen, carpeta, base, ext), nueva: true };
@@ -157,18 +160,22 @@ async function convertirFoto(origen, carpeta, base, ext) {
   if (![".png", ".jpg", ".jpeg", ".webp"].includes(ext)) return copiaTalCual();
 
   const { width, height } = await sharp(origen).metadata();
-  const grande = Math.max(width, height) > LADO_MAX_FOTO;
-  const aJpg = ext === ".png"
-    && fs.statSync(origen).size > PNG_A_JPG_DESDE
-    && (await sharp(origen).stats()).isOpaque;
-  if (!grande && !aJpg) return copiaTalCual();
+  const grande = width > ANCHO_MAX_FOTO;
+  const pngGrande = ext === ".png" && fs.statSync(origen).size > PNG_A_JPG_DESDE;
+  const opaco = pngGrande && (await sharp(origen).stats()).isOpaque;
+  const aJpg = pngGrande && opaco;
+  const aWebp = pngGrande && !opaco;
+  if (!grande && !pngGrande) return copiaTalCual();
 
   let img = sharp(origen).rotate(); // aplica la orientación EXIF antes de reducir
-  if (grande) img = img.resize({ width: LADO_MAX_FOTO, height: LADO_MAX_FOTO, fit: "inside" });
+  if (grande) img = img.resize({ width: ANCHO_MAX_FOTO });
   let final = ext;
   if (aJpg || ext === ".jpg" || ext === ".jpeg") {
     img = img.jpeg({ quality: CALIDAD_JPG, mozjpeg: true });
     if (aJpg) final = ".jpg";
+  } else if (aWebp) {
+    img = img.webp({ quality: 90, alphaQuality: 100 });
+    final = ".webp";
   } else if (ext === ".png") {
     img = img.png({ compressionLevel: 9 });
   } else {
@@ -518,7 +525,7 @@ function convertirTikTok(cuerpo) {
  * o null. `copiarImagen(nombre)` copia la imagen y devuelve lo que va en el enlace.
  */
 function transformarCuerpo(cuerpo, ctx) {
-  const { resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas, esEventoSemana } = ctx;
+  const { resolver, copiarImagen, buscarOscura, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas, esEventoSemana } = ctx;
 
   let s = cuerpo;
 
@@ -564,6 +571,11 @@ function transformarCuerpo(cuerpo, ctx) {
       return `<!-- imagen no encontrada: ${archivo} -->`;
     }
     const etiqueta = /^\d+$/.test((alt || "").trim()) ? "" : (alt || "").trim();
+    // Imagen de día y de noche: si hay «nombre-oscuro» junto a
+    // «nombre-claro», van las dos seguidas y el CSS enseña la del tema.
+    const oscura = /-claro\.[a-z]+$/i.test(archivo) && buscarOscura(archivo);
+    const copiadaOscura = oscura && copiarImagen(oscura);
+    if (copiadaOscura) return `![${etiqueta}](./${copiado})![${etiqueta}](./${copiadaOscura})`;
     return `![${etiqueta}](./${copiado})`;
   });
 
@@ -704,6 +716,16 @@ async function main() {
     return base;
   };
 
+  // La versión de noche de una imagen «nombre-claro.ext»: «nombre-oscuro.*»
+  // en cualquier formato de imagen, o null.
+  const buscarOscura = (nombre) => {
+    const base = nombre.normalize("NFC").replace(/-claro\.[a-z]+$/i, "-oscuro");
+    for (const ext of ["png", "jpg", "jpeg", "webp"]) {
+      if (indiceImagenes.has(`${base}.${ext}`)) return `${base}.${ext}`;
+    }
+    return null;
+  };
+
   // --- Pasada 1: recopilar lo publicado y construir el mapa de enlaces ---
   const items = [];
   for (const ruta of buscarMarkdown(BOVEDA)) {
@@ -838,7 +860,7 @@ async function main() {
     };
 
     let cuerpo = transformarCuerpo(it.content, {
-      resolver, copiarImagen, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas,
+      resolver, copiarImagen, buscarOscura, copiarVideo, tweets, mediaMapa, videoMapa, tarjetas,
       esEventoSemana: it.clase.kind === "semana",
     });
     let fotoNueva = false;

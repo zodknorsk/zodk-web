@@ -67,6 +67,19 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+/* Imágenes con versión de día y de noche («nombre-claro» y «nombre-oscuro» en
+   la bóveda; el importador las pone seguidas): de día, solo la clara; de
+   noche, solo la oscura. Una «-claro» sin pareja se ve siempre. */
+article img[src*="-oscuro."] {
+  display: none;
+}
+html.dark article img[src*="-oscuro."] {
+  display: block;
+}
+html.dark article img[src*="-claro."]:has(+ img[src*="-oscuro."]) {
+  display: none;
+}
+
 /* Resaltado de Obsidian (==texto==): como un rotulador, fondo detrás y texto
    oscuro, de día y de noche. */
 article mark {
