@@ -587,7 +587,7 @@ VERGÜENZA de gobierno italiano.</div>
 
 <blockquote class="tweet" data-tweet-id="2084687443236680188">
   <a class="tweet-author" href="https://x.com/alandete/status/2084687443236680188" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/2083149124698820608-pnaa0hil_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <img class="tweet-avatar" src="/tweets/2104890435701190656-qbogif0g_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
     <span class="tweet-name">David Alandete</span>
     <span class="tweet-handle">@alandete</span>
   </a>
