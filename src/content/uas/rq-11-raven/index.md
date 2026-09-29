@@ -7,7 +7,6 @@ description: >-
 updated: '2026-09-29'
 tags:
   - eeuu
-  - españa
   - dron
 bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos

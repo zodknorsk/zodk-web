@@ -139,7 +139,8 @@ del X10D).
   con el nombre del archivo de la maqueta** (`src/data/uas/skydio-x10d.ts`).
 - **Frontmatter**: el de siempre (sin claves propias: lo decidió el usuario;
   «las plantillas de Obsidian tienen todas el mismo formato»). `tipo:
-  objeto`, `estado: borrador`, `publicar: true`, `tags` con el país y `dron`.
+  objeto`, `estado: borrador`, `publicar: true`, `tags` solo con el país del fabricante y `dron`, nunca los países que lo
+  operan (lo corrigió el usuario con el Raven, que llevaba también `españa`).
 - **Cuerpo** (pedido por el usuario), sin reglas `---` entre apartados:
   - Una **cita con `>`** justo bajo las propiedades, sin título: un párrafo
     con qué es, quién lo usa y dónde ha destacado. **Cada hecho con su
