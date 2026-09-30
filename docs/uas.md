@@ -564,6 +564,16 @@ el país sale marcado en todas las tarjetas. (Se probó una vuelta completa y
 luego «de frente», pero de frente los winglets y las hélices, de canto,
 desaparecían; el usuario pidió la planta. El filtro por tipo se quitó.)
 
+**Ancho del índice** (30-sep-2026): con más drones, la lista de dos
+columnas se hacía muy larga. La página `/uas` va a **860 px** (el resto de la
+web, 720), cabecera y pie incluidos, y así caben **tres tarjetas por fila**
+con el dron a su tamaño; la cuadrícula es la misma (`minmax(16rem, 1fr)`) y
+en el móvil baja a una o dos. Se probaron: tres columnas en 720 con el dron a
+3/4, solo el listado a 1080, la página a 920, lista de filas, grupos
+plegables por país, estanterías por categoría y un buscador. Quedan como
+ideas, sobre todo la lista y el buscador para cuando haya muchos drones, y
+el hangar como mapa en pixel art (sin dibujar).
+
 ## El glosario
 
 La nota `Glosario y Terminología.md` de la misma carpeta de la bóveda (el
@@ -589,8 +599,12 @@ decidido con espacio).
 **Los términos y las municiones en los artículos** (29-sep-2026). En las
 notas, los eventos y las fichas del Hangar, la primera vez que sale un
 término del glosario (MALE, MTOW, jamming…) o una munición del armamento
-(Hellfire, GBU-38…) queda enlazado a su entrada con un subrayado de
-puntos, y al pasar el ratón sale una tarjeta con el término, su nombre
+(Hellfire, GBU-38…) queda enlazado a su entrada. Para que no se confunda con un enlace
+normal (azul) va del color del texto, en IBM Plex Mono algo más pequeña,
+con rayas finas debajo (pintadas con un degradado: con `text-decoration`
+salían desiguales según lo que mide la palabra), y el puntero es una «i»
+blanca en un círculo oscuro (el usuario los eligió el 30-sep-2026 entre
+cinco estilos y diez punteros). Al pasar el ratón sale una tarjeta con el término, su nombre
 completo, la definición (siete líneas como mucho) y «Ver en el glosario →».
 En táctil, el primer toque abre la tarjeta. Es automático: en la bóveda no
 se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).

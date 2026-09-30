@@ -246,6 +246,11 @@ const paises = recuento((f) => f.data.pais);
   :global(html.dark) .uas-filtros button[aria-pressed="true"] { background: #e4e4e7; border-color: #e4e4e7; color: #18181b; }
   .uas-bandera { font-size: 0.95rem; line-height: 1; }
 
+  /* El hangar va más ancho que el resto de la web (860 px en vez de 720),
+     cabecera incluida, para que quepan tres tarjetas por fila con el dron a
+     su tamaño (256 px). */
+  :global(body:has(.uas-tarjetas) .max-w-\[720px\]) { max-width: 860px; }
+
   /* Tarjetas: la miniatura sobre la cuadrícula del visor y, debajo, el texto. */
   .uas-tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 1rem; }
   .uas-tarjeta {

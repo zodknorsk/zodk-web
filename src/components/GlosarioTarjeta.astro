@@ -122,12 +122,27 @@
 </script>
 
 <style is:global>
-  /* El término: subrayado de puntos en vez del de los enlaces normales. */
+  /* El término: en la letra de la tarjeta (Plex Mono, un poco más pequeña),
+     del color del texto y con rayas finas debajo. Las rayas se pintan con un
+     degradado y no con text-decoration dashed, que las reparte según lo que
+     mide la palabra y salen desiguales. */
   article a.gl {
-    text-decoration-style: dotted;
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 3px;
-    cursor: help;
+    color: inherit;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.9em;
+    letter-spacing: 0.02em;
+    padding-bottom: 2px;
+    background-image: repeating-linear-gradient(90deg, rgba(113, 113, 122, 0.7) 0 4px, transparent 4px 7px);
+    background-position: 0 100%;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    /* Puntero: una «i» blanca en un círculo oscuro. */
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Ccircle cx='11' cy='11' r='9' fill='%2318181b' stroke='%23fafafa' stroke-width='1.5'/%3E%3Ctext x='11' y='15.5' font-family='Menlo,monospace' font-size='12' font-weight='700' fill='%23fafafa' text-anchor='middle'%3Ei%3C/text%3E%3C/svg%3E") 11 11, help;
+    transition: background-color 0.15s;
+  }
+  article a.gl:hover {
+    background-color: rgba(113, 113, 122, 0.14);
+    background-image: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px);
   }
 
   .gl-tarjeta {
