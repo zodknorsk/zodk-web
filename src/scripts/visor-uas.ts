@@ -14,6 +14,7 @@ import type { Acabado, Maqueta } from "../data/uas/tipos";
 import { geometriaDe, VISTAS, type Vista } from "./uas-geometria";
 import { crearPixelado, marcaPieza, materialPixel, ponerPaleta } from "./uas-pixelado";
 import { PALETAS } from "./uas-paletas";
+import { colorHD, crearLuzHD, ESTILOS_HD, materialContorno, materialHD, montarDetalles, type EstiloHD, type MaterialHD } from "./uas-hd";
 
 type Pin = { x: number; y: number; tapado: boolean };
 
@@ -91,10 +92,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const pixelado = crearPixelado(renderer);
 
   const escena = new Scene();
-  escena.add(new HemisphereLight(0xffffff, 0x60606a, 1.7));
+  const cielo = new HemisphereLight(0xffffff, 0x60606a, 1.7);
   const sol = new DirectionalLight(0xffffff, 1.9);
   sol.position.set(2, 4, 3);
-  escena.add(sol);
+  escena.add(cielo, sol);
 
   const camara = new PerspectiveCamera(32, 1, 0.05, 50);
   const controles = new OrbitControls(camara, lienzo);
@@ -104,7 +105,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Piezas: relleno + aristas. Cada pieza guarda sus materiales para
   // resaltarla.
   const raiz = new Group();
-  const materiales = new Map<string, { acabado: Acabado; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial }>();
+  const materiales = new Map<string, { acabado: Acabado; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial; hd?: MaterialHD }>();
   const mallas: Mesh[] = [];
   const aristas: LineSegments[] = [];
   for (const [i, p] of maqueta.piezas.entries()) {
@@ -113,6 +114,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     materiales.set(p.id, { acabado: p.acabado ?? "negro", relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marcaPieza(i, p.acabado === "junta")) });
     for (const g of geometriaDe(p)) {
       const malla = new Mesh(g, relleno);
+      malla.castShadow = malla.receiveShadow = true;
       mallas.push(malla);
       malla.userData.pieza = p.id;
       raiz.add(malla);
@@ -129,6 +131,34 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const radio = caja3.getSize(new Vector3()).length() / 2;
   raiz.position.sub(centro);
   escena.add(raiz);
+
+  // HD (proyecto UAS HD): sus luces y, mientras se elige, el estilo de prueba
+  // (?hd=a|b|c, o el selector temporal sobre el lienzo; «no», la maqueta 1.0).
+  const luzHD = maqueta.hd ? crearLuzHD(renderer, escena, radio) : null;
+  // Calcas y costuras del HD (docs/uas-hd.md).
+  const detallesHD = luzHD && maqueta.detalles ? montarDetalles(escena, raiz, mallas, maqueta.detalles, radio) : null;
+  // Siluetas en tinta de los estilos b y c: una copia de cada malla.
+  const tintaContorno = luzHD ? materialContorno(radio * 0.0022) : null;
+  const contornos: Mesh[] = [];
+  if (tintaContorno) for (const malla of mallas) {
+    const c = new Mesh(malla.geometry, tintaContorno);
+    c.visible = false;
+    c.raycast = () => {};
+    contornos.push(c);
+    malla.parent!.add(c);
+  }
+  let estiloHD: EstiloHD | null = null;
+  if (luzHD) {
+    let guardado: string | null = null;
+    try { guardado = localStorage.getItem("uas-hd-estilo"); } catch { /* sin almacenamiento */ }
+    const pedido = new URLSearchParams(location.search).get("hd") ?? guardado ?? "a";
+    estiloHD = ESTILOS_HD.some((e) => e.id === pedido) ? (pedido as EstiloHD) : null;
+    const selector = document.createElement("div");
+    selector.className = "visor-hd-prueba";
+    selector.innerHTML = `<span>Prueba</span>` + [["no", "1.0"], ...ESTILOS_HD.map((e) => [e.id, `${e.id.toUpperCase()} · ${e.nombre}`])]
+      .map(([id, t]) => `<button type="button" data-hd="${id}">${t}</button>`).join("");
+    caja.querySelector(".visor-lienzo-caja")?.append(selector);
+  }
 
   // La tira de siluetas.
   const botonesVista = [...caja.querySelectorAll<HTMLElement>("[data-vista]")];
@@ -174,6 +204,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       const color = COLOR_MAQUETA[m.acabado];
       const base = m.acabado === "junta" ? colores.relleno.clone().multiplyScalar(0.8) : colores.relleno;
       m.relleno.color.copy(si ? (enTinta ? TINTA : colores.resalte) : color ? new Color(color) : base);
+      m.hd?.color.copy(si ? (enTinta ? TINTA : colores.resalte) : colorHD(m.acabado));
       m.linea.color.copy(si ? (enTinta ? colores.arista : colores.resalteArista) : colores.arista);
       ponerPaleta(m.pixel, si ? paletas[enTinta ? "tinta" : "resalte"] : paletas[m.acabado]);
     }
@@ -259,7 +290,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     ultimo = t;
     if (controles.autoRotate) controles.update(dt);
     if (modo === "pixel") pixelado.pintar(escena, camara);
-    else renderer.render(escena, camara);
+    else {
+      if (estiloHD) luzHD?.seguir(camara);
+      renderer.render(escena, camara);
+    }
     colocarPines();
     if (controles.autoRotate || animando) pedir();
     else ultimo = 0;
@@ -347,11 +381,32 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const cambiarEstilo = (estilo: "maqueta" | "pixel") => {
     modo = estilo;
     caja.querySelectorAll<HTMLElement>("[data-estilo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.estilo === estilo)));
+    const hd = estilo === "maqueta" && estiloHD ? estiloHD : null;
+    for (const m of materiales.values()) {
+      m.hd?.dispose();
+      m.hd = hd ? materialHD(m.acabado, hd) : undefined;
+    }
     for (const malla of mallas) {
       const m = materiales.get(malla.userData.pieza)!;
-      malla.material = estilo === "pixel" ? m.pixel : m.relleno;
+      malla.material = estilo === "pixel" ? m.pixel : m.hd ?? m.relleno;
     }
-    for (const a of aristas) a.visible = estilo === "maqueta";
+    for (const a of aristas) a.visible = estilo === "maqueta" && (!hd || hd === "b");
+    for (const c of contornos) c.visible = hd === "b" || hd === "c";
+    cielo.visible = sol.visible = !hd;
+    luzHD?.encender(!!hd, hd ?? "a");
+    detallesHD?.ver(!!hd);
+    // En HD, cámara de teleobjetivo: casi sin perspectiva, como en las fotos.
+    const fov = hd ? 18 : 32;
+    if (camara.fov !== fov) {
+      const distanciaAntes = distancia;
+      camara.fov = fov;
+      camara.updateProjectionMatrix();
+      encuadrar();
+      camara.position.multiplyScalar(distancia / distanciaAntes);
+      controles.update();
+    }
+    caja.querySelectorAll<HTMLElement>("[data-hd]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.hd === (estiloHD ?? "no"))));
+    pintarPiezas();
     lienzo.classList.toggle("visor-lienzo--pixel", estilo === "pixel");
     pedir();
   };
@@ -369,6 +424,11 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     if (b.dataset.pestana) cambiarPestana(b.dataset.pestana);
     else if (b.dataset.parte) elegir(Number(b.dataset.parte));
     else if (b.dataset.estilo) cambiarEstilo(b.dataset.estilo as "maqueta" | "pixel");
+    else if (b.dataset.hd) {
+      estiloHD = b.dataset.hd === "no" ? null : (b.dataset.hd as EstiloHD);
+      try { localStorage.setItem("uas-hd-estilo", b.dataset.hd); } catch { /* sin almacenamiento */ }
+      cambiarEstilo("maqueta");
+    }
     else if (b.dataset.vista) ponerVista(b.dataset.vista as Vista);
     else if (b.dataset.accion === "acercar") acercar(0.8);
     else if (b.dataset.accion === "alejar") acercar(1.25);
@@ -436,7 +496,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const parteInicial = (params.get("parte") ?? "").toUpperCase().charCodeAt(0) - 65;
   if (parteInicial >= 0 && parteInicial < maqueta.partes.length) elegir(parteInicial);
   if (params.get("pestana") === "fuentes") cambiarPestana("fuentes");
-  if (params.get("estilo") === "pixel") cambiarEstilo("pixel");
+  cambiarEstilo(params.get("estilo") === "pixel" ? "pixel" : "maqueta");
   caja.classList.add("visor-listo");
 
   return () => {
@@ -453,7 +513,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     raiz.traverse((o) => {
       if (o instanceof Mesh || o instanceof LineSegments) o.geometry.dispose();
     });
-    for (const m of materiales.values()) { m.relleno.dispose(); m.linea.dispose(); m.pixel.dispose(); }
+    for (const m of materiales.values()) { m.relleno.dispose(); m.linea.dispose(); m.pixel.dispose(); m.hd?.dispose(); }
+    luzHD?.dispose();
+    tintaContorno?.dispose();
+    detallesHD?.dispose();
     renderer.dispose();
     // Soltar el contexto WebGL: si no, al ir y volver entre páginas se
     // acumulan y el navegador acaba tirando alguno (el visor sale mal).

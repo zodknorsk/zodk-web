@@ -6,7 +6,7 @@ import {
   Float32BufferAttribute, LatheGeometry, Quaternion, Shape, SphereGeometry,
   Vector2, Vector3,
 } from "three";
-import type { Pieza } from "../data/uas/tipos";
+import type { Pieza, Seccion } from "../data/uas/tipos";
 
 export type Vista = "3d" | "arriba" | "lado" | "frente" | "detras";
 
@@ -41,20 +41,170 @@ function geometriaAla(y: number, estaciones: Estacion[]): BufferGeometry {
   ];
   const M = contorno.length;
   const pos: number[] = [];
-  for (const [x, zBA, zBS, t, sube] of estaciones)
-    for (const [s, lado] of contorno) pos.push(x, y + sube + lado * t * perfilNaca(s), zBA + (zBS - zBA) * s);
   const idx: number[] = [];
-  for (let e = 0; e < estaciones.length - 1; e++)
+  // Un anillo de vértices con el perfil de una estación; devuelve el primero.
+  const anillo = ([x, zBA, zBS, t, sube]: Estacion) => {
+    const base = pos.length / 3;
+    for (const [s, lado] of contorno) pos.push(x, y + sube + lado * t * perfilNaca(s), zBA + (zBS - zBA) * s);
+    return base;
+  };
+  const unir = (a: number, b: number) => {
     for (let k = 0; k < M; k++) {
-      const a = e * M + k, b = e * M + ((k + 1) % M), c = a + M, d = b + M;
-      idx.push(a, b, c, b, d, c);
+      const a0 = a + k, a1 = a + ((k + 1) % M), b0 = b + k, b1 = b + ((k + 1) % M);
+      idx.push(a0, a1, b0, a1, b1, b0);
     }
+  };
+  // Las estaciones seguidas comparten vértices (normales suaves a lo largo de
+  // la envergadura). Un escalón (dos estaciones en la misma x: donde el borde
+  // de salida cambia de sitio, junto a un alerón o el hueco de un motor) es
+  // una pared de lado con vértices propios; compartidos, su normal torcía la
+  // luz del tramo de ala de al lado.
+  const primero = anillo(estaciones[0]);
+  let previo = primero;
+  for (let e = 0; e < estaciones.length - 1; e++) {
+    if (estaciones[e][0] === estaciones[e + 1][0]) {
+      unir(anillo(estaciones[e]), anillo(estaciones[e + 1]));
+      previo = anillo(estaciones[e + 1]);
+    } else {
+      const siguiente = anillo(estaciones[e + 1]);
+      unir(previo, siguiente);
+      previo = siguiente;
+    }
+  }
   // Tapas de las puntas: abanico desde el centro de cada contorno.
-  for (const e of [0, estaciones.length - 1]) {
+  for (const [e, base] of [[0, primero], [estaciones.length - 1, previo]]) {
     const [x, zBA, zBS, , sube] = estaciones[e];
     const centro = pos.length / 3;
     pos.push(x, y + sube, (zBA + zBS) / 2);
-    for (let k = 0; k < M; k++) idx.push(centro, e * M + k, e * M + ((k + 1) % M));
+    for (let k = 0; k < M; k++) idx.push(centro, base + k, base + ((k + 1) % M));
+  }
+  const g = new BufferGeometry();
+  g.setAttribute("position", new Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return g;
+}
+
+// Interpolación cúbica monótona (Fritsch-Carlson) de v en función de z: pasa
+// por todos los puntos, es suave y no se pasa de largo entre dos medidas
+// (una curva normal abombaría el cuerpo entre secciones muy distintas).
+function monotona(zs: number[], vs: number[]) {
+  const n = zs.length;
+  const d = zs.slice(1).map((z, i) => (vs[i + 1] - vs[i]) / (z - zs[i]));
+  const m = zs.map((_, i) => (i === 0 ? d[0] : i === n - 1 ? d[n - 2] : d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2));
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; }
+    const a = m[i] / d[i], b = m[i + 1] / d[i], h = a * a + b * b;
+    if (h > 9) { const t = 3 / Math.sqrt(h); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+  }
+  return (z: number) => {
+    let i = 0;
+    while (i < n - 2 && z > zs[i + 1]) i++;
+    const h = zs[i + 1] - zs[i], t = (z - zs[i]) / h;
+    const t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * vs[i] + (t3 - 2 * t2 + t) * h * m[i] + (-2 * t3 + 3 * t2) * vs[i + 1] + (t3 - t2) * h * m[i + 1];
+  };
+}
+
+// Casco: anillos a lo largo de z, con las medidas de las secciones
+// interpoladas. La mitad de arriba es una superelipse (su alto y su
+// «cuadratura»); la de abajo, otra superelipse o, si la sección da `panza`,
+// un trapecio: del costado baja una cara inclinada hasta una panza plana de
+// ese medio ancho, con las esquinas de abajo redondeadas (el fuselaje del
+// MQ-9). Las dos mitades van con vértices propios, así la arista del costado
+// (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
+// si no, se tapan.
+function geometriaCasco(secciones: Seccion[]): BufferGeometry {
+  const PASOS = 12, MEDIO = 28;  // anillos entre secciones; puntos por mitad
+  const ss = secciones.slice().sort((a, b) => a.z - b.z);
+  const zs = ss.map((q) => q.z);
+  const f = (v: (q: Seccion) => number) => monotona(zs, ss.map(v));
+  const ancho = f((q) => q.ancho), arriba = f((q) => q.arriba), abajo = f((q) => q.abajo);
+  const cintura = f((q) => q.cintura ?? (q.arriba + q.abajo) / 2);
+  const nA = f((q) => q.n ?? 2), nB = f((q) => q.nAbajo ?? q.n ?? 2);
+  const conPanza = ss.some((q) => q.panza !== undefined);
+  const panza = f((q) => q.panza ?? q.ancho * 0.5);
+  const arista = f((q) => q.arista ?? 0);
+  const anillosZ: number[] = [];
+  for (let i = 0; i < zs.length - 1; i++)
+    for (let j = 0; j < PASOS; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / PASOS);
+  anillosZ.push(zs[zs.length - 1]);
+
+  // Mitad de abajo en trapecio: de (-w, c) a (-p, b), (p, b) y (w, c), con
+  // las esquinas de abajo redondeadas, repartida por su largo.
+  const trapecio = (w: number, p: number, c: number, b: number): [number, number][] => {
+    const r = Math.min(0.4 * Math.hypot(w - p, c - b), 0.5 * p);
+    const esquina = (ax: number, ay: number, ox: number, oy: number, bx: number, by: number) => {
+      const d1 = Math.hypot(ax - ox, ay - oy) || 1, d2 = Math.hypot(bx - ox, by - oy) || 1;
+      const p1 = [ox + ((ax - ox) * r) / d1, oy + ((ay - oy) * r) / d1], p2 = [ox + ((bx - ox) * r) / d2, oy + ((by - oy) * r) / d2];
+      return Array.from({ length: 7 }, (_, i) => {
+        const t = i / 6;
+        return [(1 - t) ** 2 * p1[0] + 2 * (1 - t) * t * ox + t * t * p2[0], (1 - t) ** 2 * p1[1] + 2 * (1 - t) * t * oy + t * t * p2[1]] as [number, number];
+      });
+    };
+    const linea: [number, number][] = [[-w, c], ...esquina(-w, c, -p, b, p, b), ...esquina(-p, b, p, b, w, c), [w, c]];
+    const largos = [0];
+    for (let i = 1; i < linea.length; i++) largos.push(largos[i - 1] + Math.hypot(linea[i][0] - linea[i - 1][0], linea[i][1] - linea[i - 1][1]));
+    const total = largos[largos.length - 1] || 1;
+    return Array.from({ length: MEDIO + 1 }, (_, k) => {
+      const d = (k / MEDIO) * total;
+      let i = 1;
+      while (i < linea.length - 1 && largos[i] < d) i++;
+      const t = (d - largos[i - 1]) / ((largos[i] - largos[i - 1]) || 1);
+      return [linea[i - 1][0] + (linea[i][0] - linea[i - 1][0]) * t, linea[i - 1][1] + (linea[i][1] - linea[i - 1][1]) * t];
+    });
+  };
+
+  // Dos tiras: la de arriba (de +x a −x por el lomo) y la de abajo (de −x a
+  // +x por la panza), cada una con MEDIO + 1 puntos por anillo.
+  const tiras: number[][] = [[], []];
+  for (const z of anillosZ) {
+    const w = Math.max(0, ancho(z)), c = cintura(z);
+    const top = Math.max(c, arriba(z)), bot = Math.min(c, abajo(z));
+    const na = Math.max(0.5, nA(z)), nb = Math.max(0.5, nB(z));
+    // Arriba, la superelipse tiene su centro «virtual» por debajo de la
+    // cintura (arista: qué parte del alto de arriba baja) y se corta en la
+    // cintura: así llega a ella ya inclinada, mirando hacia arriba, y la
+    // arista con la cara de abajo marca un ángulo (y un contraste de luz).
+    const k0 = Math.min(0.9, Math.max(0, arista(z)));
+    const c0 = c - k0 * (top - c), alto = top - c0;
+    const t0 = Math.asin(Math.min(1, ((c - c0) / (alto || 1)) ** (na / 2)));
+    const W = k0 > 0 ? w / Math.max(1e-6, Math.abs(Math.cos(t0)) ** (2 / na)) : w;
+    for (let k = 0; k <= MEDIO; k++) {
+      const t = t0 + (k / MEDIO) * (Math.PI - 2 * t0), co = Math.cos(t), si = Math.sin(t);
+      tiras[0].push(W * Math.sign(co) * Math.abs(co) ** (2 / na), c0 + alto * Math.abs(si) ** (2 / na), z);
+    }
+    const abajoPts: [number, number][] = conPanza
+      ? trapecio(w, Math.min(w, Math.max(0, panza(z))), c, bot)
+      : Array.from({ length: MEDIO + 1 }, (_, k) => {
+        const t = Math.PI + (k / MEDIO) * Math.PI, co = Math.cos(t), si = Math.sin(t);
+        return [w * Math.sign(co) * Math.abs(co) ** (2 / nb), c - (c - bot) * Math.abs(si) ** (2 / nb)];
+      });
+    for (const [x, y] of abajoPts) tiras[1].push(x, y, z);
+  }
+  const pos: number[] = [], idx: number[] = [];
+  const N = MEDIO + 1;
+  for (const tira of tiras) {
+    const base = pos.length / 3;
+    pos.push(...tira);
+    for (let i = 0; i < anillosZ.length - 1; i++)
+      for (let k = 0; k < MEDIO; k++) {
+        const a = base + i * N + k, b = a + 1, c = a + N, d = b + N;
+        idx.push(a, b, c, b, d, c);
+      }
+  }
+  // Tapas donde el cuerpo no acaba en punta.
+  for (const [i, atras] of [[0, true], [anillosZ.length - 1, false]] as const) {
+    const anillo = [0, 1].flatMap((t) => Array.from({ length: N }, (_, k) => t * anillosZ.length * N + i * N + k));
+    const xs = anillo.map((v) => pos[v * 3]);
+    if (Math.max(...xs) - Math.min(...xs) < 1e-6) continue;
+    const centro = pos.length / 3;
+    pos.push(0, anillo.reduce((s, v) => s + pos[v * 3 + 1], 0) / anillo.length, anillosZ[i]);
+    for (let t = 0; t < 2; t++)
+      for (let k = 0; k < MEDIO; k++) {
+        const a = anillo[t * N + k], b = anillo[t * N + k + 1];
+        if (atras) idx.push(centro, b, a); else idx.push(centro, a, b);
+      }
   }
   const g = new BufferGeometry();
   g.setAttribute("position", new Float32BufferAttribute(pos, 3));
@@ -68,11 +218,24 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
     case "ala": {
       // Media ala (x ≥ 0) y su reflejo. Si no empieza en x = 0 (las puntas de
       // un ala en tres piezas), son dos piezas sueltas, sin unir por el centro.
+      // `sola`: solo la mitad dada, sin reflejo. `vertical`: la mitad cuelga
+      // hacia abajo (x pasa a −y), en el plano x = 0: aletas y soportes con
+      // perfil. `x` la mueve de lado (con `espejo`, también al otro).
       const mitad = p.estaciones.map(([x, a, b, t, sube = 0]): Estacion => [x, a, b, t, sube]);
       const reflejo = mitad.slice().reverse().map(([x, a, b, t, sube]): Estacion => [-x, a, b, t, sube]);
+      if (p.vertical || p.sola) {
+        return (p.espejo ? [1, -1] : [1]).map((sx) => {
+          const g = geometriaAla(0, mitad);
+          if (p.vertical) g.rotateZ(-Math.PI / 2);
+          g.translate((p.x ?? 0) * sx, p.y, 0);
+          return g;
+        });
+      }
       if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo), geometriaAla(p.y, mitad)];
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
+    case "casco":
+      return [geometriaCasco(p.secciones)];
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();

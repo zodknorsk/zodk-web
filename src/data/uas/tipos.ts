@@ -19,6 +19,19 @@ export type Pieza = (
   // y alto es el medio alto en esa z (el radio queda como medio ancho), para
   // un cuerpo que cambia de sección a lo largo. Las z no se repiten.
   | { tipo: "tubo"; id: string; perfil: (Punto2 | [number, number, number] | [number, number, number, number])[]; centro?: Punto2; seccion?: Punto2 }
+  // Casco: un cuerpo hecho de secciones a lo largo de z, de delante atrás,
+  // unidas con curvas suaves (bastan pocas secciones bien medidas). Cada
+  // sección da, en esa z: el medio ancho, la y del lomo y la de la panza, la
+  // y donde el cuerpo es más ancho (cintura; por defecto, a media altura) y
+  // lo cuadrada que es la mitad de arriba y la de abajo (n: 2 es un óvalo;
+  // más, más cuadrada; menos de 2, en punta). Un medio ancho 0 cierra en
+  // punta (el morro, la cola). Sirve para fuselajes que no son redondos:
+  // panza plana, costados rectos, lomo abombado. Con `panza` (medio ancho de
+  // una panza plana), la mitad de abajo es un trapecio: una arista viva en la
+  // cintura y una cara inclinada hasta la panza (el MQ-9). `arista` (0 a 0,9)
+  // hace que la mitad de arriba llegue a la cintura ya inclinada hacia
+  // arriba, y la arista marca más ángulo.
+  | { tipo: "casco"; id: string; secciones: Seccion[] }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -37,7 +50,9 @@ export type Pieza = (
   // la estación sobre y (el diedro: las puntas del Raven suben). Si la
   // primera estación no está en x = 0, salen dos piezas sueltas, una a cada
   // lado (las puntas de un ala en tres piezas, con su junta).
-  | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[] }
+  // `sola`: solo esa mitad; `vertical`: colgando hacia abajo desde y (una
+  // aleta o un soporte con perfil), en el costado `x` (con `espejo`, en los dos).
+  | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[]; sola?: boolean; vertical?: boolean; x?: number; espejo?: boolean }
   // Varilla recta (mástiles, antenas, brazos, patas).
   | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean }
   // Hélice: por defecto gira en el plano vertical (empuja a lo largo de z, como
@@ -52,6 +67,27 @@ export type Pieza = (
   // espejo: se repite al otro lado (x → −x, la normal también).
   | { tipo: "disco"; id: string; en: Punto3; normal: Punto3; radio: number; grosor: number; espejo?: boolean }
 ) & { acabado?: Acabado };
+
+// Detalle pintado del HD (docs/uas-hd.md), en las mismas unidades que las
+// piezas. Una calca se proyecta sobre las piezas `sobre` desde la dirección
+// `desde` (hacia fuera de la superficie), centrada en `en`, de `tam`
+// [ancho, alto]; `giro` (grados) la gira en su plano. Una costura es una
+// línea de panel: la polilínea `puntos`, llevada a la superficie desde
+// `desde`; con `remaches`, un tornillo cada tantas unidades, o, con
+// `enVertices`, uno en cada punto de la polilínea (una tapa: esquinas y
+// centros de los lados). `espejo`
+// repite la calca o la costura al otro lado (x → −x).
+export type Dibujo =
+  | { tipo: "escarapela" }
+  | { tipo: "texto"; texto: string }
+  | { tipo: "serie"; ano: string; numero: string }
+  | { tipo: "disco"; color: string }
+  | { tipo: "escudo" };
+export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
+export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
+
+// Una sección de un casco (ver arriba).
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number };
 
 // Qué respalda lo que cuenta cada parte.
 export type Respaldo = "foto" | "reconstruccion" | "fabricante";
@@ -93,4 +129,8 @@ export type Maqueta = {
   // Color de la parte elegida: blanco papel (por defecto, para drones
   // oscuros) o tinta (para drones claros, donde el blanco no se distingue).
   resalte?: "papel" | "tinta";
+  // Versión 2.0 (docs/uas-hd.md): el modo Maqueta pinta el dron en HD, con
+  // sus calcas y costuras.
+  hd?: boolean;
+  detalles?: { calcas: Calca[]; costuras: Costura[] };
 };

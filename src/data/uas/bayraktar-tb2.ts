@@ -224,6 +224,8 @@ const u2 = ([a, b]: [number, number]): [number, number] => [u(a), u(b)];
 const u3 = ([a, b, c]: [number, number, number]): [number, number, number] => [u(a), u(b), u(c)];
 const aUnidades = (p: Pieza): Pieza => {
   switch (p.tipo) {
+    case "casco":
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }) })) };
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "placa":
