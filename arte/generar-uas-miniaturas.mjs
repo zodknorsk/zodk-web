@@ -194,7 +194,11 @@ for (const modelo of modelos) {
     for (const momento of ["dia", "noche"]) {
       const tira = new Uint8Array(W * vistas.length * H * 4);
       colores.forEach((color, f) => {
-        const img = pintar(color, W, H, PALETAS[momento], contorno(momento), UMBRAL);
+        // En la tarjeta cada píxel abarca más dron que en el visor: una
+        // superficie grande vista de lado (el ala del Shahed) ya salta más de
+        // 0,07 de un píxel al siguiente y salía entera como línea. El salto
+        // tiene que ser, como poco, el de tres píxeles.
+        const img = pintar(color, W, H, PALETAS[momento], contorno(momento), Math.max(UMBRAL, 3 / escalas[f]));
         for (let y = 0; y < H; y++) tira.set(img.subarray(y * W * 4, (y + 1) * W * 4), (y * W * vistas.length + f * W) * 4);
       });
       await guardar(tira, W * vistas.length, H, path.join(dir, `giro-${nombre}${momento === "dia" ? "" : "-noche"}.png`));
