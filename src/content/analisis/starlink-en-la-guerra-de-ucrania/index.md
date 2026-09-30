@@ -2,7 +2,7 @@
 title: Starlink en la guerra de Ucrania
 date: '2026-09-28'
 description: Un tren de satélites Starlink cruza el cielo de noche.
-updated: '2026-09-28'
+updated: '2026-09-30'
 tags:
   - osint
   - ucrania
@@ -11,7 +11,7 @@ tags:
 ![](./cleanshot-2026-09-28-at-2327052x_upscayl_1x_ultramix-balanced-4x.jpg)
 *Un tren de satélites Starlink cruza el cielo de noche.*
 
-> La tarde del 26 de febrero de 2022, dos días después de que las tropas rusas cruzaran la frontera, el viceprimer ministro ucraniano Mykhailo Fedorov [le recordó a Elon Musk en un tuit](https://x.com/FedorovMykhailo/status/1497543633293266944?s=20) que, mientras él intentaba colonizar Marte, Rusia intentaba ocupar Ucrania, y le pidió terminales de Starlink para el país. Diez horas después, [Musk respondió](https://x.com/elonmusk/status/1497701484003213317?s=20) con una frase corta que cambiaría la guerra: «Starlink service is now active in Ukraine. More terminals en route». Ese intercambio de tuits, más que cualquier declaración oficial, marcó el momento en que una red de satélites privada pasó a formar parte del arsenal de un país en guerra.
+> La tarde del 26 de febrero de 2022, dos días después de que las tropas rusas cruzaran la frontera, el viceprimer ministro ucraniano Mykhailo Fedorov [le escribió a Elon Musk en un tuit](https://x.com/FedorovMykhailo/status/1497543633293266944?s=20) que, mientras él intentaba colonizar Marte, Rusia intentaba ocupar Ucrania, pidiéndole terminales de Starlink para el país. Diez horas después, [Musk respondió](https://x.com/elonmusk/status/1497701484003213317?s=20) con una frase corta que cambiaría la guerra: «Starlink service is now active in Ukraine. More terminals en route». Ese intercambio de tuits, más que cualquier declaración oficial, marcó el momento en que una red de satélites privada pasó a formar parte del arsenal de un país en guerra.
 
 ## Qué es Starlink y qué lo hace diferente.
 
@@ -44,9 +44,9 @@ Pero encender un _Dishy_ en primera línea tiene un precio: [la antena emite una
 ![](./pasted-image-20260928192151.jpg)
 *Un lanzacohetes HIMARS ucraniano dispara en campo abierto.*
 
-Una de las primeras cosas que Ucrania conectó a Starlink fue la artillería. La aplicación GIS Arta, [desarrollada por un oficial de artillería para repartir objetivos entre las baterías disponibles como si fuera un Uber](https://www.newamerica.org/insights/how-ukraines-uber-for-artillery-is-leading-the-software-war-against-russia/), reúne en una misma red las radios militares, los móviles y Starlink, y consiguió bajar a 45 segundos el tiempo entre ver un objetivo y disparar.
+Una de las primeras cosas que Ucrania conectó a Starlink fue la artillería. La aplicación GIS Arta, [desarrollada por un oficial de artillería para repartir objetivos entre las baterías disponibles](https://www.newamerica.org/insights/how-ukraines-uber-for-artillery-is-leading-the-software-war-against-russia/), reúne en una misma red las radios militares, los móviles y Starlink, y consiguió bajar a 45 segundos el tiempo entre ver un objetivo y disparar.
 
-Por la misma conexión va el vídeo de los drones FPV, del piloto al puesto de mando que decide el siguiente objetivo. Y cuando hay que sacar a un herido de una zona demasiado peligrosa para que entren los sanitarios, algunas unidades ucranianas [controlan vehículos terrestres no tripulados (UGV) a través de un terminal Starlink montado en el propio robot](https://www.space.com/space-exploration/satellites/spacex-starlink-internet-isnt-fast-enough-for-ukraines-combat-robots), aunque, con apenas 10 Mbps de ancho de banda disponible por terminal, la imagen que llega al operador es de mala calidad.
+Por la misma conexión va el feed de los drones FPV, del piloto al puesto de mando que decide el siguiente objetivo. Y cuando hay que sacar a un herido de una zona demasiado peligrosa para que entren los sanitarios, algunas unidades ucranianas [controlan vehículos terrestres no tripulados (UGV) a través de un terminal Starlink montado en el propio robot](https://www.space.com/space-exploration/satellites/spacex-starlink-internet-isnt-fast-enough-for-ukraines-combat-robots), aunque, con apenas 10 Mbps de ancho de banda disponible por terminal, la imagen que llega al operador es de mala calidad.
 
 Pero por encima de la artillería, los drones y la evacuación, Starlink cumple una función más básica: sustituir a una red móvil ucraniana que, en buena parte del frente, sencillamente [ya no existe](https://circleid.com/posts/starlink-in-ukraine-what-three-years-of-wartime-connectivity-taught-us). Los bombardeos rusos han destruido antenas y repetidores que nadie puede reparar bajo fuego, así que la antena por satélite es, para muchas unidades y buena parte de la población civil, la única forma de tener conexión.
 
@@ -88,6 +88,6 @@ Y el interruptor vale para los dos bandos. Rusia lleva usando Starlink de forma 
 ![](./pasted-image-20260928231619.jpg)
 _Encendido de los motores de la Starship de SpaceX durante su lanzamiento en la prueba de vuelo IFT-5._
 
-Ucrania ha sostenido las comunicaciones de un país en guerra con una red comercial, pensada para vender internet a particulares. Por ella pasan los apoyos de fuego de la artillería, el feed de los drones, el control de los robots que sacan a los heridos y la conexión de regiones que se han quedado sin red móvil. No tenía ni dinero ni tiempo para montar la suya, e improvisó con lo que había.
+Ucrania ha sostenido las comunicaciones de un país en guerra con una red comercial, pensada para vender internet a particulares. Por ella pasan los apoyos de fuego de la artillería, el feed de los drones, el control de robots que sacan a los heridos del frente y la conexión de regiones que se han quedado sin red móvil. No tenía ni dinero ni tiempo para montar la suya, e improvisó con lo que había.
 
-Eso fue posible por la curva de costes: cohetes reutilizables, satélites cada vez más baratos de fabricar y lanzar, datos desde el espacio un 77 % más baratos que en 2019. [Goldman Sachs calcula que el mercado de satélites se multiplicará por siete en la próxima década](https://www.goldmansachs.com/insights/articles/the-global-satellite-market-is-forecast-to-become-seven-times-bigger), hay más de 70.000 satélites en órbita baja planeados o anunciados para lanzarse entre 2025 y 2031, y el coste de subir un kilo a órbita podría bajar a solo 100 o 200 dólares. A eso se suma el _direct-to-cell_: Starlink, T-Mobile, AT&T y otras operadoras ya conectan teléfonos normales directamente a satélites, sin terminal ni antena, así que la frontera entre «cobertura móvil» y «cobertura por satélite» está empezando a desaparecer.
+Eso fue posible por la curva de costes: cohetes reutilizables y satélites cada vez más baratos de fabricar y lanzar. [Goldman Sachs calcula que el mercado de satélites se multiplicará por siete en la próxima década](https://www.goldmansachs.com/insights/articles/the-global-satellite-market-is-forecast-to-become-seven-times-bigger), hay más de 70.000 satélites en órbita baja planeados o anunciados para lanzarse entre 2025 y 2031, y el coste de subir un kilo a órbita podría bajar a solo 100 o 200 dólares. A eso se suma el _direct-to-cell_: Starlink, T-Mobile, AT&T y otras operadoras ya conectan teléfonos normales directamente a satélites, sin terminal ni antena, así que la frontera entre «cobertura móvil» y «cobertura por satélite» está empezando a desaparecer.
