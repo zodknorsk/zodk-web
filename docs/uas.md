@@ -40,7 +40,7 @@ importador la busca por ese nombre); se añadió el **glosario** (apartado
 tarjetas de `/uas` enseñaran fotogramas partidos al quitar el ratón a medias
 (ver «Animaciones por fotogramas»).
 
-**28-sep-2026, fallos del iPhone y del PC** (en `main`, **sin commit**):
+**28-sep-2026, fallos del iPhone y del PC** (commit en `main`, subido):
 hecho que al volver atrás desde un enlace la ficha quede donde se estaba
 leyendo (el visor ya se coloca en el build, ver «Las fichas en la web») y
 que el giro de las tarjetas de `/uas` no se deslice partido en Safari (ver
@@ -117,7 +117,7 @@ El tamaño, en `base.css` (`.bandera-uas svg`). De paso: la regla que
 atenúa el número de cada filtro pasó a `button > span:last-child` (con la
 bandera dentro, la apagaba). Windows, además, no pinta las banderas emoji.
 
-**30-sep-2026, banderas en un solo sitio** (sin commit). Lo propuso el
+**30-sep-2026, banderas en un solo sitio** (commit en `main`, subido). Lo propuso el
 usuario: las chapas estaban dibujadas en cuatro sitios (el planeta del
 hero en `arte/generar-tierra.py`, `/luna` en `alunizajes.ts`, `/marte` en
 `amartizajes.ts` y el hangar en `banderas-uas.ts`, ya borrado), con EE. UU.
@@ -132,8 +132,8 @@ cualquier emoji que tenga chapa. Las chapas del planeta salen idénticas
 Ucrania en el hangar pasa a 3 filas azules y 4 amarillas, como en el
 planeta (lo había elegido el usuario allí); antes, 4 y 3.
 
-**30-sep-2026, Shahed-136** (en `main`, **sin commit**, ni en zodk-web
-ni en la bóveda). Orden pedido por el usuario: después del TB2. Decisiones
+**30-sep-2026, Shahed-136** (commit en `main` y en la bóveda,
+subido). Orden pedido por el usuario: después del TB2. Decisiones
 del usuario: **una sola nota** para Shahed-136 y Geran-2 (el Geran va en la
 Historia y Rusia como operador) y la maqueta del **iraní, en gris claro**,
 no la del Geran negro. Hecho: nota `🇮🇷 Shahed-136.md` (`borrador`),
@@ -149,7 +149,7 @@ antena GNSS, que el plano de Alexpl también dibuja. Falta: que el usuario
 revise la nota y la maqueta. (Commit el 30-sep-2026: banderas `4731abb`,
 Shahed `0bb7a55`; en la bóveda, `fe0fd0c`.)
 
-**30-sep-2026, Geran-2** (en `main`, **sin commit**). Lo pidió el usuario
+**30-sep-2026, Geran-2** (commit en `main`, subido). Lo pidió el usuario
 después del Shahed: nota aparte, maqueta **en negro**, texto sobre su
 historia, dónde se fabrica y qué novedades lleva. País: Rusia (el
 fabricante), etiquetas `rusia` y `dron`. En «En acción», **vídeos solo del
@@ -170,7 +170,7 @@ del plano de 3,35 m, y `geran-2.ts` la importa entera, la pinta de negro,
 cambia el anillo por una junta y añade el panel CRPA. Las notas del Shahed
 y del Geran las revisa y retoca el usuario (dice «da eso por tachado»).
 
-**30-sep-2026, tarjetas de /uas** (sin commit). El usuario vio el pixel art
+**30-sep-2026, tarjetas de /uas** (commit en `main`, subido). El usuario vio el pixel art
 de la tarjeta del Shahed «raro» comparado con el visor: en el primer
 fotograma salía una franja oscura a lo largo del borde de salida. Era la
 línea de salto de profundidad: en la tarjeta cada píxel abarca unas tres
@@ -180,6 +180,12 @@ pintaba como línea. Arreglado en `generar-uas-miniaturas.mjs`: el umbral es
 `max(0,07, el salto de tres píxeles)`. Se regeneraron todas las tarjetas
 (los demás drones apenas cambian). Se descartó antes, probando, que fueran
 la luz, las normales de los escalones del ala o las caras de espaldas.
+
+**30-sep-2026, índice más ancho y términos del glosario** (commit en `main`,
+subido). `/uas` va a 860 px con tres tarjetas por fila (ver «El hangar: la
+tira de la portada y el índice»); los términos del glosario en los
+artículos, en mono con rayas y puntero «i» (ver «El glosario»); el contador
+de las tiras sube en 3 s.
 
 ## Pedir una ficha nueva: el guion completo
 
