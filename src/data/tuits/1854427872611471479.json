@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-09-30",
+  "tuit": {
+    "id_str": "1854427872611471479",
+    "created_at": "2024-11-07T07:37:13.000Z",
+    "text": "Shahed 136 (Geran-2) flying over Kyiv this morning. https://t.co/XoomzULIzJ",
+    "user": {
+      "name": "MenchOsint",
+      "screen_name": "MenchOsint",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1931115896602288128/b0tqXVn6_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/XoomzULIzJ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1854427750506889226/img/d7zSvgsZ9AeTVoUl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1854427750506889226/pl/DastiRmE81lIp7zb.m3u8?tag=16&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/1854427750506889226/vid/avc1/320x568/we2C7Epnc_CdDBbw.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/1854427750506889226/vid/avc1/480x852/rmHhkNU0mqY4xxlL.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1854427750506889226/vid/avc1/720x1280/lhI7iND6dLfXLD8J.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

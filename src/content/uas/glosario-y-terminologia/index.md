@@ -78,7 +78,7 @@ glosario: true
 
 - **Loitering munition** *(munición merodeadora)* — Dron de un solo uso que sirve a la vez para buscar y para atacar. Vuela sobre una zona durante un rato mientras manda vídeo al operador y, cuando este encuentra un objetivo, lo lanza contra él. Algunos modelos pueden reconocer el objetivo por su cuenta. El Switchblade estadounidense y el Lancet ruso son de este tipo.
 
-- **One-way attack drone** *(dron de ataque de un solo uso, OWA)* — Dron de largo alcance que funciona como un misil de crucero barato. Se lanza hacia unas coordenadas fijas y programadas de antemano, y se guía por GPS y navegación inercial siguiendo una ruta de puntos de paso para esquivar las defensas. No necesita cámara ni enlace en tiempo real, aunque muchos modelos recientes los llevan. Se usa para destruir infraestructuras a cientos o miles de kilómetros. El Shahed-136 iraní y el [MICH-2000](/uas/mich-2000) ucraniano son de este tipo.
+- **One-way attack drone** *(dron de ataque de un solo uso, OWA)* — Dron de largo alcance que funciona como un misil de crucero barato. Se lanza hacia unas coordenadas fijas y programadas de antemano, y se guía por GPS y navegación inercial siguiendo una ruta de puntos de paso para esquivar las defensas. No necesita cámara ni enlace en tiempo real, aunque muchos modelos recientes los llevan. Se usa para destruir infraestructuras a cientos o miles de kilómetros. El [Shahed-136](/uas/shahed-136) iraní y el [MICH-2000](/uas/mich-2000) ucraniano son de este tipo.
 
 - **Interceptor drone** *(dron interceptor)* — Dron que se lanza para derribar otros drones, chocando contra ellos o explotando a su lado. Es mucho más barato que un misil antiaéreo, y Ucrania lo usa como una de sus principales defensas contra los Shahed.
 

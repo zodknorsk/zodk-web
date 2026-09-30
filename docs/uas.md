@@ -14,8 +14,9 @@ Drones hechos: MICH-2000 (ala volante, Ucrania), Skydio X10D (cuadricóptero,
 EE. UU., del Ejército de Tierra), Wildfire (avión con cola en V, EE. UU.,
 hecho solo con renders del fabricante), MQ-9 Reaper (EE. UU., armado con
 cuatro Hellfire y dos GBU-12, con el tren fuera), RQ-11 Raven (EE. UU., de
-mano, con el morro de gimbal del Ejército de Tierra) y Bayraktar TB2
-(Turquía, con cuatro MAM-L). **Este documento es la receta**: con
+mano, con el morro de gimbal del Ejército de Tierra), Bayraktar TB2
+(Turquía, con cuatro MAM-L) y Shahed-136 (Irán, ala en delta, en el gris
+claro de los iraníes). **Este documento es la receta**: con
 él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
 final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
 fotos de cada maqueta.
@@ -90,7 +91,7 @@ el usuario la vio «bastante bien» y pidió dos retoques, hechos: el borde de s
 ala, que junto al cuerpo se curva hacia atrás hasta el motor, y la parte
 de atrás del cuerpo, con el cono largo y la hélice de 1,7 m del plano). Orden pedido por el usuario: TB2 y
 después Shahed-136. Hecho: nota `🇹🇷 Bayraktar TB2.md` (`completa`), maqueta `src/data/uas/bayraktar-tb2.ts` con seis partes y
-cuatro MAM-L, bandera turca en pixel art (en `src/data/banderas-uas.ts`), miniaturas de fuentes y del dron, importado. La
+cuatro MAM-L, bandera turca en pixel art (hoy en `src/data/banderas.json`), miniaturas de fuentes y del dron, importado. La
 maqueta se comparó con el plano de cinco vistas de Commons (a escala con
 12 m y 6,5 m) superponiéndola en ortográfica (`arte/superponer-plano.mjs`) y con
 fotos. Para hacerlo, el `tubo` admite ya
@@ -109,12 +110,42 @@ la portada; sin maqueta, el emoji. Después pidió lo mismo **en las tablas**
 de las notas del hangar (la fila «País» de los drones y de las municiones):
 lo hace el plugin `src/lib/banderas-tablas.mjs` (Sätteri, como el del
 glosario), que cambia el emoji del principio de una celda por la chapa; en
-la bóveda sigue el emoji. Las chapas están todas en
-`src/data/banderas-uas.ts` (EE. UU., Ucrania, Turquía y Noruega), las usan
-las maquetas y se buscan por su emoji: **un país nuevo, una entrada ahí**.
+la bóveda sigue el emoji. Las chapas se buscan por su emoji entre todas
+las de la web (ver «30-sep-2026, banderas en un solo sitio»).
 El tamaño, en `base.css` (`.bandera-uas svg`). De paso: la regla que
 atenúa el número de cada filtro pasó a `button > span:last-child` (con la
 bandera dentro, la apagaba). Windows, además, no pinta las banderas emoji.
+
+**30-sep-2026, banderas en un solo sitio** (sin commit). Lo propuso el
+usuario: las chapas estaban dibujadas en cuatro sitios (el planeta del
+hero en `arte/generar-tierra.py`, `/luna` en `alunizajes.ts`, `/marte` en
+`amartizajes.ts` y el hangar en `banderas-uas.ts`, ya borrado), con EE. UU.
+y Ucrania repetidas. Ahora todas están en **`src/data/banderas.json`**
+(dibujo, paleta, emoji y, si hace falta, una `nota` de por qué se dibujó
+así), que lee también el generador del planeta; en TypeScript se piden con
+`bandera("IR")` de `src/data/banderas.ts`, que tiene además `svgBandera` y
+`banderaPorEmoji`. **Un país nuevo = una entrada en `banderas.json`** y sale
+igual en todas partes; las tablas de las notas del hangar ya cambian
+cualquier emoji que tenga chapa. Las chapas del planeta salen idénticas
+(comprobado celda a celda; no hubo que regenerarlo). Único cambio visible:
+Ucrania en el hangar pasa a 3 filas azules y 4 amarillas, como en el
+planeta (lo había elegido el usuario allí); antes, 4 y 3.
+
+**30-sep-2026, Shahed-136** (en `main`, **sin commit**, ni en zodk-web
+ni en la bóveda). Orden pedido por el usuario: después del TB2. Decisiones
+del usuario: **una sola nota** para Shahed-136 y Geran-2 (el Geran va en la
+Historia y Rusia como operador) y la maqueta del **iraní, en gris claro**,
+no la del Geran negro. Hecho: nota `🇮🇷 Shahed-136.md` (`borrador`),
+maqueta `src/data/uas/shahed-136.ts` con ocho partes (en metros, escala 1,
+sacada del plano de Alexpl a 325 px/m y comparada en ortográfica; la planta
+cuadra casi exacta), miniaturas de fuentes y del dron, importado. Enlaces
+nuevos al Shahed desde la nota del MICH-2000 y desde el glosario (los pidió
+el usuario). La bandera de Irán ya existía (la del planeta, por el F-15E) y
+sale del archivo único de banderas. El usuario pasó capturas de la ficha
+de drone-warfare: su dibujo de tres vistas es una ilustración («not to
+exact scale», winglets mal); solo se usó para confirmar la carena de la
+antena GNSS, que el plano de Alexpl también dibuja. Falta: que el usuario
+revise la nota y la maqueta.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -174,7 +205,7 @@ del X10D).
   con el nombre del archivo de la maqueta** (`src/data/uas/skydio-x10d.ts`).
 - **Frontmatter**: el de siempre (sin claves propias: lo decidió el usuario;
   «las plantillas de Obsidian tienen todas el mismo formato»). `tipo:
-  objeto`, `estado: borrador`, `publicar: true`, `tags` solo con el país del fabricante y `dron`, nunca los países que lo
+  analisis` (como todas las del hangar), `estado: borrador`, `publicar: true`, `tags` solo con el país del fabricante y `dron`, nunca los países que lo
   operan (lo corrigió el usuario con el Raven, que llevaba también `españa`).
 - **Cuerpo** (pedido por el usuario), sin reglas `---` entre apartados:
   - Una **cita con `>`** justo bajo las propiedades, sin título: un párrafo
@@ -192,8 +223,12 @@ del X10D).
     Lo que no se sepa, «No publicado»; lo del fabricante, «(fabricante)».
   - `## Historia`: dos párrafos y uno corto de su uso reciente, con enlaces.
   - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`).
-  - `## Fuentes`: `- **Nombre de la web** ([fuente](url))`, debajo una línea
-    sangrada con de qué habla, y una línea en blanco entre fuentes.
+  - `## Fuentes` (formato que eligió el usuario con el TB2, 29-sep-2026):
+    una línea por fuente, `* **Medio**, mes año - Título real ([fuente](url))`,
+    con el título en su idioma. Las webs sin fecha (Wikipedia, fichas del
+    fabricante) van primero y sin fecha; el resto, de la más antigua a la
+    más reciente. Si no se encuentra la fecha, no se inventa: se deja sin
+    ella y se avisa. (La plantilla de Templater aún tiene el formato viejo.)
 - **Nombres que se enlazan solos**: en la web, la primera vez que sale un
   término del glosario o una munición del armamento lleva su tarjeta, pero
   solo si está escrito **igual que en su nota**. Términos: tal cual los
@@ -231,7 +266,7 @@ desplegado). Apuntar qué se ve y qué es supuesto.
 
 Solo datos (tipos en `src/data/uas/tipos.ts`). Copiar `mich-2000.ts` (ala
 volante) o `skydio-x10d.ts` (cuadricóptero). Imports de valor con extensión
-`.ts` (`import { PAISES_LUNA } from "../alunizajes.ts"`), porque los
+`.ts` (`import { bandera } from "../banderas.ts"`), porque los
 generadores de `arte/` leen estos archivos con Node.
 - **Ejes**: x hacia la punta del ala derecha, y arriba, z hacia el morro.
   Unidades libres; `escala` = metros por unidad (MICH 1, X10D 0,25): con
@@ -258,8 +293,9 @@ generadores de `arte/` leen estos archivos con Node.
   maqueta, a `COLOR_MAQUETA` (`visor-uas.ts`).
 - **`resalte: "tinta"`** en drones claros (la parte elegida sale oscura; en
   blanco no se distingue). Por defecto, blanco papel.
-- **`pais`**: la chapa en pixel art 11x7 (las de `alunizajes.ts`,
-  `amartizajes.ts`; si falta, se añade allí).
+- **`pais`**: la chapa en pixel art 11x7, `bandera("US")` (de
+  `src/data/banderas.ts`; si el país no está, se dibuja en
+  `src/data/banderas.json`).
 - **Escribir en metros** si hay medidas oficiales: el Reaper se escribe en
   metros y al final pasa a unidades con `aUnidades` (1 unidad = `ESCALA`
   m). Las unidades tienen que ser del orden de las del Wildfire (unas 2-3
@@ -810,3 +846,24 @@ Hay 46 fotos más de Commons en `arte/uas-fuentes/bayraktar-tb2/todas/`
 | kiev-morro.jpg | El morro de cerca: sonda y aletas de los lados (Zinnsoldat, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2,_Kyiv,_2019_03.jpg |
 | frente-teknofest.jpg | De frente (Kingbjelica, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-%C4%B0HA,_Teknofest_2019.jpg |
 | despegue-armado.jpg | Despegando, armado, con el tren fuera (Fuerza Aérea de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Ukrainian_bayraktar.jpg |
+
+**Shahed-136.** Medidas de los restos y analistas (3,5 m de largo, 2,5 m de
+envergadura, unos 200 kg). La forma, del plano de cuatro vistas de Commons
+(Alexpl, a escala, 325 px/m en el PNG de 1920 px; dibuja un Geran-2, igual
+por fuera): el morro, el cuerpo de 0,31 m, el borde de ataque (1,5 m hacia
+atrás por metro de envergadura), el corte del motor, los elevones, las
+winglets (+0,21 / −0,235 m) y los Pitot. El color, de las fotos al aire libre
+del desfile de Teherán (en las exposiciones, con luz cálida, parece beige).
+Hay 30 candidatas de Commons en `arte/uas-fuentes/shahed-136/candidatas/`
+(con `info.json`).
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| plano-cuatro-vistas.jpg | Plano a escala de cuatro vistas (Alexpl, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Shahed-136-350-250draw.svg |
+| plano-dia.jpg | Planta, perfil y panza con sus partes (DIA, dominio público) | https://commons.wikimedia.org/wiki/File:Shahed-136_(Geran-2)_drawing_by_Defense_Intelligence_Agency.jpg |
+| desfile-teheran.jpg | De lado, en un desfile en Teherán, 2023 (Meghdad Madadi, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Military_equipment_displayed_for_the_44th_Iranian_revolution_anniversary_rally_-_Shahed_136.jpg |
+| expo-lado.jpg | De lado con el motor al aire, Kermanshah (Behrouz Ahmadi, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:2023_IRGC_Aerospace_Force_achievements_Exhibition_in_Kermanshah_(018).jpg |
+| expo-detras.jpg | Desde detrás: motor, hélice y elevones, Kermanshah (Yahya Biabadi, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:2023_IRGC_Aerospace_Force_achievements_Exhibition_in_Kermanshah_(033).jpg |
+| expo-frente.jpg | De frente, Qom (Mohammadreza Jabbari, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:2023_IRGC_Aerospace_Force_achievements_Exhibition_in_Qom_(33).jpg |
+| motor-md-550.jpg | Motor MD-550 recuperado en Ucrania (Zenwort, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:MD-550_Shahed-136_20260702_122912cr.jpg |
+| mercer-street-winglet.jpg | Winglet en el Mercer Street, 2021 (CENTCOM, dominio público) | https://commons.wikimedia.org/wiki/File:29-30JULY2021_Drone_Attack_on_MT_Mercer_Street_-_Vertical_Stabilizer.jpg |
