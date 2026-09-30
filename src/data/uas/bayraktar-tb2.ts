@@ -8,7 +8,7 @@
 // Imágenes a tamaño completo en arte/uas-fuentes/bayraktar-tb2/ (fuera de
 // Git; enlaces en docs/uas.md).
 import type { Maqueta, Parte, Pieza } from "./tipos";
-import { TURQUIA } from "../banderas-uas.ts";
+import { bandera } from "../banderas.ts";
 
 const ESCALA = 4.5;
 
@@ -249,7 +249,7 @@ const maqueta: Maqueta = {
   escala: ESCALA,  // 1 unidad = 4,5 m; medidas de Baykar
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
-  pais: TURQUIA,
+  pais: bandera("TR"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
   fuentes: [

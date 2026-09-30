@@ -5,7 +5,7 @@
 // 1 unidad ≈ 7,8 m. Imágenes a tamaño completo en arte/uas-fuentes/wildfire/
 // (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta, Pieza } from "./tipos";
-import { PAISES_LUNA } from "../alunizajes.ts";
+import { bandera } from "../banderas.ts";
 
 const COMUNICADO = "https://www.ga-asi.com/ga-asi-unveils-wildfire-uas-for-military-civil-and-commercial-roles";
 const TWZ = "https://www.twz.com/air/first-look-at-general-atomics-wildfire-its-successor-to-the-mq-9-reaper";
@@ -53,7 +53,7 @@ const maqueta: Maqueta = {
   escala: 7.8,  // 1 unidad ≈ 7,8 m: unos 20 m de envergadura, como el Reaper (sin medidas oficiales)
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
-  pais: PAISES_LUNA.find((p) => p.codigo === "US")!,
+  pais: bandera("US"),
   piezas: [
     {
       // Morro abultado y redondeado, sin la joroba de la antena de satélite

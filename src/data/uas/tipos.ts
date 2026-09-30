@@ -3,7 +3,7 @@
 // Ejes: x hacia la punta del ala derecha, y hacia arriba, z hacia el morro.
 // Unidades libres: las maquetas no tienen escala.
 
-import type { Pais } from "../alunizajes";
+import type { Pais } from "../banderas";
 
 type Punto3 = [number, number, number];
 type Punto2 = [number, number];

@@ -1459,50 +1459,40 @@ def cloud_cells(lon0, night=False):
 # Bandera de 11x7 px con contorno oscuro de 1 px, esquinas recortadas y una
 # sombra de 1 px abajo a la derecha; centrada en el punto del país, gira con el
 # planeta, solo en la cara iluminada y lejos del borde, con la luz de las nubes.
-# Añadir un país = una entrada en BANDERAS (filas de 11 letras de BAND_PAL) y
-# otra en src/data/paises.ts (su nombre y las etiquetas de artículo que le
-# corresponden). En la web solo se pintan las de países con algún artículo.
-BAND_PAL = {
-    "R": (0xc8, 0x1e, 0x2d), "Y": (0xf4, 0xc4, 0x30), "E": (0x8e, 0x16, 0x20),   # España
-    "r": (0xc1, 0x27, 0x2d), "g": (0x1f, 0x7a, 0x3c),                           # Marruecos
-    "G": (0x2a, 0x9d, 0x48), "W": (0xf4, 0xf4, 0xf0), "Q": (0xd4, 0x16, 0x1c),   # Irán
-    "u": (0xb8, 0x26, 0x38), "w": (0xf4, 0xf4, 0xf0), "B": (0x33, 0x3d, 0x74),   # EE. UU.
-    "k": (0x1a, 0x1a, 0x1a),                                                    # Afganistán
-    "b": (0x00, 0x57, 0xb7), "y": (0xff, 0xd7, 0x00),                           # Ucrania
-    "K": (0x2c, 0x2c, 0x30),                                                    # Sáhara Occidental
-}
-BANDERAS = [   # (iso, nombre, lat, lon del punto del país, filas) — iso = el de src/data/paises.ts
-    ("ES", "España", 40.2, -3.6, ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY",
-                            "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"]),
-    ("MA", "Marruecos", 31.8, -6.3, ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr",
-                               "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"]),
-    # Sáhara Occidental: la bandera de la RASD. Negro, blanco y verde, el
-    # triángulo rojo en el asta y la media luna (una C) con la estrella en el
-    # blanco. El negro va algo levantado (K): con el de verdad, la franja de
-    # arriba se fundía con el contorno y parecía un marco más gordo.
-    ("EH", "Sáhara Occidental", 24.5, -13.0, ["QKKKKKKKKKK", "QQKKKKKKKKK", "QQQWWQQWWWW", "QQQQWQWWQWW",
-                                         "QQQWWQQWWWW", "QQggggggggg", "Qgggggggggg"]),
-    ("IR", "Irán", 32.5, 54.0, ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW",
-                          "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"]),
-    ("US", "EE. UU.", 39.5, -98.5, ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
-                              "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"]),
-    # Afganistán: bandera talibán actual, blanca con la shahada. Tres palabras
-    # sueltas (sin línea base continua, que se leía como un peine), una cola en
-    # diagonal y dos puntos bajo la palabra de la derecha.
-    ("AF", "Afganistán", 34.5553, 69.2075, ["WWWWWWWWWWW", "WWkWWWWkWkW", "WWkWWkWkWkW", "WkkWkkWkkkW",
-                                      "WWWWkWWWWWW", "WWWkWWWkWkW", "WWWWWWWWWWW"]),
-    # Ucrania: con 7 filas no se puede partir por la mitad; el azul se queda
-    # con 3 y el amarillo con 4 (el usuario prefirió esto a una chapa de otro alto).
-    ("UA", "Ucrania", 48.9, 31.3, ["bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "yyyyyyyyyyy",
-                             "yyyyyyyyyyy", "yyyyyyyyyyy", "yyyyyyyyyyy"]),
+# Los dibujos (filas de 11 letras y su paleta) están en src/data/banderas.json,
+# el mismo archivo que usan /luna, /marte y el hangar de UAS. Aquí solo va
+# dónde se clava cada chapa. Añadir un país = su dibujo en banderas.json (si no
+# está), una entrada en BANDERAS y otra en src/data/paises.ts (su nombre y las
+# etiquetas de artículo que le corresponden). En la web solo se pintan las de
+# países con algún artículo.
+import json
+import os
+
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "data", "banderas.json"), encoding="utf-8") as _f:
+    DIBUJOS = json.load(_f)
+
+
+def _rgb(h):
+    return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
+
+
+BANDERAS = [   # (iso, lat, lon del punto del país) — iso = el de src/data/paises.ts y banderas.json
+    ("ES", 40.2, -3.6),
+    ("MA", 31.8, -6.3),
+    ("EH", 24.5, -13.0),
+    ("IR", 32.5, 54.0),
+    ("US", 39.5, -98.5),
+    ("AF", 34.5553, 69.2075),
+    ("UA", 48.9, 31.3),
 ]
 BAND_PZ = 0.30                     # no se pinta más cerca del borde del disco que esto
 BAND_EDGE = (0x10, 0x13, 0x1c)
 
 
-def _chapa(rows):
+def _chapa(iso):
     """-> (celdas {(x, y): rgb} con origen en la esquina de la tela, sombra
     [(x, y)], ancla (centro de la tela))."""
+    rows, pal = DIBUJOS[iso]["filas"], DIBUJOS[iso]["paleta"]
     fw, fh = len(rows[0]), len(rows)
     cells = {}
     for y in range(-1, fh + 1):
@@ -1510,12 +1500,12 @@ def _chapa(rows):
             if x in (-1, fw) and y in (-1, fh):
                 continue                             # esquinas recortadas
             inside = 0 <= x < fw and 0 <= y < fh
-            cells[(x, y)] = BAND_PAL[rows[y][x]] if inside else BAND_EDGE
+            cells[(x, y)] = _rgb(pal[rows[y][x]]) if inside else BAND_EDGE
     sombra = [(x + 1, y + 1) for (x, y) in cells if (x + 1, y + 1) not in cells]
     return cells, sombra, (fw / 2.0, fh / 2.0)
 
 
-CHAPAS = [(iso, la, lo) + _chapa(rows) for iso, _n, la, lo, rows in BANDERAS]
+CHAPAS = [(iso, la, lo) + _chapa(iso) for iso, la, lo in BANDERAS]
 
 
 def flag_cells(lon0, night=False):

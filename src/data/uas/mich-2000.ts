@@ -3,7 +3,7 @@
 // publicadas: las proporciones son a ojo. Las fotos, a tamaño completo, en
 // arte/uas-fuentes/mich-2000/ (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta } from "./tipos";
-import { UCRANIA } from "../banderas-uas.ts";
+import { bandera } from "../banderas.ts";
 
 const OBORONKA = "https://oboronka.mezha.ua/istoriya-dronu-mich-2000-314113/";
 
@@ -12,7 +12,7 @@ const maqueta: Maqueta = {
   subtitulo: "Dron de ataque de largo alcance",
   // ~2,5 m de envergadura, como el Shahed-136 (no hay medidas publicadas).
   escala: 1,
-  pais: UCRANIA,
+  pais: bandera("UA"),
   piezas: [
     {
       // El cuerpo va medio hundido en el ala, como en las fotos del lanzador:

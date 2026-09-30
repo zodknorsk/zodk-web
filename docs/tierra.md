@@ -40,7 +40,9 @@ nombres "se irán puliendo con el tiempo".
   el planeta). Clic: se clava una X y la coordenada queda fija y resaltada;
   clic en la X o Esc la quita. En táctil no hay coordenada.
 - **Chapas de bandera** en los países con artículos; al pasar el ratón, ficha
-  con esos artículos (sin fichas en táctil).
+  con esos artículos (sin fichas en táctil). El dibujo de cada una está en
+  `src/data/banderas.json`, el mismo de /luna, /marte y el hangar; en
+  `generar-tierra.py` solo va dónde se clava.
 - **Una nave** a la vez sobrevolando (dron, aviones, satélite), al 55 % del
   tamaño de antes; el botón de la hélice trae otra. Al pasar el ratón, ficha
   y se para toda la portada.

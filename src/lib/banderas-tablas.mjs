@@ -1,15 +1,15 @@
 // Plugin de Sätteri para las notas del hangar de UAS (fichas de drones y
 // armamento): en las tablas, la bandera emoji del principio de una celda
 // («🇹🇷 Turquía», la fila «País») se cambia por su chapa en pixel art, la
-// misma de los filtros, las tarjetas y el visor (src/data/banderas-uas.ts).
+// misma de los filtros, las tarjetas y el visor (src/data/banderas.ts).
 // Lo decidió el usuario el 29-sep-2026. En la bóveda sigue el emoji. Si el
 // país no tiene chapa, se queda el emoji.
-import { banderaPorEmoji } from "../data/banderas-uas.ts";
+import { banderaPorEmoji } from "../data/banderas.ts";
 
 // Una bandera emoji: dos letras regionales seguidas.
 const BANDERA = /^([\u{1F1E6}-\u{1F1FF}]{2})\s*/u;
 
-// La chapa como nodos HAST: lo mismo que svgBandera (alunizajes.ts), con el
+// La chapa como nodos HAST: lo mismo que svgBandera (banderas.ts), con el
 // contorno oscuro de 1 px.
 function chapa(pais) {
   const rect = (x, y, w, h, fill) => ({ type: "element", tagName: "rect", properties: { x, y, width: w, height: h, fill }, children: [] });

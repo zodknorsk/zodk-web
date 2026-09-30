@@ -55,7 +55,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { PLANETA_V, LUNA_V, MARTE_V } from "../scripts/versiones.js";
   import { montarNombres } from "../scripts/nombres.js";
   import { AMARTIZAJES, PAISES_MARTE } from "../data/amartizajes";
-  import { svgBandera } from "../data/alunizajes";
+  import { svgBandera } from "../data/banderas";
   import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
 
   type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;

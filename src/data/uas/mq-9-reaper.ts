@@ -9,7 +9,7 @@
 // completo en arte/uas-fuentes/mq-9-reaper/ (fuera de Git; enlaces en
 // docs/uas.md).
 import type { Maqueta, Parte, Pieza } from "./tipos";
-import { PAISES_LUNA } from "../alunizajes.ts";
+import { bandera } from "../banderas.ts";
 
 const ESCALA = 7.8;
 
@@ -346,7 +346,7 @@ const maqueta: Maqueta = {
   escala: ESCALA,  // 1 unidad = 7,8 m; medidas de la ficha de la Fuerza Aérea
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
-  pais: PAISES_LUNA.find((p) => p.codigo === "US")!,
+  pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
   fuentes: [

@@ -3,21 +3,16 @@
 // estrellaron o no llegaron no entran: Chandrayaan-2, Peregrine y Beresheet.
 // Al pasar el ratón por una chapa se despliega su ficha.
 //
-// La chapa es la bandera del país en pixel art, con el mismo formato que las
-// de la Tierra (11x7 celdas + contorno de 1 px; ver BANDERAS en
-// arte/generar-tierra.py). Aquí van las filas porque en la Luna las chapas
-// son elementos del DOM encima del lienzo, no parte del dibujo.
+// La chapa es la bandera del país en pixel art (src/data/banderas.ts). En la
+// Luna las chapas son elementos del DOM encima del lienzo, no parte del dibujo.
 //
 // Las notas están en la bóveda, en 02 - Temas/moon-project; la ficha enlaza
 // a la del blog si está publicada (`publicar: true`). Añadir una misión = una
 // entrada en ALUNIZAJES y su foto en public/alunizajes/.
 
-export interface Pais {
-  codigo: string;
-  nombre: string;
-  bandera: string; // emoji, para la columna y la ficha
-  filas: string[]; // 7 filas de 11 letras de `paleta`
-  paleta: Record<string, string>;
+import { bandera, type Pais } from "./banderas.ts";
+
+export interface PaisLuna extends Pais {
   // Subgrupos que se despliegan bajo el país en la columna, cada uno con su
   // casilla (hoy solo EE. UU.). Las misiones del país llevan `grupo`.
   grupos?: { codigo: string; nombre: string }[];
@@ -39,58 +34,19 @@ export interface Alunizaje {
   texto: string;
 }
 
-export const PAISES_LUNA: Pais[] = [
+export const PAISES_LUNA: PaisLuna[] = [
   {
-    codigo: "US",
-    nombre: "EE. UU.",
-    bandera: "🇺🇸",
-    // La misma bandera que lleva EE. UU. en la Tierra (BAND_PAL "US").
-    filas: ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww",
-            "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"],
-    paleta: { u: "#b82638", w: "#f4f4f0", B: "#333d74" },
+    ...bandera("US"),
     grupos: [
       { codigo: "surveyor", nombre: "Programa Surveyor" },
       { codigo: "apolo", nombre: "Programa Apolo" },
       { codigo: "privadas", nombre: "Misiones privadas" },
     ],
   },
-  {
-    codigo: "RU",
-    nombre: "Rusia (URSS)",
-    bandera: "🇷🇺",
-    // Tricolor a partes iguales (2/3/2 de las 7 filas). Se usa la bandera rusa
-    // porque Unicode no tiene una de la URSS que se pinte en la mayoría de
-    // sistemas (saldría "SU" en una cajita).
-    filas: ["wwwwwwwwwww", "wwwwwwwwwww", "zzzzzzzzzzz", "zzzzzzzzzzz",
-            "zzzzzzzzzzz", "vvvvvvvvvvv", "vvvvvvvvvvv"],
-    paleta: { w: "#f4f4f4", z: "#0039a6", v: "#d52b1e" },
-  },
-  {
-    codigo: "CN",
-    nombre: "China",
-    bandera: "🇨🇳",
-    // Estrella grande (bloque 2x2) y las cuatro pequeñas en arco a su derecha,
-    // compactas arriba a la izquierda, como el cantón real.
-    filas: ["rrrrsrrrrrr", "rssrrsrrrrr", "rssrrrrrrrr", "rrrrrsrrrrr",
-            "rrrrsrrrrrr", "rrrrrrrrrrr", "rrrrrrrrrrr"],
-    paleta: { r: "#c8102e", s: "#f4c430" },
-  },
-  {
-    codigo: "IN",
-    nombre: "India",
-    bandera: "🇮🇳",
-    filas: ["ooooooooooo", "ooooooooooo", "wwwwwCwwwww", "wwwwwCwwwww",
-            "wwwwwwwwwww", "ggggggggggg", "ggggggggggg"],
-    paleta: { o: "#ff9933", w: "#f4f4f4", g: "#138808", C: "#000080" },
-  },
-  {
-    codigo: "JP",
-    nombre: "Japón",
-    bandera: "🇯🇵",
-    filas: ["wwwwwwwwwww", "wwwwHHHwwww", "wwwHHHHHwww", "wwwHHHHHwww",
-            "wwwHHHHHwww", "wwwwHHHwwww", "wwwwwwwwwww"],
-    paleta: { w: "#f4f4f4", H: "#bc002d" },
-  },
+  { ...bandera("RU"), nombre: "Rusia (URSS)" },
+  bandera("CN"),
+  bandera("IN"),
+  bandera("JP"),
 ];
 
 export const ALUNIZAJES: Alunizaje[] = [
@@ -186,13 +142,3 @@ export const RELES: Rele[] = [
 // .astro (no orbita como un dato más), pero el enlace a su nota sigue el mismo
 // patrón que RELES ("Leer la nota" solo si está publicada).
 export const ORION_NOTA = "orion-artemis-ii";
-
-/** La chapa de un país como SVG (11x7 + contorno de 1 px), igual que en la Tierra. */
-export function svgBandera(pais: Pais): string {
-  const fw = 11, fh = 7;
-  let r = `<rect x="0" y="0" width="${fw + 2}" height="${fh + 2}" fill="#10131c"/>`;
-  for (let y = 0; y < fh; y++)
-    for (let x = 0; x < fw; x++)
-      r += `<rect x="${x + 1}" y="${y + 1}" width="1" height="1" fill="${pais.paleta[pais.filas[y][x]]}"/>`;
-  return `<svg viewBox="0 0 ${fw + 2} ${fh + 2}" aria-hidden="true">${r}</svg>`;
-}

@@ -1,5 +1,5 @@
 // Amartizajes con chapa sobre el Marte de /marte. Como las chapas de /luna:
-// la bandera del país en pixel art (svgBandera de alunizajes.ts), en su sitio
+// la bandera del país en pixel art (svgBandera de banderas.ts), en su sitio
 // exacto y a cualquier zoom (a ×1 son lo único que sale). Al pasar el ratón
 // (o con un toque en el móvil), su ficha.
 //
@@ -15,29 +15,15 @@
 // Hard Landings). La chapa enlaza a /notas/<nota> solo si está publicada
 // (`publicar: true`); si no, es solo la ficha.
 
-import { PAISES_LUNA, type Pais } from "./alunizajes";
+import { bandera, type Pais } from "./banderas.ts";
+import { PAISES_LUNA } from "./alunizajes.ts";
 
 // Las banderas de /luna (EE. UU., URSS, China) y dos más que en la Luna no
 // hacen falta. Van aparte para no salir en la columna de países de /luna.
 export const PAISES_MARTE: Pais[] = [
   ...PAISES_LUNA,
-  {
-    codigo: "GB",
-    nombre: "Reino Unido",
-    bandera: "🇬🇧",
-    filas: ["wbbbwrwbbbw", "bwbbwrwbbwb", "wwwwwrwwwww", "rrrrrrrrrrr",
-            "wwwwwrwwwww", "bwbbwrwbbwb", "wbbbwrwbbbw"],
-    paleta: { b: "#012169", w: "#f4f4f4", r: "#c8102e" },
-  },
-  {
-    // La ESA: bandera europea, el círculo de estrellas en pixel art.
-    codigo: "EU",
-    nombre: "ESA (Europa)",
-    bandera: "🇪🇺",
-    filas: ["bbbbbybbbbb", "bbbybbbybbb", "bbbbbbbbbbb", "bbybbbbbybb",
-            "bbbbbbbbbbb", "bbbybbbybbb", "bbbbbybbbbb"],
-    paleta: { b: "#003399", y: "#ffcc00" },
-  },
+  bandera("GB"),
+  { ...bandera("EU"), nombre: "ESA (Europa)" },
 ];
 
 export interface Amartizaje {

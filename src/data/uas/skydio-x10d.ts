@@ -4,7 +4,7 @@
 // simplificadas: el cuerpo real tiene más aristas, rejillas y tapas. Fotos a tamaño completo en
 // arte/uas-fuentes/skydio-x10d/ (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta } from "./tipos";
-import { PAISES_LUNA } from "../alunizajes.ts";
+import { bandera } from "../banderas.ts";
 
 const SKYDIO = "https://www.skydio.com/x10d";
 const FICHA_TECNICA = "https://www.skydio.com/x10/technical-specs";
@@ -34,7 +34,7 @@ const maqueta: Maqueta = {
   escala: 0.25,  // 1 unidad ≈ 25 cm (medidas oficiales)
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
-  pais: PAISES_LUNA.find((p) => p.codigo === "US")!,
+  pais: bandera("US"),
   piezas: [
     // Cuerpo en dos pisos, con forma de hueso vista desde arriba: ancho
     // delante y detrás (donde se articulan los brazos) y estrecho en medio.

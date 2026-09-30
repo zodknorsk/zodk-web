@@ -10,7 +10,7 @@
 // unidades de la maqueta (1 unidad = 0,5 m). Imágenes a tamaño completo en
 // arte/uas-fuentes/rq-11-raven/ (fuera de Git; enlaces en docs/uas.md).
 import type { Maqueta, Parte, Pieza } from "./tipos";
-import { PAISES_LUNA } from "../alunizajes.ts";
+import { bandera } from "../banderas.ts";
 
 const ESCALA = 0.5;
 
@@ -256,7 +256,7 @@ const maqueta: Maqueta = {
   escala: ESCALA,  // 1 unidad = 0,5 m; medidas de la ficha del Ejército de Tierra
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
-  pais: PAISES_LUNA.find((p) => p.codigo === "US")!,
+  pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
   fuentes: [

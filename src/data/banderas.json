@@ -1,0 +1,86 @@
+{
+  "_leeme": "Todas las banderas en pixel art de la web, en un solo sitio: 11x7 celdas, cada fila con letras de su `paleta`. Las usan las chapas del planeta del hero (arte/generar-tierra.py), las de /luna y /marte, el hangar de UAS (maquetas, /uas, tablas de las notas) a través de src/data/banderas.ts. Un país nuevo = una entrada aquí; `nota`, si la hay, cuenta por qué se dibujó así.",
+  "ES": {
+    "nombre": "España", "bandera": "🇪🇸",
+    "filas": ["RRRRRRRRRRR", "RRRRRRRRRRR", "YYEEYYYYYYY", "YYEEYYYYYYY", "YYYYYYYYYYY", "RRRRRRRRRRR", "RRRRRRRRRRR"],
+    "paleta": { "R": "#c81e2d", "Y": "#f4c430", "E": "#8e1620" }
+  },
+  "MA": {
+    "nombre": "Marruecos", "bandera": "🇲🇦",
+    "filas": ["rrrrrrrrrrr", "rrrrrgrrrrr", "rrrgggggrrr", "rrrrgggrrrr", "rrrrgrgrrrr", "rrrgrrrgrrr", "rrrrrrrrrrr"],
+    "paleta": { "r": "#c1272d", "g": "#1f7a3c" }
+  },
+  "EH": {
+    "nombre": "Sáhara Occidental", "bandera": "🇪🇭",
+    "nota": "La bandera de la RASD. Negro, blanco y verde, el triángulo rojo en el asta y la media luna (una C) con la estrella en el blanco. El negro va algo levantado (K): con el de verdad, la franja de arriba se fundía con el contorno y parecía un marco más gordo.",
+    "filas": ["QKKKKKKKKKK", "QQKKKKKKKKK", "QQQWWQQWWWW", "QQQQWQWWQWW", "QQQWWQQWWWW", "QQggggggggg", "Qgggggggggg"],
+    "paleta": { "Q": "#d4161c", "K": "#2c2c30", "W": "#f4f4f0", "g": "#1f7a3c" }
+  },
+  "IR": {
+    "nombre": "Irán", "bandera": "🇮🇷",
+    "filas": ["GGGGGGGGGGG", "GGGGGGGGGGG", "WWWWQWQWWWW", "WWWWQQQWWWW", "WWWWWQWWWWW", "QQQQQQQQQQQ", "QQQQQQQQQQQ"],
+    "paleta": { "G": "#2a9d48", "W": "#f4f4f0", "Q": "#d4161c" }
+  },
+  "US": {
+    "nombre": "EE. UU.", "bandera": "🇺🇸",
+    "filas": ["BwBwBuuuuuu", "BBBBBwwwwww", "BwBwBuuuuuu", "BBBBBwwwwww", "uuuuuuuuuuu", "wwwwwwwwwww", "uuuuuuuuuuu"],
+    "paleta": { "u": "#b82638", "w": "#f4f4f0", "B": "#333d74" }
+  },
+  "AF": {
+    "nombre": "Afganistán", "bandera": "🇦🇫",
+    "nota": "La bandera talibán actual, blanca con la shahada. Tres palabras sueltas (sin línea base continua, que se leía como un peine), una cola en diagonal y dos puntos bajo la palabra de la derecha.",
+    "filas": ["WWWWWWWWWWW", "WWkWWWWkWkW", "WWkWWkWkWkW", "WkkWkkWkkkW", "WWWWkWWWWWW", "WWWkWWWkWkW", "WWWWWWWWWWW"],
+    "paleta": { "W": "#f4f4f0", "k": "#1a1a1a" }
+  },
+  "UA": {
+    "nombre": "Ucrania", "bandera": "🇺🇦",
+    "nota": "Con 7 filas no se puede partir por la mitad; el azul se queda con 3 y el amarillo con 4 (el usuario prefirió esto a una chapa de otro alto).",
+    "filas": ["bbbbbbbbbbb", "bbbbbbbbbbb", "bbbbbbbbbbb", "yyyyyyyyyyy", "yyyyyyyyyyy", "yyyyyyyyyyy", "yyyyyyyyyyy"],
+    "paleta": { "b": "#0057b7", "y": "#ffd700" }
+  },
+  "RU": {
+    "nombre": "Rusia", "bandera": "🇷🇺",
+    "nota": "Tricolor a partes iguales (2/3/2 de las 7 filas). En /luna y /marte hace también de la URSS: Unicode no tiene una bandera de la URSS que se pinte en la mayoría de sistemas.",
+    "filas": ["wwwwwwwwwww", "wwwwwwwwwww", "zzzzzzzzzzz", "zzzzzzzzzzz", "zzzzzzzzzzz", "vvvvvvvvvvv", "vvvvvvvvvvv"],
+    "paleta": { "w": "#f4f4f4", "z": "#0039a6", "v": "#d52b1e" }
+  },
+  "CN": {
+    "nombre": "China", "bandera": "🇨🇳",
+    "nota": "Estrella grande (bloque 2x2) y las cuatro pequeñas en arco a su derecha, compactas arriba a la izquierda, como el cantón real.",
+    "filas": ["rrrrsrrrrrr", "rssrrsrrrrr", "rssrrrrrrrr", "rrrrrsrrrrr", "rrrrsrrrrrr", "rrrrrrrrrrr", "rrrrrrrrrrr"],
+    "paleta": { "r": "#c8102e", "s": "#f4c430" }
+  },
+  "IN": {
+    "nombre": "India", "bandera": "🇮🇳",
+    "filas": ["ooooooooooo", "ooooooooooo", "wwwwwCwwwww", "wwwwwCwwwww", "wwwwwwwwwww", "ggggggggggg", "ggggggggggg"],
+    "paleta": { "o": "#ff9933", "w": "#f4f4f4", "g": "#138808", "C": "#000080" }
+  },
+  "JP": {
+    "nombre": "Japón", "bandera": "🇯🇵",
+    "filas": ["wwwwwwwwwww", "wwwwHHHwwww", "wwwHHHHHwww", "wwwHHHHHwww", "wwwHHHHHwww", "wwwwHHHwwww", "wwwwwwwwwww"],
+    "paleta": { "w": "#f4f4f4", "H": "#bc002d" }
+  },
+  "GB": {
+    "nombre": "Reino Unido", "bandera": "🇬🇧",
+    "filas": ["wbbbwrwbbbw", "bwbbwrwbbwb", "wwwwwrwwwww", "rrrrrrrrrrr", "wwwwwrwwwww", "bwbbwrwbbwb", "wbbbwrwbbbw"],
+    "paleta": { "b": "#012169", "w": "#f4f4f4", "r": "#c8102e" }
+  },
+  "EU": {
+    "nombre": "Unión Europea", "bandera": "🇪🇺",
+    "nota": "El círculo de estrellas en pixel art. En /marte es la de la ESA.",
+    "filas": ["bbbbbybbbbb", "bbbybbbybbb", "bbbbbbbbbbb", "bbybbbbbybb", "bbbbbbbbbbb", "bbbybbbybbb", "bbbbbybbbbb"],
+    "paleta": { "b": "#003399", "y": "#ffcc00" }
+  },
+  "TR": {
+    "nombre": "Turquía", "bandera": "🇹🇷",
+    "nota": "Media luna y estrella blancas sobre rojo.",
+    "filas": ["rrrrrrrrrrr", "rrrwwrrrrrr", "rrwrrrrwrrr", "rrwrrrwwwrr", "rrwrrrrwrrr", "rrrwwrrrrrr", "rrrrrrrrrrr"],
+    "paleta": { "r": "#e30a17", "w": "#f4f4f0" }
+  },
+  "NO": {
+    "nombre": "Noruega", "bandera": "🇳🇴",
+    "nota": "Cruz nórdica azul con borde blanco sobre rojo.",
+    "filas": ["rrrwbwrrrrr", "rrrwbwrrrrr", "wwwwbwwwwww", "bbbbbbbbbbb", "wwwwbwwwwww", "rrrwbwrrrrr", "rrrwbwrrrrr"],
+    "paleta": { "r": "#ba0c2f", "w": "#f4f4f0", "b": "#00205b" }
+  }
+}
