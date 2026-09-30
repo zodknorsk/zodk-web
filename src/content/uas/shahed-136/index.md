@@ -12,7 +12,7 @@ bandera: "\U0001F1EE\U0001F1F7"
 pais: Irán
 categoria: Dron de ataque de un solo uso
 ---
-> El Shahed-136 es el <mark>dron iraní de ataque de un solo uso</mark> que ha convertido los ataques de largo alcance en algo barato y masivo: un ala en delta de 2,5 m, con un motor de pistón detrás, que vuela sola hasta unas coordenadas y se estrella con unos 50 kg de explosivo. Irán lo estrenó en 2021 contra el petrolero [Mercer Street](https://iranprimer.usip.org/blog/2021/aug/10/centcom-iran-behind-drone-attack-tanker). Desde 2022, <mark>Rusia lo fabrica con el nombre de Geran-2</mark> y lo lanza cada noche contra Ucrania: [810 en una sola noche](https://www.npr.org/2025/09/07/nx-s1-5533036/russia-assaults-ukraine-800-drones-largest-attack-war) en septiembre de 2025. En 2026, en la guerra con EE. UU. e Israel, Irán lo usó en masa contra los países del Golfo: [1.422 drones solo contra Emiratos](https://www.csis.org/analysis/unpacking-irans-drone-campaign-gulf-early-lessons-future-drone-warfare) en la primera semana.
+> El Shahed-136 es el <mark>dron iraní de ataque de un solo uso</mark> que ha convertido los ataques de largo alcance en algo barato y masivo: un ala en delta de 2,5 m, con un motor de pistón detrás, que vuela sola hasta unas coordenadas y se estrella con unos 50 kg de explosivo. Irán lo estrenó en 2021 contra el petrolero [Mercer Street](https://iranprimer.usip.org/blog/2021/aug/10/centcom-iran-behind-drone-attack-tanker). Desde 2022, <mark>Rusia lo fabrica con el nombre de [Geran-2](/uas/geran-2)</mark> y lo lanza cada noche contra Ucrania: [810 en una sola noche](https://www.npr.org/2025/09/07/nx-s1-5533036/russia-assaults-ukraine-800-drones-largest-attack-war) en septiembre de 2025. En 2026, en la guerra con EE. UU. e Israel, Irán lo usó en masa contra los países del Golfo: [1.422 drones solo contra Emiratos](https://www.csis.org/analysis/unpacking-irans-drone-campaign-gulf-early-lessons-future-drone-warfare) en la primera semana.
 
 ⚠️ Irán no ha publicado sus cifras. Las medidas y el alcance salen de los restos recuperados en Ucrania y en el Golfo y de estimaciones de analistas.
 
@@ -45,15 +45,17 @@ Irán lo usó contra Israel en abril de 2024, con unos 170 drones que [fueron de
 ## En acción
 
 
-<blockquote class="tweet" data-tweet-id="1854427872611471479">
-  <a class="tweet-author" href="https://x.com/MenchOsint/status/1854427872611471479" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1931115896602288128-b0tqxvn6_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">MenchOsint</span>
-    <span class="tweet-handle">@MenchOsint</span>
+<blockquote class="tweet" data-tweet-id="2027804327457526092">
+  <a class="tweet-author" href="https://x.com/shanaka86/status/2027804327457526092" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1891509660630269952-kr7b-kac_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Shanaka Anslem Perera ⚡</span>
+    <span class="tweet-handle">@shanaka86</span>
   </a>
-  <div class="tweet-text">Shahed 136 (Geran-2) flying over Kyiv this morning.</div>
-  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-d7zsvgsz9aetvoul.jpg"><source src="https://video.twimg.com/amplify_video/1854427750506889226/vid/avc1/720x1280/lhI7iND6dLfXLD8J.mp4?tag=16" type="video/mp4" /><source src="/tweets/720x1280-lhi7ind6dlfxld8j.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/MenchOsint/status/1854427872611471479" target="_blank" rel="noopener">Verlo en X</a></video>
-  <a class="tweet-date" href="https://x.com/MenchOsint/status/1854427872611471479" target="_blank" rel="noopener">7 de noviembre de 2024</a>
+  <div class="tweet-text">The video has surfaced. Watch it carefully because it is the most important piece of footage to emerge from this war so far.<br>
+<br>
+CCTV captures the moment an Iranian drone arrives at Kuwait International Airport’s Terminal 1. Not nearby. Not overhead. At the terminal. The passenger […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-estrr8-tf9idcshj.jpg"><source src="https://video.twimg.com/amplify_video/2027804269496434688/vid/avc1/1290x734/DFXclXVMSmphfvKE.mp4" type="video/mp4" /><source src="/tweets/1290x734-dfxclxvmsmphfvke.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/shanaka86/status/2027804327457526092" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/shanaka86/status/2027804327457526092" target="_blank" rel="noopener">28 de febrero de 2026</a>
 </blockquote>
 
 

@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-09-30",
+  "tuit": {
+    "id_str": "2027804327457526092",
+    "created_at": "2026-02-28T17:53:21.000Z",
+    "text": "The video has surfaced. Watch it carefully because it is the most important piece of footage to emerge from this war so far.\n\nCCTV captures the moment an Iranian drone arrives at Kuwait International Airport’s Terminal 1. Not nearby. Not overhead. At the terminal. The passenger https://t.co/rtYYfIdrbd",
+    "note_tweet": true,
+    "user": {
+      "name": "Shanaka Anslem Perera ⚡",
+      "screen_name": "shanaka86",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1891509660630269952/kR7B-kAC_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/rtYYfIdrbd",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2027804269496434688/img/EsTRr8-tF9IDCshj.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2027804269496434688/pl/UMkzz5_fy8eAWWRt.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2027804269496434688/vid/avc1/474x270/o6oBzB_lDkU5fn1u.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2027804269496434688/vid/avc1/632x360/5DKlDf6wWLqO5gpk.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2027804269496434688/vid/avc1/1290x734/DFXclXVMSmphfvKE.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

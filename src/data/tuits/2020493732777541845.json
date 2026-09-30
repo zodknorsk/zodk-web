@@ -1,0 +1,61 @@
+{
+  "capturado": "2026-09-30",
+  "tuit": {
+    "id_str": "2020493732777541845",
+    "created_at": "2026-02-08T13:43:39.000Z",
+    "text": "🇷🇺🇺🇦 The interception of an R-60 air-to-air missile equipped э series Geran-2. Note the massive wing stabilizers. As with the turbojet-powered Geran-3, it is unclear whether there is a separate production line or if incomplete standard airframes are diverted for conversion. https://t.co/lwXYoMM0SK",
+    "user": {
+      "name": "Shahryar Pasandideh",
+      "screen_name": "shahpas",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1074853130574225409/M-yTylNM_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/lwXYoMM0SK",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2020493622123089920/img/W73f177uB14ZhG1R.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2020493622123089920/pl/M0deTLRsecezuRO9.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2020493622123089920/vid/avc1/490x270/o81PXl9lpptAjVlG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2020493622123089920/vid/avc1/654x360/z_6y3AjPMybVi3tq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2020493622123089920/vid/avc1/1280x704/Rwn97IA1zaRmFM0J.mp4"
+            }
+          ]
+        }
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/lwXYoMM0SK",
+        "media_url_https": "https://pbs.twimg.com/media/HAo8QP4aMAAVeja.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/lwXYoMM0SK",
+        "media_url_https": "https://pbs.twimg.com/media/HAo8R2UW8AEgtOr.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/lwXYoMM0SK",
+        "media_url_https": "https://pbs.twimg.com/media/HAo8SP7acAApPo7.jpg"
+      }
+    ]
+  }
+}

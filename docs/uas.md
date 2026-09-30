@@ -15,8 +15,9 @@ EE. UU., del Ejército de Tierra), Wildfire (avión con cola en V, EE. UU.,
 hecho solo con renders del fabricante), MQ-9 Reaper (EE. UU., armado con
 cuatro Hellfire y dos GBU-12, con el tren fuera), RQ-11 Raven (EE. UU., de
 mano, con el morro de gimbal del Ejército de Tierra), Bayraktar TB2
-(Turquía, con cuatro MAM-L) y Shahed-136 (Irán, ala en delta, en el gris
-claro de los iraníes). **Este documento es la receta**: con
+(Turquía, con cuatro MAM-L), Shahed-136 (Irán, ala en delta, en el gris
+claro de los iraníes) y Geran-2 (Rusia, la versión rusa del Shahed, en
+negro). **Este documento es la receta**: con
 él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
 final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
 fotos de cada maqueta.
@@ -145,7 +146,37 @@ sale del archivo único de banderas. El usuario pasó capturas de la ficha
 de drone-warfare: su dibujo de tres vistas es una ilustración («not to
 exact scale», winglets mal); solo se usó para confirmar la carena de la
 antena GNSS, que el plano de Alexpl también dibuja. Falta: que el usuario
-revise la nota y la maqueta.
+revise la nota y la maqueta. (Commit el 30-sep-2026: banderas `4731abb`,
+Shahed `0bb7a55`; en la bóveda, `fe0fd0c`.)
+
+**30-sep-2026, Geran-2** (en `main`, **sin commit**). Lo pidió el usuario
+después del Shahed: nota aparte, maqueta **en negro**, texto sobre su
+historia, dónde se fabrica y qué novedades lleva. País: Rusia (el
+fabricante), etiquetas `rusia` y `dron`. En «En acción», **vídeos solo del
+Geran en su nota y solo del Shahed iraní en la del Shahed** (el de Kiev pasó
+al Geran; al Shahed, el del aeropuerto de Kuwait). El usuario pidió también
+**cruzar varias fuentes** y no apoyarse casi solo en drone-warfare: la nota
+usa AP, Reuters (vía The Moscow Times), GUR, Defense Express, ISIS, CSIS,
+CNN, NPR y Euronews. Maqueta `src/data/uas/geran-2.ts`: importa la del
+Shahed y reutiliza lo de detrás (ala hasta el borde de salida, elevones,
+winglets, motor, hélice, carena), en negro; rehace el morro (0,19 m más
+corto) y el borde de ataque junto al cuerpo con el plano de Alexpl de 2025,
+y añade el panel CRPA de cuatro elementos en el ala derecha. Ojo: ese plano
+coincide exactamente con el **plano del Shahed de 3,35 m** (Alexpl, 2024),
+revisión del de 3,50 m (2023) con que se hizo el Shahed; las proporciones
+del de la DIA se parecen más al nuevo. **Pendiente de decidir** por el
+usuario: si se rehace el Shahed con el de 3,35 m.
+
+**30-sep-2026, tarjetas de /uas** (sin commit). El usuario vio el pixel art
+de la tarjeta del Shahed «raro» comparado con el visor: en el primer
+fotograma salía una franja oscura a lo largo del borde de salida. Era la
+línea de salto de profundidad: en la tarjeta cada píxel abarca unas tres
+veces más dron que en el visor, y sobre un ala grande vista de lado el
+salto normal entre dos píxeles de la misma superficie pasaba de 0,07 y se
+pintaba como línea. Arreglado en `generar-uas-miniaturas.mjs`: el umbral es
+`max(0,07, el salto de tres píxeles)`. Se regeneraron todas las tarjetas
+(los demás drones apenas cambian). Se descartó antes, probando, que fueran
+la luz, las normales de los escalones del ala o las caras de espaldas.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -394,7 +425,10 @@ tira de la portada (`planta.png`; los drones muy grandes se reducen hasta
 72x70, `PLANTA_MAX`). Pinta como el modo Pixel del visor: mismo contorno,
 líneas en los saltos de profundidad y en las juntas entre piezas, y
 tramado en las curvas (la planta de la portada, sin líneas ni tramado,
-como estaba). Repetir si cambia la maqueta o las paletas.
+como estaba). La línea de salto de profundidad salta a 0,07 unidades o al
+salto de tres píxeles, lo que sea mayor (si no, un ala grande vista de lado
+salía entera como línea: el Shahed). Repetir si cambia la maqueta o las
+paletas.
 
 ### 8. Capturas
 
@@ -867,3 +901,19 @@ Hay 30 candidatas de Commons en `arte/uas-fuentes/shahed-136/candidatas/`
 | expo-frente.jpg | De frente, Qom (Mohammadreza Jabbari, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:2023_IRGC_Aerospace_Force_achievements_Exhibition_in_Qom_(33).jpg |
 | motor-md-550.jpg | Motor MD-550 recuperado en Ucrania (Zenwort, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:MD-550_Shahed-136_20260702_122912cr.jpg |
 | mercer-street-winglet.jpg | Winglet en el Mercer Street, 2021 (CENTCOM, dominio público) | https://commons.wikimedia.org/wiki/File:29-30JULY2021_Drone_Attack_on_MT_Mercer_Street_-_Vertical_Stabilizer.jpg |
+
+**Geran-2.** La forma de detrás es la del Shahed (misma maqueta). El morro
+y el borde de ataque, del plano de Alexpl del Geran-2 de 2025 (3,35 m, a 325
+px/m, igual que el del Shahed): morro 0,19 m más corto, cuerpo de 0,29 m,
+borde de ataque 1,34 m hacia atrás por metro de envergadura, que llega a
+la misma punta. El panel CRPA, del mismo plano (x = 0,57 m, a 2,19 m del
+morro). El negro, de las fotos de restos de la Policía Nacional de Ucrania.
+
+| Archivo | Qué enseña | URL |
+|---|---|---|
+| plano-2025.jpg | Plano a escala del Geran-2 de 2025, en negro, con variantes del panel GNSS (Alexpl, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Geran2-335-250-2025.svg |
+| vinnytsia-negro.jpg | Geran negro caído en Vínnytsia, 2024 (Policía Nacional de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Remains_of_Shahed_drone_in_Vinnytsia_Oblast,_2024-03-18_(01).jpg |
+| sumy-negro.jpg | Geran-2 negro con artificieros, Sumy, 2024 (Policía Nacional de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Shahed_drone_in_Sumy_Oblast_(2024-10-17)_01.jpg |
+| chernihiv-hielo.jpg | Sobre el hielo del embalse de Kiev, 2026 (Servicio de Emergencias de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Remains_of_Shahed_drone_in_Chernihiv_Oblast,_2026-02-19_(01).jpg |
+| kiev-winglet.jpg | Winglet con ГЕРАНЬ-2 y elevón con НЕ БРАТЬСЯ, Kiev, 2022 (GUR, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Remains_of_a_downed_Geran-2_drone_in_Kyiv,_2022-12-14.jpg |
+| motor-vinnytsia.jpg | Motor de un Geran caído en Vínnytsia (Policía Nacional de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Remains_of_Shahed_drone_in_Vinnytsia_Oblast,_2024-03-15_(01).jpg |
