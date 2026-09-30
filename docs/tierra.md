@@ -46,6 +46,10 @@ nombres "se irán puliendo con el tiempo".
 - **Una nave** a la vez sobrevolando (dron, aviones, satélite), al 55 % del
   tamaño de antes; el botón de la hélice trae otra. Al pasar el ratón, ficha
   y se para toda la portada.
+  Las fichas siguen las mismas filas y etiquetas que las del hangar de UAS
+  (Fabricante, País con su chapa en pixel art, Primer vuelo, Envergadura,
+  MTOW, Techo, Autonomía y las propias del tipo; «No publicado» si no se
+  sabe). Reglas en la cabecera de `src/data/aeronaves.ts`.
 - **Sol y luna** arriba a la izquierda y **Marte** a la derecha, cerca del
   borde de arriba del globo; durante el acercamiento se van a las esquinas.
   La luna lleva la fase real del día. Pulsar la luna (de noche) o Marte hace

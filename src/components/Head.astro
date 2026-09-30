@@ -222,8 +222,8 @@ const socialImageURL = new URL(image, Astro.site);
       specs.querySelector("dl").innerHTML = a.specs
         .map(([k, v]) => {
           const flag =
-            k === "Origen" && a.bandera
-              ? " <span class=\"craft-flag\">" + a.bandera + "</span>"
+            k === "País"
+              ? " <span class=\"craft-flag bandera-uas\">" + a.banderaSvg + "</span>"
               : "";
           return "<dt>" + k + "</dt><dd>" + v + flag + "</dd>";
         })

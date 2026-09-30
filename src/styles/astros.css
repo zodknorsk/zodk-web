@@ -212,10 +212,8 @@ html.dark .viaje-icono-tierra { background-image: url(/zodk-tierra-noche.png); }
 .craft-specs dt { color: #8b93a0; }
 .craft-specs dd { margin: 0; color: #dfe4ea; }
 .craft-flag {
-  margin-left: 0.15em;
-  font-size: 0.85rem;
-  vertical-align: -0.08em;
-  /* en Windows los emoji de bandera no se pintan */
+  margin-left: 0.3em;
+  font-size: 0.68rem; /* el tamaño de la chapa (1,3em) sale de .bandera-uas */
 }
 
 /* --- Colocación de la ficha: igual para todas las trayectorias --------- */

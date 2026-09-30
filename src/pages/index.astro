@@ -13,6 +13,7 @@ import ThemeToggle from "@components/ThemeToggle.astro";
 import BanderaUAS from "@components/BanderaUAS.astro";
 import { SITE, HOME, STACK, CONTACTO, SEGUIMIENTO, OPERACIONES, ANALISIS } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
+import { bandera, svgBandera } from "@data/banderas";
 import { PAISES } from "@data/paises";
 import { ALUNIZAJES } from "@data/alunizajes";
 import { AMARTIZAJES } from "@data/amartizajes";
@@ -225,9 +226,7 @@ const dos = (n: number) => String(n).padStart(2, "0");
                 <dt>{k}</dt>
                 <dd>
                   {v}
-                  {k === "Origen" && objetoInicial.bandera && (
-                    <span class="craft-flag">{objetoInicial.bandera}</span>
-                  )}
+                  {k === "País" && <span class="craft-flag bandera-uas" set:html={svgBandera(bandera(objetoInicial.pais))} />}
                 </dd>
               </Fragment>
             ))}
@@ -236,7 +235,7 @@ const dos = (n: number) => String(n).padStart(2, "0");
       </div>
     </div>
     {AERONAVES.length > 1 && (
-      <script is:inline type="application/json" id="aeronaves-data" set:html={JSON.stringify(AERONAVES)} />
+      <script is:inline type="application/json" id="aeronaves-data" set:html={JSON.stringify(AERONAVES.map((a) => ({ ...a, banderaSvg: svgBandera(bandera(a.pais)) })))} />
     )}
     <span class="hero-scroll" aria-hidden="true"></span>
   </section>
