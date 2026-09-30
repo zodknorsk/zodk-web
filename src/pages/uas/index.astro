@@ -117,14 +117,14 @@ const paises = recuento((f) => f.data.pais);
 
 <script>
   // Cuántos términos y municiones hay, en una chapa que cuenta desde 0 al
-  // cargar la página, en 1,6 s (lo eligió el usuario el 29-sep-2026 entre
-  // varias velocidades). Sin animación si se piden menos movimientos.
+  // cargar la página, en 3 s (con 1,6 s casi no se veía subir mientras
+  // aparece la página). Sin animación si se piden menos movimientos.
   document.addEventListener("astro:page-load", () => {
     const cuentas = [...document.querySelectorAll<HTMLElement>(".uas-cuenta")];
     if (!cuentas.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t0 = performance.now();
     const paso = (t: number) => {
-      const k = Math.min(1, (t - t0) / 1600);
+      const k = Math.min(1, (t - t0) / 3000);
       const suave = 1 - (1 - k) ** 3;
       for (const el of cuentas) el.textContent = String(Math.round(Number(el.dataset.n) * suave));
       if (k < 1) requestAnimationFrame(paso);

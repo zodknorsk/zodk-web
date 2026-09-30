@@ -664,8 +664,9 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
   las cuatro primeras municiones y cuántas hay («7 bombas o misiles
   disponibles en la armería», texto del usuario del 29-sep-2026). El número
   de las dos tiras va en una chapa en tinta que cuenta desde 0 al cargar,
-  en 1,6 s (el usuario la eligió entre seis opciones y luego la velocidad,
-  probando de 0,9 a 3,5 s; descartadas: casillas de dígitos, punto verde que
+  en 3 s (el usuario la eligió entre seis opciones y luego la velocidad,
+  probando de 0,9 a 3,5 s; primero 1,6 s, y el 30-sep-2026 pidió más lento
+  porque al recargar casi no se veía subir; descartadas: casillas de dígitos, punto verde que
   late, número grande a la derecha y rotulador amarillo).
 - **Las fotos**: en `02 - Temas/Adjuntos/armamento-*.jpg`, de Wikimedia
   Commons, con licencia libre (dominio público del ejército de EE. UU., o
