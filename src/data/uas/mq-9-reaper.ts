@@ -8,7 +8,7 @@
 // la misma escala que el Wildfire (1 unidad = 7,8 m). Imágenes a tamaño
 // completo en arte/uas-fuentes/mq-9-reaper/ (fuera de Git; enlaces en
 // docs/uas.md).
-import type { Maqueta, Parte, Pieza } from "./tipos";
+import type { Calca, Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";
 import { bandera } from "../banderas.ts";
 
 const ESCALA = 7.8;
@@ -19,22 +19,47 @@ const ASF = "https://www.airandspaceforces.com/weapons/mq-9/";
 const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 
 // Ala recta y larga: altura, punta, bordes y grosor en la raíz y en la punta.
-// Cruza el fuselaje a media altura, a unos 5 m del morro.
-const ALA = { y: 0.06, punta: 10.05, baRaiz: 0.45, bsRaiz: -1.15, baPunta: 0.07, bsPunta: -0.88, tRaiz: 0.32, tPunta: 0.16 };
+// Nace en la mitad baja del costado, con la cara de arriba a la altura de la
+// arista (perfil del «CH» 152 y foto francesa; en la 1.0 iba 20 cm más alta).
+const ALA = { y: -0.14, punta: 10.05, baRaiz: 0.45, bsRaiz: -1.15, baPunta: 0.07, bsPunta: -0.88, tRaiz: 0.32, tPunta: 0.16 };
 const enAla = (raiz: number, punta: number) => (x: number) => raiz + ((punta - raiz) * x) / ALA.punta;
 const bordeAtaque = enAla(ALA.baRaiz, ALA.baPunta);
 const bordeSalida = enAla(ALA.bsRaiz, ALA.bsPunta);
+const grosorAla = enAla(ALA.tRaiz, ALA.tPunta);
+// Punto de la cuerda a la fracción f, del borde de ataque (0) al de salida (1).
+const cuerdaMedia = (x: number, f: number) => bordeAtaque(x) - f * (bordeAtaque(x) - bordeSalida(x));
+
+// Superficies de mando del ala, piezas aparte con su hueco (fotos de cerca):
+// flaps por dentro y alerones por fuera, de un cuarto de la cuerda.
+const MANDO = { cuerda: 0.24, hueco: 0.006, flap: [0.75, 4.5], aleron: [4.51, 9.55] };
+const bisagra = (x: number) => bordeSalida(x) + MANDO.cuerda * (bordeAtaque(x) - bordeSalida(x));
+// Con el grosor justo para seguir al ala en la bisagra: se ven como una línea
+// fina, no como piezas sueltas.
+const estMando = (x: number): [number, number, number, number] => [x, bisagra(x) - MANDO.hueco, bordeSalida(x), grosorAla(x) * 0.45];
 
 // Dos soportes bajo cada ala (foto de frente con teleobjetivo): el de dentro
 // con una GBU-12 y el de fuera con dos Hellfire.
 const SOPORTE = { dentro: 1.3, fuera: 2.25 };
-const GBU = { y: -0.5 };
-const HELLFIRE = { y: -0.66, xs: [SOPORTE.fuera - 0.19, SOPORTE.fuera + 0.19] };
+// Bajo el soporte, que cuelga 0,34 m del ala: la GBU-12 pegada a él (en la
+// primera versión colgaba 4 cm por debajo, en el aire) y el lanzador de los
+// Hellfire con sus raíles.
+const SOPORTE_Y = ALA.y - 0.04, SOPORTE_BAJO = SOPORTE_Y - 0.34;
+const GBU = { y: SOPORTE_BAJO - 0.137 };
+const LANZADOR_Y = SOPORTE_BAJO - 0.08;
+const HELLFIRE = { y: LANZADOR_Y - 0.26, xs: [SOPORTE.fuera - 0.19, SOPORTE.fuera + 0.19] };
 // Los tubos no se reflejan solos: cada arma se monta en los dos lados.
 const LADOS = [1, -1];
 
 // Suelo, bajo las ruedas: con él, 3,8 m de alto hasta la punta de la cola.
 const SUELO = -1.62;
+// Patas del tren: dónde empiezan y acaban, y un punto a lo largo de ellas
+// (f de 0 a 1), desplazado `dz` hacia el morro.
+const PATA = { arriba: [0.62, -0.36, -0.3] as [number, number, number], abajo: [1.7, SUELO + 0.23, -0.05] as [number, number, number] };
+const enPata = (f: number, dz = 0): [number, number, number] =>
+  [PATA.arriba[0] + (PATA.abajo[0] - PATA.arriba[0]) * f, PATA.arriba[1] + (PATA.abajo[1] - PATA.arriba[1]) * f, PATA.arriba[2] + (PATA.abajo[2] - PATA.arriba[2]) * f + dz];
+const NARIZ_TREN = { arriba: [0, -0.45, 2.35] as [number, number, number], abajo: [0, -1.25, 2.87] as [number, number, number] };
+const enPataMorro = (f: number, dz = 0): [number, number, number] =>
+  [0, NARIZ_TREN.arriba[1] + (NARIZ_TREN.abajo[1] - NARIZ_TREN.arriba[1]) * f, NARIZ_TREN.arriba[2] + (NARIZ_TREN.abajo[2] - NARIZ_TREN.arriba[2]) * f + dz];
 
 // Cuatro aletas en X alrededor del eje de un misil o una bomba: el contorno
 // va en [z, distancia al eje].
@@ -62,7 +87,11 @@ const gbu = (x: number): Pieza[] => [
   ...aletasX(`gbu-canard-${x}`, x, GBU.y, [[1.74, 0.08], [1.52, 0.08], [1.56, 0.19], [1.68, 0.19]], "gris"),
   ...aletasX(`gbu-ala-${x}`, x, GBU.y, [[-0.96, 0.08], [-1.42, 0.08], [-1.42, 0.37], [-1.28, 0.37]], "gris"),
 ];
-const PIEZAS_GBU = LADOS.flatMap((s) => gbu(s * SOPORTE.dentro));
+const PIEZAS_GBU = LADOS.flatMap((s) => [
+  ...gbu(s * SOPORTE.dentro),
+  // Los dos ganchos que la sujetan al soporte.
+  ...[0.45, -0.2].map((z, i): Pieza => ({ tipo: "varilla", id: `gbu-gancho-${s}-${i}`, acabado: "metal", desde: [s * SOPORTE.dentro, GBU.y + 0.12, z], hasta: [s * SOPORTE.dentro, SOPORTE_BAJO + 0.02, z], radio: 0.022 })),
+]);
 
 // Hellfire: 1,63 m, con el buscador redondo delante, la franja amarilla de
 // la carga explosiva y dos juegos de aletas en X. Van de dos en dos, colgados
@@ -84,11 +113,11 @@ const idsHellfire = (x: number) => [
   ...[0, 1, 2, 3].flatMap((i) => [`hellfire-alas-${x}-${i}`, `hellfire-timones-${x}-${i}`]),
 ];
 
-// Soportes bajo el ala: cajas con el frente redondeado, casi tan largas como
-// la cuerda.
+// Soportes bajo el ala: casi tan largos como la cuerda y con perfil.
 const soporte = (id: string, x: number): Pieza => ({
-  tipo: "caja", id, acabado: "gris", espejo: true, redondeo: 0.06,
-  centro: [x, -0.14, bordeAtaque(x) - 0.43], tam: [0.14, 0.34, 0.8],
+  // Con perfil, como una aleta que cuelga del ala (en la 1.0, una caja).
+  tipo: "ala", id, acabado: "gris", vertical: true, espejo: true, x, y: SOPORTE_Y,
+  estaciones: [[0, bordeAtaque(x) - 0.02, bordeAtaque(x) - 0.84, 0.14], [0.34, bordeAtaque(x) - 0.06, bordeAtaque(x) - 0.84, 0.13]],
 });
 
 // Carenados de los mandos del ala: bultos alargados bajo el borde de salida,
@@ -96,19 +125,34 @@ const soporte = (id: string, x: number): Pieza => ({
 const CARENADOS = [3.0, 5.0, 6.6, 8.3];
 const carenado = (x: number): Pieza => ({
   tipo: "caja", id: `carenado-${x}`, acabado: "gris", espejo: true, redondeo: 0.03,
-  centro: [x, 0.03, bordeSalida(x) + 0.14], tam: [0.09, 0.1, 0.5],
+  centro: [x, ALA.y - 0.03, bordeSalida(x) + 0.14], tam: [0.09, 0.1, 0.5],
 });
 
-// Cola en V: contorno en su plano, [z, distancia a lo largo de la
-// superficie], de la raíz (dentro del fuselaje) a la punta.
-const COLA = { largo: 3.95, baRaiz: -2.9, bsRaiz: -3.9, baPunta: -4.04, bsPunta: -4.67 };
+// Cola en V: de la raíz (en el eje, dentro del fuselaje) a la punta, a lo
+// largo de la superficie, a 32°. Contorno medido en el perfil del «CH» 152
+// quitando que la foto está hecha algo desde atrás (unos 16°: cada punto de
+// la cola se corre 0,28 m por cada metro que se aparta del eje): el borde de
+// ataque en flecha, el de salida casi recto y la cuerda de 1,39 m a 0,61 m.
+// En la primera versión los dos bordes iban en flecha y no se parecía.
+const COLA = { largo: 3.95, y: -0.38, baRaiz: -2.66, bsRaiz: -4.05, baPunta: -3.58, bsPunta: -4.19, angulo: (32 * Math.PI) / 180 };
 const bordeSalidaCola = (d: number) => COLA.bsRaiz + ((COLA.bsPunta - COLA.bsRaiz) * d) / COLA.largo;
+const bordeAtaqueCola = (d: number) => COLA.baRaiz + ((COLA.baPunta - COLA.baRaiz) * d) / COLA.largo;
+// Estación de la cola a d metros de la raíz, a lo largo de la superficie en V;
+// con `timon`, el borde de salida adelantado hasta la bisagra del timón.
+const TIMON = { cuerda: 0.3, desde: 0.6, hasta: 3.75 };
+const bisagraCola = (d: number) => bordeSalidaCola(d) + TIMON.cuerda * (bordeAtaqueCola(d) - bordeSalidaCola(d));
+const grosorCola = (d: number) => 0.13 + ((0.07 - 0.13) * d) / COLA.largo;
+const estCola = (d: number, timon = false): [number, number, number, number, number] =>
+  [d * Math.cos(COLA.angulo), bordeAtaqueCola(d), timon ? bisagraCola(d) : bordeSalidaCola(d), grosorCola(d), d * Math.sin(COLA.angulo)];
+const estTimon = (d: number): [number, number, number, number, number] =>
+  [d * Math.cos(COLA.angulo), bisagraCola(d) - 0.006, bordeSalidaCola(d), grosorCola(d) * 0.45, d * Math.sin(COLA.angulo)];
 // Carenados de los mandos de la cola: la misma superficie, más gruesa en una
 // franja corta junto al borde de salida (fotos de perfil).
 const carenadoCola = (d: number): Pieza => ({
-  tipo: "placa", id: `carenado-cola-${d}`, acabado: "gris", plano: "vertical", x: 0, grosor: 0.17,
-  espejo: true, inclinacion: 56, bisel: 0.04,
-  planta: [[bordeSalidaCola(d) + 0.45, d], [bordeSalidaCola(d) - 0.05, d], [bordeSalidaCola(d + 0.09) - 0.05, d + 0.09], [bordeSalidaCola(d + 0.09) + 0.45, d + 0.09]],
+  // Pequeños: las bisagras del timón (en la primera versión, barras gruesas).
+  tipo: "placa", id: `carenado-cola-${d}`, acabado: "gris", plano: "vertical", x: 0, y: COLA.y, grosor: 0.09,
+  espejo: true, inclinacion: 58, bisel: 0.02,
+  planta: [[bordeSalidaCola(d) + 0.3, d], [bordeSalidaCola(d) + 0.02, d], [bordeSalidaCola(d + 0.05) + 0.02, d + 0.05], [bordeSalidaCola(d + 0.05) + 0.3, d + 0.05]],
 });
 const CARENADOS_COLA = [1.6, 2.9];
 
@@ -118,53 +162,134 @@ const esfera = (z: number, r: number): [number, number][] =>
     const a = (i / 12) * Math.PI;
     return [z + r * Math.cos(a), r * Math.sin(a)];
   });
-const TORRETA = { y: -0.66, z: 4.34, r: 0.23 };
+const TORRETA = { y: -0.6, z: 4.41 };
+// Escape: de la base (junto al cono) a la boca, hacia fuera, arriba y delante.
+const ESCAPE = { x: 0, y: 0.6 };
+
+// Secciones del cuerpo: [z, medio ancho, lomo, panza, cintura], en metros.
+// Arriba, una superelipse de n = 2,8 (la joroba vista de frente). Abajo, la
+// arista viva que se ve en todas las fotos: el costado de arriba llega a la
+// cintura ya inclinado hacia arriba (recoge el sol) y ahí se quiebra hacia
+// dentro en una cara empinada que mira abajo (en sombra) hasta una panza plana
+// de casi todo el ancho (la cara baja unos 15° desde la vertical), con las esquinas bien redondeadas (foto de frente
+// de Kandahar). La señaló el
+// usuario: en la primera versión el paso era redondeado y no se veía.
+const sec = ([z, ancho, arriba, abajo, cintura]: number[]): Seccion => ({ z, ancho, arriba, abajo, cintura, n: 2.6, arista: 0.45, panza: ancho * 0.87 });
+const MORRO: Seccion[] = [
+  [5.505, 0, 0, 0, 0],
+  [5.45, 0.13, 0.091, -0.105, -0.02],
+  [5.33, 0.24, 0.217, -0.228, -0.04],
+  [5.2, 0.32, 0.318, -0.296, -0.06],
+  [5.0, 0.42, 0.497, -0.363, -0.1],
+  [4.75, 0.49, 0.657, -0.4, -0.12],
+  [4.5, 0.53, 0.766, -0.417, -0.13],
+  [4.25, 0.555, 0.833, -0.429, -0.135],
+  [4.0, 0.565, 0.871, -0.438, -0.135],
+  [3.75, 0.57, 0.865, -0.445, -0.14],
+  [3.5, 0.572, 0.826, -0.451, -0.14],
+  [3.25, 0.574, 0.762, -0.461, -0.14],
+  [3.0, 0.575, 0.679, -0.468, -0.145],
+  [2.75, 0.575, 0.603, -0.478, -0.145],
+  [2.5, 0.574, 0.528, -0.488, -0.15],
+  [2.2, 0.572, 0.458, -0.5, -0.15],
+].map(sec);
+const CUERPO: Seccion[] = [
+  [2.2, 0.572, 0.458, -0.5, -0.15],
+  [1.5, 0.566, 0.43, -0.524, -0.15],
+  [1.0, 0.56, 0.408, -0.532, -0.145],
+  [0, 0.54, 0.386, -0.53, -0.13],
+  // Detrás del ala, el cuerpo crece en la góndola del motor, de la misma
+  // pieza (fotos italiana, francesa y del 05-015; en la primera versión, una
+  // carena aparte posada encima): sube casi a pico detrás de la toma hasta
+  // 0,75 m, tan ancha como el cuerpo, y baja hasta la hélice.
+  [-1, 0.52, 0.36, -0.52, -0.12],
+  [-1.8, 0.5, 0.37, -0.51, -0.1],
+  [-2.2, 0.5, 0.39, -0.51, -0.09],
+  [-2.45, 0.51, 0.55, -0.51, -0.09],
+  [-2.8, 0.53, 0.72, -0.5, -0.08],
+  [-3.4, 0.54, 0.75, -0.49, -0.06],
+  [-4.0, 0.5, 0.68, -0.46, -0.04],
+  [-4.5, 0.44, 0.52, -0.39, -0.02],
+  [-4.85, 0.36, 0.38, -0.32, 0],
+  [-5.08, 0.3, 0.3, -0.3, 0],
+].map(sec);
+
+// Lo alto del lomo en z (entre secciones, en línea recta: basta para posar
+// piezas pequeñas encima).
+const lomo = (z: number) => {
+  const ss = CUERPO.slice().sort((a, b) => a.z - b.z);
+  const i = Math.max(0, ss.findIndex((q) => q.z >= z) - 1);
+  const a = ss[i], b = ss[Math.min(i + 1, ss.length - 1)];
+  return b.z === a.z ? a.arriba : a.arriba + ((b.arriba - a.arriba) * (z - a.z)) / (b.z - a.z);
+};
+const caraAla = (x: number) => ALA.y + grosorAla(x) * 0.48;
+
+// Luces del lomo y del ala (fotos italiana y del 05-015): cúpulas pequeñas
+// de plástico, rojas y blancas, sobre un aro de metal. En la primera versión,
+// discos pintados.
+const LUCES: { en: [number, number, number]; color: "rojo" | "blanco"; espejo?: boolean }[] = [
+  // Pocas y pequeñas, como en la foto italiana (en la primera versión eran
+  // demasiadas: «parece que tiene varicela»).
+  ...([[1.1, -0.1, "rojo"], [0.85, 0.1, "blanco"], [0.3, 0, "rojo"], [-0.4, 0.1, "blanco"], [-1.0, -0.1, "rojo"]] as const)
+    .map(([z, x, color]) => ({ en: [x, lomo(z) - 0.005, z] as [number, number, number], color })),
+  ...[2.4, 6.2].map((x) => ({ en: [x, caraAla(x), cuerdaMedia(x, 0.42)] as [number, number, number], color: "rojo" as const, espejo: true })),
+];
+const PIEZAS_LUCES: Pieza[] = LUCES.flatMap(({ en, color, espejo }, i): Pieza[] => [
+  { tipo: "disco", id: `luz-aro-${i}`, acabado: "metal", espejo, en: [en[0], en[1] - 0.004, en[2]], normal: [0, 1, 0], radio: 0.032, grosor: 0.01 },
+  ...(espejo ? [1, -1] : [1]).map((l): Pieza => ({ tipo: "tubo", id: `luz-${i}${l < 0 ? "-b" : ""}`, acabado: color, centro: [l * en[0], en[1] - 0.004], seccion: [1, 0.4], perfil: esfera(en[2], 0.022) })),
+]);
 
 const PIEZAS: Pieza[] = [
-  {
-    // Cuerpo, de la punta del morro al cono de la hélice: 1,1 m de ancho
-    // (foto de frente con teleobjetivo), algo más ancho que alto; por abajo,
-    // plano hasta la cola, donde sube hacia la hélice.
-    tipo: "tubo", id: "fuselaje", acabado: "gris", centro: [0, -0.02], seccion: [1, 0.85],
-    perfil: [
-      [5.5, 0], [5.47, 0.12], [5.4, 0.21], [5.26, 0.31], [5.1, 0.38], [4.97, 0.42], [4.65, 0.52], [4.2, 0.54],
-      [3.0, 0.55], [1.0, 0.55], [-0.5, 0.54], [-1.5, 0.52], [-2.5, 0.49], [-3.2, 0.46], [-3.8, 0.4],
-      [-4.3, 0.35], [-4.7, 0.29], [-4.95, 0.23], [-4.97, 0],
-    ],
-  },
-  {
-    // La joroba del morro, con la antena de satélite dentro: sube hasta 1,3 m
-    // sobre la panza y deja un pliegue a lo largo del costado.
-    tipo: "tubo", id: "joroba", acabado: "gris", centro: [0, 0.1], seccion: [0.8, 1],
-    perfil: [
-      [5.4, 0], [5.34, 0.05], [5.2, 0.18], [5.05, 0.31], [4.85, 0.45], [4.65, 0.57], [4.35, 0.66], [4.08, 0.7],
-      [3.63, 0.7], [3.3, 0.64], [3.02, 0.59], [2.7, 0.49], [2.33, 0.37], [2.0, 0.3], [1.8, 0],
-    ],
-  },
-  {
-    // Parte de atrás, la del motor: el lomo sigue recto hasta la hélice y la
-    // panza sube.
-    tipo: "tubo", id: "fuselaje-motor", acabado: "gris", centro: [0, 0.1],
-    perfil: [[-0.3, 0], [-0.5, 0.25], [-1.5, 0.31], [-2.5, 0.335], [-3.3, 0.345], [-4.0, 0.34], [-4.6, 0.33], [-4.95, 0.32], [-4.96, 0]],
-  },
+  // Cuerpo en dos cascos seguidos: el morro con la joroba del satélite y, desde
+  // detrás de la joroba, el resto hasta la hélice. Secciones medidas en el
+  // perfil del «CH» 152 al despegar (foto nivelada con la punta del morro y
+  // la del cono a la misma altura; 426,7 px/m) y en la de frente con
+  // teleobjetivo de Kandahar (ancho y forma de la sección). Arriba, la joroba
+  // es una superelipse algo cuadrada; abajo, la panza es casi plana. La arista
+  // del costado (cintura) va algo por debajo del eje.
+  { tipo: "casco", id: "morro", acabado: "gris", secciones: MORRO },
+  { tipo: "casco", id: "fuselaje", acabado: "gris", secciones: CUERPO },
   // Sonda y cámara de vuelo en la punta del morro.
   { tipo: "varilla", id: "sonda", acabado: "metal", desde: [0, 0.08, 5.42], hasta: [0, 0.09, 6.0], radio: 0.013 },
   { tipo: "disco", id: "camara-morro", acabado: "lente", en: [0, -0.02, 5.49], normal: [0, 0, 1], radio: 0.045, grosor: 0.02 },
   // Torreta de sensores bajo el morro: una bola con una ventana grande
   // delante y otra pequeña al lado, colgada de un collar.
-  { tipo: "disco", id: "torreta-collar", acabado: "gris", en: [0, -0.47, TORRETA.z], normal: [0, 1, 0], radio: 0.17, grosor: 0.07 },
-  { tipo: "tubo", id: "torreta", acabado: "gris", centro: [0, TORRETA.y], perfil: esfera(TORRETA.z, TORRETA.r) },
-  { tipo: "disco", id: "torreta-ventana", acabado: "lente", en: [0, TORRETA.y, TORRETA.z + TORRETA.r - 0.01], normal: [0, 0, 1], radio: 0.14, grosor: 0.02 },
-  { tipo: "disco", id: "torreta-ventana-2", acabado: "lente", en: [0.13, TORRETA.y + 0.1, TORRETA.z + 0.17], normal: [0.5, 0.3, 1], radio: 0.045, grosor: 0.015 },
-  // Antenas del lomo, detrás de la joroba: una cúpula pequeña y una en T.
-  { tipo: "varilla", id: "cupula-pie", acabado: "gris", desde: [0, 0.4, 2.07], hasta: [0, 0.56, 2.07], radio: 0.07 },
-  { tipo: "disco", id: "cupula", acabado: "gris", en: [0, 0.6, 2.07], normal: [0, 1, 0], radio: 0.2, grosor: 0.08 },
-  { tipo: "disco", id: "cupula-tapa", acabado: "gris", en: [0, 0.66, 2.07], normal: [0, 1, 0], radio: 0.13, grosor: 0.05 },
+  // La torreta de sensores (MTS-B; fotos de cerca de frente, de lado y de
+  // mantenimiento): colgada de un collar en dos anillos, con la cara de
+  // delante plana en forma de «D» al revés (el borde de arriba recto y
+  // ancho, los lados que bajan curvándose hasta un fondo redondo) y la parte
+  // de atrás redondeada. En la cara, abajo, la ventana grande con un aro
+  // claro y grueso; encima, una fila de cuatro ventanas distintas y una
+  // pegatina amarilla en el borde de arriba.
+  { tipo: "disco", id: "torreta-collar", acabado: "gris", en: [0, -0.445, TORRETA.z], normal: [0, 1, 0], radio: 0.27, grosor: 0.04 },
+  { tipo: "disco", id: "torreta-anillo", acabado: "junta", en: [0, -0.472, TORRETA.z], normal: [0, 1, 0], radio: 0.255, grosor: 0.018 },
+  { tipo: "casco", id: "torreta", acabado: "gris", secciones: [
+    { z: TORRETA.z - 0.3, ancho: 0, arriba: -0.6, abajo: -0.6 },
+    { z: TORRETA.z - 0.24, ancho: 0.2, arriba: -0.475, abajo: -0.76, cintura: -0.6, n: 4, nAbajo: 2 },
+    { z: TORRETA.z - 0.1, ancho: 0.27, arriba: -0.475, abajo: -0.86, cintura: -0.6, n: 5, nAbajo: 2.2 },
+    { z: TORRETA.z + 0.2, ancho: 0.275, arriba: -0.475, abajo: -0.88, cintura: -0.6, n: 5, nAbajo: 2.2 },
+    { z: TORRETA.z + 0.27, ancho: 0.26, arriba: -0.48, abajo: -0.86, cintura: -0.6, n: 5, nAbajo: 2.2 },
+  ] },
+  { tipo: "disco", id: "torreta-marco", acabado: "metal", en: [0, -0.705, TORRETA.z + 0.272], normal: [0, 0, 1], radio: 0.167, grosor: 0.014 },
+  { tipo: "disco", id: "torreta-ventana", acabado: "lente", en: [0, -0.705, TORRETA.z + 0.279], normal: [0, 0, 1], radio: 0.146, grosor: 0.01 },
+  { tipo: "disco", id: "torreta-ventana-2", acabado: "lente", en: [-0.16, -0.522, TORRETA.z + 0.272], normal: [0, 0, 1], radio: 0.03, grosor: 0.01 },
+  { tipo: "caja", id: "torreta-ventana-3", acabado: "lente", centro: [-0.06, -0.518, TORRETA.z + 0.272], tam: [0.1, 0.07, 0.01], redondeo: 0.03 },
+  { tipo: "disco", id: "torreta-ventana-4", acabado: "negro", en: [0.05, -0.52, TORRETA.z + 0.272], normal: [0, 0, 1], radio: 0.028, grosor: 0.01 },
+  { tipo: "disco", id: "torreta-ventana-5-aro", acabado: "metal", en: [0.15, -0.522, TORRETA.z + 0.27], normal: [0, 0, 1], radio: 0.048, grosor: 0.01 },
+  { tipo: "disco", id: "torreta-ventana-5", acabado: "lente", en: [0.15, -0.522, TORRETA.z + 0.276], normal: [0, 0, 1], radio: 0.04, grosor: 0.01 },
+  { tipo: "caja", id: "torreta-pegatina", acabado: "amarillo", centro: [0.08, -0.488, TORRETA.z + 0.271], tam: [0.06, 0.018, 0.004] },
+  // Cúpula en seta (perfil del «CH» 152 y foto desde arriba): una gota de
+  // 0,46 m de largo, 0,29 de ancho y 0,18 de alto sobre un cuello estrecho.
+  { tipo: "varilla", id: "cupula-pie", acabado: "gris", desde: [0, 0.42, 2.07], hasta: [0, 0.56, 2.07], radio: 0.06 },
+  { tipo: "tubo", id: "cupula", acabado: "gris", centro: [0, 0.6], seccion: [0.63, 0.4], perfil: esfera(2.06, 0.23) },
   {
-    tipo: "placa", id: "antena-t", acabado: "gris", plano: "vertical", x: 0, grosor: 0.04, bisel: 0.012,
-    planta: [[1.85, 0.4], [1.62, 0.4], [1.5, 0.86], [1.64, 0.86]],
+    // Antena en T: una pala ancha abajo que se estrecha hacia arriba, echada
+    // hacia atrás, y encima una varilla que sale hacia atrás hasta una bola.
+    tipo: "placa", id: "antena-t", acabado: "gris", plano: "vertical", x: 0, grosor: 0.05, bisel: 0.015,
+    planta: [[1.82, 0.42], [1.36, 0.42], [1.4, 0.84], [1.58, 0.84]],
   },
-  { tipo: "varilla", id: "antena-t-barra", acabado: "gris", desde: [0, 0.87, 1.7], hasta: [0, 0.87, 0.98], radio: 0.022 },
+  { tipo: "varilla", id: "antena-t-barra", acabado: "gris", desde: [0, 0.85, 1.64], hasta: [0, 0.85, 0.96], radio: 0.018 },
+  { tipo: "tubo", id: "antena-t-bola", acabado: "gris", centro: [0, 0.85], perfil: esfera(0.95, 0.03) },
   // Antena en forma de gota bajo la panza, delante de la pata del morro.
   { tipo: "varilla", id: "gota-pie", acabado: "gris", desde: [0, -0.47, 2.72], hasta: [0, -0.62, 2.72], radio: 0.03 },
   {
@@ -172,25 +297,43 @@ const PIEZAS: Pieza[] = [
     perfil: [[2.95, 0], [2.91, 0.045], [2.83, 0.075], [2.7, 0.08], [2.58, 0.05], [2.5, 0]],
   },
   {
-    // Media ala (x ≥ 0): [x, borde de ataque, borde de salida, grosor].
+    // Media ala (x ≥ 0): [x, borde de ataque, borde de salida, grosor]. Donde
+    // van los flaps y los alerones, el borde de salida se adelanta hasta la
+    // bisagra (escalones: dos estaciones en la misma x).
     tipo: "ala", id: "ala", acabado: "gris", y: ALA.y,
     estaciones: [
       [0, ALA.baRaiz, ALA.bsRaiz, ALA.tRaiz],
+      [MANDO.flap[0], bordeAtaque(MANDO.flap[0]), bordeSalida(MANDO.flap[0]), grosorAla(MANDO.flap[0])],
+      [MANDO.flap[0], bordeAtaque(MANDO.flap[0]), bisagra(MANDO.flap[0]), grosorAla(MANDO.flap[0])],
+      [MANDO.aleron[1], bordeAtaque(MANDO.aleron[1]), bisagra(MANDO.aleron[1]), grosorAla(MANDO.aleron[1])],
+      [MANDO.aleron[1], bordeAtaque(MANDO.aleron[1]), bordeSalida(MANDO.aleron[1]), grosorAla(MANDO.aleron[1])],
       [ALA.punta, ALA.baPunta, ALA.bsPunta, ALA.tPunta],
     ],
   },
+  { tipo: "ala", id: "flaps", acabado: "gris", y: ALA.y, estaciones: [estMando(MANDO.flap[0] + MANDO.hueco), estMando(MANDO.flap[1])] },
+  { tipo: "ala", id: "alerones", acabado: "gris", y: ALA.y, estaciones: [estMando(MANDO.aleron[0]), estMando(MANDO.aleron[1] - MANDO.hueco)] },
   ...CARENADOS.map(carenado),
+  // Toma de aire (fotos francesa e italiana): la góndola acaba delante en un
+  // cono corto que se estrecha hasta la boca, ovalada, de labio grueso (0,29 ×
+  // 0,22 m por fuera) y partida por un tabique; encima, una ranura pequeña.
+  { tipo: "tubo", id: "toma", acabado: "gris", centro: [0, 0.55], seccion: [1.3, 1], perfil: [
+    [-2.12, 0.092], [-2.13, 0.112], [-2.16, 0.12], [-2.25, 0.125], [-2.45, 0.16], [-2.7, 0.19], [-3.0, 0.14], [-3.2, 0],
+  ] },
+  { tipo: "tubo", id: "toma-boca", acabado: "negro", centro: [0, 0.55], seccion: [1.3, 1], perfil: [[-2.125, 0], [-2.13, 0.094]] },
   {
-    // Toma de aire del motor: una góndola redonda sobre el lomo, delante de
-    // la cola, con la boca partida en dos.
-    tipo: "tubo", id: "toma", acabado: "gris", centro: [0, 0.55], seccion: [1.2, 1],
-    perfil: [[-2.28, 0.17], [-2.3, 0.21], [-2.36, 0.235], [-2.5, 0.255], [-2.8, 0.26], [-3.1, 0.245], [-3.4, 0.2], [-3.7, 0.1], [-3.85, 0]],
+    tipo: "placa", id: "toma-tabique", acabado: "gris", plano: "vertical", x: 0, grosor: 0.02, bisel: 0.005,
+    planta: [[-2.125, 0.46], [-2.2, 0.46], [-2.2, 0.64], [-2.125, 0.64]],
   },
-  { tipo: "disco", id: "toma-boca", acabado: "junta", en: [0, 0.55, -2.29], normal: [0, 0, 1], radio: 0.2, grosor: 0.02 },
-  {
-    tipo: "placa", id: "toma-tabique", acabado: "gris", plano: "vertical", x: 0, grosor: 0.03,
-    planta: [[-2.28, 0.37], [-2.5, 0.37], [-2.5, 0.73], [-2.28, 0.73]],
-  },
+  { tipo: "caja", id: "toma-ranura", acabado: "negro", centro: [0, 0.71, -2.5], tam: [0.13, 0.02, 0.07], redondeo: 0.02 },
+  // Escape del motor (fotos del 05-015): una capucha centrada en lo alto de
+  // la góndola, que nace lisa en la chapa y se levanta hacia atrás hasta una
+  // boca ovalada, negra, abierta hacia la hélice. (Probado y descartado: un
+  // tubo que subía hacia delante, la capucha ladeada a la derecha y un canal
+  // oscuro detrás, que en la foto era solo una sombra.)
+  { tipo: "tubo", id: "escape", acabado: "gris", centro: [ESCAPE.x, ESCAPE.y], seccion: [0.85, 1], perfil: [
+    [-3.9, 0], [-4.02, 0.09], [-4.16, 0.15], [-4.3, 0.185], [-4.38, 0.195], [-4.385, 0],
+  ] },
+  { tipo: "tubo", id: "escape-boca", acabado: "negro", centro: [ESCAPE.x, ESCAPE.y + 0.01], seccion: [0.85, 1], perfil: [[-4.387, 0.165], [-4.39, 0]] },
   // Salidas de aire a los lados de la panza, bajo el motor.
   {
     tipo: "caja", id: "escapes", acabado: "junta", espejo: true, redondeo: 0.03,
@@ -199,55 +342,158 @@ const PIEZAS: Pieza[] = [
   {
     // Cola en Y: dos superficies en V hacia arriba, de unos 6,7 m de punta a
     // punta y a 34° sobre la horizontal...
-    tipo: "placa", id: "cola", acabado: "gris", plano: "vertical", x: 0, grosor: 0.1,
-    espejo: true, inclinacion: 56, bisel: 0.03,
-    planta: [[COLA.baRaiz, 0], [COLA.bsRaiz, 0], [COLA.bsPunta, COLA.largo], [COLA.baPunta, COLA.largo]],
+    tipo: "ala", id: "cola", acabado: "gris", y: COLA.y,
+    // Con perfil de ala (en la 1.0, una placa plana) y a 30° sobre la
+    // horizontal (foto de frente con teleobjetivo): la punta, a lo largo de la
+    // superficie, a COLA.largo de la raíz.
+    estaciones: [
+      estCola(0), estCola(TIMON.desde), estCola(TIMON.desde, true), estCola(TIMON.hasta, true), estCola(TIMON.hasta), estCola(COLA.largo),
+    ],
   },
+  // Timones de la V, piezas aparte con su hueco.
+  { tipo: "ala", id: "timones", acabado: "gris", y: COLA.y, estaciones: [estTimon(TIMON.desde + 0.02), estTimon(TIMON.hasta - 0.02)] },
   ...CARENADOS_COLA.map(carenadoCola),
   {
-    // ...y una aleta por debajo, que protege la hélice al despegar.
-    tipo: "placa", id: "aleta-ventral", acabado: "gris", plano: "vertical", x: 0, grosor: 0.1, bisel: 0.03,
-    planta: [[-2.84, -0.25], [-4.08, -0.25], [-4.05, -1.2], [-3.4, -1.2]],
+    // ...y una aleta por debajo, que protege la hélice al despegar (perfil
+    // del «CH» 152, en el eje: la foto no la deforma): el borde de detrás
+    // vertical, el de delante en flecha y el fondo plano a 1,65 m bajo el
+    // eje. Detrás lleva un timón de 0,25 m, que se ve como una línea.
+    tipo: "ala", id: "aleta-ventral", acabado: "gris", vertical: true, y: -0.4,
+    estaciones: [[0, -2.66, -3.96, 0.12], [1.25, -3.22, -3.93, 0.08]],
   },
-  {
-    tipo: "placa", id: "carenado-ventral", acabado: "gris", plano: "vertical", x: 0, grosor: 0.17, bisel: 0.04,
-    planta: [[-3.62, -0.7], [-4.12, -0.7], [-4.12, -0.79], [-3.62, -0.79]],
-  },
+  // El carenado pequeño de la aleta, dentro de la cuerda.
+  { tipo: "caja", id: "carenado-ventral", acabado: "gris", espejo: true, redondeo: 0.025, centro: [0.055, -0.97, -3.66], tam: [0.05, 0.06, 0.56] },
   // Hélice propulsora de tres palas y 2,6 m, con su cono.
   {
-    tipo: "tubo", id: "cono", acabado: "metal", centro: [0, 0.12],
-    perfil: [[-4.93, 0.32], [-5.1, 0.3], [-5.3, 0.22], [-5.45, 0.1], [-5.5, 0]],
+    tipo: "tubo", id: "cono", acabado: "metal", centro: [0, 0],
+    perfil: [[-5.07, 0.3], [-5.2, 0.265], [-5.35, 0.185], [-5.46, 0.08], [-5.505, 0]],
   },
-  { tipo: "helice", id: "helice", acabado: "metal", en: [0, 0.12, -5.05], radio: 1.3, palas: 3 },
+  { tipo: "helice", id: "helice", acabado: "metal", en: [0, 0, -5.12], radio: 1.3, palas: 3 },
   // Soportes y armas.
+  ...PIEZAS_LUCES,
   soporte("soporte-dentro", SOPORTE.dentro),
   soporte("soporte-fuera", SOPORTE.fuera),
   ...PIEZAS_GBU,
-  {
-    tipo: "caja", id: "lanzador", acabado: "negro", espejo: true, redondeo: 0.04,
-    centro: [SOPORTE.fuera, -0.45, -0.02], tam: [0.3, 0.24, 1.45],
-  },
+  // Lanzador de los Hellfire (foto de cerca de Cannon): un cuerpo negro corto
+  // pegado bajo el soporte por dos ganchos y dos tirantes, con cajas de
+  // electrónica y conectores a los lados; debajo, dos brazos y dos raíles, y
+  // de cada raíl cuelga un misil por dos patines.
+  { tipo: "caja", id: "lanzador", acabado: "negro", espejo: true, redondeo: 0.03, centro: [SOPORTE.fuera, LANZADOR_Y, 0.05], tam: [0.3, 0.14, 0.95] },
+  ...[0.3, -0.2].map((dz, i): Pieza => ({ tipo: "varilla", id: `lanzador-gancho-${i}`, acabado: "metal", espejo: true, desde: [SOPORTE.fuera, LANZADOR_Y + 0.07, bordeAtaque(SOPORTE.fuera) - 0.45 + dz], hasta: [SOPORTE.fuera, SOPORTE_BAJO + 0.02, bordeAtaque(SOPORTE.fuera) - 0.45 + dz], radio: 0.03 })),
+  ...[-1, 1].map((l, i): Pieza => ({ tipo: "varilla", id: `lanzador-tirante-${i}`, acabado: "metal", espejo: true, desde: [SOPORTE.fuera + l * 0.13, LANZADOR_Y + 0.07, 0.05], hasta: [SOPORTE.fuera + l * 0.05, SOPORTE_BAJO + 0.01, 0.05], radio: 0.015 })),
+  ...[-1, 1].map((l, i): Pieza => ({ tipo: "caja", id: `lanzador-caja-${i}`, acabado: "negro", espejo: true, redondeo: 0.02, centro: [SOPORTE.fuera + l * 0.17, LANZADOR_Y + 0.01, -0.12], tam: [0.06, 0.1, 0.36] })),
+  ...[-1, 1].map((l, i): Pieza => ({ tipo: "varilla", id: `lanzador-conector-${i}`, acabado: "junta", espejo: true, desde: [SOPORTE.fuera + l * 0.15, LANZADOR_Y + 0.02, 0.28], hasta: [SOPORTE.fuera + l * 0.22, LANZADOR_Y + 0.02, 0.28], radio: 0.03 })),
+  ...[-0.19, 0.19].map((dx, i): Pieza => ({ tipo: "caja", id: `lanzador-rail-${i}`, acabado: "negro", espejo: true, redondeo: 0.015, centro: [SOPORTE.fuera + dx, LANZADOR_Y - 0.13, -0.05], tam: [0.07, 0.07, 1.45] })),
+  ...[-0.19, 0.19].map((dx, i): Pieza => ({ tipo: "caja", id: `lanzador-brazo-${i}`, acabado: "negro", espejo: true, centro: [SOPORTE.fuera + dx * 0.55, LANZADOR_Y - 0.08, 0.05], tam: [Math.abs(dx) * 1.1, 0.05, 0.7] })),
+  ...[-0.19, 0.19].flatMap((dx, i) => [0.35, -0.35].map((dz, k): Pieza => ({ tipo: "caja", id: `lanzador-patin-${i}-${k}`, acabado: "junta", espejo: true, centro: [SOPORTE.fuera + dx, LANZADOR_Y - 0.18, dz], tam: [0.035, 0.04, 0.08] }))),
   ...LADOS.flatMap((s) => HELLFIRE.xs.flatMap((x) => hellfire(s * x))),
   // Tren triciclo: la pata del morro, detrás de la torreta, y dos patas que
   // salen hacia fuera de unos carenados bajo la raíz del ala, con 3,5 m
-  // entre ruedas.
-  { tipo: "varilla", id: "pata-morro", acabado: "metal", desde: [0, -0.45, 2.35], hasta: [0, -1.25, 2.87], radio: 0.05 },
-  { tipo: "varilla", id: "horquilla", acabado: "metal", espejo: true, desde: [0.08, -1.25, 2.87], hasta: [0.08, SUELO + 0.19, 2.95], radio: 0.025 },
+  // entre ruedas. Con sus piezas, como en la foto de cerca de Cannon: cada
+  // pata principal lleva el amortiguador en paralelo; la del morro, un
+  // amortiguador con su vástago brillante, el compás y un tirante.
+  { tipo: "varilla", id: "pata-morro", acabado: "negro", desde: NARIZ_TREN.arriba, hasta: enPataMorro(0.58), radio: 0.055 },
+  { tipo: "varilla", id: "vastago-morro", acabado: "metal", desde: enPataMorro(0.55), hasta: NARIZ_TREN.abajo, radio: 0.035 },
+  { tipo: "varilla", id: "tirante-morro", acabado: "negro", desde: [0, -0.47, 1.95], hasta: enPataMorro(0.42), radio: 0.03 },
+  { tipo: "varilla", id: "compas-morro", acabado: "metal", desde: enPataMorro(0.62, 0.1), hasta: enPataMorro(0.8, 0.13), radio: 0.014 },
+  { tipo: "varilla", id: "compas-morro-2", acabado: "metal", desde: enPataMorro(0.8, 0.13), hasta: enPataMorro(0.97, 0.05), radio: 0.014 },
+  { tipo: "varilla", id: "horquilla", acabado: "metal", espejo: true, desde: [0.08, NARIZ_TREN.abajo[1], NARIZ_TREN.abajo[2]], hasta: [0.08, SUELO + 0.19, 2.95], radio: 0.025 },
   { tipo: "disco", id: "rueda-morro", acabado: "negro", en: [0, SUELO + 0.19, 2.95], normal: [1, 0, 0], radio: 0.19, grosor: 0.12 },
+  { tipo: "disco", id: "buje-morro", acabado: "metal", espejo: true, en: [0.062, SUELO + 0.19, 2.95], normal: [1, 0, 0], radio: 0.085, grosor: 0.01 },
   {
     tipo: "caja", id: "carenados-tren", acabado: "gris", espejo: true, redondeo: 0.12,
     centro: [0.55, -0.1, -0.35], tam: [0.32, 0.26, 1.5],
   },
-  { tipo: "varilla", id: "patas", acabado: "gris", espejo: true, desde: [0.62, -0.2, -0.3], hasta: [1.7, SUELO + 0.23, -0.05], radio: 0.07 },
+  { tipo: "varilla", id: "patas", acabado: "gris", espejo: true, desde: PATA.arriba, hasta: PATA.abajo, radio: 0.075 },
+  { tipo: "varilla", id: "amortiguadores", acabado: "negro", espejo: true, desde: enPata(0.45, 0.12), hasta: enPata(0.95, 0.12), radio: 0.065 },
+  { tipo: "varilla", id: "ejes", acabado: "metal", espejo: true, desde: PATA.abajo, hasta: [1.78, SUELO + 0.23, -0.05], radio: 0.035 },
   { tipo: "disco", id: "ruedas", acabado: "negro", espejo: true, en: [1.78, SUELO + 0.23, -0.05], normal: [1, 0, 0], radio: 0.23, grosor: 0.14 },
   { tipo: "disco", id: "bujes", acabado: "metal", espejo: true, en: [1.855, SUELO + 0.23, -0.05], normal: [1, 0, 0], radio: 0.1, grosor: 0.02 },
+  { tipo: "disco", id: "bujes-dentro", acabado: "metal", espejo: true, en: [1.705, SUELO + 0.23, -0.05], normal: [1, 0, 0], radio: 0.1, grosor: 0.02 },
+  // Antenas y sondas (foto de Cannon y perfil del «CH» 152): una varilla fina
+  // que cuelga de la gota y una sonda en L a cada lado del morro, a la altura
+  // de la arista. La panza es lisa.
+  { tipo: "varilla", id: "gota-varilla", acabado: "gris", desde: [0, -0.74, 2.7], hasta: [0, -0.98, 2.68], radio: 0.008 },
+  { tipo: "varilla", id: "sondas-morro", acabado: "metal", espejo: true, desde: [0.4, -0.12, 4.95], hasta: [0.4, -0.12, 5.17], radio: 0.009 },
+  { tipo: "varilla", id: "sondas-morro-pie", acabado: "metal", espejo: true, desde: [0.4, -0.12, 4.95], hasta: [0.44, -0.12, 4.95], radio: 0.012 },
+];
+
+// ── Detalle pintado del HD (el «CH» 11-4152 de Creech) ─────────────────────
+// Marcas y costuras de las fotos del «CH» 152 (perfil al despegar) y de otros
+// MQ-9 de la Fuerza Aérea para lo que en esas no se ve (los discos rojos y
+// blancos del lomo y del ala). En metros, como las piezas.
+const LADO: [number, number, number] = [1, 0, 0];
+const ARRIBA: [number, number, number] = [0, 1, 0];
+// Cara de fuera de la cola derecha (la de abajo de la V, que mira afuera).
+const FUERA_COLA: [number, number, number] = [Math.sin(COLA.angulo), -Math.cos(COLA.angulo), 0];
+const enCola = (d: number, z: number): [number, number, number] =>
+  [d * Math.cos(COLA.angulo) + 0.1 * Math.sin(COLA.angulo), COLA.y + d * Math.sin(COLA.angulo) - 0.1 * Math.cos(COLA.angulo), z];
+
+const CALCAS: Calca[] = [
+  // Escarapela de baja visibilidad, detrás del ala y a la altura de la arista.
+  { sobre: ["fuselaje"], en: [0.6, -0.05, -2.15], desde: LADO, tam: [0.52, 0.235], dibujo: { tipo: "escarapela" }, espejo: true },
+  // Escudo del 432.º Ala, detrás del morro.
+  { sobre: ["fuselaje"], en: [0.6, 0.07, 1.42], desde: LADO, tam: [0.2, 0.26], dibujo: { tipo: "escudo" }, espejo: true },
+  // «CH» (Creech) y el escudo del Mando de Combate Aéreo, en la cara de fuera
+  // de cada cola.
+  { sobre: ["cola"], en: enCola(1.3, -3.55), desde: FUERA_COLA, tam: [0.5, 0.26], dibujo: { tipo: "texto", texto: "CH" }, espejo: true },
+  { sobre: ["cola"], en: enCola(3.0, -3.98), desde: FUERA_COLA, tam: [0.19, 0.2], dibujo: { tipo: "escudo" }, espejo: true },
+  // Número de serie en la aleta ventral: «AF» sobre «11» y el «152».
+  { sobre: ["aleta-ventral"], en: [0.1, -0.72, -3.3], desde: LADO, tam: [0.56, 0.22], dibujo: { tipo: "serie", ano: "11", numero: "152" }, espejo: true },
+  // Luces: la roja bajo la punta del morro (foto de Cannon) y las de posición
+  // en las puntas del ala, roja a la izquierda y verde a la derecha.
+  { sobre: ["morro"], en: [0, -0.1, 5.5], desde: [0, -0.3, 1], tam: [0.06, 0.06], dibujo: { tipo: "disco", color: "#d0222a" } },
+  { sobre: ["ala"], en: [ALA.punta, ALA.y, bordeAtaque(ALA.punta) - 0.12], desde: [1, 0, 0], tam: [0.07, 0.07], dibujo: { tipo: "disco", color: "#1fae5a" } },
+  { sobre: ["ala"], en: [-ALA.punta, ALA.y, bordeAtaque(ALA.punta) - 0.12], desde: [-1, 0, 0], tam: [0.07, 0.07], dibujo: { tipo: "disco", color: "#d0222a" } },
+];
+
+const COSTURAS: Costura[] = [
+  // Borde de la carena de la joroba, fino y atornillado (foto del «CH» 152):
+  // baja detrás de ella con los tornillos juntos (7 cm) y recorre el costado
+  // por encima de la arista hasta el morro, con uno cada 15 cm.
+  { sobre: ["morro", "fuselaje"], desde: LADO, espejo: true, remaches: 0.07, puntos: [[0.62, 0.44, 2.3], [0.62, 0.2, 2.34], [0.62, 0.06, 2.45]] },
+  { sobre: ["morro", "fuselaje"], desde: LADO, espejo: true, remaches: 0.15, puntos: [
+    [0.62, 0.06, 2.45], [0.62, 0.03, 3.0], [0.62, 0.03, 4.0], [0.62, 0.07, 4.7], [0.62, 0.16, 5.1], [0.62, 0.3, 5.3],
+  ] },
+  { sobre: ["morro", "fuselaje"], desde: ARRIBA, remaches: 0.07, puntos: [[-0.5, 0.9, 2.3], [0.5, 0.9, 2.3]] },
+  // Tapa de la punta del morro.
+  { sobre: ["morro"], desde: LADO, espejo: true, puntos: [[0.6, 0.35, 5.33], [0.6, -0.3, 5.33]] },
+  // Tapa de registro junto al escudo: tornillos solo en las esquinas y en el
+  // centro de cada lado, como en la foto.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, enVertices: true, puntos: [
+    [0.62, 0.135, 1.9], [0.62, 0.135, 2.04], [0.62, 0.135, 2.18], [0.62, 0.0125, 2.18], [0.62, -0.11, 2.18],
+    [0.62, -0.11, 2.04], [0.62, -0.11, 1.9], [0.62, 0.0125, 1.9], [0.62, 0.135, 1.9],
+  ] },
+  // Otra tapa atornillada, junto a la raíz del ala (perfil del «CH» 152).
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, enVertices: true, puntos: [
+    [0.6, 0.09, -0.69], [0.6, 0.09, -0.84], [0.6, 0.09, -0.99], [0.6, -0.005, -0.99], [0.6, -0.1, -0.99],
+    [0.6, -0.1, -0.84], [0.6, -0.1, -0.69], [0.6, -0.005, -0.69], [0.6, 0.09, -0.69],
+  ] },
+  // Tapas de los soportes, a los dos lados de cada uno (foto de Cannon).
+  ...(["dentro", "fuera"] as const).flatMap((q): Costura[] => [1, -1].map((l) => {
+    const x = SOPORTE[q] + l * 0.075, z0 = bordeAtaque(SOPORTE[q]) - 0.35;
+    return { sobre: [`soporte-${q}`], desde: [l, 0, 0], espejo: true, enVertices: true, puntos: [
+      [x, -0.05, z0], [x, -0.05, z0 - 0.3], [x, -0.24, z0 - 0.3], [x, -0.24, z0], [x, -0.05, z0],
+    ] };
+  })),
+  // Tapas de registro del ala (por arriba, junto a la raíz y a media ala).
+  ...[1.25, 5.8].map((x): Costura => ({ sobre: ["ala"], desde: ARRIBA, espejo: true, enVertices: true, puntos: [
+    [x - 0.2, 0.4, cuerdaMedia(x, 0.3)], [x + 0.2, 0.4, cuerdaMedia(x, 0.3)], [x + 0.2, 0.4, cuerdaMedia(x, 0.5)], [x - 0.2, 0.4, cuerdaMedia(x, 0.5)], [x - 0.2, 0.4, cuerdaMedia(x, 0.3)],
+  ] })),
+  // Tapa de la raíz de cada cola, en su cara de fuera.
+  { sobre: ["cola"], desde: FUERA_COLA, espejo: true, enVertices: true, puntos: [enCola(0.45, -3.05), enCola(0.45, -3.4), enCola(0.8, -3.45), enCola(0.8, -3.1), enCola(0.45, -3.05)] },
+  // Timón de la aleta de debajo: su bisagra y su borde de abajo.
+  { sobre: ["aleta-ventral"], desde: LADO, espejo: true, puntos: [[0.1, -0.5, -3.7], [0.1, -1.55, -3.7], [0.1, -1.55, -3.95]] },
+  // Junta de la carena del motor.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.6, 0.4, -4.35], [0.6, -0.5, -4.35]] },
+  { sobre: ["fuselaje"], desde: ARRIBA, puntos: [[-0.4, 0.6, -4.35], [0.4, 0.6, -4.35]] },
 ];
 
 const PARTES: Parte[] = [
   {
     nombre: "Joroba del satélite",
     en: [0, 0.95, 3.9],
-    piezas: ["joroba", "cupula", "cupula-pie", "cupula-tapa", "antena-t", "antena-t-barra"],
+    piezas: ["morro", "cupula", "cupula-pie", "antena-t", "antena-t-barra", "antena-t-bola", "gota", "gota-pie", "gota-varilla"],
     respaldo: "foto",
     fuentes: ["perfil", "morro", "suelo"],
     texto: "El bulto de encima del morro guarda la antena que habla con el satélite: por ahí se maneja el Reaper desde bases al otro lado del mundo. Detrás van una cúpula pequeña y una antena en forma de T.",
@@ -255,7 +501,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Torreta de sensores",
     en: [0, -1.0, 4.34],
-    piezas: ["torreta", "torreta-collar", "torreta-ventana", "torreta-ventana-2", "camara-morro"],
+    piezas: ["torreta", "torreta-collar", "torreta-anillo", "torreta-marco", "torreta-ventana", "torreta-ventana-2", "torreta-ventana-3", "torreta-ventana-4", "torreta-ventana-5-aro", "torreta-ventana-5", "torreta-pegatina", "camara-morro", "sondas-morro", "sondas-morro-pie"],
     respaldo: "foto",
     fuentes: ["frente", "morro", "perfil", "ficha"],
     texto: "Una bola que gira bajo el morro con cámaras de día y térmica y un láser que marca el blanco para los misiles y las bombas guiadas. El piloto se orienta con otra cámara pequeña en la punta del morro.",
@@ -264,7 +510,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Ala recta y larga",
     en: [7.0, 0.3, -0.4],
-    piezas: ["ala", ...CARENADOS.map((x) => `carenado-${x}`)],
+    piezas: ["ala", "flaps", "alerones", ...CARENADOS.map((x) => `carenado-${x}`)],
     respaldo: "foto",
     fuentes: ["arriba", "abajo", "ficha"],
     texto: "20,1 m de punta a punta, casi el doble que el largo del avión: un ala de planeador, pensada para aguantar muchas horas en el aire gastando poco. Debajo del borde de salida, los bultos de los mandos.",
@@ -273,7 +519,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Cuatro misiles Hellfire",
     en: [SOPORTE.fuera + 0.35, HELLFIRE.y - 0.1, 0.4],
-    piezas: ["soporte-fuera", "lanzador", ...LADOS.flatMap((s) => HELLFIRE.xs.flatMap((x) => idsHellfire(s * x)))],
+    piezas: ["soporte-fuera", "lanzador", "lanzador-gancho-0", "lanzador-gancho-1", "lanzador-tirante-0", "lanzador-tirante-1", "lanzador-caja-0", "lanzador-caja-1", "lanzador-conector-0", "lanzador-conector-1", "lanzador-rail-0", "lanzador-rail-1", "lanzador-brazo-0", "lanzador-brazo-1", "lanzador-patin-0-0", "lanzador-patin-0-1", "lanzador-patin-1-0", "lanzador-patin-1-1", ...LADOS.flatMap((s) => HELLFIRE.xs.flatMap((x) => idsHellfire(s * x)))],
     respaldo: "foto",
     fuentes: ["frente", "taxi", "abajo", "perfil", "asf"],
     texto: "Dos en cada ala, colgados de un lanzador bajo el soporte de fuera. Es un misil pequeño, de 1,6 m y unos 50 kg, guiado por el láser de la torreta: el arma con la que el Reaper hizo su primer ataque, en Afganistán, en 2007.",
@@ -290,7 +536,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Motor y hélice",
     en: [0, 1.0, -2.6],
-    piezas: ["toma", "toma-boca", "toma-tabique", "escapes", "helice", "cono", "fuselaje-motor"],
+    piezas: ["toma", "toma-boca", "toma-tabique", "toma-ranura", "escape", "escape-boca", "escapes", "helice", "cono"],
     respaldo: "foto",
     fuentes: ["morro", "suelo", "perfil", "ga"],
     texto: "Un turbohélice Honeywell de 900 caballos metido en la parte de atrás, que respira por la góndola del lomo y mueve una hélice de tres palas que empuja desde la cola.",
@@ -299,7 +545,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Cola en Y",
     en: [1.9, 1.45, -3.9],
-    piezas: ["cola", "aleta-ventral", "carenado-ventral", ...CARENADOS_COLA.map((d) => `carenado-cola-${d}`)],
+    piezas: ["cola", "timones", "aleta-ventral", "carenado-ventral", ...CARENADOS_COLA.map((d) => `carenado-cola-${d}`)],
     respaldo: "foto",
     fuentes: ["perfil", "frente", "suelo"],
     texto: "Dos superficies en V hacia arriba y una aleta por debajo, que evita que la hélice toque el suelo si el morro sube de más al despegar o aterrizar.",
@@ -308,7 +554,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Tren de aterrizaje",
     en: [1.95, SUELO - 0.1, -0.05],
-    piezas: ["carenados-tren", "patas", "ruedas", "bujes", "pata-morro", "horquilla", "rueda-morro"],
+    piezas: ["carenados-tren", "patas", "amortiguadores", "ejes", "ruedas", "bujes", "bujes-dentro", "pata-morro", "vastago-morro", "tirante-morro", "compas-morro", "compas-morro-2", "horquilla", "rueda-morro", "buje-morro"],
     respaldo: "foto",
     fuentes: ["frente", "armas", "suelo"],
     texto: "Tres ruedas: una bajo el morro y dos en patas largas que salen de la panza hacia fuera. En vuelo no se recogen del todo: se ven colgando en muchas fotos.",
@@ -323,12 +569,14 @@ const aUnidades = (p: Pieza): Pieza => {
   switch (p.tipo) {
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
+    case "casco":
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }) })) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }
         : { ...p, planta: p.planta.map(u2), x: u(p.x), ...(p.y !== undefined && { y: u(p.y) }), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) };
     case "ala":
-      return { ...p, y: u(p.y), estaciones: p.estaciones.map(([x, a, b, t]): [number, number, number, number] => [u(x), u(a), u(b), u(t)]) };
+      return { ...p, y: u(p.y), ...(p.x !== undefined && { x: u(p.x) }), estaciones: p.estaciones.map(([x, a, b, t, sube = 0]): [number, number, number, number, number] => [u(x), u(a), u(b), u(t), u(sube)]) };
     case "varilla":
       return { ...p, desde: u3(p.desde), hasta: u3(p.hasta), radio: u(p.radio) };
     case "helice":
@@ -340,12 +588,17 @@ const aUnidades = (p: Pieza): Pieza => {
   }
 };
 
+const aCalca = (k: Calca): Calca => ({ ...k, en: u3(k.en), tam: u2(k.tam) });
+const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...(k.remaches && { remaches: u(k.remaches) }) });
+
 const maqueta: Maqueta = {
   nombre: "MQ-9 Reaper",
   subtitulo: "Dron armado de media altitud y gran autonomía",
   escala: ESCALA,  // 1 unidad = 7,8 m; medidas de la ficha de la Fuerza Aérea
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
+  hd: true,
+  detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),

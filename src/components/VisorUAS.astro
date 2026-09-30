@@ -277,6 +277,16 @@ const VISTAS = [
   .visor-pines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .visor-guia { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
   .visor-guia line { stroke: var(--visor-acento); stroke-width: 1; }
+  /* Selector temporal de las pruebas de estilo del HD (docs/uas-hd.md). */
+  .visor-hd-prueba {
+    position: absolute; left: 0.7rem; top: 0.7rem; z-index: 3; display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center;
+    font-family: var(--font-mono, monospace); font-size: 0.62rem; letter-spacing: 0.06em;
+  }
+  .visor-hd-prueba span { color: var(--visor-suave); text-transform: uppercase; margin-right: 0.2rem; }
+  .visor-hd-prueba button {
+    border: 1px solid var(--visor-borde); background: var(--visor-fondo, transparent); color: inherit; padding: 0.2rem 0.45rem; cursor: pointer;
+  }
+  .visor-hd-prueba button[aria-pressed="true"] { background: var(--visor-arista); color: var(--visor-relleno); }
   .visor-ayuda { position: absolute; right: 0.9rem; bottom: 0.7rem; color: var(--visor-suave); font-size: 0.6rem; letter-spacing: 0.08em; }
   .visor-sin-webgl-aviso { display: none; }
   .visor.visor-sin-webgl .visor-sin-webgl-aviso {

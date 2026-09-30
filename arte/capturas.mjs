@@ -11,6 +11,7 @@
 //   --noche             modo noche (la web lo guarda en sessionStorage)
 //   --js=CÓDIGO         ejecuta ese JavaScript en la página antes de capturar
 //   --tam=ANCHOxALTO    tamaño de la ventana (1300x900 por defecto)
+//   --escala=2          píxeles por punto (2 = pantalla retina; 1 por defecto)
 // Ejemplo: la tira del hangar con la puerta abierta, de noche:
 //   node arte/capturas.mjs http://localhost:4321/ hangar.png --ir=.tira-sat --raton=.sat-hangar --noche
 import { spawn } from "node:child_process";
@@ -28,7 +29,7 @@ const CHROME = process.env.CHROME ?? (process.platform === "darwin"
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "capturas-"));
 const puerto = 9300 + Math.floor(Math.random() * 500);
 const chrome = spawn(CHROME, ["--headless=new", `--remote-debugging-port=${puerto}`, `--user-data-dir=${dir}`,
-  `--window-size=${ancho},${alto}`, "--hide-scrollbars", "--use-angle=metal", "--ignore-gpu-blocklist", "about:blank"], { stdio: "ignore" });
+  `--window-size=${ancho},${alto}`, `--force-device-scale-factor=${op.escala ?? 1}`, "--hide-scrollbars", "--use-angle=metal", "--ignore-gpu-blocklist", "about:blank"], { stdio: "ignore" });
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Protocolo de depuración de Chrome, lo justo: una pestaña, órdenes y respuestas.
