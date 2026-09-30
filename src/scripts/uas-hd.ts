@@ -28,16 +28,20 @@ export const ESTILOS_HD: { id: EstiloHD; nombre: string }[] = [
 // sacado de la foto del «CH» 152 (entre #97a4b4 y #b6b8c3 al sol).
 type Pintura = { color: string; metal: number; rugosidad: number };
 const PINTURAS: Record<Acabado, Pintura> = {
-  gris: { color: "#a9b0b9", metal: 0, rugosidad: 0.48 },
+  gris: { color: "#a6b0bb", metal: 0, rugosidad: 0.5 },
   "gris-et": { color: "#a3adab", metal: 0, rugosidad: 0.65 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   junta: { color: "#7d838b", metal: 0, rugosidad: 0.7 },
-  mando: { color: "#9aa1aa", metal: 0, rugosidad: 0.62 },
+  mando: { color: "#a0aab6", metal: 0, rugosidad: 0.5 },
   metal: { color: "#9aa0a8", metal: 0.85, rugosidad: 0.32 },
-  lente: { color: "#0b1018", metal: 0.1, rugosidad: 0.06 },
+  // Cristal oscuro algo verdoso, que refleja el cielo (torreta, buscadores).
+  lente: { color: "#3a5a4c", metal: 0.1, rugosidad: 0.12 },
   amarillo: { color: "#d9ad1a", metal: 0, rugosidad: 0.5 },
   azul: { color: "#1b4fb0", metal: 0, rugosidad: 0.5 },
   oliva: { color: "#5a613f", metal: 0, rugosidad: 0.6 },
+  // Las luces del lomo y del ala: cúpulas pequeñas de plástico, con brillo.
+  rojo: { color: "#8e2a2d", metal: 0, rugosidad: 0.35 },
+  blanco: { color: "#eeeeea", metal: 0, rugosidad: 0.25 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -57,7 +61,7 @@ export function materialHD(acabado: Acabado, estilo: EstiloHD): MeshStandardMate
   // Por las dos caras, como la maqueta 1.0: algunas piezas (las alas) tienen
   // los triángulos al revés y, pintadas solo por delante, salían del revés.
   if (estilo === "b") return new MeshToonMaterial({ color: new Color(p.color), gradientMap: rampaToon(), side: DoubleSide });
-  return new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.35, side: DoubleSide });
+  return new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.45, side: DoubleSide });
 }
 
 export const colorHD = (acabado: Acabado) => new Color(PINTURAS[acabado].color);
@@ -73,10 +77,14 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   // se oscurece enseguida bajo el horizonte (la mitad baja del costado y la
   // panza quedan en sombra, como en las fotos al sol), el horizonte y el cielo.
   const PARADAS: [number, [number, number, number]][] = [
-    [0, [0.045, 0.043, 0.04]], [0.42, [0.09, 0.085, 0.08]], [0.5, [0.4, 0.43, 0.48]], [1, [0.28, 0.38, 0.56]],
+    [0, [0.012, 0.012, 0.014]], [0.44, [0.025, 0.027, 0.032]], [0.52, [0.2, 0.22, 0.26]], [1, [0.36, 0.43, 0.56]],
   ];
   for (let y = 0; y < H; y++) {
-    const a = 1 - (y + 0.5) / H;
+    // La fila 0 de la textura es la de abajo (v = 0 en el mapa
+    // equirectangular): en la primera versión el cielo iba del revés, arriba
+    // se reflejaba el suelo oscuro y la parte de arriba del dron salía más
+    // oscura que la de abajo.
+    const a = (y + 0.5) / H;
     let i = 0;
     while (i < PARADAS.length - 2 && a > PARADAS[i + 1][0]) i++;
     const [a0, c0] = PARADAS[i], [a1, c1] = PARADAS[i + 1];
@@ -95,16 +103,16 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   pmrem.dispose();
   cieloTex.dispose();
   const grupo = new Group();
-  const cielo = new HemisphereLight(0xd6e2f2, 0x1f1d1b, 0.12);
-  const sol = new DirectionalLight(0xfff0dc, 3.9);
-  // El sol va con la cámara, pero como en una foto al aire libre: alto (65°
-  // sobre el horizonte) y algo de lado (40° a la izquierda de quien mira), así
-  // el lomo y el costado que se ve reciben sol y la cara de debajo de la
-  // arista queda en sombra (con 70° de lado, el costado que se ve se quedaba
-  // igual de apagado que la cara de abajo). Fijo en el
-  // mundo, desde muchos ángulos alumbraba el lado que no se ve; justo detrás
-  // de la cámara, lo aplanaba todo como un flash.
-  const ALTURA = (65 * Math.PI) / 180, LADO = (40 * Math.PI) / 180;
+  const cielo = new HemisphereLight(0x9cb2d2, 0x4a4e56, 0.85);
+  const sol = new DirectionalLight(0xfffaf2, 3.9);
+  // El sol va con la cámara y casi encima (78°), un poco del lado de quien
+  // mira (45°): la mitad de arriba del dron recibe sol entera, sin sombras, y
+  // todas las sombras quedan de la mitad para abajo (lo pidió el usuario: «le
+  // está dando el sol directamente»). Probado antes y descartado: el sol
+  // bajo y del lado contrario a la cámara (manchaba de sombra la mitad de
+  // arriba), el sol del lado de quien mira y bajo (aplanaba todo) y el sol
+  // fijo en el mundo (desde muchos ángulos alumbraba el lado que no se ve).
+  const ALTURA = (78 * Math.PI) / 180, LADO = (45 * Math.PI) / 180;
   const v = new Vector3(), esf = new Spherical();
   sol.castShadow = true;
   const s = sol.shadow;
@@ -113,8 +121,8 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   s.camera.right = s.camera.top = radio * 1.1;
   s.camera.near = radio * 0.5;
   s.camera.far = radio * 7;
-  s.bias = -0.0004;
-  s.normalBias = radio * 0.004;
+  s.bias = -0.0008;
+  s.normalBias = radio * 0.012;
   grupo.add(cielo, sol, sol.target);
   grupo.visible = false;
   escena.add(grupo);
@@ -123,12 +131,12 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
       grupo.visible = si;
       escena.environment = si && estilo !== "b" ? entorno : null;
       renderer.toneMapping = si && estilo !== "b" ? ACESFilmicToneMapping : NoToneMapping;
-      renderer.toneMappingExposure = 0.9;
+      renderer.toneMappingExposure = 0.95;
       renderer.shadowMap.enabled = si;
       renderer.shadowMap.type = PCFShadowMap;
       renderer.shadowMap.needsUpdate = true;
       // En la ilustración, el sol sin sombras suaves de ambiente.
-      cielo.intensity = estilo === "b" ? 1.2 : 0.12;
+      cielo.intensity = estilo === "b" ? 1.2 : 0.85;
     },
     seguir(camara: Camera) {
       esf.setFromVector3(camara.position);
@@ -221,6 +229,15 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.96, 0, Math.PI * 2); c.fill();
       c.strokeStyle = "rgba(0,0,0,0.35)"; c.lineWidth = r * 0.12;
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.9, 0, Math.PI * 2); c.stroke();
+      break;
+    }
+    case "franja": {
+      // Una mancha alargada y lisa (el canal de un escape), que se difumina
+      // hacia un extremo.
+      const g = c.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, d.color); g.addColorStop(0.75, d.color); g.addColorStop(1, "rgba(0,0,0,0)");
+      c.fillStyle = g;
+      c.beginPath(); c.roundRect(W * 0.04, 0, W * 0.92, H, W * 0.25); c.fill();
       break;
     }
     case "escudo": {

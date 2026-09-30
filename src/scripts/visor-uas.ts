@@ -20,7 +20,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", lente: "#141b26", oliva: "#5e6743",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", blanco: "#f1f1ec",
 };
 
 export type { Vista };
@@ -132,9 +132,22 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   raiz.position.sub(centro);
   escena.add(raiz);
 
-  // HD (proyecto UAS HD): sus luces y, mientras se elige, el estilo de prueba
-  // (?hd=a|b|c, o el selector temporal sobre el lienzo; «no», la maqueta 1.0).
+  // HD (proyecto UAS HD): el estilo C (realista con filete), el que eligió el
+  // usuario. Con ?hd=a|b|c|no en la URL se puede probar otro y sale el
+  // selector de pruebas sobre el lienzo (en la web normal no se ve).
   const luzHD = maqueta.hd ? crearLuzHD(renderer, escena, radio) : null;
+  let estiloHD: EstiloHD | null = null;
+  if (luzHD) {
+    const pedido = new URLSearchParams(location.search).get("hd");
+    estiloHD = pedido === null ? "c" : ESTILOS_HD.some((e) => e.id === pedido) ? (pedido as EstiloHD) : null;
+    if (pedido !== null) {
+      const selector = document.createElement("div");
+      selector.className = "visor-hd-prueba";
+      selector.innerHTML = `<span>Prueba</span>` + [["no", "1.0"], ...ESTILOS_HD.map((e) => [e.id, `${e.id.toUpperCase()} · ${e.nombre}`])]
+        .map(([id, t]) => `<button type="button" data-hd="${id}">${t}</button>`).join("");
+      caja.querySelector(".visor-lienzo-caja")?.append(selector);
+    }
+  }
   // Calcas y costuras del HD (docs/uas-hd.md).
   const detallesHD = luzHD && maqueta.detalles ? montarDetalles(escena, raiz, mallas, maqueta.detalles, radio) : null;
   // Siluetas en tinta de los estilos b y c: una copia de cada malla.
@@ -146,18 +159,6 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     c.raycast = () => {};
     contornos.push(c);
     malla.parent!.add(c);
-  }
-  let estiloHD: EstiloHD | null = null;
-  if (luzHD) {
-    let guardado: string | null = null;
-    try { guardado = localStorage.getItem("uas-hd-estilo"); } catch { /* sin almacenamiento */ }
-    const pedido = new URLSearchParams(location.search).get("hd") ?? guardado ?? "a";
-    estiloHD = ESTILOS_HD.some((e) => e.id === pedido) ? (pedido as EstiloHD) : null;
-    const selector = document.createElement("div");
-    selector.className = "visor-hd-prueba";
-    selector.innerHTML = `<span>Prueba</span>` + [["no", "1.0"], ...ESTILOS_HD.map((e) => [e.id, `${e.id.toUpperCase()} · ${e.nombre}`])]
-      .map(([id, t]) => `<button type="button" data-hd="${id}">${t}</button>`).join("");
-    caja.querySelector(".visor-lienzo-caja")?.append(selector);
   }
 
   // La tira de siluetas.
@@ -426,7 +427,6 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     else if (b.dataset.estilo) cambiarEstilo(b.dataset.estilo as "maqueta" | "pixel");
     else if (b.dataset.hd) {
       estiloHD = b.dataset.hd === "no" ? null : (b.dataset.hd as EstiloHD);
-      try { localStorage.setItem("uas-hd-estilo", b.dataset.hd); } catch { /* sin almacenamiento */ }
       cambiarEstilo("maqueta");
     }
     else if (b.dataset.vista) ponerVista(b.dataset.vista as Vista);

@@ -11,9 +11,12 @@ con los demás.
 
 ## Dónde estamos
 
-- **Rama `uas-hd`**, sacada de `main` el 30-sep-2026 (después de `d3d4686`).
-  Sin subir. `main` y zodk.eu no se tocan hasta fusionar. Primer commit
-  el 30-sep-2026: el HD del MQ-9 completo (forma, luz, piezas, detalle).
+- **Fusionado en `main` y publicado el 30-sep-2026** (rama `uas-hd`, que se
+  deja en GitHub como registro). El HD del MQ-9 está terminado a falta de
+  retoques: estilo **C** fijo por defecto; el selector de pruebas solo sale
+  con `?hd=a|b|c|no` en la URL.
+- **Pendiente para otro día** (lo dejó el usuario, «saturado»): el **pixel
+  art 2.0**, y pasar los demás drones al HD.
 - **Hecho** (sin commit): las fuentes (abajo); la pieza nueva **`casco`**
   en `uas-geometria.ts` (cuerpo de secciones con forma de superelipse, mitad
   de arriba y de abajo con su alto y su «cuadratura», unidas con una
@@ -104,7 +107,78 @@ con los demás.
   oscura, el tabique y el borde grueso (en la 1.0, una góndola posada
   encima); tapas atornilladas en los dos lados de cada soporte, dos por
   ala por arriba y una en la raíz de cada cola.
-- **Siguiente paso**: el **pixel art 2.0** (lo segundo que pidió el
+- **30-sep-2026, revisión del usuario (7 puntos)**, sin commit:
+  1. **Ala 20 cm más baja** (`ALA.y` −0,14: la cara de arriba a la altura de
+     la arista) y **cola en V rehecha**: sale del costado a media altura
+     (`COLA.y` −0,38), a 32°, punta a 1,71 m; medida en el perfil del «CH»
+     152 corrigiendo que la foto está hecha algo desde atrás (las puntas de
+     las dos colas salen 1,9 m separadas en z). **Toma nueva**: boca redonda
+     y corta (r 0,13 m, sin tabique en el «CH» 152) delante de una carena
+     grande (`casco` hasta 0,74 m) y salidas de aire atrás.
+  2. **Cúpula en seta** (gota de 0,46 × 0,29 × 0,18 m sobre un cuello) y
+     **antena en T** con la pala ancha abajo y la varilla hacia atrás hasta
+     una bola.
+  3. **Luces en relieve**: cúpulas rojas y blancas con aro de metal (acabados
+     nuevos `rojo` y `blanco`), en el lomo y el ala, en lugar de calcas.
+  4. **Lanzador** con tirantes, cajas, conectores y patines, pegado al
+     soporte; **GBU-12 pegada** al suyo con dos ganchos (colgaba 4 cm en el
+     aire); **torreta** con cuello de dos anillos, cara plana, marco y tres
+     ventanas.
+  5. Fuera las **juntas de paneles del ala** (no están en las fotos);
+     flaps, alerones y timones con hueco de 6 mm y el grosor del ala.
+  6. **Más contraste**: sol más fuerte (4,6), poco ambiente, la tierra del
+     cielo de reflejos más oscura, exposición 0,82.
+  7. **Sin tono azulado**: gris neutro de la pintura (#a8aaad), luz de cielo
+     y cielo de reflejos sin azul, sol blanco (probado uno cálido: salía
+     beige).
+- **Segunda revisión del usuario** (muy molesto con la primera): la toma
+  «SE FUNDE CON EL CUERPO», la cola «no se parece», luces «con varicela»,
+  contraste y azulado «ni se nota» (quería el azulado de la foto italiana,
+  y yo lo había quitado). Hecho: la **góndola del motor es el propio cuerpo**
+  (secciones del `fuselaje` suben a 0,74 m entre 2,3 y 4,5 m detrás del
+  centro; la toma, solo una boca corta delante); **cola** con la cuerda más
+  ancha y las bisagras pequeñas; **cinco luces en el lomo y dos por ala**,
+  pequeñas; **luz como la foto italiana**: sol blanco fuerte (5,4), alto
+  (58°) y del lado contrario a quien mira (125°), luz de cielo azul (0,75),
+  pintura gris azulada (#a3b3c5), cielo de reflejos azul con el suelo casi
+  negro: arriba casi blanco azulado, costado azul oscuro, panza negra.
+  Colores medidos en la foto y en el render en los mismos puntos.
+- **Tercera revisión** («tómate tu tiempo»; todo medido en fotos antes de
+  tocar):
+  - **Cola**: el contorno, medido en el perfil del «CH» 152 quitando el giro
+    de la cámara (~16°, 0,28 m por metro de separación del eje): borde de
+    ataque en flecha, **borde de salida casi recto**, cuerda de 1,39 a 0,61
+    m. Antes los dos bordes iban en flecha.
+  - **Aleta de debajo** (en el eje, la foto no la deforma): borde de detrás
+    vertical en −3,95, fondo plano a −1,65, timón de 0,25 m (costura),
+    carenado pequeño dentro de la cuerda; fuera la barra que sobresalía.
+  - **Góndola**: sube casi a pico detrás de la toma (0,39 → 0,72 m en 0,6 m);
+    **toma** con cono corto, boca ovalada de 0,29 × 0,22 m, labio grueso,
+    tabique y ranura encima (fotos francesa e italiana); **salidas de aire**:
+    una capucha a cada lado de la parte de atrás, abierta hacia atrás (foto
+    del 05-015).
+  - **Torreta** (MTS-B, fotos de cerca): tambor aplastado de 0,56 m con el
+    fondo redondeado, cara plana grande, ventana principal abajo con aro
+    claro y cuatro pequeñas encima; cristal algo verdoso.
+  - Fuera las **antenas de pala** de la panza (la panza es lisa).
+  - **Luz**: el cielo de reflejos estaba **del revés** (la fila 0 de la
+    textura es abajo): arriba se reflejaba el suelo y la parte de arriba
+    salía más oscura que la de abajo. Arreglado; sol 4,3 y más luz en las
+    sombras (menos contraste, como pidió).
+- **Cuarta revisión**: algo menos de contraste y de azul (pintura #a6b0bb,
+  cielo de relleno más gris, sol 3,9); **sol casi encima** (78°, 45° del
+  lado de quien mira): el usuario no quería sombras en la mitad de arriba
+  («le está dando el sol directamente»), y el sol bajo y del lado contrario
+  las manchaba; sesgo de sombra mayor contra el acné. **Escape**: una **capucha centrada en lo alto de la góndola**, que nace
+  lisa y se levanta hacia atrás hasta una boca ovalada negra mirando a la
+  hélice. Probado y descartado: dos capuchas a los lados (inventadas), un
+  tubo hacia delante (al revés), la capucha ladeada a la derecha y un canal
+  oscuro detrás (en la foto era una sombra; el usuario: «te lo has
+  inventado»).
+  **Torreta**: un `casco` con la cara plana en «D» al revés, fondo redondo,
+  ventana grande con aro claro, cuatro pequeñas y pegatina amarilla;
+  cristal verdoso.
+- **Siguiente paso**: lo que diga el usuario; después, el **pixel art 2.0** (lo segundo que pidió el
   usuario: «darle un toque más de calidad y detallar un poco más»).
 
 ## Decisiones del usuario (30-sep-2026)
@@ -137,7 +211,7 @@ con los demás.
       serie), los discos rojos y blancos del lomo. Con calcas proyectadas.
 - [ ] Rendimiento en Zen (`docs/rendimiento.md`).
 - [ ] Pixel art 2.0.
-- [ ] Fusionar en `main`.
+- [x] Fusionar en `main` (30-sep-2026).
 
 ## Fuentes
 

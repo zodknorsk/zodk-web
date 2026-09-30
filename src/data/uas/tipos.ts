@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "gris-et" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva";
+export type Acabado = "negro" | "gris" | "gris-et" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "blanco";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -82,6 +82,7 @@ export type Dibujo =
   | { tipo: "texto"; texto: string }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
+  | { tipo: "franja"; color: string }
   | { tipo: "escudo" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
