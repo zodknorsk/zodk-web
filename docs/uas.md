@@ -164,8 +164,11 @@ corto) y el borde de ataque junto al cuerpo con el plano de Alexpl de 2025,
 y añade el panel CRPA de cuatro elementos en el ala derecha. Ojo: ese plano
 coincide exactamente con el **plano del Shahed de 3,35 m** (Alexpl, 2024),
 revisión del de 3,50 m (2023) con que se hizo el Shahed; las proporciones
-del de la DIA se parecen más al nuevo. **Pendiente de decidir** por el
-usuario: si se rehace el Shahed con el de 3,35 m.
+del de la DIA se parecen más al nuevo. El usuario dijo que se rehiciera
+(hecho, sin commit): ahora **la geometría está en `shahed-136.ts`**, medida
+del plano de 3,35 m, y `geran-2.ts` la importa entera, la pinta de negro,
+cambia el anillo por una junta y añade el panel CRPA. Las notas del Shahed
+y del Geran las revisa y retoca el usuario (dice «da eso por tachado»).
 
 **30-sep-2026, tarjetas de /uas** (sin commit). El usuario vio el pixel art
 de la tarjeta del Shahed «raro» comparado con el visor: en el primer
@@ -881,19 +884,24 @@ Hay 46 fotos más de Commons en `arte/uas-fuentes/bayraktar-tb2/todas/`
 | frente-teknofest.jpg | De frente (Kingbjelica, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-%C4%B0HA,_Teknofest_2019.jpg |
 | despegue-armado.jpg | Despegando, armado, con el tren fuera (Fuerza Aérea de Ucrania, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Ukrainian_bayraktar.jpg |
 
-**Shahed-136.** Medidas de los restos y analistas (3,5 m de largo, 2,5 m de
-envergadura, unos 200 kg). La forma, del plano de cuatro vistas de Commons
-(Alexpl, a escala, 325 px/m en el PNG de 1920 px; dibuja un Geran-2, igual
-por fuera): el morro, el cuerpo de 0,31 m, el borde de ataque (1,5 m hacia
+**Shahed-136.** Medidas de los restos y analistas (de 3,35 a 3,5 m de
+largo, 2,5 m de envergadura, unos 200 kg). La forma, del plano de cuatro
+vistas de Commons de Alexpl, **revisión de 2024 (3,35 m)**, a 325 px/m en
+el PNG de 1920 px (dibuja un Geran-2 de la serie M, iraní, igual por
+fuera): el morro, el cuerpo de 0,29 m, el borde de ataque (1,34 m hacia
 atrás por metro de envergadura), el corte del motor, los elevones, las
-winglets (+0,21 / −0,235 m) y los Pitot. El color, de las fotos al aire libre
+winglets (+0,21 / −0,235 m) y los Pitot. La primera maqueta se hizo con la
+versión de 2023 (3,5 m: morro 0,19 m más largo y borde de ataque de 1,5 m
+por metro) y se rehízo el 30-sep-2026. En los dos planos, la vista de
+perfil no cuadra del todo con la de planta (la cola, ~0,1 m); manda la
+planta. El color, de las fotos al aire libre
 del desfile de Teherán (en las exposiciones, con luz cálida, parece beige).
 Hay 30 candidatas de Commons en `arte/uas-fuentes/shahed-136/candidatas/`
 (con `info.json`).
 
 | Archivo | Qué enseña | URL |
 |---|---|---|
-| plano-cuatro-vistas.jpg | Plano a escala de cuatro vistas (Alexpl, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Shahed-136-350-250draw.svg |
+| plano-cuatro-vistas.jpg | Plano a escala de cuatro vistas, revisión de 2024 (Alexpl, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Shahed-136-335-250draw.svg |
 | plano-dia.jpg | Planta, perfil y panza con sus partes (DIA, dominio público) | https://commons.wikimedia.org/wiki/File:Shahed-136_(Geran-2)_drawing_by_Defense_Intelligence_Agency.jpg |
 | desfile-teheran.jpg | De lado, en un desfile en Teherán, 2023 (Meghdad Madadi, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:Military_equipment_displayed_for_the_44th_Iranian_revolution_anniversary_rally_-_Shahed_136.jpg |
 | expo-lado.jpg | De lado con el motor al aire, Kermanshah (Behrouz Ahmadi, CC BY 4.0) | https://commons.wikimedia.org/wiki/File:2023_IRGC_Aerospace_Force_achievements_Exhibition_in_Kermanshah_(018).jpg |

@@ -1,10 +1,8 @@
-// Maqueta del Geran-2 ruso, sacada del plano a escala de Commons del Geran-2
-// de 2025 (Alexpl, 3,35 m de largo y 2,5 m de envergadura) y de fotos de
-// restos en Ucrania. Por detrás es igual que el Shahed-136 (ala, elevones,
-// winglets, motor y hélice salen de su maqueta); cambian el morro, más corto,
-// el borde de ataque junto al cuerpo, el negro de los ataques nocturnos y el
-// panel de la antena CRPA en el ala derecha. En metros (escala 1): mismas z
-// que el Shahed por detrás, así que el morro queda en z = 1,555.
+// Maqueta del Geran-2 ruso: la misma forma que el Shahed-136 (su maqueta
+// sale del plano de Alexpl de 2024, que coincide con el del Geran-2 de 2025),
+// en el negro de los ataques nocturnos y con el panel de la antena CRPA en el
+// ala derecha, del plano de 2025. Fotos de restos en Ucrania. En metros
+// (escala 1), con las mismas z que el Shahed: el morro en z = 1,555.
 import type { Maqueta, Pieza } from "./tipos";
 import { bandera } from "../banderas.ts";
 import shahed from "./shahed-136.ts";
@@ -14,20 +12,12 @@ const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 // Distancia desde la punta del morro (como se mide en el plano) a z.
 const z = (d: number) => +(1.555 - d).toFixed(3);
 
-const ALA_Y = -0.015;
-
-// Borde de ataque: 1,34 m hacia atrás por cada metro hacia la punta; llega a
-// la misma punta que el del Shahed, pero junto al cuerpo arranca más atrás.
-const ba = (x: number) => z(0.988 + (x - 0.185) * 1.34);
-
-// Del Shahed se quedan las piezas de detrás, pintadas de negro (el motor, de
-// metal). El cuerpo, el ala y los Pitot se rehacen con las medidas del plano.
-const REHECHAS = new Set(["fuselaje", "anillo", "ala", "pitot"]);
-const deDetras: Pieza[] = shahed.piezas
-  .filter((p) => !REHECHAS.has(p.id))
+// Todas las piezas del Shahed, de negro (el motor, de metal; los elevones,
+// un punto más claros). El anillo oscuro del iraní, sobre el negro, es solo
+// una junta.
+const DEL_SHAHED: Pieza[] = shahed.piezas
+  .filter((p) => p.id !== "anillo")
   .map((p) => ({ ...p, acabado: p.acabado === "metal" ? "metal" : p.id.startsWith("elevon") ? "mando" : "negro" }));
-
-const ESTACIONES_SHAHED = (shahed.piezas.find((p) => p.id === "ala") as Extract<Pieza, { tipo: "ala" }>).estaciones;
 
 const maqueta: Maqueta = {
   nombre: "Geran-2",
@@ -35,31 +25,10 @@ const maqueta: Maqueta = {
   escala: 1,
   pais: bandera("RU"),
   piezas: [
+    ...DEL_SHAHED,
     {
-      // Morro redondo, algo más corto que el del Shahed, y un tubo de 0,29 m.
-      tipo: "tubo", id: "fuselaje", centro: [0, 0],
-      perfil: [
-        [z(0), 0], [z(0.012), 0.043], [z(0.025), 0.058], [z(0.049), 0.077], [z(0.074), 0.089],
-        [z(0.098), 0.098], [z(0.123), 0.108], [z(0.172), 0.12], [z(0.277), 0.132], [z(0.369), 0.138],
-        [z(0.462), 0.142], [z(0.554), 0.145], [-0.95, 0.145], [-1.15, 0.132], [-1.25, 0.11],
-        [-1.29, 0.078], [-1.3, 0],
-      ],
-    },
-    {
-      // Junta del morro: en el negro apenas se ve (en el Shahed iraní es un
-      // anillo oscuro sobre el gris).
       tipo: "tubo", id: "junta-morro", acabado: "junta", centro: [0, 0],
       perfil: [[z(0.745), 0.1462], [z(0.755), 0.1462]],
-    },
-    {
-      // Mismas estaciones que el Shahed, con el borde de ataque del plano de 2025.
-      tipo: "ala", id: "ala", y: ALA_Y,
-      estaciones: ESTACIONES_SHAHED.map(([x, , bs, grosor]) => [x, ba(x), bs, grosor] as [number, number, number, number]),
-    },
-    ...deDetras,
-    {
-      tipo: "varilla", id: "pitot", acabado: "metal", espejo: true,
-      desde: [0.7, ALA_Y, ba(0.7) + 0.02], hasta: [0.7, ALA_Y, ba(0.7) + 0.25], radio: 0.008,
     },
     {
       // Panel de la antena CRPA en el ala derecha: el Kometa-M4 de cuatro
