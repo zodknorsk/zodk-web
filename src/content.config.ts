@@ -109,7 +109,7 @@ const uas = defineCollection({
     categoria: z.string().optional(),
     // El glosario del hangar: página aparte, no sale entre las tarjetas.
     glosario: z.boolean().optional(),
-    // El índice del armamento del hangar: página aparte, con una tarjeta por
+    // El índice del armamento del hangar: página aparte, con una fila por
     // munición, en los grupos y el orden del índice de la nota.
     armamento: z.boolean().optional(),
     grupos: z.array(z.object({ titulo: z.string(), municiones: z.array(z.string()) })).optional(),

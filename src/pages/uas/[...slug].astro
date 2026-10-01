@@ -1,7 +1,7 @@
 ---
 // Ficha de un dron de la enciclopedia de UAS: /uas/<slug>. Es una nota de la
 // carpeta «Hangar de UAS» de la bóveda (también el glosario, con su índice;
-// el armamento, con una tarjeta por munición, y cada munición, en
+// el armamento, con una fila por munición, y cada munición, en
 // /uas/armamento/<slug>, con sus fotos en carrusel). Si hay maqueta
 // (src/data/uas/<slug>.ts), el importador deja un hueco en su sección
 // «Visor» y aquí se pone el visor (docs/uas.md).
@@ -13,7 +13,7 @@ import BackToPrev from "@components/BackToPrev.astro";
 import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import VisorUAS from "@components/VisorUAS.astro";
 import GlosarioIndice from "@components/GlosarioIndice.astro";
-import ArmamentoTarjetas from "@components/ArmamentoTarjetas.astro";
+import ArmamentoLista from "@components/ArmamentoLista.astro";
 import Carrusel from "@components/Carrusel.astro";
 import { readingTime } from "@lib/utils";
 import { leerGlosario } from "@lib/glosario";
@@ -84,7 +84,7 @@ const volver = ficha.data.municion
         <Content />
       )}
     </article>
-    {grupos && <ArmamentoTarjetas grupos={grupos} />}
+    {grupos && <ArmamentoLista grupos={grupos} />}
   </Container>
   <GlosarioTarjeta />
   {ficha.data.municion && <Carrusel />}

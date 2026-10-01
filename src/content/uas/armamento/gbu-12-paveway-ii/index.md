@@ -16,6 +16,12 @@ categoria: Bomba guiada por láser
 ![](./armamento-gbu-12.jpg)
 *Reaper británico en Kandahar, con dos GBU-12 en los soportes de dentro y cuatro Hellfire en los de fuera (foto: Cpl Steve Bain/MOD, OGL v1.0, diciembre de 2009).*
 
+![](./armamento-gbu-12-f35a.jpg)
+*Un F-35A suelta una GBU-12 sobre el campo de tiro de Utah, en febrero de 2016 (foto: Jim Haseltine, Fuerza Aérea de EE. UU.).*
+
+![](./armamento-gbu-12-afganistan.jpg)
+*Dos GBU-12 y un misil Sidewinder bajo el ala de un F/A-18 Hornet del portaaviones Carl Vinson, sobre Afganistán, el 31 de octubre de 2001 (foto: Lt. Steve Lightstone, Marina de EE. UU.).*
+
 | | |
 |---|---|
 | **País** | 🇺🇸 Estados Unidos |

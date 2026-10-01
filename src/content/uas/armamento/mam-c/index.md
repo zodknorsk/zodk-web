@@ -16,6 +16,9 @@ categoria: Bomba muy pequeña guiada por láser
 ![](./armamento-mam-c.jpg)
 *Una MAM-C en la feria Eurosatory de 2022, en París (foto: NeeXxXoR, CC BY-SA 4.0).*
 
+![](./armamento-mam-eurosatory.jpg)
+*La MAM-T junto a la MAM-L y la MAM-C, en la feria Eurosatory de 2022 (foto: NeeXxXoR, CC BY-SA 4.0).*
+
 | | |
 |---|---|
 | **País** | 🇹🇷 Turquía |

@@ -16,6 +16,12 @@ categoria: Bomba pequeña guiada por láser
 ![](./armamento-mam-l.jpg)
 *Una MAM-L en la feria Teknofest de 2019, en Estambul (foto: Kingbjelica, CC BY-SA 4.0).*
 
+![](./armamento-mam-l-idet.jpg)
+*Una MAM-L en la feria IDET de 2017, en Brno (foto: Karel Šubrt, CC BY-SA 4.0).*
+
+![](./armamento-mam-eurosatory.jpg)
+*La MAM-T junto a la MAM-L y la MAM-C, en la feria Eurosatory de 2022 (foto: NeeXxXoR, CC BY-SA 4.0).*
+
 | | |
 |---|---|
 | **País** | 🇹🇷 Turquía |

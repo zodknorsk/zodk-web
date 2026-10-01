@@ -16,6 +16,15 @@ categoria: Misil antibuque
 ![](./armamento-lrasm.jpg)
 *Un LRASM recién soltado por un B-1B, en su primer vuelo de pruebas, en agosto de 2013 (foto: DARPA).*
 
+![](./armamento-lrasm-f35c.jpg)
+*Un F-35C con un LRASM bajo cada ala y un misil aire-aire AIM-9X Sidewinder en el soporte de fuera, en las pruebas para certificar el avión con el LRASM, en septiembre de 2024 (foto: Dane Wiedmann, Marina de EE. UU.).*
+
+![](./armamento-lrasm-f35c-2.jpg)
+*Un F-35C con un misil AGM-158 y un AIM-9X Sidewinder bajo cada ala, en el primer vuelo de esas pruebas, el 9 de septiembre de 2024. Según la ficha del vuelo, los AGM-158 de esta foto podrían ser JASSM-ER, el hermano del LRASM para atacar en tierra (foto: Dane Wiedmann, Marina de EE. UU.).*
+
+![](./armamento-lrasm-blanco.jpg)
+*El MST 9301, el barco blanco de la Marina que hizo de blanco en la primera prueba del LRASM, el 27 de agosto de 2013 (foto: DARPA).*
+
 | | |
 |---|---|
 | **País** | 🇺🇸 Estados Unidos |

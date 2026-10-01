@@ -194,9 +194,12 @@ cuchillas), justo después del Hellfire, con foto sacada del vídeo de CENTCOM
 Historia (Zawahiri, 2022). El Hellfire tiene ahora cuatro fotos en carrusel.
 Después, el armamento pasó a ser una carpeta con una nota por munición,
 cada una con su página y sus fuentes, y `/uas/armamento` un índice con
-tarjetas (ver «El armamento»). Falta: que el usuario revise la nota del R9X
-(en `borrador`), fotos para las demás municiones (elegidas por él entre
-candidatas de Commons) y commit.
+una lista (ver «El armamento»). Cada munición tiene ya varias fotos en
+carrusel, elegidas por el usuario entre candidatas de Commons, salvo el JSM
+(no hay más fotos libres que la maqueta). El R9X lleva cuatro fotos que dio
+el usuario, de redes sociales, y el vídeo de CENTCOM en «En acción». Falta:
+que el usuario revise la nota del R9X (en `borrador`) y saber de qué ataque
+son dos de sus fotos (el sedán beis y la furgoneta blanca).
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -680,9 +683,12 @@ cuentan entre las tarjetas de `/uas` ni en la portada.
   negrita (`- **Misiles**`, `- **Bombas guiadas**`) y debajo los enlaces a
   cada munición. Sale en `/uas/armamento` con `armamento: true`; el
   importador quita la lista y guarda los grupos y el orden en `grupos` (el
-  slug de cada munición), y la página pone la entrada y debajo una tarjeta
-  por munición (`ArmamentoTarjetas`: primera foto, país, nombre y tipo, en
-  dos columnas, con el aire de las tarjetas de `/uas`).
+  slug de cada munición), y la página pone la entrada y debajo una fila
+  por munición (`ArmamentoLista`: miniatura de la primera foto, nombre, tipo
+  y, a la derecha, el país; en el móvil, sin el país). El usuario la eligió
+  el 1-oct-2026 entre tarjetas como las de `/uas`, una tabla de datos sin
+  fotos (tipo, guiado, alcance, lo llevan) y filas con foto grande y la
+  primera frase de la nota.
 - **Cada munición** (`🇺🇸 AGM-114 Hellfire.md`): el nombre del archivo con
   la bandera del fabricante delante, como los drones; `titulo` sin bandera,
   «designación nombre» («AGM-114 Hellfire», «GBU-12 Paveway II») o solo el

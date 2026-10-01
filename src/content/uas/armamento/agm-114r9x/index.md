@@ -16,6 +16,18 @@ categoria: Misil aire-superficie sin explosivo
 ![](./armamento-r9x.jpg)
 *El R9X alcanza la camioneta de un jefe de Hurras al Din, en el noroeste de Siria, el 23 de febrero de 2025: no hay explosión, solo un destello en forma de cruz (vídeo: Mando Central de EE. UU.).*
 
+![](./armamento-r9x-masri.jpg)
+*El coche de Abu Khayr al Masri, el número dos de Al Qaeda, después del ataque en Idlib (Siria), en febrero de 2017: el techo, cortado por las cuchillas, y ni rastro de explosión (foto: redes sociales).*
+
+![](./armamento-r9x-coche.png)
+*Vecinos alrededor de un coche alcanzado por un R9X en Siria (foto: redes sociales).*
+
+![](./armamento-r9x-idlib-2020.jpg)
+*El coche en el que murieron Khalid al Aruri y Bilal al Sanaani, de Hurras al Din, en Idlib, el 14 de junio de 2020. Las rayas rojas marcan los cortes de las cuchillas de varios misiles (foto: redes sociales).*
+
+![](./armamento-r9x-furgoneta.jpg)
+*Una furgoneta alcanzada por un R9X en Siria, con el agujero del misil en el techo (foto: redes sociales).*
+
 | | |
 |---|---|
 | **País** | 🇺🇸 Estados Unidos |
@@ -32,10 +44,28 @@ El AGM-114R9X es un [Hellfire](/uas/armamento/agm-114-hellfire) sin explosivo. E
 
 El primer ataque conocido fue en febrero de 2017, en Idlib (Siria): mató a Abu Khayr al Masri, el número dos de Al Qaeda, que iba en coche. En enero de 2019, en Yemen, mató a Jamal al Badawi, acusado de organizar el atentado contra el destructor USS Cole en 2000. El más famoso es el de Kabul: el 31 de julio de 2022, a las 6:18 de la mañana, un dron de la CIA [disparó dos Hellfire contra el balcón](https://www.cbsnews.com/news/hellfire-missiles-ayman-al-zawahiri-dead-kabul-balcony/) donde estaba Ayman al Zawahiri, el jefe de Al Qaeda. Murió solo él y la casa quedó en pie. Estados Unidos nunca ha dicho qué misil usó, pero todo apunta al R9X. Se sigue usando en Siria contra Hurras al Din, la rama de Al Qaeda allí: en marzo de 2025, CENTCOM publicó [el primer vídeo de uno](https://www.twz.com/air/bladed-hellfire-missile-seen-in-action-for-the-first-time), el del ataque del 23 de febrero contra el jefe militar del grupo, Muhammed Yusuf Ziya Talay. La camioneta queda casi entera, con un agujero en el techo justo encima del conductor.
 
+## En acción
+
+
+<blockquote class="tweet" data-tweet-id="1895859285600452987">
+  <a class="tweet-author" href="https://x.com/CENTCOM/status/1895859285600452987" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1742575878226276352-ndnlf4k3_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">U.S. Central Command</span>
+    <span class="tweet-handle">@CENTCOM</span>
+  </a>
+  <div class="tweet-text">CENTCOM Forces Kill the Senior Military Leader of Al-Qaeda Affiliate Hurras al-Din (HaD) in Syria<br>
+<br>
+On Feb. 23, U.S. Central Command (CENTCOM) forces conducted a precision airstrike in Northwest Syria, targeting and killing Muhammed Yusuf Ziya Talay, the senior military leader of […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-2f3bxckzzggzqp4p.jpg"><source src="https://video.twimg.com/amplify_video/1895857515910373377/vid/avc1/640x452/D0DTbkqXroHZpCVV.mp4?tag=16" type="video/mp4" /><source src="/tweets/640x452-d0dtbkqxrohzpcvv.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/CENTCOM/status/1895859285600452987" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/CENTCOM/status/1895859285600452987" target="_blank" rel="noopener">1 de marzo de 2025</a>
+</blockquote>
+
+
 ## Fuentes
 
 * **Wikipedia** - AGM-114 Hellfire ([fuente](https://en.wikipedia.org/wiki/AGM-114_Hellfire))
 * **The War Zone**, mayo 2019 - Secret Hellfire Missile With Sword-Like Blades Made Mysterious Strike On Terror Leader In Syria ([fuente](https://www.twz.com/27917/secret-hellfire-missile-with-sword-like-blades-made-mysterious-syria-strike-on-terror-leader))
+* **Bellingcat**, agosto 2021 - The Telltale Traces of the US Military’s New ‘Bladed’ Missile ([fuente](https://www.bellingcat.com/resources/how-tos/2021/08/26/the-telltale-traces-of-the-us-militarys-new-bladed-missile-r9x/))
 * **CBS News**, agosto 2022 - Al-Zawahiri was on his Kabul balcony. How Hellfire missiles took him out ([fuente](https://www.cbsnews.com/news/hellfire-missiles-ayman-al-zawahiri-dead-kabul-balcony/))
 * **The War Zone**, marzo 2025 - Bladed 'Ginsu' Hellfire Missile Seen In Action For First Time ([fuente](https://www.twz.com/air/bladed-hellfire-missile-seen-in-action-for-the-first-time))
 * **DVIDS**, marzo 2025 - CENTCOM Forces Kill the Senior Military Leader of Al-Qaeda Affiliate Hurras al-Din (HaD) in Syria ([fuente](https://www.dvidshub.net/video/954005))

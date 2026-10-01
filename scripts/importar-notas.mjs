@@ -912,7 +912,7 @@ async function main() {
     cuerpo = resaltados(cuerpo);
     const esDron = it.clase.tipo === "uas" && !it.clase.glosario && !it.clase.armamento && !it.clase.municion;
     if (esDron) cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
-    // El índice del armamento lo monta la página (ArmamentoTarjetas) con las
+    // El índice del armamento lo monta la página (ArmamentoLista) con las
     // municiones, en el orden y los grupos del índice de la nota (`grupos`);
     // la lista, que sirve en Obsidian, sobra.
     if (it.clase.armamento) cuerpo = cuerpo.replace(/^## Índice\n[\s\S]*?(?=^## |(?![\s\S]))/m, "").trimEnd() + "\n";

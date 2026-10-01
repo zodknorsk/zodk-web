@@ -16,6 +16,15 @@ categoria: Bomba guiada por GPS
 ![](./armamento-gbu-38.jpg)
 *Un Reaper de la Fuerza Aérea en Kandahar, armado con cuatro GBU-38, en febrero de 2018 (foto: TSgt Paul Labbe, Fuerza Aérea de EE. UU.).*
 
+![](./armamento-gbu-38-reaper.jpg)
+*Un MQ-9 Reaper de la Guardia Nacional Aérea de Dakota del Norte con GBU-38 de prácticas, en el ejercicio Southern Strike de 2021 (foto: CMSgt David H. Lipp, Fuerza Aérea de EE. UU.).*
+
+![](./armamento-gbu-38-f2.jpg)
+*Una GBU-38 bajo el ala de un F-2B japonés en la base de Tsuiki, en noviembre de 2017 (foto: Hunini, CC BY-SA 4.0).*
+
+![](./armamento-gbu-38-truman.jpg)
+*Marineros mueven una GBU-38 por la cubierta del portaaviones USS Harry S. Truman, en el golfo de Omán, en diciembre de 2013 (foto: Marina de EE. UU.).*
+
 | | |
 |---|---|
 | **País** | 🇺🇸 Estados Unidos |
