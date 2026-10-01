@@ -1,7 +1,8 @@
 ---
 // Ficha de un dron de la enciclopedia de UAS: /uas/<slug>. Es una nota de la
-// carpeta «Hangar de UAS» de la bóveda (también el glosario y el armamento,
-// que llevan un índice en vez de visor). Si hay maqueta
+// carpeta «Hangar de UAS» de la bóveda (también el glosario, con su índice;
+// el armamento, con una tarjeta por munición, y cada munición, en
+// /uas/armamento/<slug>, con sus fotos en carrusel). Si hay maqueta
 // (src/data/uas/<slug>.ts), el importador deja un hueco en su sección
 // «Visor» y aquí se pone el visor (docs/uas.md).
 import { type CollectionEntry, getCollection, render } from "astro:content";
@@ -12,9 +13,11 @@ import BackToPrev from "@components/BackToPrev.astro";
 import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import VisorUAS from "@components/VisorUAS.astro";
 import GlosarioIndice from "@components/GlosarioIndice.astro";
+import ArmamentoTarjetas from "@components/ArmamentoTarjetas.astro";
+import Carrusel from "@components/Carrusel.astro";
 import { readingTime } from "@lib/utils";
 import { leerGlosario } from "@lib/glosario";
-import { leerArmamento } from "@lib/armamento";
+import { gruposDeMuniciones } from "@lib/armamento";
 
 export async function getStaticPaths() {
   const fichas = (await getCollection("uas")).filter((f) => !f.data.draft);
@@ -34,17 +37,17 @@ const html = ficha.rendered?.html ?? "";
 const conVisor = html.includes(HUECO) && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
 const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
 const cuerpo = ficha.body ?? "";
-const indice = ficha.data.glosario
-  ? { secciones: leerGlosario(cuerpo), unidad: "términos" }
-  : ficha.data.armamento
-    ? { secciones: leerArmamento(cuerpo), unidad: "municiones" }
-    : null;
+const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo), unidad: "términos" } : null;
+const grupos = ficha.data.armamento ? gruposDeMuniciones(await getCollection("uas")) : null;
+const volver = ficha.data.municion
+  ? { href: "/uas/armamento", texto: "Volver al armamento" }
+  : { href: "/uas", texto: "Volver a la enciclopedia" };
 ---
 
 <PageLayout title={ficha.data.title} description={ficha.data.description ?? ""}>
   <Container>
     <div class="animate">
-      <BackToPrev href="/uas">Volver a la enciclopedia</BackToPrev>
+      <BackToPrev href={volver.href}>{volver.texto}</BackToPrev>
     </div>
     <div class="space-y-1 my-10">
       <div class="animate flex items-center gap-1.5 font-mono">
@@ -81,8 +84,10 @@ const indice = ficha.data.glosario
         <Content />
       )}
     </article>
+    {grupos && <ArmamentoTarjetas grupos={grupos} />}
   </Container>
   <GlosarioTarjeta />
+  {ficha.data.municion && <Carrusel />}
 </PageLayout>
 
 <style>

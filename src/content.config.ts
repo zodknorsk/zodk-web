@@ -91,7 +91,8 @@ const seguimientos = defineCollection({
 // de la bóveda = una ficha en /uas/<slug>. Si hay maqueta
 // (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/uas.md). El
 // glosario y el armamento viven en la misma carpeta, pero no son drones
-// (`glosario`, `armamento`).
+// (`glosario`, `armamento`, y cada munición, `municion`, en
+// /uas/armamento/<slug>).
 const uas = defineCollection({
   loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/uas" }),
   schema: z.object({
@@ -108,9 +109,12 @@ const uas = defineCollection({
     categoria: z.string().optional(),
     // El glosario del hangar: página aparte, no sale entre las tarjetas.
     glosario: z.boolean().optional(),
-    // El armamento del hangar (las municiones de los drones): igual, página
-    // aparte.
+    // El índice del armamento del hangar: página aparte, con una tarjeta por
+    // munición, en los grupos y el orden del índice de la nota.
     armamento: z.boolean().optional(),
+    grupos: z.array(z.object({ titulo: z.string(), municiones: z.array(z.string()) })).optional(),
+    // Una munición (/uas/armamento/<slug>): tampoco sale entre los drones.
+    municion: z.boolean().optional(),
   }),
 });
 

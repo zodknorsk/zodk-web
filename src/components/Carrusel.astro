@@ -1,0 +1,78 @@
+---
+// Los carruseles de fotos de las notas del hangar (los monta
+// src/lib/carrusel-fotos.mjs): pulsar en la mitad derecha de la foto pasa a la
+// siguiente y en la izquierda vuelve a la anterior, con la flecha del sistema
+// hacia ese lado como puntero. También las flechas del pie, las del teclado y
+// deslizar con el dedo. No pasan solas.
+---
+
+<script>
+  function montar(caja: HTMLElement) {
+    const marco = caja.querySelector<HTMLElement>(".car-marco")!;
+    const imgs = [...marco.querySelectorAll("img")];
+    const pies = [...caja.querySelectorAll<HTMLElement>(".car-pies > em")];
+    const contador = caja.querySelector<HTMLElement>(".car-cont")!;
+    let i = 0;
+
+    const ir = (n: number) => {
+      i = (n + imgs.length) % imgs.length;
+      imgs.forEach((im, k) => im.classList.toggle("oculta", k !== i));
+      pies.forEach((p, k) => (p.hidden = k !== i));
+      contador.textContent = `${i + 1} / ${imgs.length}`;
+    };
+    // La foto siguiente se pide ya, para que no tarde al pasar.
+    imgs.forEach((im) => (im.loading = "eager"));
+
+    caja.querySelectorAll<HTMLButtonElement>(".car-flecha").forEach((b) =>
+      b.addEventListener("click", () => ir(i + Number(b.dataset.dir))),
+    );
+    const lado = (x: number) => (x - marco.getBoundingClientRect().left < marco.clientWidth / 2 ? -1 : 1);
+    marco.addEventListener("pointermove", (e) => {
+      const d = lado(e.clientX);
+      marco.classList.toggle("puntero-atras", d < 0);
+      marco.classList.toggle("puntero-adelante", d > 0);
+    });
+    // Deslizar con el dedo; si apenas se mueve, es un toque y cuenta el lado.
+    let x0: number | null = null;
+    marco.addEventListener("pointerdown", (e) => (x0 = e.clientX));
+    marco.addEventListener("pointerup", (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      x0 = null;
+      ir(i + (Math.abs(dx) > 40 ? (dx < 0 ? 1 : -1) : lado(e.clientX)));
+    });
+    caja.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") ir(i + 1);
+      if (e.key === "ArrowLeft") ir(i - 1);
+    });
+    ir(0);
+    caja.classList.add("listo");
+  }
+  document.querySelectorAll<HTMLElement>("[data-carrusel]").forEach(montar);
+</script>
+
+<style is:global>
+  article .carrusel { margin: 1.25em 0; outline: none; }
+  article .carrusel:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+  article .carrusel .car-marco {
+    position: relative; aspect-ratio: 3 / 2; overflow: hidden;
+    background: #e4e4e7; touch-action: pan-y; user-select: none;
+  }
+  html.dark article .carrusel .car-marco { background: #27272a; }
+  article .carrusel .car-marco > img {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+    object-fit: cover; transition: opacity 0.25s ease; -webkit-user-drag: none;
+  }
+  article .carrusel:not(.listo) .car-marco > img ~ img,
+  article .carrusel .car-marco > img.oculta { opacity: 0; }
+  article .carrusel .car-marco.puntero-atras { cursor: w-resize; }
+  article .carrusel .car-marco.puntero-adelante { cursor: e-resize; }
+  /* El pie, como el de una foto sola (un párrafo en cursiva). */
+  article .carrusel .car-pie {
+    display: flex; gap: 0.75rem; align-items: baseline; margin-top: 0.75em;
+    font-family: "IBM Plex Serif", serif; font-size: 1em; line-height: inherit; color: var(--tw-prose-body);
+  }
+  article .carrusel .car-nav { display: inline-flex; align-items: baseline; gap: 0.15rem; white-space: nowrap; font: 12px "IBM Plex Mono", monospace; opacity: 0.75; }
+  article .carrusel .car-flecha { padding: 0 0.3rem; font: 16px "IBM Plex Mono", monospace; color: inherit; cursor: pointer; }
+  article .carrusel .car-flecha:hover { color: var(--tw-prose-headings); }
+</style>

@@ -1,12 +1,12 @@
 // El glosario del Hangar de UAS: secciones (`## …`) y términos (puntos de
 // lista de primer nivel que empiezan en negrita) de su Markdown, y el ancla
-// de cada término, que la página pone en su <li> al cargar. El índice
-// (GlosarioIndice) sirve también para el armamento (@lib/armamento).
+// de cada término, que la página pone en su <li> al cargar, para el índice
+// (GlosarioIndice).
 
 export interface SeccionIndice {
   titulo: string;
   // `ancla`: si falta, la de un término del glosario. `nota`: texto pequeño
-  // detrás del nombre (en el armamento, el tipo de munición).
+  // detrás del nombre.
   terminos: { t: string; ancla?: string; nota?: string }[];
 }
 

@@ -10,17 +10,17 @@ import Container from "@components/Container.astro";
 import BackToPrev from "@components/BackToPrev.astro";
 import BanderaUAS from "@components/BanderaUAS.astro";
 import { porFecha } from "@lib/contenido";
-import { leerArmamento } from "@lib/armamento";
+import { gruposDeMuniciones } from "@lib/armamento";
 
 const todas = (await getCollection("uas")).filter((f) => !f.data.draft);
-const fichas = todas.filter((f) => !f.data.glosario && !f.data.armamento).sort(porFecha);
+const fichas = todas.filter((f) => !f.data.glosario && !f.data.armamento && !f.data.municion).sort(porFecha);
 // El glosario: una tira encima del filtro, con cuántos términos tiene (cada
 // entrada es un punto de lista de primer nivel que empieza en negrita).
 const glosario = todas.find((f) => f.data.glosario);
 const nTerminos = glosario ? (glosario.body ?? "").match(/^- \*\*/gm)?.length ?? 0 : 0;
 // El armamento: otra tira debajo, con unas cuantas municiones de ejemplo.
 const armamento = todas.find((f) => f.data.armamento);
-const municiones = armamento ? leerArmamento(armamento.body ?? "").flatMap((s) => s.terminos.map((x) => x.t)) : [];
+const municiones = gruposDeMuniciones(todas).flatMap((g) => g.municiones.map((f) => f.data.title));
 // El dron de cada tarjeta, de día y de noche, como variables para el CSS. Los
 // drones con HD, su imagen en pixel HD (arte/generar-uas-miniaturas-hd.mjs),
 // a 1 px por píxel como el visor; los demás, el primer fotograma de su tira

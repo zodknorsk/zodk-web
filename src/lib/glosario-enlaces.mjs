@@ -9,22 +9,22 @@
 // - Glosario: «- **MALE** *(Medium Altitude Long Endurance)* — Definición»
 //   (@lib/glosario lee la misma lista para el índice). La sigla detrás de una
 //   coma en el paréntesis también vale («…, OWA»).
-// - Armamento: cada `###` («AGM-114 Hellfire»), con el «Tipo» de su tabla y
-//   su primer párrafo. Vale el nombre entero, la designación («AGM-114») y el
-//   nombre de detrás («Hellfire»).
+// - Armamento: cada munición (src/content/uas/armamento/<slug>/index.md,
+//   «AGM-114 Hellfire»), con el «Tipo» de su tabla y su primer párrafo. Vale
+//   el nombre entero, la designación («AGM-114») y el nombre de detrás
+//   («Hellfire»).
 //
 // Siglas (dos o más mayúsculas: MALE, EO/IR, LiDAR, C-UAS, GBU-38) distinguen
 // mayúsculas, para que LOS no se confunda con «los»; las palabras (jamming,
 // Hellfire) no. Se admite el plural con «s». No se tocan títulos, enlaces,
 // código ni tuits. Los enlaces hechos a mano en la bóveda al glosario (si su
 // texto es un término) o a una munición ganan la tarjeta.
-import { readFileSync, statSync } from "node:fs";
-import GithubSlugger from "github-slugger";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { anclaTermino } from "./glosario.ts";
 
 const NOTA_GLOSARIO = "src/content/uas/glosario-y-terminologia/index.md";
 const URL_GLOSARIO = "/uas/glosario-y-terminologia";
-const NOTA_ARMAMENTO = "src/content/uas/armamento/index.md";
+const CARPETA_ARMAMENTO = "src/content/uas/armamento";
 const URL_ARMAMENTO = "/uas/armamento";
 const SALTAR = new Set(["a", "code", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "script", "style", "svg"]);
 
@@ -70,33 +70,34 @@ function leerTerminos(nota) {
   return entradas;
 }
 
-// Las municiones, con el ancla de su `###` (la misma que pone Astro, como en
-// @lib/armamento), el «Tipo» de la tabla y el primer párrafo.
-function leerMuniciones(nota) {
-  const slugger = new GithubSlugger();
-  const entradas = [];
-  let actual = null;
-  for (const linea of nota.split("\n")) {
-    const h = linea.match(/^(#{2,3})\s+(.+?)\s*$/);
-    if (h) {
-      const ancla = slugger.slug(h[2]);
-      actual = null;
-      if (h[1] === "###") {
-        const t = h[2];
-        const [designacion, ...resto] = t.split(" ");
-        const nombres = [t];
-        if (resto.length && /^[A-Z]+-\d+[A-Z]?$/.test(designacion)) nombres.push(designacion, resto.join(" "));
-        actual = { t, en: "", def: "", href: `${URL_ARMAMENTO}#${ancla}`, ir: "Ver en el armamento →", nombres };
-        entradas.push(actual);
-      }
-      continue;
-    }
-    if (!actual) continue;
+// Una munición: su título, el «Tipo» de la tabla y el primer párrafo.
+function leerMunicion(nota, slug) {
+  const [, fm = "", cuerpo = ""] = nota.split(/^---$/m);
+  const t = fm.match(/^title:\s*['"]?(.+?)['"]?\s*$/m)?.[1];
+  if (!t) return null;
+  const [designacion, ...resto] = t.split(" ");
+  const nombres = [t];
+  if (resto.length && /^[A-Z]+-\d+[A-Z]?$/.test(designacion)) nombres.push(designacion, resto.join(" "));
+  const x = { t, en: "", def: "", href: `${URL_ARMAMENTO}/${slug}`, ir: "Ver la munición →", nombres };
+  for (const linea of cuerpo.split("\n")) {
     const tipo = linea.match(/^\|\s*\*\*Tipo\*\*\s*\|\s*(.+?)\s*\|/);
-    if (tipo) actual.en = limpiar(tipo[1]);
-    else if (!actual.def && /^[^\s|!*><]/.test(linea)) actual.def = limpiar(linea);
+    if (tipo) x.en = limpiar(tipo[1]);
+    else if (!x.def && /^[^\s|!*><#]/.test(linea)) x.def = limpiar(linea);
   }
-  return entradas;
+  return x;
+}
+
+// Todas las municiones: una carpeta cada una dentro del armamento.
+function leerMuniciones() {
+  let carpetas = [];
+  try {
+    carpetas = readdirSync(CARPETA_ARMAMENTO, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+  } catch {
+    return [];
+  }
+  return carpetas
+    .map((slug) => leerSiCambia(`${CARPETA_ARMAMENTO}/${slug}/index.md`, (nota) => leerMunicion(nota, slug), null))
+    .filter(Boolean);
 }
 
 // Un solo patrón para los dos, y los nombres, por el texto tal cual (siglas)
@@ -104,8 +105,8 @@ function leerMuniciones(nota) {
 let indice = { de: [], patron: null, porNombre: new Map(), porHref: new Map() };
 function cargar() {
   const glosario = leerSiCambia(NOTA_GLOSARIO, leerTerminos, []);
-  const armamento = leerSiCambia(NOTA_ARMAMENTO, leerMuniciones, []);
-  if (indice.de[0] === glosario && indice.de[1] === armamento) return indice;
+  const armamento = leerMuniciones();
+  if (indice.de[0] === glosario && indice.de.length === armamento.length + 1 && armamento.every((x, i) => indice.de[i + 1] === x)) return indice;
 
   const entradas = [...glosario, ...armamento];
   const porHref = new Map(entradas.map((x) => [x.href, x]));
@@ -126,7 +127,7 @@ function cargar() {
     ? new RegExp(`(?<![\\p{L}\\p{N}\\-/])(${partes.join("|")})s?(?![\\p{L}\\p{N}\\-/])`, "gu")
     : null;
 
-  indice = { de: [glosario, armamento], patron, porNombre, porHref };
+  indice = { de: [glosario, ...armamento], patron, porNombre, porHref };
   return indice;
 }
 
@@ -139,14 +140,15 @@ function propiedades(x) {
   return p;
 }
 
-// Se llama una vez por documento. El glosario no se enlaza a sí mismo, y el
-// armamento tampoco enlaza sus municiones (se leen en la misma página).
+// Se llama una vez por documento. El glosario no se enlaza a sí mismo, ni
+// cada munición a su propia página.
 export default function glosario({ fileURL, data }) {
   const fm = data?.astro?.frontmatter ?? {};
   if (fm.glosario || fileURL?.pathname.includes("glosario-y-terminologia")) return null;
-  const esArmamento = fm.armamento || fileURL?.pathname.includes("/uas/armamento/");
   const { patron, porNombre, porHref } = cargar();
-  const usados = new Set();
+  // Una munición no se enlaza a sí misma.
+  const propia = fileURL?.pathname.match(/\/uas\/armamento\/([^/]+)\/index\.md$/)?.[1];
+  const usados = new Set(propia ? [`${URL_ARMAMENTO}/${decodeURIComponent(propia)}`] : []);
 
   const saltar = (nodo, ctx) => {
     for (let p = ctx.parent(nodo); p && p.type === "element"; p = ctx.parent(p)) {
@@ -165,7 +167,7 @@ export default function glosario({ fileURL, data }) {
         const href = String(a.properties?.href ?? "");
         let x = null;
         if (href.startsWith(URL_GLOSARIO)) x = buscar(porNombre, ctx.textContent(a).trim());
-        else if (href.startsWith(`${URL_ARMAMENTO}#`)) x = porHref.get(decodeURI(href));
+        else if (href.startsWith(`${URL_ARMAMENTO}/`)) x = porHref.get(decodeURI(href));
         if (!x) return;
         usados.add(x.href);
         for (const [clave, valor] of Object.entries(propiedades(x))) ctx.setProperty(a, clave, valor);
@@ -178,7 +180,7 @@ export default function glosario({ fileURL, data }) {
       let desde = 0;
       for (const m of texto.matchAll(patron)) {
         const x = buscar(porNombre, m[1]);
-        if (!x || usados.has(x.href) || (esArmamento && x.ir)) continue;
+        if (!x || usados.has(x.href)) continue;
         usados.add(x.href);
         if (m.index > desde) nuevos.push({ type: "text", value: texto.slice(desde, m.index) });
         nuevos.push({ type: "element", tagName: "a", properties: propiedades(x), children: [{ type: "text", value: m[0] }] });

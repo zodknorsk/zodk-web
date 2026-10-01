@@ -5,6 +5,7 @@ import autoprefixer from "autoprefixer";
 import { satteri } from "@astrojs/markdown-satteri";
 import glosario from "./src/lib/glosario-enlaces.mjs";
 import banderasTablas from "./src/lib/banderas-tablas.mjs";
+import carruselFotos from "./src/lib/carrusel-fotos.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,8 +23,9 @@ export default defineConfig({
   // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).
   // Sätteri es el procesador de Markdown que Astro 7 usa de serie. En las
   // tablas del hangar, las banderas en pixel art (src/lib/banderas-tablas.mjs).
+  // En el armamento, las fotos seguidas van en carrusel (src/lib/carrusel-fotos.mjs).
   markdown: {
-    processor: satteri({ hastPlugins: [glosario, banderasTablas] }),
+    processor: satteri({ hastPlugins: [glosario, banderasTablas, carruselFotos] }),
   },
 
   // Astro 7 quita por defecto los espacios con reglas de JSX: un salto de línea

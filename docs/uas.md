@@ -187,6 +187,17 @@ tira de la portada y el índice»); los términos del glosario en los
 artículos, en mono con rayas y puntero «i» (ver «El glosario»); el contador
 de las tiras sube en 3 s.
 
+**1-oct-2026, AGM-114R9X y carrusel de fotos** (sin commit, probado en
+local). En el armamento, la munición nueva AGM-114R9X (el Hellfire de las
+cuchillas), justo después del Hellfire, con foto sacada del vídeo de CENTCOM
+(DVIDS 954005, dominio público); la nota del Reaper la enlaza en su
+Historia (Zawahiri, 2022). El Hellfire tiene ahora cuatro fotos en carrusel.
+Después, el armamento pasó a ser una carpeta con una nota por munición,
+cada una con su página y sus fuentes, y `/uas/armamento` un índice con
+tarjetas (ver «El armamento»). Falta: que el usuario revise la nota del R9X
+(en `borrador`), fotos para las demás municiones (elegidas por él entre
+candidatas de Commons) y commit.
+
 ## Pedir una ficha nueva: el guion completo
 
 El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
@@ -639,12 +650,12 @@ se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).
   gana la tarjeta.
 - `src/components/GlosarioTarjeta.astro`: la tarjeta, en las páginas de
   notas, eventos y UAS.
-- Las municiones salen de las `###` del armamento: vale el nombre entero
-  («AGM-114 Hellfire»), la designación («AGM-114») y el nombre de detrás
-  («Hellfire»). Su tarjeta lleva el «Tipo» de la tabla, el primer párrafo
-  de su ficha y «Ver en el armamento →». En la página del armamento no se
-  enlazan entre ellas. Los enlaces a mano (`[[Armamento#GBU-38 JDAM|GBU-38]]`)
-  también ganan la tarjeta.
+- Las municiones salen de sus notas (`src/content/uas/armamento/<slug>/`):
+  vale el nombre entero («AGM-114 Hellfire»), la designación («AGM-114») y
+  el nombre de detrás («Hellfire»). Su tarjeta lleva el «Tipo» de la tabla,
+  el primer párrafo de su nota y «Ver la munición →», que lleva a su página.
+  Una munición no se enlaza a sí misma. Los enlaces a mano
+  (`[[🇺🇸 GBU-38 JDAM|GBU-38]]`) también ganan la tarjeta.
 - **Para que enlace, hay que escribirlo igual** (lo pidió el usuario): en
   cualquier nota, el término o la munición con el nombre exacto del
   glosario o del armamento (ver «Nombres que se enlazan solos» en la
@@ -656,34 +667,44 @@ se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).
 
 ## El armamento
 
-La nota `Armamento.md` de la misma carpeta de la bóveda (el importador la
-reconoce porque empieza por «Armamento») recoge las **municiones** que llevan
-los drones del hangar: misiles y bombas guiadas. Como el glosario, no es un
-dron: sale en `/uas/armamento`, sin visor, con `armamento: true` en su
-frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
+Desde el 1-oct-2026 el armamento es una **carpeta** de la bóveda,
+`Hangar de UAS/Armamento/`, con una nota por munición y la nota índice
+`Armamento.md` (lo pidió el usuario: con varias fotos por munición, una sola
+nota iba a ser enorme; hasta entonces era una nota con una `###` por
+munición). Las **municiones** son lo que llevan los drones del hangar:
+misiles y bombas guiadas. Ni el índice ni las municiones son drones: no
+cuentan entre las tarjetas de `/uas` ni en la portada.
 
-- **La nota**: `## Misiles` y `## Bombas guiadas`, y dentro una `###` por
-  munición (sin bandera en el título, para que el enlace
-  `[[Armamento#AGM-114 Hellfire]]` quede limpio; la bandera va en la fila
-  «País»). Cada una lleva foto con pie y crédito, tabla (País, Fabricante,
-  Tipo, Guiado, Peso / longitud, Warhead, Alcance, En servicio, Lo llevan)
-  y dos párrafos. La bandera es la del fabricante, como en los drones. El
-  usuario pidió «munición», no «bomba», como palabra general.
-- **Una munición nueva**: la `###` es «designación nombre» («AGM-114
-  Hellfire», «GBU-12 Paveway II»), o solo el nombre si no tiene designación
-  de EE. UU. («JSM»). De ahí salen los nombres con los que se enlaza sola en
-  las demás notas, así que las fichas y notas tienen que escribirla igual.
-  El primer párrafo es el que sale en la tarjeta: que empiece diciendo qué
-  es.
-- **El índice**: la nota tiene uno propio (`## Índice`) para Obsidian; el
-  importador lo quita y la página monta el suyo con `GlosarioIndice` (el
-  mismo componente del glosario, que ahora recibe las secciones ya leídas):
-  `leerArmamento` (`src/lib/armamento.ts`) saca las `##`, las `###` y el
-  «Tipo» de cada tabla, que sale en pequeño debajo del nombre.
+- **La nota índice** (`Armamento.md`, el importador la reconoce porque
+  empieza por «Armamento»): la entrada y un `## Índice` con los grupos en
+  negrita (`- **Misiles**`, `- **Bombas guiadas**`) y debajo los enlaces a
+  cada munición. Sale en `/uas/armamento` con `armamento: true`; el
+  importador quita la lista y guarda los grupos y el orden en `grupos` (el
+  slug de cada munición), y la página pone la entrada y debajo una tarjeta
+  por munición (`ArmamentoTarjetas`: primera foto, país, nombre y tipo, en
+  dos columnas, con el aire de las tarjetas de `/uas`).
+- **Cada munición** (`🇺🇸 AGM-114 Hellfire.md`): el nombre del archivo con
+  la bandera del fabricante delante, como los drones; `titulo` sin bandera,
+  «designación nombre» («AGM-114 Hellfire», «GBU-12 Paveway II») o solo el
+  nombre si no tiene designación de EE. UU. («JSM»). Las propiedades de la
+  plantilla de siempre. Dentro: fotos con su pie (si son varias, carrusel),
+  tabla (País, Fabricante, Tipo, Guiado, Peso / longitud, Warhead, Alcance,
+  En servicio, Lo llevan), el texto y `## Fuentes` en el formato de los
+  drones. Sale en `/uas/armamento/<slug>` con `municion: true`, `pais`,
+  `bandera` y `categoria` (su «Tipo»), y «Volver al armamento». El usuario
+  pidió «munición», no «bomba», como palabra general.
+- **Los enlaces**: a una munición se enlaza por su nota
+  (`[[🇺🇸 AGM-114 Hellfire\|Hellfire]]` en una tabla). En la web, su nombre
+  se enlaza solo con su tarjeta en las demás páginas
+  (`src/lib/glosario-enlaces.mjs` lee cada `armamento/<slug>/index.md`: el
+  título, la designación o el nombre de detrás; el «Tipo» y el primer
+  párrafo, que tiene que empezar diciendo qué es). Una munición no se
+  enlaza a sí misma.
 - **La tira de `/uas`**: debajo de la del glosario, mismo estilo, con
   «AGM / GBU» (los prefijos de misiles y bombas guiadas) en lugar de «A–Z»,
-  las cuatro primeras municiones y cuántas hay («7 bombas o misiles
-  disponibles en la armería», texto del usuario del 29-sep-2026). El número
+  las cuatro primeras municiones y cuántas hay («8 bombas o misiles
+  disponibles en la armería», texto del usuario del 29-sep-2026; se cuentan
+  las notas de municiones, `gruposDeMuniciones` en `src/lib/armamento.ts`). El número
   de las dos tiras va en una chapa en tinta que cuenta desde 0 al cargar,
   en 3 s (el usuario la eligió entre seis opciones y luego la velocidad,
   probando de 0,9 a 3,5 s; primero 1,6 s, y el 30-sep-2026 pidió más lento
@@ -692,6 +713,21 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
 - **Las fotos**: en `02 - Temas/Adjuntos/armamento-*.jpg`, de Wikimedia
   Commons, con licencia libre (dominio público del ejército de EE. UU., o
   CC BY-SA / OGL con su crédito en el pie).
+- **Varias fotos de una munición: carrusel** (1-oct-2026). En la nota van
+  seguidas, cada una con su pie y con una línea en blanco entre ellas
+  (`![[armamento-hellfire-predator.jpg]]` y debajo `*pie*`); en Obsidian se
+  ven todas. En la web, `src/lib/carrusel-fotos.mjs` (plugin de Sätteri, en
+  `astro.config.mjs`, solo para las municiones) junta dos o más fotos seguidas
+  en una: foto en 3:2 y debajo «‹ 1 / 4 ›» y su pie. Pulsar en la mitad
+  derecha de la foto pasa a la siguiente y en la izquierda vuelve atrás; el
+  puntero es la flecha del sistema hacia ese lado (`e-resize` / `w-resize`).
+  También las flechas del pie, las del teclado y deslizar con el dedo; no
+  pasan solas. El comportamiento está en `src/components/Carrusel.astro`. El
+  usuario lo eligió entre cinco formas (flechas y puntos, miniaturas debajo
+  o al lado, deslizar con la siguiente asomando y contador en el pie) y
+  cuatro variantes de miniaturas pequeñas; quiso el contador en el pie y
+  descartó las miniaturas y un puntero dibujado («más minimalista»). De
+  momento solo lo tiene el Hellfire (cuatro fotos).
 - `[[#sección]]` sin texto se lee ahora «sección» en la web, como en
   Obsidian (antes salía «#sección»).
 

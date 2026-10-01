@@ -52,7 +52,7 @@ const todasOps = (await getCollection("operaciones")).filter((o) => !o.data.draf
 
 // Hangar de UAS: cuántas fichas hay y la planta en pixel art de los drones
 // de la tira (arte/generar-uas-miniaturas.mjs).
-const fichasUas = (await getCollection("uas")).filter((f) => !f.data.draft && !f.data.glosario && !f.data.armamento).sort(porFecha);
+const fichasUas = (await getCollection("uas")).filter((f) => !f.data.draft && !f.data.glosario && !f.data.armamento && !f.data.municion).sort(porFecha);
 // De momento, siempre el X10D y, a su derecha, el MICH-2000 (al lado del
 // hangar solo caben dos puestos; más adelante se verá cómo entran los demás).
 const EN_HANGAR = ["skydio-x10d", "mich-2000"];

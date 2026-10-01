@@ -89,8 +89,11 @@ const EN_ESTA_RAMA = process.argv.includes("--en-esta-rama");
 const ETIQUETAS_PROYECTO = new Set(["luna", "marte", "blog"]);
 // El Hangar de UAS: sus notas son fichas de drones en /uas (docs/uas.md),
 // salvo el glosario y el armamento (notas que empiezan por «Glosario» y por
-// «Armamento»), que son páginas aparte.
+// «Armamento»), que son páginas aparte. Las municiones son una nota cada una
+// en la carpeta «Armamento» (junto a la nota índice) y van en
+// /uas/armamento/<slug>.
 const CARPETA_UAS = "Hangar de UAS";
+const CARPETA_ARMAMENTO = "Armamento";
 const RE_GLOSARIO_UAS = /^Glosario\b/i;
 const RE_ARMAMENTO_UAS = /^Armamento\b/i;
 const CARPETAS_IGNORADAS = new Set([
@@ -337,7 +340,9 @@ function clasificar(ruta, data) {
   const partes = path.relative(BOVEDA, ruta).split(path.sep);
   const stem = path.basename(ruta, ".md");
   if (partes.includes(CARPETA_UAS)) {
-    return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(stem), armamento: RE_ARMAMENTO_UAS.test(stem) };
+    const armamento = RE_ARMAMENTO_UAS.test(stem);
+    const municion = !armamento && partes.includes(CARPETA_ARMAMENTO);
+    return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(stem), armamento, municion };
   }
   if ([].concat(data.tags ?? []).some((t) => ETIQUETAS_PROYECTO.has(String(t).toLowerCase()))) {
     return { tipo: "nota" };
@@ -408,6 +413,35 @@ function paisDeFicha(cuerpo) {
   const categoria = fila("Categor[ií]a")?.split(/[,(]/)[0].trim();
   if (categoria) datos.categoria = categoria;
   return datos;
+}
+
+/** Una munición sin sus fotos, sus pies ni su tabla: lo que queda empieza por el texto. */
+function sinFotosNiTabla(cuerpo) {
+  return cuerpo
+    .split("\n")
+    .filter((l) => !/^\s*(!\[|\||\*[^*\s].*\*\s*$)/.test(l))
+    .join("\n");
+}
+
+/**
+ * Los grupos del índice de la nota del armamento («- **Misiles**» y, debajo,
+ * las líneas con sus enlaces), con el slug de cada munición en su orden.
+ */
+function gruposDelIndice(cuerpo, resolver) {
+  const indice = cuerpo.match(/^## Índice\n([\s\S]*?)(?=^## |(?![\s\S]))/m)?.[1] ?? "";
+  const grupos = [];
+  for (const linea of indice.split("\n")) {
+    const grupo = linea.match(/^[-*]\s+\*\*(.+?)\*\*/);
+    if (grupo) {
+      grupos.push({ titulo: grupo[1], municiones: [] });
+      continue;
+    }
+    for (const m of linea.matchAll(/\[\[([^\]|#]+)/g)) {
+      const url = resolver(m[1]);
+      if (url?.startsWith("/uas/armamento/") && grupos.length) grupos.at(-1).municiones.push(url.split("/").pop());
+    }
+  }
+  return grupos.filter((g) => g.municiones.length);
 }
 
 /**
@@ -744,8 +778,13 @@ async function main() {
     if (plana[clase.tipo]) {
       const [base, destino] = plana[clase.tipo];
       const slug = generarSlug(titulo);
-      url = `/${base}/${slug}`;
-      carpetaDestino = path.join(destino, slug);
+      if (clase.municion) {
+        url = `/uas/armamento/${slug}`;
+        carpetaDestino = path.join(DESTINO_UAS, "armamento", slug);
+      } else {
+        url = `/${base}/${slug}`;
+        carpetaDestino = path.join(destino, slug);
+      }
     } else {
       url = clase.kind === "index"
         ? `/seguimiento/${clase.eventoSlug}`
@@ -871,24 +910,33 @@ async function main() {
       fotoNueva ||= nueva;
     }
     cuerpo = resaltados(cuerpo);
-    const esDron = it.clase.tipo === "uas" && !it.clase.glosario && !it.clase.armamento;
+    const esDron = it.clase.tipo === "uas" && !it.clase.glosario && !it.clase.armamento && !it.clase.municion;
     if (esDron) cuerpo = saltosEnListas(colocarVisor(cuerpo, path.basename(it.carpetaDestino)));
-    // El índice del armamento lo monta la página (ArmamentoIndice) con los
-    // encabezados; el de la nota, que sirve en Obsidian, sobra.
-    if (it.clase.armamento) cuerpo = cuerpo.replace(/^## Índice\n[\s\S]*?(?=^## )/m, "");
+    // El índice del armamento lo monta la página (ArmamentoTarjetas) con las
+    // municiones, en el orden y los grupos del índice de la nota (`grupos`);
+    // la lista, que sirve en Obsidian, sobra.
+    if (it.clase.armamento) cuerpo = cuerpo.replace(/^## Índice\n[\s\S]*?(?=^## |(?![\s\S]))/m, "").trimEnd() + "\n";
 
     const fm = {
       title: it.titulo,
       date: aFechaISO(primero(it.data.creado) || primero(it.data.created)) || aFechaISO(new Date()),
     };
-    const desc = extraerDescripcion(it.content);
+    // En una munición, la descripción es su primer párrafo, no el pie de foto.
+    const desc = extraerDescripcion(it.clase.municion ? sinFotosNiTabla(it.content) : it.content);
     if (desc) fm.description = desc;
     const actualizado = parsearFechaActualizado(primero(it.data.actualizado));
     if (actualizado) fm.updated = aFechaISO(actualizado);
     if (Array.isArray(it.data.tags) && it.data.tags.length) fm.tags = it.data.tags.map(String);
     if (it.clase.glosario) fm.glosario = true;
-    else if (it.clase.armamento) fm.armamento = true;
-    else if (esDron) Object.assign(fm, paisDeFicha(it.content));
+    else if (it.clase.armamento) {
+      fm.armamento = true;
+      fm.grupos = gruposDelIndice(it.content, resolver);
+    } else if (it.clase.municion) {
+      fm.municion = true;
+      Object.assign(fm, paisDeFicha(it.content));
+      const tipo = it.content.match(/^\|\s*\*\*Tipo\*\*\s*\|\s*(.+?)\s*\|\s*$/m)?.[1];
+      if (tipo) fm.categoria = tipo;
+    } else if (esDron) Object.assign(fm, paisDeFicha(it.content));
 
     if (it.clase.opinion) fm.opinion = true;
     if (it.clase.tipo === "operacion") {

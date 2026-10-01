@@ -86,11 +86,11 @@ glosario: true
 
 ## Municiones y guiado
 
-- **Semi-active laser** *(guiado láser semiactivo)* — Forma de guiar un misil o una bomba en la que alguien, sea el propio dron, otro avión o un soldado en tierra, apunta un láser al objetivo, y el arma sigue el reflejo de ese láser hasta él. Es muy precisa, pero hay que mantener el láser sobre el blanco hasta el impacto, y no atraviesa bien las nubes ni el humo. Así se guían el [Hellfire](/uas/armamento#agm-114-hellfire) y la [GBU-12](/uas/armamento#gbu-12-paveway-ii).
+- **Semi-active laser** *(guiado láser semiactivo)* — Forma de guiar un misil o una bomba en la que alguien, sea el propio dron, otro avión o un soldado en tierra, apunta un láser al objetivo, y el arma sigue el reflejo de ese láser hasta él. Es muy precisa, pero hay que mantener el láser sobre el blanco hasta el impacto, y no atraviesa bien las nubes ni el humo. Así se guían el [Hellfire](/uas/armamento/agm-114-hellfire) y la [GBU-12](/uas/armamento/gbu-12-paveway-ii).
 
-- **Fire and forget** *(dispara y olvida)* — Arma que, una vez lanzada, se guía sola hasta el blanco, sin que quien la disparó tenga que seguir apuntando, así que puede alejarse o atacar otro objetivo enseguida. El nombre del [Hellfire](/uas/armamento#agm-114-hellfire) viene de ahí, aunque de sus versiones solo lo es de verdad la de radar, el AGM-114L: las de láser necesitan que alguien siga iluminando el blanco.
+- **Fire and forget** *(dispara y olvida)* — Arma que, una vez lanzada, se guía sola hasta el blanco, sin que quien la disparó tenga que seguir apuntando, así que puede alejarse o atacar otro objetivo enseguida. El nombre del [Hellfire](/uas/armamento/agm-114-hellfire) viene de ahí, aunque de sus versiones solo lo es de verdad la de radar, el AGM-114L: las de láser necesitan que alguien siga iluminando el blanco.
 
-- **Sea-skimming** *(vuelo rasante sobre el mar)* — Volar a muy pocos metros por encima de las olas. Los misiles antibuque lo hacen en el último tramo para que el radar del barco los detecte lo más tarde posible, cuando ya casi no queda tiempo para derribarlos. Lo hacen el [JSM](/uas/armamento#jsm) y el [LRASM](/uas/armamento#agm-158c-lrasm).
+- **Sea-skimming** *(vuelo rasante sobre el mar)* — Volar a muy pocos metros por encima de las olas. Los misiles antibuque lo hacen en el último tramo para que el radar del barco los detecte lo más tarde posible, cuando ya casi no queda tiempo para derribarlos. Lo hacen el [JSM](/uas/armamento/jsm) y el [LRASM](/uas/armamento/agm-158c-lrasm).
 
 ## Piezas y sistemas del propio dron
 

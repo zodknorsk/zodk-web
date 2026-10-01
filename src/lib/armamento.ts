@@ -1,33 +1,29 @@
-// El armamento del Hangar de UAS: secciones (`## Misiles`, `## Bombas
-// guiadas`) y municiones (`### …`) de su Markdown, con el «Tipo» de la tabla
-// de cada una, para el índice de la página (GlosarioIndice).
-import GithubSlugger from "github-slugger";
-import type { SeccionIndice } from "@lib/glosario";
+// El armamento del Hangar de UAS: cada munición es una entrada de la colección
+// «uas» con `municion` (/uas/armamento/<slug>). Se agrupan y ordenan como en
+// el índice de la nota del armamento (`grupos`, lo pone el importador); las
+// que no salgan allí van al final, en «Otras».
+import type { CollectionEntry } from "astro:content";
 
-const FUERA = new Set(["Índice", "Fuentes"]);
+type Ficha = CollectionEntry<"uas">;
+export type GrupoMuniciones = { titulo: string; municiones: Ficha[] };
 
-export function leerArmamento(cuerpo: string): SeccionIndice[] {
-  // El ancla de cada munición es la del encabezado que genera Astro.
-  const slugger = new GithubSlugger();
-  const secciones: SeccionIndice[] = [];
-  let dentro = false;
-  for (const linea of cuerpo.split("\n")) {
-    const h2 = linea.match(/^##\s+(.+?)\s*$/);
-    if (h2) {
-      slugger.slug(h2[1]);
-      dentro = !FUERA.has(h2[1]);
-      if (dentro) secciones.push({ titulo: h2[1], terminos: [] });
-      continue;
-    }
-    const h3 = linea.match(/^###\s+(.+?)\s*$/);
-    if (h3) {
-      const ancla = slugger.slug(h3[1]);
-      if (dentro) secciones[secciones.length - 1].terminos.push({ t: h3[1], ancla });
-      continue;
-    }
-    const tipo = linea.match(/^\|\s*\*\*Tipo\*\*\s*\|\s*(.+?)\s*\|/);
-    const ultima = secciones[secciones.length - 1]?.terminos.at(-1);
-    if (tipo && dentro && ultima && !ultima.nota) ultima.nota = tipo[1];
-  }
-  return secciones.filter((s) => s.terminos.length);
+export const slugMunicion = (f: Ficha) => f.id.split("/").pop()!;
+
+export function gruposDeMuniciones(todas: Ficha[]): GrupoMuniciones[] {
+  const municiones = todas.filter((f) => f.data.municion && !f.data.draft);
+  const porSlug = new Map(municiones.map((f) => [slugMunicion(f), f]));
+  const indice = todas.find((f) => f.data.armamento)?.data.grupos ?? [];
+  const usadas = new Set<string>();
+  const grupos = indice.map((g) => ({
+    titulo: g.titulo,
+    municiones: g.municiones.flatMap((s) => {
+      const f = porSlug.get(s);
+      if (!f || usadas.has(s)) return [];
+      usadas.add(s);
+      return [f];
+    }),
+  }));
+  const otras = municiones.filter((f) => !usadas.has(slugMunicion(f)));
+  if (otras.length) grupos.push({ titulo: "Otras", municiones: otras });
+  return grupos.filter((g) => g.municiones.length);
 }
