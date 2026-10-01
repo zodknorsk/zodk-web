@@ -13,20 +13,17 @@ bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
 categoria: Misil aire-superficie sin explosivo
 ---
-![](./armamento-r9x.jpg)
-*El R9X alcanza la camioneta de un jefe de Hurras al Din, en el noroeste de Siria, el 23 de febrero de 2025: no hay explosión, solo un destello en forma de cruz (vídeo: Mando Central de EE. UU.).*
-
 ![](./armamento-r9x-masri.jpg)
 *El coche de Abu Khayr al Masri, el número dos de Al Qaeda, después del ataque en Idlib (Siria), en febrero de 2017: el techo, cortado por las cuchillas, y ni rastro de explosión (foto: redes sociales).*
 
 ![](./armamento-r9x-coche.png)
-*Vecinos alrededor de un coche alcanzado por un R9X en Siria (foto: redes sociales).*
+*Vecinos alrededor del coche de Abu Khayr al Masri, en Idlib, en febrero de 2017 (foto: redes sociales).*
 
 ![](./armamento-r9x-idlib-2020.jpg)
 *El coche en el que murieron Khalid al Aruri y Bilal al Sanaani, de Hurras al Din, en Idlib, el 14 de junio de 2020. Las rayas rojas marcan los cortes de las cuchillas de varios misiles (foto: redes sociales).*
 
 ![](./armamento-r9x-furgoneta.jpg)
-*Una furgoneta alcanzada por un R9X en Siria, con el agujero del misil en el techo (foto: redes sociales).*
+*Una furgoneta alcanzada por un R9X en el norte de la provincia de Alepo (Siria), el 20 de julio de 2020, con el agujero del misil en el techo (foto: redes sociales).*
 
 | | |
 |---|---|
@@ -65,6 +62,7 @@ On Feb. 23, U.S. Central Command (CENTCOM) forces conducted a precision airstrik
 
 * **Wikipedia** - AGM-114 Hellfire ([fuente](https://en.wikipedia.org/wiki/AGM-114_Hellfire))
 * **The War Zone**, mayo 2019 - Secret Hellfire Missile With Sword-Like Blades Made Mysterious Strike On Terror Leader In Syria ([fuente](https://www.twz.com/27917/secret-hellfire-missile-with-sword-like-blades-made-mysterious-syria-strike-on-terror-leader))
+* **Samir (@obretix)**, julio 2020 - geolocation of a drone strike with R9X Hellfire missile in northern Aleppo countryside today ([fuente](https://x.com/obretix/status/1285180788431085569))
 * **Bellingcat**, agosto 2021 - The Telltale Traces of the US Military’s New ‘Bladed’ Missile ([fuente](https://www.bellingcat.com/resources/how-tos/2021/08/26/the-telltale-traces-of-the-us-militarys-new-bladed-missile-r9x/))
 * **CBS News**, agosto 2022 - Al-Zawahiri was on his Kabul balcony. How Hellfire missiles took him out ([fuente](https://www.cbsnews.com/news/hellfire-missiles-ayman-al-zawahiri-dead-kabul-balcony/))
 * **The War Zone**, marzo 2025 - Bladed 'Ginsu' Hellfire Missile Seen In Action For First Time ([fuente](https://www.twz.com/air/bladed-hellfire-missile-seen-in-action-for-the-first-time))
