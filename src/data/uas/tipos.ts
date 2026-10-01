@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "gris-et" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "blanco";
+export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -59,7 +59,10 @@ export type Pieza = (
   // la del MICH); con eje "y", en el horizontal (multirrotores).
   // espejo: se repite al otro lado (x → −x). giro: grados que se giran las
   // palas sobre su eje (0: la primera, tumbada hacia x).
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number }
+  // ancho: cuerda máxima de la pala; con él, cada pala tiene forma (estrecha
+  // en la raíz, más ancha a un tercio y con la punta redondeada) en vez de ser
+  // una tabla.
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number; ancho?: number }
   // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
   // redondeo: radio de las esquinas vistas desde arriba (y bisel arriba y abajo).
   | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean; redondeo?: number }
@@ -79,7 +82,20 @@ export type Pieza = (
 // repite la calca o la costura al otro lado (x → −x).
 export type Dibujo =
   | { tipo: "escarapela" }
-  | { tipo: "texto"; texto: string }
+  // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;
+  // `fino`: letra de palo normal en vez de la negrita ancha.
+  | { tipo: "texto"; texto: string; color?: string; fino?: boolean }
+  // Bandera turca, escarapela turca (roja, blanca y roja) y logo de Baykar
+  // (el TB2).
+  | { tipo: "bandera-tr" }
+  | { tipo: "escarapela-tr" }
+  | { tipo: "baykar" }
+  // Placa de aviso: amarilla, con el borde rayado en negro y unas líneas.
+  | { tipo: "aviso" }
+  // Toma de aire sumergida (NACA): una rampa hundida, estrecha delante y
+  // ancha detrás, que acaba en la boca negra. El largo va a lo ancho del
+  // dibujo, con la boca a la izquierda.
+  | { tipo: "naca" }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
   | { tipo: "franja"; color: string }
@@ -88,7 +104,18 @@ export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; g
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
 
 // Una sección de un casco (ver arriba).
-export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number };
+// Con `lomo` (su medio ancho) el cuerpo lleva encima un lomo más estrecho,
+// fundido con él por un hombro suave: `arriba` es entonces lo alto del lomo y
+// `hombro`, lo alto del cuerpo de debajo (el TB2).
+// Con `costado` (medio ancho del cuerpo), la sección lleva un ensanche fino
+// hasta `ancho` a la altura de la cintura: la arista que corre por el costado
+// y se convierte en la raíz del ala (el TB2). Por arriba, un empalme cóncavo
+// sube del ensanche al costado del cuerpo hasta `sobreArista`; por abajo,
+// otro baja hasta `bajoArista`. Sin ensanche (`ancho` igual a `costado`),
+// el costado es recto entre esas dos alturas. `costadoArriba`: hasta dónde
+// llega hacia dentro el empalme de arriba (por defecto, el costado); en la
+// raíz del ala del TB2 sube hasta el pie del lomo, sin hombro.
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number };
 
 // Qué respalda lo que cuenta cada parte.
 export type Respaldo = "foto" | "reconstruccion" | "fabricante";
@@ -134,4 +161,7 @@ export type Maqueta = {
   // sus calcas y costuras.
   hd?: boolean;
   detalles?: { calcas: Calca[]; costuras: Costura[] };
+  // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
+  // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
+  desfaseLuz?: number;
 };

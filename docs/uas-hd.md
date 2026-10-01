@@ -21,7 +21,8 @@ abajo). El cómo, las piezas y las herramientas están en «Dónde estamos» y e
 se enseña una versión rápida para que el usuario la corrija.
 
 **Qué drones**: el usuario puede pedir pasar un dron al HD, al pixel HD o a
-los dos (todos menos el MQ-9, que está terminado). Los drones nuevos se
+los dos (todos menos el MQ-9, que está terminado, y el TB2, hecho y a falta
+de su revisión). Los drones nuevos se
 hacen desde el principio en HD y pixel HD.
 
 **Antes de empezar**
@@ -85,6 +86,28 @@ Con eso se gana casi todo el HD. Además, en todos los drones:
 - **Cierre**: el usuario lo da por bueno, se fusiona en `main`, se publica
   y se borra la rama.
 
+**Medir con fotos encajadas** (desde el TB2, 1-oct-2026). Con fotos en
+perspectiva no basta con una rejilla: se encaja la cámara de cada foto y se
+pinta la maqueta encima desde ese mismo ángulo.
+
+- `arte/encajar-camara.mjs <ajuste.json> [salida.png]`: en el json, la foto
+  y puntos que se reconocen en ella (`[x, y, z, px, py, "nombre"]`, en metros
+  de la maqueta). Encaja la cámara (acimut, elevación, giro, distancia, campo)
+  y dice el error de cada punto; la salida lleva la silueta de la maqueta en
+  rojo y las juntas en amarillo. Un punto con `"medir:z"` (o `x`, `y`) no
+  encaja: dice dónde cae su píxel con esa coordenada fija (por ejemplo, el
+  ancho de las ruedas si se sabe su z).
+- `arte/comparar-foto.mjs <ajuste.json> <salida.png> [--encima] [--pixel]`:
+  el visor en HD (o pixel) desde la cámara encajada, debajo de la foto o
+  encima a medias. Usa un enganche del visor que solo existe con `npm run
+  dev` (`window.__visor.mirar`). Lienzo de 1900 px como mucho.
+- `arte/vista-visor.mjs`: el visor desde una cámara cualquiera, sin foto.
+- Lo que sí vale y lo que no: medir a lo largo de la vista no sirve (una z en
+  una foto de frente). El ancho, con fotos ancladas a medidas que se saben a
+  la misma profundidad (la envergadura). Una foto con una sola referencia de
+  ancho (una punta del ala) da anchos poco fiables.
+- Los json de cada foto, junto a las fotos (fuera de Git).
+
 **Lo que salió mal con el MQ-9 y no se repite**
 
 - Redondear una arista que se veía en todas las fotos.
@@ -120,7 +143,7 @@ fuera en negro, sin tramado y sin tornillos.
    el centro de un escalón y no en el borde, o las caras grandes (el ala)
    salen a franjas. Se mide la luminosidad de la pintura en el HD; los
    escalones están puestos para el gris del MQ-9 (~0,8), y si otro dron cae
-   en un borde hay que moverlos.
+   en un borde hay que moverlos: `desfaseLuz` en la maqueta (el TB2, 0,48).
 2. **Marcas que se lean**: cada calca, con tinta entera o nada. Se comprueba
    de perfil y desde donde se vean que salen todas.
 3. **Líneas limpias**: contorno negro por fuera solo en lo que tiene tres
@@ -380,6 +403,103 @@ al pixel HD incluye regenerarlas.
   de probar a pasar el sol debajo (al girar saltaba y llenaba el dron de
   sombras) y a subir la luz del cielo en la panza. No volver a tocar la luz
   para esa vista.
+- **1-oct-2026, Bayraktar TB2 en HD y pixel HD** (rama `hd-bayraktar-tb2`,
+  sin commit; falta que lo revise el usuario). Lo pidió el usuario («no
+  quiero un producto rápido, quiero un producto bueno»), con un avión
+  **turco** («es el original») y **cuatro MAM-L**. Avión de las marcas: el
+  **TB2 del Ejército de Tierra turco de Teknofest 2021** (Estambul; tres
+  fotos de CeeGee en Commons, de los dos lados). Se descartó el TC-SRM (el
+  PT-2 de Baykar, con matrícula) porque solo tiene una foto. Hecho:
+  - **Cuerpo** en una pieza (`casco` con lomo, ver abajo): el morro ancho
+    del plano con su arista baja, el lomo que sube hasta la góndola y la
+    góndola, fundidos (con el lomo y la góndola como piezas aparte salían
+    posados, con cintura). Carenado de la raíz del ala que sube hasta el
+    hombro del cuerpo y baja por el costado. Toma de aire en lo alto de la
+    góndola, con la boca hacia delante.
+  - **Ala** del plano: cuerda de 0,84 a 0,64 m, borde de salida casi recto
+    (en la 1.0 la punta iba 12 cm adelantada), grueso del 18 al 13 %, diedro
+    de 3,8°, dos alerones por ala con sus carenados, pitot y luces.
+  - **Vigas, ruedas y soportes, más juntos que en el plano.** Encajando
+    fotos con la envergadura de 12 m (la polaca de frente y la ucraniana
+    desde arriba), la turca de 3/4 y la de detrás anclada a la hélice de
+    1,7 m: vigas a ±1,02 (medidas de 0,94 a 1,1; plano ±1,14), ruedas a
+    ±0,82 (0,78 a 0,87; plano ±1,0), soportes a 1,30 y 1,72 (1,33 y 1,71
+    desde detrás; plano 1,6–1,7 y 2,05–2,15). El ancho del cuerpo sí cuadra
+    con el plano (±0,48 frente a ±0,50 en z = 2). Ojo con la foto polaca: es
+    de gran angular y deforma hacia los bordes. Vigas ovaladas (0,12 × 0,175 m, plano de lado y desfile de
+    Kiev) que acaban en una luz junto al borde de salida de la cola.
+  - **Cola** en V invertida a unos 45°, con los **timones en dos tramos**
+    (la mitad de atrás de la cuerda), dos carenados con su varilla en la
+    cara de dentro de cada mitad y la antena de la punta.
+  - Torreta blanca (z = 1,81, r 0,19), placa y antena de la panza, sonda
+    con veletas, placas de los costados del morro, tren con patas gruesas y
+    rodilla, rueda del morro con amortiguador y compás, hélice de 1,64 m
+    con palas con forma (`helice` con `ancho`), cono blanco, rejillas y
+    escape bajo la góndola.
+  - **MAM-L** (punta en z ≈ 1,05, medida en el desfile de Kiev): buscador,
+    alas y timones en X y argolla, colgadas de soportes con percha.
+  - **Marcas** (Teknofest 2021): bandera turca y logo de Baykar en la cara
+    de fuera de cada mitad de la cola; escarapela turca en los costados de
+    la góndola y, como en el plano, arriba en un ala y abajo en la otra;
+    «BAYRAKTAR TB2» y «DİKKAT PERVANE / DANGER PROPELLER» en las vigas,
+    entre dos franjas rojas (piezas, en `rojo-vivo`); ranura negra de la
+    salida de aire; avisos amarillos rayados en el morro. En las fotos de los
+    dos lados la bandera va como una pegatina vista desde fuera (la media
+    luna hacia el morro en un lado y hacia la cola en el otro), igual que
+    proyecta el visor.
+  - **Costuras**: la tapa grande del morro y la costura larga del lomo,
+    atornilladas; la junta de la carena del motor; una tapa en la joroba.
+  - **Color**: gris propio, `gris-tr` (#8d999f): al sol el render da
+    #afb9c0 y las fotos turcas #acb8bf de media (el `gris` del MQ-9 salía un
+    12 % más claro).
+  - **Pixel HD**: con ese gris, el ala al sol tenía una luminosidad de 0,717,
+    en el borde de dos escalones; la maqueta lleva `desfaseLuz: 0.48` (los
+    escalones, medio escalón corridos) y sale lisa. Tarjeta y planta
+    regeneradas (fuera el giro 1.0).
+  - Para hacerlo, en el motor: `casco` admite `lomo`, `hombro` y `nLomo` (un
+    lomo más estrecho fundido con el cuerpo); `helice` admite `ancho`;
+    dibujos de calca nuevos (`bandera-tr`, `escarapela-tr`, `baykar`,
+    `aviso`; el `texto` admite color, dos líneas y letra fina); acabados
+    `gris-tr` y `rojo-vivo`; `desfaseLuz`. El MQ-9 sale igual.
+  - Falta: que lo revise el usuario; el rendimiento en Zen.
+- **1-oct-2026, primera revisión del usuario del TB2** (con tres fotos suyas
+  del J-10 turco: dos en vuelo y una en tierra con el pod de Aselsan, en
+  `arte/uas-fuentes/bayraktar-tb2/hd/full/usuario-*.png`). Pidió analizar
+  cada fallo con fotos antes de tocar nada; color, marcas, motor y hélice,
+  bien. Hecho, midiendo con las tres fotos encajadas:
+  - **Dos MAM-L flotando**: las del ala izquierda colgaban 20 cm por debajo
+    de sus soportes. Causa: la altura y la z de cada bomba salían de las
+    fórmulas del ala con la x del soporte, negativa en ese lado (el diedro
+    salía al revés). Ahora con la distancia al centro, y dos argollas bajo la
+    percha (la de antes quedaba por delante).
+  - **Raíz del ala y cuerpo, una sola pieza**: el `casco` admite un
+    ensanche (`costado`, `costadoArriba`, `sobreArista`, `bajoArista`, ver
+    `docs/uas.md`). La arista nace en la punta del morro, sube por el
+    costado y se abre en la raíz del ala (planta del plano); por arriba, un
+    empalme cóncavo sube hasta el pie del lomo, sin hombro por encima del ala
+    (foto polaca de frente); por abajo, otro baja a la panza. El ala, delgada,
+    nace del ensanche desde x = 0,7. Antes: raíz gruesa aparte (un puro
+    posado) y la arista baja.
+  - **Tomas de aire**: la central es una boca rectangular en lo alto del
+    lomo en z = 1,05 (antes, una rampa encima del capó, donde no hay nada);
+    las laterales, dos tomas sumergidas NACA a los lados del lomo, de z = 0,6
+    a la boca en 0,15 (calca `naca`).
+  - **Tornillería**: los dos bordes del lomo (x de 0,27 a 0,39) con tornillos
+    cada 12 cm; la tapa grande del morro (borde de atrás en z = 2,3, baja por
+    los costados); la junta en anillo del capó con tornillos juntos; dos
+    tapas atornilladas en cada raíz del ala. Fuera la costura del costado y
+    la tapa de la joroba, que no existen.
+  - **Torreta**: tambor del ancho de la bola metido en la panza y media
+    esfera debajo, de 42 cm, en z = 1,67 (antes, bola colgada de un collar,
+    14 cm más adelante).
+  - Encontrado por el camino: **ruedas** de 19 cm (antes 28 y 26) y la del
+    morro en z = 2,31; suelo en −0,91; la **caja bajo el morro**, larga
+    (0,95 m).
+  - Herramientas: `arte/encajar-camara.mjs` admite `medir:superficie` (el
+    píxel llevado a la superficie de la maqueta con un rayo); el enganche
+    del visor deja la cámara fija.
+  - Visto y sin tocar (no lo pidió): en las fotos en vuelo el tren principal
+    no se ve; podría recogerse.
 - **Siguiente paso**: el dron que pida el usuario.
 
 ## Decisiones del usuario (30-sep-2026)
@@ -394,6 +514,10 @@ al pixel HD incluye regenerarlas.
 - El avión de las marcas: **el «CH» 152 de Creech** (432.º Ala), elegido
   frente al «HO» 16-307 de Holloman. Sin armas en sus fotos; los Hellfire y
   las GBU-12, de otras.
+
+**Bayraktar TB2 (1-oct-2026)**: un avión **turco** («es el original»), con
+**cuatro MAM-L**. El avión concreto lo eligió Claude con permiso del usuario
+(«te dejo trabajando»): el del Ejército de Tierra de Teknofest 2021.
 
 ## Plan
 

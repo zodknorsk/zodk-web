@@ -20,7 +20,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", blanco: "#f1f1ec",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", blanco: "#f1f1ec",
 };
 
 export type { Vista };
@@ -174,7 +174,11 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Distancia a la que la maqueta entera cabe en el lienzo, mire desde donde
   // mire; el zoom va de la mitad a más del doble.
   let distancia = 4;
+  // Solo en local (window.__visor.mirar): la cámara puesta a mano no se
+  // vuelve a encuadrar ni a acotar al cambiar el tamaño del lienzo.
+  let camaraFija = false;
   const encuadrar = () => {
+    if (camaraFija) return;
     const vertical = (camara.fov * Math.PI) / 360;
     const horizontal = Math.atan(Math.tan(vertical) * camara.aspect);
     distancia = (radio * 0.78) / Math.sin(Math.min(vertical, horizontal));
@@ -431,7 +435,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     luzHD?.encender(!!hdMat, hdMat ?? "a");
     detallesHD?.ver(!!hd || pixelHD, !pixelHD);
     // Píxel de 1 px en el pixel HD (lo eligió el usuario frente a 2 y 1,5).
-    pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined);
+    pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined, maqueta.desfaseLuz ?? 0);
     // En HD, cámara de teleobjetivo: casi sin perspectiva, como en las fotos.
     const fov = hdMat ? 18 : 32;
     const distanciaAntes = distancia;
@@ -497,7 +501,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     renderer.setSize(w, h, false);
     camara.aspect = w / h;
     encuadrar();
-    camara.position.clampLength(controles.minDistance, controles.maxDistance);
+    if (!camaraFija) camara.position.clampLength(controles.minDistance, controles.maxDistance);
     camara.updateProjectionMatrix();
     pedir();
   };
@@ -534,6 +538,27 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   if (params.get("pestana") === "fuentes") cambiarPestana("fuentes");
   cambiarEstilo(params.get("estilo") === "pixel" ? "pixel" : "maqueta");
   caja.classList.add("visor-listo");
+  // Solo en local: las capturas de comparación con fotos (arte/capturas.mjs
+  // --js) ponen la cámara donde se encajó la de la foto.
+  if (import.meta.env.DEV) {
+    (window as unknown as { __visor: unknown }).__visor = {
+      camara, controles, pedir, escala: maqueta.escala,
+      // En metros de la maqueta (la raíz está desplazada para centrarla).
+      mirar(desde: [number, number, number], hacia: [number, number, number], fov: number, giro = 0) {
+        const e = maqueta.escala, o = raiz.position;
+        camaraFija = true;
+        camara.fov = fov;
+        camara.updateProjectionMatrix();
+        controles.minDistance = 0.01;
+        controles.maxDistance = 1000;
+        controles.target.set(hacia[0] / e + o.x, hacia[1] / e + o.y, hacia[2] / e + o.z);
+        camara.position.set(desde[0] / e + o.x, desde[1] / e + o.y, desde[2] / e + o.z);
+        controles.update();
+        camara.rotateZ((giro * Math.PI) / 180);
+        pedir();
+      },
+    };
+  }
 
   return () => {
     cancelAnimationFrame(pedido);

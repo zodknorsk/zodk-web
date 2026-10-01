@@ -116,8 +116,11 @@ function monotona(zs: number[], vs: number[]) {
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
 function geometriaCasco(secciones: Seccion[]): BufferGeometry {
-  const PASOS = 12, MEDIO = 28;  // anillos entre secciones; puntos por mitad
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
+  // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
+  // curva cerrada.
+  const conLomo = ss.some((q) => q.lomo !== undefined);
+  const PASOS = 12, MEDIO = conLomo ? 44 : 28;  // anillos entre secciones; puntos por mitad
   const zs = ss.map((q) => q.z);
   const f = (v: (q: Seccion) => number) => monotona(zs, ss.map(v));
   const ancho = f((q) => q.ancho), arriba = f((q) => q.arriba), abajo = f((q) => q.abajo);
@@ -126,6 +129,16 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
   const conPanza = ss.some((q) => q.panza !== undefined);
   const panza = f((q) => q.panza ?? q.ancho * 0.5);
   const arista = f((q) => q.arista ?? 0);
+  // Lomo: medio ancho del lomo (0, sin lomo) y alto del cuerpo de debajo (el
+  // hombro); con lomo, `arriba` es lo alto del lomo.
+  const lomo = f((q) => q.lomo ?? 0), hombro = f((q) => q.hombro ?? q.arriba), nL = f((q) => q.nLomo ?? 2.4);
+  // Ensanche (arista que se hace raíz del ala): medio ancho del cuerpo y
+  // dónde acaban los empalmes por arriba y por abajo.
+  const conEnsanche = ss.some((q) => q.costado !== undefined);
+  const costado = f((q) => q.costado ?? q.ancho);
+  const costadoArriba = f((q) => q.costadoArriba ?? q.costado ?? q.ancho);
+  const sobreArista = f((q) => q.sobreArista ?? q.cintura ?? (q.arriba + q.abajo) / 2);
+  const bajoArista = f((q) => q.bajoArista ?? q.cintura ?? (q.arriba + q.abajo) / 2);
   const anillosZ: number[] = [];
   for (let i = 0; i < zs.length - 1; i++)
     for (let j = 0; j < PASOS; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / PASOS);
@@ -161,8 +174,48 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
   const tiras: number[][] = [[], []];
   for (const z of anillosZ) {
     const w = Math.max(0, ancho(z)), c = cintura(z);
-    const top = Math.max(c, arriba(z)), bot = Math.min(c, abajo(z));
+    const cima = Math.max(c, arriba(z)), bot = Math.min(c, abajo(z));
+    const wl = conLomo ? Math.max(0, lomo(z)) : 0;
+    const top = conLomo ? Math.max(c, Math.min(cima, hombro(z))) : cima;
     const na = Math.max(0.5, nA(z)), nb = Math.max(0.5, nB(z));
+    if (conEnsanche) {
+      // Media sección derecha, de la arista hacia el centro: el empalme
+      // (curva con el punto de control en la esquina, cóncava) y el cuerpo
+      // (cuarto de superelipse); luego su reflejo.
+      const ws0 = Math.min(w, Math.max(0, costado(z))), wsA = Math.min(w, Math.max(0, costadoArriba(z)));
+      const K = MEDIO / 2, KF = 9, KS = K - KF;
+      const media = (yLado: number, yCentro: number, n: number, ws: number): [number, number][] => {
+        const pts: [number, number][] = [];
+        for (let k = 0; k < KF; k++) {
+          const t = k / KF;
+          pts.push([(1 - t) ** 2 * w + 2 * (1 - t) * t * ws + t * t * ws, (1 - t) ** 2 * c + 2 * (1 - t) * t * c + t * t * yLado]);
+        }
+        for (let k = 0; k <= KS; k++) {
+          const t = (k / KS) * (Math.PI / 2), co = Math.cos(t), si = Math.sin(t);
+          pts.push([ws * co ** (2 / n), yLado + (yCentro - yLado) * si ** (2 / n)]);
+        }
+        return pts;
+      };
+      const yS = Math.min(top, Math.max(c, sobreArista(z))), yB = Math.max(bot, Math.min(c, bajoArista(z)));
+      const arribaD = media(yS, top, na, wsA), abajoD = media(yB, bot, nb, ws0);
+      const arribaPts = [...arribaD, ...arribaD.slice(0, -1).reverse().map(([x, y]): [number, number] => [-x, y])];
+      const abajoPts2 = [...abajoD.map(([x, y]): [number, number] => [-x, y]), ...abajoD.slice(0, -1).reverse()];
+      // Lomo, como arriba.
+      for (const [x0, y0] of arribaPts) {
+        let x = x0, y = y0;
+        if (wl > 0) {
+          const hL2 = cima - c;
+          const ang = Math.atan2(y - c, x), r1 = Math.hypot(x, y - c);
+          const ca = Math.abs(Math.cos(ang)), sa = Math.abs(Math.sin(ang)), nl2 = Math.max(0.5, nL(z));
+          const r2 = hL2 > 1e-6 ? 1 / ((ca / wl) ** nl2 + (sa / hL2) ** nl2) ** (1 / nl2) : 0;
+          const r = (r1 ** 8 + r2 ** 8) ** (1 / 8);
+          if (r1 > 1e-9) { x *= r / r1; y = c + ((y - c) * r) / r1; }
+        }
+        tiras[0].push(x, y, z);
+      }
+      for (const [x, y] of abajoPts2) tiras[1].push(x, y, z);
+      continue;
+    }
     // Arriba, la superelipse tiene su centro «virtual» por debajo de la
     // cintura (arista: qué parte del alto de arriba baja) y se corta en la
     // cintura: así llega a ella ya inclinada, mirando hacia arriba, y la
@@ -171,9 +224,24 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
     const c0 = c - k0 * (top - c), alto = top - c0;
     const t0 = Math.asin(Math.min(1, ((c - c0) / (alto || 1)) ** (na / 2)));
     const W = k0 > 0 ? w / Math.max(1e-6, Math.abs(Math.cos(t0)) ** (2 / na)) : w;
+    // Lomo: una superelipse más estrecha y más alta, unida al cuerpo con una
+    // unión suave (la norma p de los dos radios vistos desde la cintura): sale
+    // un hombro cóncavo, sin arista, como en el lomo del TB2.
+    const hL = cima - c, nl = Math.max(0.5, nL(z)), P = 8;
+    const radioLomo = (ang: number) => {
+      if (wl <= 1e-6 || hL <= 1e-6) return 0;
+      const ca = Math.abs(Math.cos(ang)), sa = Math.abs(Math.sin(ang));
+      return 1 / ((ca / wl) ** nl + (sa / hL) ** nl) ** (1 / nl);
+    };
     for (let k = 0; k <= MEDIO; k++) {
       const t = t0 + (k / MEDIO) * (Math.PI - 2 * t0), co = Math.cos(t), si = Math.sin(t);
-      tiras[0].push(W * Math.sign(co) * Math.abs(co) ** (2 / na), c0 + alto * Math.abs(si) ** (2 / na), z);
+      let x = W * Math.sign(co) * Math.abs(co) ** (2 / na), y = c0 + alto * Math.abs(si) ** (2 / na);
+      if (wl > 0) {
+        const ang = Math.atan2(y - c, x), r1 = Math.hypot(x, y - c), r2 = radioLomo(ang);
+        const r = (r1 ** P + r2 ** P) ** (1 / P);
+        if (r1 > 1e-9) { x *= r / r1; y = c + ((y - c) * r) / r1; }
+      }
+      tiras[0].push(x, y, z);
     }
     const abajoPts: [number, number][] = conPanza
       ? trapecio(w, Math.min(w, Math.max(0, panza(z))), c, bot)
@@ -347,8 +415,21 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
         const ancho = Math.max(0.045, p.radio * 0.16);
         const hoja: BufferGeometry[] = [];
         for (let i = 0; i < p.palas; i++) {
-          const pala = new BoxGeometry(p.radio, ancho, 0.008);
-          pala.translate(p.radio / 2, 0, 0);
+          let pala: BufferGeometry;
+          if (p.ancho) {
+            // Planta de la pala, de la raíz (x = 0) a la punta (x = radio).
+            const c = p.ancho, R = p.radio, forma = new Shape();
+            const borde: [number, number][] = [[0.08, 0.32], [0.3, 0.5], [0.6, 0.45], [0.85, 0.36], [0.96, 0.24], [1, 0]];
+            forma.moveTo(R * 0.06, -c * 0.22);
+            for (const [t, a] of borde) forma.lineTo(R * t, c * a * (t === 1 ? 0 : 1));
+            for (const [t, a] of borde.slice(0, -1).reverse()) forma.lineTo(R * t, -c * a * 0.8);
+            forma.lineTo(R * 0.06, -c * 0.22);
+            pala = new ExtrudeGeometry(forma, { depth: c * 0.06, bevelEnabled: false });
+            pala.translate(0, 0, -c * 0.03);
+          } else {
+            pala = new BoxGeometry(p.radio, ancho, 0.008);
+            pala.translate(p.radio / 2, 0, 0);
+          }
           pala.rotateX(0.35);  // paso de la pala
           pala.rotateZ((i / p.palas) * Math.PI * 2 + ((p.giro ?? 0) * Math.PI) / 180);
           hoja.push(pala);
