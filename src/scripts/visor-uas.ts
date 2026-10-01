@@ -105,13 +105,14 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Piezas: relleno + aristas. Cada pieza guarda sus materiales para
   // resaltarla.
   const raiz = new Group();
-  const materiales = new Map<string, { acabado: Acabado; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial; hd?: MaterialHD }>();
+  const materiales = new Map<string, { acabado: Acabado; marca: number; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial; hd?: MaterialHD }>();
   const mallas: Mesh[] = [];
   const aristas: LineSegments[] = [];
   for (const [i, p] of maqueta.piezas.entries()) {
     const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const linea = new LineBasicMaterial();
-    materiales.set(p.id, { acabado: p.acabado ?? "negro", relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marcaPieza(i, p.acabado === "junta")) });
+    const marca = marcaPieza(i, p.acabado === "junta");
+    materiales.set(p.id, { acabado: p.acabado ?? "negro", marca, relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marca) });
     for (const g of geometriaDe(p)) {
       const malla = new Mesh(g, relleno);
       malla.castShadow = malla.receiveShadow = true;
@@ -290,7 +291,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     const dt = ultimo ? (t - ultimo) / 1000 : 1 / 60;
     ultimo = t;
     if (controles.autoRotate) controles.update(dt);
-    if (modo === "pixel") pixelado.pintar(escena, camara);
+    if (modo === "pixel") {
+      luzHD?.seguir(camara);
+      pixelado.pintar(escena, camara);
+    }
     else {
       if (estiloHD) luzHD?.seguir(camara);
       renderer.render(escena, camara);
@@ -383,26 +387,31 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     modo = estilo;
     caja.querySelectorAll<HTMLElement>("[data-estilo]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.estilo === estilo)));
     const hd = estilo === "maqueta" && estiloHD ? estiloHD : null;
+    // Pixel HD: la escena con los materiales, la luz y las calcas del HD (C).
+    const pixelHD = estilo === "pixel" && !!luzHD;
+    const hdMat = hd ?? (pixelHD ? "c" : null);
     for (const m of materiales.values()) {
       m.hd?.dispose();
-      m.hd = hd ? materialHD(m.acabado, hd) : undefined;
+      m.hd = hdMat ? materialHD(m.acabado, hdMat, pixelHD ? m.marca : undefined) : undefined;
     }
     for (const malla of mallas) {
       const m = materiales.get(malla.userData.pieza)!;
-      malla.material = estilo === "pixel" ? m.pixel : m.hd ?? m.relleno;
+      malla.material = estilo === "pixel" && !pixelHD ? m.pixel : m.hd ?? m.relleno;
     }
     for (const a of aristas) a.visible = estilo === "maqueta" && (!hd || hd === "b");
     for (const c of contornos) c.visible = hd === "b" || hd === "c";
-    cielo.visible = sol.visible = !hd;
-    luzHD?.encender(!!hd, hd ?? "a");
-    detallesHD?.ver(!!hd);
+    cielo.visible = sol.visible = !hdMat;
+    luzHD?.encender(!!hdMat, hdMat ?? "a");
+    detallesHD?.ver(!!hd || pixelHD, !pixelHD);
+    // Píxel de 1 px en el pixel HD (lo eligió el usuario frente a 2 y 1,5).
+    pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined);
     // En HD, cámara de teleobjetivo: casi sin perspectiva, como en las fotos.
-    const fov = hd ? 18 : 32;
-    if (camara.fov !== fov) {
-      const distanciaAntes = distancia;
-      camara.fov = fov;
-      camara.updateProjectionMatrix();
-      encuadrar();
+    const fov = hdMat ? 18 : 32;
+    const distanciaAntes = distancia;
+    camara.fov = fov;
+    camara.updateProjectionMatrix();
+    encuadrar();
+    if (distancia !== distanciaAntes) {
       camara.position.multiplyScalar(distancia / distanciaAntes);
       controles.update();
     }

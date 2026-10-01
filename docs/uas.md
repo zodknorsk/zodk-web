@@ -195,6 +195,11 @@ art, las miniaturas y las fotos de fuentes**, probado en local, con capturas
 y, cuando lo diga, commit (y push si lo pide: `commit` y `push` son órdenes
 separadas).
 
+**Desde el 1-oct-2026, los drones nuevos van directamente en HD y pixel HD**
+(lo pidió el usuario): la maqueta, con `hd: true` y sus calcas, cumpliendo
+los objetivos de `docs/uas-hd.md` («Pasar un dron al HD» y «Pasar un dron al
+pixel HD»). Para pasar al HD un dron que ya existe, lo mismo.
+
 0. **Antes de empezar.** `git status` y rama en `~/Documents/zodk-web`. El
    proyecto ya está en `main`: un dron nuevo va en `main` (el push a `main`
    publica zodk.eu: nunca sin que lo pida). `npm run dev` en marcha
