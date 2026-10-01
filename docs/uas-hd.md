@@ -9,10 +9,104 @@ después un pixel art con más calidad y detalle. Se empieza por el **MQ-9
 Reaper** (el más documentado; idea del usuario) y, si sale bien, se sigue
 con los demás.
 
+## Pasar un dron al HD: objetivos
+
+Cuando el usuario pida «pasa el <dron> al HD» (o «mejora el <dron> a la
+2.0»), esto es lo que tiene que cumplir el resultado. Lo fijó el usuario el
+1-oct-2026, después del MQ-9 y sus cuatro revisiones (ver el registro de
+abajo). El cómo, las piezas y las herramientas están en «Dónde estamos» y en
+`docs/uas.md`.
+
+**Calidad antes que rapidez.** Un dron en HD se trabaja despacio y bien; no
+se enseña una versión rápida para que el usuario la corrija.
+
+**Qué drones**: los que ya están en el hangar se pasan al HD uno a uno
+(todos menos el MQ-9, que está terminado). Los drones nuevos se hacen en HD
+desde el principio.
+
+**Antes de empezar**
+
+- Leer este documento y `docs/uas.md`.
+- Rama propia (`hd-<slug>`); al fusionar en `main` se borra.
+- Preguntar al usuario solo lo que no está fijado: qué avión concreto da
+  las marcas y con qué carga va. Ya está decidido y no se pregunta: estilo
+  **C**, el botón «Maqueta | Pixel», el dron montado como en vuelo, y las
+  partes con letras, las vistas y el modo Pixel como están.
+
+**Objetivos**
+
+1. **Modelar bien el dron.** Es lo más importante.
+   - Fotos en alta de todos los ángulos, de un avión concreto, y fotos de
+     cerca de las piezas pequeñas.
+   - Medidas sacadas de las fotos (perfil nivelado, a escala, con rejilla en
+     metros), nunca a ojo. Si la foto está girada respecto al eje, se
+     corrige antes de medir.
+   - Cuerpo de una pieza continua (`casco`), sin tubos ni cajas. Las líneas
+     donde la luz cambia de golpe en varias fotos son aristas vivas. Las
+     góndolas, carenados y tomas salen del cuerpo; no van posados encima.
+   - Alas, cola y aletas medidas con el mismo cuidado que el cuerpo: perfil,
+     contorno (borde de ataque, borde de salida, cuerda en la raíz y en la
+     punta), y el punto y la altura de donde nacen.
+   - El dron no es una sola pieza: flaps, alerones y timones van aparte, con
+     su hueco; el tren con sus piezas; tomas y salidas de aire.
+   - **Una pieza se coloca y se mide con varias fotos desde ángulos
+     distintos**, nunca con una sola. Con el MQ-9, una foto sesgada hizo
+     ver el escape ladeado cuando está centrado, y se insistió en el error.
+   - **Si al comparar con las fotos algo está claramente mal, se arregla**
+     aunque el usuario no lo haya señalado. Con el MQ-9 salió bien lo
+     hecho por cuenta propia, pero cuando él señalaba un fallo con fotos no
+     se veía el problema. No se espera a que lo diga.
+2. **Dibujos que representan al dron**: las marcas reales del avión elegido
+   (escarapela, letras de la base, número de serie, escudos, discos). Van
+   proyectados como calcas, sobre la forma definitiva.
+3. **Luces y sombras con el sol dándole directo desde arriba**: la parte de
+   arriba, al sol y sin manchas de sombra; los costados y la panza, más
+   oscuros. Se comprueba desde el ángulo de cada foto.
+4. **Colores reales del dron**, con varios tonos si las fotos los muestran
+   (pintura, metal, piezas negras, cristal). Se miden píxeles en la foto y en
+   el render en los mismos puntos hasta que cuadren. Los cambios de color o
+   de luz, grandes y comprobados; si un comentario admite dos lecturas, se
+   pregunta.
+5. **Tornillería, costuras, remaches y juntas**, finos, y solo los que se ven
+   en las fotos de cerca. Si algo es una sombra o no se distingue, no se
+   dibuja.
+6. **Detalle de cámaras y armamento**: la óptica con su forma real
+   (cuerpo, cara, ventanas, cristal) y las armas con sus lanzadores y
+   soportes, pegadas a ellos (nada flotando).
+
+Con eso se gana casi todo el HD. Además, en todos los drones:
+
+- **Comparación lado a lado** con cada foto desde su mismo ángulo, pieza a
+  pieza, antes de enseñar nada; las capturas se mandan junto a la foto con
+  la que se comparan.
+- **Rendimiento** medido en Zen (`docs/rendimiento.md`).
+- **Este documento al día en cada paso**: qué se hizo, qué se probó y se
+  descartó, y qué falta.
+- **Cierre**: el usuario lo da por bueno, se fusiona en `main`, se publica
+  y se borra la rama.
+
+**Lo que salió mal con el MQ-9 y no se repite**
+
+- Redondear una arista que se veía en todas las fotos.
+- Tomas y góndolas como piezas posadas encima del cuerpo.
+- Cola y aletas sin medir; volver con una pieza que el usuario ya había
+  señalado sin haberla tocado.
+- Fiarse de una sola foto sesgada (el escape) e insistir en el error.
+- Inventar piezas (escapes a los lados, antenas de pala, juntas en el ala)
+  o dibujar sombras como si fueran forma.
+- Cambios de luz o contraste tan pequeños que «ni se notan», o interpretar
+  al revés lo que pidió («quiero este azulado»).
+- El cielo de reflejos del revés (la fila 0 de la textura es abajo).
+- Piezas colgando en el aire, separadas de su soporte.
+
+**Pixel art HD**: la segunda parte («darle un toque más de calidad y
+detallar un poco más»). Se empieza con el MQ-9 el 1-oct-2026; sus objetivos
+se apuntan aquí cuando estén fijados con el usuario.
+
 ## Dónde estamos
 
-- **Fusionado en `main` y publicado el 30-sep-2026** (rama `uas-hd`, que se
-  deja en GitHub como registro). El HD del MQ-9 está terminado a falta de
+- **Fusionado en `main` y publicado el 30-sep-2026**; la rama `uas-hd` se
+  borró el 1-oct-2026 (todo estaba en `main`). El HD del MQ-9 está terminado a falta de
   retoques: estilo **C** fijo por defecto; el selector de pruebas solo sale
   con `?hd=a|b|c|no` en la URL.
 - **Pendiente para otro día** (lo dejó el usuario, «saturado»): el **pixel
@@ -178,8 +272,49 @@ con los demás.
   **Torreta**: un `casco` con la cara plana en «D» al revés, fondo redondo,
   ventana grande con aro claro, cuatro pequeñas y pegatina amarilla;
   cristal verdoso.
-- **Siguiente paso**: lo que diga el usuario; después, el **pixel art 2.0** (lo segundo que pidió el
-  usuario: «darle un toque más de calidad y detallar un poco más»).
+- **1-oct-2026, pixel HD del MQ-9** (rama `hd-pixel-mq-9`, con commit, sin
+  subir ni fusionar). El
+  usuario pidió aplicar los objetivos del HD al pixel y probar también más
+  resolución. Cómo funciona: en los drones con `hd`, el modo Pixel pinta la
+  escena con los materiales, la luz (sol desde arriba, con sombras) y las
+  calcas del HD a baja resolución, y la pasada final (`uas-pixelado.ts`) le
+  aplica el tono de pantalla del HD (ACES y sRGB, que Three.js no aplica en
+  un destino intermedio) y deja la luz en siete escalones conservando el
+  color. El número de cada pieza va en el alfa, como en el pixel 1.0, para
+  las juntas; las calcas y costuras lo respetan (`sinTocarAlfa`). Sin
+  tornillos (a un píxel cada uno, ruido).
+  Pruebas en local: un panel abajo a la derecha (solo con `npm run dev`) con
+  dos filas: **Actual · A** (color y luz) **· B** (+ marcas y costuras)
+  **· C** (+ contorno del color de la pieza) y **2 px · 1 px · 2 px más
+  cerca**. Probado y quitado: el tramado (con la luz del HD dibujaba rayas
+  en las caras planas y puntos sueltos) y escalones repartidos en curva (el
+  gris del ala al sol caía justo en el borde de dos escalones y salía a
+  franjas).
+  El usuario eligió la **B** (con marcas y costuras): fuera la A, la C y el
+  botón «Actual»; el MQ-9 en Pixel es siempre el pixel HD. Pidió un tamaño
+  de **1,5 px** (2 px «muy pixel art», 1 px «más un dibujo, aunque me gusta»)
+  y «otra pasada de calidad». Hecho, comparando con el HD desde el mismo
+  ángulo en las vistas 3D, perfil, frente y planta:
+  - El píxel de 1,5 px solo sale limpio en pantallas retina (3 píxeles de
+    pantalla); en las normales pasa a 2 (`ponerHD`).
+  - Líneas de dentro (saltos de profundidad y juntas entre piezas) en el tono
+    de la pieza más oscuro, no en negro: las juntas del ala pesaban mucho
+    más que en el HD y los lanzadores de Hellfire eran un borrón negro.
+  - Limpieza de píxeles sueltos (un píxel rodeado de un mismo escalón, a un
+    escalón del suyo, toma el color de al lado): el lomo salía salpicado.
+  - Lo fino (uno o dos píxeles de grueso) sin contorno y más oscuro: de
+    frente, el ala y la cola en V salían como barras negras de cuatro
+    píxeles; en el HD son rayas finas.
+  - Calcas nítidas en el pixel (cada píxel, tinta entera o nada): reducidas
+    a pocos píxeles se volvían un gris que se perdía y no se veían ni el
+    «CH», ni el «152», ni la escarapela.
+  Queda: en 3D, la punta de la cola en V sale algo dentada (el grosor pasa
+  de dos a tres píxeles a saltos).
+  El usuario eligió **1 px** (frente a 2, 1,5 y «2 px más cerca»): fuera el
+  panel de pruebas; el pixel HD va siempre a 1 px.
+- **Siguiente paso**: subir y fusionar `hd-pixel-mq-9` cuando lo diga el
+  usuario; decidir si se regeneran las miniaturas de `/uas` y la portada
+  (hoy salen del pixel 1.0).
 
 ## Decisiones del usuario (30-sep-2026)
 
@@ -210,7 +345,7 @@ con los demás.
       paneles, remaches, marcas del «CH» 152 (escarapela, «CH», número de
       serie), los discos rojos y blancos del lomo. Con calcas proyectadas.
 - [ ] Rendimiento en Zen (`docs/rendimiento.md`).
-- [ ] Pixel art 2.0.
+- [x] Pixel art 2.0 del MQ-9 (pixel HD, 1 px; sin fusionar).
 - [x] Fusionar en `main` (30-sep-2026).
 
 ## Fuentes

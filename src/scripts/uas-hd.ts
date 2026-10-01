@@ -11,7 +11,7 @@ import {
   Points, PointsMaterial, Raycaster, SRGBColorSpace,
   ACESFilmicToneMapping, Color, DataTexture, DirectionalLight, EquirectangularReflectionMapping,
   FloatType, Group, HemisphereLight, LinearFilter, RGBAFormat,
-  BackSide, DoubleSide, MeshBasicMaterial, MeshStandardMaterial, MeshToonMaterial, NearestFilter, NoToneMapping, PCFShadowMap,
+  AddEquation, BackSide, CustomBlending, DoubleSide, OneFactor, OneMinusSrcAlphaFactor, SrcAlphaFactor, ZeroFactor, MeshBasicMaterial, MeshStandardMaterial, MeshToonMaterial, NearestFilter, NoToneMapping, PCFShadowMap,
   PMREMGenerator, RedFormat, Spherical, Vector3, type Camera, type Material, type Scene, type Texture, type WebGLRenderer,
 } from "three";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
@@ -56,13 +56,30 @@ const rampaToon = () => {
   return rampa;
 };
 
-export function materialHD(acabado: Acabado, estilo: EstiloHD): MeshStandardMaterial | MeshToonMaterial {
+// marca: para el pixel HD, el número de la pieza va en el canal alfa (como
+// en materialPixel), para que la pasada final marque las juntas.
+export function materialHD(acabado: Acabado, estilo: EstiloHD, marca?: number): MeshStandardMaterial | MeshToonMaterial {
   const p = PINTURAS[acabado];
   // Por las dos caras, como la maqueta 1.0: algunas piezas (las alas) tienen
   // los triángulos al revés y, pintadas solo por delante, salían del revés.
   if (estilo === "b") return new MeshToonMaterial({ color: new Color(p.color), gradientMap: rampaToon(), side: DoubleSide });
-  return new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.45, side: DoubleSide });
+  const m = new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.45, side: DoubleSide });
+  if (marca !== undefined) {
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.marca = { value: marca };
+      sh.fragmentShader = "uniform float marca;\n" + sh.fragmentShader.replace(
+        "#include <dithering_fragment>",
+        "#include <dithering_fragment>\ngl_FragColor.a = marca;",
+      );
+    };
+    m.customProgramCacheKey = () => "pixel-hd";
+  }
+  return m;
 }
+
+// Las calcas y costuras se mezclan con el color de debajo pero dejan su alfa
+// como está: en el pixel HD, el alfa es el número de la pieza.
+const sinTocarAlfa = { blending: CustomBlending, blendEquation: AddEquation, blendSrc: SrcAlphaFactor, blendDst: OneMinusSrcAlphaFactor, blendSrcAlpha: ZeroFactor, blendDstAlpha: OneFactor } as const;
 
 export const colorHD = (acabado: Acabado) => new Color(PINTURAS[acabado].color);
 
@@ -299,6 +316,10 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     return { punto: golpe.point, normal: n, malla: golpe.object as Mesh };
   };
   const aDesechar: { dispose(): void }[] = [];
+  // En el pixel, cada píxel de la calca va entero o no va: reducida a pocos
+  // píxeles, la tinta mezclada con el transparente era un gris que se perdía
+  // en los escalones de luz (no se veían ni el «CH» ni la escarapela).
+  const nitidez = { value: 0 };
 
   for (const k of detalles.calcas) {
     for (const lado of k.espejo ? [false, true] : [false]) {
@@ -316,14 +337,23 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       textura.anisotropy = 4;
       const m = new MeshStandardMaterial({
         map: textura, transparent: true, depthWrite: false, roughness: 0.55, metalness: 0,
-        polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
+        polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4, ...sinTocarAlfa,
       });
+      m.onBeforeCompile = (sh) => {
+        sh.uniforms.nitidez = nitidez;
+        sh.fragmentShader = "uniform float nitidez;\n" + sh.fragmentShader.replace(
+          "#include <map_fragment>",
+          "#include <map_fragment>\nif (nitidez > 0.5) { diffuseColor.rgb /= max(diffuseColor.a, 0.001); diffuseColor.a = step(0.3, diffuseColor.a); }",
+        );
+      };
+      m.customProgramCacheKey = () => "calca";
       grupo.add(new Mesh(g, m));
       aDesechar.push(g, m, textura);
     }
   }
 
   const lineas: number[] = [], remaches: number[] = [];
+  let puntos: Points | null = null;
   for (const k of detalles.costuras) {
     for (const lado of k.espejo ? [false, true] : [false]) {
       const desde = new Vector3(...(espejar(k.desde, lado) as [number, number, number])).normalize();
@@ -354,7 +384,7 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     const g = new BufferGeometry();
     g.setAttribute("position", new Float32BufferAttribute(lineas, 3));
     // Finas: en las fotos, las juntas son casi solo un cambio de tono.
-    const m = new LineBasicMaterial({ color: 0x4a4f56, transparent: true, opacity: 0.22 });
+    const m = new LineBasicMaterial({ color: 0x4a4f56, transparent: true, opacity: 0.22, ...sinTocarAlfa });
     grupo.add(new LineSegments(g, m));
     aDesechar.push(g, m);
   }
@@ -370,11 +400,17 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     const mapa = new CanvasTexture(circulo);
     const m = new PointsMaterial({ color: 0x5a6068, size: 1.3, sizeAttenuation: false, transparent: true, opacity: 0.55, alphaMap: mapa, alphaTest: 0.3 });
     aDesechar.push(mapa);
-    grupo.add(new Points(g, m));
+    puntos = new Points(g, m);
+    grupo.add(puntos);
     aDesechar.push(g, m);
   }
   return {
-    ver(si: boolean) { grupo.visible = si; },
+    // En el pixel, sin tornillos: a un píxel cada uno solo serían ruido.
+    ver(si: boolean, conTornillos = true) {
+      grupo.visible = si;
+      if (puntos) puntos.visible = conTornillos;
+      nitidez.value = conTornillos ? 0 : 1;
+    },
     dispose() { for (const d of aDesechar) d.dispose(); escena.remove(grupo); },
   };
 }
