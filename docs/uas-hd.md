@@ -20,9 +20,9 @@ abajo). El cómo, las piezas y las herramientas están en «Dónde estamos» y e
 **Calidad antes que rapidez.** Un dron en HD se trabaja despacio y bien; no
 se enseña una versión rápida para que el usuario la corrija.
 
-**Qué drones**: los que ya están en el hangar se pasan al HD uno a uno
-(todos menos el MQ-9, que está terminado). Los drones nuevos se hacen en HD
-desde el principio.
+**Qué drones**: el usuario puede pedir pasar un dron al HD, al pixel HD o a
+los dos (todos menos el MQ-9, que está terminado). Los drones nuevos se
+hacen desde el principio en HD y pixel HD.
 
 **Antes de empezar**
 
@@ -99,14 +99,58 @@ Con eso se gana casi todo el HD. Además, en todos los drones:
 - El cielo de reflejos del revés (la fila 0 de la textura es abajo).
 - Piezas colgando en el aire, separadas de su soporte.
 
-**Pixel art HD**: la segunda parte («darle un toque más de calidad y
-detallar un poco más»). Se empieza con el MQ-9 el 1-oct-2026; sus objetivos
-se apuntan aquí cuando estén fijados con el usuario.
+## Pasar un dron al pixel HD: objetivos
+
+El pixel HD sale del HD: el modo Pixel pinta en directo la escena del HD
+(forma, materiales, luz y calcas) a 1 px por píxel y la pasada final
+(`uas-pixelado.ts`) la pasa a pixel art. Basta con `hd: true` en la maqueta;
+no hay que dibujar nada aparte. Por eso **primero va el HD bien hecho**: un
+fallo de forma, color o luz del HD sale igual en el pixel. Se fijó con el
+MQ-9 el 1-oct-2026.
+
+**Ya decidido** y no se pregunta: 1 px por píxel (el usuario eligió frente
+a 2, 1,5 y «2 px más cerca»: «2 px parece muy pixel art, 1 px más un dibujo,
+aunque me gusta como queda»), con marcas y costuras (la «B»), contorno de
+fuera en negro, sin tramado y sin tornillos.
+
+**Objetivos** (comprobados antes de enseñar nada):
+
+1. **El mismo color y la misma luz que el HD**, desde el mismo ángulo. La
+   luz va en siete escalones: la pintura del dron al sol tiene que caer en
+   el centro de un escalón y no en el borde, o las caras grandes (el ala)
+   salen a franjas. Se mide la luminosidad de la pintura en el HD; los
+   escalones están puestos para el gris del MQ-9 (~0,8), y si otro dron cae
+   en un borde hay que moverlos.
+2. **Marcas que se lean**: cada calca, con tinta entera o nada. Se comprueba
+   de perfil y desde donde se vean que salen todas.
+3. **Líneas limpias**: contorno negro por fuera solo en lo que tiene tres
+   píxeles de grueso o más; lo más fino (el ala de frente, colas, patas),
+   como raya oscura de su color. Las líneas de dentro (una pieza delante de
+   otra, juntas de flaps y alerones), del tono de la pieza más oscuro, nunca
+   negras: las piezas oscuras (armas, lanzadores) tienen que distinguirse.
+4. **Sin ruido**: ni píxeles sueltos ni tramado.
+5. **Revisión pieza a pieza** en las cuatro vistas (3D, perfil, frente y
+   planta) junto al HD, y de noche. Si algo está claramente mal, se arregla
+   antes de enseñarlo.
+
+**Lo que salió mal con el MQ-9 y no se repite**: el tramado hacía rayas en
+las caras planas y puntos sueltos; los escalones repartidos en curva ponían
+el ala en un borde y salía a franjas; con líneas negras, los lanzadores eran
+un borrón; de frente, el ala y la cola eran barras negras; las marcas no se
+veían (la tinta reducida se volvía gris). Sin resolver: en 3D, la punta de
+la cola en V sale algo dentada.
+
+**Pendiente de decidir**: las miniaturas de `/uas` y la tira de la portada
+salen todavía del pixel 1.0 (`arte/generar-uas-miniaturas.mjs`, sin
+navegador); pasarlas al pixel HD es otro trabajo.
 
 ## Dónde estamos
 
-- **Fusionado en `main` y publicado el 30-sep-2026**; la rama `uas-hd` se
-  borró el 1-oct-2026 (todo estaba en `main`). El HD del MQ-9 está terminado a falta de
+- **El MQ-9 está cerrado** (HD y pixel HD) desde el 1-oct-2026: el pixel HD,
+  fusionado en `main` y publicado ese día, y las ramas `uas-hd` y
+  `hd-pixel-mq-9`, borradas. Lo que sigue es pasar otros drones (ver los
+  objetivos de arriba).
+- **HD fusionado en `main` y publicado el 30-sep-2026**. El HD del MQ-9 está terminado a falta de
   retoques: estilo **C** fijo por defecto; el selector de pruebas solo sale
   con `?hd=a|b|c|no` en la URL.
 - **Pendiente para otro día** (lo dejó el usuario, «saturado»): el **pixel
@@ -272,8 +316,8 @@ se apuntan aquí cuando estén fijados con el usuario.
   **Torreta**: un `casco` con la cara plana en «D» al revés, fondo redondo,
   ventana grande con aro claro, cuatro pequeñas y pegatina amarilla;
   cristal verdoso.
-- **1-oct-2026, pixel HD del MQ-9** (rama `hd-pixel-mq-9`, con commit, sin
-  subir ni fusionar). El
+- **1-oct-2026, pixel HD del MQ-9** (rama `hd-pixel-mq-9`, fusionada en
+  `main` y borrada). El
   usuario pidió aplicar los objetivos del HD al pixel y probar también más
   resolución. Cómo funciona: en los drones con `hd`, el modo Pixel pinta la
   escena con los materiales, la luz (sol desde arriba, con sombras) y las
@@ -312,9 +356,8 @@ se apuntan aquí cuando estén fijados con el usuario.
   de dos a tres píxeles a saltos).
   El usuario eligió **1 px** (frente a 2, 1,5 y «2 px más cerca»): fuera el
   panel de pruebas; el pixel HD va siempre a 1 px.
-- **Siguiente paso**: subir y fusionar `hd-pixel-mq-9` cuando lo diga el
-  usuario; decidir si se regeneran las miniaturas de `/uas` y la portada
-  (hoy salen del pixel 1.0).
+- **Siguiente paso**: el dron que pida el usuario; aparte, decidir si se
+  regeneran las miniaturas de `/uas` y la portada (hoy salen del pixel 1.0).
 
 ## Decisiones del usuario (30-sep-2026)
 
@@ -345,7 +388,7 @@ se apuntan aquí cuando estén fijados con el usuario.
       paneles, remaches, marcas del «CH» 152 (escarapela, «CH», número de
       serie), los discos rojos y blancos del lomo. Con calcas proyectadas.
 - [ ] Rendimiento en Zen (`docs/rendimiento.md`).
-- [x] Pixel art 2.0 del MQ-9 (pixel HD, 1 px; sin fusionar).
+- [x] Pixel art 2.0 del MQ-9 (pixel HD, 1 px), fusionado el 1-oct-2026.
 - [x] Fusionar en `main` (30-sep-2026).
 
 ## Fuentes
