@@ -306,12 +306,39 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const pedir = () => { if (!pedido) pedido = requestAnimationFrame(pintar); };
   controles.addEventListener("change", pedir);
 
+  // Distancia a la que el dron, visto desde esa vista, llena el lienzo (con
+  // margen): lo que ocupa de verdad desde ahí, no la esfera que lo envuelve.
+  // Con la esfera, el perfil del MQ-9 salía pequeñísimo (el ala, de canto,
+  // no ocupa casi nada pero la esfera le guardaba sitio entero).
+  const punto = new Vector3();
+  const distanciaVista = (vista: Vista) => {
+    const [az, el] = VISTAS[vista];
+    const giro = new PerspectiveCamera();
+    giro.position.setFromSpherical(new Spherical(1, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
+    giro.lookAt(0, 0, 0);
+    giro.updateMatrixWorld();
+    raiz.updateMatrixWorld(true);
+    // Cada punto cabe si la cámara está, como poco, a la distancia que lo
+    // deja dentro del 88 % del lienzo contando con lo que está más cerca de
+    // ella (la perspectiva); la vista se pone a la mayor de todas.
+    const tanV = Math.tan((camara.fov * Math.PI) / 360) * 0.88, tanH = tanV * camara.aspect;
+    let d = 0;
+    for (const m of mallas) {
+      const pos = m.geometry.getAttribute("position");
+      for (let i = 0; i < pos.count; i += 3) {
+        punto.fromBufferAttribute(pos, i).applyMatrix4(m.matrixWorld).applyMatrix4(giro.matrixWorldInverse);
+        d = Math.max(d, Math.max(Math.abs(punto.x) / tanH, Math.abs(punto.y) / tanV) + punto.z + 1);
+      }
+    }
+    return Math.min(distancia, d);
+  };
+
   // Vistas fijas: la cámara viaja hasta ellas en medio segundo.
   let animando = false;
   const ponerVista = (vista: Vista, sinViaje = false) => {
     const [az, el] = VISTAS[vista];
     const desde = new Spherical().setFromVector3(camara.position);
-    const hasta = new Spherical(distancia, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180);
+    const hasta = new Spherical(distanciaVista(vista), ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180);
     // Por el camino más corto.
     let dTheta = hasta.theta - desde.theta;
     dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));

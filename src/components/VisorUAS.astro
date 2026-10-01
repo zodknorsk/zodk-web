@@ -27,6 +27,7 @@ const RESPALDO = { foto: "Se ve en las fotos", reconstruccion: "Reconstrucción"
 const respalda = (id: string) => m.partes.flatMap((p, i) => (p.fuentes.includes(id) ? [letra(i)] : []));
 const VISTAS = [
   { vista: "arriba", nombre: "Planta" },
+  { vista: "abajo", nombre: "Abajo" },
   { vista: "lado", nombre: "Perfil" },
   { vista: "frente", nombre: "Frente" },
   { vista: "3d", nombre: "3D" },

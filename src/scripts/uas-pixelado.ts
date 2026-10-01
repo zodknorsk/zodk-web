@@ -87,6 +87,8 @@ export function crearPixelado(renderer: WebGLRenderer) {
       contorno: { value: new Vector3() },
       cerca: { value: 0.05 },
       lejos: { value: 50 },
+      // Salto de profundidad que marca línea, en unidades de la maqueta.
+      salto: { value: 0.07 },
       hd: { value: 0 },
       exposicion: { value: 0.95 },
     },
@@ -101,6 +103,7 @@ export function crearPixelado(renderer: WebGLRenderer) {
       uniform vec3 contorno;
       uniform float cerca;
       uniform float lejos;
+      uniform float salto;
       uniform float hd;
       uniform float exposicion;
       varying vec2 vUv;
@@ -182,7 +185,7 @@ export function crearPixelado(renderer: WebGLRenderer) {
           vec4 n = texture2D(tColor, uv);
           if (n.a < 0.5) continue;
           float dn = distancia(uv);
-          if (d - dn > 0.07) { mezcla = 0.6; break; }
+          if (d - dn > salto) { mezcla = 0.6; break; }
           if (c.a < 0.998 && n.a < 0.998 && abs(c.a - n.a) > 0.002 && d > dn) mezcla = 0.45;
         }
         // En el pixel HD, las líneas de dentro son el tono de la pieza más
@@ -214,6 +217,9 @@ export function crearPixelado(renderer: WebGLRenderer) {
 
   return {
     ponerContorno(hex: string) { final.uniforms.contorno.value = aVector(hex); },
+    // En las miniaturas cada píxel abarca más dron y el salto tiene que ser
+    // mayor (si no, una superficie grande vista de lado sale entera como línea).
+    ponerSalto(unidades: number) { final.uniforms.salto.value = unidades; },
     ponerHD(si: boolean, tamano = TAM_PIXEL) {
       final.uniforms.hd.value = si ? 1 : 0;
       // Cada píxel de arte, un número entero de píxeles de la pantalla.

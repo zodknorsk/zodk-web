@@ -140,9 +140,24 @@ un borrón; de frente, el ala y la cola eran barras negras; las marcas no se
 veían (la tinta reducida se volvía gris). Sin resolver: en 3D, la punta de
 la cola en V sale algo dentada.
 
-**Pendiente de decidir**: las miniaturas de `/uas` y la tira de la portada
-salen todavía del pixel 1.0 (`arte/generar-uas-miniaturas.mjs`, sin
-navegador); pasarlas al pixel HD es otro trabajo.
+**El 2.0 sustituye al 1.0 en todas partes**, no solo en el visor: también
+la tarjeta de `/uas` y la planta de la tira de la portada. El usuario lo
+dejó claro («ES DE CAJÓN») cuando el MQ-9 se cerró con las dos en 1.0, y
+pidió que la tarjeta se viera **como el visor**: `tarjeta.png` y
+`tarjeta-noche.png`, 256x144 a 1 px por píxel, quieta (se quitó el giro a
+planta de todas las tarjetas), casi de perfil y un poco desde arriba y por
+delante (79°, 11°: el ángulo que eligió el usuario con una captura del
+visor; desde la vista 3D, 38° y 32°, el ala entera dejaba el cuerpo pequeño
+y el dron parecía una X de palos), con un objetivo de 10° (con los 18° del
+visor, al llenar la tarjeta, lo cercano salía exagerado), llenando el
+recuadro y centrada con la perspectiva de verdad (sin ella, la punta del ala
+se salía). La planta (`planta.png`), con un
+teleobjetivo cerrado (8°) y las medidas de la 1.0. Salen de
+`node arte/generar-uas-miniaturas-hd.mjs <modelo>`, con `npm run dev` en
+marcha: un Chrome sin ventana las pinta con el mismo motor del visor
+(`src/scripts/uas-miniatura-hd.ts`), y borra el giro 1.0 del dron.
+`arte/generar-uas-miniaturas.mjs` se salta los drones con `hd`. Pasar un dron
+al pixel HD incluye regenerarlas.
 
 ## Dónde estamos
 
@@ -356,8 +371,16 @@ navegador); pasarlas al pixel HD es otro trabajo.
   de dos a tres píxeles a saltos).
   El usuario eligió **1 px** (frente a 2, 1,5 y «2 px más cerca»): fuera el
   panel de pruebas; el pixel HD va siempre a 1 px.
-- **Siguiente paso**: el dron que pida el usuario; aparte, decidir si se
-  regeneran las miniaturas de `/uas` y la portada (hoy salen del pixel 1.0).
+- **1-oct-2026, tarjeta y planta de la portada del MQ-9 en pixel HD** (en
+  `main`, sin commit): seguían en 1.0; ver «Pasar un dron al pixel HD».
+- **1-oct-2026, visor** (en `main`, sin commit): cada vista fija se encuadra
+  con lo que ocupa el dron desde ahí (el perfil del MQ-9 salía pequeñísimo) y
+  hay una vista nueva, **Abajo**, con el morro arriba. Desde abajo el dron se
+  ve **oscuro, con la misma luz de siempre**: el usuario lo dejó así después
+  de probar a pasar el sol debajo (al girar saltaba y llenaba el dron de
+  sombras) y a subir la luz del cielo en la panza. No volver a tocar la luz
+  para esa vista.
+- **Siguiente paso**: el dron que pida el usuario.
 
 ## Decisiones del usuario (30-sep-2026)
 

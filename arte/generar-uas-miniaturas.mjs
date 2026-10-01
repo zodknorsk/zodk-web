@@ -17,7 +17,8 @@
 //                                        una foto de satélite; si pasa de
 //                                        PLANTA_MAX, se reduce hasta caber
 // Uso (desde la raíz del repo):  node arte/generar-uas-miniaturas.mjs [modelo…]
-// Sin modelos, todas.
+// Sin modelos, todas. Los drones con HD (`hd: true`) no: van en pixel HD
+// (arte/generar-uas-miniaturas-hd.mjs), que sustituye al 1.0 en todas partes.
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
@@ -155,6 +156,7 @@ const guardar = (img, ancho, alto, salida) =>
 
 for (const modelo of modelos) {
   const { default: maqueta } = await import(path.join(DATOS, `${modelo}.ts`));
+  if (maqueta.hd) { console.log(`${modelo}: tiene HD, sus miniaturas salen de arte/generar-uas-miniaturas-hd.mjs`); continue; }
   const mallas = [];
   for (const [i, p] of maqueta.piezas.entries())
     for (const g of geometriaDe(p))

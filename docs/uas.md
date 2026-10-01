@@ -433,8 +433,12 @@ perfil.
 
 ### 7. Miniaturas del dron (generadas)
 
-`node arte/generar-uas-miniaturas.mjs <modelo>`: el giro hasta verse de planta de las tarjetas de `/uas`
-(`giro-planta*.png`, 8 fotogramas de 128x72) y la planta a escala para la
+Drones con HD: sus miniaturas (`tarjeta*.png` y `planta.png`) salen en
+pixel HD de `node arte/generar-uas-miniaturas-hd.mjs <modelo>`, con `npm run
+dev` en marcha (ver `docs/uas-hd.md`); el comando de abajo se los salta.
+
+`node arte/generar-uas-miniaturas.mjs <modelo>` (drones sin HD): la tira 1.0 de las tarjetas de `/uas`
+(`giro-planta*.png`, 8 fotogramas de 128x72; la tarjeta solo usa el primero) y la planta a escala para la
 tira de la portada (`planta.png`; los drones muy grandes se reducen hasta
 72x70, `PLANTA_MAX`). Pinta como el modo Pixel del visor: mismo contorno,
 líneas en los saltos de profundidad y en las juntas entre piezas, y
@@ -480,8 +484,12 @@ visor, medir el **consumo en Zen** (`docs/rendimiento.md`).
 - **Lienzo**: la maqueta. Se gira arrastrando, se acerca con la rueda o
   pellizcando. Letras en casillas sobre cada parte; las tapadas, apagadas.
   La parte elegida se pinta en blanco papel (o tinta) y sale un rótulo.
-- **Barra**: la tira de siluetas (Planta, Perfil, Frente, 3D) son los
-  botones de vista; se dibujan solas de la maqueta. Luego Maqueta | Pixel,
+- **Barra**: la tira de siluetas (Planta, Abajo, Perfil, Frente, 3D) son
+  los botones de vista; se dibujan solas de la maqueta. «Abajo» (1-oct-2026)
+  es el dron visto desde abajo con el morro arriba, como en las láminas de
+  identificación; con la luz de siempre, sale oscuro (así lo quiere el
+  usuario). Cada vista se encuadra con lo que ocupa el dron desde ahí, al
+  88 % del lienzo y contando la perspectiva (`distanciaVista`). Luego Maqueta | Pixel,
   Girar (apagado al empezar), − y +.
 - **Modo Pixel** (`uas-pixelado.ts`): la misma escena pintada en directo a
   2 px por píxel de arte, cuatro tonos por acabado, tramado solo en
@@ -567,13 +575,15 @@ tarjetas; línea amarilla de rodadura).
   piloto rojo y dron que sale volando (no los eligió).
 
 **El índice `/uas`**: «Volver a la portada», título «Hangar de UAS», filtro
-por país y tarjetas con el dron en pixel art (128x72 al doble) sobre la
-cuadrícula del visor, país, nombre, categoría y el principio de la
-introducción. Al pasar el ratón, el dron **gira hasta verse de planta**, con
-el morro arriba (`giro-planta.png`), y el país resalta; con un filtro puesto,
-el país sale marcado en todas las tarjetas. (Se probó una vuelta completa y
-luego «de frente», pero de frente los winglets y las hélices, de canto,
-desaparecían; el usuario pidió la planta. El filtro por tipo se quitó.)
+por país y tarjetas con el dron en pixel art sobre la cuadrícula del visor,
+país, nombre, categoría y el principio de la introducción. El dron va
+**quieto, desde la vista 3D**: con HD, `tarjeta.png` (256x144 a 1 px por
+píxel, como el visor); sin HD, el primer fotograma de su tira 1.0
+(`giro-planta.png`, 128x72 al doble). Al pasar el ratón, el país resalta;
+con un filtro puesto, sale marcado en todas las tarjetas. **El giro hasta
+verse de planta al pasar el ratón se quitó el 1-oct-2026** (lo pidió el
+usuario); antes se probaron una vuelta completa y «de frente». El filtro por
+tipo se quitó.
 
 **Ancho del índice** (30-sep-2026): con más drones, la lista de dos
 columnas se hacía muy larga. La página `/uas` va a **860 px** (el resto de la
@@ -687,8 +697,8 @@ frontmatter de la web, y no cuenta entre las tarjetas ni en la portada.
 
 ## Animaciones por fotogramas
 
-La puerta del hangar (5 fotogramas) y el giro de las tarjetas (8) son tiras
-de fotogramas. **No animarlas con `transition: background-position …
+La puerta del hangar (5 fotogramas) es una tira de fotogramas (el giro de
+las tarjetas, que también lo era, se quitó el 1-oct-2026). **No animarlas con `transition: background-position …
 steps()`**: si se quita el ratón a medias, la vuelta se hace en saltos del
 tramo recorrido, que no caen en fotogramas enteros, y se ven dos fotogramas
 partidos (medido: 2 → 1,5 → 1 → 0,5). Se anima un número de fotograma
@@ -739,7 +749,8 @@ del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
 | `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>` |
 | `src/pages/index.astro`, `src/styles/portada.css` | La tira «Hangar de UAS» (`.tira-sat`) |
 | `scripts/importar-notas.mjs` | Notas de la carpeta → `src/content/uas/` |
-| `arte/generar-uas-miniaturas.mjs` | Giro de las tarjetas y planta de cada dron |
+| `arte/generar-uas-miniaturas.mjs` | Tarjeta y planta de los drones sin HD (pixel 1.0) |
+| `arte/generar-uas-miniaturas-hd.mjs` | Tarjeta y planta de los drones con HD (pixel HD) |
 | `arte/generar-uas-hangar.mjs` | El hangar y el asfalto de la tira |
 | `arte/capturas.mjs` | Capturas para enseñar al usuario |
 | `public/uas/<modelo>/` | Miniaturas, giro, planta y `fuentes/` |

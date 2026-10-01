@@ -8,13 +8,14 @@ import {
 } from "three";
 import type { Pieza, Seccion } from "../data/uas/tipos";
 
-export type Vista = "3d" | "arriba" | "lado" | "frente" | "detras";
+export type Vista = "3d" | "arriba" | "abajo" | "lado" | "frente" | "detras";
 
 // Ángulos de cada vista: [acimut, elevación] en grados. Acimut 0 = de frente
 // (desde el morro), 90 = desde el ala derecha.
 export const VISTAS: Record<Vista, [number, number]> = {
   "3d": [38, 32],
   arriba: [180, 89.9],  // desde detrás, para que el morro quede arriba
+  abajo: [0, -89.9],  // desde abajo, con el morro arriba (como en las láminas de identificación)
   lado: [90, 0],
   frente: [0, 0],
   detras: [180, 8],
