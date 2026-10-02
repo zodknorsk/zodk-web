@@ -553,6 +553,8 @@ al pixel HD incluye regenerarlas.
   - Rendimiento en Zen sin medir.
   - Visto y sin tocar: en las fotos en vuelo el tren principal no se ve;
     podría recogerse.
+  - 2-oct-2026, después: el usuario eligió con una captura la vista 3D del
+    visor del TB2 (acimut 61°, elevación 20°; `vista3d` en la maqueta).
 - **Siguiente paso**: el dron que pida el usuario.
 
 ## Decisiones del usuario (30-sep-2026)

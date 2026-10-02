@@ -171,6 +171,9 @@ export type Maqueta = {
   // sus calcas y costuras.
   hd?: boolean;
   detalles?: { calcas: Calca[]; costuras: Costura[] };
+  // Vista 3D propia del visor: [acimut, elevación] en grados (si no, la de
+  // todos, VISTAS en uas-geometria.ts).
+  vista3d?: [number, number];
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;

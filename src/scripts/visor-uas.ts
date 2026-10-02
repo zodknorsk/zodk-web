@@ -30,7 +30,7 @@ type Colores = { relleno: Color; arista: Color; resalte: Color; resalteArista: C
 // Siluetas de la tira de vistas: la maqueta entera en un solo color, con
 // cámara ortográfica (planta, perfil, frente) o en perspectiva (3D). Se
 // pintan una vez en un lienzo aparte y se usan como máscara CSS.
-function pintarSiluetas(raiz: Group, radio: number, vistas: Vista[]): Map<Vista, string> {
+function pintarSiluetas(raiz: Group, radio: number, vistas: Vista[], angulos: Record<Vista, [number, number]>): Map<Vista, string> {
   const ancho = 256, alto = 128;
   const lienzo = document.createElement("canvas");
   const r = new WebGLRenderer({ canvas: lienzo, antialias: true, alpha: true, preserveDrawingBuffer: true });
@@ -45,7 +45,7 @@ function pintarSiluetas(raiz: Group, radio: number, vistas: Vista[]): Map<Vista,
   escena.add(copia);
   const salida = new Map<Vista, string>();
   for (const vista of vistas) {
-    const [az, el] = VISTAS[vista];
+    const [az, el] = angulos[vista];
     const pos = new Vector3().setFromSpherical(new Spherical(radio * 4, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
     let camara: OrthographicCamera | PerspectiveCamera;
     if (vista === "3d") {
@@ -164,7 +164,9 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
 
   // La tira de siluetas.
   const botonesVista = [...caja.querySelectorAll<HTMLElement>("[data-vista]")];
-  const siluetas = pintarSiluetas(raiz, radio, botonesVista.map((b) => b.dataset.vista as Vista));
+  // La vista 3D puede ser propia de cada dron (`vista3d` en la maqueta).
+  const angulos: Record<Vista, [number, number]> = { ...VISTAS, ...(maqueta.vista3d && { "3d": maqueta.vista3d }) };
+  const siluetas = pintarSiluetas(raiz, radio, botonesVista.map((b) => b.dataset.vista as Vista), angulos);
   for (const b of botonesVista) {
     const url = siluetas.get(b.dataset.vista as Vista);
     const s = b.querySelector<HTMLElement>(".visor-silueta");
@@ -316,7 +318,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // no ocupa casi nada pero la esfera le guardaba sitio entero).
   const punto = new Vector3();
   const distanciaVista = (vista: Vista) => {
-    const [az, el] = VISTAS[vista];
+    const [az, el] = angulos[vista];
     const giro = new PerspectiveCamera();
     giro.position.setFromSpherical(new Spherical(1, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
     giro.lookAt(0, 0, 0);
@@ -340,7 +342,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Vistas fijas: la cámara viaja hasta ellas en medio segundo.
   let animando = false;
   const ponerVista = (vista: Vista, sinViaje = false) => {
-    const [az, el] = VISTAS[vista];
+    const [az, el] = angulos[vista];
     const desde = new Spherical().setFromVector3(camara.position);
     const hasta = new Spherical(distanciaVista(vista), ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180);
     // Por el camino más corto.

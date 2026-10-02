@@ -402,6 +402,10 @@ generadores de `arte/` leen estos archivos con Node.
 - **Capó con boca** (la toma del TB2): un `casco` con `abierto` (sin tapa
   delante), algo mayor que el cuerpo de delante, y otro dentro en `hueco`
   (acabado casi negro y mate) como fondo de la boca.
+- **Vista 3D propia**: `vista3d: [acimut, elevación]` en la maqueta cambia
+  la vista 3D del visor (y su silueta) solo para ese dron. El TB2 lleva
+  [61, 20], el ángulo que eligió el usuario con una captura; para sacarlo,
+  `arte/encajar-camara.mjs` sobre la captura.
 - **Palas con forma**: la `helice` admite `ancho` (la cuerda de la pala):
   estrecha en la raíz, más ancha a un tercio y con la punta redondeada. Sin
   él, cada pala es una tabla.
