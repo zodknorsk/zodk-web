@@ -425,6 +425,11 @@ generadores de `arte/` leen estos archivos con Node.
 - **Palas con forma**: la `helice` admite `ancho` (la cuerda de la pala):
   estrecha en la raíz, más ancha a un tercio y con la punta redondeada. Sin
   él, cada pala es una tabla.
+- **Zoom del visor**: hacia el cursor (`zoomToCursor` de OrbitControls),
+  de 1/16 a 1,2 veces la distancia de encuadre; al alejarse, el punto de
+  mira vuelve al centro (`controles` «change» en `visor-uas.ts`). Todo lo
+  que gira o acerca la cámara va alrededor de `controles.target`, no del
+  origen.
 - **Comparar con fotos desde su mismo ángulo**: `arte/encajar-camara.mjs`,
   `arte/comparar-foto.mjs` y `arte/vista-visor.mjs` (ver «Medir con fotos
   encajadas» en `docs/uas-hd.md`). `comparar-foto` admite `--zoom` (con

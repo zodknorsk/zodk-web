@@ -100,6 +100,11 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const camara = new PerspectiveCamera(32, 1, 0.05, 50);
   const controles = new OrbitControls(camara, lienzo);
   controles.enablePan = false;
+  // La rueda y el pellizco acercan hacia lo que hay bajo el cursor (el
+  // punto al que se mira se mueve con él); al alejarse, vuelve al centro
+  // (ver «centrar»). Con la cámara siempre mirando al centro no se podía
+  // acercar casi nada sin meterse dentro del ala.
+  controles.zoomToCursor = true;
   controles.autoRotateSpeed = 1.2;
 
   // Piezas: relleno + aristas. Cada pieza guarda sus materiales para
@@ -172,7 +177,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   }
 
   // Distancia a la que la maqueta entera cabe en el lienzo, mire desde donde
-  // mire; el zoom va de la mitad a más del doble.
+  // mire; el zoom va de 1/16 (de cerca, hacia el cursor) a 1,2 veces (antes,
+  // de 0,45 a 2,2: se alejaba hasta perder el dron y casi no se acercaba).
   let distancia = 4;
   // Solo en local (window.__visor.mirar): la cámara puesta a mano no se
   // vuelve a encuadrar ni a acotar al cambiar el tamaño del lienzo.
@@ -182,8 +188,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     const vertical = (camara.fov * Math.PI) / 360;
     const horizontal = Math.atan(Math.tan(vertical) * camara.aspect);
     distancia = (radio * 0.78) / Math.sin(Math.min(vertical, horizontal));
-    controles.minDistance = distancia * 0.45;
-    controles.maxDistance = distancia * 2.2;
+    controles.minDistance = distancia / 16;
+    controles.maxDistance = distancia * 1.2;
   };
 
   // Colores del tema (variables CSS del visor): se releen al cambiar día/noche.
@@ -341,13 +347,16 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   let animando = false;
   const ponerVista = (vista: Vista, sinViaje = false) => {
     const [az, el] = VISTAS[vista];
-    const desde = new Spherical().setFromVector3(camara.position);
+    // Desde donde se mire, con el punto de mira de vuelta al centro.
+    const desde = new Spherical().setFromVector3(desdeObjetivo());
+    const objetivo0 = controles.target.clone();
     const hasta = new Spherical(distanciaVista(vista), ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180);
     // Por el camino más corto.
     let dTheta = hasta.theta - desde.theta;
     dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));
     botonesVista.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.vista === vista)));
     if (sinViaje) {
+      controles.target.set(0, 0, 0);
       camara.position.setFromSpherical(hasta);
       camara.lookAt(0, 0, 0);
       controles.update();
@@ -364,7 +373,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
         desde.phi + (hasta.phi - desde.phi) * e,
         desde.theta + dTheta * e,
       );
-      camara.position.setFromSpherical(s);
+      controles.target.copy(objetivo0).multiplyScalar(1 - e);
+      camara.position.copy(controles.target).add(new Vector3().setFromSpherical(s));
       controles.update();
       if (k < 1) requestAnimationFrame(paso);
       else animando = false;
@@ -373,19 +383,36 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     requestAnimationFrame(paso);
   };
 
+  // Los botones y las teclas acercan y giran alrededor del punto al que se
+  // mira (con el zoom hacia el cursor, no siempre es el centro).
+  const desdeObjetivo = () => camara.position.clone().sub(controles.target);
   const acercar = (factor: number) => {
-    const d = Math.min(controles.maxDistance, Math.max(controles.minDistance, camara.position.length() * factor));
-    camara.position.setLength(d);
+    const v = desdeObjetivo();
+    v.setLength(Math.min(controles.maxDistance, Math.max(controles.minDistance, v.length() * factor)));
+    camara.position.copy(controles.target).add(v);
     controles.update();
   };
 
   const girar = (dAz: number, dEl: number) => {
-    const s = new Spherical().setFromVector3(camara.position);
+    const s = new Spherical().setFromVector3(desdeObjetivo());
     s.theta += dAz;
     s.phi = Math.min(Math.PI - 0.01, Math.max(0.01, s.phi - dEl));
-    camara.position.setFromSpherical(s);
+    camara.position.copy(controles.target).add(new Vector3().setFromSpherical(s));
     controles.update();
   };
+
+  // Al alejarse, el punto al que se mira vuelve al centro: puede apartarse
+  // más cuanto más cerca está la cámara, y nada a la distancia del encuadre.
+  // Se mueven los dos a la vez, así la vista no gira.
+  controles.addEventListener("change", () => {
+    if (camaraFija || animando) return;
+    const libre = radio * Math.max(0, 1 - desdeObjetivo().length() / distancia);
+    const t = controles.target;
+    if (t.length() <= libre + 1e-6) return;
+    const d = t.clone().setLength(t.length() - libre);
+    t.sub(d);
+    camara.position.sub(d);
+  });
 
   // Elegir una parte: se resalta la pieza, sale su ficha y su rótulo, y en
   // las fuentes se apagan las que no la respaldan.
@@ -443,7 +470,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     camara.updateProjectionMatrix();
     encuadrar();
     if (distancia !== distanciaAntes) {
-      camara.position.multiplyScalar(distancia / distanciaAntes);
+      const v = desdeObjetivo().multiplyScalar(distancia / distanciaAntes);
+      camara.position.copy(controles.target).add(v);
       controles.update();
     }
     caja.querySelectorAll<HTMLElement>("[data-hd]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.hd === (estiloHD ?? "no"))));
@@ -501,7 +529,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     renderer.setSize(w, h, false);
     camara.aspect = w / h;
     encuadrar();
-    if (!camaraFija) camara.position.clampLength(controles.minDistance, controles.maxDistance);
+    if (!camaraFija) { const v = desdeObjetivo().clampLength(controles.minDistance, controles.maxDistance); camara.position.copy(controles.target).add(v); }
     camara.updateProjectionMatrix();
     pedir();
   };

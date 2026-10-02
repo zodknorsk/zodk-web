@@ -183,12 +183,11 @@ al pixel HD incluye regenerarlas.
 
 ## Dónde estamos
 
-- **2-oct-2026, TB2 retomado** (rama `hd-bayraktar-tb2`): toma de aire del
-  lomo, hecha y cerrada por el usuario (commit `b6bfa85`). **Ala movida a su
-  sitio** (sin commit): 19 cm más adelante, punta más estrecha, alerón al
-  24 % de la cuerda. Siguiente: **las líneas del cuerpo** (ver «tercera
-  vuelta del TB2», abajo), pendiente del visto bueno del usuario al plan.
-  Falta también: tarjeta y planta regeneradas, rendimiento en Zen.
+- **2-oct-2026, TB2 retomado y cerrado otra vez**: toma de aire en el centro
+  del lomo, ala en su sitio, cuerpo sin las líneas de las uniones, tarjeta y
+  planta regeneradas, y el zoom de todos los visores (hacia el cursor).
+  Fusionado en `main` (rama `hd-bayraktar-tb2` borrada). Queda: rendimiento
+  en Zen; la joroba de delante del ala, que el usuario ve bien.
 - **El MQ-9 está cerrado** (HD y pixel HD) desde el 1-oct-2026: el pixel HD,
   fusionado en `main` y publicado ese día, y las ramas `uas-hd` y
   `hd-pixel-mq-9`, borradas. Lo que sigue es pasar otros drones (ver los
@@ -668,8 +667,16 @@ al pixel HD incluye regenerarlas.
     empinada y el empalme de arriba sube de golpe (`sobreArista` de −0,05 a
     0,06 en 20 cm) mientras la planta se abre de 0,56 a 0,70.
   - El usuario lo ve bien (2-oct-2026): la joroba se deja como está.
-- **Siguiente paso**: regenerar tarjeta y planta; rendimiento en Zen; el
-  zoom de los visores (para el final).
+  - **Zoom de los visores** (lo pidió el usuario): la rueda y el pellizco
+    acercan hacia lo que hay bajo el cursor (`zoomToCursor`), hasta 1/16
+    del encuadre; alejar, hasta 1,2 veces (antes, de 0,45 a 2,2 y siempre
+    hacia el centro: se alejaba hasta perder el dron y casi no se
+    acercaba). Al alejarse, el punto de mira vuelve al centro; las vistas
+    fijas lo devuelven también. Botones y teclas, alrededor del punto de
+    mira. Visto de paso y sin tocar: en consola sale un error de shader del
+    contorno (`objectNormal`, MeshBasicMaterial) que ya estaba antes.
+- **Siguiente paso**: el dron que pida el usuario; rendimiento en Zen del
+  TB2.
 - **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no
   en mitad del cuerpo): en todos los visores, el zoom aleja sin límite pero
   acerca poco; retocarlo en general.
