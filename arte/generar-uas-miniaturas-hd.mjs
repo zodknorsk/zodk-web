@@ -26,6 +26,8 @@ const op = Object.fromEntries(process.argv.slice(2).filter((a) => a.startsWith("
 // el ángulo que eligió el usuario el 1-oct-2026 con una captura del visor.
 // Desde la vista 3D del visor (38°, 32°) el ala, entera, dejaba el cuerpo
 // pequeño y el dron se leía como una X de palos.
+// Un dron puede llevar su propio ángulo (`vistaTarjeta` en la maqueta; el
+// TB2, 61°, 20°); --vista manda sobre los dos.
 const VISTA_3D = op.vista ? op.vista.split(",").map(Number) : [79, 11];
 const NOMBRE = op.nombre ?? "tarjeta";
 // La planta, como las 1.0 (arte/generar-uas-miniaturas.mjs).
@@ -67,7 +69,8 @@ try {
         const { tarjetaHD } = await import("/src/scripts/uas-miniatura-hd.ts");
         const { default: maqueta } = await import("/src/data/uas/${modelo}.ts");
         if (!maqueta.hd) throw new Error("${modelo} no tiene HD");
-        return JSON.stringify(tarjetaHD(maqueta, ${JSON.stringify(VISTA_3D)}, ${W}, ${H}));
+        const vista = ${op.vista ? "null" : "maqueta.vistaTarjeta"} ?? ${JSON.stringify(VISTA_3D)};
+        return JSON.stringify(tarjetaHD(maqueta, vista, ${W}, ${H}));
       })()`,
       awaitPromise: true, returnByValue: true,
     });

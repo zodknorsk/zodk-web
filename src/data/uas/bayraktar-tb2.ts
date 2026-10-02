@@ -572,10 +572,10 @@ const maqueta: Maqueta = {
   // Su gris al sol tiene una luminosidad de 0,717, en el borde de dos
   // escalones del pixel HD (puestos para el MQ-9): corridos medio escalón.
   desfaseLuz: 0.48,
-  // Vista 3D del visor: la que eligió el usuario el 2-oct-2026 con una
-  // captura (cámara encajada: acimut 61°, elevación 20°), más de lado y más
-  // baja que la de todos (38°, 32°).
-  vista3d: [61, 20],
+  // Ángulo de la tarjeta de /uas: el que eligió el usuario el 2-oct-2026 con
+  // una captura del visor (cámara encajada: acimut 61°, elevación 20°), en
+  // vez del de todas (79°, 11°).
+  vistaTarjeta: [61, 20],
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("TR"),
   piezas: PIEZAS.map(aUnidades),
