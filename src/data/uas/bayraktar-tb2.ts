@@ -26,8 +26,14 @@ const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 // 2019): ahí el ala es más gruesa, más ancha y está más baja.
 const ALA = { punta: 5.97 };
 const RAIZ_ALA_X = 1.3;
-const bordeAtaque = (x: number) => 0.724 - 0.0571 * (x - 1.5);
-const bordeSalida = (x: number) => -0.118 - 0.0106 * (x - 1.5);
+// Bordes de ataque y de salida, de las dos fotos del J-10 en vuelo (desde
+// arriba y de lado) con la cámara encajada y las puntas donde el ajuste da
+// menos error; la media de las dos (difieren unos ±5 cm). El plano ponía el
+// ala unos 19 cm más atrás y la punta más ancha (0,63 m de cuerda; en las
+// fotos, 0,55): con él, el ajuste de las fotos dejaba 13–17 px de error en
+// las puntas, el morro y la cola (2-oct-2026).
+const bordeAtaque = (x: number) => 0.913 - 0.078 * (x - 1.5);
+const bordeSalida = (x: number) => 0.082 - 0.0168 * (x - 1.5);
 // El grosor y la altura van como parámetros del perfil: el grueso total es
 // 0,775 veces `t` y la mitad del grueso queda 0,1125·t por encima de `sube`.
 const grosorAla = (x: number) => 0.194 - 0.0198 * (x - 1.5);
@@ -41,11 +47,12 @@ const estAla = (x: number, bs = bordeSalida(x)): Est => [x, bordeAtaque(x), bs, 
 // Carenado de la raíz: [x, borde de ataque, borde de salida, t, sube].
 // El ala empieza en x = 1,3, dentro del ensanche del cuerpo y con su mismo
 // perfil (ver «Cuerpo»).
-const RAIZ: Est[] = [[RAIZ_ALA_X, 0.745, -0.122, 0.236, 0.016]];
+const RAIZ: Est[] = [[RAIZ_ALA_X, bordeAtaque(RAIZ_ALA_X), bordeSalida(RAIZ_ALA_X), 0.236, 0.016]];
 // Alerones, dos por ala (plano desde arriba y desde abajo): de 3,68 a 4,8 m
-// y de 4,8 a 5,9, con la bisagra a 0,13 m del borde de salida.
-const ALERON = { cuerda: 0.13, hueco: 0.006, tramos: [[3.68, 4.8], [4.8, 5.9]] };
-const bisagra = (x: number) => bordeSalida(x) + ALERON.cuerda;
+// y de 4,8 a 5,9, con la bisagra al 24 % de la cuerda desde el borde de
+// salida (fotos del J-10 de lado, en la punta; antes, 0,13 m fijos).
+const ALERON = { cuerda: 0.24, hueco: 0.006, tramos: [[3.68, 4.8], [4.8, 5.9]] };
+const bisagra = (x: number) => bordeSalida(x) + ALERON.cuerda * (bordeAtaque(x) - bordeSalida(x));
 const estAleron = (x: number): Est => {
   const [, , , t, sube] = estAla(x);
   return [x, bisagra(x) - ALERON.hueco, bordeSalida(x), t * 0.42, sube - 0.02 * t];
@@ -137,6 +144,8 @@ const FILAS: FilaCuerpo[] = [
 // larga, desde 0,7 m del costado, como se ve de frente en todas las fotos
 // (en la versión anterior el ala salía del cuerpo en x = 0,85 con un empalme
 // corto: el ala parecía pinchada en un cuerpo en forma de huevo).
+// RAIZ_ALA y los bordes del ensanche van en las z del plano; `alSitio` (más
+// abajo) los lleva a donde está el ala de verdad.
 const RAIZ_ALA = { x: RAIZ_ALA_X, ba: 0.745, bs: -0.122, t: 0.236, sube: 0.016 };
 // Borde del ensanche delante y detrás del ala: [z, x].
 const BORDE_DELANTE: [number, number][] = [
@@ -198,8 +207,11 @@ const conAltura = (q: Seccion): Seccion => {
   const yB = q.bordeArriba ?? q.cintura ?? 0, yS = q.sobreArista ?? yB;
   if (yS - yB < 1e-3) return q;
   const r = (ALTURA_EMPALME(q.z) - yB) / ((2 / 3) * (yS - yB));
-  // Detrás, mezclado con el de siempre a medida que el ala engorda.
-  const k = suave(0.45, 0.6, q.z);
+  // Solo en la nariz del perfil (los primeros centímetros detrás del borde
+  // de ataque, donde el ala es casi un filo); más atrás el empalme sale
+  // tangente al ala, en horizontal: con redondeo salía inclinado y dejaba un
+  // pliegue a lo largo del ala junto a la raíz.
+  const k = suave(0.66, 0.73, q.z);
   return { ...q, redondeo: Math.max(0, Math.min(1.4, k * r + (1 - k) * (q.redondeo ?? 0))) };
 };
 const RAIZ_CUERPO = [
@@ -210,12 +222,28 @@ const RAIZ_CUERPO = [
   }),
   ...BORDE_DETRAS.map(([z, x]) => conBorde(z, x)),
 ];
+// El ensanche y sus empalmes están medidos con el ala donde la ponía el
+// plano (RAIZ_ALA). El ala va en realidad unos 19 cm más adelante (ver
+// bordeAtaque): `alSitio` lleva cada sección del ensanche a su z con el ala
+// (entera en la raíz, estirada para que la cuerda de la raíz sea la del ala,
+// y cada vez menos hacia el morro y hacia el capó, que no se mueven), y le
+// pone el lomo, el hombro y la panza de esa z nueva, que son del cuerpo.
+const RAIZ_BA = bordeAtaque(RAIZ_ALA_X), RAIZ_BS = bordeSalida(RAIZ_ALA_X);
+const alSitioZ = (z: number) => {
+  if (z >= RAIZ_ALA.ba) return z + (RAIZ_BA - RAIZ_ALA.ba) * (1 - suave(RAIZ_ALA.ba, 2.2, z));
+  if (z >= RAIZ_ALA.bs) return RAIZ_BS + ((z - RAIZ_ALA.bs) * (RAIZ_BA - RAIZ_BS)) / (RAIZ_ALA.ba - RAIZ_ALA.bs);
+  return z + (RAIZ_BS - RAIZ_ALA.bs) * suave(-0.55, RAIZ_ALA.bs, z);
+};
+const alSitio = (q: Seccion): Seccion => {
+  const z = alSitioZ(q.z), cuerpo = aSeccion(filaEn(z));
+  return { ...q, z, hombro: cuerpo.hombro, arriba: cuerpo.arriba, lomo: cuerpo.lomo, abajo: cuerpo.abajo };
+};
 const CUERPO: Seccion[] = [
   // La arista del morro, también suave (en las fotos de lado no hay un filo
   // con sombra debajo, solo un cambio de luz).
   ...FILAS.filter(([z]) => z > BORDE_DELANTE[0][0] + 1e-6 || z < BORDE_DETRAS[BORDE_DETRAS.length - 1][0] - 1e-6).map((f) => conLabio({ ...aSeccion(f), ...(REDONDEO(f[0]) > 0 && { redondeo: REDONDEO(f[0]) }) })),
   ...RAIZ_CUERPO,
-];
+].map(alSitio);
 // Toma de aire del motor: una sola, en el centro de lo alto del lomo, junto
 // al capó (fotos del J-10 en vuelo, desde arriba y de lado, tr05 de lado y
 // 030 de frente; a escala con la toma pequeña del lomo, de 17 cm; desde
@@ -260,7 +288,10 @@ const bajoSoporte = (x: number) => abajoAla(Math.abs(x)) - SOPORTE.alto + 0.03;
 // de la percha por una argolla.
 const MAM = { r: 0.08, largo: 1.0 };
 const yMam = (x: number) => bajoSoporte(x) - 0.02 - MAM.r;
-const zMam = (x: number) => bordeAtaque(Math.abs(x)) + 0.33;
+// La punta, en z ≈ 1,05 (desfile de Kiev y tr05), 14 cm por delante del
+// borde de ataque (con el ala del plano, 33 cm: la punta ya estaba medida y
+// no se mueve con el ala).
+const zMam = (x: number) => bordeAtaque(Math.abs(x)) + 0.14;
 
 // Cuatro aletas en X alrededor del eje de una bomba: el contorno va en
 // [z, distancia al eje].
@@ -358,9 +389,10 @@ const PIEZAS: Pieza[] = [
   // Toma de aire central: una boca rectangular en lo alto del lomo, sobre la
   // raíz del ala (fotos del J-10 en vuelo: no está en el capó, como en la
   // primera versión, sino 1 m por delante). Un capuchón bajo con la boca
-  // negra mirando adelante.
-  { tipo: "caja", id: "toma", acabado: "gris-tr", centro: [0, 0.3, 1.0], tam: [0.17, 0.05, 0.16], redondeo: 0.03 },
-  { tipo: "caja", id: "toma-boca", acabado: "negro", centro: [0, 0.305, 1.075], tam: [0.14, 0.035, 0.012] },
+  // negra mirando adelante, que apenas sale del lomo: 1 cm (salía 2–3; lo
+  // pidió el usuario el 2-oct-2026).
+  { tipo: "caja", id: "toma", acabado: "gris-tr", centro: [0, 0.288, 1.0], tam: [0.17, 0.05, 0.16], redondeo: 0.03 },
+  { tipo: "caja", id: "toma-boca", acabado: "negro", centro: [0, 0.293, 1.075], tam: [0.14, 0.035, 0.012] },
   // Morro: la sonda de datos de aire en la punta, con sus dos veletas, una
   // antena corta encima y las dos placas de los costados, a la altura de la
   // arista (foto de Kiev 2019).
@@ -404,7 +436,7 @@ const PIEZAS: Pieza[] = [
   },
   ...ALERON.tramos.map(([a, b], i): Pieza => ({ tipo: "ala", id: `aleron-${i}`, acabado: "gris-tr", y: 0, estaciones: [estAleron(a + ALERON.hueco), estAleron(b - ALERON.hueco)] })),
   // Carenados de los mandos de los alerones, bajo el ala (plano desde abajo).
-  ...[3.8, 4.92].map((x, i): Pieza => ({ tipo: "caja", id: `carenado-aleron-${i}`, acabado: "gris-tr", espejo: true, redondeo: 0.012, centro: [x, abajoAla(x) - 0.012, bordeSalida(x) + 0.12], tam: [0.025, 0.035, 0.2] })),
+  ...[3.8, 4.92].map((x, i): Pieza => ({ tipo: "caja", id: `carenado-aleron-${i}`, acabado: "gris-tr", espejo: true, redondeo: 0.012, centro: [x, abajoAla(x) - 0.012, bisagra(x) - 0.01], tam: [0.025, 0.035, 0.2] })),
   // Luces de las puntas del ala y el tubo pitot, bajo un ala.
   ...LADOS.map((s): Pieza => ({ tipo: "tubo", id: `luz-punta-${s}`, acabado: "blanco", centro: [s * ALA.punta, subidaAla(ALA.punta)], seccion: [0.5, 0.5], perfil: esfera(cuerdaAla(ALA.punta, 0.35), 0.05) })),
   { tipo: "varilla", id: "pitot-pie", acabado: "gris-tr", desde: [2.62, abajoAla(2.62) + 0.01, cuerdaAla(2.62, 0.2)], hasta: [2.62, abajoAla(2.62) - 0.06, cuerdaAla(2.62, 0.15)], radio: 0.012 },

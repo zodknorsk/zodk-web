@@ -183,11 +183,12 @@ al pixel HD incluye regenerarlas.
 
 ## Dónde estamos
 
-- **2-oct-2026, TB2 retomado** (rama `hd-bayraktar-tb2`): la toma de aire
-  del lomo, hecha (una sola, en el centro); ahora, **el ala**: está colocada
-  demasiado atrás y la punta es demasiado ancha (ver «tercera vuelta del
-  TB2» en el registro). Falta también: tarjeta y planta regeneradas,
-  rendimiento en Zen.
+- **2-oct-2026, TB2 retomado** (rama `hd-bayraktar-tb2`): toma de aire del
+  lomo, hecha y cerrada por el usuario (commit `b6bfa85`). **Ala movida a su
+  sitio** (sin commit): 19 cm más adelante, punta más estrecha, alerón al
+  24 % de la cuerda. Siguiente: **las líneas del cuerpo** (ver «tercera
+  vuelta del TB2», abajo), pendiente del visto bueno del usuario al plan.
+  Falta también: tarjeta y planta regeneradas, rendimiento en Zen.
 - **El MQ-9 está cerrado** (HD y pixel HD) desde el 1-oct-2026: el pixel HD,
   fusionado en `main` y publicado ese día, y las ramas `uas-hd` y
   `hd-pixel-mq-9`, borradas. Lo que sigue es pasar otros drones (ver los
@@ -612,10 +613,35 @@ al pixel HD incluye regenerarlas.
     de ataque se curva liso hacia delante hasta el costado, y el de salida
     también se abre en curva; en la maqueta el borde de ataque recto choca
     con la curva del ensanche en x = 1,3 (esquina).
-- **Siguiente paso**: el ala (medidas definitivas con más fotos, moverla y
-  estrecharla, raíz tangente; luego soportes, alerones y vigas, y revisar
-  el pliegue con el ala en su sitio); regenerar tarjeta y planta;
-  rendimiento en Zen.
+  - **Ala movida** (2-oct-2026): bordes de ataque y de salida, la media de
+    las dos fotos del J-10 (`bordeAtaque` 0,913 − 0,078·(x − 1,5),
+    `bordeSalida` 0,082 − 0,0168·(x − 1,5)); puntas en z = 0,29 en los
+    ajustes de cámara. Error del ajuste: J-10 desde arriba 13,5 → 5,3 px,
+    de lado 17,1 → 11,9; 032 21,4 → 19,8; tr04 17,0 → 16,3; tr05 9,3 → 11,5
+    y 030 4,0 → 5,3 (en esas dos manda el gran angular en morro y cola). El
+    ensanche y sus empalmes, medidos con el ala del plano, se llevan a su
+    sitio con `alSitio` (estirados en la raíz y cada vez menos hacia el morro
+    y el capó). Alerón al 24 % de la cuerda (foto de lado; antes 13 cm
+    fijos), carenados en la bisagra. Las MAM-L, con la punta donde estaba
+    medida (z ≈ 1,05: 14 cm por delante del borde de ataque); los soportes
+    van con el ala y ahora quedan centrados en la bomba. La toma pequeña del
+    lomo, 1,2 cm más hundida (lo pidió el usuario). El redondeo del empalme
+    se queda solo en la nariz del perfil (detrás, el empalme sale en
+    horizontal, tangente al ala).
+  - **Las líneas del cuerpo** (las marcó el usuario el 2-oct-2026 con tres
+    capturas: «es como si el cuerpo no tuviese la misma forma»). En los
+    cortes del cuerpo: (1) el pie del lomo hace esquina con el empalme de
+    arriba (x ≈ 0,28; en z = 0,5 casi en ángulo recto): la línea larga a
+    los dos lados del lomo, del capó al morro; (2) en z ≈ 1,1–1,5, la unión
+    del labio, el empalme y el costado hace una S con dos dobleces: la línea
+    del costado que se ve de lado y de 3/4; (3) del morro a z ≈ 1,8, el
+    labio (`nariz`) deja un cordón en la arista; (4) el lomo, unido al
+    cuerpo con una norma p, sale como cresta y las secciones, poligonales.
+    La sección de arriba es un montaje de piezas (empalme, costado, hombro,
+    lomo, labio) y cada unión concentra la curvatura en una línea.
+- **Siguiente paso**: las líneas del cuerpo (plan en la conversación con el
+  usuario: la mitad de arriba de cada sección, una sola curva continua
+  medida en fotos); regenerar tarjeta y planta; rendimiento en Zen.
 
 ## Decisiones del usuario (30-sep-2026)
 
