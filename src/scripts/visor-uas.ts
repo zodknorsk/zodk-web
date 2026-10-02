@@ -542,7 +542,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // --js) ponen la cámara donde se encajó la de la foto.
   if (import.meta.env.DEV) {
     (window as unknown as { __visor: unknown }).__visor = {
-      camara, controles, pedir, escala: maqueta.escala,
+      camara, controles, pedir, escala: maqueta.escala, raiz,
       // En metros de la maqueta (la raíz está desplazada para centrarla).
       mirar(desde: [number, number, number], hacia: [number, number, number], fov: number, giro = 0) {
         const e = maqueta.escala, o = raiz.position;

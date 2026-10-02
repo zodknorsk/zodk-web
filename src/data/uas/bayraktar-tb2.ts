@@ -108,11 +108,16 @@ const FILAS: FilaCuerpo[] = [
   [2, 0.5, -0.165, 0.515, 0.012, 0.012, 0.15, 0.175, 0.2, -0.375, 0],
   [1.75, 0.505, -0.13, 0.52, 0.012, 0.012, 0.165, 0.215, 0.26, -0.375, 0],
   // El ensanche delante del ala (planta del plano), hasta la raíz.
-  [1.5, 0.53, -0.09, 0.545, 0.03, 0.02, 0.17, 0.245, 0.26, -0.375, 0.4],
-  [1.35, 0.545, -0.065, 0.58, 0.07, 0.07, 0.185, 0.262, 0.26, -0.375, 0.32],
-  [1.25, 0.555, -0.045, 0.62, 0.11, 0.1, 0.2, 0.274, 0.26, -0.375, 0.29],
-  [1.15, 0.565, -0.03, 0.7, 0.15, 0.13, 0.21, 0.285, 0.26, -0.375, 0.28],
-  [1.07, 0.57, -0.012, 0.79, 0.18, 0.145, 0.22, 0.293, 0.26, -0.375, 0.27],
+  // Hacia el morro, el empalme de arriba llega cada vez menos hacia dentro y
+  // la mejilla del costado se ensancha poco a poco hasta el labio (foto tr05
+  // y de Baykar en tierra: el costado baja liso y redondo). Antes el empalme
+  // llegaba hasta x = 0,27–0,32 hasta z = 1,35 y luego saltaba a 0,4 y 0,5:
+  // la mejilla quedaba metida y salía una joroba con dos valles.
+  [1.5, 0.53, -0.09, 0.545, 0.04, 0.02, 0.17, 0.245, 0.26, -0.375, 0.46],
+  [1.35, 0.545, -0.065, 0.58, 0.075, 0.07, 0.185, 0.262, 0.26, -0.375, 0.41],
+  [1.25, 0.555, -0.045, 0.62, 0.105, 0.1, 0.2, 0.274, 0.26, -0.375, 0.37],
+  [1.15, 0.565, -0.03, 0.7, 0.14, 0.13, 0.21, 0.285, 0.26, -0.375, 0.33],
+  [1.07, 0.57, -0.012, 0.79, 0.17, 0.145, 0.22, 0.293, 0.26, -0.375, 0.3],
   // Bajo la raíz del ala (las del medio salen de RAIZ_CUERPO).
   [0.85, 0.58, 0, 0.85, 0.2, 0.16, 0.235, 0.31, 0.26, -0.373, 0.27],
   [0.3, 0.57, 0, 0.85, 0.12, 0.18, 0.26, 0.345, 0.26, -0.365, 0.27],
@@ -156,23 +161,75 @@ const aSeccion = ([z, costado, cintura, ancho, sube, baja, hombro, arriba, lomo,
 // del perfil del ala en esa z).
 const conBorde = (z: number, x: number, borde?: [number, number], redondeo = 0) =>
   ({ ...aSeccion(filaEn(z).map((v, j) => (j === 0 ? z : j === 3 ? x : v)) as FilaCuerpo, borde), ...(redondeo > 0 && { redondeo }) });
+// Redondeo del ensanche a lo largo del cuerpo: delante del ala es redondo,
+// sin arista (el borde de ataque se funde con el costado, fotos del J-10 en
+// tierra y en vuelo), y hacia el morro sigue la arista suave. Cambia poco a
+// poco: de 0 en el borde de ataque (donde el ensanche acaba con el perfil del
+// ala) a 0,75 y otra vez a 0 en la punta del morro. Antes saltaba de 0,75 a 0
+// en un centímetro en el borde de ataque y dejaba un pliegue.
+const suave = (a: number, b: number, v: number) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
+// En el borde de ataque, el perfil del ala tiene grueso cero: sin redondeo,
+// el empalme entero bajaba ahí hasta el borde y volvía a subir detrás (el
+// pliegue). Con redondeo, el empalme queda alto por dentro; detrás del borde
+// de ataque se apaga a medida que el ala engorda y da ella la altura.
+const REDONDEO = (z: number) => (z <= RAIZ_ALA.ba ? 0.9 * suave(0.4, RAIZ_ALA.ba, z) : 0.9 - 0.15 * suave(0.9, 1.3, z)) * (1 - suave(2.9, 3.27, z));
+// Delante del ala, el ensanche no acaba en filo: el borde de ataque sigue
+// hacia el morro como un reborde redondo (foto de Baykar en tierra), con el
+// grueso de la nariz de un perfil, que se afina hacia el morro. LABIO(z): su
+// grueso; la nariz, de un largo algo menor. Antes acababa en un filo de
+// grueso cero que chocaba con el ala, gruesa, y dejaba un pliegue.
+const LABIO = (z: number) => (z <= RAIZ_ALA.ba ? 0 : 0.03 + 0.06 * suave(RAIZ_ALA.ba, 0.9, z) - 0.04 * suave(1.2, 1.6, z) - 0.03 * suave(1.6, 2.4, z) - 0.02 * suave(2.4, 3.2, z));
+const conLabio = (q: Seccion): Seccion => {
+  const t = LABIO(q.z), c = q.cintura ?? 0;
+  if (t <= 0.002) return q;
+  // Sin pasar de lo que suben y bajan los empalmes en esa z.
+  const arriba = Math.min(c + 0.55 * t, c + 0.9 * ((q.sobreArista ?? c) - c)), abajo = Math.max(c - 0.45 * t, c - 0.9 * (c - (q.bajoArista ?? c)));
+  return { ...q, bordeArriba: arriba, bordeAbajo: abajo, nariz: 0.8 * (arriba - abajo) };
+};
+// Junto al borde de ataque, el redondeo se saca de la altura a la que debe
+// quedar el empalme por dentro (el control de su curva): la de la raíz del
+// ala, 0,15, que baja poco a poco hacia delante. Con el redondeo a ojo, el
+// empalme quedaba 2,5 cm más bajo en el anillo del borde de ataque que 5 cm
+// detrás: un surco. En el borde de ataque, algo más alta: la curva queda
+// más por debajo de su control cuanto más bajo está el borde.
+const ALTURA_EMPALME = (z: number) => 0.15 - 0.035 * suave(0.72, 1.1, z) + 0.024 * Math.exp(-(((z - 0.76) / 0.09) ** 2)) + 0.016 * Math.exp(-(((z - 0.742) / 0.012) ** 2));
+const conAltura = (q: Seccion): Seccion => {
+  if (q.z < 0.45 || q.z > 1.1) return q;
+  const yB = q.bordeArriba ?? q.cintura ?? 0, yS = q.sobreArista ?? yB;
+  if (yS - yB < 1e-3) return q;
+  const r = (ALTURA_EMPALME(q.z) - yB) / ((2 / 3) * (yS - yB));
+  // Detrás, mezclado con el de siempre a medida que el ala engorda.
+  const k = suave(0.45, 0.6, q.z);
+  return { ...q, redondeo: Math.max(0, Math.min(1.4, k * r + (1 - k) * (q.redondeo ?? 0))) };
+};
 const RAIZ_CUERPO = [
-  // Delante del ala el ensanche es redondo, sin arista: el borde de ataque
-  // se funde con el costado (fotos del J-10 en tierra y en vuelo). Hacia el
-  // morro sigue la arista suave.
-  ...BORDE_DELANTE.map(([z, x]) => conBorde(z, x, undefined, 0.75)),
+  ...BORDE_DELANTE.map(([z, x]) => conAltura(conLabio(conBorde(z, x, undefined, REDONDEO(z))))),
   ...[0, 0.01, 0.03, 0.07, 0.13, 0.22, 0.33, 0.47, 0.62, 0.78, 0.92, 1].map((f) => {
     const z = RAIZ_ALA.ba - f * (RAIZ_ALA.ba - RAIZ_ALA.bs), g = RAIZ_ALA.t * perfilNaca(f);
-    return conBorde(z, RAIZ_ALA.x, [RAIZ_ALA.sube + g, RAIZ_ALA.sube - 0.55 * g]);
+    return conAltura(conBorde(z, RAIZ_ALA.x, [RAIZ_ALA.sube + g, RAIZ_ALA.sube - 0.55 * g], REDONDEO(z)));
   }),
   ...BORDE_DETRAS.map(([z, x]) => conBorde(z, x)),
 ];
 const CUERPO: Seccion[] = [
   // La arista del morro, también suave (en las fotos de lado no hay un filo
   // con sombra debajo, solo un cambio de luz).
-  ...FILAS.filter(([z]) => z > BORDE_DELANTE[0][0] + 1e-6 || z < BORDE_DETRAS[BORDE_DETRAS.length - 1][0] - 1e-6).map((f) => ({ ...aSeccion(f), ...(f[0] > 1.5 && f[0] < 3.2 && { redondeo: 0.75 }) })),
+  ...FILAS.filter(([z]) => z > BORDE_DELANTE[0][0] + 1e-6 || z < BORDE_DETRAS[BORDE_DETRAS.length - 1][0] - 1e-6).map((f) => conLabio({ ...aSeccion(f), ...(REDONDEO(f[0]) > 0 && { redondeo: REDONDEO(f[0]) }) })),
   ...RAIZ_CUERPO,
 ];
+// Toma de aire del motor: una sola, en el centro de lo alto del lomo, junto
+// al capó (fotos del J-10 en vuelo, desde arriba y de lado, tr05 de lado y
+// 030 de frente; a escala con la toma pequeña del lomo, de 17 cm; desde
+// arriba cae en la línea de esa toma y de la punta del cono). Un hueco oval y
+// hondo de unos 25 cm, con la boca (la pared de atrás) en z = 0,1, 10 cm por
+// delante de la junta remachada del capó; delante, una rampa poco honda que
+// se estrecha hasta la punta (z = 0,64), con los bordes un poco salidos.
+// (Vista desde un lado, solo se ve iluminada la pared de enfrente y parece
+// una cuña a un lado: el 2-oct-2026 salieron por error dos tomas laterales.)
+const TOMA = { boca: 0.1, largo: 0.25, punta: 0.64, x: 0, y: 0.373, ancho: 0.11, hondo: 0.12, ceja: 0.012 };
+// Fondo de la boca: un disco negro contra la pared, centrado en el fondo del
+// hueco (solo asoma la mitad que queda dentro de la toma): la entrada del
+// conducto, que es un agujero de verdad.
+const FONDO_TOMA: [number, number, number] = [0, TOMA.y - TOMA.hondo, TOMA.boca + 0.002];
 const HELICE = { y: 0.18, z: -0.62, r: 0.82 };
 // Borde delantero del capó, donde está la boca de la toma de aire.
 const CAPO = { z: 0.0 };
@@ -266,7 +323,7 @@ const carenadosTimon = (f: number, i: number): Pieza[] => {
 };
 
 const PIEZAS: Pieza[] = [
-  { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO },
+  { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO, tomas: [TOMA] },
   // Toma de aire del motor (foto de Baykar en tierra, J-10 en vuelo y polaca
   // de frente): el capó del motor es algo más grueso que el cuerpo de delante
   // y su borde delantero queda separado, con una boca negra que lo rodea por
@@ -297,6 +354,7 @@ const PIEZAS: Pieza[] = [
       { z: CAPO.z - 0.08, ancho: 0.39, cintura: 0.1, hombro: 0.235, arriba: 0.403, lomo: 0.32, abajo: -0.02, n: 2.3, nLomo: 2.4, nAbajo: 2 },
     ],
   },
+  { tipo: "disco", id: "toma-fondo", acabado: "hueco", en: FONDO_TOMA, normal: [0, 0, 1], radio: 0.95 * TOMA.hondo, grosor: 0.004 },
   // Toma de aire central: una boca rectangular en lo alto del lomo, sobre la
   // raíz del ala (fotos del J-10 en vuelo: no está en el capó, como en la
   // primera versión, sino 1 m por delante). Un capuchón bajo con la boca
@@ -542,7 +600,7 @@ const aUnidades = (p: Pieza): Pieza => {
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "casco":
-      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.bordeArriba !== undefined && { bordeArriba: u(q.bordeArriba) }), ...(q.bordeAbajo !== undefined && { bordeAbajo: u(q.bordeAbajo) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }) })) };
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.bordeArriba !== undefined && { bordeArriba: u(q.bordeArriba) }), ...(q.bordeAbajo !== undefined && { bordeAbajo: u(q.bordeAbajo) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }), ...(q.nariz !== undefined && { nariz: u(q.nariz) }) })), ...(p.tomas && { tomas: p.tomas.map((t) => ({ boca: u(t.boca), largo: u(t.largo), punta: u(t.punta), x: u(t.x), y: u(t.y), ancho: u(t.ancho), hondo: u(t.hondo), ceja: u(t.ceja) })) }) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }

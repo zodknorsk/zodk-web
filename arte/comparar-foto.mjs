@@ -5,6 +5,9 @@
 // Uso: node arte/comparar-foto.mjs <ajuste.json> <salida.png> [--ancho=1400]
 //        [--pixel] [--recorte=x,y,ancho,alto (píxeles de la foto)] [--encima]
 //        [--noche] [--solo (solo el render)]
+//        [--zoom (con --recorte: pinta solo el recorte, a todo el ancho, para
+//        ver de cerca una pieza)] [--sin=helice,cono (piezas que no se pintan:
+//        la hélice tapa a veces lo que se quiere ver)]
 // El lienzo no puede pasar de lo que cabe en la pantalla (en el Mac, unos
 // 1900 px de ancho): más grande, el encuadre se descoloca.
 import { spawn } from "node:child_process";
@@ -22,9 +25,28 @@ const meta = await sharp(foto).metadata();
 const W = meta.width, H = meta.height;
 const rad = (g) => (g * Math.PI) / 180;
 // Lienzo con la forma de la foto entera; luego se recorta lo mismo en los dos.
-const ancho = Number(op.ancho ?? 1400), alto = Math.round((ancho * H) / W);
+const rec = op.recorte ? String(op.recorte).split(",").map(Number) : null;
+const zoom = !!(op.zoom && rec);
+const ancho = Number(op.ancho ?? 1400), alto = zoom ? Math.round((ancho * rec[3]) / rec[2]) : Math.round((ancho * H) / W);
 const C = [cam.tx + cam.d * Math.sin(rad(cam.az)) * Math.cos(rad(cam.el)), cam.ty + cam.d * Math.sin(rad(cam.el)), cam.tz + cam.d * Math.cos(rad(cam.az)) * Math.cos(rad(cam.el))];
-const T = [cam.tx, cam.ty, cam.tz];
+let T = [cam.tx, cam.ty, cam.tz];
+let fovVisor = cam.fov;
+// Con zoom, la cámara mira al centro del recorte y el campo se estrecha a su
+// alto (con setViewOffset, la sombra del sol del HD salía como una franja
+// negra). Los ejes, como en arte/encajar-camara.mjs.
+if (zoom) {
+  let f = T.map((v, i) => v - C[i]); const nf = Math.hypot(...f); f = f.map((v) => v / nf);
+  const cruz = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  let r = cruz(f, [0, 1, 0]); const nr = Math.hypot(...r); r = r.map((v) => v / nr);
+  let u = cruz(r, f);
+  const cr = Math.cos(rad(cam.roll ?? 0)), sr = Math.sin(rad(cam.roll ?? 0));
+  [r, u] = [r.map((v, i) => cr * v + sr * u[i]), u.map((v, i) => -sr * r[i] + cr * v)];
+  const F = H / 2 / Math.tan(rad(cam.fov) / 2);
+  const dx = rec[0] + rec[2] / 2 - W / 2 - (cam.cx ?? 0), dy = rec[1] + rec[3] / 2 - H / 2 - (cam.cy ?? 0);
+  const dir = f.map((v, i) => v + (dx / F) * r[i] - (dy / F) * u[i]);
+  T = C.map((v, i) => v + dir[i] * nf);
+  fovVisor = (2 * Math.atan(rec[3] / 2 / (F * Math.hypot(1, dx / F, dy / F))) * 180) / Math.PI;
+}
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "comparar-"));
@@ -67,12 +89,13 @@ const caja = await evaluar(`(async () => {
   }
   window.scrollTo(0, 0);
   await new Promise((r) => setTimeout(r, 600));
-  window.__visor.mirar(${JSON.stringify(C)}, ${JSON.stringify(T)}, ${cam.fov}, ${cam.roll ?? 0});
+  ${op.sin ? `{ const fuera = new Set(); window.__visor.raiz.traverse((o) => { if (${JSON.stringify(String(op.sin).split(","))}.includes(o.userData.pieza)) fuera.add(o.geometry); }); window.__visor.raiz.traverse((o) => { if (fuera.has(o.geometry)) o.visible = false; }); window.__visor.pedir(); }` : ""}
+  window.__visor.mirar(${JSON.stringify(C)}, ${JSON.stringify(T)}, ${fovVisor}, ${cam.roll ?? 0});
   await new Promise((r) => setTimeout(r, 900));
-  window.__visor.mirar(${JSON.stringify(C)}, ${JSON.stringify(T)}, ${cam.fov}, ${cam.roll ?? 0});
+  window.__visor.mirar(${JSON.stringify(C)}, ${JSON.stringify(T)}, ${fovVisor}, ${cam.roll ?? 0});
   await new Promise((r) => setTimeout(r, 600));
   const b = document.querySelector('.visor-lienzo').getBoundingClientRect();
-  return JSON.stringify({ x: b.x + scrollX, y: b.y + scrollY, sx: scrollX, sy: scrollY, by: b.y, cw: document.querySelector('.visor-lienzo').width, ch: document.querySelector('.visor-lienzo').height, aspect: window.__visor?.camara.aspect, fov: window.__visor?.camara.fov, vw: innerWidth, vh: innerHeight, w: b.width, h: b.height, hay: typeof window.__visor, pos: window.__visor?.camara.position, min: window.__visor?.controles.minDistance, max: window.__visor?.controles.maxDistance, near: window.__visor?.camara.near, far: window.__visor?.camara.far });
+  return JSON.stringify({ x: b.x + scrollX, y: b.y + scrollY, sx: scrollX, sy: scrollY, by: b.y, cw: document.querySelector('.visor-lienzo').width, ch: document.querySelector('.visor-lienzo').height, aspect: window.__visor?.camara.aspect, view: window.__visor?.camara.view, fov: window.__visor?.camara.fov, vw: innerWidth, vh: innerHeight, w: b.width, h: b.height, hay: typeof window.__visor, pos: window.__visor?.camara.position, min: window.__visor?.controles.minDistance, max: window.__visor?.controles.maxDistance, near: window.__visor?.camara.near, far: window.__visor?.camara.far });
 })()`);
 const r = JSON.parse(caja); if (op.depurar) console.log(caja);
 const { data } = await orden("Page.captureScreenshot", { format: "png", clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } });
@@ -82,9 +105,9 @@ await espera(300);
 try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* */ }
 
 let render = sharp(Buffer.from(data, "base64")).resize(ancho, alto);
-let fotoR = sharp(foto).resize(ancho, alto);
+let fotoR = zoom ? sharp(foto).extract({ left: rec[0], top: rec[1], width: rec[2], height: rec[3] }).resize(ancho, alto) : sharp(foto).resize(ancho, alto);
 let [x0, y0, w0, h0] = [0, 0, ancho, alto];
-if (op.recorte) {
+if (op.recorte && !zoom) {
   const [x, y, w, h] = String(op.recorte).split(",").map(Number);
   const k = ancho / W;
   [x0, y0, w0, h0] = [Math.round(x * k), Math.round(y * k), Math.round(w * k), Math.round(h * k)];

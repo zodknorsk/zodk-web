@@ -183,6 +183,11 @@ al pixel HD incluye regenerarlas.
 
 ## Dónde estamos
 
+- **2-oct-2026, TB2 retomado** (rama `hd-bayraktar-tb2`): la toma de aire
+  del lomo, hecha (una sola, en el centro); ahora, **el ala**: está colocada
+  demasiado atrás y la punta es demasiado ancha (ver «tercera vuelta del
+  TB2» en el registro). Falta también: tarjeta y planta regeneradas,
+  rendimiento en Zen.
 - **El MQ-9 está cerrado** (HD y pixel HD) desde el 1-oct-2026: el pixel HD,
   fusionado en `main` y publicado ese día, y las ramas `uas-hd` y
   `hd-pixel-mq-9`, borradas. Lo que sigue es pasar otros drones (ver los
@@ -556,7 +561,61 @@ al pixel HD incluye regenerarlas.
   - 2-oct-2026, después: la tarjeta de `/uas` del TB2, con el ángulo que
     eligió el usuario con una captura del visor (acimut 61°, elevación 20°;
     `vistaTarjeta` en la maqueta). El visor sigue con el de siempre.
-- **Siguiente paso**: el dron que pida el usuario.
+- **2-oct-2026, tercera vuelta del TB2** (rama `hd-bayraktar-tb2` otra
+  vez, sin commit). El usuario pidió el pendiente («la toma de aire entiende
+  que es un agujero hacia dentro y que sale un poquito; las tomas laterales
+  vamos a dejarlas; dale caña a las alas»). Hecho:
+  - **Toma de aire del lomo**: no era la U del capó. Una sola, en el centro
+    de lo alto del lomo (desde arriba cae en la línea de la toma pequeña
+    del lomo y de la punta del cono): un hueco oval y hondo de unos 25 cm,
+    con la boca (pared de atrás) en z = 0,1, 10 cm por delante de la junta
+    remachada del capó; delante, una rampa poco honda hasta z = 0,64, con
+    los bordes un poco salidos (1,2 cm; más, de frente salían orejas). En
+    el `casco` (`tomas`), con un disco `hueco` en la boca. Las ranuras
+    laterales del capó (la U), como estaban. Errores por el camino, que el
+    usuario corrigió: primero hice **dos tomas**, una a cada lado (desde un
+    lado solo se ve iluminada la pared de enfrente y parecía una cuña a un
+    lado), y oscurecí el fondo con un tono por vértice copiado de la foto
+    («te has basado en la sombra de una foto»: la luz la pone el visor; se
+    quitó). Descartados también: en el costado mirando afuera (desde tr05
+    salía un tajo) y una rampa larga sin hueco.
+  - **El pliegue de delante del ala**, medido con cortes del cuerpo y un
+    mapa de alturas: (1) el `redondeo` saltaba de 0,75 a 0 en 1 cm en el
+    borde de ataque; (2) en ese anillo el perfil del ala tiene grueso cero y
+    el empalme entero bajaba a ras del borde: un surco de 3 cm cruzando hasta
+    el cuerpo; (3) delante del ala el ensanche acababa en un filo de grueso
+    cero (en la foto de Baykar en tierra es un labio redondo). Arreglo:
+    redondeo que cambia poco a poco y que, junto al borde de ataque, sale de
+    la altura a la que debe quedar el empalme (`ALTURA_EMPALME`, 0,15 detrás
+    y bajando hacia delante); `nariz` y `LABIO` (de 3 a 9 cm, afinándose
+    hacia el morro); empalme en cúbica sin codo; el empalme de arriba llega
+    cada vez menos hacia dentro hacia el morro (`costadoArriba` de 0,27 a
+    0,46). Queda un escalón de ~1 cm en 2 cm justo en el borde de ataque.
+  - **Sigue**: la joroba del costado de delante del ala (z 0,9–1,3, x
+    0,28–0,4): es la mejilla del cuerpo, más estrecha que el labio, sobre la
+    repisa plana de delante del ala; en las fotos el costado baja más liso.
+  - Visto y sin tocar: motas negras en la junta remachada del capó (ya
+    estaban en `main`).
+  - Herramientas: `comparar-foto` con `--zoom` y `--sin`; el enganche del
+    visor da también `raiz`.
+  - **El ala, mal colocada** (2-oct-2026, con la foto del J-10 desde arriba
+    que señaló el usuario): el ajuste de cámara de las dos fotos del J-10
+    dejaba 13–17 px de error; con las puntas en z ≈ 0,28 en vez de 0,15
+    baja a la mitad (13,5 → 5,3 px desde arriba; 17,1 → 11,9 de lado).
+    Medido punto a punto en las dos: borde de ataque 10–23 cm más adelante
+    que la maqueta (0,93 / 0,81 / 0,70 / 0,60 en x 2 / 3,4 / 4,7 / punta,
+    desde arriba; 0,83 / 0,70 / 0,60 / 0,55 de lado), borde de salida 15–22
+    cm más adelante (0,10 / 0,07 / 0,05 desde arriba; 0,05 / 0,00 / −0,05
+    de lado); cuerda de la punta 0,55 (maqueta 0,63), junto al cuerpo igual
+    (0,82); alerón, ~25 % de la cuerda. El plano de cinco vistas, de donde
+    salió, coloca mal el ala. Y la unión con el cuerpo: en la foto el borde
+    de ataque se curva liso hacia delante hasta el costado, y el de salida
+    también se abre en curva; en la maqueta el borde de ataque recto choca
+    con la curva del ensanche en x = 1,3 (esquina).
+- **Siguiente paso**: el ala (medidas definitivas con más fotos, moverla y
+  estrecharla, raíz tangente; luego soportes, alerones y vigas, y revisar
+  el pliegue con el ala en su sitio); regenerar tarjeta y planta;
+  rendimiento en Zen.
 
 ## Decisiones del usuario (30-sep-2026)
 

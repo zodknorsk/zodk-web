@@ -33,7 +33,8 @@ export type Pieza = (
   // arriba, y la arista marca más ángulo.
   // `abierto`: sin tapa delante (la sección de mayor z): un capó con la boca
   // de la toma de aire (el TB2).
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean }
+  // `tomas`: tomas de aire sumergidas (ver `Toma`).
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[] }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -121,11 +122,24 @@ export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remach
 // raíz del ala del TB2 sube hasta el pie del lomo, sin hombro.
 // `bordeArriba` y `bordeAbajo`: el ensanche acaba con ese grueso (las caras
 // de arriba y de abajo del perfil de la raíz del ala en esa z) en vez de en
-// arista, y el ala sigue desde ahí sin escalón. `redondeo` (0 a 1): los
+// arista, y el ala sigue desde ahí sin escalón. `redondeo` (0 a 1,4): los
 // empalmes, cóncavos con 0; con más, salen del borde ya inclinados y el
 // ensanche se ve redondo (delante del ala del TB2, donde el borde de ataque
-// se funde con el costado).
-export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number };
+// se funde con el costado). `nariz`: el borde del ensanche, en vez de un
+// filo, es media elipse de ese largo hacia dentro, del grueso que dan
+// bordeArriba y bordeAbajo: un reborde redondo (delante del ala del TB2, el
+// borde de ataque sigue así hacia el morro).
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number };
+
+// Toma de aire en un casco (la del lomo del TB2): un hueco oval que se mete
+// en el cuerpo, de `largo` (z) desde la `boca` hacia delante, con la pared
+// de atrás recta (la entrada del conducto) en la boca y el frente
+// redondeado; delante, una rampa poco honda que se estrecha hasta la `punta`
+// (z); los bordes salen un poco (`ceja`). `x` e `y`, el centro del hueco en
+// la boca, sobre la superficie (con x > 0, otra igual en espejo; con x = 0,
+// una sola en el centro); `ancho`, su medio ancho ahí, y `hondo`, cuánto se
+// mete.
+export type Toma = { boca: number; largo: number; punta: number; x: number; y: number; ancho: number; hondo: number; ceja: number };
 
 // Qué respalda lo que cuenta cada parte.
 export type Respaldo = "foto" | "reconstruccion" | "fabricante";

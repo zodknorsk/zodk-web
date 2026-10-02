@@ -398,7 +398,19 @@ generadores de `arte/` leen estos archivos con Node.
 - **Raíz del ala sin escalón** (el TB2): el ensanche del `casco` acaba con
   el perfil del ala (`bordeArriba` y `bordeAbajo`, las caras de arriba y de
   abajo del perfil en esa z) y el `ala` empieza ahí con `raizDentro` (sin
-  tapa). `redondeo` (0 a 1) hace el ensanche redondo en vez de en arista.
+  tapa). `redondeo` (0 a 1,4) hace el ensanche redondo en vez de en arista
+  y sube el empalme por dentro sin subir el borde; el empalme es una cúbica
+  que llega al costado con un tramo vertical largo (sin codo). `nariz`: el
+  borde del ensanche acaba en media elipse de ese largo, del grueso que dan
+  `bordeArriba` y `bordeAbajo` (el labio redondo de delante del ala del TB2).
+- **Toma de aire sumergida** (la del lomo del TB2): `tomas` en el `casco`
+  (ver `Toma` en `tipos.ts`): un hueco oval que se mete en el cuerpo, con la
+  pared de la boca recta, una rampa poco honda delante y los bordes un poco
+  salidos; con `x = 0`, una sola en el centro. En lo alto de la sección, los
+  puntos van en ángulos fijos (los mismos en todos los anillos) y más juntos
+  en la toma; si se cruzan de un anillo a otro, la luz sale a rayas. Sin
+  sombras pintadas: la luz la pone el visor (solo es negro el disco de la
+  boca, que es un agujero).
 - **Capó con boca** (la toma del TB2): un `casco` con `abierto` (sin tapa
   delante), algo mayor que el cuerpo de delante, y otro dentro en `hueco`
   (acabado casi negro y mate) como fondo de la boca.
@@ -411,7 +423,9 @@ generadores de `arte/` leen estos archivos con Node.
   él, cada pala es una tabla.
 - **Comparar con fotos desde su mismo ángulo**: `arte/encajar-camara.mjs`,
   `arte/comparar-foto.mjs` y `arte/vista-visor.mjs` (ver «Medir con fotos
-  encajadas» en `docs/uas-hd.md`).
+  encajadas» en `docs/uas-hd.md`). `comparar-foto` admite `--zoom` (con
+  `--recorte`, pinta solo el recorte a todo el ancho, para ver una pieza de
+  cerca) y `--sin=helice,…` (piezas que no se pintan).
 - **Comparar con un plano en ortográfica**: el visor tiene perspectiva y
   engaña con las piezas que salen del plano (el diedro del TB2, de lado, se
   ve como un trapecio oscuro sobre el cuerpo). Con un plano a escala, mejor
