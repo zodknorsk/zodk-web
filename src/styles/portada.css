@@ -293,8 +293,10 @@ html.dark .hero-mgrs.fijada {
    --fijo...). Datos en src/data/aeronaves.ts. Al pasar el ratón se para toda
    la portada y sale la ficha. Solo con ratón.
 
-   Las fotos (.png) van suavizadas; el único pixel art (el Sentinel-2, .svg)
-   lleva --pixelado. Una foto animada en "pixelated" parpadea, porque se
+   Las fotos (.png) van suavizadas; el pixel art del Sentinel-2 (.svg)
+   lleva --pixelado. Los drones en pixel HD (TB2, MQ-9) van suavizados como
+   las fotos y con su ancho en px (`ancho` en aeronaves.ts, en línea), que
+   manda sobre los de abajo. Una foto animada en "pixelated" parpadea, porque se
    vuelve a muestrear en cada fotograma de un desplazamiento que no cae en
    un píxel entero.
    --naves-k: tamaño de todas las naves respecto a sus medidas de abajo. */
@@ -344,8 +346,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 }
 
 /* Trayectoria "sweep" (dron): barrido diagonal amplio que baja cruzando el
-   título y vuelve a subir (alternate). La foto del TB3 es casi cuadrada y
-   con detalle, así que se le da bastante ancho para que se lea. */
+   título y vuelve a subir (alternate). */
 .hero-craft--sweep {
   left: 44%;
   top: 24%;
@@ -411,8 +412,6 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 .hero-craft--fijo-centro {
   left: 43%;
   top: 62%;
-  /* el sprite del MQ-9 trae bastante margen transparente (dron + sombra), así
-     que se le da más ancho de caja que al RQ-4 para que el dron se vea igual. */
   width: calc(clamp(78px, 7.4vw, 116px) * var(--naves-k));
 }
 .hero-craft--fijo-arriba {

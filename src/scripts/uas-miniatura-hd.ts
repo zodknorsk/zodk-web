@@ -18,8 +18,13 @@ import { PALETAS } from "./uas-paletas";
 // 10° se ve como un recorte del visor.
 const FOV_PLANTA = 8, FOV_VISOR = 10;
 
+// Si una pieza se queda fuera: su id es uno de `quitar` o empieza por uno
+// de ellos y un guion («lanzador» quita también «lanzador-rail-0»).
+const fuera = (id: string, quitar: string[]) => quitar.some((q) => id === q || id.startsWith(q + "-"));
+
 // La escena del dron en HD, lista para pintar en pixel a ancho x alto.
-function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
+// `quitar`: piezas que no se montan (las armas o el tren, en la portada).
+function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: string[] = []) {
   const lienzo = document.createElement("canvas");
   const renderer = new WebGLRenderer({ canvas: lienzo, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(1);
@@ -28,7 +33,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
   const raiz = new Group();
   const mallas: Mesh[] = [];
   for (const [i, p] of maqueta.piezas.entries())
-    for (const g of geometriaDe(p)) {
+    for (const g of fuera(p.id, quitar) ? [] : geometriaDe(p)) {
       const malla = new Mesh(g, materialHD(p.acabado ?? "negro", "c", marcaPieza(i, p.acabado === "junta")));
       malla.castShadow = malla.receiveShadow = true;
       malla.userData.pieza = p.id;
@@ -42,7 +47,10 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
   raiz.updateMatrixWorld(true);
   const luz = crearLuzHD(renderer, escena, radio);
   luz.encender(true, "c");
-  const detalles = maqueta.detalles ? montarDetalles(escena, raiz, mallas, maqueta.detalles, radio) : null;
+  const sinQuitadas = <T extends { sobre: string[] }>(l: T[]) => l.filter((d) => !d.sobre.some((id) => fuera(id, quitar)));
+  const detalles = maqueta.detalles
+    ? montarDetalles(escena, raiz, mallas, { calcas: sinQuitadas(maqueta.detalles.calcas), costuras: sinQuitadas(maqueta.detalles.costuras) }, radio)
+    : null;
   detalles?.ver(true, false);
   const pixelado = crearPixelado(renderer);
   pixelado.ponerHD(true, 1, maqueta.desfaseLuz ?? 0);
@@ -52,6 +60,8 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
     new Vector3().setFromSpherical(new Spherical(1, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
   // Desplazamiento de la imagen (píxeles) para centrar el dron tal como se ve.
   let desplazar: [number, number] | null = null;
+  // Giro de la cámara sobre su eje (radianes): gira la imagen.
+  let giro = 0;
   const colocar = (vista: [number, number], escala: number) => {
     const d = H / 2 / (escala * Math.tan((FOV * Math.PI) / 360));
     camara.position.copy(direccion(vista)).multiplyScalar(d);
@@ -59,6 +69,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
     camara.far = d + radio * 2;
     camara.updateProjectionMatrix();
     camara.lookAt(0, 0, 0);
+    camara.rotateZ(giro);
     if (desplazar) camara.setViewOffset(W, H, desplazar[0], desplazar[1], W, H);
     else camara.clearViewOffset();
     camara.updateMatrixWorld();
@@ -76,11 +87,30 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
     }
     return { x0, x1, y0, y1 };
   };
+  // Dónde cae un punto de la maqueta en la imagen, en píxeles desde arriba
+  // a la izquierda.
+  const enImagen = (p: Vector3) => {
+    v.copy(p).applyMatrix4(raiz.matrixWorld).project(camara);
+    return [((v.x + 1) * W) / 2, ((1 - v.y) * H) / 2] as [number, number];
+  };
   return {
+    enImagen,
+    mallas,
+    // Gira la cámara sobre su eje para que el morro (+z) apunte en la imagen
+    // hacia `angulo` (grados; 180, a la izquierda; positivo, hacia arriba).
+    morroHacia(vista: [number, number], angulo: number) {
+      giro = 0;
+      desplazar = null;
+      colocar(vista, 1);
+      const [x0, y0] = enImagen(new Vector3(0, 0, -1));
+      const [x1, y1] = enImagen(new Vector3(0, 0, 1));
+      giro = Math.atan2(-(y1 - y0), x1 - x0) - (angulo * Math.PI) / 180;
+    },
     // Medio ancho y medio alto del dron visto desde ahí, en unidades.
     ocupa(vista: [number, number]) {
       camara.position.copy(direccion(vista)).multiplyScalar(radio * 50);
       camara.lookAt(0, 0, 0);
+      camara.rotateZ(giro);
       camara.updateMatrixWorld();
       let mx = 0, my = 0;
       for (const m of mallas) {
@@ -161,4 +191,31 @@ export function plantaHD(maqueta: Maqueta, vista: [number, number], pxPorMetro: 
   const { dia } = m.pintar(vista, escala);
   m.soltar();
   return { png: dia, ancho, alto };
+}
+
+// La nave del hero de la portada (src/data/aeronaves.ts): el dron en vuelo
+// desde la vista `vista`, con el morro hacia `morro` (grados; 180, a la
+// izquierda, como las demás naves) y llenando un cuadrado de `lado` px a
+// 1 px por píxel. Sin la sombra ni el recorte, que los pone
+// arte/generar-naves-uas-hd.mjs. Devuelve también dónde caen las puntas de
+// las alas (las luces de posición), en píxeles: `der` la derecha (+x).
+export function naveHD(maqueta: Maqueta, vista: [number, number], morro: number, lado: number, quitar: string[] = []) {
+  const m = montar(maqueta, lado, lado, FOV_VISOR, quitar);
+  m.morroHacia(vista, morro);
+  const { dia } = m.pintar(vista, m.llenar(vista, 2));
+  // Las puntas: los vértices del ala más a cada lado.
+  const ala = m.mallas.filter((x) => x.userData.pieza === "ala");
+  const p = new Vector3();
+  let der: Vector3 | null = null, izq: Vector3 | null = null;
+  for (const malla of ala) {
+    const pos = malla.geometry.getAttribute("position");
+    for (let i = 0; i < pos.count; i++) {
+      p.fromBufferAttribute(pos, i).applyMatrix4(malla.matrix);
+      if (!der || p.x > der.x) der = p.clone();
+      if (!izq || p.x < izq.x) izq = p.clone();
+    }
+  }
+  const luces = der && izq ? { der: m.enImagen(der), izq: m.enImagen(izq) } : null;
+  m.soltar();
+  return { png: dia, luces };
 }

@@ -181,8 +181,28 @@ marcha: un Chrome sin ventana las pinta con el mismo motor del visor
 `arte/generar-uas-miniaturas.mjs` se salta los drones con `hd`. Pasar un dron
 al pixel HD incluye regenerarlas.
 
+**Las naves del hero de la portada** (`src/data/aeronaves.ts`) también salen
+del pixel HD cuando el dron está en el hangar (el TB2 y el MQ-9, desde el
+2-oct-2026): `node arte/generar-naves-uas-hd.mjs [id]`, con `npm run dev` en
+marcha, pinta `public/zodk-<id>.png` (dron en vuelo, morro a la izquierda,
+sombra debajo) y da su `ratio` y sus `luces`; la de noche, con
+`python3 arte/generar-naves-noche.py <id>` (el de `/usr/bin`, que tiene
+Pillow). Vista E (90°, 28°: casi de lado y desde arriba), elegida por el
+usuario. Se pintan a 260 px y se ven a la mitad (`ancho` 132): en retina,
+1 px por píxel. **No pintarlas al tamaño que ocupan en pantalla**: a 1 px por
+píxel y 60 px de ancho no caben el volumen ni las armas, y el dron queda en
+una cruz gris (primer intento, descartado). En vuelo: el MQ-9 con el tren
+recogido y armado; el TB2 recoge solo la rueda del morro.
+
 ## Dónde estamos
 
+- **2-oct-2026, naves de la portada en pixel HD**: el TB2 (sustituye al TB3,
+  que se quitó) y el MQ-9, con `arte/generar-naves-uas-hd.mjs` (ver arriba).
+  Pendiente de mirar: las maquetas del hangar están en espejo respecto al
+  avión de verdad (ejes x derecha, y arriba, z morro en un Three.js que es de
+  mano derecha): con el morro a la izquierda y desde arriba, la punta verde
+  (derecha) sale abajo. Afecta a todo el visor. La maqueta del TB2 dice que
+  el tren no se recoge, pero la rueda del morro sí se recoge.
 - **2-oct-2026, TB2 retomado y cerrado otra vez**: toma de aire en el centro
   del lomo, ala en su sitio, cuerpo sin las líneas de las uniones, tarjeta y
   planta regeneradas, y el zoom de todos los visores (hacia el cursor).

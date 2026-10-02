@@ -197,9 +197,11 @@ const socialImageURL = new URL(image, Astro.site);
         "hero-craft--fijo-arriba-der", "hero-craft--pixelado", "flip-x"
       );
       el.classList.add("hero-craft--" + a.vuelo);
-      // Solo el pixel art (.svg) va sin suavizar; las fotos (.png) se ven
-      // mejor, y sin parpadeo al moverse, con el suavizado del navegador.
+      // Solo el pixel art (.svg) va sin suavizar; las fotos y el pixel HD
+      // (pintado grande y reducido) se ven mejor, y sin parpadeo al moverse,
+      // con el suavizado del navegador. El pixel HD va a su `ancho`.
       if (a.sprite.endsWith(".svg")) el.classList.add("hero-craft--pixelado");
+      el.style.width = a.ancho ? a.ancho + "px" : "";
       el.dataset.craft = a.id;
       el.style.aspectRatio = a.ratio;
       el.style.setProperty("--sprite", "url(" + a.sprite + ")");

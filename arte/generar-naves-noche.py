@@ -11,13 +11,13 @@ tamaño fijo en pantalla, porque las fotos se ven muy reducidas (una de 857 px
 se muestra a ~210 px) y un punto dibujado en la foto quedaría de menos de 1 px.
 Sus posiciones están en src/data/aeronaves.ts (campo `luces`).
 
-    python3 generar-naves-noche.py
+    python3 generar-naves-noche.py [id…]      (sin id, todas las de NAVES)
 """
 import os
 
 from PIL import Image
 
-NAVES = ["dron", "rq4", "mq9", "e2-hawkeye", "u2", "sr71", "shahed136"]
+NAVES = ["tb2", "rq4", "mq9", "e2-hawkeye", "u2", "sr71", "shahed136"]
 # Elegido con pruebas sobre el planeta de noche: más oscuro, las naves grises
 # se camuflaban contra el mar azul y casi desaparecían.
 TINTE = (0.60, 0.72, 1.0)          # luz de luna
@@ -53,6 +53,7 @@ def procesa(nid, **kw):
 
 
 if __name__ == "__main__":
-    for nid in NAVES:
+    import sys
+    for nid in sys.argv[1:] or NAVES:
         procesa(nid).save(os.path.join(PUB, f"zodk-{nid}-noche.png"), optimize=True)
         print("->", f"zodk-{nid}-noche.png")

@@ -7,15 +7,18 @@
 // botón .hero-cambio, que trae otro al azar (salen todos antes de repetir).
 // Lo lleva initObjeto() en Head.astro; sin JS se ve el primero de la lista.
 //
-// Dibujos, en public/zodk-<id>[-noche].{svg,png}: todas son fotos PNG salvo
-// el Sentinel-2, que es pixel art de arte/generar-aeronaves.py. La versión de
-// noche de las fotos (a la luz de la luna) sale de arte/generar-naves-noche.py.
-// Añadir una nave = su foto en public/, la de noche con ese script y una
-// entrada aquí.
+// Dibujos, en public/zodk-<id>[-noche].{svg,png}: fotos PNG; el Sentinel-2,
+// pixel art de arte/generar-aeronaves.py; y los drones que están en el hangar
+// en pixel HD (el TB2 y el MQ-9), pixel HD de arte/generar-naves-uas-hd.mjs,
+// que da también su `ratio` y sus `luces`. La versión de noche (a la luz de
+// la luna) sale de arte/generar-naves-noche.py. Añadir una nave = su dibujo
+// en public/, la de noche con ese script y una entrada aquí.
 //
 // Luces de posición (solo de noche): puntos fijos encima de la nave, en % de
 // su imagen (x, y). Morro a la izquierda y vista desde arriba, así que el ala
-// derecha es la de arriba (verde) y la izquierda la de abajo (roja). Sin
+// derecha es la de arriba (verde) y la izquierda la de abajo (roja). En el
+// pixel HD van donde las puntas pintadas de la maqueta, que salen al revés
+// (las maquetas del hangar están en espejo: la derecha queda abajo). Sin
 // `luces`, la nave va a oscuras (el Shahed-136, como en la realidad; el
 // satélite no lleva).
 //
@@ -43,6 +46,7 @@ export type Aeronave = {
     | "fijo-arriba"
     | "fijo-arriba-der"; // trayectoria (clases .hero-craft--* de portada.css)
   escala?: number; // multiplica el ancho en el hero (1 = normal). Solo "sweep".
+  ancho?: number; // pixel HD: ancho en pantalla (px). El PNG va al doble: en retina, 1 px por píxel
   pais: string; // código de src/data/banderas.json: la chapa en pixel art junto a "País"
   luces?: {
     der: [number, number];
@@ -53,24 +57,25 @@ export type Aeronave = {
 
 export const AERONAVES: Aeronave[] = [
   {
-    id: "dron",
-    nombre: "Bayraktar TB3",
-    clase: "Dron armado MALE embarcado",
-    sprite: "/zodk-dron.png",
-    spriteNoche: "/zodk-dron-noche.png",
-    ratio: "430 / 450",
+    id: "tb2",
+    nombre: "Bayraktar TB2",
+    clase: "Dron armado MALE",
+    sprite: "/zodk-tb2.png",
+    spriteNoche: "/zodk-tb2-noche.png",
+    ratio: "264 / 224",
+    ancho: 132,
     vuelo: "sweep",
     pais: "TR",
-    luces: { der: [52, 2], izq: [52, 97] },
+    luces: { der: [53, 88], izq: [52, 1] },
     specs: [
       ["Fabricante", "Baykar"],
       ["País", "Turquía"],
-      ["Primer vuelo", "2023"],
-      ["Envergadura", "14 m"],
-      ["MTOW", "1.450 kg"],
-      ["Techo", "~7.600 m"],
-      ["Autonomía", "más de 24 h"],
-      ["Carga", "280 kg"],
+      ["Primer vuelo", "2014"],
+      ["Envergadura", "12 m"],
+      ["MTOW", "700 kg"],
+      ["Techo", "~6.100 m"],
+      ["Autonomía", "más de 18 h"],
+      ["Carga", "150 kg"],
     ],
   },
   {
@@ -99,10 +104,11 @@ export const AERONAVES: Aeronave[] = [
     clase: "Dron armado MALE",
     sprite: "/zodk-mq9.png",
     spriteNoche: "/zodk-mq9-noche.png",
-    ratio: "244 / 265",
+    ratio: "264 / 245",
+    ancho: 132,
     vuelo: "fijo-centro",
     pais: "US",
-    luces: { der: [54, 2], izq: [53, 89] },
+    luces: { der: [59, 89], izq: [57, 1] },
     specs: [
       ["Fabricante", "General Atomics"],
       ["País", "EE. UU."],
