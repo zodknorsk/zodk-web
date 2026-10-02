@@ -669,6 +669,7 @@ const maqueta: Maqueta = {
   // Su gris al sol tiene una luminosidad de 0,717, en el borde de dos
   // escalones del pixel HD (puestos para el MQ-9): corridos medio escalón.
   desfaseLuz: 0.48,
+  contornoPixel: true,
   // Ángulo de la tarjeta de /uas: el que eligió el usuario el 2-oct-2026 con
   // una captura del visor (cámara encajada: acimut 61°, elevación 20°), en
   // vez del de todas (79°, 11°).

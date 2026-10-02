@@ -194,4 +194,7 @@ export type Maqueta = {
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
+  // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
+  // de la pasada de pixel (el MQ-9, lo pidió el usuario el 2-oct-2026).
+  contornoPixel?: boolean;
 };

@@ -457,7 +457,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       malla.material = estilo === "pixel" && !pixelHD ? m.pixel : m.hd ?? m.relleno;
     }
     for (const a of aristas) a.visible = estilo === "maqueta" && (!hd || hd === "b");
-    for (const c of contornos) c.visible = hd === "b" || hd === "c";
+    for (const c of contornos) c.visible = hd === "b" || hd === "c" || (pixelHD && !!maqueta.contornoPixel);
     cielo.visible = sol.visible = !hdMat;
     luzHD?.encender(!!hdMat, hdMat ?? "a");
     detallesHD?.ver(!!hd || pixelHD, !pixelHD);

@@ -598,6 +598,7 @@ const maqueta: Maqueta = {
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
   hd: true,
+  contornoPixel: true,
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),

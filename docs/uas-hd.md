@@ -678,7 +678,9 @@ al pixel HD incluye regenerarlas.
     `objectNormal`, que `MeshBasicMaterial` solo declara con mapa de entorno
     o esqueleto; no compilaba y desde el 30-sep el contorno no se pintaba.
     Ahora con el atributo `normal`. Al usuario le gusta, más fino: grosor
-    `radio * 0.0011` (era 0.0022).
+    `radio * 0.0011` (era 0.0022). En el pixel HD también, con
+    `contornoPixel: true` en la maqueta (MQ-9 y TB2); en la tarjeta y la
+    planta no se ve (menos de un píxel).
 - **Siguiente paso**: el dron que pida el usuario; rendimiento en Zen del
   TB2.
 - **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no
