@@ -6,7 +6,7 @@ import {
   Float32BufferAttribute, LatheGeometry, Quaternion, Shape, SphereGeometry,
   Vector2, Vector3,
 } from "three";
-import type { Pieza, Seccion } from "../data/uas/tipos";
+import type { Pieza, Seccion, Toma } from "../data/uas/tipos";
 
 export type Vista = "3d" | "arriba" | "abajo" | "lado" | "frente" | "detras";
 
@@ -116,12 +116,117 @@ function monotona(zs: number[], vs: number[]) {
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
+// Una curva abierta, suavizada: se reparte por su largo, se le pega delante y
+// detrás su reflejo en el extremo (así los extremos no se mueven y la
+// dirección con la que salen se conserva) y se pasa una campana de ancho
+// `sigma` (en largo de curva). Sale con el mismo número de puntos, repartidos
+// por igual a lo largo.
+// Con `crece`, la campana va creciendo desde los extremos (ancho = crece ×
+// distancia al extremo, hasta `sigma`): una nariz pequeña junto al borde se
+// conserva y su unión con el resto queda lisa.
+function suavizarCurva(pts: [number, number][], sigma: number, crece = 0): [number, number][] {
+  const n = pts.length;
+  const L = [0];
+  for (let i = 1; i < n; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const total = L[n - 1];
+  if (total < 1e-9) return pts;
+  const enLargo = (d: number): [number, number] => {
+    let i = 1;
+    while (i < n - 1 && L[i] < d) i++;
+    const t = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1);
+    return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t];
+  };
+  const M = 240, paso = total / M;
+  const s = Math.min(sigma, 0.12 * total);
+  const base = Array.from({ length: M + 1 }, (_, k) => enLargo(k * paso));
+  // Con el reflejo en cada extremo (punto = 2·extremo − punto).
+  const ext = (k: number): [number, number] => {
+    if (k < 0) { const q = base[Math.min(M, -k)]; return [2 * base[0][0] - q[0], 2 * base[0][1] - q[1]]; }
+    if (k > M) { const q = base[Math.max(0, 2 * M - k)]; return [2 * base[M][0] - q[0], 2 * base[M][1] - q[1]]; }
+    return base[k];
+  };
+  const lisa = base.map((_, k) => {
+    const sk = crece > 0 ? Math.min(s, crece * Math.min(k, M - k) * paso) : s;
+    if (sk < 1e-9) return base[k];
+    const R = Math.ceil((3 * sk) / paso);
+    let x = 0, y = 0, suma = 0;
+    for (let j = -R; j <= R; j++) { const w = Math.exp(-0.5 * ((j * paso) / sk) ** 2), q = ext(k + j); x += q[0] * w; y += q[1] * w; suma += w; }
+    return [x / suma, y / suma] as [number, number];
+  });
+  // De vuelta a n puntos, por igual a lo largo de la curva lisa (con
+  // `crece`, cuatro veces más juntos junto a los extremos: la nariz, con
+  // pocos puntos, salía poligonal).
+  const L2 = [0];
+  for (let i = 1; i <= M; i++) {
+    const d = Math.min(i, M - i) * paso, peso = crece > 0 ? 1 + 3 * Math.exp(-d / (s || 1)) : 1;
+    L2.push(L2[i - 1] + Math.hypot(lisa[i][0] - lisa[i - 1][0], lisa[i][1] - lisa[i - 1][1]) * peso);
+  }
+  let i = 1;
+  return Array.from({ length: n }, (_, k) => {
+    const d = (k / (n - 1)) * L2[M];
+    while (i < M && L2[i] < d) i++;
+    const t = (d - L2[i - 1]) / ((L2[i] - L2[i - 1]) || 1);
+    return [lisa[i - 1][0] + (lisa[i][0] - lisa[i - 1][0]) * t, lisa[i - 1][1] + (lisa[i][1] - lisa[i - 1][1]) * t] as [number, number];
+  });
+}
+
+// Una sección cerrada (la mitad de arriba, de +x a −x, y la de abajo, de −x
+// a +x), suavizada entera como una sola curva: sin arista entre las dos
+// mitades. Devuelve las dos mitades con sus números de puntos, repartidos
+// por igual a lo largo.
+function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], sigma: number): [[number, number][], [number, number][]] {
+  const lazo = [...arriba, ...abajo.slice(1, -1)];
+  const n = lazo.length;
+  const L = [0];
+  for (let i = 1; i <= n; i++) { const a = lazo[i - 1], b = lazo[i % n]; L.push(L[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1])); }
+  const total = L[n];
+  let largoArriba = 0;
+  for (let i = 1; i < arriba.length; i++) largoArriba += Math.hypot(arriba[i][0] - arriba[i - 1][0], arriba[i][1] - arriba[i - 1][1]);
+  if (total < 1e-9) return [arriba, abajo];
+  const enLargo = (d: number): [number, number] => {
+    d = ((d % total) + total) % total;
+    let i = 1;
+    while (i < n && L[i] < d) i++;
+    const t = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1), a = lazo[i - 1], b = lazo[i % n];
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  };
+  const M = 480, paso = total / M, s = Math.min(sigma, 0.06 * total);
+  const base = Array.from({ length: M }, (_, k) => enLargo(k * paso));
+  const R = Math.ceil((3 * s) / paso), pesos = Array.from({ length: 2 * R + 1 }, (_, j) => Math.exp(-0.5 * (((j - R) * paso) / (s || 1)) ** 2));
+  const suma = pesos.reduce((a, b) => a + b, 0);
+  const lisa = base.map((_, k) => {
+    if (s < 1e-9) return base[k];
+    let x = 0, y = 0;
+    for (let j = -R; j <= R; j++) { const q = base[(((k + j) % M) + M) % M]; x += q[0] * pesos[j + R]; y += q[1] * pesos[j + R]; }
+    return [x / suma, y / suma] as [number, number];
+  });
+  const m1 = Math.round((M * largoArriba) / total);
+  const repartir = (pts: [number, number][], cuantos: number): [number, number][] => {
+    const Lp = [0];
+    for (let i = 1; i < pts.length; i++) Lp.push(Lp[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    let i = 1;
+    return Array.from({ length: cuantos }, (_, k) => {
+      const d = (k / (cuantos - 1)) * Lp[Lp.length - 1];
+      while (i < pts.length - 1 && Lp[i] < d) i++;
+      const t = (d - Lp[i - 1]) / ((Lp[i] - Lp[i - 1]) || 1);
+      return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t] as [number, number];
+    });
+  };
+  const arr = Array.from({ length: m1 + 1 }, (_, k) => lisa[k]);
+  const ab = Array.from({ length: M - m1 + 1 }, (_, k) => lisa[(m1 + k) % M]);
+  return [repartir(arr, arriba.length), repartir(ab, abajo.length)];
+}
+
+function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0): BufferGeometry {
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
-  // curva cerrada.
+  // curva cerrada. Con tomas, más todavía (y apretados en las tomas).
   const conLomo = ss.some((q) => q.lomo !== undefined);
-  const PASOS = 12, MEDIO = conLomo ? 44 : 28;  // anillos entre secciones; puntos por mitad
+  // Con `alisado`, más puntos por mitad (la sección lisa va repartida por
+  // igual a lo largo y con pocos puntos salía poligonal) y los anillos por
+  // distancia, uno cada 1/260 del largo (con 12 entre cada dos secciones se
+  // amontonaban donde hay muchas, en la raíz del ala).
+  const PASOS = 12, MEDIO = alisado > 0 ? 96 : conLomo ? 44 : 28;  // anillos entre secciones; puntos por mitad
   const zs = ss.map((q) => q.z);
   const f = (v: (q: Seccion) => number) => monotona(zs, ss.map(v));
   const ancho = f((q) => q.ancho), arriba = f((q) => q.arriba), abajo = f((q) => q.abajo);
@@ -143,10 +248,116 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
   const bordeArriba = f((q) => q.bordeArriba ?? q.cintura ?? (q.arriba + q.abajo) / 2);
   const bordeAbajo = f((q) => q.bordeAbajo ?? q.cintura ?? (q.arriba + q.abajo) / 2);
   const redondeo = f((q) => q.redondeo ?? 0);
+  const nariz = f((q) => q.nariz ?? 0);
+  const CAP = 7;
   const anillosZ: number[] = [];
-  for (let i = 0; i < zs.length - 1; i++)
-    for (let j = 0; j < PASOS; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / PASOS);
+  const pasoZ = (zs[zs.length - 1] - zs[0]) / 260;
+  for (let i = 0; i < zs.length - 1; i++) {
+    const pasos = alisado > 0 ? Math.max(1, Math.ceil((zs[i + 1] - zs[i]) / pasoZ)) : PASOS;
+    for (let j = 0; j < pasos; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / pasos);
+  }
   anillosZ.push(zs[zs.length - 1]);
+
+  // Tomas de aire sumergidas (ver `Toma`): cada una, en ángulo alrededor de
+  // la cintura, para hundir la sección hacia su centro. Un anillo justo en
+  // la boca y otros detrás: entre ellos, la pared de la boca y el final de
+  // la ceja.
+  const huecos = tomas.map((t) => {
+    const c = cintura(t.boca), r0 = Math.hypot(t.x, t.y - c);
+    return { ...t, ang: Math.atan2(t.y - c, t.x), dAng: t.ancho / r0, pared: 0.15 * t.hondo, finCeja: 0.35 * t.hondo };
+  });
+  // (Los anillos de siempre ya van cada centímetro o así; los de la boca
+  // apartan a los que les quedan pegados: con anillos casi juntos, los
+  // triángulos salen planos y la luz, a rayas.)
+  const fijos = huecos.flatMap((t) => [t.boca, t.boca - t.pared, t.boca - 2 * t.pared, t.boca - t.finCeja]);
+  const cerca = (z: number) => fijos.some((f) => Math.abs(z - f) < 0.5 * Math.min(...huecos.map((t) => t.pared)));
+  for (let i = anillosZ.length - 1; i >= 0; i--) if (cerca(anillosZ[i])) anillosZ.splice(i, 1);
+  anillosZ.push(...fijos);
+  anillosZ.sort((a, b) => a - b);
+  const anguloDe = (x: number, y: number, c: number) => Math.atan2(y - c, Math.abs(x));
+  // Más puntos en las tomas. La parte baja de la media sección (el empalme
+  // y el costado, hasta el punto K0) se queda como está: ahí están las
+  // esquinas que dan la luz. De ahí hasta lo alto, los puntos van en ángulos
+  // fijos desde la cintura (los mismos en todos los anillos: si un punto se
+  // cruza con otro de un anillo al siguiente, la luz sale a rayas), más
+  // juntos en las tomas, sobre la curva suave del radio según el ángulo.
+  const K0 = 12 + CAP, EXTRA = 16;
+  const porAngulo = (pts: [number, number][], c: number): [number, number][] => {
+    const K = (pts.length - 1) / 2, media = pts.slice(0, K + 1);
+    // Solo los puntos con el ángulo creciente (en el morro, donde la sección
+    // es casi un punto, alguno se repite).
+    const arriba = media.slice(K0).filter(([x, y], i, l) => i === 0 || Math.atan2(y - c, x) > Math.atan2(l[i - 1][1] - c, l[i - 1][0]) + 1e-9);
+    const angs = arriba.map(([x, y]) => Math.atan2(y - c, x)), radios = arriba.map(([x, y]) => Math.hypot(x, y - c));
+    const n = K - K0 + EXTRA;
+    const espejo = (mitad: [number, number][]) => [...mitad, ...mitad.slice(0, -1).reverse().map(([x, y]): [number, number] => [-x, y])];
+    // Una sección que es casi un punto: el último, repetido.
+    if (angs.length < 2) return espejo([...media.slice(0, K0 + 1), ...Array.from({ length: n }, () => media[K])]);
+    const radio = monotona(angs, radios);
+    const a0 = angs[0], a1 = Math.PI / 2;
+    // Reparto con una campana de densidad en cada toma (integrada a pasos).
+    const peso = (a: number) => 1 + huecos.reduce((s, t) => s + 7 * Math.exp(-(((a - t.ang) / (1.5 * t.dAng)) ** 2)), 0);
+    const PASOS_A = 400, acum = [0];
+    for (let i = 1; i <= PASOS_A; i++) acum.push(acum[i - 1] + peso(a0 + ((a1 - a0) * (i - 0.5)) / PASOS_A));
+    const nuevos: [number, number][] = [];
+    for (let k = 1; k <= n; k++) {
+      const objetivo = (k / n) * acum[PASOS_A];
+      let i = 1;
+      while (i < PASOS_A && acum[i] < objetivo) i++;
+      const a = a0 + ((a1 - a0) * (i - 1 + (objetivo - acum[i - 1]) / (acum[i] - acum[i - 1]))) / PASOS_A;
+      const r = radio(a);
+      nuevos.push(k === n ? [0, c + r] : [r * Math.cos(a), c + r * Math.sin(a)]);
+    }
+    return espejo([...media.slice(0, K0 + 1), ...nuevos]);
+  };
+  // Los mismos puntos repartidos a lo largo de la curva, más juntos donde
+  // `peso` es mayor.
+  // Los `fijo` primeros y últimos no se mueven (el tramo que cierra el
+  // borde por dentro del ala: si no, se cortaba la esquina con el ala).
+  const aLoLargo = (todos: [number, number][], fijo: number, peso: (x: number, y: number) => number): [number, number][] => {
+    if (fijo > 0) return [...todos.slice(0, fijo), ...aLoLargo(todos.slice(fijo, todos.length - fijo), 0, peso), ...todos.slice(todos.length - fijo)];
+    const pts = todos;
+    const L = [0];
+    for (let i = 1; i < pts.length; i++) {
+      const [a, b] = [pts[i - 1], pts[i]];
+      L.push(L[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1]) * peso((a[0] + b[0]) / 2, (a[1] + b[1]) / 2));
+    }
+    const total = L[L.length - 1] || 1;
+    let i = 1;
+    return pts.map((_, k) => {
+      const d = (k / (pts.length - 1)) * total;
+      while (i < pts.length - 1 && L[i] < d) i++;
+      const t = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1);
+      return [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t];
+    });
+  };
+  // Hunde la sección en cada toma (hacia el centro, a lo largo del radio
+  // desde la cintura) y saca un poco sus bordes.
+  const suave = (a: number, b: number, v: number) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const hundir = (pts: [number, number][], z: number, c: number): [number, number][] => pts.map(([x, y]) => {
+    const ang = anguloDe(x, y, c);
+    let r = Math.hypot(x, y - c);
+    for (const t of huecos) {
+      if (z > t.punta) continue;
+      const kPared = z >= t.boca ? 1 : 1 - suave(0, t.pared, t.boca - z);
+      const kCeja = z >= t.boca ? 1 : 1 - suave(0, t.finCeja, t.boca - z);
+      // El hueco: en planta, un cuarto de elipse (ancho entero en la boca, a
+      // cero en el frente), con las paredes casi rectas y el frente en cuesta.
+      const q = Math.min(1, Math.max(0, (z - t.boca) / t.largo));
+      const fw = Math.sqrt(1 - q * q);
+      const dHueco = fw > 0 ? Math.abs(ang - t.ang) / (t.dAng * fw) : 9;
+      const hueco = (1 - q ** 1.5) * (1 - suave(0.5, 1, dHueco));
+      // La rampa de delante, poco honda, que se abre hacia la boca.
+      const s = Math.min(1, (t.punta - z) / (t.punta - t.boca));
+      const ancho = t.dAng * (0.12 + 0.88 * s ** 0.6);
+      const dRampa = Math.abs(ang - t.ang) / ancho;
+      const rampa = 0.3 * s ** 1.5 * (1 - suave(0.55, 1, dRampa));
+      // Los bordes, un poco salidos, a lo largo de la rampa y del hueco.
+      const borde = Math.abs(ang - t.ang) / Math.max(ancho, t.dAng * fw);
+      const ceja = t.ceja * suave(0, 0.8, s) * kCeja * Math.exp(-(((borde - 1.05) / 0.18) ** 2));
+      r += -t.hondo * kPared * Math.max(hueco, rampa) + ceja;
+    }
+    return [Math.sign(x) * r * Math.cos(ang), c + r * Math.sin(ang)];
+  });
 
   // Mitad de abajo en trapecio: de (-w, c) a (-p, b), (p, b) y (w, c), con
   // las esquinas de abajo redondeadas, repartida por su largo.
@@ -176,6 +387,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
   // Dos tiras: la de arriba (de +x a −x por el lomo) y la de abajo (de −x a
   // +x por la panza), cada una con MEDIO + 1 puntos por anillo.
   const tiras: number[][] = [[], []];
+  const aplazados: { z: number; c: number; fijo: number; arriba: [number, number][]; abajo: [number, number][] }[] = [];
   for (const z of anillosZ) {
     const w = Math.max(0, ancho(z)), c = cintura(z);
     const cima = Math.max(c, arriba(z)), bot = Math.min(c, abajo(z));
@@ -190,15 +402,31 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
       const K = MEDIO / 2, KF = 9, KS = K - KF;
       // El empalme sale del borde del ensanche (a la altura yBorde) en
       // horizontal, como sigue el ala, y se curva hasta el costado.
-      const r = Math.min(1, Math.max(0, redondeo(z)));
-      const media = (yLado: number, yCentro: number, n: number, ws: number, yBorde: number): [number, number][] => {
+      const r = Math.min(1.4, Math.max(0, redondeo(z)));
+      // Con nariz, el borde del ensanche es media elipse de ese largo hacia
+      // dentro (entre bordeArriba y bordeAbajo) y los empalmes salen de sus
+      // extremos; sin ella, los CAP puntos de la nariz caen en el borde.
+      const a = Math.min(Math.max(0, nariz(z)), 0.9 * Math.max(0, w - Math.max(ws0, wsA)));
+      const wE = w - a;
+      const media = (yLado: number, yCentro: number, n: number, ws: number, yBorde: number, yMedio: number): [number, number][] => {
         const pts: [number, number][] = [];
+        for (let k = 0; k < CAP; k++) {
+          const t = (k / CAP) * (Math.PI / 2);
+          pts.push([wE + a * Math.cos(t), yMedio + (yBorde - yMedio) * Math.sin(t)]);
+        }
         // Con redondeo, el empalme sale del borde inclinado (no en horizontal)
         // y sigue llegando en vertical al costado: sin pliegue con el cuerpo.
-        const cx = ws, cy = yBorde + r * (yLado - yBorde);
+        // Es la cuadrática con el control en (ws, cy) escrita como cúbica, con
+        // el último tramo vertical al menos del 45 % del alto: con mucho
+        // redondeo el control quedaba casi arriba, la curva iba recta y
+        // giraba en un codo junto al costado (delante del ala del TB2 se veía
+        // como un bulto).
+        const cy = yBorde + r * (yLado - yBorde);
+        const p1 = [wE + (2 / 3) * (ws - wE), yBorde + (2 / 3) * (cy - yBorde)];
+        const p2 = [ws, yLado - Math.max((2 / 3) * (yLado - cy), 0.45 * (yLado - yBorde))];
         for (let k = 0; k < KF; k++) {
-          const t = k / KF;
-          pts.push([(1 - t) ** 2 * w + 2 * (1 - t) * t * cx + t * t * ws, (1 - t) ** 2 * yBorde + 2 * (1 - t) * t * cy + t * t * yLado]);
+          const t = k / KF, u = 1 - t;
+          pts.push([u ** 3 * wE + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t ** 3 * ws, u ** 3 * yBorde + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t ** 3 * yLado]);
         }
         for (let k = 0; k <= KS; k++) {
           const t = (k / KS) * (Math.PI / 2), co = Math.cos(t), si = Math.sin(t);
@@ -208,10 +436,12 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
       };
       const yS = Math.min(top, Math.max(c, sobreArista(z))), yB = Math.max(bot, Math.min(c, bajoArista(z)));
       const yBA = Math.min(yS, Math.max(c, bordeArriba(z))), yBB = Math.max(yB, Math.min(c, bordeAbajo(z)));
-      const arribaD = media(yS, top, na, wsA, yBA), abajoD = media(yB, bot, nb, ws0, yBB);
+      const yMedio = (yBA + yBB) / 2;
+      const arribaD = media(yS, top, na, wsA, yBA, yMedio), abajoD = media(yB, bot, nb, ws0, yBB, yMedio);
       const arribaPts = [...arribaD, ...arribaD.slice(0, -1).reverse().map(([x, y]): [number, number] => [-x, y])];
       const abajoPts2 = [...abajoD.map(([x, y]): [number, number] => [-x, y]), ...abajoD.slice(0, -1).reverse()];
       // Lomo, como arriba.
+      const anillo: [number, number][] = [];
       for (const [x0, y0] of arribaPts) {
         let x = x0, y = y0;
         if (wl > 0) {
@@ -222,9 +452,42 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
           const r = (r1 ** 8 + r2 ** 8) ** (1 / 8);
           if (r1 > 1e-9) { x *= r / r1; y = c + ((y - c) * r) / r1; }
         }
-        tiras[0].push(x, y, z);
+        anillo.push([x, y]);
       }
-      for (const [x, y] of abajoPts2) tiras[1].push(x, y, z);
+      // Con `suave`, cada mitad es una sola curva lisa del borde de un lado
+      // al del otro: sin las esquinas y los dobleces donde se juntan el
+      // empalme, el costado, el hombro y el lomo (cada una salía como una
+      // línea en la luz).
+      // Donde el ensanche es la raíz del ala, el borde no se mueve (el ala
+      // nace ahí con su perfil) y el tramo que lo cierra por dentro del ala
+      // tampoco (si no, la superficie bajaba junto al ala y salía un surco). Donde el ensanche apenas sale del costado (delante
+      // del ala), la sección se suaviza entera: con el borde fijo, la arista
+      // quedaba en V. Entre medias, poco a poco.
+      let arribaLisa = anillo, abajoLisa = abajoPts2;
+      // Sin nariz, el tramo que cierra el borde por dentro del ala no se
+      // suaviza. Con nariz, entra en el suavizado, pero con la campana
+      // creciendo desde el borde: la nariz es más pequeña que la campana y,
+      // suavizada entera, salía en V de cuchillo; fuera del suavizado, hacía
+      // esquina con el resto.
+      const fijo = a > 1e-6 ? 0 : CAP;
+      if (alisado > 0) {
+        const abierta = (pts: [number, number][]) => [...pts.slice(0, fijo), ...suavizarCurva(pts.slice(fijo, pts.length - fijo), alisado, 0.35), ...pts.slice(pts.length - fijo)];
+        const [ar1, ab1] = [abierta(anillo), abierta(abajoPts2)];
+        const k = 1 - suave(0.4 * alisado, 1.8 * alisado, w - Math.max(ws0, wsA));
+        if (k > 1e-3) {
+          const [ar2, ab2] = suavizarCerrada(anillo, abajoPts2, alisado);
+          const mezcla = (p: [number, number][], q: [number, number][]) => p.map(([x, y], i): [number, number] => [x + (q[i][0] - x) * k, y + (q[i][1] - y) * k]);
+          arribaLisa = mezcla(ar1, ar2); abajoLisa = mezcla(ab1, ab2);
+        } else { arribaLisa = ar1; abajoLisa = ab1; }
+      }
+      // Con la sección lisa, las tomas y los anillos se ponen al final, tras
+      // suavizar también a lo largo del cuerpo (ver abajo).
+      if (alisado > 0) { aplazados.push({ z, c, fijo, arriba: arribaLisa, abajo: abajoLisa }); continue; }
+      // Con tomas, más puntos en ellas, por ángulo (con la sección lisa, a lo
+      // largo de la curva, abajo: por ángulo, la parte plana junto al ala se
+      // quedaba con muy pocos puntos).
+      for (const [x, y] of huecos.length ? hundir(porAngulo(arribaLisa, c), z, c) : arribaLisa) tiras[0].push(x, y, z);
+      for (const [x, y] of abajoLisa) tiras[1].push(x, y, z);
       continue;
     }
     // Arriba, la superelipse tiene su centro «virtual» por debajo de la
@@ -263,34 +526,81 @@ function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
     for (const [x, y] of abajoPts) tiras[1].push(x, y, z);
   }
   const pos: number[] = [], idx: number[] = [];
-  const N = MEDIO + 1;
-  for (const tira of tiras) {
-    const base = pos.length / 3;
-    pos.push(...tira);
+  // Con `alisado`, también a lo largo del cuerpo: cada punto, con los del
+  // mismo número en los anillos vecinos (campana de 0,6·alisado en z). Sin
+  // esto quedaba un escalón de 1 a 3 cm entre dos secciones seguidas en el
+  // borde de ataque, a lo largo de la raíz del ala: se veía una línea, como
+  // si el ala acabase ahí. Junto al borde del ensanche no se toca (el ala
+  // nace ahí con su perfil), ni en las puntas del cuerpo.
+  if (aplazados.length) {
+    const sZ = 0.6 * alisado, z0 = aplazados[0].z, zN = aplazados[aplazados.length - 1].z;
+    const alisarZ = (cual: "arriba" | "abajo") => aplazados.map((r, k) => {
+      const borde = Math.abs(r[cual][0][0]), fin = suave(0, 3 * sZ, Math.min(r.z - z0, zN - r.z));
+      let j0 = k, j1 = k;
+      while (j0 > 0 && r.z - aplazados[j0 - 1].z < 3 * sZ) j0--;
+      while (j1 < aplazados.length - 1 && aplazados[j1 + 1].z - r.z < 3 * sZ) j1++;
+      return r[cual].map(([x, y], i): [number, number] => {
+        const p = fin * suave(0.3 * alisado, 1.5 * alisado, borde - Math.abs(x));
+        if (p < 1e-4) return [x, y];
+        let sx = 0, sy = 0, sw = 0;
+        for (let j = j0; j <= j1; j++) { const w = Math.exp(-0.5 * ((aplazados[j].z - r.z) / sZ) ** 2), q = aplazados[j][cual][i]; sx += q[0] * w; sy += q[1] * w; sw += w; }
+        return [x + (sx / sw - x) * p, y + (sy / sw - y) * p];
+      });
+    });
+    const [arribas, abajos] = [alisarZ("arriba"), alisarZ("abajo")];
+    aplazados.forEach(({ z, c, fijo }, k) => {
+      const arribaLisa = arribas[k], abajoLisa = abajos[k];
+      // Con tomas, más puntos en ellas, a lo largo de la curva con más peso
+      // cerca de la toma (y, como al suavizar, junto a los bordes).
+      const xBorde = Math.abs(arribaLisa[0][0]);
+      const conTomas = huecos.length ? aLoLargo(arribaLisa, fijo, (x, y) => 1 + 3 * Math.exp(-Math.hypot(xBorde - Math.abs(x), y - arribaLisa[0][1]) / alisado) + huecos.reduce((acc, t) => acc + 4 * Math.exp(-(((anguloDe(x, y, c) - t.ang) / (1.6 * t.dAng)) ** 2)), 0)) : arribaLisa;
+      for (const [x, y] of huecos.length ? hundir(conTomas, z, c) : arribaLisa) tiras[0].push(x, y, z);
+      for (const [x, y] of abajoLisa) tiras[1].push(x, y, z);
+    });
+  }
+  // Puntos por anillo de cada tira (la de arriba, con los de las tomas).
+  const Ns = tiras.map((t) => t.length / 3 / anillosZ.length);
+  const bases = [0, tiras[0].length / 3];
+  tiras.forEach((tira, t) => {
+    const base = pos.length / 3, N = Ns[t];
+    for (const v of tira) pos.push(v);
     for (let i = 0; i < anillosZ.length - 1; i++)
-      for (let k = 0; k < MEDIO; k++) {
+      for (let k = 0; k < N - 1; k++) {
         const a = base + i * N + k, b = a + 1, c = a + N, d = b + N;
         idx.push(a, b, c, b, d, c);
       }
-  }
+  });
   // Tapas donde el cuerpo no acaba en punta.
   for (const [i, atras] of [[0, true], [anillosZ.length - 1, false]] as const) {
     if (abierto && !atras) continue;
-    const anillo = [0, 1].flatMap((t) => Array.from({ length: N }, (_, k) => t * anillosZ.length * N + i * N + k));
+    const anillos = [0, 1].map((t) => Array.from({ length: Ns[t] }, (_, k) => bases[t] + i * Ns[t] + k));
+    const anillo = anillos.flat();
     const xs = anillo.map((v) => pos[v * 3]);
     if (Math.max(...xs) - Math.min(...xs) < 1e-6) continue;
     const centro = pos.length / 3;
     pos.push(0, anillo.reduce((s, v) => s + pos[v * 3 + 1], 0) / anillo.length, anillosZ[i]);
-    for (let t = 0; t < 2; t++)
-      for (let k = 0; k < MEDIO; k++) {
-        const a = anillo[t * N + k], b = anillo[t * N + k + 1];
-        if (atras) idx.push(centro, b, a); else idx.push(centro, a, b);
+    for (const a of anillos)
+      for (let k = 0; k < a.length - 1; k++) {
+        if (atras) idx.push(centro, a[k + 1], a[k]); else idx.push(centro, a[k], a[k + 1]);
       }
   }
   const g = new BufferGeometry();
   g.setAttribute("position", new Float32BufferAttribute(pos, 3));
   g.setIndex(idx);
   g.computeVertexNormals();
+  // Con `suave`, la arista entre la mitad de arriba y la de abajo, sin línea:
+  // donde sus extremos caen en el mismo sitio, las dos llevan la misma normal.
+  if (alisado > 0) {
+    const nor = g.getAttribute("normal");
+    const [n0, n1] = Ns, b1 = bases[1];
+    for (let i = 0; i < anillosZ.length; i++)
+      for (const [a, b] of [[i * n0, b1 + i * n1 + n1 - 1], [i * n0 + n0 - 1, b1 + i * n1]]) {
+        if (Math.hypot(pos[a * 3] - pos[b * 3], pos[a * 3 + 1] - pos[b * 3 + 1]) > 1e-6) continue;
+        const v = [0, 1, 2].map((k) => nor.getComponent(a, k) + nor.getComponent(b, k));
+        const l = Math.hypot(...v) || 1;
+        for (const q of [a, b]) nor.setXYZ(q, v[0] / l, v[1] / l, v[2] / l);
+      }
+  }
   return g;
 }
 
@@ -319,7 +629,7 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
     case "casco":
-      return [geometriaCasco(p.secciones, p.abierto)];
+      return [geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave)];
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();

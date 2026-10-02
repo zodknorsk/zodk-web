@@ -183,6 +183,11 @@ al pixel HD incluye regenerarlas.
 
 ## Dónde estamos
 
+- **2-oct-2026, TB2 retomado y cerrado otra vez**: toma de aire en el centro
+  del lomo, ala en su sitio, cuerpo sin las líneas de las uniones, tarjeta y
+  planta regeneradas, y el zoom de todos los visores (hacia el cursor).
+  Fusionado en `main` (rama `hd-bayraktar-tb2` borrada). Queda: rendimiento
+  en Zen; la joroba de delante del ala, que el usuario ve bien.
 - **El MQ-9 está cerrado** (HD y pixel HD) desde el 1-oct-2026: el pixel HD,
   fusionado en `main` y publicado ese día, y las ramas `uas-hd` y
   `hd-pixel-mq-9`, borradas. Lo que sigue es pasar otros drones (ver los
@@ -556,7 +561,125 @@ al pixel HD incluye regenerarlas.
   - 2-oct-2026, después: la tarjeta de `/uas` del TB2, con el ángulo que
     eligió el usuario con una captura del visor (acimut 61°, elevación 20°;
     `vistaTarjeta` en la maqueta). El visor sigue con el de siempre.
-- **Siguiente paso**: el dron que pida el usuario.
+- **2-oct-2026, tercera vuelta del TB2** (rama `hd-bayraktar-tb2` otra
+  vez, sin commit). El usuario pidió el pendiente («la toma de aire entiende
+  que es un agujero hacia dentro y que sale un poquito; las tomas laterales
+  vamos a dejarlas; dale caña a las alas»). Hecho:
+  - **Toma de aire del lomo**: no era la U del capó. Una sola, en el centro
+    de lo alto del lomo (desde arriba cae en la línea de la toma pequeña
+    del lomo y de la punta del cono): un hueco oval y hondo de unos 25 cm,
+    con la boca (pared de atrás) en z = 0,1, 10 cm por delante de la junta
+    remachada del capó; delante, una rampa poco honda hasta z = 0,64, con
+    los bordes un poco salidos (1,2 cm; más, de frente salían orejas). En
+    el `casco` (`tomas`), con un disco `hueco` en la boca. Las ranuras
+    laterales del capó (la U), como estaban. Errores por el camino, que el
+    usuario corrigió: primero hice **dos tomas**, una a cada lado (desde un
+    lado solo se ve iluminada la pared de enfrente y parecía una cuña a un
+    lado), y oscurecí el fondo con un tono por vértice copiado de la foto
+    («te has basado en la sombra de una foto»: la luz la pone el visor; se
+    quitó). Descartados también: en el costado mirando afuera (desde tr05
+    salía un tajo) y una rampa larga sin hueco.
+  - **El pliegue de delante del ala**, medido con cortes del cuerpo y un
+    mapa de alturas: (1) el `redondeo` saltaba de 0,75 a 0 en 1 cm en el
+    borde de ataque; (2) en ese anillo el perfil del ala tiene grueso cero y
+    el empalme entero bajaba a ras del borde: un surco de 3 cm cruzando hasta
+    el cuerpo; (3) delante del ala el ensanche acababa en un filo de grueso
+    cero (en la foto de Baykar en tierra es un labio redondo). Arreglo:
+    redondeo que cambia poco a poco y que, junto al borde de ataque, sale de
+    la altura a la que debe quedar el empalme (`ALTURA_EMPALME`, 0,15 detrás
+    y bajando hacia delante); `nariz` y `LABIO` (de 3 a 9 cm, afinándose
+    hacia el morro); empalme en cúbica sin codo; el empalme de arriba llega
+    cada vez menos hacia dentro hacia el morro (`costadoArriba` de 0,27 a
+    0,46). Queda un escalón de ~1 cm en 2 cm justo en el borde de ataque.
+  - **Sigue**: la joroba del costado de delante del ala (z 0,9–1,3, x
+    0,28–0,4): es la mejilla del cuerpo, más estrecha que el labio, sobre la
+    repisa plana de delante del ala; en las fotos el costado baja más liso.
+  - Visto y sin tocar: motas negras en la junta remachada del capó (ya
+    estaban en `main`).
+  - Herramientas: `comparar-foto` con `--zoom` y `--sin`; el enganche del
+    visor da también `raiz`.
+  - **El ala, mal colocada** (2-oct-2026, con la foto del J-10 desde arriba
+    que señaló el usuario): el ajuste de cámara de las dos fotos del J-10
+    dejaba 13–17 px de error; con las puntas en z ≈ 0,28 en vez de 0,15
+    baja a la mitad (13,5 → 5,3 px desde arriba; 17,1 → 11,9 de lado).
+    Medido punto a punto en las dos: borde de ataque 10–23 cm más adelante
+    que la maqueta (0,93 / 0,81 / 0,70 / 0,60 en x 2 / 3,4 / 4,7 / punta,
+    desde arriba; 0,83 / 0,70 / 0,60 / 0,55 de lado), borde de salida 15–22
+    cm más adelante (0,10 / 0,07 / 0,05 desde arriba; 0,05 / 0,00 / −0,05
+    de lado); cuerda de la punta 0,55 (maqueta 0,63), junto al cuerpo igual
+    (0,82); alerón, ~25 % de la cuerda. El plano de cinco vistas, de donde
+    salió, coloca mal el ala. Y la unión con el cuerpo: en la foto el borde
+    de ataque se curva liso hacia delante hasta el costado, y el de salida
+    también se abre en curva; en la maqueta el borde de ataque recto choca
+    con la curva del ensanche en x = 1,3 (esquina).
+  - **Ala movida** (2-oct-2026): bordes de ataque y de salida, la media de
+    las dos fotos del J-10 (`bordeAtaque` 0,913 − 0,078·(x − 1,5),
+    `bordeSalida` 0,082 − 0,0168·(x − 1,5)); puntas en z = 0,29 en los
+    ajustes de cámara. Error del ajuste: J-10 desde arriba 13,5 → 5,3 px,
+    de lado 17,1 → 11,9; 032 21,4 → 19,8; tr04 17,0 → 16,3; tr05 9,3 → 11,5
+    y 030 4,0 → 5,3 (en esas dos manda el gran angular en morro y cola). El
+    ensanche y sus empalmes, medidos con el ala del plano, se llevan a su
+    sitio con `alSitio` (estirados en la raíz y cada vez menos hacia el morro
+    y el capó). Alerón al 24 % de la cuerda (foto de lado; antes 13 cm
+    fijos), carenados en la bisagra. Las MAM-L, con la punta donde estaba
+    medida (z ≈ 1,05: 14 cm por delante del borde de ataque); los soportes
+    van con el ala y ahora quedan centrados en la bomba. La toma pequeña del
+    lomo, 1,2 cm más hundida (lo pidió el usuario). El redondeo del empalme
+    se queda solo en la nariz del perfil (detrás, el empalme sale en
+    horizontal, tangente al ala).
+  - **Las líneas del cuerpo** (las marcó el usuario el 2-oct-2026 con tres
+    capturas: «es como si el cuerpo no tuviese la misma forma»). En los
+    cortes del cuerpo: (1) el pie del lomo hace esquina con el empalme de
+    arriba (x ≈ 0,28; en z = 0,5 casi en ángulo recto): la línea larga a
+    los dos lados del lomo, del capó al morro; (2) en z ≈ 1,1–1,5, la unión
+    del labio, el empalme y el costado hace una S con dos dobleces: la línea
+    del costado que se ve de lado y de 3/4; (3) del morro a z ≈ 1,8, el
+    labio (`nariz`) deja un cordón en la arista; (4) el lomo, unido al
+    cuerpo con una norma p, sale como cresta y las secciones, poligonales.
+    La sección de arriba es un montaje de piezas (empalme, costado, hombro,
+    lomo, labio) y cada unión concentra la curvatura en una línea.
+  - **Las líneas, quitadas** (2-oct-2026, sin commit): el `casco` admite
+    `suave` (el TB2, 7 cm): cada mitad de la sección se suaviza como una
+    sola curva (campana a lo largo de la curva, que crece desde el borde
+    para no aplanar la nariz redonda; el borde y su dirección no se mueven,
+    ni el tramo que cierra el borde por dentro del ala) y, donde el ensanche
+    apenas sale del costado (delante del ala), la sección entera, arriba y
+    abajo juntas (con el borde fijo la arista quedaba en V); la arista entre
+    las dos mitades, con la normal común. Anillos por distancia (1/260 del
+    largo) y 96 puntos por mitad: el fuselaje baja de 163 000 a 124 000
+    triángulos. El labio, de 3 a 4 cm (tenía 9) y apagado antes de z = 1,7
+    (dejaba un cordón en la arista).
+  - **Queda la joroba** del costado de delante del ala: la planta del
+    ensanche (del plano) salta de 0,56 a 0,69 m entre z = 1,45 y 1,3 y la
+    sección pasa de abombada a cóncava en 15 cm; en la foto de Teknofest
+    (tr05) el costado baja liso. Hay que medir esa planta en fotos.
+  - **La línea del borde de ataque** (la marcó el usuario: «como si el ala
+    ahí ya terminase»): escalón de 1–3 cm entre dos secciones seguidas a lo
+    largo de la raíz. Arreglo (sin commit): con `suave`, las secciones
+    también se suavizan a lo largo del cuerpo (campana de 4 cm en z), salvo
+    junto al borde del ensanche y en las puntas; las tomas se tallan
+    después.
+  - **La joroba, dos intentos descartados**: alargar el paso entre la
+    sección entera y la de borde fijo (no cambia nada) y suavizar a lo largo
+    del cuerpo con una campana de 13 cm (salen ondas: mezcla puntos que no
+    se corresponden). La causa está en los datos de delante del ala, no en
+    el suavizado: entre z = 1,6 y 1,3 la cara de arriba del costado baja
+    empinada y el empalme de arriba sube de golpe (`sobreArista` de −0,05 a
+    0,06 en 20 cm) mientras la planta se abre de 0,56 a 0,70.
+  - El usuario lo ve bien (2-oct-2026): la joroba se deja como está.
+  - **Zoom de los visores** (lo pidió el usuario): la rueda y el pellizco
+    acercan hacia lo que hay bajo el cursor (`zoomToCursor`), hasta 1/16
+    del encuadre; alejar, hasta 1,2 veces (antes, de 0,45 a 2,2 y siempre
+    hacia el centro: se alejaba hasta perder el dron y casi no se
+    acercaba). Al alejarse, el punto de mira vuelve al centro; las vistas
+    fijas lo devuelven también. Botones y teclas, alrededor del punto de
+    mira. Visto de paso y sin tocar: en consola sale un error de shader del
+    contorno (`objectNormal`, MeshBasicMaterial) que ya estaba antes.
+- **Siguiente paso**: el dron que pida el usuario; rendimiento en Zen del
+  TB2.
+- **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no
+  en mitad del cuerpo): en todos los visores, el zoom aleja sin límite pero
+  acerca poco; retocarlo en general.
 
 ## Decisiones del usuario (30-sep-2026)
 
