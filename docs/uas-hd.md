@@ -554,7 +554,12 @@ al pixel HD incluye regenerarlas.
   - Visto y sin tocar: en las fotos en vuelo el tren principal no se ve;
     podría recogerse.
   - 2-oct-2026, después: el usuario eligió con una captura la vista 3D del
-    visor del TB2 (acimut 61°, elevación 20°; `vista3d` en la maqueta).
+    visor del TB2 (acimut 61°, elevación 20°; `vista3d` en la maqueta,
+    commit `e0c6d5f`). **Pendiente**: se equivocó; el visor tiene que volver
+    al ángulo de siempre (quitar `vista3d` del TB2) y ese ángulo era para la
+    tarjeta del hangar (`/uas`): regenerar la `tarjeta.png` del TB2 con
+    `node arte/generar-uas-miniaturas-hd.mjs bayraktar-tb2 --vista=61,20`
+    (hoy, 79°, 11° para todas) y ver cómo encaja en la tarjeta.
 - **Siguiente paso**: el dron que pida el usuario.
 
 ## Decisiones del usuario (30-sep-2026)
