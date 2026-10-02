@@ -157,7 +157,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Calcas y costuras del HD (docs/uas-hd.md).
   const detallesHD = luzHD && maqueta.detalles ? montarDetalles(escena, raiz, mallas, maqueta.detalles, radio) : null;
   // Siluetas en tinta de los estilos b y c: una copia de cada malla.
-  const tintaContorno = luzHD ? materialContorno(radio * 0.0022) : null;
+  const tintaContorno = luzHD ? materialContorno(radio * 0.0011) : null;
   const contornos: Mesh[] = [];
   if (tintaContorno) for (const malla of mallas) {
     const c = new Mesh(malla.geometry, tintaContorno);

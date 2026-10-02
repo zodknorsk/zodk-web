@@ -673,8 +673,12 @@ al pixel HD incluye regenerarlas.
     hacia el centro: se alejaba hasta perder el dron y casi no se
     acercaba). Al alejarse, el punto de mira vuelve al centro; las vistas
     fijas lo devuelven también. Botones y teclas, alrededor del punto de
-    mira. Visto de paso y sin tocar: en consola sale un error de shader del
-    contorno (`objectNormal`, MeshBasicMaterial) que ya estaba antes.
+    mira.
+  - **Contorno del estilo C, arreglado** (2-oct-2026): el shader usaba
+    `objectNormal`, que `MeshBasicMaterial` solo declara con mapa de entorno
+    o esqueleto; no compilaba y desde el 30-sep el contorno no se pintaba.
+    Ahora con el atributo `normal`. Al usuario le gusta, más fino: grosor
+    `radio * 0.0011` (era 0.0022).
 - **Siguiente paso**: el dron que pida el usuario; rendimiento en Zen del
   TB2.
 - **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no

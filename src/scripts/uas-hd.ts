@@ -183,7 +183,7 @@ export function materialContorno(grosor: number) {
     sh.uniforms.grosor = { value: grosor };
     sh.vertexShader = "uniform float grosor;\n" + sh.vertexShader.replace(
       "#include <begin_vertex>",
-      "#include <begin_vertex>\ntransformed += normalize(objectNormal) * grosor;",
+      "#include <begin_vertex>\ntransformed += normalize(normal) * grosor;",
     );
   };
   return m;
