@@ -12,6 +12,8 @@
 //   --js=CÓDIGO         ejecuta ese JavaScript en la página antes de capturar
 //   --tam=ANCHOxALTO    tamaño de la ventana (1300x900 por defecto)
 //   --escala=2          píxeles por punto (2 = pantalla retina; 1 por defecto)
+//   --espera=MS         lo que espera tras cargar (3500 por defecto; la
+//                       entrada de la portada tarda más en sacar la nave)
 // Ejemplo: la tira del hangar con la puerta abierta, de noche:
 //   node arte/capturas.mjs http://localhost:4321/ hangar.png --ir=.tira-sat --raton=.sat-hangar --noche
 import { spawn } from "node:child_process";
@@ -55,7 +57,7 @@ if (op.noche) {
   await evaluar("sessionStorage.setItem('theme','dark')");
 }
 await orden("Page.navigate", { url });
-await espera(3500);
+await espera(Number(op.espera ?? 3500));
 if (op.js) await evaluar(op.js);
 if (op.ir) await evaluar(`document.querySelector(${JSON.stringify(op.ir)})?.scrollIntoView({ block: "center" })`);
 await espera(1500);

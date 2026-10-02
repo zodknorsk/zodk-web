@@ -209,7 +209,7 @@ const dos = (n: number) => String(n).padStart(2, "0");
       data-craft={objetoInicial.id}
       data-slot="0"
       aria-hidden="true"
-      style={`aspect-ratio:${objetoInicial.ratio};--sprite:url(${objetoInicial.sprite});--sprite-noche:url(${objetoInicial.spriteNoche});--escala:${objetoInicial.escala ?? 1}`}
+      style={`aspect-ratio:${objetoInicial.ratio};--sprite:url(${objetoInicial.sprite});--sprite-noche:url(${objetoInicial.spriteNoche});--escala:${objetoInicial.escala ?? 1}${objetoInicial.ancho ? `;width:${objetoInicial.ancho}px` : ""}`}
     >
       {(["der", "izq"] as const).map((k) => {
         const p = objetoInicial.luces?.[k];
