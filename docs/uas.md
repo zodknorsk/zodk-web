@@ -201,11 +201,11 @@ el usuario, de redes sociales, y el vídeo de CENTCOM en «En acción». Falta:
 que el usuario revise la nota del R9X (en `borrador`) y saber de qué ataque
 son dos de sus fotos (el sedán beis y la furgoneta blanca).
 
-**1-oct-2026, Bayraktar TB2 en HD y pixel HD** (rama `hd-bayraktar-tb2`, sin
-commit). Ver `docs/uas-hd.md` («Dónde estamos»): cuerpo, ala, cola y tren
+**1-oct-2026, Bayraktar TB2 en HD y pixel HD** (fusionado en `main` y
+publicado el 2-oct-2026). Ver `docs/uas-hd.md` («Dónde estamos»): cuerpo, ala, cola y tren
 rehechos con el plano y fotos encajadas, marcas del TB2 del Ejército de
 Tierra turco de Teknofest 2021, gris propio y tarjeta y planta en pixel HD.
-Falta que lo revise el usuario.
+Lo pendiente, en `docs/uas-hd.md`.
 
 ## Pedir una ficha nueva: el guion completo
 
@@ -395,6 +395,13 @@ generadores de `arte/` leen estos archivos con Node.
   hasta dónde llega hacia dentro el de arriba (en la raíz, hasta el pie del
   lomo). Sin ensanche (`ancho` un poco mayor que `costado`) queda una arista
   suave. El ala, delgada, empieza dentro del ensanche.
+- **Raíz del ala sin escalón** (el TB2): el ensanche del `casco` acaba con
+  el perfil del ala (`bordeArriba` y `bordeAbajo`, las caras de arriba y de
+  abajo del perfil en esa z) y el `ala` empieza ahí con `raizDentro` (sin
+  tapa). `redondeo` (0 a 1) hace el ensanche redondo en vez de en arista.
+- **Capó con boca** (la toma del TB2): un `casco` con `abierto` (sin tapa
+  delante), algo mayor que el cuerpo de delante, y otro dentro en `hueco`
+  (acabado casi negro y mate) como fondo de la boca.
 - **Palas con forma**: la `helice` admite `ancho` (la cuerda de la pala):
   estrecha en la raíz, más ancha a un tercio y con la punta redondeada. Sin
   él, cada pala es una tabla.

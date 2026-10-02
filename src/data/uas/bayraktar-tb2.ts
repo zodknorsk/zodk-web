@@ -25,6 +25,7 @@ const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 // hasta la panza (vista de frente del plano y foto de frente de Teknofest
 // 2019): ahí el ala es más gruesa, más ancha y está más baja.
 const ALA = { punta: 5.97 };
+const RAIZ_ALA_X = 1.3;
 const bordeAtaque = (x: number) => 0.724 - 0.0571 * (x - 1.5);
 const bordeSalida = (x: number) => -0.118 - 0.0106 * (x - 1.5);
 // El grosor y la altura van como parámetros del perfil: el grueso total es
@@ -38,17 +39,9 @@ const cuerdaAla = (x: number, f: number) => bordeAtaque(x) - f * (bordeAtaque(x)
 type Est = [number, number, number, number, number];
 const estAla = (x: number, bs = bordeSalida(x)): Est => [x, bordeAtaque(x), bs, grosorAla(x), subidaAla(x)];
 // Carenado de la raíz: [x, borde de ataque, borde de salida, t, sube].
-const RAIZ: Est[] = [
-  // El ala, delgada, nace del ensanche del cuerpo (ver «Cuerpo»): el borde
-  // de ataque, por detrás de la punta del ensanche, y el de salida, que se
-  // curva hacia atrás hasta el motor (plano desde arriba).
-  [0.7, 1.2, -0.21, 0.24, 0.0],
-  [0.8, 1.08, -0.185, 0.24, 0.0],
-  [0.9, 0.97, -0.16, 0.24, 0.003],
-  [1.0, 0.88, -0.145, 0.24, 0.006],
-  [1.15, 0.795, -0.13, 0.238, 0.01],
-  [1.3, 0.745, -0.122, 0.236, 0.016],
-];
+// El ala empieza en x = 1,3, dentro del ensanche del cuerpo y con su mismo
+// perfil (ver «Cuerpo»).
+const RAIZ: Est[] = [[RAIZ_ALA_X, 0.745, -0.122, 0.236, 0.016]];
 // Alerones, dos por ala (plano desde arriba y desde abajo): de 3,68 a 4,8 m
 // y de 4,8 a 5,9, con la bisagra a 0,13 m del borde de salida.
 const ALERON = { cuerda: 0.13, hueco: 0.006, tramos: [[3.68, 4.8], [4.8, 5.9]] };
@@ -92,43 +85,97 @@ const pendienteCola = Math.atan2(COLA.yVertice - COLA.yRaiz, COLA.x);
 // del ala, se abre en el ensanche que es la raíz del ala: por arriba, un
 // empalme cóncavo sube del ensanche al hombro del cuerpo; por abajo, otro
 // baja por el costado hasta la panza redonda. Encima, desde detrás de la tapa
-// del morro, el lomo estrecho que sube hasta el capó del motor. (En la
+// del morro, el lomo estrecho (0,52 m de ancho, foto polaca de frente) que
+// sube hasta el capó del motor. (En la
 // primera versión, cuerpo y raíz del ala iban aparte: la raíz parecía un puro
 // posado junto al costado y la arista corría baja, a −0,27 m.)
-// Secciones: [z, medio ancho del cuerpo, arista (y), medio ancho hasta la
-// punta del ensanche, alto del empalme de arriba y del de abajo sobre y bajo
-// la arista, alto del cuerpo, lo alto del lomo, medio ancho del lomo, panza,
-// hasta dónde llega el empalme de arriba]. En la raíz del ala el empalme de
-// arriba sube hasta el pie del lomo: no queda hombro del cuerpo por encima
-// del ala (foto polaca de frente).
-const CUERPO: Seccion[] = ([
+// En la raíz del ala el empalme de arriba sube hasta el pie del lomo: no
+// queda hombro del cuerpo por encima del ala (foto polaca de frente).
+// Medidas del cuerpo a lo largo: [z, medio ancho del cuerpo, arista (y),
+// hasta dónde llega el ensanche, alto del empalme de arriba y de abajo sobre
+// y bajo la arista, alto del cuerpo, lo alto del lomo, medio ancho del lomo,
+// panza, hasta dónde llega hacia dentro el empalme de arriba (0: el costado)].
+type FilaCuerpo = [number, number, number, number, number, number, number, number, number, number, number];
+const FILAS: FilaCuerpo[] = [
   [3.27, 0, -0.225, 0, 0, 0, -0.225, -0.225, 0, -0.225, 0],
   [3.22, 0.15, -0.245, 0.165, 0.01, 0.01, -0.15, -0.15, 0, -0.31, 0],
   [3.15, 0.205, -0.245, 0.22, 0.01, 0.01, -0.085, -0.085, 0, -0.335, 0],
   [3.05, 0.27, -0.24, 0.285, 0.012, 0.012, -0.04, -0.04, 0, -0.355, 0],
-  [2.95, 0.31, -0.235, 0.325, 0.012, 0.012, 0.0, 0.0, 0, -0.365, 0],
+  [2.95, 0.31, -0.235, 0.325, 0.012, 0.012, 0, 0, 0, -0.365, 0],
   [2.75, 0.38, -0.225, 0.395, 0.012, 0.012, 0.03, 0.03, 0, -0.372, 0],
   [2.5, 0.44, -0.21, 0.455, 0.012, 0.012, 0.07, 0.07, 0, -0.375, 0],
   [2.25, 0.48, -0.19, 0.495, 0.012, 0.012, 0.12, 0.125, 0.05, -0.375, 0],
-  [2.0, 0.5, -0.165, 0.515, 0.012, 0.012, 0.15, 0.175, 0.2, -0.375, 0],
+  [2, 0.5, -0.165, 0.515, 0.012, 0.012, 0.15, 0.175, 0.2, -0.375, 0],
   [1.75, 0.505, -0.13, 0.52, 0.012, 0.012, 0.165, 0.215, 0.26, -0.375, 0],
-  [1.5, 0.53, -0.09, 0.545, 0.03, 0.02, 0.17, 0.245, 0.28, -0.375, 0.48],
-  [1.3, 0.55, -0.06, 0.6, 0.08, 0.08, 0.19, 0.268, 0.29, -0.375, 0.42],
-  [1.15, 0.565, -0.04, 0.7, 0.14, 0.13, 0.21, 0.285, 0.3, -0.375, 0.38],
-  [1.0, 0.575, -0.02, 0.86, 0.19, 0.15, 0.225, 0.3, 0.31, -0.374, 0.35],
-  [0.85, 0.58, -0.01, 0.95, 0.2, 0.16, 0.235, 0.31, 0.32, -0.373, 0.34],
-  [0.7, 0.58, 0.0, 0.97, 0.2, 0.17, 0.245, 0.32, 0.325, -0.372, 0.34],
-  [0.3, 0.57, 0.0, 0.97, 0.21, 0.18, 0.26, 0.345, 0.345, -0.365, 0.35],
-  [0.1, 0.52, 0.0, 0.95, 0.21, 0.18, 0.27, 0.38, 0.37, -0.35, 0.36],
-  [-0.12, 0.43, 0.0, 0.8, 0.18, 0.17, 0.25, 0.4, 0.4, -0.29, 0.38],
-  [-0.2, 0.41, 0.02, 0.55, 0.1, 0.1, 0.2, 0.395, 0.395, -0.22, 0.4],
+  // El ensanche delante del ala (planta del plano), hasta la raíz.
+  [1.5, 0.53, -0.09, 0.545, 0.03, 0.02, 0.17, 0.245, 0.26, -0.375, 0.4],
+  [1.35, 0.545, -0.065, 0.58, 0.07, 0.07, 0.185, 0.262, 0.26, -0.375, 0.32],
+  [1.25, 0.555, -0.045, 0.62, 0.11, 0.1, 0.2, 0.274, 0.26, -0.375, 0.29],
+  [1.15, 0.565, -0.03, 0.7, 0.15, 0.13, 0.21, 0.285, 0.26, -0.375, 0.28],
+  [1.07, 0.57, -0.012, 0.79, 0.18, 0.145, 0.22, 0.293, 0.26, -0.375, 0.27],
+  // Bajo la raíz del ala (las del medio salen de RAIZ_CUERPO).
+  [0.85, 0.58, 0, 0.85, 0.2, 0.16, 0.235, 0.31, 0.26, -0.373, 0.27],
+  [0.3, 0.57, 0, 0.85, 0.12, 0.18, 0.26, 0.345, 0.26, -0.365, 0.27],
+  [-0.12, 0.43, 0, 0.85, 0.07, 0.17, 0.25, 0.4, 0.32, -0.29, 0.3],
+  // Detrás del ala, el ensanche se cierra hasta el capó (plano).
+  [-0.21, 0.41, 0.02, 0.6, 0.06, 0.1, 0.2, 0.395, 0.35, -0.21, 0.35],
+  [-0.26, 0.4, 0.035, 0.45, 0.04, 0.04, 0.15, 0.39, 0.39, -0.18, 0],
   [-0.3, 0.39, 0.05, 0.39, 0, 0, 0.1, 0.385, 0.385, -0.15, 0],
   [-0.45, 0.33, 0.14, 0.33, 0, 0, 0.2, 0.36, 0.33, -0.05, 0],
   [-0.5, 0.25, 0.18, 0.25, 0, 0, 0.25, 0.32, 0.25, 0.04, 0],
-] as const).map(([z, costado, cintura, ancho, sube, baja, hombro, arriba, lomo, abajo, costadoArriba]): Seccion => ({
+];
+// El ensanche es la raíz del ala: llega hasta x = 1,3, donde empieza el ala
+// recta, y acaba ahí con el perfil del ala en cada z (sin escalón). Su planta
+// sigue el borde de ataque, que junto al cuerpo se curva hacia delante hasta
+// el morro, y el de salida, que se curva hacia atrás hasta el capó (plano
+// desde arriba). Así el empalme de arriba sube del ala al lomo en una curva
+// larga, desde 0,7 m del costado, como se ve de frente en todas las fotos
+// (en la versión anterior el ala salía del cuerpo en x = 0,85 con un empalme
+// corto: el ala parecía pinchada en un cuerpo en forma de huevo).
+const RAIZ_ALA = { x: RAIZ_ALA_X, ba: 0.745, bs: -0.122, t: 0.236, sube: 0.016 };
+// Borde del ensanche delante y detrás del ala: [z, x].
+const BORDE_DELANTE: [number, number][] = [
+  [1.5, 0.545], [1.42, 0.56], [1.35, 0.58], [1.25, 0.62], [1.15, 0.7], [1.07, 0.79], [1.02, 0.85], [0.97, 0.9],
+  [0.92, 0.95], [0.88, 1.0], [0.84, 1.07], [0.8, 1.15], [0.775, 1.21], [0.755, 1.27],
+];
+const BORDE_DETRAS: [number, number][] = [
+  [-0.13, 1.15], [-0.145, 1.0], [-0.16, 0.9], [-0.172, 0.85], [-0.19, 0.72], [-0.21, 0.6], [-0.235, 0.5], [-0.26, 0.45],
+];
+const perfilNaca = (s: number) => 5 * (0.2969 * Math.sqrt(s) - 0.126 * s - 0.3516 * s ** 2 + 0.2843 * s ** 3 - 0.1036 * s ** 4);
+const filaEn = (z: number): FilaCuerpo => {
+  const fs = FILAS.slice().sort((a, b) => a[0] - b[0]);
+  const i = Math.max(0, fs.findIndex((f) => f[0] >= z) - 1), a = fs[i], b = fs[Math.min(i + 1, fs.length - 1)];
+  const k = b[0] === a[0] ? 0 : (z - a[0]) / (b[0] - a[0]);
+  return a.map((v, j) => v + (b[j] - v) * k) as FilaCuerpo;
+};
+const aSeccion = ([z, costado, cintura, ancho, sube, baja, hombro, arriba, lomo, abajo, costadoArriba]: FilaCuerpo, borde?: [number, number]): Seccion => ({
   z, ancho, costado, ...(costadoArriba > 0 && { costadoArriba }), cintura, sobreArista: cintura + sube, bajoArista: cintura - baja, hombro, arriba, lomo, abajo, n: 2.3, nLomo: 2.4, nAbajo: 2.2,
-}));
+  ...(borde && { bordeArriba: borde[0], bordeAbajo: borde[1] }),
+});
+// Una sección en z con el borde del ensanche en x (y, bajo el ala, el grueso
+// del perfil del ala en esa z).
+const conBorde = (z: number, x: number, borde?: [number, number], redondeo = 0) =>
+  ({ ...aSeccion(filaEn(z).map((v, j) => (j === 0 ? z : j === 3 ? x : v)) as FilaCuerpo, borde), ...(redondeo > 0 && { redondeo }) });
+const RAIZ_CUERPO = [
+  // Delante del ala el ensanche es redondo, sin arista: el borde de ataque
+  // se funde con el costado (fotos del J-10 en tierra y en vuelo). Hacia el
+  // morro sigue la arista suave.
+  ...BORDE_DELANTE.map(([z, x]) => conBorde(z, x, undefined, 0.75)),
+  ...[0, 0.01, 0.03, 0.07, 0.13, 0.22, 0.33, 0.47, 0.62, 0.78, 0.92, 1].map((f) => {
+    const z = RAIZ_ALA.ba - f * (RAIZ_ALA.ba - RAIZ_ALA.bs), g = RAIZ_ALA.t * perfilNaca(f);
+    return conBorde(z, RAIZ_ALA.x, [RAIZ_ALA.sube + g, RAIZ_ALA.sube - 0.55 * g]);
+  }),
+  ...BORDE_DETRAS.map(([z, x]) => conBorde(z, x)),
+];
+const CUERPO: Seccion[] = [
+  // La arista del morro, también suave (en las fotos de lado no hay un filo
+  // con sombra debajo, solo un cambio de luz).
+  ...FILAS.filter(([z]) => z > BORDE_DELANTE[0][0] + 1e-6 || z < BORDE_DETRAS[BORDE_DETRAS.length - 1][0] - 1e-6).map((f) => ({ ...aSeccion(f), ...(f[0] > 1.5 && f[0] < 3.2 && { redondeo: 0.75 }) })),
+  ...RAIZ_CUERPO,
+];
 const HELICE = { y: 0.18, z: -0.62, r: 0.82 };
+// Borde delantero del capó, donde está la boca de la toma de aire.
+const CAPO = { z: 0.0 };
 
 // ── Tren ───────────────────────────────────────────────────────────────────
 // Triciclo fijo. Patas principales de una pieza, que salen de la panza bajo
@@ -220,6 +267,36 @@ const carenadosTimon = (f: number, i: number): Pieza[] => {
 
 const PIEZAS: Pieza[] = [
   { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO },
+  // Toma de aire del motor (foto de Baykar en tierra, J-10 en vuelo y polaca
+  // de frente): el capó del motor es algo más grueso que el cuerpo de delante
+  // y su borde delantero queda separado, con una boca negra que lo rodea por
+  // los costados y por arriba. De lado se ve como una banda negra vertical;
+  // de frente, como dos medias lunas a los lados del lomo; desde arriba, como
+  // dos huecos oscuros delante del capó (en la versión anterior, mal
+  // entendidos como dos tomas sumergidas encima y una ranura en el costado).
+  {
+    // Con la forma del cuerpo de delante, algo más grande: un lomo alto y
+    // estrecho (foto polaca de frente) sobre unos hombros de 0,4 m de medio
+    // ancho (plano desde arriba: el capó es lo más ancho detrás del ala). Delante
+    // de él, el empalme del ala con el lomo es bajo: la boca baja por los
+    // costados hasta el ala (foto de Baykar en tierra). La boca,
+    // entre los dos, es una U fina alrededor del lomo que se abre en dos
+    // medias lunas abajo, a los lados, donde el cuerpo de delante baja hacia
+    // el ala.
+    tipo: "casco", id: "capo", acabado: "gris-tr", abierto: true, secciones: [
+      { z: CAPO.z, ancho: 0.4, cintura: 0.1, hombro: 0.24, arriba: 0.41, lomo: 0.315, abajo: 0.0, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+      { z: CAPO.z - 0.08, ancho: 0.405, cintura: 0.1, hombro: 0.24, arriba: 0.41, lomo: 0.335, abajo: -0.03, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+      { z: -0.18, ancho: 0.42, cintura: 0.13, hombro: 0.24, arriba: 0.4, lomo: 0.37, abajo: -0.06, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+      { z: -0.3, ancho: 0.38, cintura: 0.14, hombro: 0.24, arriba: 0.375, lomo: 0.37, abajo: -0.06, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+    ],
+  },
+  // El fondo de la boca, unos centímetros dentro del borde.
+  {
+    tipo: "casco", id: "capo-boca", acabado: "hueco", secciones: [
+      { z: CAPO.z - 0.04, ancho: 0.385, cintura: 0.1, hombro: 0.235, arriba: 0.4, lomo: 0.3, abajo: 0.0, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+      { z: CAPO.z - 0.08, ancho: 0.39, cintura: 0.1, hombro: 0.235, arriba: 0.403, lomo: 0.32, abajo: -0.02, n: 2.3, nLomo: 2.4, nAbajo: 2 },
+    ],
+  },
   // Toma de aire central: una boca rectangular en lo alto del lomo, sobre la
   // raíz del ala (fotos del J-10 en vuelo: no está en el capó, como en la
   // primera versión, sino 1 m por delante). Un capuchón bajo con la boca
@@ -254,11 +331,11 @@ const PIEZAS: Pieza[] = [
   // Antenas pequeñas del lomo y luces blancas del carenado del ala.
   { tipo: "tubo", id: "antena-lomo", acabado: "blanco", centro: [0, 0.205], seccion: [1, 0.45], perfil: esfera(1.9, 0.04) },
   { tipo: "tubo", id: "antena-lomo-2", acabado: "blanco", centro: [0, 0.3], seccion: [1, 0.45], perfil: esfera(1.0, 0.04) },
-  ...LADOS.map((s): Pieza => ({ tipo: "tubo", id: `luz-raiz-${s}`, acabado: "blanco", centro: [s * 1.3, 0.11], seccion: [1, 0.35], perfil: esfera(0.6, 0.03) })),
+  ...LADOS.map((s): Pieza => ({ tipo: "tubo", id: `luz-raiz-${s}`, acabado: "blanco", centro: [s * 1.3, 0.12], seccion: [1, 0.35], perfil: esfera(0.6, 0.03) })),
   // Ala con su carenado, en una pieza; donde van los alerones el borde de
   // salida se adelanta hasta la bisagra.
   {
-    tipo: "ala", id: "ala", acabado: "gris-tr", y: 0,
+    tipo: "ala", id: "ala", acabado: "gris-tr", y: 0, raizDentro: true,
     estaciones: [
       ...RAIZ,
       estAla(1.5), estAla(2.5),
@@ -362,21 +439,13 @@ const CALCAS: Calca[] = [
   { sobre: ["cola"], en: sobreCola(0.74, 0.24), desde: FUERA_COLA, tam: [0.25, 0.2], dibujo: { tipo: "baykar" }, espejo: true },
   // Escarapelas: en los costados de la góndola, detrás de la salida de aire,
   // y en las alas (plano): arriba en el ala izquierda y abajo en la derecha.
-  { sobre: ["fuselaje"], en: [0.45, 0.2, -0.27], desde: LADO, tam: [0.22, 0.22], dibujo: { tipo: "escarapela-tr" }, espejo: true },
+  { sobre: ["capo", "fuselaje"], en: [0.45, 0.17, -0.25], desde: LADO, tam: [0.22, 0.22], dibujo: { tipo: "escarapela-tr" }, espejo: true },
   { sobre: ["ala"], en: [3.4, subidaAla(3.4) + 0.1, cuerdaAla(3.4, 0.42)], desde: ARRIBA, tam: [0.3, 0.3], dibujo: { tipo: "escarapela-tr" } },
   { sobre: ["ala"], en: [-3.4, subidaAla(3.4) - 0.1, cuerdaAla(3.4, 0.42)], desde: [0, -1, 0], tam: [0.3, 0.3], dibujo: { tipo: "escarapela-tr" } },
   // En la cara de fuera de cada viga: el nombre y, entre las dos franjas
   // rojas, el aviso de la hélice.
   { sobre: ["viga-1", "viga--1"], en: [VIGA.x + 0.1, alturaViga(-1.62), -1.62], desde: LADO, tam: [0.82, 0.085], dibujo: { tipo: "texto", texto: "BAYRAKTAR  TB2", fino: true }, espejo: true },
   { sobre: ["viga-1", "viga--1"], en: [VIGA.x + 0.1, alturaViga(-0.84), -0.84], desde: LADO, tam: [0.34, 0.07], dibujo: { tipo: "texto", texto: "DİKKAT PERVANE\nDANGER PROPELLER", color: "#d81e2a", fino: true }, espejo: true },
-  // Tomas de aire sumergidas (NACA), una a cada lado del lomo, arriba:
-  // estrechas delante (z = 0,6) y con la boca negra detrás, junto a la junta
-  // del capó (fotos del J-10 en vuelo, desde arriba y de lado; de frente, en
-  // la polaca, se ven las dos bocas a los lados del lomo).
-  { sobre: ["fuselaje"], en: [0.25, 0.33, 0.38], desde: [0.35, 1, 0], tam: [0.48, 0.2], giro: 180, dibujo: { tipo: "naca" }, espejo: true },
-  // Salida de aire de la carena: una ranura negra en cada costado, delante
-  // de la escarapela (foto de Teknofest 2021).
-  { sobre: ["fuselaje"], en: [0.45, 0.21, -0.07], desde: LADO, tam: [0.04, 0.27], dibujo: { tipo: "franja", color: "#111214" }, espejo: true },
   // Avisos amarillos rayados en la tapa del morro.
   { sobre: ["fuselaje"], en: [0.3, 0.2, 2.05], desde: [0.35, 1, 0], tam: [0.17, 0.075], dibujo: { tipo: "aviso" }, espejo: true },
 ];
@@ -401,8 +470,8 @@ const COSTURAS: Costura[] = [
   { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.6, 0.08, 2.35], [0.6, -0.07, 2.47], [0.6, -0.15, 2.87], [0.6, -0.19, 3.1], [0.6, -0.2, 3.18]] },
   // Junta en anillo del capó, con tornillos juntos: arriba en z = 0, más
   // atrás según baja por el costado.
-  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.06, puntos: [[0.6, 0.38, 0.0], [0.6, 0.27, -0.06], [0.6, 0.06, -0.1], [0.6, -0.1, -0.12]] },
-  { sobre: ["fuselaje"], desde: ARRIBA, remaches: 0.06, puntos: [[-0.3, 0.6, 0.0], [0, 0.6, 0.0], [0.3, 0.6, 0.0]] },
+  { sobre: ["capo"], desde: LADO, espejo: true, remaches: 0.06, puntos: [[0.6, 0.38, -0.04], [0.6, 0.27, -0.06], [0.6, 0.06, -0.08]] },
+  { sobre: ["capo"], desde: ARRIBA, remaches: 0.06, puntos: [[-0.3, 0.6, -0.04], [0, 0.6, -0.04], [0.3, 0.6, -0.04]] },
   // Tapas atornilladas encima de la raíz del ala: una detrás (sobre el
   // empalme) y otra delante, más fuera.
   tapaAla(0.53, 0.75, 0.25, 0.5),
@@ -439,7 +508,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Motor y hélice",
     en: [0, 0.85, -0.5],
-    piezas: ["helice", "cono", "aro-helice", "toma", "toma-boca", "escape", "escape-2", "rejilla-0", "rejilla-1", "rejilla-2", "rejilla-3"],
+    piezas: ["helice", "cono", "aro-helice", "capo", "capo-boca", "toma", "toma-boca", "escape", "escape-2", "rejilla-0", "rejilla-1", "rejilla-2", "rejilla-3"],
     respaldo: "foto",
     fuentes: ["detras", "perfil", "baykar"],
     texto: "Un motor de avioneta de unos 100 caballos en la parte de atrás del cuerpo, que mueve una hélice de dos palas y 1,7 m que empuja desde detrás. Al principio era el austriaco Rotax 912; cuando su fabricante dejó de venderlo en 2020, Baykar hizo el suyo.",
@@ -473,7 +542,7 @@ const aUnidades = (p: Pieza): Pieza => {
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "casco":
-      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }) })) };
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.bordeArriba !== undefined && { bordeArriba: u(q.bordeArriba) }), ...(q.bordeAbajo !== undefined && { bordeAbajo: u(q.bordeAbajo) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }) })) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }

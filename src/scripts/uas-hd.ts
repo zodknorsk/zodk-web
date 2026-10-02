@@ -47,6 +47,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   blanco: { color: "#eeeeea", metal: 0, rugosidad: 0.25 },
   // Las franjas rojas de las vigas del TB2, del rojo de la bandera turca.
   "rojo-vivo": { color: "#d81e2a", metal: 0, rugosidad: 0.5 },
+  // El fondo de una boca o un hueco (la toma de aire del TB2): casi negro y
+  // mate, para que no se lea como una pieza pintada de negro.
+  hueco: { color: "#08090a", metal: 0, rugosidad: 1 },
 };
 
 // Tres escalones de luz para la ilustración.

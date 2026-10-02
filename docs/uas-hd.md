@@ -21,8 +21,7 @@ abajo). El cómo, las piezas y las herramientas están en «Dónde estamos» y e
 se enseña una versión rápida para que el usuario la corrija.
 
 **Qué drones**: el usuario puede pedir pasar un dron al HD, al pixel HD o a
-los dos (todos menos el MQ-9, que está terminado, y el TB2, hecho y a falta
-de su revisión). Los drones nuevos se
+los dos (todos menos el MQ-9 y el TB2, terminados). Los drones nuevos se
 hacen desde el principio en HD y pixel HD.
 
 **Antes de empezar**
@@ -404,7 +403,7 @@ al pixel HD incluye regenerarlas.
   sombras) y a subir la luz del cielo en la panza. No volver a tocar la luz
   para esa vista.
 - **1-oct-2026, Bayraktar TB2 en HD y pixel HD** (rama `hd-bayraktar-tb2`,
-  sin commit; falta que lo revise el usuario). Lo pidió el usuario («no
+  fusionada en `main` el 2-oct-2026). Lo pidió el usuario («no
   quiero un producto rápido, quiero un producto bueno»), con un avión
   **turco** («es el original») y **cuatro MAM-L**. Avión de las marcas: el
   **TB2 del Ejército de Tierra turco de Teknofest 2021** (Estambul; tres
@@ -500,6 +499,60 @@ al pixel HD incluye regenerarlas.
     del visor deja la cámara fija.
   - Visto y sin tocar (no lo pidió): en las fotos en vuelo el tren principal
     no se ve; podría recogerse.
+- **1-oct-2026, segunda revisión del usuario del TB2** (commit `d7ca5ce` en
+  la rama, sin subir). Bien: misiles, gimbal; tornillería «mejor pero
+  bueno». Mal:
+  - **Las alas, peor**: de frente hay un salto. En todas las fotos el ala y
+    el cuerpo son prácticamente una sola pieza. Causa entendida: el ensanche
+    del `casco` acaba en una arista de grueso cero y el ala (0,19 m de grueso)
+    sale de él desde x = 0,7, así que donde se cruzan hay un escalón.
+    Arreglo previsto: que el ensanche acabe en x = 0,85 con el mismo perfil
+    que la raíz del ala en cada z (arriba y abajo del perfil NACA en esa
+    cuerda: campos nuevos de la sección para el alto de arriba y de abajo
+    del borde) y que el ala empiece ahí, sin hueco ni escalón; los empalmes
+    salen tangentes al ala (horizontales) y suben o bajan al cuerpo.
+  - **La toma de aire**: las dos calcas NACA y la ranura negra eran la misma
+    toma mal entendida. En la foto de Baykar de tierra
+    (`usuario-aselsan-suelo.png`, x 500 px, y 230–320) la toma principal es
+    el hueco negro en anillo delante del capó: el capó es más grande que el
+    final del cuerpo y su borde delantero queda separado, con una ranura
+    oscura que rodea el frente del capó por los costados y por arriba. De
+    lado se ve como una banda negra vertical; de frente (foto polaca), como
+    dos medias lunas a los lados del lomo; desde arriba (J-10), como las
+    bocas oscuras que tomé por tomas NACA. Arreglo previsto: el capó como
+    pieza aparte, algo más grande que el cuerpo en su borde de delante, con
+    un anillo negro dentro (la boca); fuera las calcas NACA y la ranura.
+    Buscarla en todas las fotos (tr05, 032, tr04, detras, 030, usuario-*)
+    para medir su z, su alto y su ancho.
+  Hecho el 2-oct-2026 (sin commit):
+  - **Alas**: el ensanche del cuerpo llega ya hasta x = 1,3, donde empieza
+    el ala recta, y bajo el ala acaba con el mismo perfil que la raíz del
+    ala (`bordeArriba`/`bordeAbajo` en la sección); el ala nace ahí sin tapa
+    (`raizDentro` en el `ala`: con tapa, la luz se torcía y se veía una
+    costura). La planta del ensanche sigue el borde de ataque y el de salida
+    del plano. Delante del ala, el ensanche es redondo (`redondeo`): el borde
+    de ataque se funde con el costado; la arista del morro, también suave.
+    Comprobado de frente (polaca), en tierra (Baykar) y en vuelo (J-10).
+  - **Toma de aire**: el capó es una pieza aparte (`casco` con `abierto`,
+    sin tapa delante) con la forma del cuerpo de delante, algo mayor: lomo
+    alto y estrecho y hombros de 0,4 m (plano desde arriba). La boca (fondo
+    en `hueco`, casi negro y mate) queda entre los dos: una U fina alrededor
+    del lomo que baja por los costados hasta el ala. Para que baje hasta el
+    ala, el lomo de delante pasa a 0,26 m de medio ancho (antes 0,37; foto
+    polaca de frente) y el empalme del ala con el lomo, junto al capó, es
+    bajo. Fuera las calcas NACA y la ranura negra, que eran esta misma toma
+    mal leída. La toma pequeña del lomo (z = 1,05) se queda.
+  El usuario lo dio por bueno el 2-oct-2026 («creo que está bastante bien»);
+  fusionado en `main` y publicado, rama borrada. **Pendiente si se retoma**
+  (lo que no convencía al cerrarlo):
+  - Desde arriba, el hueco de la toma no se ve tan hondo como en la foto del
+    J-10 en vuelo (`usuario-j10-arriba.png`): allí parece una cavidad que se
+    mete hacia atrás en el hombro del capó.
+  - De 3/4 por delante queda un pliegue suave donde el ensanche de delante
+    del ala (`redondeo`) se junta con el costado.
+  - Rendimiento en Zen sin medir.
+  - Visto y sin tocar: en las fotos en vuelo el tren principal no se ve;
+    podría recogerse.
 - **Siguiente paso**: el dron que pida el usuario.
 
 ## Decisiones del usuario (30-sep-2026)

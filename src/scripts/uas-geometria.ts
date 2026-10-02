@@ -31,7 +31,7 @@ const perfilNaca = (s: number) =>
 // intradós más plano); las estaciones se unen a lo largo de la envergadura y
 // las puntas se cierran. Cada estación puede subir sobre y (el diedro).
 type Estacion = readonly [number, number, number, number, number];
-function geometriaAla(y: number, estaciones: Estacion[]): BufferGeometry {
+function geometriaAla(y: number, estaciones: Estacion[], sinTapa: number[] = []): BufferGeometry {
   const N = 14;  // puntos por cara, más juntos cerca del borde de ataque
   const cuerda = Array.from({ length: N + 1 }, (_, i) => (1 - Math.cos((i / N) * Math.PI)) / 2);
   // El contorno va del borde de salida por arriba hasta el de ataque y vuelve
@@ -74,6 +74,7 @@ function geometriaAla(y: number, estaciones: Estacion[]): BufferGeometry {
   }
   // Tapas de las puntas: abanico desde el centro de cada contorno.
   for (const [e, base] of [[0, primero], [estaciones.length - 1, previo]]) {
+    if (sinTapa.includes(e)) continue;
     const [x, zBA, zBS, , sube] = estaciones[e];
     const centro = pos.length / 3;
     pos.push(x, y + sube, (zBA + zBS) / 2);
@@ -115,7 +116,7 @@ function monotona(zs: number[], vs: number[]) {
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[]): BufferGeometry {
+function geometriaCasco(secciones: Seccion[], abierto = false): BufferGeometry {
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
   // curva cerrada.
@@ -139,6 +140,9 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
   const costadoArriba = f((q) => q.costadoArriba ?? q.costado ?? q.ancho);
   const sobreArista = f((q) => q.sobreArista ?? q.cintura ?? (q.arriba + q.abajo) / 2);
   const bajoArista = f((q) => q.bajoArista ?? q.cintura ?? (q.arriba + q.abajo) / 2);
+  const bordeArriba = f((q) => q.bordeArriba ?? q.cintura ?? (q.arriba + q.abajo) / 2);
+  const bordeAbajo = f((q) => q.bordeAbajo ?? q.cintura ?? (q.arriba + q.abajo) / 2);
+  const redondeo = f((q) => q.redondeo ?? 0);
   const anillosZ: number[] = [];
   for (let i = 0; i < zs.length - 1; i++)
     for (let j = 0; j < PASOS; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / PASOS);
@@ -184,11 +188,17 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
       // (cuarto de superelipse); luego su reflejo.
       const ws0 = Math.min(w, Math.max(0, costado(z))), wsA = Math.min(w, Math.max(0, costadoArriba(z)));
       const K = MEDIO / 2, KF = 9, KS = K - KF;
-      const media = (yLado: number, yCentro: number, n: number, ws: number): [number, number][] => {
+      // El empalme sale del borde del ensanche (a la altura yBorde) en
+      // horizontal, como sigue el ala, y se curva hasta el costado.
+      const r = Math.min(1, Math.max(0, redondeo(z)));
+      const media = (yLado: number, yCentro: number, n: number, ws: number, yBorde: number): [number, number][] => {
         const pts: [number, number][] = [];
+        // Con redondeo, el empalme sale del borde inclinado (no en horizontal)
+        // y sigue llegando en vertical al costado: sin pliegue con el cuerpo.
+        const cx = ws, cy = yBorde + r * (yLado - yBorde);
         for (let k = 0; k < KF; k++) {
           const t = k / KF;
-          pts.push([(1 - t) ** 2 * w + 2 * (1 - t) * t * ws + t * t * ws, (1 - t) ** 2 * c + 2 * (1 - t) * t * c + t * t * yLado]);
+          pts.push([(1 - t) ** 2 * w + 2 * (1 - t) * t * cx + t * t * ws, (1 - t) ** 2 * yBorde + 2 * (1 - t) * t * cy + t * t * yLado]);
         }
         for (let k = 0; k <= KS; k++) {
           const t = (k / KS) * (Math.PI / 2), co = Math.cos(t), si = Math.sin(t);
@@ -197,7 +207,8 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
         return pts;
       };
       const yS = Math.min(top, Math.max(c, sobreArista(z))), yB = Math.max(bot, Math.min(c, bajoArista(z)));
-      const arribaD = media(yS, top, na, wsA), abajoD = media(yB, bot, nb, ws0);
+      const yBA = Math.min(yS, Math.max(c, bordeArriba(z))), yBB = Math.max(yB, Math.min(c, bordeAbajo(z)));
+      const arribaD = media(yS, top, na, wsA, yBA), abajoD = media(yB, bot, nb, ws0, yBB);
       const arribaPts = [...arribaD, ...arribaD.slice(0, -1).reverse().map(([x, y]): [number, number] => [-x, y])];
       const abajoPts2 = [...abajoD.map(([x, y]): [number, number] => [-x, y]), ...abajoD.slice(0, -1).reverse()];
       // Lomo, como arriba.
@@ -264,6 +275,7 @@ function geometriaCasco(secciones: Seccion[]): BufferGeometry {
   }
   // Tapas donde el cuerpo no acaba en punta.
   for (const [i, atras] of [[0, true], [anillosZ.length - 1, false]] as const) {
+    if (abierto && !atras) continue;
     const anillo = [0, 1].flatMap((t) => Array.from({ length: N }, (_, k) => t * anillosZ.length * N + i * N + k));
     const xs = anillo.map((v) => pos[v * 3]);
     if (Math.max(...xs) - Math.min(...xs) < 1e-6) continue;
@@ -300,11 +312,14 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           return g;
         });
       }
-      if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo), geometriaAla(p.y, mitad)];
+      // Con la raíz dentro del cuerpo, sin tapa en la raíz: la tapa compartía
+      // vértices con el último anillo, le torcía la luz y se veía una costura
+      // donde el ala sale del cuerpo (el TB2).
+      if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo, p.raizDentro ? [reflejo.length - 1] : []), geometriaAla(p.y, mitad, p.raizDentro ? [0] : [])];
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
     case "casco":
-      return [geometriaCasco(p.secciones)];
+      return [geometriaCasco(p.secciones, p.abierto)];
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();
