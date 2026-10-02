@@ -201,6 +201,12 @@ el usuario, de redes sociales, y el vídeo de CENTCOM en «En acción». Falta:
 que el usuario revise la nota del R9X (en `borrador`) y saber de qué ataque
 son dos de sus fotos (el sedán beis y la furgoneta blanca).
 
+**1-oct-2026, Bayraktar TB2 en HD y pixel HD** (fusionado en `main` y
+publicado el 2-oct-2026). Ver `docs/uas-hd.md` («Dónde estamos»): cuerpo, ala, cola y tren
+rehechos con el plano y fotos encajadas, marcas del TB2 del Ejército de
+Tierra turco de Teknofest 2021, gris propio y tarjeta y planta en pixel HD.
+Lo pendiente, en `docs/uas-hd.md`.
+
 ## Pedir una ficha nueva: el guion completo
 
 El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
@@ -377,6 +383,31 @@ generadores de `arte/` leen estos archivos con Node.
   repiten. Se sacan del plano de perfil (arriba y abajo en cada z) y del
   de planta (el ancho). Con estos números, `aUnidades` tiene que pasar
   todos los números del punto (`q.map(u)`), no solo dos.
+- **Cuerpo ancho con un lomo más estrecho encima** (el TB2): las secciones
+  del `casco` admiten `lomo` (medio ancho del lomo), `hombro` (lo alto del
+  cuerpo de debajo; `arriba` pasa a ser lo alto del lomo) y `nLomo`. El lomo
+  se funde con el cuerpo por un hombro suave, en la misma pieza. Con piezas
+  aparte quedan posadas, con cintura.
+- **Ala que nace del cuerpo** (el TB2): las secciones del `casco` admiten
+  un ensanche. `ancho` pasa a ser hasta dónde llega la arista; `costado`, el
+  medio ancho del cuerpo; `sobreArista` y `bajoArista`, dónde acaban los
+  empalmes cóncavos de arriba y de abajo en el costado; `costadoArriba`,
+  hasta dónde llega hacia dentro el de arriba (en la raíz, hasta el pie del
+  lomo). Sin ensanche (`ancho` un poco mayor que `costado`) queda una arista
+  suave. El ala, delgada, empieza dentro del ensanche.
+- **Raíz del ala sin escalón** (el TB2): el ensanche del `casco` acaba con
+  el perfil del ala (`bordeArriba` y `bordeAbajo`, las caras de arriba y de
+  abajo del perfil en esa z) y el `ala` empieza ahí con `raizDentro` (sin
+  tapa). `redondeo` (0 a 1) hace el ensanche redondo en vez de en arista.
+- **Capó con boca** (la toma del TB2): un `casco` con `abierto` (sin tapa
+  delante), algo mayor que el cuerpo de delante, y otro dentro en `hueco`
+  (acabado casi negro y mate) como fondo de la boca.
+- **Palas con forma**: la `helice` admite `ancho` (la cuerda de la pala):
+  estrecha en la raíz, más ancha a un tercio y con la punta redondeada. Sin
+  él, cada pala es una tabla.
+- **Comparar con fotos desde su mismo ángulo**: `arte/encajar-camara.mjs`,
+  `arte/comparar-foto.mjs` y `arte/vista-visor.mjs` (ver «Medir con fotos
+  encajadas» en `docs/uas-hd.md`).
 - **Comparar con un plano en ortográfica**: el visor tiene perspectiva y
   engaña con las piezas que salen del plano (el diedro del TB2, de lado, se
   ve como un trapecio oscuro sobre el cuerpo). Con un plano a escala, mejor
@@ -795,6 +826,8 @@ del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
 | `arte/generar-uas-miniaturas-hd.mjs` | Tarjeta y planta de los drones con HD (pixel HD) |
 | `arte/generar-uas-hangar.mjs` | El hangar y el asfalto de la tira |
 | `arte/capturas.mjs` | Capturas para enseñar al usuario |
+| `arte/encajar-camara.mjs` | Encaja la cámara de una foto con puntos del dron y mide sobre ella |
+| `arte/comparar-foto.mjs`, `arte/vista-visor.mjs` | El visor desde la cámara de una foto (al lado o encima) o desde una cualquiera |
 | `public/uas/<modelo>/` | Miniaturas, giro, planta y `fuentes/` |
 | `arte/uas-fuentes/<modelo>/` | Fotos a tamaño completo y `FUENTES.md` (fuera de Git) |
 | `00 - Meta/Plantilla UAS (Templater).md` (bóveda) | Esqueleto de la nota |
@@ -950,6 +983,23 @@ los soportes a 1,7 y 2,16 m y el diedro (0,27 m en la punta). El plano
 tiene la pata del morro en gris, pero en las fotos en vuelo se ve fuera.
 Hay 46 fotos más de Commons en `arte/uas-fuentes/bayraktar-tb2/todas/`
 (con `indice.txt`).
+
+Para el HD (1-oct-2026), en `arte/uas-fuentes/bayraktar-tb2/hd/` (fuera de
+Git): `full/` a tamaño completo, `med/` a 1600 px, `indice.json` (las de las
+categorías de Commons del TB2) y `ajustes/` (la cámara encajada de cada foto).
+Las marcas salen del TB2 del Ejército de Tierra turco de Teknofest 2021. Las
+vigas, las ruedas y los soportes del plano están demasiado abiertos (ver
+`docs/uas-hd.md`).
+
+| Archivo (hd/full) | Qué enseña | URL |
+|---|---|---|
+| tr05.jpg | El TB2 del Ejército de Tierra en Teknofest 2021, de 3/4 por delante: marcas, morro, MAM-L (CeeGee, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-IHA_TurkishArmy_Teknofest2021_(1).jpg |
+| tr07.jpg | El mismo, por detrás: cola, timones, viga, logo (CeeGee, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-IHA_TurkishArmy_Teknofest2021_(3).jpg |
+| tr09.jpg | De frente y desde arriba, Teknofest 2019 (Kingbjelica, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_S-%C4%B0HA,_Teknofest_2019.jpg |
+| tr04.jpg | En pista en 2014, casi de perfil (Bayhaluk, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_Runway.jpg |
+| tr03.jpg | El TC-SRM con MAM-L, 2016 (Bayhaluk, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:Bayraktar_TB2_Ground.jpg |
+| 032.jpg | De perfil con teleobjetivo en el desfile de Kiev, 2021 (Presidencia de Ucrania, dominio público) | https://commons.wikimedia.org/wiki/File:President_took_part_in_the_festive_Parade_of_Troops_on_the_occasion_of_the_30th_anniversary_of_Ukraine%27s_independence._(51716729329).jpg |
+| 030.jpg | De frente, con las dos puntas del ala, en Polonia (Perriquito, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:PAF_Bayraktar_TB2.jpg |
 
 | Archivo | Qué enseña | URL |
 |---|---|---|

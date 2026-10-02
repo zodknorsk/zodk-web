@@ -30,6 +30,9 @@ type Pintura = { color: string; metal: number; rugosidad: number };
 const PINTURAS: Record<Acabado, Pintura> = {
   gris: { color: "#a6b0bb", metal: 0, rugosidad: 0.5 },
   "gris-et": { color: "#a3adab", metal: 0, rugosidad: 0.65 },
+  // El gris de los TB2 turcos, algo más oscuro y azulado que el del MQ-9
+  // (medido al sol en las fotos de Teknofest 2021 y del TC-SRM: #acb8bf).
+  "gris-tr": { color: "#8d999f", metal: 0, rugosidad: 0.5 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   junta: { color: "#7d838b", metal: 0, rugosidad: 0.7 },
   mando: { color: "#a0aab6", metal: 0, rugosidad: 0.5 },
@@ -42,6 +45,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // Las luces del lomo y del ala: cúpulas pequeñas de plástico, con brillo.
   rojo: { color: "#8e2a2d", metal: 0, rugosidad: 0.35 },
   blanco: { color: "#eeeeea", metal: 0, rugosidad: 0.25 },
+  // Las franjas rojas de las vigas del TB2, del rojo de la bandera turca.
+  "rojo-vivo": { color: "#d81e2a", metal: 0, rugosidad: 0.5 },
+  // El fondo de una boca o un hueco (la toma de aire del TB2): casi negro y
+  // mate, para que no se lea como una pieza pintada de negro.
+  hueco: { color: "#08090a", metal: 0, rugosidad: 1 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -224,9 +232,84 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       break;
     }
     case "texto": {
-      c.font = `900 ${Math.round(H * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`;
+      const lineas = d.texto.split("\n");
+      const alto = H / lineas.length;
+      c.fillStyle = d.color ?? TINTA_CALCA;
+      c.font = d.fino
+        ? `600 ${Math.round(alto * 0.86)}px "Helvetica Neue", Arial, sans-serif`
+        : `900 ${Math.round(alto * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`;
       c.textAlign = "center"; c.textBaseline = "middle";
-      c.fillText(d.texto, W / 2, H * 0.54, W * 0.98);
+      lineas.forEach((l, i) => c.fillText(l, W / 2, alto * (i + 0.54), W * 0.98));
+      break;
+    }
+    case "bandera-tr": {
+      // Proporciones oficiales (alto A): media luna de 0,5·A a 0,5·A del
+      // asta, hueco de 0,4·A corrido 0,0625·A, estrella de 0,25·A.
+      const A = H;
+      c.fillStyle = "#e30a17"; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#fff";
+      c.beginPath(); c.arc(A * 0.5, H / 2, A * 0.25, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "#e30a17";
+      c.beginPath(); c.arc(A * 0.5625, H / 2, A * 0.2, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "#fff";
+      c.save(); c.translate(A * 0.8835, H / 2); c.rotate(-Math.PI / 2);
+      estrella(0, 0, A * 0.125); c.restore(); c.fill();
+      break;
+    }
+    case "escarapela-tr": {
+      const R = Math.min(W, H) / 2;
+      c.fillStyle = "#e30a17"; c.beginPath(); c.arc(W / 2, H / 2, R * 0.97, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "#fff"; c.beginPath(); c.arc(W / 2, H / 2, R * 0.66, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "#e30a17"; c.beginPath(); c.arc(W / 2, H / 2, R * 0.33, 0, Math.PI * 2); c.fill();
+      break;
+    }
+    case "baykar": {
+      // Un paralelogramo azul con la «B» blanca (una barra y dos curvas, como
+      // un 3) y «BAYKAR» debajo, en azul.
+      const azul = "#1d33a6", alto = H * 0.72, inc = alto * 0.32;
+      c.fillStyle = azul;
+      c.beginPath(); c.moveTo(inc, 0); c.lineTo(W, 0); c.lineTo(W - inc, alto); c.lineTo(0, alto); c.closePath(); c.fill();
+      c.strokeStyle = "#fff"; c.lineWidth = alto * 0.11; c.lineCap = "round";
+      const bx = W * 0.3, r = alto * 0.19;
+      c.beginPath(); c.moveTo(bx - r * 0.6, alto * 0.14); c.lineTo(bx - r * 0.6, alto * 0.86); c.stroke();
+      c.beginPath(); c.arc(bx, alto * 0.33, r, -Math.PI * 0.75, Math.PI * 0.5); c.stroke();
+      c.beginPath(); c.arc(bx, alto * 0.67, r * 1.05, -Math.PI * 0.5, Math.PI * 0.8); c.stroke();
+      c.fillStyle = azul;
+      c.font = `700 ${Math.round(H * 0.22)}px "Helvetica Neue", Arial, sans-serif`;
+      c.textAlign = "left"; c.textBaseline = "alphabetic";
+      c.fillText("B A Y K A R", 0, H * 0.99, W * 0.9);
+      break;
+    }
+    case "naca": {
+      // Los costados de la rampa se curvan hacia fuera (la forma NACA): de la
+      // punta (derecha) a la boca (izquierda). La rampa se oscurece al
+      // hundirse y la boca es negra.
+      const borde = (t: number) => (H / 2) * (0.08 + 0.92 * Math.pow(1 - t, 1.6));
+      const xBoca = W * 0.14;
+      const rampa = () => {
+        c.beginPath();
+        c.moveTo(W * 0.99, H / 2);
+        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * (1 - t), H / 2 - borde(1 - t) * 0.96); }
+        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * t, H / 2 + borde(t) * 0.96); }
+        c.closePath();
+      };
+      const g = c.createLinearGradient(W, 0, xBoca, 0);
+      g.addColorStop(0, "rgba(20,22,26,0.0)"); g.addColorStop(0.55, "rgba(20,22,26,0.28)"); g.addColorStop(1, "rgba(20,22,26,0.55)");
+      c.fillStyle = g; rampa(); c.fill();
+      c.strokeStyle = "rgba(20,22,26,0.7)"; c.lineWidth = H * 0.035; rampa(); c.stroke();
+      c.fillStyle = "#0d0e10";
+      c.beginPath(); c.roundRect(W * 0.03, H * 0.04, xBoca - W * 0.03, H * 0.92, H * 0.2); c.fill();
+      break;
+    }
+    case "aviso": {
+      c.fillStyle = "#f2c200"; c.fillRect(0, 0, W, H);
+      const b = Math.min(W, H) * 0.16;
+      c.save(); c.beginPath(); c.rect(0, 0, W, H); c.rect(b, b, W - 2 * b, H - 2 * b); c.clip("evenodd");
+      c.fillStyle = "#17181a";
+      for (let x = -H; x < W + H; x += b * 1.6) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x + b * 0.8, 0); c.lineTo(x + b * 0.8 - H, H); c.lineTo(x - H, H); c.closePath(); c.fill(); }
+      c.restore();
+      c.fillStyle = "#17181a";
+      for (const f of [0.38, 0.62]) c.fillRect(W * 0.25, H * f - b * 0.18, W * 0.5, b * 0.36);
       break;
     }
     case "serie": {

@@ -91,6 +91,8 @@ export function crearPixelado(renderer: WebGLRenderer) {
       salto: { value: 0.07 },
       hd: { value: 0 },
       exposicion: { value: 0.95 },
+      // Desfase de los escalones de luz (en escalones), por dron.
+      desfase: { value: 0 },
     },
     vertexShader: /* glsl */ `
       varying vec2 vUv;
@@ -106,6 +108,7 @@ export function crearPixelado(renderer: WebGLRenderer) {
       uniform float salto;
       uniform float hd;
       uniform float exposicion;
+      uniform float desfase;
       varying vec2 vUv;
       float distancia(vec2 uv) {
         return -perspectiveDepthToViewZ(texture2D(tProf, uv).x, cerca, lejos);
@@ -131,12 +134,15 @@ export function crearPixelado(renderer: WebGLRenderer) {
       // ala sale a franjas. Sin tramado: con la luz del HD (el reflejo del
       // cielo cambia un pelo de un píxel a otro) dibujaba rayas en las caras
       // planas y puntos sueltos por todo el dron.
+      // Un dron de otro gris puede caer en un borde: el desfase (de la
+      // maqueta, en escalones) los corre hasta que su pintura al sol caiga
+      // en el centro de uno (el TB2, más oscuro que el MQ-9).
       const float NIVELES = 7.0;
-      float nivel(vec3 c) { return clamp(floor(luma(c) * NIVELES), 0.0, NIVELES - 1.0); }
+      float nivel(vec3 c) { return clamp(floor(luma(c) * NIVELES + desfase), 0.0, NIVELES - 1.0); }
       vec3 aNivel(vec3 c, float k) {
         float l = luma(c);
         if (l < 0.002) return c;
-        return clamp(c * (((k + 0.5) / NIVELES) / l), 0.0, 1.0);
+        return clamp(c * (((k + 0.5 - desfase) / NIVELES) / l), 0.0, 1.0);
       }
       void main() {
         vec2 v[4];
@@ -220,8 +226,9 @@ export function crearPixelado(renderer: WebGLRenderer) {
     // En las miniaturas cada píxel abarca más dron y el salto tiene que ser
     // mayor (si no, una superficie grande vista de lado sale entera como línea).
     ponerSalto(unidades: number) { final.uniforms.salto.value = unidades; },
-    ponerHD(si: boolean, tamano = TAM_PIXEL) {
+    ponerHD(si: boolean, tamano = TAM_PIXEL, desfase = 0) {
       final.uniforms.hd.value = si ? 1 : 0;
+      final.uniforms.desfase.value = si ? desfase : 0;
       // Cada píxel de arte, un número entero de píxeles de la pantalla.
       const r = renderer.getPixelRatio();
       tamPixel = Math.max(1, Math.round(tamano * r)) / r;

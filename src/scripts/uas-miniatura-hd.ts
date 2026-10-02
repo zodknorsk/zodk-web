@@ -45,7 +45,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number) {
   const detalles = maqueta.detalles ? montarDetalles(escena, raiz, mallas, maqueta.detalles, radio) : null;
   detalles?.ver(true, false);
   const pixelado = crearPixelado(renderer);
-  pixelado.ponerHD(true, 1);
+  pixelado.ponerHD(true, 1, maqueta.desfaseLuz ?? 0);
   const camara = new PerspectiveCamera(FOV, W / H, 0.05, 50);
   const v = new Vector3();
   const direccion = ([az, el]: [number, number]) =>
