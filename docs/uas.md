@@ -403,6 +403,10 @@ generadores de `arte/` leen estos archivos con Node.
   que llega al costado con un tramo vertical largo (sin codo). `nariz`: el
   borde del ensanche acaba en media elipse de ese largo, del grueso que dan
   `bordeArriba` y `bordeAbajo` (el labio redondo de delante del ala del TB2).
+- **Sección lisa** (el TB2): `suave` en el `casco` con ensanche suaviza
+  cada mitad como una sola curva (ver `suavizarCurva` y `suavizarCerrada`
+  en `uas-geometria.ts`); sin él, las uniones del empalme, el costado, el
+  hombro y el lomo salen como líneas en la luz.
 - **Toma de aire sumergida** (la del lomo del TB2): `tomas` en el `casco`
   (ver `Toma` en `tipos.ts`): un hueco oval que se mete en el cuerpo, con la
   pared de la boca recta, una rampa poco honda delante y los bordes un poco

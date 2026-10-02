@@ -34,7 +34,10 @@ export type Pieza = (
   // `abierto`: sin tapa delante (la sección de mayor z): un capó con la boca
   // de la toma de aire (el TB2).
   // `tomas`: tomas de aire sumergidas (ver `Toma`).
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[] }
+  // `suave`: con ensanche, cada mitad de la sección se suaviza como una sola
+  // curva lisa (campana de ese ancho a lo largo de la curva; el borde y su
+  // dirección no se mueven) y la arista entre las dos mitades va sin línea.
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).

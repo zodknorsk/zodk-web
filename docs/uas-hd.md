@@ -639,9 +639,27 @@ al pixel HD incluye regenerarlas.
     cuerpo con una norma p, sale como cresta y las secciones, poligonales.
     La sección de arriba es un montaje de piezas (empalme, costado, hombro,
     lomo, labio) y cada unión concentra la curvatura en una línea.
-- **Siguiente paso**: las líneas del cuerpo (plan en la conversación con el
-  usuario: la mitad de arriba de cada sección, una sola curva continua
-  medida en fotos); regenerar tarjeta y planta; rendimiento en Zen.
+  - **Las líneas, quitadas** (2-oct-2026, sin commit): el `casco` admite
+    `suave` (el TB2, 7 cm): cada mitad de la sección se suaviza como una
+    sola curva (campana a lo largo de la curva, que crece desde el borde
+    para no aplanar la nariz redonda; el borde y su dirección no se mueven,
+    ni el tramo que cierra el borde por dentro del ala) y, donde el ensanche
+    apenas sale del costado (delante del ala), la sección entera, arriba y
+    abajo juntas (con el borde fijo la arista quedaba en V); la arista entre
+    las dos mitades, con la normal común. Anillos por distancia (1/260 del
+    largo) y 96 puntos por mitad: el fuselaje baja de 163 000 a 124 000
+    triángulos. El labio, de 3 a 4 cm (tenía 9) y apagado antes de z = 1,7
+    (dejaba un cordón en la arista).
+  - **Queda la joroba** del costado de delante del ala: la planta del
+    ensanche (del plano) salta de 0,56 a 0,69 m entre z = 1,45 y 1,3 y la
+    sección pasa de abombada a cóncava en 15 cm; en la foto de Teknofest
+    (tr05) el costado baja liso. Hay que medir esa planta en fotos.
+- **Siguiente paso**: que el usuario vea el cuerpo; la joroba (planta del
+  ensanche delante del ala, medida en fotos); regenerar tarjeta y planta;
+  rendimiento en Zen.
+- **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no
+  en mitad del cuerpo): en todos los visores, el zoom aleja sin límite pero
+  acerca poco; retocarlo en general.
 
 ## Decisiones del usuario (30-sep-2026)
 

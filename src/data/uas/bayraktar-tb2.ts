@@ -187,7 +187,11 @@ const REDONDEO = (z: number) => (z <= RAIZ_ALA.ba ? 0.9 * suave(0.4, RAIZ_ALA.ba
 // grueso de la nariz de un perfil, que se afina hacia el morro. LABIO(z): su
 // grueso; la nariz, de un largo algo menor. Antes acababa en un filo de
 // grueso cero que chocaba con el ala, gruesa, y dejaba un pliegue.
-const LABIO = (z: number) => (z <= RAIZ_ALA.ba ? 0 : 0.03 + 0.06 * suave(RAIZ_ALA.ba, 0.9, z) - 0.04 * suave(1.2, 1.6, z) - 0.03 * suave(1.6, 2.4, z) - 0.02 * suave(2.4, 3.2, z));
+// Se apaga hacia el morro antes de z = 1,7: más adelante dejaba un cordón a
+// lo largo de la arista, y en las fotos ahí solo cambia la luz.
+// De 3 a 4 cm: con 9 cm (más que la nariz del perfil del ala) salía una
+// joroba bajo la raíz del ala; en la foto de Teknofest (tr05), fino.
+const LABIO = (z: number) => (z <= RAIZ_ALA.ba ? 0 : (0.03 + 0.01 * suave(RAIZ_ALA.ba, 0.9, z)) * (1 - suave(1.1, 1.7, z)));
 const conLabio = (q: Seccion): Seccion => {
   const t = LABIO(q.z), c = q.cintura ?? 0;
   if (t <= 0.002) return q;
@@ -354,7 +358,10 @@ const carenadosTimon = (f: number, i: number): Pieza[] => {
 };
 
 const PIEZAS: Pieza[] = [
-  { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO, tomas: [TOMA] },
+  // Cada sección, una curva lisa (campana de 7 cm): las uniones del empalme,
+  // el costado, el hombro y el lomo salían como líneas que en las fotos no
+  // están (las marcó el usuario el 2-oct-2026).
+  { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO, tomas: [TOMA], suave: 0.07 },
   // Toma de aire del motor (foto de Baykar en tierra, J-10 en vuelo y polaca
   // de frente): el capó del motor es algo más grueso que el cuerpo de delante
   // y su borde delantero queda separado, con una boca negra que lo rodea por
@@ -632,7 +639,7 @@ const aUnidades = (p: Pieza): Pieza => {
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "casco":
-      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.bordeArriba !== undefined && { bordeArriba: u(q.bordeArriba) }), ...(q.bordeAbajo !== undefined && { bordeAbajo: u(q.bordeAbajo) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }), ...(q.nariz !== undefined && { nariz: u(q.nariz) }) })), ...(p.tomas && { tomas: p.tomas.map((t) => ({ boca: u(t.boca), largo: u(t.largo), punta: u(t.punta), x: u(t.x), y: u(t.y), ancho: u(t.ancho), hondo: u(t.hondo), ceja: u(t.ceja) })) }) };
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.panza !== undefined && { panza: u(q.panza) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.costado !== undefined && { costado: u(q.costado) }), ...(q.costadoArriba !== undefined && { costadoArriba: u(q.costadoArriba) }), ...(q.bordeArriba !== undefined && { bordeArriba: u(q.bordeArriba) }), ...(q.bordeAbajo !== undefined && { bordeAbajo: u(q.bordeAbajo) }), ...(q.sobreArista !== undefined && { sobreArista: u(q.sobreArista) }), ...(q.bajoArista !== undefined && { bajoArista: u(q.bajoArista) }), ...(q.nariz !== undefined && { nariz: u(q.nariz) }) })), ...(p.suave && { suave: u(p.suave) }), ...(p.tomas && { tomas: p.tomas.map((t) => ({ boca: u(t.boca), largo: u(t.largo), punta: u(t.punta), x: u(t.x), y: u(t.y), ancho: u(t.ancho), hondo: u(t.hondo), ceja: u(t.ceja) })) }) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }
