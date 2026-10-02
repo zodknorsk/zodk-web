@@ -654,9 +654,22 @@ al pixel HD incluye regenerarlas.
     ensanche (del plano) salta de 0,56 a 0,69 m entre z = 1,45 y 1,3 y la
     sección pasa de abombada a cóncava en 15 cm; en la foto de Teknofest
     (tr05) el costado baja liso. Hay que medir esa planta en fotos.
-- **Siguiente paso**: que el usuario vea el cuerpo; la joroba (planta del
-  ensanche delante del ala, medida en fotos); regenerar tarjeta y planta;
-  rendimiento en Zen.
+  - **La línea del borde de ataque** (la marcó el usuario: «como si el ala
+    ahí ya terminase»): escalón de 1–3 cm entre dos secciones seguidas a lo
+    largo de la raíz. Arreglo (sin commit): con `suave`, las secciones
+    también se suavizan a lo largo del cuerpo (campana de 4 cm en z), salvo
+    junto al borde del ensanche y en las puntas; las tomas se tallan
+    después.
+  - **La joroba, dos intentos descartados**: alargar el paso entre la
+    sección entera y la de borde fijo (no cambia nada) y suavizar a lo largo
+    del cuerpo con una campana de 13 cm (salen ondas: mezcla puntos que no
+    se corresponden). La causa está en los datos de delante del ala, no en
+    el suavizado: entre z = 1,6 y 1,3 la cara de arriba del costado baja
+    empinada y el empalme de arriba sube de golpe (`sobreArista` de −0,05 a
+    0,06 en 20 cm) mientras la planta se abre de 0,56 a 0,70.
+  - El usuario lo ve bien (2-oct-2026): la joroba se deja como está.
+- **Siguiente paso**: regenerar tarjeta y planta; rendimiento en Zen; el
+  zoom de los visores (para el final).
 - **Para el final, cuando esté todo** (lo pidió el usuario el 2-oct-2026, no
   en mitad del cuerpo): en todos los visores, el zoom aleja sin límite pero
   acerca poco; retocarlo en general.

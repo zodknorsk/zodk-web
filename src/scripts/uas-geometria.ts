@@ -387,6 +387,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   // Dos tiras: la de arriba (de +x a −x por el lomo) y la de abajo (de −x a
   // +x por la panza), cada una con MEDIO + 1 puntos por anillo.
   const tiras: number[][] = [[], []];
+  const aplazados: { z: number; c: number; fijo: number; arriba: [number, number][]; abajo: [number, number][] }[] = [];
   for (const z of anillosZ) {
     const w = Math.max(0, ancho(z)), c = cintura(z);
     const cima = Math.max(c, arriba(z)), bot = Math.min(c, abajo(z));
@@ -479,13 +480,13 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
           arribaLisa = mezcla(ar1, ar2); abajoLisa = mezcla(ab1, ab2);
         } else { arribaLisa = ar1; abajoLisa = ab1; }
       }
-      // Con tomas, más puntos en ellas: por ángulo, o, con la sección lisa,
-      // a lo largo de la curva con más peso cerca de la toma (por ángulo,
-      // la parte plana junto al ala se quedaba con muy pocos puntos).
-      // (Y, como al suavizar, más juntos junto a los bordes.)
-      const xBorde = Math.abs(arribaLisa[0][0]);
-      const conTomas = alisado > 0 ? aLoLargo(arribaLisa, fijo, (x, y) => 1 + 3 * Math.exp(-Math.hypot(xBorde - Math.abs(x), y - arribaLisa[0][1]) / alisado) + huecos.reduce((acc, t) => acc + 4 * Math.exp(-(((anguloDe(x, y, c) - t.ang) / (1.6 * t.dAng)) ** 2)), 0)) : porAngulo(arribaLisa, c);
-      for (const [x, y] of huecos.length ? hundir(conTomas, z, c) : arribaLisa) tiras[0].push(x, y, z);
+      // Con la sección lisa, las tomas y los anillos se ponen al final, tras
+      // suavizar también a lo largo del cuerpo (ver abajo).
+      if (alisado > 0) { aplazados.push({ z, c, fijo, arriba: arribaLisa, abajo: abajoLisa }); continue; }
+      // Con tomas, más puntos en ellas, por ángulo (con la sección lisa, a lo
+      // largo de la curva, abajo: por ángulo, la parte plana junto al ala se
+      // quedaba con muy pocos puntos).
+      for (const [x, y] of huecos.length ? hundir(porAngulo(arribaLisa, c), z, c) : arribaLisa) tiras[0].push(x, y, z);
       for (const [x, y] of abajoLisa) tiras[1].push(x, y, z);
       continue;
     }
@@ -525,6 +526,38 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
     for (const [x, y] of abajoPts) tiras[1].push(x, y, z);
   }
   const pos: number[] = [], idx: number[] = [];
+  // Con `alisado`, también a lo largo del cuerpo: cada punto, con los del
+  // mismo número en los anillos vecinos (campana de 0,6·alisado en z). Sin
+  // esto quedaba un escalón de 1 a 3 cm entre dos secciones seguidas en el
+  // borde de ataque, a lo largo de la raíz del ala: se veía una línea, como
+  // si el ala acabase ahí. Junto al borde del ensanche no se toca (el ala
+  // nace ahí con su perfil), ni en las puntas del cuerpo.
+  if (aplazados.length) {
+    const sZ = 0.6 * alisado, z0 = aplazados[0].z, zN = aplazados[aplazados.length - 1].z;
+    const alisarZ = (cual: "arriba" | "abajo") => aplazados.map((r, k) => {
+      const borde = Math.abs(r[cual][0][0]), fin = suave(0, 3 * sZ, Math.min(r.z - z0, zN - r.z));
+      let j0 = k, j1 = k;
+      while (j0 > 0 && r.z - aplazados[j0 - 1].z < 3 * sZ) j0--;
+      while (j1 < aplazados.length - 1 && aplazados[j1 + 1].z - r.z < 3 * sZ) j1++;
+      return r[cual].map(([x, y], i): [number, number] => {
+        const p = fin * suave(0.3 * alisado, 1.5 * alisado, borde - Math.abs(x));
+        if (p < 1e-4) return [x, y];
+        let sx = 0, sy = 0, sw = 0;
+        for (let j = j0; j <= j1; j++) { const w = Math.exp(-0.5 * ((aplazados[j].z - r.z) / sZ) ** 2), q = aplazados[j][cual][i]; sx += q[0] * w; sy += q[1] * w; sw += w; }
+        return [x + (sx / sw - x) * p, y + (sy / sw - y) * p];
+      });
+    });
+    const [arribas, abajos] = [alisarZ("arriba"), alisarZ("abajo")];
+    aplazados.forEach(({ z, c, fijo }, k) => {
+      const arribaLisa = arribas[k], abajoLisa = abajos[k];
+      // Con tomas, más puntos en ellas, a lo largo de la curva con más peso
+      // cerca de la toma (y, como al suavizar, junto a los bordes).
+      const xBorde = Math.abs(arribaLisa[0][0]);
+      const conTomas = huecos.length ? aLoLargo(arribaLisa, fijo, (x, y) => 1 + 3 * Math.exp(-Math.hypot(xBorde - Math.abs(x), y - arribaLisa[0][1]) / alisado) + huecos.reduce((acc, t) => acc + 4 * Math.exp(-(((anguloDe(x, y, c) - t.ang) / (1.6 * t.dAng)) ** 2)), 0)) : arribaLisa;
+      for (const [x, y] of huecos.length ? hundir(conTomas, z, c) : arribaLisa) tiras[0].push(x, y, z);
+      for (const [x, y] of abajoLisa) tiras[1].push(x, y, z);
+    });
+  }
   // Puntos por anillo de cada tira (la de arriba, con los de las tomas).
   const Ns = tiras.map((t) => t.length / 3 / anillosZ.length);
   const bases = [0, tiras[0].length / 3];
