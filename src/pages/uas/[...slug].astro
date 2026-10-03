@@ -37,7 +37,7 @@ const html = ficha.rendered?.html ?? "";
 const conVisor = html.includes(HUECO) && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
 const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
 const cuerpo = ficha.body ?? "";
-const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo), unidad: "términos" } : null;
+const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo) } : null;
 const grupos = ficha.data.armamento ? gruposDeMuniciones(await getCollection("uas")) : null;
 const volver = ficha.data.municion
   ? { href: "/uas/armamento", texto: "Volver al armamento" }

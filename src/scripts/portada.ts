@@ -369,10 +369,9 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate(d.ruta);
     precarga();
     await img!.decode().catch(() => {});
-    // La cabecera también: /luna y /marte no la tienen y así no desaparece
-    // de golpe. Y el otro astro del cielo: no gira con la cámara.
+    // El otro astro del cielo también se apaga: no gira con la cámara.
     const SEL_APAGAR = `.hero-titulo, .hero-hud, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
-    const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
+    const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR)];
     // El planeta deja de girar mientras dura el vuelo: no se aprecia y cada
     // repintado cuesta un volcado entero del lienzo justo en el momento de
     // más trabajo de toda la web (docs/rendimiento.md).

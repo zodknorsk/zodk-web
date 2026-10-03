@@ -35,7 +35,7 @@ const DEG = Math.PI / 180;
 // Vista inicial de /marte: inclinada 12,5° al norte, con Tharsis en el
 // centro. Es también la de marte-quieto.png y la del Marte pequeño de la
 // portada (el vuelo empieza y acaba en ella).
-export const VISTA_INICIAL = { lat0: 12.5, lon0: -80 };
+const VISTA_INICIAL = { lat0: 12.5, lon0: -80 };
 // El nivel más fino (24 px/grado) está hecho para x6: más allá solo se
 // agrandaría.
 const ZOOM_MAX = 6;

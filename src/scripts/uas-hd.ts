@@ -118,8 +118,6 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
     for (let x = 0; x < W; x++) datos.set([r, g, b, 1], (y * W + x) * 4);
   }
   const cieloTex = new DataTexture(datos, W, H, RGBAFormat, FloatType);
-  // (Por debajo del horizonte, oscuro: la panza queda en sombra, como en las
-  // fotos al sol.)
   cieloTex.mapping = EquirectangularReflectionMapping;
   cieloTex.magFilter = cieloTex.minFilter = LinearFilter;
   cieloTex.needsUpdate = true;
@@ -280,27 +278,6 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.fillText("B A Y K A R", 0, H * 0.99, W * 0.9);
       break;
     }
-    case "naca": {
-      // Los costados de la rampa se curvan hacia fuera (la forma NACA): de la
-      // punta (derecha) a la boca (izquierda). La rampa se oscurece al
-      // hundirse y la boca es negra.
-      const borde = (t: number) => (H / 2) * (0.08 + 0.92 * Math.pow(1 - t, 1.6));
-      const xBoca = W * 0.14;
-      const rampa = () => {
-        c.beginPath();
-        c.moveTo(W * 0.99, H / 2);
-        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * (1 - t), H / 2 - borde(1 - t) * 0.96); }
-        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * t, H / 2 + borde(t) * 0.96); }
-        c.closePath();
-      };
-      const g = c.createLinearGradient(W, 0, xBoca, 0);
-      g.addColorStop(0, "rgba(20,22,26,0.0)"); g.addColorStop(0.55, "rgba(20,22,26,0.28)"); g.addColorStop(1, "rgba(20,22,26,0.55)");
-      c.fillStyle = g; rampa(); c.fill();
-      c.strokeStyle = "rgba(20,22,26,0.7)"; c.lineWidth = H * 0.035; rampa(); c.stroke();
-      c.fillStyle = "#0d0e10";
-      c.beginPath(); c.roundRect(W * 0.03, H * 0.04, xBoca - W * 0.03, H * 0.92, H * 0.2); c.fill();
-      break;
-    }
     case "aviso": {
       c.fillStyle = "#f2c200"; c.fillRect(0, 0, W, H);
       const b = Math.min(W, H) * 0.16;
@@ -329,15 +306,6 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.96, 0, Math.PI * 2); c.fill();
       c.strokeStyle = "rgba(0,0,0,0.35)"; c.lineWidth = r * 0.12;
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.9, 0, Math.PI * 2); c.stroke();
-      break;
-    }
-    case "franja": {
-      // Una mancha alargada y lisa (el canal de un escape), que se difumina
-      // hacia un extremo.
-      const g = c.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, d.color); g.addColorStop(0.75, d.color); g.addColorStop(1, "rgba(0,0,0,0)");
-      c.fillStyle = g;
-      c.beginPath(); c.roundRect(W * 0.04, 0, W * 0.92, H, W * 0.25); c.fill();
       break;
     }
     case "escudo": {

@@ -19,10 +19,10 @@ import { PLANETA_V } from "./versiones.js";
 
 const DEG = Math.PI / 180;
 // Vista inicial: inclinada 20° al norte, con el Atlántico, Europa y África.
-export const VISTA_INICIAL = { lat0: 20, lon0: -10 };
+const VISTA_INICIAL = { lat0: 20, lon0: -10 };
 // Radio del disco en píxeles de arte. Con el píxel de Marte y la Luna serían
 // 256; con 180 el píxel es algo más grueso, y se eligió ese.
-export const RADIO_ARTE = 180;
+const RADIO_ARTE = 180;
 
 async function bitmap(url) {
   const blob = await fetch(url).then((r) => {
@@ -749,6 +749,9 @@ export async function montarTierraGL(canvas, {
     aurSentido = ya < yb ? 1 : -1;
   }
   const aVec = (c) => c.map((x) => x / 255);
+  // Sol (o luna) en vista (x derecha, y ARRIBA, z hacia quien mira): el de
+  // los datos lleva la y hacia abajo. No cambia al girar ni al arrastrar: la
+  // luz viene siempre del mismo lado.
   const LUZ = {
     dia: { S: [D.SX, -D.SY, D.SZ], suelo: D.NIGHT, atmo: aVec(D.ATMO), nube: D.C_NUBE.flatMap(aVec) },
     noche: { S: [D.MX, -D.MY, D.MZ], suelo: D.N_NIGHT, atmo: aVec(D.N_ATMO), nube: D.C_NUBE_NOCHE.flatMap(aVec) },
@@ -889,10 +892,6 @@ export async function montarTierraGL(canvas, {
   gl.enableVertexAttribArray(1);
   gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 20, 8);
   gl.bindVertexArray(null);
-
-  // Sol (o luna) en vista (x derecha, y ARRIBA, z hacia quien mira): el de
-  // los datos lleva la y hacia abajo. No cambia al girar ni al arrastrar: la
-  // luz viene siempre del mismo lado.
 
   let lat0 = lat0Ini, lon0 = lon0Ini, zoom = 1, zoomObj = 1, ancla = null, vivo = true;
   // El centro del disco, `des` píxeles de arte por debajo del centro del

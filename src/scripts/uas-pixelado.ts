@@ -15,7 +15,7 @@ import {
 } from "three";
 
 // Tamaño de un píxel de arte, en píxeles CSS (en el pixel HD, 1).
-export const TAM_PIXEL = 2;
+const TAM_PIXEL = 2;
 
 import type { Paleta } from "./uas-paletas";
 export type { Paleta };

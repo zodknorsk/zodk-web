@@ -252,8 +252,6 @@ const PIEZAS: Pieza[] = [
   // Sonda y cámara de vuelo en la punta del morro.
   { tipo: "varilla", id: "sonda", acabado: "metal", desde: [0, 0.08, 5.42], hasta: [0, 0.09, 6.0], radio: 0.013 },
   { tipo: "disco", id: "camara-morro", acabado: "lente", en: [0, -0.02, 5.49], normal: [0, 0, 1], radio: 0.045, grosor: 0.02 },
-  // Torreta de sensores bajo el morro: una bola con una ventana grande
-  // delante y otra pequeña al lado, colgada de un collar.
   // La torreta de sensores (MTS-B; fotos de cerca de frente, de lado y de
   // mantenimiento): colgada de un collar en dos anillos, con la cara de
   // delante plana en forma de «D» al revés (el borde de arriba recto y

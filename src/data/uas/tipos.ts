@@ -100,13 +100,8 @@ export type Dibujo =
   | { tipo: "baykar" }
   // Placa de aviso: amarilla, con el borde rayado en negro y unas líneas.
   | { tipo: "aviso" }
-  // Toma de aire sumergida (NACA): una rampa hundida, estrecha delante y
-  // ancha detrás, que acaba en la boca negra. El largo va a lo ancho del
-  // dibujo, con la boca a la izquierda.
-  | { tipo: "naca" }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
-  | { tipo: "franja"; color: string }
   | { tipo: "escudo" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };

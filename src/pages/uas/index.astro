@@ -98,7 +98,7 @@ const paises = recuento((f) => f.data.pais);
 
           <ul class="animate uas-tarjetas">
             {fichas.map((f) => (
-              <li data-pais={f.data.pais ?? ""} data-categoria={f.data.categoria ?? ""}>
+              <li data-pais={f.data.pais ?? ""}>
                 <a href={`/uas/${f.id}`} class="uas-tarjeta">
                   <span class="uas-tarjeta-foto">
                     {conGiro(f.id) && <span class:list={["uas-giro", { "uas-giro--hd": conHD(f.id) }]} style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
@@ -137,7 +137,7 @@ const paises = recuento((f) => f.data.pais);
     requestAnimationFrame(paso);
   });
 
-  // Filtro por país (el código admite más grupos de filtros a la vez).
+  // Filtro por país.
   document.addEventListener("astro:page-load", () => {
     const grupos = [...document.querySelectorAll<HTMLElement>(".uas-filtros")];
     if (!grupos.length) return;
