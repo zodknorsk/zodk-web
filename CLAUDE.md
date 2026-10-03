@@ -37,6 +37,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/luna.md` | `/luna` |
 | `docs/marte.md` | `/marte` |
 | `docs/uas.md` | Hangar de UAS: fichas de drones, visor y tira de la portada. **Guion completo para hacer un dron nuevo desde cero** |
+| `docs/uas-hd.md` | Drones en HD y en pixel HD: objetivos para pasar un dron, estado y lo probado |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
 | `docs/contenido.md` | Importador de Obsidian; secciones (análisis, operaciones, seguimiento) por el `tipo`; tuits |
 | `docs/rendimiento.md` | Consumo en Zen: cómo medir |
@@ -99,14 +100,15 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 - `public/favicon.ico` y `public/apple-touch-icon.png` se quedan aunque nada
   los enlace: los navegadores y iOS los piden por su nombre.
 
-## Peso del repositorio: plan acordado, sin empezar
+## Peso del repositorio: plan acordado
 
 La web publicada no sufre (los visitantes no bajan el historial); lo que
-engorda es el repositorio, y borrar no adelgaza el historial. Medido: ~500 MB
-de archivos (teselas de la Luna 179 MB, fotos de notas y eventos 170 MB,
-tuits 67 MB, Marte 39 MB, la Tierra 4 MB) y más de 600 MB de historial. Lo
-que más crece son **las fotos de los artículos**: el importador las copia a
-tamaño original (capturas PNG de 26 MB).
+engorda es el repositorio, y borrar no adelgaza el historial. Medido el
+3-oct-2026, después de reescribir el historial: ~400 MB de archivos en Git
+(teselas de la Luna 185 MB, imágenes de tuits 80 MB, notas con sus fotos
+54 MB, Marte 39 MB, la Tierra 4 MB) y un `.git` de ~380 MB. Lo que más
+crece son **las fotos de los artículos** (el importador ya las reduce, punto
+2).
 
 Decidido: **seguir con Astro y GitHub Pages**. Descartados: WordPress/Ghost
 (se pierde el pixel art y el flujo de Obsidian), servidor propio, Git LFS
@@ -121,6 +123,4 @@ framework o de hosting (no arregla el historial). Por orden, cuando toque:
    tipo `media.zodk.eu`, o pintar el pixel art al vuelo en la GPU. Cuentas:
    cada nivel de zoom ×4 teselas; la Tierra a 1 px = 1 km son ~100-150 MB, a
    250 m ~2 GB (no cabe en GitHub Pages).
-4. Opcional: limpiar el historial viejo (reescribe la historia de Git y
-   obliga a volver a clonar en el Mac y en el PC). Explicárselo con los
-   comandos exactos antes de hacer nada.
+4. ~~Limpiar el historial viejo~~: hecho el 26-sep-2026 (ver «Estado»).
