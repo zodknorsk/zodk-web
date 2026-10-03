@@ -56,7 +56,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { montarNombres } from "../scripts/nombres.js";
   import { AMARTIZAJES, PAISES_MARTE } from "../data/amartizajes";
   import { svgBandera } from "../data/banderas";
-  import { volar, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
+  import { volar, alejarAx1, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
 
   type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;
   let quitar: (() => void)[] = [];
@@ -80,26 +80,6 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
       return el;
     },
   };
-
-  // Si estaba acercado, antes de ir a la Tierra Marte se aleja hasta ×1 sin
-  // girar: el lienzo solo pinta lo que cabe en la ventana y, con zoom, al
-  // salir por abajo asomaba cortado en seco por arriba. A la velocidad del
-  // vuelo (1,6 s por cada e de zoom), con arranque y frenada suaves.
-  function alejarAx1(m: Marte): Promise<void> {
-    const z0 = m.vista().zoom;
-    if (z0 <= 1) return Promise.resolve();
-    const ms = 1600 * Math.log(z0);
-    return new Promise((listo) => {
-      const t0 = performance.now();
-      const paso = (ahora: number) => {
-        const p = Math.min(1, (ahora - t0) / ms);
-        m.ponZoom(z0 ** (1 - inOutSine(p)), true);
-        if (p < 1) requestAnimationFrame(paso);
-        else requestAnimationFrame(() => listo());   // un fotograma más: el lienzo ya pintado a ×1
-      };
-      requestAnimationFrame(paso);
-    });
-  }
 
   // Ir a la Tierra (la Tierra pequeña): hacia delante, como los vuelos de
   // ida. La Tierra pequeña crece hasta quedar como en la portada (el disco
