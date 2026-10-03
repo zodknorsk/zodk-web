@@ -319,7 +319,8 @@ export async function montarMarteGL(canvas, {
     bitmap(`${base}${prefijo}mapa.png${v}`),
     bitmap(lut ?? `${base}${prefijo}lut.png${v}`),
   ]);
-  // La Luna no trae niveles finos (de momento) ni una luz fija.
+  // Respaldo para unos datos sin niveles de zoom: arte/generar-luna.py
+  // escribe luna-datos.json sin ellos (--canvas) y los añade en otra pasada.
   D.NIVELES ??= [{ ppd: 4, teselas: false }];
   D.TESELA ??= 360;
   const MW = D.MAPA_W, MH = D.MAPA_H, R0 = D.RADIUS, T = D.TESELA;
@@ -714,9 +715,10 @@ export async function montarMarteGL(canvas, {
     mueve,
     suelta: () => { planifica(); },
     // Foto de la vista de ahora, en píxeles de arte: un lienzo de `lado` x
-    // `lado` centrado en el disco (el de marte-quieto.png es de 450). La usa
-    // el vuelo de vuelta a la Tierra, que así sale de Marte tal como se ha
-    // dejado. Se pinta y se copia en el mismo paso: el lienzo WebGL no guarda
+    // `lado` centrado en el disco (el de marte-quieto.png es de 450). La usan
+    // la vuelta de /marte a la Luna y la de /luna a la Tierra, que así salen
+    // del astro tal como se ha dejado, y los generadores de las fotos
+    // quietas. Se pinta y se copia en el mismo paso: el lienzo WebGL no guarda
     // lo pintado una vez en pantalla (preserveDrawingBuffer: false).
     instantanea(lado) {
       pinta();

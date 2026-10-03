@@ -2,10 +2,11 @@
 // materiales que responden a la luz como los de verdad (pintura mate, metal,
 // cristal), luz de ambiente con reflejos suaves y un sol que hace sombras del
 // propio dron (el ala sobre el cuerpo, las armas bajo el ala).
-// Mientras el usuario elige, hay tres estilos de prueba:
+// Tres estilos:
 //   a · realista: materiales físicos y sombras, sin tinta;
 //   b · ilustración: tres tonos de luz y las aristas en tinta, como una lámina;
 //   c · realista con filete: el a, con las aristas en tinta muy fina.
+// Se usa el c; el a y el b, solo con ?hd= en la URL.
 import {
   BufferGeometry, CanvasTexture, Float32BufferAttribute, LineBasicMaterial, LineSegments, Mesh, Object3D,
   Points, PointsMaterial, Raycaster, SRGBColorSpace,
@@ -95,8 +96,7 @@ export const colorHD = (acabado: Acabado) => new Color(PINTURAS[acabado].color);
 // Se enciende y se apaga entero al cambiar de modo.
 export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number) {
   // Entorno para los reflejos: un cielo degradado (claro y algo azul arriba,
-  // horizonte blanquecino, tierra parda y oscura abajo). El RoomEnvironment de
-  // Three.js lo quemaba todo a blanco.
+  // horizonte blanquecino, tierra parda y oscura abajo).
   const W = 64, H = 32, datos = new Float32Array(W * H * 4);
   // Paradas del degradado, de abajo (0) arriba (1): la tierra oscura, que
   // se oscurece enseguida bajo el horizonte (la mitad baja del costado y la
@@ -106,9 +106,7 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   ];
   for (let y = 0; y < H; y++) {
     // La fila 0 de la textura es la de abajo (v = 0 en el mapa
-    // equirectangular): en la primera versión el cielo iba del revés, arriba
-    // se reflejaba el suelo oscuro y la parte de arriba del dron salía más
-    // oscura que la de abajo.
+    // equirectangular).
     const a = (y + 0.5) / H;
     let i = 0;
     while (i < PARADAS.length - 2 && a > PARADAS[i + 1][0]) i++;
@@ -128,13 +126,11 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   const grupo = new Group();
   const cielo = new HemisphereLight(0x9cb2d2, 0x4a4e56, 0.85);
   const sol = new DirectionalLight(0xfffaf2, 3.9);
-  // El sol va con la cámara y casi encima (78°), un poco del lado de quien
-  // mira (45°): la mitad de arriba del dron recibe sol entera, sin sombras, y
-  // todas las sombras quedan de la mitad para abajo (lo pidió el usuario: «le
-  // está dando el sol directamente»). Probado antes y descartado: el sol
-  // bajo y del lado contrario a la cámara (manchaba de sombra la mitad de
-  // arriba), el sol del lado de quien mira y bajo (aplanaba todo) y el sol
-  // fijo en el mundo (desde muchos ángulos alumbraba el lado que no se ve).
+  // El sol va con la cámara, casi encima (78°) y un poco del lado de quien
+  // mira (45°): la mitad de arriba del dron, al sol y sin sombras; las
+  // sombras, de la mitad para abajo. Fijo en el mundo, desde muchos ángulos
+  // alumbraba el lado que no se ve. Las otras posiciones probadas, en
+  // docs/uas-hd.md.
   const ALTURA = (78 * Math.PI) / 180, LADO = (45 * Math.PI) / 180;
   const v = new Vector3(), esf = new Spherical();
   sol.castShadow = true;

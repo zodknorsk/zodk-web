@@ -1,6 +1,7 @@
 // Visor de maquetas de drones: se gira arrastrando, se acerca con la rueda o
-// pellizcando y enseña las partes con chinchetas. Estilo boceto: relleno liso
-// con las aristas en tinta. Solo pinta cuando algo cambia (arrastrar, zoom,
+// pellizcando y enseña las partes con chinchetas. En la 1.0, relleno liso
+// con las aristas en tinta; con `hd`, el dron pintado (uas-hd.ts). Solo
+// pinta cuando algo cambia (arrastrar, zoom,
 // cambio de vista); el giro automático es lo único que pinta seguido, y se
 // para si la página no se ve.
 import {
@@ -138,9 +139,9 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   raiz.position.sub(centro);
   escena.add(raiz);
 
-  // HD (proyecto UAS HD): el estilo C (realista con filete), el que eligió el
-  // usuario. Con ?hd=a|b|c|no en la URL se puede probar otro y sale el
-  // selector de pruebas sobre el lienzo (en la web normal no se ve).
+  // HD: estilo C (realista con filete). Con ?hd=a|b|c|no en la URL se prueba
+  // otro y sale el selector de pruebas sobre el lienzo (en la web normal no
+  // se ve).
   const luzHD = maqueta.hd ? crearLuzHD(renderer, escena, radio) : null;
   let estiloHD: EstiloHD | null = null;
   if (luzHD) {
@@ -177,8 +178,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   }
 
   // Distancia a la que la maqueta entera cabe en el lienzo, mire desde donde
-  // mire; el zoom va de 1/16 (de cerca, hacia el cursor) a 1,2 veces (antes,
-  // de 0,45 a 2,2: se alejaba hasta perder el dron y casi no se acercaba).
+  // mire; el zoom va de 1/16 (de cerca, hacia el cursor) a 1,2 veces.
   let distancia = 4;
   // Solo en local (window.__visor.mirar): la cámara puesta a mano no se
   // vuelve a encuadrar ni a acotar al cambiar el tamaño del lienzo.
@@ -317,9 +317,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   controles.addEventListener("change", pedir);
 
   // Distancia a la que el dron, visto desde esa vista, llena el lienzo (con
-  // margen): lo que ocupa de verdad desde ahí, no la esfera que lo envuelve.
-  // Con la esfera, el perfil del MQ-9 salía pequeñísimo (el ala, de canto,
-  // no ocupa casi nada pero la esfera le guardaba sitio entero).
+  // margen): lo que ocupa de verdad desde ahí, no la esfera que lo envuelve
+  // (con ella, un ala vista de canto dejaba el dron pequeñísimo).
   const punto = new Vector3();
   const distanciaVista = (vista: Vista) => {
     const [az, el] = VISTAS[vista];
@@ -461,7 +460,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     cielo.visible = sol.visible = !hdMat;
     luzHD?.encender(!!hdMat, hdMat ?? "a");
     detallesHD?.ver(!!hd || pixelHD, !pixelHD);
-    // Píxel de 1 px en el pixel HD (lo eligió el usuario frente a 2 y 1,5).
+    // Pixel HD a 1 px por píxel de arte (ver docs/uas-hd.md, «Pasar un dron
+    // al pixel HD»).
     pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined, maqueta.desfaseLuz ?? 0);
     // En HD, cámara de teleobjetivo: casi sin perspectiva, como en las fotos.
     const fov = hdMat ? 18 : 32;

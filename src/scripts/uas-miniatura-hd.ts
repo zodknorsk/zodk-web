@@ -2,8 +2,9 @@
 // las tarjetas de /uas y la planta de la tira de la portada, pintadas con el
 // mismo motor que el modo Pixel del visor (materiales, luz y calcas del HD y
 // la pasada de uas-pixelado.ts). El 2.0 sustituye al 1.0 en todas partes.
-// Lo usa arte/generar-uas-miniaturas-hd.mjs desde un Chrome sin ventana con
-// `npm run dev` en marcha; la web no lo carga.
+// Lo usan arte/generar-uas-miniaturas-hd.mjs y arte/generar-naves-uas-hd.mjs
+// (naveHD) desde un Chrome sin ventana con `npm run dev` en marcha; la web no
+// lo carga.
 import { Box3, Group, Mesh, PerspectiveCamera, Scene, Spherical, Vector3, WebGLRenderer } from "three";
 import type { Maqueta } from "../data/uas/tipos";
 import { geometriaDe } from "./uas-geometria";

@@ -124,8 +124,8 @@ const PNG_A_JPG_DESDE = 500 * 1024;
 const CALIDAD_JPG = 88;
 const EXT_VIDEO = /\.(mp4|mov|webm)$/i;
 
-// URL de un vídeo de YouTube, envuelta en `![](...)` (así los embebe el
-// usuario en Obsidian: watch?v=, live/ o youtu.be/, con o sin `?si=...`).
+// URL de un vídeo de YouTube, envuelta en `![](...)` (así se pegan en
+// Obsidian: watch?v=, live/ o youtu.be/, con o sin `?si=...`).
 const RE_YOUTUBE = new RegExp(
   `!\\[[^\\]]*\\]\\(\\s*<?\\s*https?://(?:www\\.)?` +
   `(?:youtube\\.com/(?:watch\\?v=|live/|embed/)|youtu\\.be/)` +

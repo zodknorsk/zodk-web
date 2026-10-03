@@ -20,7 +20,7 @@ const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 
 // Ala recta y larga: altura, punta, bordes y grosor en la raíz y en la punta.
 // Nace en la mitad baja del costado, con la cara de arriba a la altura de la
-// arista (perfil del «CH» 152 y foto francesa; en la 1.0 iba 20 cm más alta).
+// arista (perfil del «CH» 152 y foto francesa).
 const ALA = { y: -0.14, punta: 10.05, baRaiz: 0.45, bsRaiz: -1.15, baPunta: 0.07, bsPunta: -0.88, tRaiz: 0.32, tPunta: 0.16 };
 const enAla = (raiz: number, punta: number) => (x: number) => raiz + ((punta - raiz) * x) / ALA.punta;
 const bordeAtaque = enAla(ALA.baRaiz, ALA.baPunta);
@@ -40,9 +40,8 @@ const estMando = (x: number): [number, number, number, number] => [x, bisagra(x)
 // Dos soportes bajo cada ala (foto de frente con teleobjetivo): el de dentro
 // con una GBU-12 y el de fuera con dos Hellfire.
 const SOPORTE = { dentro: 1.3, fuera: 2.25 };
-// Bajo el soporte, que cuelga 0,34 m del ala: la GBU-12 pegada a él (en la
-// primera versión colgaba 4 cm por debajo, en el aire) y el lanzador de los
-// Hellfire con sus raíles.
+// Bajo el soporte, que cuelga 0,34 m del ala: la GBU-12 pegada a él y el
+// lanzador de los Hellfire con sus raíles.
 const SOPORTE_Y = ALA.y - 0.04, SOPORTE_BAJO = SOPORTE_Y - 0.34;
 const GBU = { y: SOPORTE_BAJO - 0.137 };
 const LANZADOR_Y = SOPORTE_BAJO - 0.08;
@@ -115,7 +114,7 @@ const idsHellfire = (x: number) => [
 
 // Soportes bajo el ala: casi tan largos como la cuerda y con perfil.
 const soporte = (id: string, x: number): Pieza => ({
-  // Con perfil, como una aleta que cuelga del ala (en la 1.0, una caja).
+  // Con perfil, como una aleta que cuelga del ala.
   tipo: "ala", id, acabado: "gris", vertical: true, espejo: true, x, y: SOPORTE_Y,
   estaciones: [[0, bordeAtaque(x) - 0.02, bordeAtaque(x) - 0.84, 0.14], [0.34, bordeAtaque(x) - 0.06, bordeAtaque(x) - 0.84, 0.13]],
 });
@@ -133,7 +132,6 @@ const carenado = (x: number): Pieza => ({
 // quitando que la foto está hecha algo desde atrás (unos 16°: cada punto de
 // la cola se corre 0,28 m por cada metro que se aparta del eje): el borde de
 // ataque en flecha, el de salida casi recto y la cuerda de 1,39 m a 0,61 m.
-// En la primera versión los dos bordes iban en flecha y no se parecía.
 const COLA = { largo: 3.95, y: -0.38, baRaiz: -2.66, bsRaiz: -4.05, baPunta: -3.58, bsPunta: -4.19, angulo: (32 * Math.PI) / 180 };
 const bordeSalidaCola = (d: number) => COLA.bsRaiz + ((COLA.bsPunta - COLA.bsRaiz) * d) / COLA.largo;
 const bordeAtaqueCola = (d: number) => COLA.baRaiz + ((COLA.baPunta - COLA.baRaiz) * d) / COLA.largo;
@@ -149,7 +147,7 @@ const estTimon = (d: number): [number, number, number, number, number] =>
 // Carenados de los mandos de la cola: la misma superficie, más gruesa en una
 // franja corta junto al borde de salida (fotos de perfil).
 const carenadoCola = (d: number): Pieza => ({
-  // Pequeños: las bisagras del timón (en la primera versión, barras gruesas).
+  // Pequeños: las bisagras del timón.
   tipo: "placa", id: `carenado-cola-${d}`, acabado: "gris", plano: "vertical", x: 0, y: COLA.y, grosor: 0.09,
   espejo: true, inclinacion: 58, bisel: 0.02,
   planta: [[bordeSalidaCola(d) + 0.3, d], [bordeSalidaCola(d) + 0.02, d], [bordeSalidaCola(d + 0.05) + 0.02, d + 0.05], [bordeSalidaCola(d + 0.05) + 0.3, d + 0.05]],
@@ -171,9 +169,8 @@ const ESCAPE = { x: 0, y: 0.6 };
 // arista viva que se ve en todas las fotos: el costado de arriba llega a la
 // cintura ya inclinado hacia arriba (recoge el sol) y ahí se quiebra hacia
 // dentro en una cara empinada que mira abajo (en sombra) hasta una panza plana
-// de casi todo el ancho (la cara baja unos 15° desde la vertical), con las esquinas bien redondeadas (foto de frente
-// de Kandahar). La señaló el
-// usuario: en la primera versión el paso era redondeado y no se veía.
+// de casi todo el ancho (la cara baja unos 15° desde la vertical), con las
+// esquinas bien redondeadas (foto de frente de Kandahar).
 const sec = ([z, ancho, arriba, abajo, cintura]: number[]): Seccion => ({ z, ancho, arriba, abajo, cintura, n: 2.6, arista: 0.45, panza: ancho * 0.87 });
 const MORRO: Seccion[] = [
   [5.505, 0, 0, 0, 0],
@@ -199,9 +196,8 @@ const CUERPO: Seccion[] = [
   [1.0, 0.56, 0.408, -0.532, -0.145],
   [0, 0.54, 0.386, -0.53, -0.13],
   // Detrás del ala, el cuerpo crece en la góndola del motor, de la misma
-  // pieza (fotos italiana, francesa y del 05-015; en la primera versión, una
-  // carena aparte posada encima): sube casi a pico detrás de la toma hasta
-  // 0,75 m, tan ancha como el cuerpo, y baja hasta la hélice.
+  // pieza (fotos italiana, francesa y del 05-015): sube casi a pico detrás de
+  // la toma hasta 0,75 m, tan ancha como el cuerpo, y baja hasta la hélice.
   [-1, 0.52, 0.36, -0.52, -0.12],
   [-1.8, 0.5, 0.37, -0.51, -0.1],
   [-2.2, 0.5, 0.39, -0.51, -0.09],
@@ -225,11 +221,9 @@ const lomo = (z: number) => {
 const caraAla = (x: number) => ALA.y + grosorAla(x) * 0.48;
 
 // Luces del lomo y del ala (fotos italiana y del 05-015): cúpulas pequeñas
-// de plástico, rojas y blancas, sobre un aro de metal. En la primera versión,
-// discos pintados.
+// de plástico, rojas y blancas, sobre un aro de metal.
 const LUCES: { en: [number, number, number]; color: "rojo" | "blanco"; espejo?: boolean }[] = [
-  // Pocas y pequeñas, como en la foto italiana (en la primera versión eran
-  // demasiadas: «parece que tiene varicela»).
+  // Pocas y pequeñas, como en la foto italiana.
   ...([[1.1, -0.1, "rojo"], [0.85, 0.1, "blanco"], [0.3, 0, "rojo"], [-0.4, 0.1, "blanco"], [-1.0, -0.1, "rojo"]] as const)
     .map(([z, x, color]) => ({ en: [x, lomo(z) - 0.005, z] as [number, number, number], color })),
   ...[2.4, 6.2].map((x) => ({ en: [x, caraAla(x), cuerdaMedia(x, 0.42)] as [number, number, number], color: "rojo" as const, espejo: true })),
@@ -325,9 +319,8 @@ const PIEZAS: Pieza[] = [
   { tipo: "caja", id: "toma-ranura", acabado: "negro", centro: [0, 0.71, -2.5], tam: [0.13, 0.02, 0.07], redondeo: 0.02 },
   // Escape del motor (fotos del 05-015): una capucha centrada en lo alto de
   // la góndola, que nace lisa en la chapa y se levanta hacia atrás hasta una
-  // boca ovalada, negra, abierta hacia la hélice. (Probado y descartado: un
-  // tubo que subía hacia delante, la capucha ladeada a la derecha y un canal
-  // oscuro detrás, que en la foto era solo una sombra.)
+  // boca ovalada, negra, abierta hacia la hélice. Lo probado y descartado,
+  // en docs/uas-hd.md.
   { tipo: "tubo", id: "escape", acabado: "gris", centro: [ESCAPE.x, ESCAPE.y], seccion: [0.85, 1], perfil: [
     [-3.9, 0], [-4.02, 0.09], [-4.16, 0.15], [-4.3, 0.185], [-4.38, 0.195], [-4.385, 0],
   ] },
@@ -339,11 +332,10 @@ const PIEZAS: Pieza[] = [
   },
   {
     // Cola en Y: dos superficies en V hacia arriba, de unos 6,7 m de punta a
-    // punta y a 34° sobre la horizontal...
+    // punta, con perfil de ala y a COLA.angulo (32°) sobre la horizontal (foto
+    // de frente con teleobjetivo): la punta, a lo largo de la superficie, a
+    // COLA.largo de la raíz.
     tipo: "ala", id: "cola", acabado: "gris", y: COLA.y,
-    // Con perfil de ala (en la 1.0, una placa plana) y a 30° sobre la
-    // horizontal (foto de frente con teleobjetivo): la punta, a lo largo de la
-    // superficie, a COLA.largo de la raíz.
     estaciones: [
       estCola(0), estCola(TIMON.desde), estCola(TIMON.desde, true), estCola(TIMON.hasta, true), estCola(TIMON.hasta), estCola(COLA.largo),
     ],

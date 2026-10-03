@@ -1,9 +1,8 @@
-// Plugin de Sätteri para las notas del hangar de UAS (de momento, las
-// municiones del armamento): dos o más fotos seguidas, cada una con su pie
-// («![[foto.jpg]]» y debajo «*pie*», separadas por una línea en blanco), se
-// juntan en un carrusel: se ve una foto, y debajo «‹ 1 / 4 ›» y su pie. En la bóveda se
-// siguen viendo todas, una debajo de otra. Lo eligió el usuario el
-// 1-oct-2026 (la opción «contador en el pie»). Lo que hace al pulsar está en
+// Plugin de Sätteri para las municiones del armamento del hangar de UAS: dos
+// o más fotos seguidas, cada una con su pie («![[foto.jpg]]» y debajo
+// «*pie*», separadas por una línea en blanco), se juntan en un carrusel: se
+// ve una foto, y debajo «‹ 1 / 4 ›» y su pie. En la bóveda se siguen viendo
+// todas, una debajo de otra. Lo que hace al pulsar está en
 // src/components/Carrusel.astro.
 //
 // Corre antes que el plugin de imágenes de Astro, así que las fotos del

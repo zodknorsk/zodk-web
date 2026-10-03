@@ -4,8 +4,8 @@ import type { Acabado } from "../data/uas/tipos";
 
 export type Paleta = [string, string, string, string];
 
-// Paletas del modo Pixel (de oscuro a claro), por acabado. El dron, negro
-// mate como los ejemplares de la fábrica; las juntas, un punto más oscuras;
+// Paletas del modo Pixel (de oscuro a claro), por acabado. El negro, mate;
+// las juntas, un punto más oscuras;
 // los elevones, un punto más claros; motor, hélice y antena, metal gris; la
 // escarapela, sus colores; las bombas del Reaper, verde oliva; el Raven, el gris
 // algo verdoso de los del Ejército de Tierra (gris-et). La parte elegida va en blanco papel. De noche, el

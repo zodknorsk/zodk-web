@@ -1,7 +1,8 @@
 ---
 // /uas: el hangar de UAS (la gran enciclopedia de los UAS). Las tiras del
-// glosario y del armamento y una tarjeta por ficha, con la miniatura en pixel art del dron (arte/generar-uas-miniaturas.mjs),
-// su país, nombre y categoría, y un filtro por país (sale de la tabla de
+// glosario y del armamento y una tarjeta por ficha, con la miniatura en pixel
+// art del dron (arte/generar-uas-miniaturas.mjs, o generar-uas-miniaturas-hd.mjs
+// los que tienen HD), su país, nombre y categoría, y un filtro por país (sale de la tabla de
 // características de cada ficha).
 import fs from "node:fs";
 import { getCollection } from "astro:content";
@@ -122,7 +123,7 @@ const paises = recuento((f) => f.data.pais);
 
 <script>
   // Cuántos términos y municiones hay, en una chapa que cuenta desde 0 al
-  // cargar la página, en 3 s (con 1,6 s casi no se veía subir mientras
+  // cargar la página, en 3 s (más deprisa casi no se ve subir mientras
   // aparece la página). Sin animación si se piden menos movimientos.
   document.addEventListener("astro:page-load", () => {
     const cuentas = [...document.querySelectorAll<HTMLElement>(".uas-cuenta")];
@@ -289,10 +290,9 @@ const paises = recuento((f) => f.data.pais);
       linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   }
-  /* El dron, quieto (el giro hasta verse de planta al pasar el ratón se
-     quitó el 1-oct-2026, a petición del usuario). Con HD, su imagen de
-     256x144 a 1 px por píxel, como el visor, casi de perfil; sin HD, el
-     primer fotograma de su tira 1.0 (8 de 128x72), al doble. */
+  /* El dron, quieto. Con HD, su imagen de 256x144 a 1 px por píxel, como
+     el visor, casi de perfil; sin HD, el primer fotograma de su tira 1.0
+     (8 de 128x72), al doble. */
   .uas-dron {
     display: block;
     width: 256px;

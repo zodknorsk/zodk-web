@@ -1,7 +1,7 @@
 // Lo que describe la maqueta de un dron para el visor (src/scripts/visor-uas.ts
 // y src/components/VisorUAS.astro).
 // Ejes: x hacia la punta del ala derecha, y hacia arriba, z hacia el morro.
-// Unidades libres: las maquetas no tienen escala.
+// Unidades libres; `escala` dice cuántos metros es una unidad.
 
 import type { Pais } from "../banderas";
 
@@ -190,6 +190,6 @@ export type Maqueta = {
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
-  // de la pasada de pixel (el MQ-9, lo pidió el usuario el 2-oct-2026).
+  // de la pasada de pixel.
   contornoPixel?: boolean;
 };

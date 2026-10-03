@@ -21,7 +21,7 @@ const DEG = Math.PI / 180;
 // Vista inicial: inclinada 20° al norte, con el Atlántico, Europa y África.
 const VISTA_INICIAL = { lat0: 20, lon0: -10 };
 // Radio del disco en píxeles de arte. Con el píxel de Marte y la Luna serían
-// 256; con 180 el píxel es algo más grueso, y se eligió ese.
+// 256; con 180, algo más grueso.
 const RADIO_ARTE = 180;
 
 async function bitmap(url) {
