@@ -33,6 +33,3 @@ que mezclaría las dos historias.
    ```
 
 4. Devolver las fuentes a su sitio: `mv ~/zodk-fuentes/* arte/`
-
-Con esto también queda hecho lo de mover `logo-files/` a `arte/` que pide
-`CLAUDE.md` para el PC.

@@ -196,6 +196,23 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 
 ## Dónde estamos
 
+### Estado
+
+- **Cerrados**: el MQ-9 (HD y pixel HD, desde el 1-oct-2026) y el TB2
+  (2-oct-2026), en `main` y publicados: en el visor, en las tarjetas de
+  `/uas` y como naves de la portada.
+- **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`); las maquetas
+  en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
+  visores (abajo, «Para el final»); pasar los demás drones (objetivos de
+  arriba).
+- **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9` y
+  `hd-bayraktar-tb2`, fusionadas y borradas.
+
+### Registro
+
+Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
+está en `main`.
+
 - **2-oct-2026, naves de la portada en pixel HD**: el TB2 (sustituye al TB3,
   que se quitó) y el MQ-9, con `arte/generar-naves-uas-hd.mjs` (ver arriba).
   Pendiente de mirar: las maquetas del hangar están en espejo respecto al
@@ -216,7 +233,8 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   retoques: estilo **C** fijo por defecto; el selector de pruebas solo sale
   con `?hd=a|b|c|no` en la URL.
 - **Pendiente para otro día** (lo dejó el usuario, «saturado»): el **pixel
-  art 2.0**, y pasar los demás drones al HD.
+  art 2.0** (hecho el 1-oct-2026: el pixel HD), y pasar los demás drones al
+  HD.
 - **Hecho** (sin commit): las fuentes (abajo); la pieza nueva **`casco`**
   en `uas-geometria.ts` (cuerpo de secciones con forma de superelipse, mitad
   de arriba y de abajo con su alto y su «cuadratura», unidas con una
@@ -709,7 +727,7 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 
 ## Decisiones del usuario (30-sep-2026)
 
-- Rama propia, `uas-hd`.
+- Rama propia, `uas-hd` (ya fusionada y borrada).
 - El MQ-9 como ahora (cuatro Hellfire, dos GBU-12, tren fuera), **con las
   marcas reales de un avión concreto** de la Fuerza Aérea: escarapela,
   número de cola y código de la base.
@@ -724,10 +742,10 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 **cuatro MAM-L**. El avión concreto lo eligió Claude con permiso del usuario
 («te dejo trabajando»): el del Ejército de Tierra de Teknofest 2021.
 
-## Plan
+## Plan (MQ-9)
 
 - [x] Fuentes: fotos en alta de todos los ángulos y el avión de las marcas.
-- [ ] Forma: cuerpo continuo hecho de secciones medidas (no tubos sueltos),
+- [x] Forma: cuerpo continuo hecho de secciones medidas (no tubos sueltos),
       carenados, tomas de aire, antenas, tren, torreta; comparado en
       ortográfica con el plano y con fotos desde el mismo ángulo.
 - [x] Pruebas de estilo con selector temporal: el usuario eligió la C «de momento».

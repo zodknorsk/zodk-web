@@ -44,7 +44,7 @@ tarjetas de `/uas` enseñaran fotogramas partidos al quitar el ratón a medias
 hecho que al volver atrás desde un enlace la ficha quede donde se estaba
 leyendo (el visor ya se coloca en el build, ver «Las fichas en la web») y
 que el giro de las tarjetas de `/uas` no se deslice partido en Safari (ver
-«Animaciones por fotogramas»). Hecho también, en la bóveda (sin commit ni importar): las cuatro notas usan
+«Animaciones por fotogramas»). Hecho también, en la bóveda: las cuatro notas usan
 los términos del glosario que eligió el usuario (toda la tabla de
 características y cinco cambios en el texto: GPS-denied, RATO, SATCOM,
 enjambre, y fuera «se puede perder sin gran drama»). La tira de la portada en el móvil **se queda como estaba** (los dos
@@ -68,7 +68,7 @@ Hecho: nota `Armamento.md` en la carpeta del Hangar (una sola nota con
 índice, fotos y no visor: decisión del usuario), con cinco municiones, las
 que llevan nuestros drones: Hellfire, JSM, LRASM, GBU-12 y GBU-38. En la web,
 página `/uas/armamento` y tira debajo de la del glosario (ver «El
-armamento», abajo). Después (sin commit): la fila «Carga» del MQ-9 y del
+armamento», abajo). Después: la fila «Carga» del MQ-9 y del
 Wildfire enlaza a cada munición (`[[Armamento#GBU-12 Paveway II\|GBU-12]]`),
 y el glosario tiene una sección nueva, «Municiones y guiado», con
 *semi-active laser*, *fire and forget* y *sea-skimming* (75 términos).
@@ -165,7 +165,7 @@ y añade el panel CRPA de cuatro elementos en el ala derecha. Ojo: ese plano
 coincide exactamente con el **plano del Shahed de 3,35 m** (Alexpl, 2024),
 revisión del de 3,50 m (2023) con que se hizo el Shahed; las proporciones
 del de la DIA se parecen más al nuevo. El usuario dijo que se rehiciera
-(hecho, sin commit): ahora **la geometría está en `shahed-136.ts`**, medida
+(hecho): ahora **la geometría está en `shahed-136.ts`**, medida
 del plano de 3,35 m, y `geran-2.ts` la importa entera, la pinta de negro,
 cambia el anillo por una junta y añade el panel CRPA. Las notas del Shahed
 y del Geran las revisa y retoca el usuario (dice «da eso por tachado»).
@@ -187,8 +187,7 @@ tira de la portada y el índice»); los términos del glosario en los
 artículos, en mono con rayas y puntero «i» (ver «El glosario»); el contador
 de las tiras sube en 3 s.
 
-**1-oct-2026, AGM-114R9X y carrusel de fotos** (sin commit, probado en
-local). En el armamento, la munición nueva AGM-114R9X (el Hellfire de las
+**1-oct-2026, AGM-114R9X y carrusel de fotos** (en `main`). En el armamento, la munición nueva AGM-114R9X (el Hellfire de las
 cuchillas), justo después del Hellfire, con foto sacada del vídeo de CENTCOM
 (DVIDS 954005, dominio público); la nota del Reaper la enlaza en su
 Historia (Zawahiri, 2022). El Hellfire tiene ahora cuatro fotos en carrusel.
@@ -690,7 +689,7 @@ todo»). Las entradas van **con espacio** entre ellas (probado sin espacio;
 decidido con espacio).
 
 **Los términos y las municiones en los artículos** (29-sep-2026). En las
-notas, los eventos y las fichas del Hangar, la primera vez que sale un
+notas, el seguimiento y las fichas del Hangar, la primera vez que sale un
 término del glosario (MALE, MTOW, jamming…) o una munición del armamento
 (Hellfire, GBU-38…) queda enlazado a su entrada. Para que no se confunda con un enlace
 normal (azul) va del color del texto, en IBM Plex Mono algo más pequeña,
@@ -710,7 +709,7 @@ se marca nada (el usuario lo prefirió a enlazar a mano en Obsidian).
   código y tuits; un enlace a mano al glosario cuyo texto es un término
   gana la tarjeta.
 - `src/components/GlosarioTarjeta.astro`: la tarjeta, en las páginas de
-  notas, eventos y UAS.
+  notas, seguimiento y UAS.
 - Las municiones salen de sus notas (`src/content/uas/armamento/<slug>/`):
   vale el nombre entero («AGM-114 Hellfire»), la designación («AGM-114») y
   el nombre de detrás («Hellfire»). Su tarjeta lleva el «Tipo» de la tabla,
@@ -790,26 +789,25 @@ cuentan entre las tarjetas de `/uas` ni en la portada.
   usuario lo eligió entre cinco formas (flechas y puntos, miniaturas debajo
   o al lado, deslizar con la siguiente asomando y contador en el pie) y
   cuatro variantes de miniaturas pequeñas; quiso el contador en el pie y
-  descartó las miniaturas y un puntero dibujado («más minimalista»). De
-  momento solo lo tiene el Hellfire (cuatro fotos).
+  descartó las miniaturas y un puntero dibujado («más minimalista»). Lo
+  tienen todas las municiones menos el JSM (una sola foto).
 - `[[#sección]]` sin texto se lee ahora «sección» en la web, como en
   Obsidian (antes salía «#sección»).
 
 ## Animaciones por fotogramas
 
-La puerta del hangar (5 fotogramas) es una tira de fotogramas (el giro de
-las tarjetas, que también lo era, se quitó el 1-oct-2026). **No animarlas con `transition: background-position …
+La puerta del hangar de la portada (5 fotogramas) es una tira de
+fotogramas. **No animarla con `transition: background-position …
 steps()`**: si se quita el ratón a medias, la vuelta se hace en saltos del
 tramo recorrido, que no caen en fotogramas enteros, y se ven dos fotogramas
 partidos (medido: 2 → 1,5 → 1 → 0,5). Se anima un número de fotograma
-registrado como entero (`@property --hangar-fotograma` / `--giro-fotograma`,
-`syntax: "<integer>"`) y la posición se calcula con él: el navegador lo
-redondea siempre a un fotograma entero. **Safari no**: lo anima con
-decimales (medido en WebKit: 0,72 → 1,5 → 2,09…) y la tira se desliza de
-lado con dos dibujos partidos. Por eso la posición lleva además
-`round(var(--giro-fotograma), 1)`. Hecho en las tarjetas (28-sep-2026, el
-usuario lo vio en el iPhone); la puerta del hangar de la portada usa lo
-mismo sin `round()`, pero en el móvil no se ve (el hangar está oculto).
+registrado como entero (`@property --hangar-fotograma`, `syntax:
+"<integer>"`) y la posición se calcula con él: el navegador lo redondea
+siempre a un fotograma entero. **Safari no**: lo anima con decimales (medido
+en WebKit: 0,72 → 1,5 → 2,09…) y la tira se desliza de lado con dos dibujos
+partidos; se arregla redondeando también en la posición
+(`round(var(--hangar-fotograma), 1)`). La puerta no lo lleva: en el móvil
+el hangar está oculto.
 
 ## Las fichas en la web
 
@@ -844,7 +842,15 @@ del tamaño de un embed de X (34rem, foto o vídeo con alto máximo).
 | `src/scripts/uas-paletas.ts` | Paletas del pixel art (visor y generadores) |
 | `src/scripts/visor-uas.ts` | El motor (Three.js): escena, cámara, letras, vistas, modos |
 | `src/scripts/uas-pixelado.ts` | El modo Pixel |
+| `src/scripts/uas-hd.ts` | El modo HD: materiales, luz, calcas y costuras (`docs/uas-hd.md`) |
+| `src/scripts/uas-miniatura-hd.ts` | Tarjeta, planta y nave de la portada en pixel HD (lo cargan los generadores de `arte/`) |
 | `src/components/VisorUAS.astro` | El marco del visor: `<VisorUAS modelo="mich-2000" />` |
+| `src/components/BanderaUAS.astro` | La bandera en pixel art del país de un dron |
+| `src/components/GlosarioIndice.astro`, `src/lib/glosario.ts` | El índice del glosario y de dónde sale |
+| `src/components/GlosarioTarjeta.astro` | La tarjeta de un término o una munición en los artículos |
+| `src/components/ArmamentoLista.astro`, `src/lib/armamento.ts` | El índice del armamento y los grupos de municiones |
+| `src/components/Carrusel.astro` | Lo que hacen al pulsar los carruseles de fotos |
+| `src/lib/glosario-enlaces.mjs`, `src/lib/banderas-tablas.mjs`, `src/lib/carrusel-fotos.mjs` | Plugins de Markdown: términos y municiones enlazados, banderas de las tablas y carruseles |
 | `src/pages/uas/index.astro` | El índice `/uas` |
 | `src/pages/uas/[...slug].astro` | La ficha `/uas/<slug>` |
 | `src/pages/index.astro`, `src/styles/portada.css` | La tira «Hangar de UAS» (`.tira-sat`) |

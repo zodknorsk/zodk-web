@@ -177,9 +177,9 @@ rojo de **EN CURSO** (`enCurso` en `src/lib/contenido.ts`).
 Los bloques de la Luna y Marte (con cuántos alunizajes, amartizajes y notas
 hay; con el ratón encima, el astro gira despacio con su motor, cargado al
 pasar el ratón la primera vez: `montarGiroBloques` en `portada.ts`), la tira del blog con las insignias de "hecho con" (`STACK` en
-`src/consts.ts`, con el color de cada marca para el hover) y, en dos
-columnas: a la izquierda, el último seguimiento y debajo las dos últimas
-operaciones; a la derecha, los cinco últimos análisis. La foto de cada fila
+`src/consts.ts`, con el color de cada marca para el hover), el último
+seguimiento a todo el ancho y, debajo, en dos columnas, las dos últimas
+operaciones y los dos últimos análisis (`SITE.NUM_NOTAS_ON_HOMEPAGE`). La foto de cada fila
 es la primera foto local del texto (`primeraFoto`); un seguimiento sin foto
 en el índice coge la de su semana más reciente que tenga.
 
