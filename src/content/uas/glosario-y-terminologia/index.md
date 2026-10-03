@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-09-28'
+updated: '2026-10-02'
 tags:
   - dron
 glosario: true
@@ -31,26 +31,26 @@ glosario: true
 
 - **US designation system** *(designaciones de EE. UU.)* — Las letras delante del número indican para qué sirve la aeronave. 
 	- La **Q** indica que es un dron, sin tripulación. La letra que va justo antes de la Q indica su misión: 
-		- **R** reconocimiento (RQ-4 Global Hawk).
-		- **M** multimisión: combina misiones de ISR y de ataque de precisión (MQ-9 Reaper).
+		- **R** reconocimiento _(RQ-4 Global Hawk)_.
+		- **M** multimisión: combina misiones de ISR y de ataque de precisión _(MQ-9 Reaper)_.
 		- **F** caza: diseñado para el combate aire-aire, es decir, para derribar otras aeronaves. 
-		- **C** carga: transporta suministros (CQ-10 Snowgoose).
+		- **C** carga: transporta suministros _(CQ-10 Snowgoose)_.
 	- Una **Y** delante indica que es un prototipo.
 	- Una **X** que es experimental. 
-	- Una **Q** delante del todo no significa lo mismo: es un avión tripulado convertido en dron blanco para prácticas de tiro (QF-16, un F-16 sin piloto).
-	- La letra del final es la versión (MQ-9A, MQ-9B).
+	- Una **Q** delante del todo no significa lo mismo: es un avión tripulado convertido en dron blanco para prácticas de tiro (_QF-16_, un F-16 sin piloto).
+	- La letra del final es la versión _(MQ-9A, MQ-9B)_.
 
 - **NATO UAS classes** *(clases de la OTAN)* — Clasificación de la OTAN por peso al despegue:
-	- **Clase I** (menos de 150 kg). Se divide en micro (menos de 2 kg), mini (de 2 a 20 kg) y pequeños (más de 20 kg).
+	- **Clase I** (menos de 150 kg). Se divide en micro (menos de 2 kg), mini (de 2 a 20 kg) y small (más de 20 kg).
 	- **Clase II** (de 150 a 600 kg). Drones tácticos, que apoyan a una brigada.
 	- **Clase III** (más de 600 kg). Los MALE, los HALE y los drones de combate.
 
 - **DoD UAS groups** *(grupos del Departamento de Defensa de EE. UU.)* — Clasificación estadounidense por peso, altitud de vuelo y velocidad:
-	- **Grupo 1**: hasta 9 kg, por debajo de unos 370 m sobre el suelo. Por ejemplo, el RQ-11 Raven.
-	- **Grupo 2**: de 9 a 25 kg, por debajo de unos 1.070 m. Por ejemplo, el ScanEagle.
-	- **Grupo 3**: hasta 600 kg, por debajo de unos 5.500 m. Por ejemplo, el RQ-7 Shadow.
-	- **Grupo 4**: más de 600 kg, por debajo de unos 5.500 m. Por ejemplo, el MQ-1C Gray Eagle.
-	- **Grupo 5**: más de 600 kg, por encima de unos 5.500 m. Por ejemplo, el MQ-9 Reaper y el RQ-4 Global Hawk.
+	- **Grupo 1**: hasta 9 kg, por debajo de unos 370 m sobre el suelo. Por ejemplo, el _RQ-11 Raven._
+	- **Grupo 2**: de 9 a 25 kg, por debajo de unos 1.070 m. Por ejemplo, el _ScanEagle_.
+	- **Grupo 3**: hasta 600 kg, por debajo de unos 5.500 m. Por ejemplo, el _RQ-7 Shadow_.
+	- **Grupo 4**: más de 600 kg, por debajo de unos 5.500 m. Por ejemplo, el _MQ-1C Gray Eagle_.
+	- **Grupo 5**: más de 600 kg, por encima de unos 5.500 m. Por ejemplo, el _MQ-9 Reaper_ y el _RQ-4 Global Hawk_.
 
 - **Blue UAS list** *(lista Blue UAS)* — Lista del Departamento de Defensa de EE. UU. con los drones y piezas que sus unidades pueden comprar y usar porque no llevan componentes de países considerados adversarios, sobre todo China. El [Skydio X10D](/uas/skydio-x10d) está en ella.
 
