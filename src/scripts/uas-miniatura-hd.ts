@@ -16,7 +16,7 @@ import { PALETAS } from "./uas-paletas";
 // Tarjeta: 10°. En el visor (18°) el dron no llena el lienzo; la tarjeta lo
 // llena, y con 18° la parte cercana salía más exagerada que en el visor. Con
 // 10° se ve como un recorte del visor.
-const FOV_PLANTA = 8, FOV_VISOR = 10;
+const FOV_PLANTA = 8, FOV_TARJETA = 10;
 
 // Si una pieza se queda fuera: su id es uno de `quitar` o empieza por uno
 // de ellos y un guion («lanzador» quita también «lanzador-rail-0»).
@@ -171,7 +171,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
 // su cámara y a 1 px por píxel como el modo Pixel, llenando el recuadro.
 // De día y de noche (data URL).
 export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, H: number) {
-  const m = montar(maqueta, W, H, FOV_VISOR);
+  const m = montar(maqueta, W, H, FOV_TARJETA);
   const salida = m.pintar(vista, m.llenar(vista, 4));
   m.soltar();
   return salida;
@@ -200,7 +200,7 @@ export function plantaHD(maqueta: Maqueta, vista: [number, number], pxPorMetro: 
 // arte/generar-naves-uas-hd.mjs. Devuelve también dónde caen las puntas de
 // las alas (las luces de posición), en píxeles: `der` la derecha (+x).
 export function naveHD(maqueta: Maqueta, vista: [number, number], morro: number, lado: number, quitar: string[] = []) {
-  const m = montar(maqueta, lado, lado, FOV_VISOR, quitar);
+  const m = montar(maqueta, lado, lado, FOV_TARJETA, quitar);
   m.morroHacia(vista, morro);
   const { dia } = m.pintar(vista, m.llenar(vista, 2));
   // Las puntas: los vértices del ala más a cada lado.

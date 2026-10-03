@@ -11,7 +11,7 @@ import { montarMano, montarZoom } from "./gestos.js";
 import { montarNombres } from "./nombres.js";
 import { PLANETA_V, LUNA_V, MARTE_V } from "./versiones.js";
 import { mgrs } from "./mgrs.js";
-import { volarALuna, faseLunaHoy, VUELO_MARTE } from "./vuelos.js";
+import { volar, faseLunaHoy, VUELO_MARTE } from "./vuelos.js";
 
 let planeta: { desmontar(): void; setParado(b: boolean): void } | null = null;
 let quitaMira: (() => void) | null = null;
@@ -379,7 +379,7 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     // La Tierra que se queda atrás: el lienzo si ya ha pintado (con zoom o
     // girada, tal como esté), si no la Tierra quieta.
     const planeta = hero.querySelector<HTMLElement>(".hero-tierra.lista") ?? hero.querySelector<HTMLElement>(".hero-planet")!;
-    const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img!, ...d.opciones });
+    const vuelo = volar({ icono, planeta, estrellas, apagar, img: img!, ...d.opciones });
     cancela = vuelo.limpiar;
     llegada = { hero: d.heroDestino, pos: await vuelo.fin };
     // La capa se va con la página vieja al cambiar (ClientRouter sustituye el <body>).

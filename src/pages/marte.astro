@@ -56,7 +56,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   import { montarNombres } from "../scripts/nombres.js";
   import { AMARTIZAJES, PAISES_MARTE } from "../data/amartizajes";
   import { svgBandera } from "../data/banderas";
-  import { volarALuna, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
+  import { volar, inOutSine, VUELO_MARTE, VUELO_TIERRA } from "../scripts/vuelos.js";
 
   type Marte = NonNullable<Awaited<ReturnType<typeof montarMarteGL>>>;
   let quitar: (() => void)[] = [];
@@ -124,7 +124,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
     destino.setAttribute("aria-hidden", "true");
     hero.append(destino);
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
-    const vuelo = volarALuna({ icono, planeta: marteEl, estrellas, apagar, img, destino, ...VUELO_TIERRA });
+    const vuelo = volar({ icono, planeta: marteEl, estrellas, apagar, img, destino, ...VUELO_TIERRA });
     for (const f of quitar) f();                // sin mano, zoom ni motor: el lienzo se queda con lo último que pintó
     quitar = [];
     estrellasLlegada = await vuelo.fin;
@@ -136,7 +136,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
   // ×1, sin girar (con zoom el disco no cabe entero); ahí se le hace una foto,
   // con el giro de ese momento, y vuela ella, que al final, ya pequeña, se
   // funde con el Marte de /luna. Alejarse y volar son un solo movimiento
-  // (`alejar` en volarALuna). Sin WebGL2 vuela Marte quieto (marte-quieto.png).
+  // (`alejar` en volar(), vuelos.js). Sin WebGL2 vuela Marte quieto (marte-quieto.png).
   async function volver(vuelta: Vuelta, hero: HTMLElement, m: Marte | null, ocultar: HTMLElement[], apagar: HTMLElement[]) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate(vuelta.ruta);
     let img: HTMLImageElement | null = null;
@@ -171,7 +171,7 @@ const notasPublicadas = AMARTIZAJES.filter((a) => publicadas.has(a.nota)).map((a
         return foto;
       },
     };
-    const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img, inverso: true, alejar, ...VUELO_MARTE });
+    const vuelo = volar({ icono, planeta, estrellas, apagar, img, inverso: true, alejar, ...VUELO_MARTE });
     if (!alejar) esconder();
     estrellasLlegada = await vuelo.fin;
     navigate(vuelta.ruta);

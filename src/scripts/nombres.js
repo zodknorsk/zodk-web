@@ -19,7 +19,7 @@ const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de air
 /**
  * @param {HTMLElement} capa  la capa de nombres (centrada en el disco)
  * @param {{ proyecta: (lat: number, lon: number) => { x: number, y: number, z: number },
- *   pxGrado: () => number, vista: () => { zoom: number } }} marte
+ *   pxGrado: () => number, vista: () => { zoom: number } }} motor  el motor WebGL del astro
  * @param {{ lat: number, lon: number, llego: boolean, separa: number, bandera: string,
  *   titulo: string, clase: string, datos: [string, string][], texto: string,
  *   foto: string, fotoPos: string, credito: string | null, enlace: string | null }[]} [chapas]
@@ -27,7 +27,7 @@ const CHAPA_W = 20, CHAPA_H = 14;            // la chapa (18 x 12) y 1 px de air
  *   el radio del astro en km
  * @returns {Promise<{ coloca: () => void, desmontar: () => void }>}
  */
-export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
+export async function montarNombres(capa, motor, chapas, { url, radioKm }) {
   const KM_GRADO = Math.PI * radioKm / 180;    // un grado del astro, en km
   const NOMBRES = await fetch(url).then((r) => r.json());
 
@@ -118,7 +118,7 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
   for (const e of els) { e.el.hidden = true; e.el.style.visibility = ""; }
 
   function coloca() {
-    const z = marte.vista().zoom, ppg = marte.pxGrado();
+    const z = motor.vista().zoom, ppg = motor.pxGrado();
     const pantalla = Math.max(window.innerWidth, window.innerHeight);
     // Los umbrales (`px`) se ajustaron con un disco de 540 px. En el móvil el
     // disco es más pequeño (unos 340 px) y los lugares pequeños no llegaban a
@@ -128,7 +128,7 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
     const salen = [];
     for (const e of els) {
       const { n, el } = e;
-      const c = marte.proyecta(n.lat, n.lon);
+      const c = motor.proyecta(n.lat, n.lon);
       // Cerca del borde del disco se funde; por detrás, fuera.
       const borde = Math.max(0, Math.min(1, (c.z - 0.12) / 0.2));
       // Cuánto mide el lugar en pantalla, sacado de su tamaño real (la caja
@@ -160,7 +160,7 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
         // encima y no como un recorte.
         const [s, nn, o, es] = n.caja;
         const pts = [[nn, n.lon], [s, n.lon], [n.lat, o], [n.lat, es], [nn, o], [nn, es], [s, o], [s, es]]
-          .map(([la, lo]) => marte.proyecta(la, lo));
+          .map(([la, lo]) => motor.proyecta(la, lo));
         const x0 = Math.min(...pts.map((p) => p.x)), x1 = Math.max(...pts.map((p) => p.x));
         const y0 = Math.min(...pts.map((p) => p.y)), y1 = Math.max(...pts.map((p) => p.y));
         const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, l = Math.max(x1 - x0, y1 - y0) * (1 + 2 * MARGEN) / 2;
@@ -192,7 +192,7 @@ export async function montarNombres(capa, marte, chapas, { url, radioKm }) {
     // distancia real basta, cada una vuelve a su sitio.
     const puestas = [];
     for (const e of chs) {
-      const c = marte.proyecta(e.c.lat, e.c.lon);
+      const c = motor.proyecta(e.c.lat, e.c.lon);
       // Dos chapas en el mismo sitio (Perseverance e Ingenuity): la segunda,
       // pegada a la derecha a x1 y cada vez más lejos al acercar.
       c.x += e.c.separa * z;

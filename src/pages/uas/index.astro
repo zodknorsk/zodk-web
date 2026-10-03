@@ -26,10 +26,10 @@ const municiones = gruposDeMuniciones(todas).flatMap((g) => g.municiones.map((f)
 // a 1 px por píxel como el visor; los demás, el primer fotograma de su tira
 // 1.0 (arte/generar-uas-miniaturas.mjs), al doble.
 const conHD = (id: string) => fs.existsSync(`public/uas/${id}/tarjeta.png`);
-const conGiro = (id: string) => conHD(id) || fs.existsSync(`public/uas/${id}/giro-planta.png`);
-const giros = (id: string) => conHD(id)
-  ? `--giro:url(/uas/${id}/tarjeta.png);--giro-noche:url(/uas/${id}/tarjeta-noche.png)`
-  : `--giro:url(/uas/${id}/giro-planta.png);--giro-noche:url(/uas/${id}/giro-planta-noche.png)`;
+const conDibujo = (id: string) => conHD(id) || fs.existsSync(`public/uas/${id}/giro-planta.png`);
+const dibujos = (id: string) => conHD(id)
+  ? `--dron:url(/uas/${id}/tarjeta.png);--dron-noche:url(/uas/${id}/tarjeta-noche.png)`
+  : `--dron:url(/uas/${id}/giro-planta.png);--dron-noche:url(/uas/${id}/giro-planta-noche.png)`;
 
 // Valores de un filtro con cuántas fichas tiene cada uno, de más a menos.
 function recuento(de: (f: (typeof fichas)[number]) => string | undefined) {
@@ -101,7 +101,7 @@ const paises = recuento((f) => f.data.pais);
               <li data-pais={f.data.pais ?? ""}>
                 <a href={`/uas/${f.id}`} class="uas-tarjeta">
                   <span class="uas-tarjeta-foto">
-                    {conGiro(f.id) && <span class:list={["uas-giro", { "uas-giro--hd": conHD(f.id) }]} style={giros(f.id)} role="img" aria-label={f.data.title}></span>}
+                    {conDibujo(f.id) && <span class:list={["uas-dron", { "uas-dron--hd": conHD(f.id) }]} style={dibujos(f.id)} role="img" aria-label={f.data.title}></span>}
                   </span>
                   <span class="uas-tarjeta-texto">
                     <span class="uas-tarjeta-pais"><span class="uas-tarjeta-bandera"><BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span> {f.data.pais}{f.data.tags.includes("prototipo") && <span class="uas-tarjeta-sello">Prototipo</span>}</span>
@@ -293,15 +293,15 @@ const paises = recuento((f) => f.data.pais);
      quitó el 1-oct-2026, a petición del usuario). Con HD, su imagen de
      256x144 a 1 px por píxel, como el visor, casi de perfil; sin HD, el
      primer fotograma de su tira 1.0 (8 de 128x72), al doble. */
-  .uas-giro {
+  .uas-dron {
     display: block;
     width: 256px;
     height: 144px;
-    background: var(--giro) 0 0 / 2048px 144px no-repeat;
+    background: var(--dron) 0 0 / 2048px 144px no-repeat;
     image-rendering: pixelated;
   }
-  .uas-giro--hd { background-size: 256px 144px; }
-  :global(html.dark) .uas-giro { background-image: var(--giro-noche); }
+  .uas-dron--hd { background-size: 256px 144px; }
+  :global(html.dark) .uas-dron { background-image: var(--dron-noche); }
   .uas-tarjeta-texto { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.85rem 1rem 1rem; }
   /* País: resalta al pasar el ratón y, con un filtro puesto, siempre. */
   .uas-tarjeta-pais { font-size: 0.62rem; opacity: 0.7; transition: opacity 0.2s; }

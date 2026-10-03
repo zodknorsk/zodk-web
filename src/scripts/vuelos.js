@@ -94,7 +94,7 @@ export function faseLunaHoy() {
  *   alejar?: { zoom: number, ponZoom: (z: number) => void, foto: () => HTMLCanvasElement } | null }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
-export function volarALuna({
+export function volar({
   icono, planeta, estrellas, apagar = [], img = null,
   inverso = false, iconoVisible = true,
   tam = "var(--luna-tam)", dy = "var(--luna-dy)", imgLado = 600, imgDisco = 585,
