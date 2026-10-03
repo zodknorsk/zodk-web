@@ -218,12 +218,12 @@ const VISTAS = [
   }
   .visor button { cursor: pointer; }
 
-  .visor-expediente, .visor-etiqueta, .visor-ayuda, .visor-respaldo,
+  .visor-expediente, .visor-ayuda, .visor-respaldo,
   .visor-silueta-nombre, .visor-fuente-medio, .visor-fuente-respalda,
   .visor-letra, .visor-pin, .visor-rotulo {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
   }
-  .visor-etiqueta, .visor-expediente, .visor-silueta-nombre, .visor-respaldo, .visor-fuente-medio {
+  .visor-expediente, .visor-silueta-nombre, .visor-respaldo, .visor-fuente-medio {
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -398,7 +398,6 @@ const VISTAS = [
   .visor-pestanas button[aria-selected="true"] { border-bottom-color: var(--visor-acento); color: var(--visor-texto); }
   /* La hoja ocupa el alto de la escena y, si no cabe, se desplaza. */
   .visor-hoja { position: absolute; inset: 2.6rem 0 0; overflow-y: auto; padding: 1rem 1.1rem; }
-  .visor-etiqueta { color: var(--visor-suave); margin-bottom: 0.6rem; }
   .visor-lista button {
     display: flex;
     align-items: center;
