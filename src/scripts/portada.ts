@@ -9,7 +9,6 @@ import { montarTierraGL } from "./tierra-gl.js";
 import { montarMarteGL } from "./marte-gl.js";
 import { montarMano, montarZoom } from "./gestos.js";
 import { montarNombres } from "./nombres.js";
-import { montarPista } from "./pista.js";
 import { PLANETA_V, LUNA_V, MARTE_V } from "./versiones.js";
 import { mgrs } from "./mgrs.js";
 import { volar, faseLunaHoy, VUELO_MARTE } from "./vuelos.js";
@@ -491,8 +490,6 @@ document.addEventListener("astro:page-load", async () => {
   if (!cv.isConnected) { enc.quita(); return tierra.desmontar(); }   // se salió de la portada mientras cargaba
   montarAcercamiento(hero, tierra);
   tituloFuera = montarTituloFuera(hero, () => tierra.vista().zoom);
-  const cvPista = hero.querySelector<HTMLCanvasElement>(".hero-pista");
-  const quitaPista = cvPista ? montarPista(hero, cvPista) : () => {};
   alPintar();
   // Tema: a la luz del sol o de la luna (la clase .dark en <html>; la lista
   // de clases cambia también al hacer scroll, de ahí comparar).
@@ -519,7 +516,7 @@ document.addEventListener("astro:page-load", async () => {
   const quitaZoom = montarZoom(hero, conNombres, { soloCtrl: true });
   const p = {
     geo: tierra.geo, setMarca: tierra.ponMarca, posMarca: tierra.posMarca, setParado: tierra.ponParado,
-    desmontar() { mo.disconnect(); enc.quita(); tituloFuera?.quita(); quitaPista(); quitaMano(); quitaZoom(); quitaNombres(); colocaNombres = null; tierra.desmontar(); },
+    desmontar() { mo.disconnect(); enc.quita(); tituloFuera?.quita(); quitaMano(); quitaZoom(); quitaNombres(); colocaNombres = null; tierra.desmontar(); },
   };
   planeta?.desmontar();
   quitaMira?.();

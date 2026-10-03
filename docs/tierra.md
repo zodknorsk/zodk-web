@@ -36,15 +36,6 @@ nombres "se irán puliendo con el tiempo".
   retira, y la coordenada y sus botones pasan a un recuadro color papel abajo
   a la izquierda. Si solo se gira arrastrando, vuelve un momento después de
   soltar.
-- **Pista de cómo se mueve**, bajo el documento (`src/scripts/pista.js`,
-  canvas a 30 fps): con ratón, una mano tipo cursor del Mac que agarra y
-  arrastra («ARRASTRA») y luego tecla Ctrl + ratón con la rueda hacia
-  delante («AMPLÍA»); en táctil, un dedo que desliza y dos que pellizcan.
-  Sale 2,5 s después del título, da 3 vueltas y se va; también en cuanto se
-  mueve o acerca el planeta, y entonces no vuelve en la sesión
-  (`sessionStorage`). Probadas antes, en una página aparte: flecha de giro,
-  ratón solo, nota de papel, rótulo de visor, mano gruesa, guante, piel,
-  papel y tinta; se eligió la mano del Mac con sombra gris.
 - **Coordenada MGRS** del punto bajo el cursor (mira en vez de cursor sobre
   el planeta). Clic: se clava una X y la coordenada queda fija y resaltada;
   clic en la X o Esc la quita. En táctil no hay coordenada.
@@ -174,6 +165,10 @@ SECRET" arriba (queda solo el sello).
 no giraría nunca); coordenada flotando donde estaba el título, abajo en el
 centro o pegada a la mira (va en la esquina); recuadro oscuro con esquinas de
 visor (va del color del papel).
+
+**Pista de cómo mover el planeta** bajo el documento (mano que agarra y
+arrastra, Ctrl + rueda, desliza y pellizca en táctil, en pixel art): se
+publicó y se quitó, "no me gustan".
 
 ## Ideas aparcadas
 
