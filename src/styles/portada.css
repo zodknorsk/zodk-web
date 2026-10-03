@@ -907,6 +907,13 @@ html.dark .tira-hangar:is(:hover, :focus-visible) {
   transition: --hangar-fotograma 0.6s linear;
 }
 .tira-sat:is(:hover, :focus-visible) .sat-hangar { --hangar-fotograma: calc(var(--fotogramas) - 1); }
+/* Safari anima el número con decimales aunque sea entero (0,55, 1,22…) y la
+   tira se desliza con dos fotogramas partidos: se redondea en la posición.
+   Con @supports: sin round(), la posición entera no valdría y se perdería el
+   fondo. */
+@supports (width: round(1px, 1px)) {
+  .sat-hangar { background-position-x: calc(var(--ancho) * round(var(--hangar-fotograma), 1) * -1); }
+}
 
 .sat-plataforma {
   margin-left: auto;

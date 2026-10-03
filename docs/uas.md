@@ -805,9 +805,10 @@ registrado como entero (`@property --hangar-fotograma`, `syntax:
 "<integer>"`) y la posición se calcula con él: el navegador lo redondea
 siempre a un fotograma entero. **Safari no**: lo anima con decimales (medido
 en WebKit: 0,72 → 1,5 → 2,09…) y la tira se desliza de lado con dos dibujos
-partidos; se arregla redondeando también en la posición
-(`round(var(--hangar-fotograma), 1)`). La puerta no lo lleva: en el móvil
-el hangar está oculto.
+partidos; por eso la posición se redondea también
+(`round(var(--hangar-fotograma), 1)`, dentro de un `@supports`: sin
+`round()`, la posición no valdría y se perdería el fondo). Se vio en Safari
+del Mac el 3-oct-2026.
 
 ## Las fichas en la web
 
