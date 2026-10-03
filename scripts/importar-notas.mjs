@@ -162,7 +162,7 @@ async function convertirFoto(origen, carpeta, base, ext) {
   };
   if (![".png", ".jpg", ".jpeg", ".webp"].includes(ext)) return copiaTalCual();
 
-  const { width, height } = await sharp(origen).metadata();
+  const { width } = await sharp(origen).metadata();
   const grande = width > ANCHO_MAX_FOTO;
   const pngGrande = ext === ".png" && fs.statSync(origen).size > PNG_A_JPG_DESDE;
   const opaco = pngGrande && (await sharp(origen).stats()).isOpaque;

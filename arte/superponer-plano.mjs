@@ -8,7 +8,7 @@ import { geometriaDe } from "../src/scripts/uas-geometria.ts";
 const [, , modelo, vista, fondo, salida, ox, oy, esc, ancho, alto] = process.argv;
 const m = (await import(`../src/data/uas/${modelo}.ts`)).default;
 const E = m.escala, O = [+ox, +oy], S = +esc;
-const proy = { lado: (x, y, z) => [O[0] + z * S, O[1] - y * S], arriba: (x, y, z) => [O[0] + x * S, O[1] - z * S], frente: (x, y, z) => [O[0] - x * S, O[1] - y * S] }[vista];
+const proy = { lado: (_x, y, z) => [O[0] + z * S, O[1] - y * S], arriba: (x, _y, z) => [O[0] + x * S, O[1] - z * S], frente: (x, y, _z) => [O[0] - x * S, O[1] - y * S] }[vista];
 let polis = "";
 for (const p of m.piezas) for (const g of geometriaDe(p)) {
   const pos = g.getAttribute("position"), idx = g.index ? g.index.array : [...Array(pos.count).keys()];

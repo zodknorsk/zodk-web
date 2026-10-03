@@ -134,6 +134,7 @@ function cargar() {
 const buscar = (porNombre, texto) => porNombre.get(texto) ?? porNombre.get(texto.toLowerCase());
 
 function propiedades(x) {
+  /** @type {{ href: string, className: string[], dataGlT: string, dataGlDef: string, dataGlEn?: string, dataGlIr?: string }} */
   const p = { href: x.href, className: ["gl"], dataGlT: x.t, dataGlDef: x.def };
   if (x.en) p.dataGlEn = x.en;
   if (x.ir) p.dataGlIr = x.ir;

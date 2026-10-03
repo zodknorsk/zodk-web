@@ -112,8 +112,8 @@ if (op.recorte && !zoom) {
   const k = ancho / W;
   [x0, y0, w0, h0] = [Math.round(x * k), Math.round(y * k), Math.round(w * k), Math.round(h * k)];
 }
-const bufR = await (await sharp(await render.png().toBuffer()).extract({ left: x0, top: y0, width: w0, height: h0 })).png().toBuffer();
-const bufF = await (await sharp(await fotoR.png().toBuffer()).extract({ left: x0, top: y0, width: w0, height: h0 })).png().toBuffer();
+const bufR = await sharp(await render.png().toBuffer()).extract({ left: x0, top: y0, width: w0, height: h0 }).png().toBuffer();
+const bufF = await sharp(await fotoR.png().toBuffer()).extract({ left: x0, top: y0, width: w0, height: h0 }).png().toBuffer();
 if (op.solo) {
   await sharp(bufR).toFile(salida);
 } else if (op.encima) {
