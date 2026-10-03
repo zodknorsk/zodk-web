@@ -417,6 +417,10 @@ generadores de `arte/` leen estos archivos con Node.
 - **Capó con boca** (la toma del TB2): un `casco` con `abierto` (sin tapa
   delante), algo mayor que el cuerpo de delante, y otro dentro en `hueco`
   (acabado casi negro y mate) como fondo de la boca.
+- **Catapulta o lanzador** (el Shahed): `catapulta: { piezas, cabeceo }` en
+  la maqueta. El visor pone el botón «Catapulta» y, al pulsarlo, enseña esas
+  piezas e inclina el dron `cabeceo` grados morro arriba (`?catapulta=1` en
+  la URL). Las piezas, en los ejes del dron.
 - **Ángulo propio de la tarjeta de `/uas`**: `vistaTarjeta: [acimut,
   elevación]` en la maqueta (si no, 79°, 11°). El TB2 lleva [61, 20], el
   ángulo que eligió el usuario con una captura del visor; para sacarlo,

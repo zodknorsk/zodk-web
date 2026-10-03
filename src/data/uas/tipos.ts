@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco";
+export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -37,7 +37,10 @@ export type Pieza = (
   // `suave`: con ensanche, cada mitad de la sección se suaviza como una sola
   // curva lisa (campana de ese ancho a lo largo de la curva; el borde y su
   // dirección no se mueven) y la arista entre las dos mitades va sin línea.
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number }
+  // `polo`: donde el cuerpo acaba en un punto (el morro redondo del
+  // Shahed), los vértices de la punta llevan la normal del eje; si no, cada
+  // copia se inclina hacia su lado y la luz hace un hoyuelo.
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -100,6 +103,12 @@ export type Dibujo =
   | { tipo: "baykar" }
   // Placa de aviso: amarilla, con el borde rayado en negro y unas líneas.
   | { tipo: "aviso" }
+  // Cartel blanco con la bandera iraní, «MADE IN I.R.IRAN» y «ساخت ایران»
+  // (los winglets del Shahed-136 de Kermanshah) y una pegatina de código QR.
+  // `pegatina`: solo la bandera, con «ساخت» y «ایران» a los lados del emblema
+  // (la del morro del Shahed de Qom).
+  | { tipo: "bandera-ir"; pegatina?: boolean }
+  | { tipo: "qr" }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
   | { tipo: "escudo" };
@@ -154,6 +163,9 @@ export type Parte = {
   texto: string;
   // Matiz sobre el respaldo (de qué foto sale, qué es supuesto).
   nota?: string;
+  // Parte de la catapulta (ver `Maqueta.catapulta`): su chincheta solo sale
+  // con ella puesta, y elegirla la pone.
+  catapulta?: boolean;
 };
 
 export type Fuente = {
@@ -192,4 +204,9 @@ export type Maqueta = {
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
   // de la pasada de pixel.
   contornoPixel?: boolean;
+  // Catapulta o lanzador (el Shahed): piezas en los mismos ejes que el dron,
+  // que el visor enseña con el botón «Catapulta». Al ponerla, todo se inclina
+  // `cabeceo` grados morro arriba (el bastidor queda con las ruedas en el
+  // suelo). No sale en las siluetas, las tarjetas ni las naves.
+  catapulta?: { piezas: Pieza[]; cabeceo: number };
 };

@@ -19,4 +19,5 @@ const { execFileSync } = await import("node:child_process");
 const args = [path.join(path.dirname(new URL(import.meta.url).pathname), "comparar-foto.mjs"), ajuste, salida, `--ancho=${ancho}`, "--solo"];
 if (op.pixel) args.push("--pixel");
 if (op.noche) args.push("--noche");
+if (op.catapulta) args.push("--catapulta");
 execFileSync("node", args, { stdio: "inherit" });

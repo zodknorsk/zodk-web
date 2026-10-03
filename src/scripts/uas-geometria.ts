@@ -218,7 +218,7 @@ function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], 
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0): BufferGeometry {
+function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false): BufferGeometry {
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
   // curva cerrada. Con tomas, más todavía (y apretados en las tomas).
@@ -602,6 +602,18 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
         for (const q of [a, b]) nor.setXYZ(q, v[0] / l, v[1] / l, v[2] / l);
       }
   }
+  // Con `polo`, un anillo que es un solo punto (la punta) lleva la normal del
+  // eje, hacia fuera del cuerpo.
+  if (polo) {
+    const nor = g.getAttribute("normal");
+    for (const [i, s] of [[0, -1], [anillosZ.length - 1, 1]] as const)
+      for (const t of [0, 1]) {
+        const vs = Array.from({ length: Ns[t] }, (_, k) => bases[t] + i * Ns[t] + k);
+        const xs = vs.map((v) => pos[v * 3]), ys = vs.map((v) => pos[v * 3 + 1]);
+        if (Math.max(...xs) - Math.min(...xs) > 1e-6 || Math.max(...ys) - Math.min(...ys) > 1e-6) continue;
+        for (const v of vs) nor.setXYZ(v, 0, 0, s);
+      }
+  }
   return g;
 }
 
@@ -630,7 +642,7 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
     case "casco":
-      return [geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave)];
+      return [geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo)];
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();

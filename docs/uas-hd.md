@@ -198,20 +198,160 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 
 ### Estado
 
-- **Cerrados**: el MQ-9 (HD y pixel HD, desde el 1-oct-2026) y el TB2
-  (2-oct-2026), en `main` y publicados: en el visor, en las tarjetas de
-  `/uas` y como naves de la portada.
-- **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`); las maquetas
+- **Cerrados**: el MQ-9 (HD y pixel HD, desde el 1-oct-2026), el TB2
+  (2-oct-2026) y el Shahed-136 (3-oct-2026, con su catapulta y el cohete de
+  despegue), en `main` y publicados: en el visor, en las tarjetas de `/uas`
+  y como naves de la portada.
+- **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`; el Shahed con
+  la catapulta, 150 piezas); las maquetas
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
   visores (abajo, «Para el final»); pasar los demás drones (objetivos de
   arriba).
-- **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9` y
-  `hd-bayraktar-tb2`, fusionadas y borradas.
+- **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9`,
+  `hd-bayraktar-tb2` y `hd-shahed-136`, fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
 está en `main`.
+
+- **3-oct-2026, Shahed-136 en HD y pixel HD** (rama `hd-shahed-136`, sin
+  commit). El usuario eligió el Shahed («aprender de las lecciones del MQ-9 y
+  del TB2») y, para las marcas, el **ejemplar de la exposición de Kermanshah
+  de septiembre de 2023** (fotos de Fars y Mehr; las galerías originales no
+  tienen más ni más grandes que las de Commons, 800–1300 px). Pidió que
+  mande el dron iraní sobre los restos rusos o ucranianos y dejó mezclar
+  ejemplares iraníes para las marcas. Hecho:
+  - **Fuentes**: `arte/uas-fuentes/shahed-136/hd/` (fuera de Git): `full/`
+    con las fotos iraníes (Kermanshah, Qom, Parque Aeroespacial, desfiles),
+    los dos planos de Alexpl (2023 y 2024: la misma forma, 3,35 m medidos
+    por la envergadura; los «3,5 m» de la barra y del cartel de la
+    exposición son redondeos), los de la DIA, los restos del Mercer Street y
+    los motores expuestos en Kiev; `ajustes/` con las cámaras encajadas de
+    Kermanshah de lado y de Qom de frente.
+  - **Forma**: la planta del plano de 2024 se comprueba con las dos fotos
+    encajadas (errores de 2 a 15 px). **Es un tubo con un ala gruesa, sin
+    carenado**: en las fotos la unión del ala con el cuerpo es una línea; el
+    ala (0,19 m de grueso a 0,3 m del centro, 0,055 en la punta, plano de
+    frente) corta el tubo de 0,294 m a 8,5 cm sobre el eje y del tubo solo
+    asoma un lomo. Cuerpo en `casco` redondo; la punta del morro, un casquete
+    esférico de 8,35 cm con las secciones por ángulo y `polo` (nuevo en el
+    `casco`: la normal del eje en la punta; sin él, un hoyuelo de luz).
+    Winglets simétricos (en la foto, el vértice queda a 92 px de la esquina
+    de arriba y a 93 de la de abajo: la sensación de que cuelgan la dan el
+    cartel y la perspectiva). Elevones en dos tramos con la junta del ala a
+    0,72 m; **un cuerno con su varilla en cada elevón, a 0,645 y 0,775 m**
+    (plano y las dos fotos con la z de la bisagra fija; la primera vez los
+    puse a ojo a 0,4 y 0,47). **Un solo pitot**, en el ala izquierda a
+    0,77 m (Qom). Motor MD550 con cárter, cuatro cilindros con aletas, culatas,
+    bujías, admisión, escapes, corona dorada, buje con seis pernos y hélice
+    blanca. Antena negra y CRPA de cuatro elementos en el ala derecha; caja y
+    tacos del lanzador bajo el lomo.
+  - **Marcas** (calcas nuevas `bandera-ir` y `qr`): el cartel de la bandera
+    con «MADE IN I.R.IRAN» y «ساخت ایران» en la cara de fuera de cada
+    winglet (medido con la cámara: y de 0,05 a 0,21, z de −1,31 a −1,55; en
+    la exposición es una placa puesta encima, se dibuja como calca) y el QR
+    del ala derecha. Tapas y tornillos de la planta del plano (coinciden con
+    las fotos), junta del tramo de fuera arriba y abajo, dos agujeros bajo
+    cada ala.
+  - **Color**: `crema-ir` (#bcae95): al sol el render da #dad0bf, como la
+    foto de Qom (las de Kermanshah salen amarillenta una y gris la otra por
+    su luz). `aluminio` (nuevo) para el motor y `laton` para la corona.
+  - **Pixel HD**: la crema al sol cae en 5,5–5,9 escalones: `desfaseLuz`
+    −0,2. Tarjeta con su ángulo (`vistaTarjeta` [61, 20], el del TB2: con el
+    de todas, casi de lado, el ala en delta no se veía), planta y nave del
+    hero (`generar-naves-uas-hd.mjs shahed136`, vista E, `ancho` 132; sin
+    luces: el Shahed no lleva). Fuera los `giro-planta` 1.0.
+  - **Errores por el camino** (para no repetirlos): (1) **la maqueta va en
+    espejo**: el ala izquierda de verdad es la de x positiva; al encajar
+    fotos con el signo cambiado, nada cuadraba (salía la cámara desde
+    detrás y por debajo). (2) **Lo que se ve de un anillo desde arriba es su
+    borde de arriba**, no su centro: marcado como centro, el encaje de Qom
+    dejaba el morro de la maqueta ancho y largo. (3) En fotos muy cercanas
+    (el Shahed se fotografía a 2–3 m), `encajar-camara.mjs` necesita
+    `dMin` (nuevo, en el json del ajuste; por defecto 4 m). (4) Esquinas
+    tapadas por el lanzador o el cartel, leídas mal: mejor pocos puntos
+    seguros.
+  - El Geran-2 (no publicado) importa estas piezas: cambia con ellas.
+- **3-oct-2026, primera revisión del usuario del Shahed** («está muy muy bien
+  realmente»), analizada con fotos antes de tocar y aprobada punto por punto:
+  - **Dos líneas a lo largo del ala que parpadeaban**: el escalón del borde de
+    salida en x = 0,23 (del hueco del motor a la bisagra, dos estaciones en
+    la misma x). A cada lado el perfil se reparte sobre otra cuerda y no
+    casan (un pliegue en todo el ala), y la pared del escalón, pegada a las
+    caras, hacía z-fighting. Ahora el borde pasa poco a poco de 0,20 a
+    0,26 m (la esquina del hueco, redondeada como en el plano); igual en la
+    punta, de la bisagra al borde de los elevones. **No usar escalones en
+    alas gruesas.**
+  - **Bandera sobre la cabeza de combate** (la del de Qom; el de Kermanshah
+    la lleva lisa): `bandera-ir` con `pegatina`, solo la bandera con «ساخت» y
+    «ایران» a los lados del emblema, justo delante del anillo. Los bordes
+    medidos al ras de la superficie salían detrás del anillo: mandan el
+    centro medido (z = 0,95) y la foto (empieza en el anillo).
+  - De Qom también: el **conector** en lo alto, unos 10 cm detrás del anillo,
+    y los **tornillos** de la cabeza de combate (un anillo de ocho en z =
+    1,36). No hay más marcas en las fotos iraníes (el «A642» del desfile
+    choca con el cartel de Kermanshah en el winglet).
+  - **Dos pitot** (Parque Aeroespacial y los dos planos; el de Qom, uno).
+  - **Color** un punto menos crema: `crema-ir` #b8ae9e.
+  - **Tarjeta** a [65, 30], encajando la cámara sobre una captura del visor
+    del usuario.
+  - **Nave del hero** a 42° de elevación (vista [90, 42]), como la 1.0: con la
+    vista E de 28° el ala en delta no se leía. `ratio` 263 / 185.
+- **3-oct-2026, catapulta del Shahed** (la pidió el usuario con un botón, y
+  pasó fotos y renders de referencia, guardados como `full/usuario-*`):
+  - **Fuentes**: el lanzador ligero de Kermanshah (el ejemplar de las marcas,
+    foto de lado), el de Qom (otro distinto: raíles cortos, el dron en la
+    punta; fotos 42, 95 y la de frente de abajo), el render de TurboSquid
+    del mismo lanzador de Kermanshah (solo como guía de cómo es por detrás;
+    no se copia), y la infografía de drone-warfare con el cohete de
+    despegue bajo la panza.
+  - **El dron va 15° morro arriba**: encajando la foto de Kermanshah con la
+    cámara a nivel y el cabeceo fijo, el error sale mínimo con 15°
+    (10,6 px; con 0°, 60).
+  - **Cómo es**: dos raíles negros a ±0,2 m, por fuera del cuerpo, sobre una
+    escalera ocre que asoma 0,8 m por delante del morro; el dron cuelga de
+    dos patines transversales. Dos patas en A (arriba a ±0,17 m y con las
+    ruedas a ±0,5 m, foto de Qom de frente con la cámara encajada), un
+    larguero bajo a cada lado y riostras cortas, el volante y el cohete
+    blanco con su tobera y dos abrazaderas. Acabado nuevo `ocre`.
+  - **Visor**: `catapulta: { piezas, cabeceo }` en la maqueta; botón
+    «Catapulta» (solo en los drones que la tienen) y `?catapulta=1` en la
+    URL. Las piezas van aparte (no cuentan para las siluetas, las tarjetas
+    ni las naves); al ponerla, la raíz se inclina, se vuelve a centrar y el
+    encuadre crece un 15 %. Las letras de las partes y las calcas giran con
+    el dron (las calcas cuelgan ya de la raíz). `comparar-foto.mjs` y
+    `vista-visor.mjs` admiten `--catapulta`; para compararla con una foto, la
+    cámara se encaja con `fijo: { cabeceo: 15 }`.
+  - **Cohete de despegue** (lo pidió el usuario, «aproximado, inventado»): no
+    hay fotos de cerca; sale del desfile de Teherán de 2023 y de la
+    infografía de drone-warfare. Cilindro blanco de 17 cm y 1 m bajo la
+    panza, con ojiva, dos franjas rojas, tobera de metal con el fondo negro,
+    dos abrazaderas y el gancho de suelta. Primero inclinado 6° y colgado de
+    dos varillas: al usuario no le parecía unido. Ahora **paralelo al dron y
+    a los raíles** (como el recuadro de drone-warfare) y pegado a la panza con
+    un pilón continuo y una orejeta en cada abrazadera. Detallitos (los pidió
+    el usuario; inventados): punta de metal, dos juntas (con cuatro, el
+    filete de tinta del HD las volvía rayas), dos argollas de izado, la caja
+    del encendido y su cable a la panza, placa de aviso amarilla y aro en la
+    boca de la tobera. Fuera el conducto de cables del costado (el usuario
+    lo veía como una línea).
+  - **Partes I y J** (las pidió el usuario): «Catapulta» y «Cohete de
+    despegue», con `catapulta: true` en la parte: su chincheta solo sale con
+    la catapulta puesta y elegirlas la pone. Fuentes nuevas: el lanzador de
+    Qom (42) y los cohetes del desfile de Teherán de 2023 (170).
+  - El usuario lo dio por terminado el 3-oct-2026: fusionado en `main`,
+    publicado y rama borrada. (El Geran-2, sin publicar, se deja como está.) Para que se vea, la escalera va 23 cm
+    más baja que los raíles, que se apoyan en ella con postes, y sin
+    travesaños donde va el cohete.
+  - **Botón en la tira de vistas** (lo pidió el usuario): «Catapulta» va
+    después de «3D», con la silueta de perfil del dron sobre ella, y se
+    queda marcado mientras está puesta.
+  - **Los patines** (taco en la panza y travesaño hasta cada raíl) son de
+    la catapulta: en el dron salían como barras negras bajo el morro y bajo
+    el ala sin catapulta (el usuario no entendía qué eran). Tarjeta, planta
+    y nave regeneradas sin ellos.
+  - Falta: que lo revise el usuario; rendimiento en Zen.
 
 - **2-oct-2026, naves de la portada en pixel HD**: el TB2 (sustituye al TB3,
   que se quitó) y el MQ-9, con `arte/generar-naves-uas-hd.mjs` (ver arriba).
