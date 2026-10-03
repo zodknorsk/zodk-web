@@ -645,6 +645,17 @@ html.dark .hero-titulo:has(.hero-mgrs.fijada) p { color: #2e2a21; text-shadow: n
 .hero-hud .hero-cambio:not(:active) .btn-helice-giro [stroke="#d3d3d3"] { stroke: #2e2a21; }
 @media (max-width: 640px) { .hero-hud { left: 12px; bottom: 16px; } }
 
+/* Pista bajo el documento (pista.js): sitio y tamaño los pone el script;
+   aparece y se va con un fundido. */
+.hero-pista {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.hero-pista.visible { opacity: 1; }
+
 /* la nave, por debajo del papel; su ficha, por encima al pasar el ratón */
 .hero-craft:hover { z-index: 4; }
 @media (max-width: 640px) {
