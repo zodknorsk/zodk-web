@@ -1,7 +1,7 @@
 // Lo que describe la maqueta de un dron para el visor (src/scripts/visor-uas.ts
 // y src/components/VisorUAS.astro).
 // Ejes: x hacia la punta del ala derecha, y hacia arriba, z hacia el morro.
-// Unidades libres: las maquetas no tienen escala.
+// Unidades libres; `escala` dice cuántos metros es una unidad.
 
 import type { Pais } from "../banderas";
 
@@ -100,13 +100,8 @@ export type Dibujo =
   | { tipo: "baykar" }
   // Placa de aviso: amarilla, con el borde rayado en negro y unas líneas.
   | { tipo: "aviso" }
-  // Toma de aire sumergida (NACA): una rampa hundida, estrecha delante y
-  // ancha detrás, que acaba en la boca negra. El largo va a lo ancho del
-  // dibujo, con la boca a la izquierda.
-  | { tipo: "naca" }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
-  | { tipo: "franja"; color: string }
   | { tipo: "escudo" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
@@ -195,6 +190,6 @@ export type Maqueta = {
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
-  // de la pasada de pixel (el MQ-9, lo pidió el usuario el 2-oct-2026).
+  // de la pasada de pixel.
   contornoPixel?: boolean;
 };

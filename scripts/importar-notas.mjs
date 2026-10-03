@@ -124,8 +124,8 @@ const PNG_A_JPG_DESDE = 500 * 1024;
 const CALIDAD_JPG = 88;
 const EXT_VIDEO = /\.(mp4|mov|webm)$/i;
 
-// URL de un vídeo de YouTube, envuelta en `![](...)` (así los embebe el
-// usuario en Obsidian: watch?v=, live/ o youtu.be/, con o sin `?si=...`).
+// URL de un vídeo de YouTube, envuelta en `![](...)` (así se pegan en
+// Obsidian: watch?v=, live/ o youtu.be/, con o sin `?si=...`).
 const RE_YOUTUBE = new RegExp(
   `!\\[[^\\]]*\\]\\(\\s*<?\\s*https?://(?:www\\.)?` +
   `(?:youtube\\.com/(?:watch\\?v=|live/|embed/)|youtu\\.be/)` +
@@ -162,7 +162,8 @@ async function convertirFoto(origen, carpeta, base, ext) {
   };
   if (![".png", ".jpg", ".jpeg", ".webp"].includes(ext)) return copiaTalCual();
 
-  const { width, height } = await sharp(origen).metadata();
+  // El ancho ya girado según la orientación EXIF (la de .rotate() de abajo).
+  const { width } = (await sharp(origen).metadata()).autoOrient;
   const grande = width > ANCHO_MAX_FOTO;
   const pngGrande = ext === ".png" && fs.statSync(origen).size > PNG_A_JPG_DESDE;
   const opaco = pngGrande && (await sharp(origen).stats()).isOpaque;

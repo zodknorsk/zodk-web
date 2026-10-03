@@ -2,10 +2,11 @@
 // materiales que responden a la luz como los de verdad (pintura mate, metal,
 // cristal), luz de ambiente con reflejos suaves y un sol que hace sombras del
 // propio dron (el ala sobre el cuerpo, las armas bajo el ala).
-// Mientras el usuario elige, hay tres estilos de prueba:
+// Tres estilos:
 //   a · realista: materiales físicos y sombras, sin tinta;
 //   b · ilustración: tres tonos de luz y las aristas en tinta, como una lámina;
 //   c · realista con filete: el a, con las aristas en tinta muy fina.
+// Se usa el c; el a y el b, solo con ?hd= en la URL.
 import {
   BufferGeometry, CanvasTexture, Float32BufferAttribute, LineBasicMaterial, LineSegments, Mesh, Object3D,
   Points, PointsMaterial, Raycaster, SRGBColorSpace,
@@ -95,8 +96,7 @@ export const colorHD = (acabado: Acabado) => new Color(PINTURAS[acabado].color);
 // Se enciende y se apaga entero al cambiar de modo.
 export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number) {
   // Entorno para los reflejos: un cielo degradado (claro y algo azul arriba,
-  // horizonte blanquecino, tierra parda y oscura abajo). El RoomEnvironment de
-  // Three.js lo quemaba todo a blanco.
+  // horizonte blanquecino, tierra parda y oscura abajo).
   const W = 64, H = 32, datos = new Float32Array(W * H * 4);
   // Paradas del degradado, de abajo (0) arriba (1): la tierra oscura, que
   // se oscurece enseguida bajo el horizonte (la mitad baja del costado y la
@@ -106,9 +106,7 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   ];
   for (let y = 0; y < H; y++) {
     // La fila 0 de la textura es la de abajo (v = 0 en el mapa
-    // equirectangular): en la primera versión el cielo iba del revés, arriba
-    // se reflejaba el suelo oscuro y la parte de arriba del dron salía más
-    // oscura que la de abajo.
+    // equirectangular).
     const a = (y + 0.5) / H;
     let i = 0;
     while (i < PARADAS.length - 2 && a > PARADAS[i + 1][0]) i++;
@@ -118,8 +116,6 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
     for (let x = 0; x < W; x++) datos.set([r, g, b, 1], (y * W + x) * 4);
   }
   const cieloTex = new DataTexture(datos, W, H, RGBAFormat, FloatType);
-  // (Por debajo del horizonte, oscuro: la panza queda en sombra, como en las
-  // fotos al sol.)
   cieloTex.mapping = EquirectangularReflectionMapping;
   cieloTex.magFilter = cieloTex.minFilter = LinearFilter;
   cieloTex.needsUpdate = true;
@@ -130,13 +126,11 @@ export function crearLuzHD(renderer: WebGLRenderer, escena: Scene, radio: number
   const grupo = new Group();
   const cielo = new HemisphereLight(0x9cb2d2, 0x4a4e56, 0.85);
   const sol = new DirectionalLight(0xfffaf2, 3.9);
-  // El sol va con la cámara y casi encima (78°), un poco del lado de quien
-  // mira (45°): la mitad de arriba del dron recibe sol entera, sin sombras, y
-  // todas las sombras quedan de la mitad para abajo (lo pidió el usuario: «le
-  // está dando el sol directamente»). Probado antes y descartado: el sol
-  // bajo y del lado contrario a la cámara (manchaba de sombra la mitad de
-  // arriba), el sol del lado de quien mira y bajo (aplanaba todo) y el sol
-  // fijo en el mundo (desde muchos ángulos alumbraba el lado que no se ve).
+  // El sol va con la cámara, casi encima (78°) y un poco del lado de quien
+  // mira (45°): la mitad de arriba del dron, al sol y sin sombras; las
+  // sombras, de la mitad para abajo. Fijo en el mundo, desde muchos ángulos
+  // alumbraba el lado que no se ve. Las otras posiciones probadas, en
+  // docs/uas-hd.md.
   const ALTURA = (78 * Math.PI) / 180, LADO = (45 * Math.PI) / 180;
   const v = new Vector3(), esf = new Spherical();
   sol.castShadow = true;
@@ -280,27 +274,6 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.fillText("B A Y K A R", 0, H * 0.99, W * 0.9);
       break;
     }
-    case "naca": {
-      // Los costados de la rampa se curvan hacia fuera (la forma NACA): de la
-      // punta (derecha) a la boca (izquierda). La rampa se oscurece al
-      // hundirse y la boca es negra.
-      const borde = (t: number) => (H / 2) * (0.08 + 0.92 * Math.pow(1 - t, 1.6));
-      const xBoca = W * 0.14;
-      const rampa = () => {
-        c.beginPath();
-        c.moveTo(W * 0.99, H / 2);
-        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * (1 - t), H / 2 - borde(1 - t) * 0.96); }
-        for (let i = 0; i <= 24; i++) { const t = i / 24; c.lineTo(xBoca + (W * 0.99 - xBoca) * t, H / 2 + borde(t) * 0.96); }
-        c.closePath();
-      };
-      const g = c.createLinearGradient(W, 0, xBoca, 0);
-      g.addColorStop(0, "rgba(20,22,26,0.0)"); g.addColorStop(0.55, "rgba(20,22,26,0.28)"); g.addColorStop(1, "rgba(20,22,26,0.55)");
-      c.fillStyle = g; rampa(); c.fill();
-      c.strokeStyle = "rgba(20,22,26,0.7)"; c.lineWidth = H * 0.035; rampa(); c.stroke();
-      c.fillStyle = "#0d0e10";
-      c.beginPath(); c.roundRect(W * 0.03, H * 0.04, xBoca - W * 0.03, H * 0.92, H * 0.2); c.fill();
-      break;
-    }
     case "aviso": {
       c.fillStyle = "#f2c200"; c.fillRect(0, 0, W, H);
       const b = Math.min(W, H) * 0.16;
@@ -329,15 +302,6 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.96, 0, Math.PI * 2); c.fill();
       c.strokeStyle = "rgba(0,0,0,0.35)"; c.lineWidth = r * 0.12;
       c.beginPath(); c.arc(W / 2, H / 2, r * 0.9, 0, Math.PI * 2); c.stroke();
-      break;
-    }
-    case "franja": {
-      // Una mancha alargada y lisa (el canal de un escape), que se difumina
-      // hacia un extremo.
-      const g = c.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, d.color); g.addColorStop(0.75, d.color); g.addColorStop(1, "rgba(0,0,0,0)");
-      c.fillStyle = g;
-      c.beginPath(); c.roundRect(W * 0.04, 0, W * 0.92, H, W * 0.25); c.fill();
       break;
     }
     case "escudo": {

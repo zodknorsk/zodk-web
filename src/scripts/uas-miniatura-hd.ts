@@ -2,8 +2,9 @@
 // las tarjetas de /uas y la planta de la tira de la portada, pintadas con el
 // mismo motor que el modo Pixel del visor (materiales, luz y calcas del HD y
 // la pasada de uas-pixelado.ts). El 2.0 sustituye al 1.0 en todas partes.
-// Lo usa arte/generar-uas-miniaturas-hd.mjs desde un Chrome sin ventana con
-// `npm run dev` en marcha; la web no lo carga.
+// Lo usan arte/generar-uas-miniaturas-hd.mjs y arte/generar-naves-uas-hd.mjs
+// (naveHD) desde un Chrome sin ventana con `npm run dev` en marcha; la web no
+// lo carga.
 import { Box3, Group, Mesh, PerspectiveCamera, Scene, Spherical, Vector3, WebGLRenderer } from "three";
 import type { Maqueta } from "../data/uas/tipos";
 import { geometriaDe } from "./uas-geometria";
@@ -16,7 +17,7 @@ import { PALETAS } from "./uas-paletas";
 // Tarjeta: 10°. En el visor (18°) el dron no llena el lienzo; la tarjeta lo
 // llena, y con 18° la parte cercana salía más exagerada que en el visor. Con
 // 10° se ve como un recorte del visor.
-const FOV_PLANTA = 8, FOV_VISOR = 10;
+const FOV_PLANTA = 8, FOV_TARJETA = 10;
 
 // Si una pieza se queda fuera: su id es uno de `quitar` o empieza por uno
 // de ellos y un guion («lanzador» quita también «lanzador-rail-0»).
@@ -171,7 +172,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
 // su cámara y a 1 px por píxel como el modo Pixel, llenando el recuadro.
 // De día y de noche (data URL).
 export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, H: number) {
-  const m = montar(maqueta, W, H, FOV_VISOR);
+  const m = montar(maqueta, W, H, FOV_TARJETA);
   const salida = m.pintar(vista, m.llenar(vista, 4));
   m.soltar();
   return salida;
@@ -200,7 +201,7 @@ export function plantaHD(maqueta: Maqueta, vista: [number, number], pxPorMetro: 
 // arte/generar-naves-uas-hd.mjs. Devuelve también dónde caen las puntas de
 // las alas (las luces de posición), en píxeles: `der` la derecha (+x).
 export function naveHD(maqueta: Maqueta, vista: [number, number], morro: number, lado: number, quitar: string[] = []) {
-  const m = montar(maqueta, lado, lado, FOV_VISOR, quitar);
+  const m = montar(maqueta, lado, lado, FOV_TARJETA, quitar);
   m.morroHacia(vista, morro);
   const { dia } = m.pintar(vista, m.llenar(vista, 2));
   // Las puntas: los vértices del ala más a cada lado.

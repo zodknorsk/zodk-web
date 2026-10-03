@@ -11,7 +11,7 @@ import { montarMano, montarZoom } from "./gestos.js";
 import { montarNombres } from "./nombres.js";
 import { PLANETA_V, LUNA_V, MARTE_V } from "./versiones.js";
 import { mgrs } from "./mgrs.js";
-import { volarALuna, faseLunaHoy, VUELO_MARTE } from "./vuelos.js";
+import { volar, faseLunaHoy, VUELO_MARTE } from "./vuelos.js";
 
 let planeta: { desmontar(): void; setParado(b: boolean): void } | null = null;
 let quitaMira: (() => void) | null = null;
@@ -369,10 +369,9 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return navigate(d.ruta);
     precarga();
     await img!.decode().catch(() => {});
-    // La cabecera también: /luna y /marte no la tienen y así no desaparece
-    // de golpe. Y el otro astro del cielo: no gira con la cámara.
+    // El otro astro del cielo también se apaga: no gira con la cámara.
     const SEL_APAGAR = `.hero-titulo, .hero-hud, .tierra-nombres, .hero-craft, .hero-banderas, .hero-sparkle, .hero-scroll, .hero-mira, ${d.apagarTambien}`;
-    const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR), ...document.querySelectorAll<HTMLElement>("body > header")];
+    const apagar = [...hero.querySelectorAll<HTMLElement>(SEL_APAGAR)];
     // El planeta deja de girar mientras dura el vuelo: no se aprecia y cada
     // repintado cuesta un volcado entero del lienzo justo en el momento de
     // más trabajo de toda la web (docs/rendimiento.md).
@@ -380,7 +379,7 @@ function montarViaje(hero: HTMLElement, d: Destino) {
     // La Tierra que se queda atrás: el lienzo si ya ha pintado (con zoom o
     // girada, tal como esté), si no la Tierra quieta.
     const planeta = hero.querySelector<HTMLElement>(".hero-tierra.lista") ?? hero.querySelector<HTMLElement>(".hero-planet")!;
-    const vuelo = volarALuna({ icono, planeta, estrellas, apagar, img: img!, ...d.opciones });
+    const vuelo = volar({ icono, planeta, estrellas, apagar, img: img!, ...d.opciones });
     cancela = vuelo.limpiar;
     llegada = { hero: d.heroDestino, pos: await vuelo.fin };
     // La capa se va con la página vieja al cambiar (ClientRouter sustituye el <body>).

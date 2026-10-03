@@ -1,6 +1,7 @@
 // Geometría de las maquetas de drones (src/data/uas/): de cada pieza, sus
-// mallas. La usan el visor (visor-uas.ts) y el generador del pixel art
-// (arte/generar-uas-pixel.mjs), así las dos versiones salen de lo mismo.
+// mallas. La usan el visor (visor-uas.ts) y los generadores de miniaturas
+// (arte/generar-uas-miniaturas.mjs y uas-miniatura-hd.ts): todo sale de lo
+// mismo.
 import {
   BoxGeometry, BufferGeometry, CylinderGeometry, ExtrudeGeometry,
   Float32BufferAttribute, LatheGeometry, Quaternion, Shape, SphereGeometry,
@@ -108,14 +109,6 @@ function monotona(zs: number[], vs: number[]) {
   };
 }
 
-// Casco: anillos a lo largo de z, con las medidas de las secciones
-// interpoladas. La mitad de arriba es una superelipse (su alto y su
-// «cuadratura»); la de abajo, otra superelipse o, si la sección da `panza`,
-// un trapecio: del costado baja una cara inclinada hasta una panza plana de
-// ese medio ancho, con las esquinas de abajo redondeadas (el fuselaje del
-// MQ-9). Las dos mitades van con vértices propios, así la arista del costado
-// (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
-// si no, se tapan.
 // Una curva abierta, suavizada: se reparte por su largo, se le pega delante y
 // detrás su reflejo en el extremo (así los extremos no se mueven y la
 // dirección con la que salen se conserva) y se pasa una campana de ancho
@@ -217,6 +210,14 @@ function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], 
   return [repartir(arr, arriba.length), repartir(ab, abajo.length)];
 }
 
+// Casco: anillos a lo largo de z, con las medidas de las secciones
+// interpoladas. La mitad de arriba es una superelipse (su alto y su
+// «cuadratura»); la de abajo, otra superelipse o, si la sección da `panza`,
+// un trapecio: del costado baja una cara inclinada hasta una panza plana de
+// ese medio ancho, con las esquinas de abajo redondeadas (el fuselaje del
+// MQ-9). Las dos mitades van con vértices propios, así la arista del costado
+// (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
+// si no, se tapan.
 function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0): BufferGeometry {
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una

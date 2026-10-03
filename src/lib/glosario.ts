@@ -5,9 +5,7 @@
 
 export interface SeccionIndice {
   titulo: string;
-  // `ancla`: si falta, la de un término del glosario. `nota`: texto pequeño
-  // detrás del nombre.
-  terminos: { t: string; ancla?: string; nota?: string }[];
+  terminos: { t: string }[];
 }
 
 export function anclaTermino(termino: string): string {

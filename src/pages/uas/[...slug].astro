@@ -29,15 +29,15 @@ const ficha = Astro.props;
 const { Content } = await render(ficha);
 
 const maquetas = Object.keys(import.meta.glob("../../data/uas/*.ts"));
-// El visor va dentro del texto, en el hueco, desde el build. Antes lo subía
-// allí un script al cargar y la página crecía por encima de lo que se estaba
-// leyendo: al volver atrás, la lectura no quedaba donde estaba.
+// El visor va dentro del texto, en el hueco, desde el build: si lo pusiera
+// un script al cargar, la página crecería por encima de lo que se lee y al
+// volver atrás no quedaría donde estaba.
 const HUECO = "<div class=\"visor-hueco\"></div>";
 const html = ficha.rendered?.html ?? "";
 const conVisor = html.includes(HUECO) && maquetas.some((m) => m.endsWith(`/${ficha.id}.ts`));
 const [antesDelVisor, trasElVisor] = conVisor ? html.split(HUECO) : [];
 const cuerpo = ficha.body ?? "";
-const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo), unidad: "términos" } : null;
+const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo) } : null;
 const grupos = ficha.data.armamento ? gruposDeMuniciones(await getCollection("uas")) : null;
 const volver = ficha.data.municion
   ? { href: "/uas/armamento", texto: "Volver al armamento" }

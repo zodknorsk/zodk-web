@@ -8,7 +8,7 @@ node_modules/
 # Logs y entorno
 npm-debug.log*
 .env
-.env.production
+.env.*
 
 # macOS
 .DS_Store

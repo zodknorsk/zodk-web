@@ -50,6 +50,11 @@ la variable `CHROME`, y opciones de más en `CHROME_ARGS`).
 | `generar-uas-miniaturas-hd.mjs` | Lo mismo para los drones con HD, en pixel HD con el motor del visor: la tarjeta (256x144, como el visor) y la planta. Con `npm run dev` en marcha. Uso: `node arte/generar-uas-miniaturas-hd.mjs <modelo…>` | `public/uas/<modelo>/tarjeta*.png`, `planta.png` |
 | `generar-uas-hangar.mjs` | El hangar de la tira «Hangar de UAS» (de lado, con la puerta entreabierta y abierta) y la baldosa de asfalto. Uso: `node arte/generar-uas-hangar.mjs` | `public/uas/hangar/` |
 | `capturas.mjs` | Capturas de la web sin ventana (bajar a un elemento, pasar el ratón, modo noche). Ver `docs/uas.md` | un PNG |
+| `generar-naves-uas-hd.mjs` | Las naves del hero que salen de los drones del hangar, en pixel HD con el motor del visor (`naveHD`), recortadas y con su sombra. Con `npm run dev` en marcha. Uso: `node arte/generar-naves-uas-hd.mjs [id…]` | `public/zodk-<id>.png` (la de noche, con `generar-naves-noche.py`) |
+| `encajar-camara.mjs` | Encaja la cámara de una foto con puntos conocidos del dron y pinta la maqueta encima desde ese ángulo (`docs/uas-hd.md`, «Medir con fotos encajadas») | un PNG y `<ajuste>.cam.json` |
+| `comparar-foto.mjs` | El visor (HD o pixel) desde la cámara encajada de una foto, al lado o encima. Con `npm run dev` en marcha | un PNG |
+| `vista-visor.mjs` | El visor desde una cámara cualquiera, sin foto. Con `npm run dev` en marcha | un PNG |
+| `superponer-plano.mjs` | Una maqueta en ortográfica, en rojo a medias, sobre un plano a escala | un PNG |
 | `generar-aeronaves.py` | El Sentinel-2, la única nave en pixel art (las demás son fotos) | `public/zodk-sat-sentinel*.svg` |
 | `generar-naves-noche.py` | La versión de noche de las fotos de las naves | `public/zodk-<nave>-noche.png` |
 | `generar-logo.py` | El logo animado de la cabecera (ver `docs/logo.md`) | `zodk-logo-animado.svg` (aquí) |

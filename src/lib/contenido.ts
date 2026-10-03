@@ -11,6 +11,16 @@ export function proyectoDe(tags: string[]): "luna" | "marte" | "blog" | null {
   return null;
 }
 
+// "13 sept 2026": las fechas de las filas de la portada y de /blog, cortas.
+export function fechaCorta(d: Date): string {
+  return d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(".", "");
+}
+
+// Las cuentas de las cabeceras de la portada y de /blog, con dos cifras ("05").
+export function dos(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
 // Más reciente primero.
 export function porFecha(a: { data: { date: Date } }, b: { data: { date: Date } }): number {
   return b.data.date.valueOf() - a.data.date.valueOf();

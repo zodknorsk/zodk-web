@@ -19,7 +19,7 @@ sirve de referencia.
 Medidores: `?medir` en los bancos (`arte/bancos/tierra.html` da ms por
 fotograma a ×1; `marte-zoom.html`, a ×1 y ×6). La portada de antes tenía su
 propio `?medir` en la página; el motor nuevo de la Tierra no lo tiene, así que
-para el paso 8 se mide en el banco o en vatios.
+para probar la Tierra se mide en el banco o en vatios.
 
 ## Lo que se aprendió
 
@@ -56,6 +56,6 @@ detrás del disco). Aparcado: en reposo el portátil está en silencio y a unos
 
 ## Pendiente
 
-- La Tierra nueva en Zen y en el móvil (paso 8 de `tierra.md`).
+- Probar la Tierra en Zen y en el móvil (ver «Estado» en `tierra.md`).
 - El móvil en general, donde el consumo importa de verdad y casi no se ha
   medido.

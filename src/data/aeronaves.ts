@@ -34,8 +34,8 @@ export type Aeronave = {
   id: string;
   nombre: string;
   clase: string; // subtítulo de la ficha
-  sprite: string; // /zodk-<id>.svg  (modo claro)
-  spriteNoche: string; // /zodk-<id>-noche.svg
+  sprite: string; // /zodk-<id>.png (o .svg), modo claro
+  spriteNoche: string; // /zodk-<id>-noche.png (o .svg)
   ratio: string; // aspect-ratio del viewBox, "ancho / alto"
   vuelo:
     | "sweep"

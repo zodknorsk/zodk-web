@@ -8,16 +8,11 @@ import { Image } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
 import { BLOG } from "@consts";
-import { porFecha, proyectoDe, primeraFoto } from "@lib/contenido";
+import { porFecha, proyectoDe, primeraFoto, fechaCorta, dos } from "@lib/contenido";
 
 const entradas = (await getCollection("notas"))
   .filter((n) => !n.data.draft && proyectoDe(n.data.tags) === "blog")
   .sort(porFecha);
-
-// "27 sept 2026", como en las filas de la portada.
-const fechaCorta = (d: Date) =>
-  d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(".", "");
-const dos = (n: number) => String(n).padStart(2, "0");
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>

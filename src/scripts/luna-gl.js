@@ -10,12 +10,12 @@
 
 import { LUNA_V } from "./versiones.js";
 import { montarMarteGL } from "./marte-gl.js";
+import { inOutSine } from "./vuelos.js";
 
 const DEG = Math.PI / 180;
 const dir = (lat, lon) => [Math.cos(lat * DEG) * Math.sin(lon * DEG), Math.sin(lat * DEG), Math.cos(lat * DEG) * Math.cos(lon * DEG)];
 const angulo = (a, b) => Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])));
 const lerp = (a, b, t) => a + (b - a) * t;
-const inOutSine = (t) => (1 - Math.cos(Math.PI * t)) / 2;
 
 /**
  * @param {HTMLCanvasElement} canvas

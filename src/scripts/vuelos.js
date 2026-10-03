@@ -64,6 +64,29 @@ export function faseLunaHoy() {
   return `${(i / (FASES - 1)) * 100}% 0`;
 }
 
+/**
+ * Antes de un vuelo, el astro acercado (/luna, /marte) se aleja hasta ×1 sin
+ * girar: el lienzo solo pinta lo que cabe en la ventana y, con zoom, al salir
+ * asomaría cortado. A la velocidad del vuelo (1,6 s por cada e de zoom), con
+ * arranque y frenada suaves.
+ * @param {{ vista: () => { zoom: number }, ponZoom: (z: number, ya?: boolean) => void }} astro
+ * @returns {Promise<void>}
+ */
+export function alejarAx1(astro) {
+  const z0 = astro.vista().zoom;
+  if (z0 <= 1) return Promise.resolve();
+  const ms = 1600 * Math.log(z0);
+  return new Promise((listo) => {
+    const t0 = performance.now();
+    const paso = (ahora) => {
+      const p = Math.min(1, (ahora - t0) / ms);
+      astro.ponZoom(z0 ** (1 - inOutSine(p)), true);
+      if (p < 1) requestAnimationFrame(paso);
+      else requestAnimationFrame(() => listo());   // un fotograma más: el lienzo ya pintado a ×1
+    };
+    requestAnimationFrame(paso);
+  });
+}
 
 /**
  * Hace el vuelo. `fin` resuelve con la posición final de las estrellas (para
@@ -94,7 +117,7 @@ export function faseLunaHoy() {
  *   alejar?: { zoom: number, ponZoom: (z: number) => void, foto: () => HTMLCanvasElement } | null }} o
  * @returns {{ fin: Promise<string>, limpiar: () => void }}
  */
-export function volarALuna({
+export function volar({
   icono, planeta, estrellas, apagar = [], img = null,
   inverso = false, iconoVisible = true,
   tam = "var(--luna-tam)", dy = "var(--luna-dy)", imgLado = 600, imgDisco = 585,

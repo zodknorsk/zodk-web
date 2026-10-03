@@ -6,8 +6,8 @@
 // dos piezas (separa el cuerpo del ala). Se gira y se acerca como la maqueta, y al acercarse gana detalle.
 // Pixel HD (docs/uas-hd.md): en los drones con HD, la escena se pinta
 // con la luz, los colores y las calcas del HD y esta pasada final la pasa a
-// pixel art: tono de pantalla (ACES, como el HD), luz en escalones con tramado
-// en las curvas y el mismo contorno.
+// pixel art: tono de pantalla (ACES, como el HD), luz en siete escalones, sin
+// tramado, y el mismo contorno.
 import {
   DepthTexture, Mesh, NearestFilter, OrthographicCamera, PlaneGeometry, Scene,
   ShaderMaterial, Vector2, Vector3, WebGLRenderTarget, DoubleSide, HalfFloatType,
@@ -15,7 +15,7 @@ import {
 } from "three";
 
 // Tamaño de un píxel de arte, en píxeles CSS (en el pixel HD, 1).
-export const TAM_PIXEL = 2;
+const TAM_PIXEL = 2;
 
 import type { Paleta } from "./uas-paletas";
 export type { Paleta };

@@ -11,14 +11,14 @@ import PageLayout from "@layouts/PageLayout.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
 import BanderaUAS from "@components/BanderaUAS.astro";
-import { SITE, HOME, STACK, CONTACTO, SEGUIMIENTO, OPERACIONES, ANALISIS } from "@consts";
+import { SITE, HOME, STACK, CONTACTO } from "@consts";
 import { AERONAVES } from "@data/aeronaves";
 import { bandera, svgBandera } from "@data/banderas";
 import { PAISES } from "@data/paises";
 import { ALUNIZAJES } from "@data/alunizajes";
 import { AMARTIZAJES } from "@data/amartizajes";
 import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
-import { porFecha, proyectoDe, primeraFoto, enCurso } from "@lib/contenido";
+import { porFecha, proyectoDe, primeraFoto, enCurso, fechaCorta, dos } from "@lib/contenido";
 
 // El hero lleva un objeto de AERONAVES a la vez (dron, avión o satélite),
 // cada uno con su trayectoria. Solo cambia con el botón .hero-cambio. Lo
@@ -51,7 +51,8 @@ const todosEventos = await getCollection("seguimientos");
 const todasOps = (await getCollection("operaciones")).filter((o) => !o.data.draft).sort(porFecha);
 
 // Hangar de UAS: cuántas fichas hay y la planta en pixel art de los drones
-// de la tira (arte/generar-uas-miniaturas.mjs).
+// de la tira (arte/generar-uas-miniaturas.mjs, o generar-uas-miniaturas-hd.mjs
+// los que tienen HD).
 const fichasUas = (await getCollection("uas")).filter((f) => !f.data.draft && !f.data.glosario && !f.data.armamento && !f.data.municion).sort(porFecha);
 // De momento, siempre el X10D y, a su derecha, el MICH-2000 (al lado del
 // hangar solo caben dos puestos; más adelante se verá cómo entran los demás).
@@ -105,11 +106,6 @@ const DESC = {
   operaciones: "Operaciones militares narradas de principio a fin.",
   analisis: "Opinión propia y análisis a fondo sobre diversos temas.",
 };
-
-// "13 sept 2026": las fechas de las filas, cortas.
-const fechaCorta = (d: Date) =>
-  d.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).replace(".", "");
-const dos = (n: number) => String(n).padStart(2, "0");
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION} hero cabecera={false}>
@@ -259,9 +255,9 @@ const dos = (n: number) => String(n).padStart(2, "0");
       <!-- Hangar de UAS: la plataforma de un aeródromo de noche. A la
            izquierda, el hangar de lado (arte/generar-uas-hangar.mjs), con la
            puerta entreabierta y luz tenue; al pasar el ratón se abre del todo.
-           A la derecha, hasta tres drones vistos desde arriba, a escala real
-           entre ellos, con su rótulo. Si hay más, van rotando (script de
-           abajo). -->
+           A la derecha, los drones de EN_HANGAR, vistos desde arriba y a
+           escala real entre ellos, con su rótulo. Con más de tres, rotarían
+           (script de abajo). -->
       {fichasUas.length > 0 && (
         <a class="tira-hangar tira-sat" href="/uas">
           <span class="tira-hangar-texto">

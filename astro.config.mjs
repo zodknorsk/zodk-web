@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "tailwindcss";
@@ -7,6 +8,12 @@ import glosario from "./src/lib/glosario-enlaces.mjs";
 import banderasTablas from "./src/lib/banderas-tablas.mjs";
 import carruselFotos from "./src/lib/carrusel-fotos.mjs";
 
+// Los análisis tienen además una página en /notas/<slug> que solo redirige
+// (antes vivían allí).
+const ANALISIS = new Set(
+  fs.readdirSync("./src/content/analisis", { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name),
+);
+
 // https://astro.build/config
 export default defineConfig({
   // "site" es la URL final del sitio. Astro la usa para el sitemap, el RSS y las
@@ -15,9 +22,12 @@ export default defineConfig({
   // Todo el contenido lo genera el importador como .md, que Astro entiende de
   // serie: no hay integración de MDX porque no hay ningún .mdx.
   site: "https://zodk.eu",
-  // Sin las páginas que solo redirigen a la dirección nueva (/eventos/… y
-  // /notas, que pasaron a /seguimiento, /operaciones y /analisis).
-  integrations: [sitemap({ filter: (url) => !/\/eventos(\/|$)|\/notas\/$/.test(url) })],
+  // Sin las páginas que solo redirigen a la dirección nueva (/eventos/…,
+  // /notas y /notas/<análisis>, que pasaron a /seguimiento, /operaciones y
+  // /analisis).
+  integrations: [sitemap({
+    filter: (url) => !/\/eventos(\/|$)|\/notas\/$/.test(url) && !ANALISIS.has(url.match(/\/notas\/([^/]+)\/$/)?.[1]),
+  })],
 
   // Los términos del glosario de UAS enlazados en los artículos, con su
   // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).

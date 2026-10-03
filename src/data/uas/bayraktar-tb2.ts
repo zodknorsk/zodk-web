@@ -31,7 +31,7 @@ const RAIZ_ALA_X = 1.3;
 // menos error; la media de las dos (difieren unos ±5 cm). El plano ponía el
 // ala unos 19 cm más atrás y la punta más ancha (0,63 m de cuerda; en las
 // fotos, 0,55): con él, el ajuste de las fotos dejaba 13–17 px de error en
-// las puntas, el morro y la cola (2-oct-2026).
+// las puntas, el morro y la cola.
 const bordeAtaque = (x: number) => 0.913 - 0.078 * (x - 1.5);
 const bordeSalida = (x: number) => 0.082 - 0.0168 * (x - 1.5);
 // El grosor y la altura van como parámetros del perfil: el grueso total es
@@ -50,7 +50,7 @@ const estAla = (x: number, bs = bordeSalida(x)): Est => [x, bordeAtaque(x), bs, 
 const RAIZ: Est[] = [[RAIZ_ALA_X, bordeAtaque(RAIZ_ALA_X), bordeSalida(RAIZ_ALA_X), 0.236, 0.016]];
 // Alerones, dos por ala (plano desde arriba y desde abajo): de 3,68 a 4,8 m
 // y de 4,8 a 5,9, con la bisagra al 24 % de la cuerda desde el borde de
-// salida (fotos del J-10 de lado, en la punta; antes, 0,13 m fijos).
+// salida (fotos del J-10 de lado, en la punta).
 const ALERON = { cuerda: 0.24, hueco: 0.006, tramos: [[3.68, 4.8], [4.8, 5.9]] };
 const bisagra = (x: number) => bordeSalida(x) + ALERON.cuerda * (bordeAtaque(x) - bordeSalida(x));
 const estAleron = (x: number): Est => {
@@ -93,9 +93,8 @@ const pendienteCola = Math.atan2(COLA.yVertice - COLA.yRaiz, COLA.x);
 // empalme cóncavo sube del ensanche al hombro del cuerpo; por abajo, otro
 // baja por el costado hasta la panza redonda. Encima, desde detrás de la tapa
 // del morro, el lomo estrecho (0,52 m de ancho, foto polaca de frente) que
-// sube hasta el capó del motor. (En la
-// primera versión, cuerpo y raíz del ala iban aparte: la raíz parecía un puro
-// posado junto al costado y la arista corría baja, a −0,27 m.)
+// sube hasta el capó del motor. Cuerpo y raíz del ala, de una pieza: por
+// separado, la raíz parecía un puro posado junto al costado.
 // En la raíz del ala el empalme de arriba sube hasta el pie del lomo: no
 // queda hombro del cuerpo por encima del ala (foto polaca de frente).
 // Medidas del cuerpo a lo largo: [z, medio ancho del cuerpo, arista (y),
@@ -117,9 +116,8 @@ const FILAS: FilaCuerpo[] = [
   // El ensanche delante del ala (planta del plano), hasta la raíz.
   // Hacia el morro, el empalme de arriba llega cada vez menos hacia dentro y
   // la mejilla del costado se ensancha poco a poco hasta el labio (foto tr05
-  // y de Baykar en tierra: el costado baja liso y redondo). Antes el empalme
-  // llegaba hasta x = 0,27–0,32 hasta z = 1,35 y luego saltaba a 0,4 y 0,5:
-  // la mejilla quedaba metida y salía una joroba con dos valles.
+  // y de Baykar en tierra: el costado baja liso y redondo). Si el empalme
+  // salta de golpe, la mejilla queda metida y sale una joroba con dos valles.
   [1.5, 0.53, -0.09, 0.545, 0.04, 0.02, 0.17, 0.245, 0.26, -0.375, 0.46],
   [1.35, 0.545, -0.065, 0.58, 0.075, 0.07, 0.185, 0.262, 0.26, -0.375, 0.41],
   [1.25, 0.555, -0.045, 0.62, 0.105, 0.1, 0.2, 0.274, 0.26, -0.375, 0.37],
@@ -142,8 +140,8 @@ const FILAS: FilaCuerpo[] = [
 // el morro, y el de salida, que se curva hacia atrás hasta el capó (plano
 // desde arriba). Así el empalme de arriba sube del ala al lomo en una curva
 // larga, desde 0,7 m del costado, como se ve de frente en todas las fotos
-// (en la versión anterior el ala salía del cuerpo en x = 0,85 con un empalme
-// corto: el ala parecía pinchada en un cuerpo en forma de huevo).
+// (con un empalme corto, el ala parece pinchada en un cuerpo en forma de
+// huevo).
 // RAIZ_ALA y los bordes del ensanche van en las z del plano; `alSitio` (más
 // abajo) los lleva a donde está el ala de verdad.
 const RAIZ_ALA = { x: RAIZ_ALA_X, ba: 0.745, bs: -0.122, t: 0.236, sube: 0.016 };
@@ -174,8 +172,8 @@ const conBorde = (z: number, x: number, borde?: [number, number], redondeo = 0) 
 // sin arista (el borde de ataque se funde con el costado, fotos del J-10 en
 // tierra y en vuelo), y hacia el morro sigue la arista suave. Cambia poco a
 // poco: de 0 en el borde de ataque (donde el ensanche acaba con el perfil del
-// ala) a 0,75 y otra vez a 0 en la punta del morro. Antes saltaba de 0,75 a 0
-// en un centímetro en el borde de ataque y dejaba un pliegue.
+// ala) a 0,75 y otra vez a 0 en la punta del morro. De golpe, deja un
+// pliegue en el borde de ataque.
 const suave = (a: number, b: number, v: number) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
 // En el borde de ataque, el perfil del ala tiene grueso cero: sin redondeo,
 // el empalme entero bajaba ahí hasta el borde y volvía a subir detrás (el
@@ -185,8 +183,8 @@ const REDONDEO = (z: number) => (z <= RAIZ_ALA.ba ? 0.9 * suave(0.4, RAIZ_ALA.ba
 // Delante del ala, el ensanche no acaba en filo: el borde de ataque sigue
 // hacia el morro como un reborde redondo (foto de Baykar en tierra), con el
 // grueso de la nariz de un perfil, que se afina hacia el morro. LABIO(z): su
-// grueso; la nariz, de un largo algo menor. Antes acababa en un filo de
-// grueso cero que chocaba con el ala, gruesa, y dejaba un pliegue.
+// grueso; la nariz, de un largo algo menor. Con un filo de grueso cero
+// chocaría con el ala, gruesa, y dejaría un pliegue.
 // Se apaga hacia el morro antes de z = 1,7: más adelante dejaba un cordón a
 // lo largo de la arista, y en las fotos ahí solo cambia la luz.
 // De 3 a 4 cm: con 9 cm (más que la nariz del perfil del ala) salía una
@@ -256,7 +254,7 @@ const CUERPO: Seccion[] = [
 // delante de la junta remachada del capó; delante, una rampa poco honda que
 // se estrecha hasta la punta (z = 0,64), con los bordes un poco salidos.
 // (Vista desde un lado, solo se ve iluminada la pared de enfrente y parece
-// una cuña a un lado: el 2-oct-2026 salieron por error dos tomas laterales.)
+// una cuña a un lado: es una sola, en el centro.)
 const TOMA = { boca: 0.1, largo: 0.25, punta: 0.64, x: 0, y: 0.373, ancho: 0.11, hondo: 0.12, ceja: 0.012 };
 // Fondo de la boca: un disco negro contra la pared, centrado en el fondo del
 // hueco (solo asoma la mitad que queda dentro de la toma): la entrada del
@@ -272,7 +270,7 @@ const CAPO = { z: 0.0 };
 // la rueda (fotos de Teknofest y de Lituania); la del morro, un amortiguador
 // recto con su compás, detrás de la placa de la panza.
 // Ruedas pequeñas, de unos 19 cm (foto de tierra del J-10 con la cámara
-// encajada; en la primera versión, de 28 y 26 cm), y la del morro más atrás.
+// encajada), y la del morro más atrás.
 const SUELO = -0.91;
 const RUEDA = { x: 0.82, r: 0.095, z: 0.42 };
 const RUEDA_MORRO = { r: 0.098, z: 2.31 };
@@ -284,8 +282,7 @@ const SOPORTES = [1.3, 1.72];
 const LADOS = [1, -1];
 const SOPORTE = { largo: 0.46, alto: 0.14, ancho: 0.075 };
 // Todo con la distancia al centro, sin signo: con la x negativa del ala
-// izquierda el diedro salía al revés y sus dos bombas colgaban 20 cm por
-// debajo de los soportes, en el aire.
+// izquierda, el diedro saldría al revés y sus bombas colgarían en el aire.
 const bajoSoporte = (x: number) => abajoAla(Math.abs(x)) - SOPORTE.alto + 0.03;
 // MAM-L de Roketsan: 1 m y 16 cm de grueso, con el buscador láser redondo
 // delante, cuatro alas cortas a media bomba y cuatro timones detrás, colgada
@@ -312,7 +309,7 @@ const mam = (x: number): Pieza[] => {
       perfil: [[z0, 0], [z0 - 0.012, 0.04], [z0 - 0.035, 0.062], [z0 - 0.07, 0.075], [z0 - 0.12, r], [z0 - 0.95, r], [z0 - 0.985, 0.07], [z0 - MAM.largo, 0.05], [z0 - MAM.largo - 0.001, 0]],
     },
     { tipo: "tubo", id: `mam-ojo-${x}`, acabado: "lente", centro: [x, y], perfil: [[z0 + 0.004, 0], [z0 - 0.004, 0.035], [z0 - 0.02, 0.05], [z0 - 0.021, 0]] },
-    // Dos argollas, colgadas de la percha (antes, una por delante de ella).
+    // Dos argollas, colgadas de la percha.
     ...[0.1, -0.1].map((dz, i): Pieza => ({ tipo: "varilla", id: `mam-argolla-${x}${i ? "-b" : ""}`, acabado: "metal", desde: [x, y + r - 0.01, cuerdaAla(Math.abs(x), 0.42) + dz], hasta: [x, bajoSoporte(x) - 0.012, cuerdaAla(Math.abs(x), 0.42) + dz], radio: 0.012 })),
     ...aletasX(`mam-alas-${x}`, x, y, [[z0 - 0.36, r - 0.01], [z0 - 0.56, r - 0.01], [z0 - 0.53, 0.17], [z0 - 0.43, 0.17]], "gris"),
     ...aletasX(`mam-timones-${x}`, x, y, [[z0 - 0.8, r - 0.01], [z0 - 0.995, r - 0.01], [z0 - 0.995, 0.175], [z0 - 0.9, 0.175]], "gris"),
@@ -339,8 +336,7 @@ const esfera = (z: number, r: number, n = 13): [number, number][] =>
   });
 // Torreta (fotos de tierra y de vuelo del J-10): un tambor del ancho de la
 // bola, metido en la panza, y la media esfera debajo; nada de cuello. Unos
-// 42 cm de ancho, centrada en z = 1,67 (en la primera versión, una bola de
-// 38 cm colgada de un collar, 14 cm más adelante).
+// 42 cm de ancho, centrada en z = 1,67.
 const TORRETA = { y: -0.475, z: 1.67, r: 0.21 };
 
 // Carenados de los mandos de los timones, en la cara de dentro (la de abajo)
@@ -360,15 +356,15 @@ const carenadosTimon = (f: number, i: number): Pieza[] => {
 const PIEZAS: Pieza[] = [
   // Cada sección, una curva lisa (campana de 7 cm): las uniones del empalme,
   // el costado, el hombro y el lomo salían como líneas que en las fotos no
-  // están (las marcó el usuario el 2-oct-2026).
+  // están.
   { tipo: "casco", id: "fuselaje", acabado: "gris-tr", secciones: CUERPO, tomas: [TOMA], suave: 0.07 },
   // Toma de aire del motor (foto de Baykar en tierra, J-10 en vuelo y polaca
   // de frente): el capó del motor es algo más grueso que el cuerpo de delante
   // y su borde delantero queda separado, con una boca negra que lo rodea por
   // los costados y por arriba. De lado se ve como una banda negra vertical;
   // de frente, como dos medias lunas a los lados del lomo; desde arriba, como
-  // dos huecos oscuros delante del capó (en la versión anterior, mal
-  // entendidos como dos tomas sumergidas encima y una ranura en el costado).
+  // dos huecos oscuros delante del capó (no son tomas sumergidas ni una
+  // ranura en el costado).
   {
     // Con la forma del cuerpo de delante, algo más grande: un lomo alto y
     // estrecho (foto polaca de frente) sobre unos hombros de 0,4 m de medio
@@ -394,10 +390,9 @@ const PIEZAS: Pieza[] = [
   },
   { tipo: "disco", id: "toma-fondo", acabado: "hueco", en: FONDO_TOMA, normal: [0, 0, 1], radio: 0.95 * TOMA.hondo, grosor: 0.004 },
   // Toma de aire central: una boca rectangular en lo alto del lomo, sobre la
-  // raíz del ala (fotos del J-10 en vuelo: no está en el capó, como en la
-  // primera versión, sino 1 m por delante). Un capuchón bajo con la boca
-  // negra mirando adelante, que apenas sale del lomo: 1 cm (salía 2–3; lo
-  // pidió el usuario el 2-oct-2026).
+  // raíz del ala, 1 m por delante del capó (fotos del J-10 en vuelo). Un
+  // capuchón bajo con la boca negra mirando adelante, que apenas sale del
+  // lomo: 1 cm.
   { tipo: "caja", id: "toma", acabado: "gris-tr", centro: [0, 0.288, 1.0], tam: [0.17, 0.05, 0.16], redondeo: 0.03 },
   { tipo: "caja", id: "toma-boca", acabado: "negro", centro: [0, 0.293, 1.075], tam: [0.14, 0.035, 0.012] },
   // Morro: la sonda de datos de aire en la punta, con sus dos veletas, una
@@ -419,7 +414,7 @@ const PIEZAS: Pieza[] = [
   },
   // Placa de la panza, bajo el morro, con una antena de pala delante.
   // Caja larga bajo el morro, de detrás de la pata hasta casi la punta (foto
-  // de tierra del J-10; en la primera versión, una placa fina y corta).
+  // de tierra del J-10).
   { tipo: "caja", id: "placa-panza", acabado: "gris-tr", centro: [0, -0.39, 2.55], tam: [0.22, 0.07, 0.95], redondeo: 0.03 },
   {
     tipo: "placa", id: "antena-panza", acabado: "negro", plano: "vertical", x: 0, grosor: 0.012, bisel: 0.004,
@@ -670,9 +665,9 @@ const maqueta: Maqueta = {
   // escalones del pixel HD (puestos para el MQ-9): corridos medio escalón.
   desfaseLuz: 0.48,
   contornoPixel: true,
-  // Ángulo de la tarjeta de /uas: el que eligió el usuario el 2-oct-2026 con
-  // una captura del visor (cámara encajada: acimut 61°, elevación 20°), en
-  // vez del de todas (79°, 11°).
+  // Ángulo de la tarjeta de /uas, sacado de una captura del visor con
+  // arte/encajar-camara.mjs (acimut 61°, elevación 20°), en vez del de todas
+  // (79°, 11°). Ver docs/uas.md, «Ángulo propio de la tarjeta».
   vistaTarjeta: [61, 20],
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("TR"),

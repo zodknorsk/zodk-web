@@ -2,8 +2,7 @@
 // armamento): en las tablas, la bandera emoji del principio de una celda
 // («🇹🇷 Turquía», la fila «País») se cambia por su chapa en pixel art, la
 // misma de los filtros, las tarjetas y el visor (src/data/banderas.ts).
-// Lo decidió el usuario el 29-sep-2026. En la bóveda sigue el emoji. Si el
-// país no tiene chapa, se queda el emoji.
+// En la bóveda sigue el emoji. Si el país no tiene chapa, se queda el emoji.
 import { banderaPorEmoji } from "../data/banderas.ts";
 
 // Una bandera emoji: dos letras regionales seguidas.

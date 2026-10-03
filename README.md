@@ -1,8 +1,10 @@
 # zodk-web
 
 El código de mi web personal, **[zodk.eu](https://zodk.eu)**: un blog de
-historia, inteligencia y OSINT con una portada en pixel art (la Tierra) y dos
-páginas más para la Luna y Marte. Hecha con [Astro](https://astro.build) a
+historia, inteligencia y OSINT con una portada en pixel art (la Tierra), dos
+páginas más para la Luna y Marte, el Hangar de UAS (`/uas`: fichas de drones
+con su visor 3D y pixel, el glosario y el armamento) y `/blog`, sobre la
+propia web. Hecha con [Astro](https://astro.build) a
 partir de la plantilla [astro-nano](https://github.com/markhorn-dev/astro-nano)
 (MIT) y publicada en GitHub Pages.
 
@@ -29,6 +31,7 @@ Cada push a `main` compila y publica la web sola
 | [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
 | [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
 | [`docs/uas.md`](docs/uas.md) | El Hangar de UAS: fichas de drones, el visor, la tira de la portada y cómo se hace un dron nuevo |
+| [`docs/uas-hd.md`](docs/uas-hd.md) | Los drones en HD y en pixel HD: objetivos para pasar un dron, estado y lo probado |
 | [`docs/astros.md`](docs/astros.md) | Lo común a los tres: motores, gestos, vuelos, nombres, versiones de datos |
 | [`docs/rendimiento.md`](docs/rendimiento.md) | Que no caliente: cómo medir y qué se aprendió |
 | [`docs/logo.md`](docs/logo.md) | El logo animado y los iconos |
@@ -42,13 +45,15 @@ src/
     index.astro              Portada: el hero con la Tierra y, debajo, el blog
     luna.astro               /luna (con todo su JavaScript)
     marte.astro              /marte (con todo su JavaScript)
+    blog.astro               /blog: sobre la propia web, con el avatar y las entradas
     analisis/                /analisis: los análisis por años y la página de cada uno
     operaciones/             /operaciones: por fecha del suceso y la página de cada una
     seguimiento/             /seguimiento: índice, semanas y piezas de cada seguimiento
     notas/[...slug].astro    Las notas de la Luna, Marte y el blog (y redirecciones)
     eventos/, notas/index    Solo redirecciones a las direcciones nuevas
     uas/index.astro          /uas: la enciclopedia de drones, con filtro por país
-    uas/[...slug].astro      La ficha de cada dron, con su visor (docs/uas.md)
+    uas/[...slug].astro      La ficha de cada dron (con su visor), el glosario,
+                             el armamento y cada munición (docs/uas.md)
     404.astro                La página de las direcciones que no existen
     rss.xml.ts, robots.txt.ts
   layouts/PageLayout.astro   El esqueleto común: <head>, cabecera, pie
@@ -59,6 +64,13 @@ src/
     ThemeToggle.astro        El botón de día/noche
     VisorUAS.astro           El visor de cada dron (maqueta 3D y pixel, partes,
                              fuentes)
+    BanderaUAS.astro         La bandera en pixel art del país de un dron
+    GlosarioIndice.astro     El índice del glosario de UAS
+    GlosarioTarjeta.astro    La tarjeta de un término del glosario o de una
+                             munición al pasar el ratón en los artículos
+    ArmamentoLista.astro     El índice del armamento: una fila por munición
+    Carrusel.astro           Lo que hacen al pulsar los carruseles de fotos
+    TiraCabecera.astro       La cabecera de /analisis, /operaciones y /seguimiento
     Footer.astro, Container.astro, Link.astro, ArrowCard.astro (tarjeta de
     análisis u operación), BackToPrev.astro (botón de volver), EventoNav.astro
     (semana anterior/siguiente de un seguimiento), ArticuloPagina.astro
@@ -77,15 +89,20 @@ src/
     visor-uas.ts             Motor del visor de los drones (Three.js)
     uas-geometria.ts, uas-pixelado.ts, uas-paletas.ts
                              Piezas, modo Pixel y paletas de las maquetas
+    uas-hd.ts                El modo HD del visor (materiales, luz, calcas)
+    uas-miniatura-hd.ts      Las miniaturas en pixel HD (solo para arte/)
+    avatar.js                El avatar vivo de /blog
   styles/                  Los estilos, en el orden en que se cargan
     base.css                 Toda la web (Tailwind, cabecera, notas, tuits)
     astros.css               Lo común a los tres astros
-    portada.css, luna.css, marte.css
+    portada.css, luna.css, marte.css, blog.css
   data/                    Datos a mano (y el archivo de tuits)
     aeronaves.ts             Las naves del hero y sus fichas
     paises.ts                Países con chapa sobre la Tierra
     alunizajes.ts            Las 28 misiones de /luna, países y relés
     amartizajes.ts           Las 17 misiones de /marte
+    banderas.json, banderas.ts
+                             Las banderas en pixel art de toda la web
     uas/                     Las maquetas de los drones (una por dron) y sus
                              tipos
     tuits/                   El archivo de tuits: cada uno, tal como estaba
@@ -93,6 +110,11 @@ src/
   lib/
     contenido.ts             Proyecto de una nota, fotos y fechas
     utils.ts                 Utilidades (clases CSS, tiempo de lectura)
+    armamento.ts             Las municiones del Hangar, agrupadas
+    glosario.ts              Secciones, términos y anclas del glosario
+    glosario-enlaces.mjs, banderas-tablas.mjs, carrusel-fotos.mjs
+                             Plugins de Markdown: términos y municiones
+                             enlazados, banderas de las tablas y carruseles
   content/                 Lo que escribe el importador (no tocar)
   content.config.ts        El esquema de las colecciones (análisis, operaciones, seguimientos, notas, uas)
   consts.ts                Nombre de la web, textos, "hecho con" y contacto

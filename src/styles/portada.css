@@ -401,7 +401,7 @@ html.dark .craft-luz:not([hidden]) { display: block; }
 .hero-craft--fijo {
   left: 58%;
   top: 58%;
-  width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más chica que la nave anterior */
+  width: calc(clamp(105px, 10.5vw, 165px) * var(--naves-k));   /* foto del E-2, más pequeña que las demás naves */
 }
 .hero-craft--fijo-izq {
   /* sobre la parte izquierda del globo, relativo a su disco */

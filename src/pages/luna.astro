@@ -208,7 +208,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
   import { montarMano, montarZoom } from "../scripts/gestos.js";
   import { LUNA_V, MARTE_V } from "../scripts/versiones.js";
   import { montarNombres } from "../scripts/nombres.js";
-  import { volarALuna, faseLunaHoy, inOutSine, VUELO_MARTE } from "../scripts/vuelos.js";
+  import { volar, faseLunaHoy, alejarAx1, VUELO_MARTE } from "../scripts/vuelos.js";
 
   type Luna = NonNullable<Awaited<ReturnType<typeof montarLunaGL>>>;
   // Lo que se quita al salir: el motor el primero (quitar[0]), luego la mano,
@@ -238,25 +238,6 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
   }
   function borrarEstadoLuna() {
     try { sessionStorage.removeItem(CLAVE_ESTADO); } catch { /* sessionStorage no disponible */ }
-  }
-
-  // Si estaba acercada, antes de volar a Marte la Luna se aleja hasta ×1 sin
-  // girar (como Marte antes de ir a la Tierra, en /marte): con zoom no cabe
-  // entera y al salir asomaría cortada.
-  function alejarAx1(l: Luna): Promise<void> {
-    const z0 = l.vista().zoom;
-    if (z0 <= 1) return Promise.resolve();
-    const ms = 1600 * Math.log(z0);
-    return new Promise((listo) => {
-      const t0 = performance.now();
-      const paso = (ahora: number) => {
-        const p = Math.min(1, (ahora - t0) / ms);
-        l.ponZoom(z0 ** (1 - inOutSine(p)), true);
-        if (p < 1) requestAnimationFrame(paso);
-        else requestAnimationFrame(() => listo());
-      };
-      requestAnimationFrame(paso);
-    });
   }
 
   // Vuelta a la Tierra: el vuelo de la portada hacia atrás (vuelos.js), desde
@@ -292,7 +273,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         return foto;
       },
     };
-    const vuelo = volarALuna({
+    const vuelo = volar({
       icono, planeta, estrellas, apagar, inverso: true, alejar,
       iconoVisible: document.documentElement.classList.contains("dark"),
     });
@@ -318,7 +299,7 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
     await cargada;
     const icono = hero.querySelector<HTMLElement>(".hero-marte")!;
     const estrellas = hero.querySelector<HTMLElement>(".hero-stars")!;
-    const vuelo = volarALuna({ icono, planeta: lienzo, estrellas, apagar, img, ...VUELO_MARTE });
+    const vuelo = volar({ icono, planeta: lienzo, estrellas, apagar, img, ...VUELO_MARTE });
     for (const f of quitar) f();                // el lienzo se queda con lo último que pintó
     quitar = [];
     estrellasMarte = await vuelo.fin;
@@ -564,7 +545,9 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         if (!columna.querySelector(".abierto")) fija();
       };
       if (!enFila.matches) fija();
-      new ResizeObserver(fijaSiColumna).observe(hero);
+      const vigia = new ResizeObserver(fijaSiColumna);
+      vigia.observe(hero);
+      quitar.push(() => vigia.disconnect());
     }
 
     // --- En táctil, la ficha de una chapa, un relé o la Orion sale con un
