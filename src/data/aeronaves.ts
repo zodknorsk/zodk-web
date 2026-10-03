@@ -191,9 +191,9 @@ export const AERONAVES: Aeronave[] = [
     clase: "Dron de ataque de un solo uso (OWA)",
     sprite: "/zodk-shahed136.png",
     spriteNoche: "/zodk-shahed136-noche.png",
-    ratio: "788 / 440",
+    ratio: "263 / 185",
+    ancho: 132,
     vuelo: "sweep",
-    escala: 0.5,
     pais: "IR",
     specs: [
       ["Fabricante", "Shahed Aviation Industries y HESA"],

@@ -51,6 +51,17 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El fondo de una boca o un hueco (la toma de aire del TB2): casi negro y
   // mate, para que no se lea como una pieza pintada de negro.
   hueco: { color: "#08090a", metal: 0, rugosidad: 1 },
+  // La pintura crema de los Shahed-136 iraníes (fotos de Qom y Kermanshah;
+  // cada una con su luz: de #c3bc9f a #dccebc en lo alto del ala). Un punto
+  // menos crema que la de Qom, a petición del usuario: hueso claro al sol.
+  "crema-ir": { color: "#b8ae9e", metal: 0, rugosidad: 0.55 },
+  // El aluminio en bruto del motor del Shahed (cárter, cilindros y aletas),
+  // más claro y menos espejo que el «metal».
+  aluminio: { color: "#c3c6ca", metal: 0.55, rugosidad: 0.42 },
+  // El amarillo ocre de los lanzadores iraníes (Qom, al sol: #c9a64a).
+  ocre: { color: "#b8953e", metal: 0, rugosidad: 0.6 },
+  // La corona dentada del arranque del motor del Shahed, dorada.
+  laton: { color: "#d2ab4c", metal: 0.5, rugosidad: 0.4 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -285,6 +296,75 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       for (const f of [0.38, 0.62]) c.fillRect(W * 0.25, H * f - b * 0.18, W * 0.5, b * 0.36);
       break;
     }
+    case "bandera-ir": {
+      // El cartel de los winglets del Shahed de Kermanshah: blanco, con un
+      // filete gris; arriba la bandera (verde, blanca con el emblema rojo y
+      // roja, con el «Allahu akbar» repetido en blanco en los bordes de las
+      // franjas: aquí, una fila de trazos), y debajo «MADE IN I.R.IRAN» y
+      // «ساخت ایران».
+      // Con `pegatina` (la del morro del de Qom), solo la bandera, con
+      // «ساخت» y «ایران» en la franja blanca a los lados del emblema.
+      c.fillStyle = "#f4f3ee"; c.fillRect(0, 0, W, H);
+      if (!d.pegatina) { c.strokeStyle = "#a9aaa6"; c.lineWidth = H * 0.018; c.strokeRect(c.lineWidth / 2, c.lineWidth / 2, W - c.lineWidth, H - c.lineWidth); }
+      const m = d.pegatina ? 0 : W * 0.06, fw = W - 2 * m, fy = d.pegatina ? 0 : H * 0.06, fh = d.pegatina ? H : H * 0.66, f = fh / 3;
+      c.fillStyle = "#239f40"; c.fillRect(m, fy, fw, f);
+      c.fillStyle = "#da0000"; c.fillRect(m, fy + 2 * f, fw, f);
+      c.fillStyle = "#f4f3ee";
+      for (let i = 0; i < 11; i++) {
+        const x = m + ((i + 0.5) / 11) * fw;
+        c.fillRect(x - fw * 0.025, fy + f * 0.86, fw * 0.05, f * 0.09);
+        c.fillRect(x - fw * 0.025, fy + 2 * f + f * 0.05, fw * 0.05, f * 0.09);
+      }
+      // El emblema: cuatro medias lunas y la espada, en rojo.
+      const ex = W / 2, ey = fy + 1.5 * f, er = f * 0.36;
+      c.strokeStyle = "#da0000"; c.lineWidth = er * 0.16; c.lineCap = "round";
+      for (const s of [1, -1]) {
+        c.beginPath(); c.arc(ex, ey, er, s > 0 ? -1.2 : Math.PI - 1.95, s > 0 ? 1.95 - Math.PI : Math.PI + 1.2, s < 0); c.stroke();
+        c.beginPath(); c.arc(ex + s * er * 0.18, ey, er * 0.62, s > 0 ? -1.1 : Math.PI - 2.0, s > 0 ? 2.0 - Math.PI : Math.PI + 1.1, s < 0); c.stroke();
+      }
+      c.beginPath(); c.moveTo(ex, ey - er * 1.05); c.lineTo(ex, ey + er * 0.95); c.stroke();
+      if (d.pegatina) {
+        c.fillStyle = "#24262b"; c.textBaseline = "middle"; c.direction = "rtl";
+        c.font = `700 ${Math.round(f * 0.55)}px "Geeza Pro", Tahoma, "Noto Naskh Arabic", sans-serif`;
+        c.textAlign = "center";
+        c.fillText("ساخت", W * 0.76, ey, W * 0.3);
+        c.fillText("ایران", W * 0.24, ey, W * 0.3);
+        c.direction = "ltr";
+        break;
+      }
+      // Las dos leyendas, en una línea: en inglés a la izquierda y en persa a
+      // la derecha.
+      const ty = fy + fh + (H - fy - fh) * 0.5, th = (H - fy - fh) * 0.5;
+      c.textBaseline = "middle";
+      c.fillStyle = "#2a2c33"; c.textAlign = "left";
+      c.font = `700 ${Math.round(th)}px "Helvetica Neue", Arial, sans-serif`;
+      c.fillText("MADE IN I.R.IRAN", m, ty, fw * 0.48);
+      c.fillStyle = "#9a1c1f"; c.textAlign = "right"; c.direction = "rtl";
+      c.font = `700 ${Math.round(th * 1.25)}px "Geeza Pro", Tahoma, "Noto Naskh Arabic", sans-serif`;
+      c.fillText("ساخت ایران", W - m, ty, fw * 0.45);
+      c.direction = "ltr";
+      break;
+    }
+    case "qr": {
+      // Pegatina de código QR: blanca, con los tres cuadros de las esquinas
+      // y el resto de módulos repartidos siempre igual.
+      c.fillStyle = "#f4f3ee"; c.fillRect(0, 0, W, H);
+      const n = 25, q = Math.min(W, H) / (n + 2), o = q;
+      c.fillStyle = "#151619";
+      let semilla = 7;
+      const azar = () => ((semilla = (semilla * 16807) % 2147483647) / 2147483647);
+      for (let i = 0; i < n; i++)
+        for (let j = 0; j < n; j++) {
+          const enEsquina = (i < 8 && j < 8) || (i < 8 && j >= n - 8) || (i >= n - 8 && j < 8);
+          if (!enEsquina && azar() < 0.5) c.fillRect(o + i * q, o + j * q, q, q);
+        }
+      for (const [i, j] of [[0, 0], [n - 7, 0], [0, n - 7]]) {
+        c.fillRect(o + i * q, o + j * q, 7 * q, 7 * q);
+        c.fillStyle = "#f4f3ee"; c.fillRect(o + (i + 1) * q, o + (j + 1) * q, 5 * q, 5 * q);
+        c.fillStyle = "#151619"; c.fillRect(o + (i + 2) * q, o + (j + 2) * q, 3 * q, 3 * q);
+      }
+      break;
+    }
     case "serie": {
       // «AF» sobre el año, pequeños, y el número grande al lado.
       c.textBaseline = "middle";
@@ -451,6 +531,9 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     grupo.add(puntos);
     aDesechar.push(g, m);
   }
+  // Colgadas de la raíz, conservando su sitio: así giran con el dron cuando se
+  // inclina sobre su catapulta.
+  raiz.attach(grupo);
   return {
     // En el pixel, sin tornillos: a un píxel cada uno solo serían ruido.
     ver(si: boolean, conTornillos = true) {
@@ -458,6 +541,6 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       if (puntos) puntos.visible = conTornillos;
       nitidez.value = conTornillos ? 0 : 1;
     },
-    dispose() { for (const d of aDesechar) d.dispose(); escena.remove(grupo); },
+    dispose() { for (const d of aDesechar) d.dispose(); grupo.removeFromParent(); },
   };
 }

@@ -27,6 +27,10 @@ const COMUNES = {
   blanco: ["#9a9c9e", "#c4c6c8", "#e4e5e6", "#f7f7f5"],
   "rojo-vivo": ["#6e0a10", "#a8121c", "#d81e2a", "#f0454f"],
   hueco: ["#050506", "#08090a", "#0c0d0f", "#121316"],
+  "crema-ir": ["#5f5a50", "#8f887c", "#bfb6a7", "#e7e0d3"],
+  aluminio: ["#4a4e54", "#767b82", "#a5aab0", "#d3d6da"],
+  ocre: ["#5a4718", "#86692a", "#b8953e", "#dcc072"],
+  laton: ["#5a4718", "#86692a", "#b8953f", "#e0c271"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

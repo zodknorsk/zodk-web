@@ -79,6 +79,12 @@ const VISTAS = [
               <span class="visor-silueta-nombre">{nombre}</span>
             </button>
           ))}
+          {m.catapulta && (
+            <button type="button" data-accion="catapulta" aria-pressed="false" title="El dron sobre su catapulta">
+              <span class="visor-silueta" aria-hidden="true"></span>
+              <span class="visor-silueta-nombre">Catapulta</span>
+            </button>
+          )}
         </div>
         <div class="visor-herramientas">
           <div class="visor-estilo" role="group" aria-label="Estilo">
@@ -321,6 +327,7 @@ const VISTAS = [
     color: var(--visor-sobre-acento);
   }
   .visor-pin--tapado { opacity: 0.3; }
+  .visor-pin[hidden] { display: none; }
   .visor-rotulo {
     position: absolute;
     left: 0;

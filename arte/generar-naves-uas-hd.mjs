@@ -33,6 +33,9 @@ const TREN_MQ9 = ["pata-morro", "vastago-morro", "tirante-morro", "compas-morro"
 const NAVES = {
   mq9: { modelo: "mq-9-reaper", vista: [90, 28], morro: 180, lado: 260, quitar: TREN_MQ9 },
   tb2: { modelo: "bayraktar-tb2", vista: [90, 28], morro: 180, lado: 260, quitar: ["pata-morro", "vastago-morro", "compas-morro", "horquilla", "rueda-morro", "buje-morro"] },
+  // El Shahed no tiene tren: vuela como está. Más desde arriba (42°), como la
+  // nave 1.0 que le gustaba al usuario: se lee el ala en delta.
+  shahed136: { modelo: "shahed-136", vista: [90, 42], morro: 180, lado: 260, quitar: [] },
 };
 
 // La sombra, como en las fotos: la silueta desplazada hacia abajo, en

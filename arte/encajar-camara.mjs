@@ -53,11 +53,12 @@ const proyector = (c) => {
 
 const error = (c) => {
   const pr = proyector(c);
-  // Límites: campo entre 1,5° y 70°, cámara entre 4 y 400 m, el punto al que
+  // Límites: campo entre 1,5° y 70°, cámara entre 4 (o `dMin` del ajuste: el
+  // Shahed, pequeño, se fotografía a 2 o 3 m) y 400 m, el punto al que
   // mira cerca del dron.
   let e = 0;
   const fuera = (v, a, b) => (v < a ? a - v : v > b ? v - b : 0);
-  e += 1e6 * (fuera(c.fov, 1.5, 70) ** 2 + fuera(c.d, 4, 400) ** 2 + fuera(Math.hypot(c.tx, c.ty, c.tz), 0, 4) ** 2 + fuera(c.el, -60, 89) ** 2 + fuera(c.cabeceo ?? 0, -8, 8) ** 2);
+  e += 1e6 * (fuera(c.fov, 1.5, 70) ** 2 + fuera(c.d, A.dMin ?? 4, 400) ** 2 + fuera(Math.hypot(c.tx, c.ty, c.tz), 0, 4) ** 2 + fuera(c.el, -60, 89) ** 2 + fuera(c.cabeceo ?? 0, -8, 8) ** 2);
   for (const [x, y, z, px, py, , solo] of A.puntos) { if (solo?.startsWith("medir")) continue; const [a, b] = pr([x, y, z]); e += (a - px) ** 2 + (b - py) ** 2; }
   return e;
 };

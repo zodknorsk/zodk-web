@@ -21,7 +21,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a",
 };
 
 export type { Vista };
@@ -135,7 +135,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Centrar la maqueta en el origen, que es donde mira la cámara.
   const caja3 = new Box3().setFromObject(raiz);
   const centro = caja3.getCenter(new Vector3());
-  const radio = caja3.getSize(new Vector3()).length() / 2;
+  let radio = caja3.getSize(new Vector3()).length() / 2;
   raiz.position.sub(centro);
   escena.add(raiz);
 
@@ -175,6 +175,57 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     const url = siluetas.get(b.dataset.vista as Vista);
     const s = b.querySelector<HTMLElement>(".visor-silueta");
     if (url && s) { s.style.maskImage = `url(${url})`; s.style.webkitMaskImage = `url(${url})`; }
+  }
+
+  // Catapulta (el Shahed): sus piezas, aparte y escondidas, con materiales
+  // como los del dron (resalte, pixel y HD). Se montan después de las
+  // siluetas y del centrado: no cuentan para ellos.
+  const grupoCatapulta = new Group();
+  grupoCatapulta.visible = false;
+  raiz.add(grupoCatapulta);
+  const mallasCatapulta: Mesh[] = [];
+  if (maqueta.catapulta) for (const [j, p] of maqueta.catapulta.piezas.entries()) {
+    const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+    const linea = new LineBasicMaterial();
+    const marca = marcaPieza(maqueta.piezas.length + j, p.acabado === "junta");
+    materiales.set(p.id, { acabado: p.acabado ?? "negro", marca, relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marca) });
+    for (const g of geometriaDe(p)) {
+      const malla = new Mesh(g, relleno);
+      malla.castShadow = malla.receiveShadow = true;
+      malla.userData.pieza = p.id;
+      mallasCatapulta.push(malla);
+      grupoCatapulta.add(malla);
+      const arista = new LineSegments(new EdgesGeometry(g, 28), linea);
+      aristas.push(arista);
+      grupoCatapulta.add(arista);
+      if (tintaContorno) {
+        const c = new Mesh(g, tintaContorno);
+        c.visible = false;
+        c.raycast = () => {};
+        contornos.push(c);
+        grupoCatapulta.add(c);
+      }
+    }
+  }
+  const radioSinCatapulta = radio;
+  // Su botón va en la tira de vistas, con la silueta del dron sobre ella, de
+  // perfil: se pinta con la catapulta puesta y el dron inclinado, y se deja
+  // todo como estaba.
+  const botonCatapulta = caja.querySelector<HTMLElement>("[data-accion=catapulta] .visor-silueta");
+  if (maqueta.catapulta && botonCatapulta) {
+    const antes = raiz.position.clone();
+    grupoCatapulta.visible = true;
+    raiz.position.set(0, 0, 0);
+    raiz.rotation.x = (-maqueta.catapulta.cabeceo * Math.PI) / 180;
+    raiz.updateMatrixWorld(true);
+    const todo = new Box3().setFromObject(raiz);
+    raiz.position.copy(todo.getCenter(new Vector3()).negate());
+    const url = pintarSiluetas(raiz, todo.getSize(new Vector3()).length() / 2, ["lado"]).get("lado");
+    if (url) { botonCatapulta.style.maskImage = `url(${url})`; botonCatapulta.style.webkitMaskImage = `url(${url})`; }
+    grupoCatapulta.visible = false;
+    raiz.rotation.x = 0;
+    raiz.position.copy(antes);
+    raiz.updateMatrixWorld(true);
   }
 
   // Distancia a la que la maqueta entera cabe en el lienzo, mire desde donde
@@ -226,8 +277,13 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Chinchetas (las pone el marco, una por parte): se colocan en la
   // proyección de su punto.
   const pines = [...caja.querySelectorAll<HTMLElement>(".visor-pin")].map((b) => ({
-    b, en: new Vector3(...maqueta.partes[Number(b.dataset.parte)].en).sub(centro),
+    b, en: new Vector3(...maqueta.partes[Number(b.dataset.parte)].en),
   }));
+  // Punto de la maqueta en el mundo (la raíz está desplazada para centrarla y,
+  // con la catapulta, inclinada).
+  pines.forEach(({ b }, j) => { if (maqueta.partes[j].catapulta) b.hidden = true; });
+  const enMundo = new Vector3();
+  const aMundo = (p: Vector3) => enMundo.copy(p).applyMatrix4(raiz.matrixWorld);
 
   const rayo = new Raycaster();
   const v = new Vector3();
@@ -240,8 +296,9 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const mirarTapadas = () => {
     ultimaMirada = performance.now();
     pines.forEach(({ en }, i) => {
-      const hasta = camara.position.distanceTo(en);
-      rayo.set(camara.position, en.clone().sub(camara.position).normalize());
+      const w = aMundo(en);
+      const hasta = camara.position.distanceTo(w);
+      rayo.set(camara.position, w.clone().sub(camara.position).normalize());
       const choque = rayo.intersectObjects(mallas, false)[0];
       tapadas[i] = !!choque && choque.distance < hasta - 0.04;
     });
@@ -252,7 +309,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     else miradaFinal = window.setTimeout(() => colocarPines(true), 220);
     const ancho = lienzo.clientWidth, alto = lienzo.clientHeight;
     aplicarPines(pines.map(({ en }, i) => {
-      v.copy(en).project(camara);
+      v.copy(aMundo(en)).project(camara);
       return { x: ((v.x + 1) / 2) * ancho, y: ((1 - v.y) / 2) * alto, tapado: tapadas[i] };
     }));
   };
@@ -333,6 +390,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     const tanV = Math.tan((camara.fov * Math.PI) / 360) * 0.88, tanH = tanV * camara.aspect;
     let d = 0;
     for (const m of mallas) {
+      if (!m.parent?.visible) continue;
       const pos = m.geometry.getAttribute("position");
       for (let i = 0; i < pos.count; i += 3) {
         punto.fromBufferAttribute(pos, i).applyMatrix4(m.matrixWorld).applyMatrix4(giro.matrixWorldInverse);
@@ -420,6 +478,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const fuentes = [...caja.querySelectorAll<HTMLElement>("[data-fuente]")];
   const elegir = (i: number) => {
     elegida = elegida === i ? -1 : i;
+    // Una parte de la catapulta la pone.
+    if (maqueta.partes[elegida]?.catapulta && !conCatapulta) ponerCatapulta(true);
     const parte = maqueta.partes[elegida];
     pines.forEach(({ b }, j) => b.classList.toggle("visor-pin--elegido", j === elegida));
     botonesLista.forEach((b, j) => b.setAttribute("aria-pressed", String(j === elegida)));
@@ -480,6 +540,41 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     pedir();
   };
 
+  // Catapulta: el dron se inclina sobre ella, todo se vuelve a centrar y el
+  // encuadre crece lo que crece el conjunto.
+  let conCatapulta = false;
+  const ponerCatapulta = (si: boolean) => {
+    if (!maqueta.catapulta) return;
+    conCatapulta = si;
+    caja.querySelector("[data-accion=catapulta]")?.setAttribute("aria-pressed", String(si));
+    // Sus chinchetas, solo con ella; si se quita con una de sus partes
+    // elegida, se deja de elegir.
+    pines.forEach(({ b }, j) => { if (maqueta.partes[j].catapulta) b.hidden = !si; });
+    if (!si && maqueta.partes[elegida]?.catapulta) elegir(elegida);
+    grupoCatapulta.visible = si;
+    for (const m of mallasCatapulta) {
+      const i = mallas.indexOf(m);
+      if (si && i < 0) mallas.push(m);
+      if (!si && i >= 0) mallas.splice(i, 1);
+    }
+    raiz.position.set(0, 0, 0);
+    raiz.rotation.x = si ? (-maqueta.catapulta.cabeceo * Math.PI) / 180 : 0;
+    raiz.updateMatrixWorld(true);
+    const todo = new Box3();
+    for (const m of mallas) todo.expandByObject(m);
+    raiz.position.copy(todo.getCenter(new Vector3()).negate());
+    raiz.updateMatrixWorld(true);
+    const antes = distancia;
+    // Un 15 % más de margen: la catapulta es alta y en 3D las ruedas de
+    // delante quedaban cortadas abajo.
+    radio = si ? (todo.getSize(new Vector3()).length() / 2) * 1.15 : radioSinCatapulta;
+    encuadrar();
+    const v = desdeObjetivo().multiplyScalar(distancia / antes);
+    camara.position.copy(controles.target).add(v);
+    controles.update();
+    pedir();
+  };
+
   // Pestañas del panel: partes y fuentes.
   const cambiarPestana = (nombre: string) => {
     caja.querySelectorAll<HTMLElement>("[role=tab]").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.pestana === nombre)));
@@ -500,6 +595,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     else if (b.dataset.vista) ponerVista(b.dataset.vista as Vista);
     else if (b.dataset.accion === "acercar") acercar(0.8);
     else if (b.dataset.accion === "alejar") acercar(1.25);
+    else if (b.dataset.accion === "catapulta") ponerCatapulta(!conCatapulta);
     else if (b.dataset.accion === "girar") {
       controles.autoRotate = !controles.autoRotate;
       b.setAttribute("aria-pressed", String(controles.autoRotate));
@@ -565,6 +661,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   if (parteInicial >= 0 && parteInicial < maqueta.partes.length) elegir(parteInicial);
   if (params.get("pestana") === "fuentes") cambiarPestana("fuentes");
   cambiarEstilo(params.get("estilo") === "pixel" ? "pixel" : "maqueta");
+  if (params.get("catapulta") === "1") ponerCatapulta(true);
   caja.classList.add("visor-listo");
   // Solo en local: las capturas de comparación con fotos (arte/capturas.mjs
   // --js) ponen la cámara donde se encajó la de la foto.
@@ -573,12 +670,16 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       camara, controles, pedir, escala: maqueta.escala, raiz,
       // En metros de la maqueta (la raíz está desplazada para centrarla).
       mirar(desde: [number, number, number], hacia: [number, number, number], fov: number, giro = 0) {
-        const e = maqueta.escala, o = raiz.position;
+        const e = maqueta.escala;
         camaraFija = true;
         camara.fov = fov;
         camara.updateProjectionMatrix();
         controles.minDistance = 0.01;
         controles.maxDistance = 1000;
+        // Con la catapulta, la cámara encajada con el dron inclinado (cabeceo
+        // en arte/encajar-camara.mjs) ya está en los ejes del mundo: solo se
+        // suma el desplazamiento de la raíz.
+        const o = raiz.position;
         controles.target.set(hacia[0] / e + o.x, hacia[1] / e + o.y, hacia[2] / e + o.z);
         camara.position.set(desde[0] / e + o.x, desde[1] / e + o.y, desde[2] / e + o.z);
         controles.update();
