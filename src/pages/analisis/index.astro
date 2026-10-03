@@ -15,7 +15,7 @@ type Acc = {
 };
 
 const notasPorAno = data.reduce((acc: Acc, nota) => {
-  const year = nota.data.date.getFullYear().toString();
+  const year = nota.data.date.getUTCFullYear().toString();
   if (!acc[year]) acc[year] = [];
   acc[year].push(nota);
   return acc;

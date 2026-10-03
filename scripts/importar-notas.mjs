@@ -162,7 +162,8 @@ async function convertirFoto(origen, carpeta, base, ext) {
   };
   if (![".png", ".jpg", ".jpeg", ".webp"].includes(ext)) return copiaTalCual();
 
-  const { width } = await sharp(origen).metadata();
+  // El ancho ya girado según la orientación EXIF (la de .rotate() de abajo).
+  const { width } = (await sharp(origen).metadata()).autoOrient;
   const grande = width > ANCHO_MAX_FOTO;
   const pngGrande = ext === ".png" && fs.statSync(origen).size > PNG_A_JPG_DESDE;
   const opaco = pngGrande && (await sharp(origen).stats()).isOpaque;

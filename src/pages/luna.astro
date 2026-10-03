@@ -564,7 +564,9 @@ const publicadas = new Set((await getCollection("notas")).map((n) => n.id));
         if (!columna.querySelector(".abierto")) fija();
       };
       if (!enFila.matches) fija();
-      new ResizeObserver(fijaSiColumna).observe(hero);
+      const vigia = new ResizeObserver(fijaSiColumna);
+      vigia.observe(hero);
+      quitar.push(() => vigia.disconnect());
     }
 
     // --- En táctil, la ficha de una chapa, un relé o la Orion sale con un
