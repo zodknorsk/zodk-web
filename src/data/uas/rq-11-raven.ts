@@ -105,9 +105,27 @@ const BARQUILLA: Seccion[] = ([
 // usuario). Es lo que toca el suelo al aterrizar. El fondo, ajustado contra
 // la silueta de la foto de Spangdahlem con la cámara encajada
 // (arte/uas-fuentes/rq-11-raven/hd/ajpanza.py). [z, medio ancho, fondo].
-const PANZA: Seccion[] = ([
-  [0.194, 0.01, -0.1254], [0.19, 0.019, -0.1272], [0.184, 0.025, -0.1331], [0.176, 0.028, -0.1375], [0.165, 0.029, -0.1376], [0.15, 0.029, -0.1381], [0.13, 0.029, -0.1371], [0.11, 0.029, -0.1351], [0.09, 0.0285, -0.1307], [0.07, 0.0275, -0.1267], [0.05, 0.026, -0.1217], [0.033, 0.023, -0.1167], [0.018, 0.017, -0.1138], [0.006, 0.012, -0.1095], [-0.006, 0.004, -0.1045],
-] as number[][]).map(([z, ancho, abajo]) => ({ z, ancho, arriba: fondoCaja(z) + 0.007, abajo, cintura: fondoCaja(z) - 0.004, n: 2, nAbajo: 2.3 }));
+// Fondo de la panza ajustado a la silueta de la foto: [z, fondo].
+const FONDO_PANZA: [number, number][] = [[0.194, -0.1254], [0.19, -0.1272], [0.184, -0.1331], [0.176, -0.1375], [0.165, -0.1376], [0.15, -0.1381], [0.13, -0.1371], [0.11, -0.1351], [0.09, -0.1307], [0.07, -0.1267], [0.05, -0.1217], [0.033, -0.1167], [0.018, -0.1138], [0.006, -0.1095], [-0.006, -0.1045]];
+const PANZA_Z = { delante: 0.197, detras: 0.0, nariz: 0.03, cola: 0.09, ancho: 0.029 };
+// Planta y hondo, suaves: la nariz y la cola, medias elipses (con pocas
+// secciones y anchos a saltos salían caras planas y la cola en flecha).
+const PANZA: Seccion[] = Array.from({ length: 54 }, (_, i) => {
+  const { delante, detras, nariz, cola, ancho } = PANZA_Z;
+  const z = delante - ((delante - detras) * i) / 53;
+  const elipse = (t: number) => Math.sqrt(Math.max(0, 1 - Math.min(1, t) ** 2));
+  const k = z > delante - nariz ? elipse((z - (delante - nariz)) / nariz) : z < detras + cola ? elipse((detras + cola - z) / cola) : 1;
+  const j = FONDO_PANZA.findIndex(([zj]) => zj <= z);
+  const fondo = j <= 0 ? FONDO_PANZA[j < 0 ? FONDO_PANZA.length - 1 : 0][1]
+    : FONDO_PANZA[j - 1][1] + ((FONDO_PANZA[j][1] - FONDO_PANZA[j - 1][1]) * (z - FONDO_PANZA[j - 1][0])) / (FONDO_PANZA[j][0] - FONDO_PANZA[j - 1][0]);
+  // Lo que cuelga por debajo de la caja, que se apaga hacia las puntas.
+  const caja = fondoCaja(z), colgar = Math.max(0, caja - fondo);
+  const kHondo = z > delante - 0.012 ? elipse((z - (delante - 0.012)) / 0.012) : z < detras + 0.03 ? elipse((detras + 0.03 - z) / 0.03) : 1;
+  // Donde ya casi no cuelga, también se estrecha: si no, detrás quedaba una
+  // lámina fina y ancha pegada al fondo, con un filo recto.
+  const hondo = Math.max(0.0005, colgar * kHondo);
+  return { z, ancho: ancho * k * Math.min(1, hondo / 0.007) ** 0.4, arriba: caja + 0.007, abajo: caja - hondo, cintura: caja - Math.min(0.003, hondo * 0.4), n: 2, nAbajo: 2 };
+});
 
 // ── Ala ────────────────────────────────────────────────────────────────────
 // En tres piezas: el centro, recto y plano, sobre el cuello; las puntas, más

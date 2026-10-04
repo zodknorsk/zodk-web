@@ -338,6 +338,14 @@ está en `main` (salvo el Raven, en su rama).
       Spangdahlem con la cámara encajada (`hd/ajpanza.py`) a ±1–2 mm; el
       cerco acaba en el fondo nuevo. Con la panza más estrecha la junta es una
       arista, sin z-fighting.
+      Después (lo pidió el usuario: «hay algún borde como recto raro»), la
+      panza **suavizada**: 54 secciones calculadas, con la nariz y la cola en
+      media elipse en planta y en hondo, y la sección ovalada (n = 2). Con
+      las 15 secciones a mano, el ancho iba a saltos: caras planas, la cola
+      en flecha y, al final, una lámina fina y ancha pegada al fondo (allí
+      la cintura quedaba por debajo del fondo de la panza y la mitad de abajo
+      salía del revés). Ahora el ancho se cierra a la vez que el hondo. La
+      silueta sigue a ±1 mm de la foto (2–3 mm en la cola, donde se apaga).
     - **Hélice**: de 13,5 cm (antes 18, de una foto movida): la pala sale
       unos 5,5 cm del cono en las italianas y en la de Polonia, a escala con
       el cono. Palas anchas en la raíz y afiladas hasta la punta (`helice`
