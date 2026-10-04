@@ -641,8 +641,12 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
       if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo, p.raizDentro ? [reflejo.length - 1] : []), geometriaAla(p.y, mitad, p.raizDentro ? [0] : [])];
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
-    case "casco":
-      return [geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo)];
+    case "casco": {
+      const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo);
+      // Desplazado a un lado (los misiles del Wildfire, bajo el ala).
+      if (p.x) g.translate(p.x, 0, 0);
+      return [g];
+    }
     case "tubo": {
       // El torno gira alrededor de y; luego se tumba para que el eje sea z.
       const puntos = p.perfil.map(([z, r]) => new Vector2(r, z)).reverse();

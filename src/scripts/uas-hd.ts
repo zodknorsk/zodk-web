@@ -38,6 +38,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El gris de los TB2 turcos, algo más oscuro y azulado que el del MQ-9
   // (medido al sol en las fotos de Teknofest 2021 y del TC-SRM: #acb8bf).
   "gris-tr": { color: "#8d999f", metal: 0, rugosidad: 0.5 },
+  // El gris claro y neutro de los renders del Wildfire (General Atomics): al
+  // sol, desde arriba, #b5b2bb de media en el render; con el gris del MQ-9 el
+  // visor salía azulado.
+  "gris-ga": { color: "#a6a6b2", metal: 0, rugosidad: 0.5 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   junta: { color: "#7d838b", metal: 0, rugosidad: 0.7 },
   mando: { color: "#a0aab6", metal: 0, rugosidad: 0.5 },

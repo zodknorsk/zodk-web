@@ -211,13 +211,89 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
   visores (abajo, «Para el final»); pasar los demás drones (objetivos de
   arriba).
-- **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9`,
+- **En marcha: el Wildfire** (rama `hd-wildfire`, sin commit), con los
+  renders oficiales; falta que lo revise el usuario. Ver el registro.
+- **Ramas**: `hd-wildfire` abierta; `uas-hd`, `hd-pixel-mq-9`,
   `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`, fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
-está en `main` (salvo el Raven, en su rama).
+está en `main` (salvo el Wildfire, en su rama).
+
+- **4-oct-2026, Wildfire en HD y pixel HD** (rama `hd-wildfire`, sin
+  commit). Lo eligió el usuario entre el Wildfire y el MICH-2000, con los
+  renders oficiales, la pintura de General Atomics tal cual y los cuatro JSM
+  («no es reciclar del MQ-9, es aprender de él para no cometer los mismos
+  fallos»: forma medida de cero, nada copiado del Reaper). Hecho:
+  - **Fuentes**: `arte/uas-fuentes/wildfire/hd/` (fuera de Git). Los
+    originales de la galería de `ga-asi.com/remotely-piloted-aircraft/
+    wildfire` (`imgs/Wildfire-Media-Graphics_Sc{A,B,C}_…`): **A** (enjambre,
+    desde detrás y arriba, 1290x726), **B** (desde abajo y delante con los
+    cuatro JSM, 1920x600, la más nítida) y **C** (desde arriba lanzando un
+    LRASM, 1290x726). Las de TWZ y el vídeo de YouTube son las mismas,
+    reescaladas: no aportan. B es un recorte del 16:9 del vídeo: encajándolo
+    por correlación, su centro óptico está en (955,7; 252,6) (`registrar.py`).
+    Sin medidas publicadas.
+  - **Cómo se midió** (nuevo; sin fotos no hay ni una medida): se marcaron
+    a mano en los tres renders unos 30 puntos que se reconocen en varios
+    (cámara de la punta del morro, sonda, torreta, antenas del lomo, puntas
+    de la V, las seis esquinas de cada aleta de las puntas, antena de pala,
+    aleta ventral, aro de la hélice, puntas y colas de los JSM) y
+    `reconstruir.py` encaja a la vez las tres cámaras (rotación, posición,
+    focal) y la posición 3D de los puntos, con el dron simétrico (los del eje
+    en x = 0, los de los lados en pareja). La escala, de los JSM (3,70 m;
+    las dos parejas paralelas y a la misma altura). Error medio 1,4 px.
+    Remuestreando los píxeles (±1,5 px, 12 veces): largo del morro al aro de
+    la hélice 10,26 ± 0,14 m, envergadura **22,1 ± 0,8 m** (lo menos seguro),
+    punta de la V a 1,94 ± 0,11 m de alto. Después `medir.py` lleva píxeles a
+    3D: cortando con un plano, triangulando un punto en dos renders, cortando
+    los planos de un borde visto en dos (los bordes del ala) o siguiendo una
+    línea viva de un render a otro (`epi`, la arista del costado).
+  - **Errores por el camino**: (1) en C y en A los lados salen cambiados
+    respecto a como los marqué (el espejo de las maquetas otra vez); con los
+    lados bien, el error de A bajó de 72 px a 0,4. (2) A es casi ortográfica
+    (campo de 10°) y la búsqueda de cámara caía en la vista espejo, desde
+    delante; `camara-sola.py` arranca desde un ángulo dado. (3)
+    `encajar-camara.mjs` también se atasca en A: su `.cam.json` sale de
+    `camara-sola.py`. (4) Puntos mal leídos que se fueron: el capuchón de la
+    cola tomado por el buje, un bulto del borde de salida en A, los
+    carenados en C (son varios y no se sabe cuál es cuál).
+  - **Forma**: cuerpo en un `casco` con la **arista viva** del costado (medida
+    con `epi`: 0,69 m de medio ancho y y = 0,15 en z = 2,7, bajando hasta la
+    cámara de la punta, metida en la arista), la cara de abajo del morro más
+    plana (una cuchara, como en B), la **joroba del motor** de la misma pieza
+    hasta la boca del escape (0,77 m en z = −2,4), que acaba de golpe en un
+    capuchón facetado de metal. Ala del corte de bordes de B y C: cuerda de
+    1,92 m a 0,76, plana; flap y alerón con su hueco (corte a 6,47 m, A),
+    pasando poco a poco a la bisagra (sin escalón: lección del Shahed);
+    carenados encima del borde de salida (A y C; desde abajo, en B, el ala
+    está limpia). **Cola en V** en el plano que da su vista de canto en C (35°
+    sobre la horizontal), con las esquinas de A llevadas a ese plano; nace
+    del costado; timón en la mitad de fuera. Aletas de las puntas en flecha
+    arriba y abajo (seis esquinas encajadas). Aleta ventral y antena de pala
+    medidas en B. Toma de aire solo en el costado izquierdo (C; el derecho se
+    ve de frente y no la tiene). Torreta con su capucha, la cara cuadrada
+    oscura, tres ventanillas y la pegatina amarilla. Ocho antenas redondas en
+    el lomo (una blanca).
+  - **JSM**: sección casi cuadrada y más ancha que alta, con la boca
+    trapezoidal abierta (`casco` con `abierto`), aletas en X, ganchos, viga y
+    soporte con perfil. El `casco` admite ahora `x` (desplazado del eje).
+  - **Color**: `gris-ga` nuevo (#a6a6b2): con el `gris` del MQ-9 el visor
+    salía azulado; medido en C sobre puntos proyectados de la maqueta, render
+    0,73 de media al sol y visor 0,75, los dos gris neutro.
+  - **Marcas**: en los renders no se ve ninguna (ni escarapela ni números);
+    solo la tapa del costado delante del ala y la junta del capuchón, como
+    costuras.
+  - **Pixel HD**: sin franjas en el ala con los escalones de siempre (no hace
+    falta `desfaseLuz`). Tarjeta con `vistaTarjeta` [61, 20] (con la de todas,
+    la mitad cercana de la V salía negra) y planta regeneradas; fuera los
+    `giro-planta` 1.0 y las seis miniaturas de fuentes viejas (TWZ y New
+    Atlas: las mismas imágenes, peores). No es nave del hero.
+  - **Falta**: que lo revise el usuario; rendimiento en Zen; la ficha de la
+    bóveda dice «unos 20 m de envergadura» y la maqueta da unos 22 (no se ha
+    tocado la nota). Visto y sin hacer: la hélice no se ve en ningún render
+    (tamaño y palas supuestos).
 
 - **4-oct-2026, RQ-11 Raven en HD y pixel HD** (rama `hd-rq-11-raven`,
   fusionada en `main` y borrada; el usuario lo dio por bueno: «ahora mejor
