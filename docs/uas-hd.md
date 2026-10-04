@@ -272,8 +272,7 @@ está en `main` (salvo el Wildfire, en su rama).
     sobre la horizontal), con las esquinas de A llevadas a ese plano; nace
     del costado; timón en la mitad de fuera. Aletas de las puntas en flecha
     arriba y abajo (seis esquinas encajadas). Aleta ventral y antena de pala
-    medidas en B. Toma de aire solo en el costado izquierdo (C; el derecho se
-    ve de frente y no la tiene). Torreta con su capucha, la cara cuadrada
+    medidas en B. Torreta con su capucha, la cara cuadrada
     oscura, tres ventanillas y la pegatina amarilla. Ocho antenas redondas en
     el lomo (una blanca).
   - **JSM**: sección casi cuadrada y más ancha que alta, con la boca
@@ -290,6 +289,69 @@ está en `main` (salvo el Wildfire, en su rama).
     la mitad cercana de la V salía negra) y planta regeneradas; fuera los
     `giro-planta` 1.0 y las seis miniaturas de fuentes viejas (TWZ y New
     Atlas: las mismas imágenes, peores). No es nave del hero.
+  - **Toma de aire rehecha** (la señaló el usuario: «tiene una puñetera toma
+    de aire centrada arriba, como todos los aviones»; en la primera vuelta
+    la puse solo en el costado izquierdo porque en C se veía a un lado, y la
+    de verdad desapareció: el mismo error del MQ-9). **Va en el centro, en
+    lo alto**: una góndola del mismo cuerpo (`lomo` del `casco`, de 0,2 a
+    0,3 m de medio ancho, hasta 0,92 m de alto) detrás del ala, abierta por
+    los dos lados. **Boca** (C, cortando con el eje): z = −0,585, centro a
+    0,64 m, unos 0,35 × 0,22 m, con labio redondo y un tabique vertical; la
+    góndola se afina hasta ella como una bala. **Salida del escape** (A):
+    z = −2,4, 0,45 × 0,29 m, lo alto a 0,91, mirando atrás, con la chapa de
+    metal detrás hasta el capuchón. Las dos encajan con el eje en las dos
+    vistas (la boca de C proyectada en A y la salida de A en C caen donde
+    deben), y en C se ven además, justo en el eje, una ranura en lo alto de
+    la góndola (z ≈ −1,1) y una toma pequeña en cuña (z ≈ −0,8), añadidas.
+    Ojo con el motor: un `casco` no tiene agujeros; si la cara de la góndola
+    tapa la boca, el fondo «hueco» sale claro. La cara de delante va detrás
+    del labio y la de atrás delante de la salida, y el fondo oscuro de cada
+    conducto, justo fuera de la cara.
+  - **Segunda vuelta de la toma** (el usuario: «dale un poco más de trabajo…
+    suavizado, agujeros, formas; el trasero cae un poco diferente»), todo
+    comparado con A y C desde sus cámaras:
+    - **Suavizado**: el `casco` admite `pLomo` (norma de la unión del lomo
+      con el cuerpo; 8 por defecto, los demás drones igual): la góndola, con
+      4, se funde con el cuerpo sin el pliegue de antes. La góndola se afina
+      más despacio hasta el labio (en C, una bala) y se estrecha al final
+      hasta el borde del escape, sin escalón visto desde delante.
+    - **Escape**: el boquete ocupa casi toda la cara de atrás de la góndola;
+      el borde es la propia góndola (en la primera vuelta asomaba el aro por
+      encima).
+    - **El trasero**: midiendo con A y C, la junta de la chapa con el
+      capuchón está en z ≈ −3,2 a ~0,49 m (antes el capuchón empezaba en
+      −3,43). El cuerpo cae detrás del escape con la cara de arriba casi
+      plana (n = 3) y algo más alto (C: ~0,6 en z = −2,85), y por debajo
+      sube antes, cerrándose en el buje (z ≈ −3,58). El capuchón es una pieza
+      más estrecha, de aluminio, encima: un escudo con el borde de arriba
+      recto y los lados en punta abajo (A); antes era un bulbo de metal que
+      ocupaba toda la cola. La chapa, de metal más oscuro que la pintura
+      (en C, 0,54 frente a 0,73 al sol; en A sale azul porque refleja el
+      cielo), casi a ras, con los cantos como costura.
+    - Probado y quitado: dos rebordes a los lados de la chapa (las rayas
+      claras de A), como cascos aparte: salían como tubos posados; las rayas
+      son los cantos de la chapa.
+  - **JSM rehecho a partir del misil de verdad** (lo pidió el usuario: «no
+    tienes que fijarte tanto del render como del tipo de armamento»). Del
+    render solo queda cómo va colgado (dos por ala, viga y soporte); la
+    forma, de las maquetas 1:1 de Kongsberg (Farnborough, ILA 2024, la
+    entrega a Japón, Bruselas, Japan Aerospace 2016), el corte de la PSAR de
+    2014 y los renders de Kongsberg (`arte/uas-fuentes/jsm/`, con su
+    `FUENTES.md`). Medidas oficiales: 4,00 m, 0,48 × 0,52 m plegado. **Ojo:
+    el primer JSM se escaló con 3,70 m** (como el NSM); el dron se queda con
+    su escala (decisión del usuario: «es una maqueta»), y el misil se
+    escribe en metros reales y se reduce entero a los 3,70 m que ocupa
+    (`KJ`). Lo que tenía mal el de antes: la «boca trapezoidal abierta» del
+    morro era la **ventana del buscador infrarrojo** (cristal oscuro en la
+    cara de abajo del morro, que da la vuelta por los costados; calca nueva
+    `ventana`, un trapecio con brillo); el cuerpo era demasiado ancho; las
+    aletas no eran así. Ahora: morro en cuchara, cuerpo más ancho que alto
+    con arista baja y panza plana, junta del radomo a 0,82 m, **toma de aire
+    en el costado izquierdo**, abajo, detrás del ala (ranura alta, solo en
+    ese lado en la maqueta de Farnborough), alas **plegadas en tijera
+    encima** (como van colgados; una hacia delante y otra hacia atrás, corte
+    de 2014), cuatro aletas de cola en X, cola redondeada con la tobera y
+    dos anclajes de 30" hasta la viga.
   - **Falta**: que lo revise el usuario; rendimiento en Zen; la ficha de la
     bóveda dice «unos 20 m de envergadura» y la maqueta da unos 22 (no se ha
     tocado la nota). Visto y sin hacer: la hélice no se ve en ningún render

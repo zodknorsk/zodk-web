@@ -10,7 +10,7 @@
 // punta del morro) y al final se pasa a unidades de la maqueta (1 unidad =
 // 7,8 m, como el MQ-9). Herramientas y medidas en arte/uas-fuentes/wildfire/hd/
 // (fuera de Git) y en docs/uas-hd.md.
-import type { Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";
+import type { Calca, Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";
 import { bandera } from "../banderas.ts";
 
 const ESCALA = 7.8;
@@ -36,12 +36,19 @@ const grosorAla = (x: number) => ALA.tRaiz + ((ALA.tPunta - ALA.tRaiz) * x) / AL
 // y = 0,15 en z = 2,7, y se cierra en un morro romo alrededor de la cámara
 // de la punta (z = 6,66). El lomo, a 0,47–0,49 (las antenas del lomo, en A y
 // en C); la panza, donde nacen la antena de pala y la aleta ventral (B).
-// Detrás del ala sube la joroba del motor hasta la boca del escape (0,77 m en
-// z = −2,4) y sigue gruesa hasta el final (en los tres renders acaba de
-// golpe, con unos 0,7 m de alto), donde la tapa un capuchón facetado.
+// Detrás del ala, encima, la góndola del motor, del mismo cuerpo (un lomo más
+// estrecho fundido con él): abierta delante, con la boca de la toma de aire
+// (C, z = −0,6), y detrás, con la salida del escape (A, z = −2,38). Detrás
+// del escape el cuerpo baja, con una chapa de metal encima, hasta el capuchón
+// facetado de la cola.
 // En el morro la arista se marca más y la cara de abajo es más plana (una
 // cuchara, con la cámara de la punta metida en la arista; B).
-const sec = ([z, ancho, arriba, abajo, cintura]: number[]): Seccion => ({ z, ancho, arriba, abajo, cintura, n: 2.3, nAbajo: z > 5 ? 3.2 : 2.4, arista: z > 5 ? 0.6 : 0.4 });
+// Con `lomo` (medio ancho de la góndola) y `hombro` (lo alto del cuerpo de
+// debajo), `arriba` es lo alto de la góndola.
+const sec = ([z, ancho, arriba, abajo, cintura, lomo, hombro]: number[]): Seccion => ({
+  z, ancho, arriba, abajo, cintura, n: 2.3, nAbajo: z > 5 ? 3.2 : 2.4, arista: z > 5 ? 0.6 : 0.4,
+  ...(lomo !== undefined && { lomo, hombro, nLomo: 2.2, pLomo: 4 }),
+});
 const CUERPO: Seccion[] = [
   [6.7, 0, -0.01, -0.05, -0.03],
   [6.65, 0.18, 0.08, -0.15, -0.03],
@@ -58,13 +65,34 @@ const CUERPO: Seccion[] = [
   [1.5, 0.7, 0.48, -0.52, 0.18],
   [0.5, 0.69, 0.47, -0.51, 0.2],
   [-0.4, 0.65, 0.49, -0.49, 0.22],
-  [-1.2, 0.58, 0.6, -0.45, 0.24],
-  [-1.9, 0.52, 0.72, -0.37, 0.26],
-  [-2.4, 0.47, 0.77, -0.3, 0.27],
-  [-2.9, 0.43, 0.64, -0.25, 0.24],
-  [-3.25, 0.37, 0.52, -0.17, 0.2],
-  [-3.45, 0.32, 0.46, -0.1, 0.18],
-].map(sec);
+  // La góndola: su cara de delante, casi vertical, con la boca de la toma
+  // (0,35 × 0,22 m, centrada a 0,64 de alto: C, cortando con el eje); sube
+  // hasta 0,92 y acaba de golpe en la salida del escape (0,45 × 0,29 m, con
+  // lo alto a 0,91: A). Medio ancho de 0,2 a 0,3 m.
+  [-0.6, 0.635, 0.5, -0.48, 0.223, 0, 0.5],
+  [-0.64, 0.632, 0.775, -0.48, 0.224, 0.205, 0.5],
+  [-0.9, 0.615, 0.805, -0.47, 0.23, 0.235, 0.505],
+  [-1.4, 0.565, 0.865, -0.43, 0.245, 0.29, 0.53],
+  [-1.9, 0.52, 0.905, -0.37, 0.26, 0.31, 0.56],
+  [-2.2, 0.49, 0.915, -0.33, 0.27, 0.305, 0.58],
+  [-2.33, 0.478, 0.905, -0.31, 0.27, 0.29, 0.6],
+  [-2.4, 0.474, 0.89, -0.3, 0.27, 0.27, 0.61],
+  [-2.42, 0.473, 0.62, -0.3, 0.27, 0, 0.62],
+  // Detrás del escape, el cuerpo cae en tejadillo (A: la chapa con un
+  // caballete, una cara al sol y otra en sombra) hasta la junta con el
+  // capuchón (z = −3,2, a 0,48 de alto; A y C). Por debajo sube antes (B).
+  [-2.52, 0.465, 0.615, -0.29, 0.26],
+  [-2.9, 0.43, 0.58, -0.23, 0.24],
+  [-3.2, 0.37, 0.495, -0.13, 0.21],
+  [-3.3, 0.34, 0.455, -0.06, 0.2],
+  [-3.45, 0.27, 0.39, 0.02, 0.21],
+  [-3.58, 0.17, 0.31, 0.1, 0.22],
+].map(sec).map((q) => (q.z < -2.43 ? { ...q, n: 3 } : q));
+
+// Boca de la toma y salida del escape, en el eje (medio alto / medio ancho
+// de su óvalo en `alto`).
+const TOMA = { z: -0.585, y: 0.64, alto: 0.63 };
+const ESCAPE = { z: -2.46, y: 0.75, alto: 0.56 };
 
 // ── Cola en V ──────────────────────────────────────────────────────────────
 // El plano de cada mitad, de la vista de canto de la izquierda en C (35° sobre
@@ -95,37 +123,92 @@ const CARENADOS = [1.75, 4.25, 6.47, 8.13, 9.8];
 
 // ── Misiles JSM ────────────────────────────────────────────────────────────
 // Dos bajo cada ala, uno junto al otro (B): el de dentro a 1,37 m del eje y
-// el de fuera a 2,27; el eje a 0,55 m bajo el ala; 3,70 m de largo, de
-// z = 3,38 a −0,32. Como salen en el render: delante, una boca trapezoidal
-// con labio; detrás de ella un cuello y el cuerpo, más ancho que alto, como
-// una canoa; la cola, redonda, con cuatro aletas en X. Cuelgan de una viga
-// bajo un soporte con perfil, entre los dos.
+// el de fuera a 2,27, el eje a 0,55 m bajo el ala. La forma es la del JSM de
+// verdad (Kongsberg), no la del render, donde sale pequeño y simplificado:
+// las maquetas a tamaño real de las ferias (Farnborough, ILA 2024, Japan
+// Aerospace 2016, Bruselas, la entrega a Japón), el corte de Kongsberg de
+// 2014 y sus renders. Medidas oficiales: 4,00 m de largo, 0,48 de ancho y
+// 0,52 de alto con las alas plegadas. Se escribe en metros del misil (d, desde
+// la punta) y se reduce entero a los 3,70 m que ocupa en la maqueta (que no
+// está a escala exacta), así guarda sus proporciones.
 const JSM = { y: -0.555, xs: [1.37, 2.27], delante: 3.38, detras: -0.32 };
+const KJ = (JSM.delante - JSM.detras) / 4.0;
+const zj = (d: number) => JSM.delante - d * KJ;
 const SOPORTE = { x: (JSM.xs[0] + JSM.xs[1]) / 2, abajo: -0.29 };
 const LADOS = [1, -1];
-// Sección del JSM a esa z (medidas desde su eje): casi cuadrada, más ancha
-// que alta, con la arista abajo; la boca, un trapecio (más estrecha abajo).
-const secJsm = (z: number, ancho: number, arriba: number, abajo: number, panza = ancho * 0.85): Seccion =>
-  ({ z, ancho, arriba: JSM.y + arriba, abajo: JSM.y + abajo, cintura: JSM.y - 0.02, n: 3, nAbajo: 2.6, arista: 0.25, panza });
-const jsm = (x: number): Pieza[] => [
-  {
-    tipo: "casco", id: `jsm-${x}`, acabado: "gris-ga", x, abierto: true,
-    secciones: [
-      secJsm(JSM.delante, 0.165, 0.12, -0.11, 0.1), secJsm(JSM.delante - 0.035, 0.19, 0.14, -0.13, 0.12), secJsm(JSM.delante - 0.22, 0.185, 0.13, -0.12, 0.12),
-      secJsm(2.6, 0.27, 0.19, -0.18), secJsm(2.0, 0.29, 0.21, -0.2), secJsm(0.6, 0.29, 0.21, -0.2), secJsm(0.2, 0.26, 0.19, -0.18),
-      secJsm(-0.05, 0.2, 0.15, -0.14), secJsm(-0.22, 0.12, 0.09, -0.085), secJsm(JSM.detras, 0, 0.01, -0.01),
-    ],
-  },
-  // Fondo oscuro de la boca.
-  { tipo: "casco", id: `jsm-boca-${x}`, acabado: "hueco", x, secciones: [secJsm(JSM.delante - 0.02, 0.15, 0.105, -0.095, 0.09), secJsm(JSM.delante - 0.2, 0.15, 0.105, -0.095, 0.09)] },
-  ...[45, -45, 135, -135].map((inclinacion, i): Pieza => ({
-    tipo: "placa", id: `jsm-aleta-${x}-${i}`, acabado: "gris-ga", plano: "vertical", x, y: JSM.y, grosor: 0.02, inclinacion,
-    planta: [[0.2, 0.17], [-0.18, 0.17], [-0.24, 0.32], [-0.04, 0.32]],
-  })),
-  // Los dos ganchos que lo cuelgan de la viga.
-  ...[2.1, 0.9].map((z, i): Pieza => ({ tipo: "varilla", id: `jsm-gancho-${x}-${i}`, acabado: "metal", desde: [x, JSM.y + 0.2, z], hasta: [x, SOPORTE.abajo - 0.02, z], radio: 0.025 })),
+// Sección a d metros de la punta, en metros del misil desde su eje: más ancho
+// que alto, con el lomo redondeado, los costados que se abren hacia abajo
+// hasta una arista baja y la panza plana (renders de Kongsberg).
+const secJsm = (d: number, ancho: number, arriba: number, abajo: number, cintura: number, n = 2.4, panza = ancho * 0.82): Seccion => ({
+  z: zj(d), ancho: ancho * KJ, arriba: JSM.y + arriba * KJ, abajo: JSM.y + abajo * KJ, cintura: JSM.y + cintura * KJ,
+  n, nAbajo: 3, arista: 0.45, panza: panza * KJ,
+});
+const CUERPO_JSM: Seccion[] = [
+  // El morro, en cuchara: el lomo baja hasta un borde delantero redondo,
+  // bajo, y debajo queda la cara inclinada de la ventana del buscador
+  // infrarrojo (la ventana va como calca). La junta del radomo, a 0,82 m.
+  secJsm(0, 0.05, -0.05, -0.075, -0.06, 2, 0.03),
+  secJsm(0.03, 0.1, -0.03, -0.1, -0.065, 2, 0.08),
+  secJsm(0.08, 0.14, 0.0, -0.135, -0.075, 2.1, 0.11),
+  secJsm(0.16, 0.175, 0.045, -0.163, -0.088, 2.2),
+  secJsm(0.3, 0.205, 0.1, -0.185, -0.1),
+  secJsm(0.5, 0.222, 0.15, -0.19, -0.105),
+  secJsm(0.72, 0.228, 0.18, -0.19, -0.11),
+  secJsm(0.9, 0.23, 0.19, -0.19, -0.11),
+  secJsm(3.3, 0.23, 0.19, -0.19, -0.11),
+  // La cola se cierra redondeada hasta la tobera.
+  secJsm(3.55, 0.205, 0.17, -0.175, -0.09, 2.2),
+  secJsm(3.78, 0.15, 0.125, -0.135, -0.06, 2.1, 0.09),
+  secJsm(3.93, 0.09, 0.075, -0.085, -0.03, 2, 0.05),
+  secJsm(4.0, 0.055, 0.045, -0.05, -0.02, 2, 0.03),
 ];
-const idsJsm = (x: number) => [`jsm-${x}`, `jsm-boca-${x}`, ...[0, 1, 2, 3].map((i) => `jsm-aleta-${x}-${i}`), `jsm-gancho-${x}-0`, `jsm-gancho-${x}-1`];
+// Alas plegadas encima, en tijera: giran sobre un mismo eje en el lomo
+// (d = 2,15) y quedan una hacia delante y otra hacia atrás (corte de 2014).
+// Dos anclajes de 30" (0,76 m) para colgarlo (corte de 2014: «lugs»).
+const ALA_JSM = { eje: 2.15, largo: 0.8, raiz: 0.32, punta: 0.14 };
+const ANCLAJES_JSM = [1.77, 2.53];
+const jsm = (x: number): Pieza[] => {
+  const lomo = JSM.y + 0.19 * KJ;
+  const alaPlegada = (id: string, sentido: number, y: number): Pieza => {
+    const d0 = ALA_JSM.eje, d1 = ALA_JSM.eje + sentido * ALA_JSM.largo, r = ALA_JSM.raiz / 2, t = ALA_JSM.punta / 2;
+    return {
+      tipo: "placa", id, acabado: "gris-ga", plano: "horizontal", y, grosor: 0.016 * KJ, bisel: 0.005 * KJ,
+      planta: [[x - r * KJ, zj(d0)], [x + r * KJ, zj(d0)], [x + t * KJ, zj(d1 - sentido * 0.06)], [x, zj(d1)], [x - t * KJ, zj(d1 - sentido * 0.12)]],
+    };
+  };
+  return [
+    { tipo: "casco", id: `jsm-${x}`, acabado: "gris-ga", x, secciones: CUERPO_JSM },
+    { tipo: "disco", id: `jsm-tobera-${x}`, acabado: "hueco", en: [x, JSM.y, zj(4.0) - 0.002], normal: [0, 0, -1], radio: 0.04 * KJ, grosor: 0.004 },
+    // Toma de aire en el costado izquierdo, abajo, detrás del ala: una
+    // ranura alta y estrecha que sale del costado y se funde con la cola
+    // (maqueta de Farnborough; en el derecho no hay).
+    { tipo: "casco", id: `jsm-toma-${x}`, acabado: "gris-ga", x: x + 0.215 * KJ, abierto: true, secciones: [
+      { z: zj(2.8), ancho: 0.05 * KJ, arriba: JSM.y + 0.0 * KJ, abajo: JSM.y - 0.19 * KJ, cintura: JSM.y - 0.095 * KJ, n: 3.5, nAbajo: 3.5 },
+      { z: zj(2.95), ancho: 0.052 * KJ, arriba: JSM.y + 0.0 * KJ, abajo: JSM.y - 0.19 * KJ, cintura: JSM.y - 0.095 * KJ, n: 3.5, nAbajo: 3.5 },
+      { z: zj(3.3), ancho: 0.035 * KJ, arriba: JSM.y - 0.03 * KJ, abajo: JSM.y - 0.17 * KJ, cintura: JSM.y - 0.1 * KJ, n: 3, nAbajo: 3 },
+      { z: zj(3.55), ancho: 0, arriba: JSM.y - 0.08 * KJ, abajo: JSM.y - 0.14 * KJ, cintura: JSM.y - 0.11 * KJ },
+    ] },
+    { tipo: "casco", id: `jsm-toma-boca-${x}`, acabado: "hueco", x: x + 0.215 * KJ, secciones: [
+      { z: zj(2.81), ancho: 0.034 * KJ, arriba: JSM.y - 0.015 * KJ, abajo: JSM.y - 0.175 * KJ, cintura: JSM.y - 0.095 * KJ, n: 3.5, nAbajo: 3.5 },
+      { z: zj(3.0), ancho: 0.034 * KJ, arriba: JSM.y - 0.015 * KJ, abajo: JSM.y - 0.175 * KJ, cintura: JSM.y - 0.095 * KJ, n: 3.5, nAbajo: 3.5 },
+    ] },
+    alaPlegada(`jsm-ala-1-${x}`, -1, lomo + 0.012 * KJ),
+    alaPlegada(`jsm-ala-2-${x}`, 1, lomo + 0.03 * KJ),
+    // Aletas de cola en X (Farnborough: dos arriba en V y dos abajo), en
+    // flecha y con la punta recortada.
+    ...[45, -45, 135, -135].map((inclinacion, i): Pieza => ({
+      tipo: "placa", id: `jsm-aleta-${x}-${i}`, acabado: "gris-ga", plano: "vertical", x, y: JSM.y, grosor: 0.02 * KJ, bisel: 0.006 * KJ, inclinacion,
+      planta: ([[3.62, 0.12], [3.97, 0.12], [3.985, 0.34], [3.84, 0.36]] as [number, number][]).map(([d, r]): [number, number] => [zj(d), r * KJ]),
+    })),
+    // Los dos anclajes hasta la viga.
+    ...ANCLAJES_JSM.map((d, i): Pieza => ({ tipo: "varilla", id: `jsm-gancho-${x}-${i}`, acabado: "metal", desde: [x, lomo, zj(d)], hasta: [x, SOPORTE.abajo - 0.02, zj(d)], radio: 0.022 })),
+  ];
+};
+const idsJsm = (x: number) => [
+  `jsm-${x}`, `jsm-tobera-${x}`, `jsm-toma-${x}`, `jsm-toma-boca-${x}`, `jsm-ala-1-${x}`, `jsm-ala-2-${x}`,
+  ...[0, 1, 2, 3].map((i) => `jsm-aleta-${x}-${i}`), `jsm-gancho-${x}-0`, `jsm-gancho-${x}-1`,
+];
+const MISILES = LADOS.flatMap((s) => JSM.xs.map((x) => s * x));
 
 const esfera = (z: number, r: number): [number, number][] =>
   Array.from({ length: 17 }, (_, i) => {
@@ -146,19 +229,48 @@ const ANTENAS: { z: number; x: number; luz?: boolean }[] = [
 const PIEZAS: Pieza[] = [
   { tipo: "casco", id: "fuselaje", acabado: "gris-ga", secciones: CUERPO },
   // Final de la joroba: un capuchón de metal facetado (A, B y C) y el cono.
-  { tipo: "casco", id: "cola-metal", acabado: "metal", secciones: [
-    { z: -3.43, ancho: 0.31, arriba: 0.45, abajo: -0.09, cintura: 0.18, n: 1.5, nAbajo: 1.5 },
-    { z: -3.72, ancho: 0.17, arriba: 0.31, abajo: 0.03, cintura: 0.17, n: 1.5, nAbajo: 1.5 },
+  // El capuchón de metal del final, encima del cuerpo: un escudo claro y
+  // facetado (A: el borde de arriba recto en la junta con la chapa, z = −3,2,
+  // y los lados que se juntan abajo, en punta), que cae hasta el buje. Debajo
+  // y a los lados sigue el cuerpo pintado, que se cierra en el buje.
+  { tipo: "casco", id: "cola-metal", acabado: "aluminio", secciones: [
+    { z: -3.18, ancho: 0.19, arriba: 0.497, abajo: 0.3, cintura: 0.44, n: 3.5, nAbajo: 1.2 },
+    { z: -3.32, ancho: 0.19, arriba: 0.465, abajo: 0.24, cintura: 0.4, n: 3.5, nAbajo: 1.2 },
+    { z: -3.47, ancho: 0.16, arriba: 0.4, abajo: 0.2, cintura: 0.34, n: 3.2, nAbajo: 1.2 },
+    { z: -3.6, ancho: 0.1, arriba: 0.325, abajo: 0.2, cintura: 0.29, n: 3, nAbajo: 1.2 },
   ] },
-  { tipo: "tubo", id: "cono", acabado: "metal", centro: [0, 0.17], perfil: [[-3.7, 0.12], [-3.8, 0.11], [-3.92, 0.07], [-4.0, 0]] },
-  { tipo: "helice", id: "helice", acabado: "metal", en: [0, 0.17, -3.78], radio: 1.05, palas: 3, ancho: 0.2, buje: 0 },
-  // Escape en lo alto de la joroba, abierto hacia atrás (A), y la chapa de
-  // metal que lo sigue hasta la cola.
-  { tipo: "disco", id: "escape", acabado: "hueco", en: [0, 0.71, -2.5], normal: [0, 0.55, -1], radio: 0.17, grosor: 0.02 },
-  // Toma de aire en el costado izquierdo, bajo la raíz de la V (C; en el otro
-  // lado, que C ve de frente, no hay).
-  { tipo: "tubo", id: "toma", acabado: "gris-ga", centro: [0.5, 0.26], perfil: [[-1.28, 0.075], [-1.3, 0.1], [-1.36, 0.11], [-1.6, 0.1], [-1.85, 0.05], [-1.95, 0]] },
-  { tipo: "disco", id: "toma-boca", acabado: "hueco", en: [0.5, 0.26, -1.279], normal: [0, 0, 1], radio: 0.07, grosor: 0.005 },
+  { tipo: "tubo", id: "cono", acabado: "metal", centro: [0, 0.21], perfil: [[-3.57, 0.11], [-3.66, 0.1], [-3.78, 0.06], [-3.85, 0]] },
+  { tipo: "helice", id: "helice", acabado: "metal", en: [0, 0.21, -3.65], radio: 1.05, palas: 3, ancho: 0.2, buje: 0 },
+  // Toma de aire, en el centro, en lo alto: el labio redondo de la boca, que
+  // asoma un poco de la cara de la góndola, y el conducto oscuro y hondo
+  // (C: una boca ovalada, negra, con el labio claro alrededor).
+  { tipo: "tubo", id: "toma", acabado: "gris-ga", centro: [0, TOMA.y], seccion: [1, TOMA.alto], perfil: [
+    [TOMA.z, 0.168], [TOMA.z + 0.01, 0.185], [TOMA.z + 0.002, 0.202], [TOMA.z - 0.03, 0.207], [TOMA.z - 0.1, 0.207],
+  ] },
+  // El conducto: paredes y fondo oscuros. El fondo, justo delante de la cara
+  // de la góndola (un casco no tiene agujeros: detrás estaría su cara clara).
+  { tipo: "tubo", id: "toma-conducto", acabado: "hueco", centro: [0, TOMA.y], seccion: [1, TOMA.alto], perfil: [[TOMA.z + 0.002, 0.17], [TOMA.z - 0.012, 0.17], [TOMA.z - 0.013, 0]] },
+  // El tabique que parte la boca, vertical (C: una raya clara en el negro).
+  { tipo: "placa", id: "toma-tabique", acabado: "gris-ga", plano: "vertical", x: 0, grosor: 0.025, bisel: 0.006, planta: [[TOMA.z - 0.004, TOMA.y + 0.105], [TOMA.z - 0.012, TOMA.y + 0.105], [TOMA.z - 0.012, TOMA.y - 0.105], [TOMA.z - 0.004, TOMA.y - 0.105]] },
+  // Salida del escape, también en el centro: el borde grueso asoma detrás de
+  // la góndola y deja ver el hueco oscuro, mirando atrás (A).
+  { tipo: "tubo", id: "escape", acabado: "gris-ga", centro: [0, ESCAPE.y], seccion: [1, ESCAPE.alto], perfil: [
+    [ESCAPE.z + 0.1, 0.255], [ESCAPE.z, 0.255], [ESCAPE.z - 0.014, 0.243], [ESCAPE.z - 0.006, 0.224],
+  ] },
+  { tipo: "tubo", id: "escape-conducto", acabado: "hueco", centro: [0, ESCAPE.y], seccion: [1, ESCAPE.alto], perfil: [[ESCAPE.z + 0.034, 0], [ESCAPE.z + 0.033, 0.226], [ESCAPE.z - 0.003, 0.226]] },
+  // En lo alto de la góndola (C), una ranura a lo largo y, delante, una
+  // toma pequeña de refrigeración en cuña, mirando adelante.
+  { tipo: "caja", id: "ranura-gondola", acabado: "hueco", centro: [0, 0.872, -1.11], tam: [0.035, 0.02, 0.2], redondeo: 0.012 },
+  { tipo: "placa", id: "toma-gondola", acabado: "gris-ga", plano: "vertical", x: 0, grosor: 0.07, bisel: 0.015, planta: [[-0.72, 0.818], [-0.9, 0.84], [-0.9, 0.875]] },
+  { tipo: "disco", id: "toma-gondola-boca", acabado: "hueco", en: [0, 0.855, -0.901], normal: [0, 0, -1], radio: 0.02, grosor: 0.004 },
+  // La chapa de metal que sigue al escape hasta el capuchón (A: azulada, con
+  // los bordes claros; desde arriba, en C, brilla). Apenas sale del cuerpo.
+  { tipo: "casco", id: "chapa-escape", acabado: "metal", secciones: [
+    { z: -2.44, ancho: 0.2, arriba: 0.624, abajo: 0.5, cintura: 0.6, n: 3 },
+    { z: -2.55, ancho: 0.2, arriba: 0.618, abajo: 0.5, cintura: 0.597, n: 3 },
+    { z: -2.9, ancho: 0.185, arriba: 0.584, abajo: 0.46, cintura: 0.565, n: 3 },
+    { z: -3.19, ancho: 0.17, arriba: 0.5, abajo: 0.38, cintura: 0.48, n: 3 },
+  ] },
   {
     // Media ala; pasa poco a poco a la cuerda de la bisagra donde van el flap
     // y el alerón.
@@ -230,7 +342,7 @@ const PIEZAS: Pieza[] = [
     tipo: "caja", id: `viga-${s}`, acabado: "gris-ga", redondeo: 0.03,
     centro: [s * SOPORTE.x, SOPORTE.abajo + 0.02, 1.5], tam: [1.0, 0.06, 1.4],
   })),
-  ...LADOS.flatMap((s) => JSM.xs.flatMap((x) => jsm(s * x))),
+  ...MISILES.flatMap(jsm),
 ];
 
 const PARTES: Parte[] = [
@@ -277,9 +389,18 @@ const PARTES: Parte[] = [
     texto: "Una antena grande en forma de pala bajo el ala.",
   },
   {
+    nombre: "Toma de aire y escape",
+    en: [0, 1.1, -1.4],
+    piezas: ["toma", "toma-conducto", "toma-tabique", "escape", "escape-conducto", "chapa-escape", "ranura-gondola", "toma-gondola", "toma-gondola-boca"],
+    respaldo: "fabricante",
+    fuentes: ["arriba", "enjambre"],
+    texto: "El motor va dentro de la góndola de encima del cuerpo, detrás del ala: respira por la boca de delante y suelta los gases por la salida de detrás, sobre una chapa de metal que aguanta el calor hasta la cola.",
+    nota: "La boca se ve en el render desde arriba y la salida en el del enjambre, desde detrás; el motor no se ha dicho.",
+  },
+  {
     nombre: "Hélice propulsora",
     en: [0.6, 0.2, -3.9],
-    piezas: ["helice", "cono", "cola-metal", "escape", "toma", "toma-boca"],
+    piezas: ["helice", "cono", "cola-metal"],
     respaldo: "reconstruccion",
     fuentes: ["twz"],
     texto: "Una hélice que empuja desde el final del cuerpo, como en toda la familia del Predator y el Reaper. El motor no se ha dicho.",
@@ -288,10 +409,11 @@ const PARTES: Parte[] = [
   {
     nombre: "Cuatro misiles JSM",
     en: [2.6, -0.9, 3.0],
-    piezas: LADOS.flatMap((s) => [`soporte-${s}`, `viga-${s}`, ...JSM.xs.flatMap((x) => idsJsm(s * x))]),
+    piezas: [...LADOS.flatMap((s) => [`soporte-${s}`, `viga-${s}`]), ...MISILES.flatMap(idsJsm)],
     respaldo: "fabricante",
-    fuentes: ["abajo", "comunicado"],
-    texto: "Un soporte bajo cada ala con dos misiles de crucero JSM, antibuque y de ataque a tierra, de 3,7 m. General Atomics dice que puede llevar cuatro JSM o dos misiles antibuque LRASM.",
+    fuentes: ["abajo", "comunicado", "jsm-kongsberg", "jsm-farnborough"],
+    texto: "Un soporte bajo cada ala con dos misiles de crucero JSM noruegos, antibuque y de ataque a tierra: 4 m y 416 kg, con la ventana del buscador infrarrojo en el morro, la toma de aire del motor en el costado, las alas plegadas encima hasta el lanzamiento y cuatro aletas de cola en X. General Atomics dice que puede llevar cuatro JSM o dos misiles antibuque LRASM.",
+    nota: "La forma del misil sale de las maquetas a tamaño real de Kongsberg y de sus renders; cómo van colgados, del render de General Atomics.",
   },
 ];
 
@@ -300,10 +422,33 @@ const PARTES: Parte[] = [
 // del ala (B, con su arista redondeada), y la junta de la chapa de metal del
 // final de la joroba (A y C).
 const LADO: [number, number, number] = [1, 0, 0];
+// Del JSM: la ventana del buscador en la cara de abajo del morro (Farnborough
+// y renders de Kongsberg: un trapecio oscuro, más ancho arriba) y la junta
+// del radomo, a 0,82 m de la punta, alrededor del cuerpo.
+const CALCAS: Calca[] = MISILES.flatMap((x): Calca[] => [
+  { sobre: [`jsm-${x}`], en: [x, JSM.y - 0.11 * KJ, zj(0.07)], desde: [0, -0.8, 1], tam: [0.3 * KJ, 0.22 * KJ], dibujo: { tipo: "ventana", abajo: 0.62 } },
+  // La ventana da la vuelta por los costados del morro, bajo la arista.
+  ...[1, -1].map((l): Calca => ({
+    sobre: [`jsm-${x}`], en: [x + l * 0.2 * KJ, JSM.y - 0.125 * KJ, zj(0.12)], desde: [l, -0.25, 0.35], tam: [0.26 * KJ, 0.1 * KJ], dibujo: { tipo: "ventana", abajo: 0.55 },
+  })),
+]);
+const juntaJsm = (x: number, d: number): Costura[] => {
+  const z = zj(d), w = 0.3 * KJ, y0 = JSM.y;
+  return [
+    { sobre: [`jsm-${x}`], desde: [1, 0, 0], puntos: [[x + w, y0 + w, z], [x + w, y0 - w, z]] },
+    { sobre: [`jsm-${x}`], desde: [-1, 0, 0], puntos: [[x - w, y0 + w, z], [x - w, y0 - w, z]] },
+    { sobre: [`jsm-${x}`], desde: [0, 1, 0], puntos: [[x - w, y0 + w, z], [x + w, y0 + w, z]] },
+    { sobre: [`jsm-${x}`], desde: [0, -1, 0], puntos: [[x - w, y0 - w, z], [x + w, y0 - w, z]] },
+  ];
+};
+
 const COSTURAS: Costura[] = [
+  ...MISILES.flatMap((x) => [...juntaJsm(x, 0.82), ...juntaJsm(x, 3.42)]),
   { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.7, 0.1, 3.67], [0.7, 0.1, 3.88], [0.7, -0.1, 3.88], [0.7, -0.1, 3.67], [0.7, 0.1, 3.67]] },
-  { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.6, 0.6, -2.9], [0.6, -0.2, -2.9]] },
-  { sobre: ["fuselaje"], desde: [0, 1, 0], puntos: [[-0.4, 0.8, -2.9], [0.4, 0.8, -2.9]] },
+  // Los cantos de la chapa del escape (A: dos rayas claras) y su junta con
+  // el capuchón.
+  { sobre: ["chapa-escape"], desde: [0, 1, 0], espejo: true, puntos: [[0.17, 0.8, -2.47], [0.16, 0.8, -2.9], [0.145, 0.8, -3.17]] },
+  { sobre: ["cola-metal"], desde: [0, 1, 0], puntos: [[-0.18, 0.8, -3.2], [0.18, 0.8, -3.2]] },
 ];
 
 // Todo lo de arriba, de metros a unidades de la maqueta.
@@ -345,7 +490,7 @@ const maqueta: Maqueta = {
   // Tarjeta de /uas con el ángulo del TB2: con el de todas, casi de lado, la
   // mitad cercana de la V salía negra.
   vistaTarjeta: [61, 20],
-  detalles: { calcas: [], costuras: COSTURAS.map((k) => ({ ...k, puntos: k.puntos.map(u3), ...(k.remaches && { remaches: u(k.remaches) }) })) },
+  detalles: { calcas: CALCAS.map((k) => ({ ...k, en: u3(k.en), tam: u2(k.tam) })), costuras: COSTURAS.map((k) => ({ ...k, puntos: k.puntos.map(u3), ...(k.remaches && { remaches: u(k.remaches) }) })) },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
@@ -354,6 +499,8 @@ const maqueta: Maqueta = {
     { id: "arriba", imagen: "gaasi-arriba.jpg", titulo: "Desde arriba, lanzando un misil LRASM", medio: "General Atomics", url: GA },
     { id: "enjambre", imagen: "gaasi-enjambre.jpg", titulo: "Un enjambre de Wildfire sobre el mar", medio: "General Atomics", url: GA },
     { id: "comunicado", titulo: "GA-ASI Unveils Wildfire UAS for Military, Civil and Commercial Roles", medio: "General Atomics", url: COMUNICADO },
+    { id: "jsm-kongsberg", titulo: "Joint Strike Missile (JSM)", medio: "Kongsberg", url: "https://www.kongsberg.com/what-we-do/defence-and-security/missile-systems/joint-strike-missile-jsm/" },
+    { id: "jsm-farnborough", titulo: "La maqueta del JSM a tamaño real", medio: "Army Recognition", url: "https://www.armyrecognition.com/military-products/army/missiles/cruise-missiles/jsm-joint-strike-missile" },
     { id: "twz", titulo: "First Look At General Atomics' Wildfire, Its Successor To The MQ-9 Reaper", medio: "The War Zone", url: TWZ },
     { id: "twz-agosto", titulo: "Wildfire Is General Atomics' Successor To The MQ-9 Reaper", medio: "The War Zone", url: TWZ_AGOSTO },
   ],

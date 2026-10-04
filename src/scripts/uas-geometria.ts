@@ -239,6 +239,9 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   // Lomo: medio ancho del lomo (0, sin lomo) y alto del cuerpo de debajo (el
   // hombro); con lomo, `arriba` es lo alto del lomo.
   const lomo = f((q) => q.lomo ?? 0), hombro = f((q) => q.hombro ?? q.arriba), nL = f((q) => q.nLomo ?? 2.4);
+  // Cuánto se redondea la unión del lomo con el cuerpo (norma p; menos, más
+  // ancho y suave el empalme).
+  const pL = f((q) => q.pLomo ?? 8);
   // Ensanche (arista que se hace raíz del ala): medio ancho del cuerpo y
   // dónde acaban los empalmes por arriba y por abajo.
   const conEnsanche = ss.some((q) => q.costado !== undefined);
@@ -502,7 +505,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
     // Lomo: una superelipse más estrecha y más alta, unida al cuerpo con una
     // unión suave (la norma p de los dos radios vistos desde la cintura): sale
     // un hombro cóncavo, sin arista, como en el lomo del TB2.
-    const hL = cima - c, nl = Math.max(0.5, nL(z)), P = 8;
+    const hL = cima - c, nl = Math.max(0.5, nL(z)), P = Math.max(2, pL(z));
     const radioLomo = (ang: number) => {
       if (wl <= 1e-6 || hL <= 1e-6) return 0;
       const ca = Math.abs(Math.cos(ang)), sa = Math.abs(Math.sin(ang));

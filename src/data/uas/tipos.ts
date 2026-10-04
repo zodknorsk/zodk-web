@@ -134,6 +134,10 @@ export type Dibujo =
   | { tipo: "rejilla" }
   // Ranura alrededor de una tapa: un marco oscuro y fino.
   | { tipo: "marco" }
+  // Ventana de cristal oscuro (el buscador del JSM): un trapecio con las
+  // esquinas redondeadas; `abajo`, el ancho del borde de abajo respecto al de
+  // arriba. Con brillo.
+  | { tipo: "ventana"; abajo?: number }
   // Roce de una panza que aterriza en el suelo: rayas claras finas a lo largo
   // y alguna mancha; con poca tinta (en el pixel no sale).
   | { tipo: "desgaste" };
@@ -143,7 +147,9 @@ export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remach
 // Una sección de un casco (ver arriba).
 // Con `lomo` (su medio ancho) el cuerpo lleva encima un lomo más estrecho,
 // fundido con él por un hombro suave: `arriba` es entonces lo alto del lomo y
-// `hombro`, lo alto del cuerpo de debajo (el TB2).
+// `hombro`, lo alto del cuerpo de debajo (el TB2). `pLomo` (8 por defecto):
+// con menos, el empalme del lomo con el cuerpo es más ancho y suave (la
+// góndola del Wildfire).
 // Con `costado` (medio ancho del cuerpo), la sección lleva un ensanche fino
 // hasta `ancho` a la altura de la cintura: la arista que corre por el costado
 // y se convierte en la raíz del ala (el TB2). Por arriba, un empalme cóncavo
@@ -161,7 +167,7 @@ export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remach
 // filo, es media elipse de ese largo hacia dentro, del grueso que dan
 // bordeArriba y bordeAbajo: un reborde redondo (delante del ala del TB2, el
 // borde de ataque sigue así hacia el morro).
-export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number };
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; pLomo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number };
 
 // Toma de aire en un casco (la del lomo del TB2): un hueco oval que se mete
 // en el cuerpo, de `largo` (z) desde la `boca` hacia delante, con la pared
