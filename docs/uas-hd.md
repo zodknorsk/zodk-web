@@ -320,14 +320,18 @@ está en `main` (salvo el Raven, en su rama).
       (Spangdahlem, VAMTAC y AeroVironment).
   - **Panza y hélice, más matizadas** (lo pidió el usuario), con fotos de
     cerca:
-    - **Panza**: el fondo, sacado columna a columna en Spangdahlem (plano a
-      −0,14 m hasta z = 0,1 y luego sube despacio hasta el botalón); casi del
-      ancho de la caja (fotos desde abajo del usuario y del gimbal de cerca).
-      Por arriba sube por dentro de la caja con los costados rectos y 1,2 mm
-      más estrecha: con una repisa, al sol salía una línea blanca rota, y con
-      las caras casi juntas, z-fighting. Junta a lo largo de cada costado
-      (costura) y el roce de aterrizar por debajo (calca nueva `desgaste`;
-      foto de Iowa, rayada y sucia).
+    - **Panza** (segunda vuelta: el usuario la vio «no igual» en la
+      comparación 1:1; superpuesta con la foto, la panza salía unos 3 mm más
+      baja en todo el largo, el frente menos redondo, un escalón al final y
+      una junta rota con motas blancas donde en la foto el costado baja liso
+      y se curva). Ahora la caja y la panza son **una sola pieza**: hasta el
+      borde de abajo de la caja (−0,099, en la cintura) los costados bajan
+      rectos y debajo la panza se redondea. El fondo (`FONDO_PANZA`) se ajustó
+      contra la silueta de la foto de Spangdahlem con la cámara encajada, en
+      pasadas sección a sección (`hd/ajpanza.py`), hasta ±1 mm. Descartado:
+      la panza como pieza aparte (con las caras a 0,2–1,5 mm, z-fighting o
+      una línea rota de sombra en la junta). Por debajo, el roce de aterrizar
+      (calca `desgaste`, foto de Iowa).
     - **Hélice**: de 13,5 cm (antes 18, de una foto movida): la pala sale
       unos 5,5 cm del cono en las italianas y en la de Polonia, a escala con
       el cono. Palas anchas en la raíz y afiladas hasta la punta (`helice`

@@ -46,46 +46,65 @@ const esfera = (z: number, r: number): [number, number][] =>
 // Una caja de costados planos (con la tapa de la batería en cada lado) y el
 // lomo plano con los bordes redondeados; detrás, el cuello que sube hasta el
 // ala y lleva el motor, fundido con el lomo por un hombro cóncavo, y la caída
-// hasta el botalón (fotos de Iowa y desde abajo). Debajo, la panza (ver
-// PANZA). [z, medio ancho, lo alto (con el cuello, su cima), fondo de la
-// caja, hombro, medio ancho del cuello]; de la foto de perfil.
+// hasta el botalón (fotos de Iowa y desde abajo). Debajo, la panza.
+// [z, medio ancho, lo alto (con el cuello, su cima), fondo, hombro, medio
+// ancho del cuello]; de la foto de perfil.
 const CUELLO = { delante: 0.077, detras: -0.078, alto: 0.052, ancho: 0.019 };
 const FONDO = -0.099;
+// El fondo de la panza a lo largo: [z, fondo]. Ajustado contra la foto de
+// Spangdahlem con la cámara encajada, sección a sección, hasta ±1 mm
+// (arte/uas-fuentes/rq-11-raven/hd/ajpanza.py).
+const FONDO_PANZA: [number, number][] = [[0.2, -0.1016], [0.197, -0.1169], [0.193, -0.1222], [0.188, -0.1286], [0.18, -0.1352], [0.17, -0.1384], [0.155, -0.1387], [0.135, -0.1382], [0.115, -0.1360], [0.095, -0.1316], [0.075, -0.1273], [0.055, -0.1216], [0.035, -0.1159], [0.015, -0.1095], [-0.005, -0.1050], [-0.025, -0.1050], [-0.045, -0.1025], [-0.065, -0.1019], [-0.078, -0.1005]];
+const fondoPanza = (z: number) => {
+  const i = FONDO_PANZA.findIndex(([zi]) => zi <= z);
+  if (i < 0) return FONDO_PANZA[FONDO_PANZA.length - 1][1];
+  if (i === 0) return FONDO_PANZA[0][1];
+  const [z0, a0] = FONDO_PANZA[i - 1], [z1, a1] = FONDO_PANZA[i];
+  return a0 + ((a1 - a0) * (z - z0)) / (z1 - z0);
+};
+
+
 const BARQUILLA: Seccion[] = ([
-  [0.199, 0.04, 0.0, FONDO], [0.155, 0.04, 0.003, FONDO], [0.1, 0.04, 0.005, FONDO],
-  // La cara delantera del cuello sube casi vertical, con un empalme cóncavo
-  // abajo (foto de Iowa).
-  [0.092, 0.04, 0.005, FONDO, 0.005, CUELLO.ancho], [0.085, 0.04, 0.0085, FONDO, 0.005, CUELLO.ancho],
-  [0.081, 0.04, 0.017, FONDO, 0.005, CUELLO.ancho], [0.0785, 0.0399, 0.034, FONDO, 0.005, CUELLO.ancho],
-  [0.0755, 0.0399, CUELLO.alto, FONDO, 0.005, CUELLO.ancho], [0.05, 0.039, CUELLO.alto, FONDO, 0.005, CUELLO.ancho],
-  [0.02, 0.037, CUELLO.alto, FONDO, 0.005, CUELLO.ancho], [-0.01, 0.034, CUELLO.alto, -0.1, 0.004, CUELLO.ancho],
-  [-0.04, 0.03, CUELLO.alto, -0.1005, 0.003, CUELLO.ancho], [-0.066, 0.026, CUELLO.alto, -0.101, 0.002, CUELLO.ancho],
+  // La caja y la panza, en una sola pieza: hasta el borde de abajo de la caja
+  // (FONDO, en la cintura) los costados bajan rectos; debajo, la panza
+  // redondeada. Con la panza aparte, las dos caras casi pegadas hacían una
+  // línea rota al sol en la junta. La cara delantera del cuello sube casi
+  // vertical, con un empalme cóncavo abajo (foto de Iowa).
+  [0.199, 0.04, 0.0, fondoPanza(0.199)],
+  [0.197, 0.04, 0.0001, fondoPanza(0.197)],
+  [0.193, 0.04, 0.0004, fondoPanza(0.193)],
+  [0.188, 0.04, 0.0008, fondoPanza(0.188)],
+  [0.18, 0.04, 0.0013, fondoPanza(0.18)],
+  [0.17, 0.04, 0.002, fondoPanza(0.17)],
+  [0.155, 0.04, 0.003, fondoPanza(0.155)],
+  [0.135, 0.04, 0.0037, fondoPanza(0.135)],
+  [0.115, 0.04, 0.0045, fondoPanza(0.115)],
+  [0.1, 0.04, 0.005, fondoPanza(0.1)],
+  [0.092, 0.04, 0.005, fondoPanza(0.092), 0.005, CUELLO.ancho],
+  [0.085, 0.04, 0.0085, fondoPanza(0.085), 0.005, CUELLO.ancho],
+  [0.081, 0.04, 0.017, fondoPanza(0.081), 0.005, CUELLO.ancho],
+  [0.0785, 0.0399, 0.034, fondoPanza(0.0785), 0.005, CUELLO.ancho],
+  [0.0755, 0.0399, CUELLO.alto, fondoPanza(0.0755), 0.005, CUELLO.ancho],
+  [0.075, 0.0399, CUELLO.alto, fondoPanza(0.075), 0.005, CUELLO.ancho],
+  [0.055, 0.0392, CUELLO.alto, fondoPanza(0.055), 0.005, CUELLO.ancho],
+  [0.05, 0.039, CUELLO.alto, fondoPanza(0.05), 0.005, CUELLO.ancho],
+  [0.035, 0.038, CUELLO.alto, fondoPanza(0.035), 0.005, CUELLO.ancho],
+  [0.02, 0.037, CUELLO.alto, fondoPanza(0.02), 0.005, CUELLO.ancho],
+  [-0.01, 0.034, CUELLO.alto, fondoPanza(-0.01), 0.004, CUELLO.ancho],
+  [-0.025, 0.032, CUELLO.alto, fondoPanza(-0.025), 0.0035, CUELLO.ancho],
+  [-0.04, 0.03, CUELLO.alto, fondoPanza(-0.04), 0.003, CUELLO.ancho],
+  [-0.055, 0.0277, CUELLO.alto, fondoPanza(-0.055), 0.0024, CUELLO.ancho],
+  [-0.066, 0.026, CUELLO.alto, fondoPanza(-0.066), 0.002, CUELLO.ancho],
   [-0.075, 0.024, 0.044, -0.1012, 0.0, 0.02], [-0.081, 0.022, 0.0, -0.1014, -0.02, 0.012],
   [-0.087, 0.02, -0.06, -0.1016], [-0.1, 0.0165, -0.0686, -0.1008], [-0.115, 0.0138, -0.073, -0.1002], [-0.13, 0.0127, -0.0745, -0.0995],
 ] as number[][]).map(([z, ancho, arriba, abajo, hombro, lomo]) => {
-  // La cintura (donde es más ancha), a media altura de la caja sin el
-  // cuello; en la cola, en el eje del botalón. El fondo, plano con las
-  // esquinas redondeadas.
-  const cintura = z > -0.08 ? (Math.min(arriba, hombro ?? arriba) + abajo) / 2 : -0.087;
-  return { z, ancho, arriba, abajo, cintura, n: 3.4, nAbajo: z > -0.08 ? 10 : 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
+  // Con la panza, la cintura (donde es más ancha) es el borde de abajo de la
+  // caja; en la cola, en el eje del botalón (antes del cuello de atrás, a
+  // media altura, como estaba).
+  const conPanza = z > -0.07;
+  const cintura = conPanza ? FONDO : z > -0.08 ? (Math.min(arriba, hombro ?? arriba) + abajo) / 2 : -0.087;
+  return { z, ancho, arriba, abajo, cintura, n: conPanza ? 6 : 3.4, nAbajo: conPanza ? 2.4 : 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
 });
-// La panza: una quilla redonda bajo la caja, que es lo que toca el suelo al
-// aterrizar y por eso sale rozada y arañada (foto de Iowa). En las fotos se ve
-// aparte: debajo de la tapa de la batería hay una junta y la panza abomba
-// hacia abajo, casi del ancho de la caja (fotos desde abajo: la del usuario y
-// la del gimbal de cerca), con el frente redondo justo detrás del cerco, y
-// detrás se estira hasta el botalón. El fondo, sacado columna a columna de la
-// foto de Spangdahlem (plano a −0,14 m hasta z = 0,1 y luego sube despacio).
-// [z, medio ancho, fondo].
-// La parte de arriba de la panza sube por dentro de la caja con los costados
-// rectos y su mismo ancho: así no queda repisa en la junta (una repisa al sol
-// salía como una línea blanca rota).
-const anchoCaja = (z: number) => (z >= 0.02 ? 0.04 : z >= -0.01 ? 0.037 - ((0.02 - z) / 0.03) * 0.003 : z >= -0.04 ? 0.034 - ((-0.01 - z) / 0.03) * 0.004 : 0.03 - ((-0.04 - z) / 0.026) * 0.004);
-const PANZA: Seccion[] = ([
-  [0.2, 0.03, -0.117], [0.194, 0.035, -0.124], [0.189, 0.038, -0.1295], [0.18, 0.0388, -0.1355], [0.17, 0.0388, -0.139],
-  [0.155, 0.0388, -0.1405], [0.13, 0.0388, -0.139], [0.1, 0.0388, -0.1356], [0.077, 0.0388, -0.1304], [0.052, 0.0388, -0.1243],
-  [0.027, 0.0388, -0.1156], [0.001, 0, -0.1077], [-0.025, 0, -0.106], [-0.05, 0, -0.1045], [-0.062, 0, -0.1035],
-] as number[][]).map(([z, ancho, abajo]) => ({ z, ancho: ancho || anchoCaja(z) - 0.0012, arriba: -0.094, abajo, cintura: FONDO, n: 8, nAbajo: 2.6 }));
 
 // ── Ala ────────────────────────────────────────────────────────────────────
 // En tres piezas: el centro, recto y plano, sobre el cuello; las puntas, más
@@ -162,7 +181,6 @@ const PIEZAS: Pieza[] = [
   { tipo: "disco", id: "bola-ventana-ir", acabado: "lente", en: [-0.019, BOLA.y - 0.012, BOLA.z + 0.038], normal: [-0.35, -0.3, 0.89], radio: 0.0055, grosor: 0.003 },
 
   { tipo: "casco", id: "barquilla", acabado: "gris-et", secciones: BARQUILLA },
-  { tipo: "casco", id: "panza", acabado: "gris-et", secciones: PANZA },
   // La tapa de la batería en cada costado (se ve en todas las fotos de lado):
   // una placa apenas salida, de la foto de Spangdahlem, con un tornillo en
   // cada esquina y su ranura alrededor (calcas y costuras).
@@ -301,7 +319,7 @@ const CALCAS: Calca[] = [
     return { sobre: ["helice"], en: [HELICE.franja * Math.cos(a), MOTOR.y + HELICE.franja * Math.sin(a), -0.097], desde: [0, 0, cara], tam: [0.024, 0.0042], giro: cara * (HELICE.giro + 90 + g), dibujo: { tipo: "rect", color: "#2546a8" } };
   })),
   // El roce de la panza, por debajo.
-  { sobre: ["panza"], en: [0, -0.15, 0.09], desde: [0, -1, 0], tam: [0.036, 0.15], giro: 0, dibujo: { tipo: "desgaste" } },
+  { sobre: ["barquilla"], en: [0, -0.15, 0.09], desde: [0, -1, 0], tam: [0.036, 0.15], giro: 0, dibujo: { tipo: "desgaste" } },
   // Botalón y estabilizador.
   // Las de la junta del botalón: una a cada lado, a lo largo del tubo y
   // apuntándose (foto del Raven español desde arriba).
@@ -328,8 +346,6 @@ const CALCAS: Calca[] = [
 // La tapa de la batería en cada costado, con un tornillo en cada esquina; y
 // la tapa de lo alto del módulo, con cuatro.
 const COSTURAS: Costura[] = [
-  // La junta entre la caja y la panza, a lo largo de cada costado.
-  { sobre: ["panza"], desde: LADO, espejo: true, puntos: [[0.05, FONDO - 0.0008, 0.192], [0.05, FONDO - 0.0008, -0.06]] },
   { sobre: ["tapa"], desde: LADO, espejo: true, enVertices: true, puntos: [[0.05, TAPA.arriba + 0.004, TAPA.delante - 0.004], [0.05, TAPA.arriba + 0.004, TAPA.detras + 0.004], [0.05, TAPA.abajo - 0.004, TAPA.detras + 0.004], [0.05, TAPA.abajo - 0.004, TAPA.delante - 0.004], [0.05, TAPA.arriba + 0.004, TAPA.delante - 0.004]] },
   { sobre: ["capucha"], desde: ARRIBA, enVertices: true, puntos: [[0.026, 0, 0.214], [-0.026, 0, 0.214], [-0.026, 0, 0.252], [0.026, 0, 0.252], [0.026, 0, 0.214]] },
 ];
@@ -347,7 +363,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Barquilla",
     en: [0, -0.2, 0.08],
-    piezas: ["barquilla", "panza", "tapa", "disipador", ...Array.from({ length: 13 }, (_, i) => `disipador-aleta-${i}`), "sonda"],
+    piezas: ["barquilla", "tapa", "disipador", ...Array.from({ length: 13 }, (_, i) => `disipador-aleta-${i}`), "sonda"],
     respaldo: "foto",
     fuentes: ["perfil", "italiano-perfil", "iowa-morro", "suelo-gimbal", "et", "ficha-et"],
     texto: "El cuerpo, de kevlar, lleva la batería detrás de la tapa del costado. No tiene tren: aterriza de barriga, así que la panza baja y es lo que toca el suelo.",
