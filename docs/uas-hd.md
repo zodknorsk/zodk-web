@@ -297,6 +297,43 @@ está en `main` (salvo el Raven, en su rama).
     plateados, con la trama de tela, los extremos rasgados y brillo de metal
     (calca nueva `cinta`, con `metalness` 0,55); las tiras del borde de
     ataque siguen negras.
+  - **Última revisión del usuario** (en local, con cinco fotos suyas,
+    guardadas como `hd/full/usuario-*.png`), analizada con fotos y hecha:
+    - **Panza**: era parte del mismo cuerpo, con el fondo curvo. En las fotos
+      es una quilla aparte: la caja acaba a −0,099 con una arista y debajo
+      abomba la panza (fondo a −0,138 en Spangdahlem), algo más estrecha,
+      con el frente redondo detrás del cerco. Ahora la caja tiene el fondo
+      plano y la panza es un `casco` propio.
+    - **Color** menos azulado: `gris-et` #bdc1c4 (al sol, #d8dadd).
+    - **Tapa de la batería**: placa apenas salida con su ranura (calca
+      nueva `marco`) y un tornillo en cada esquina, medida en Spangdahlem.
+      Fuera las dos pegatinas de la tapa y la rejilla pintada.
+    - **Disipador**: el «radiador» es una placa negra con aletas que
+      sobresalen, solo en la tapa del lado derecho (fotos italianas; en el
+      izquierdo, Spangdahlem, no hay), en el tercio de atrás.
+    - **Flechas**: las del botalón eran un par aplastado sobre la junta;
+      ahora una a cada lado, a lo largo del tubo, apuntándose. La del
+      estabilizador, una sola junto al pasador, apuntándole.
+    - **Las «grapas» de la cola**: en la cara izquierda de la deriva van la
+      tapa clara de los servos y dos mandos: la varilla del timón con su
+      cuerno amarillo y, abajo, la del estabilizador, negra con un tramo rojo
+      (Spangdahlem, VAMTAC y AeroVironment).
+  - **Panza y hélice, más matizadas** (lo pidió el usuario), con fotos de
+    cerca:
+    - **Panza**: el fondo, sacado columna a columna en Spangdahlem (plano a
+      −0,14 m hasta z = 0,1 y luego sube despacio hasta el botalón); casi del
+      ancho de la caja (fotos desde abajo del usuario y del gimbal de cerca).
+      Por arriba sube por dentro de la caja con los costados rectos y 1,2 mm
+      más estrecha: con una repisa, al sol salía una línea blanca rota, y con
+      las caras casi juntas, z-fighting. Junta a lo largo de cada costado
+      (costura) y el roce de aterrizar por debajo (calca nueva `desgaste`;
+      foto de Iowa, rayada y sucia).
+    - **Hélice**: de 13,5 cm (antes 18, de una foto movida): la pala sale
+      unos 5,5 cm del cono en las italianas y en la de Polonia, a escala con
+      el cono. Palas anchas en la raíz y afiladas hasta la punta (`helice`
+      admite `punta`), blancas con una franja azul a media pala por las dos
+      caras; sin bola blanca en el centro (`buje: 0`). Cono negro abombado
+      como una bala, con el capuchón de la punta.
   - **Sin insignias españolas**: el usuario preguntó si el Ejército de Tierra
     le pone algún dibujo de España. En ninguna de las fotos españolas (la de
     Eslovaquia de 2024 desde arriba y al lanzarlo, la de la exposición de

@@ -757,7 +757,9 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           if (p.ancho) {
             // Planta de la pala, de la raíz (x = 0) a la punta (x = radio).
             const c = p.ancho, R = p.radio, forma = new Shape();
-            const borde: [number, number][] = [[0.08, 0.32], [0.3, 0.5], [0.6, 0.45], [0.85, 0.36], [0.96, 0.24], [1, 0]];
+            const borde: [number, number][] = p.punta
+              ? [[0.12, 0.42], [0.3, 0.5], [0.5, 0.42], [0.7, 0.3], [0.86, 0.17], [0.96, 0.06], [1, 0]]
+              : [[0.08, 0.32], [0.3, 0.5], [0.6, 0.45], [0.85, 0.36], [0.96, 0.24], [1, 0]];
             forma.moveTo(R * 0.06, -c * 0.22);
             for (const [t, a] of borde) forma.lineTo(R * t, c * a * (t === 1 ? 0 : 1));
             for (const [t, a] of borde.slice(0, -1).reverse()) forma.lineTo(R * t, -c * a * 0.8);
@@ -772,7 +774,8 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           pala.rotateZ((i / p.palas) * Math.PI * 2 + ((p.giro ?? 0) * Math.PI) / 180);
           hoja.push(pala);
         }
-        hoja.push(new SphereGeometry(Math.max(0.035, p.radio * 0.08), 12, 8));
+        const buje = p.buje ?? Math.max(0.035, p.radio * 0.08);
+        if (buje > 0) hoja.push(new SphereGeometry(buje, 12, 8));
         for (const g of hoja) {
           if (p.eje === "y") g.rotateX(-Math.PI / 2);  // a plano horizontal
           g.translate(...en);

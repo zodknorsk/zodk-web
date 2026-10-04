@@ -43,32 +43,49 @@ const esfera = (z: number, r: number): [number, number][] =>
   });
 
 // ── Barquilla ──────────────────────────────────────────────────────────────
-// Una sola pieza: los costados planos (la tapa de la batería en cada lado),
-// el lomo plano con los bordes redondeados, la panza abombada (aterriza de
-// barriga) y, detrás, el cuello que sube hasta el ala y lleva el motor,
-// fundido con el lomo por un hombro cóncavo. Por detrás del cuello cae en
-// vertical y se estrecha hasta el botalón (fotos de Iowa y desde abajo).
-// [z, medio ancho, lo alto (con el cuello, su cima), panza, hombro, medio
-// ancho del cuello]; la panza, de la foto de perfil.
+// Una caja de costados planos (con la tapa de la batería en cada lado) y el
+// lomo plano con los bordes redondeados; detrás, el cuello que sube hasta el
+// ala y lleva el motor, fundido con el lomo por un hombro cóncavo, y la caída
+// hasta el botalón (fotos de Iowa y desde abajo). Debajo, la panza (ver
+// PANZA). [z, medio ancho, lo alto (con el cuello, su cima), fondo de la
+// caja, hombro, medio ancho del cuello]; de la foto de perfil.
 const CUELLO = { delante: 0.077, detras: -0.078, alto: 0.052, ancho: 0.019 };
+const FONDO = -0.099;
 const BARQUILLA: Seccion[] = ([
-  [0.199, 0.04, 0.0, -0.119], [0.19, 0.04, 0.001, -0.128], [0.175, 0.04, 0.002, -0.137], [0.155, 0.04, 0.003, -0.1405],
-  [0.13, 0.04, 0.004, -0.139], [0.1, 0.04, 0.005, -0.1356],
+  [0.199, 0.04, 0.0, FONDO], [0.155, 0.04, 0.003, FONDO], [0.1, 0.04, 0.005, FONDO],
   // La cara delantera del cuello sube casi vertical, con un empalme cóncavo
   // abajo (foto de Iowa).
-  [0.092, 0.04, 0.005, -0.1333, 0.005, CUELLO.ancho], [0.085, 0.04, 0.0085, -0.132, 0.005, CUELLO.ancho],
-  [0.081, 0.04, 0.017, -0.131, 0.005, CUELLO.ancho], [0.0785, 0.0399, 0.034, -0.1302, 0.005, CUELLO.ancho],
-  [0.0755, 0.0399, CUELLO.alto, -0.1296, 0.005, CUELLO.ancho], [0.05, 0.039, CUELLO.alto, -0.124, 0.005, CUELLO.ancho],
-  [0.02, 0.037, CUELLO.alto, -0.114, 0.005, CUELLO.ancho], [-0.01, 0.034, CUELLO.alto, -0.107, 0.004, CUELLO.ancho],
-  [-0.04, 0.03, CUELLO.alto, -0.104, 0.003, CUELLO.ancho], [-0.066, 0.026, CUELLO.alto, -0.1025, 0.002, CUELLO.ancho],
-  [-0.075, 0.024, 0.044, -0.102, 0.0, 0.02], [-0.081, 0.022, 0.0, -0.1018, -0.02, 0.012],
+  [0.092, 0.04, 0.005, FONDO, 0.005, CUELLO.ancho], [0.085, 0.04, 0.0085, FONDO, 0.005, CUELLO.ancho],
+  [0.081, 0.04, 0.017, FONDO, 0.005, CUELLO.ancho], [0.0785, 0.0399, 0.034, FONDO, 0.005, CUELLO.ancho],
+  [0.0755, 0.0399, CUELLO.alto, FONDO, 0.005, CUELLO.ancho], [0.05, 0.039, CUELLO.alto, FONDO, 0.005, CUELLO.ancho],
+  [0.02, 0.037, CUELLO.alto, FONDO, 0.005, CUELLO.ancho], [-0.01, 0.034, CUELLO.alto, -0.1, 0.004, CUELLO.ancho],
+  [-0.04, 0.03, CUELLO.alto, -0.1005, 0.003, CUELLO.ancho], [-0.066, 0.026, CUELLO.alto, -0.101, 0.002, CUELLO.ancho],
+  [-0.075, 0.024, 0.044, -0.1012, 0.0, 0.02], [-0.081, 0.022, 0.0, -0.1014, -0.02, 0.012],
   [-0.087, 0.02, -0.06, -0.1016], [-0.1, 0.0165, -0.0686, -0.1008], [-0.115, 0.0138, -0.073, -0.1002], [-0.13, 0.0127, -0.0745, -0.0995],
 ] as number[][]).map(([z, ancho, arriba, abajo, hombro, lomo]) => {
-  // La cintura (donde es más ancha), a media altura del cuerpo sin el
-  // cuello; en la cola, en el eje del botalón.
+  // La cintura (donde es más ancha), a media altura de la caja sin el
+  // cuello; en la cola, en el eje del botalón. El fondo, plano con las
+  // esquinas redondeadas.
   const cintura = z > -0.08 ? (Math.min(arriba, hombro ?? arriba) + abajo) / 2 : -0.087;
-  return { z, ancho, arriba, abajo, cintura, n: 3.4, nAbajo: 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
+  return { z, ancho, arriba, abajo, cintura, n: 3.4, nAbajo: z > -0.08 ? 10 : 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
 });
+// La panza: una quilla redonda bajo la caja, que es lo que toca el suelo al
+// aterrizar y por eso sale rozada y arañada (foto de Iowa). En las fotos se ve
+// aparte: debajo de la tapa de la batería hay una junta y la panza abomba
+// hacia abajo, casi del ancho de la caja (fotos desde abajo: la del usuario y
+// la del gimbal de cerca), con el frente redondo justo detrás del cerco, y
+// detrás se estira hasta el botalón. El fondo, sacado columna a columna de la
+// foto de Spangdahlem (plano a −0,14 m hasta z = 0,1 y luego sube despacio).
+// [z, medio ancho, fondo].
+// La parte de arriba de la panza sube por dentro de la caja con los costados
+// rectos y su mismo ancho: así no queda repisa en la junta (una repisa al sol
+// salía como una línea blanca rota).
+const anchoCaja = (z: number) => (z >= 0.02 ? 0.04 : z >= -0.01 ? 0.037 - ((0.02 - z) / 0.03) * 0.003 : z >= -0.04 ? 0.034 - ((-0.01 - z) / 0.03) * 0.004 : 0.03 - ((-0.04 - z) / 0.026) * 0.004);
+const PANZA: Seccion[] = ([
+  [0.2, 0.03, -0.117], [0.194, 0.035, -0.124], [0.189, 0.038, -0.1295], [0.18, 0.0388, -0.1355], [0.17, 0.0388, -0.139],
+  [0.155, 0.0388, -0.1405], [0.13, 0.0388, -0.139], [0.1, 0.0388, -0.1356], [0.077, 0.0388, -0.1304], [0.052, 0.0388, -0.1243],
+  [0.027, 0.0388, -0.1156], [0.001, 0, -0.1077], [-0.025, 0, -0.106], [-0.05, 0, -0.1045], [-0.062, 0, -0.1035],
+] as number[][]).map(([z, ancho, abajo]) => ({ z, ancho: ancho || anchoCaja(z) - 0.0012, arriba: -0.094, abajo, cintura: FONDO, n: 8, nAbajo: 2.6 }));
 
 // ── Ala ────────────────────────────────────────────────────────────────────
 // En tres piezas: el centro, recto y plano, sobre el cuello; las puntas, más
@@ -86,6 +103,7 @@ const SUBIDA = (ALA.punta - ALA.centro) * Math.tan((ALA.diedro * Math.PI) / 180)
 // En lo alto de la cara de atrás del cuello, bajo el borde de salida, con la
 // hélice detrás (fotos de perfil en tierra y del Ejército italiano).
 const MOTOR = { y: 0.045, r: 0.0165, desde: -0.05, hasta: -0.088 };
+const HELICE = { radio: 0.0675, giro: 60, franja: 0.03 };
 
 // ── Botalón y cola ─────────────────────────────────────────────────────────
 // El botalón sube un poco hacia la cola y se parte en dos para ir en la
@@ -109,6 +127,11 @@ const JUNTA = { delante: -0.177, detras: -0.191 };
 // son del Raven de cámaras fijas, de morro más corto.)
 const COLA = { raiz: -0.058, alto: 0.0997, bisagra: -0.524 };
 const ESTAB = { y: -0.0715, semi: 0.2, ba: -0.574, raiz: 0.085, punta: 0.065 };
+
+// La tapa de la batería (foto de Spangdahlem: de z 0,193 a 0,047 y de y
+// −0,017 a −0,087) y el disipador (fotos italianas: en su tercio de atrás).
+const TAPA = { delante: 0.19, detras: 0.048, arriba: -0.017, abajo: -0.087 };
+const DISIPADOR = { delante: 0.105, detras: 0.08, arriba: -0.036, abajo: -0.079 };
 
 const PIEZAS: Pieza[] = [
   { tipo: "casco", id: "capucha", acabado: "gris-et", secciones: CAPUCHA, polo: true },
@@ -139,6 +162,22 @@ const PIEZAS: Pieza[] = [
   { tipo: "disco", id: "bola-ventana-ir", acabado: "lente", en: [-0.019, BOLA.y - 0.012, BOLA.z + 0.038], normal: [-0.35, -0.3, 0.89], radio: 0.0055, grosor: 0.003 },
 
   { tipo: "casco", id: "barquilla", acabado: "gris-et", secciones: BARQUILLA },
+  { tipo: "casco", id: "panza", acabado: "gris-et", secciones: PANZA },
+  // La tapa de la batería en cada costado (se ve en todas las fotos de lado):
+  // una placa apenas salida, de la foto de Spangdahlem, con un tornillo en
+  // cada esquina y su ranura alrededor (calcas y costuras).
+  {
+    tipo: "placa", id: "tapa", acabado: "gris-et", plano: "vertical", x: 0, grosor: 0.0822, bisel: 0.0006,
+    planta: [[TAPA.delante, TAPA.arriba], [TAPA.detras, TAPA.arriba], [TAPA.detras, TAPA.abajo], [TAPA.delante, TAPA.abajo]],
+  },
+  // En la tapa del lado derecho (en la maqueta, x negativa), el disipador:
+  // una placa negra con aletas horizontales que sobresalen (fotos italianas y
+  // la del gimbal de cerca); en el izquierdo no hay (Spangdahlem).
+  { tipo: "caja", id: "disipador", acabado: "negro", centro: [-0.0418, (DISIPADOR.arriba + DISIPADOR.abajo) / 2, (DISIPADOR.delante + DISIPADOR.detras) / 2], tam: [0.0025, DISIPADOR.arriba - DISIPADOR.abajo, DISIPADOR.delante - DISIPADOR.detras], redondeo: 0.001 },
+  ...Array.from({ length: 13 }, (_, i): Pieza => {
+    const y = DISIPADOR.arriba - 0.0025 - (i * (DISIPADOR.arriba - DISIPADOR.abajo - 0.005)) / 12;
+    return { tipo: "caja", id: `disipador-aleta-${i}`, acabado: "metal", centro: [-0.0442, y, (DISIPADOR.delante + DISIPADOR.detras) / 2], tam: [0.0035, 0.0012, DISIPADOR.delante - DISIPADOR.detras - 0.004] };
+  }),
 
   {
     // Media ala (x ≥ 0): [x, borde de ataque, borde de salida, grosor, subida].
@@ -170,13 +209,19 @@ const PIEZAS: Pieza[] = [
     perfil: [[MOTOR.desde, 0], [MOTOR.desde, MOTOR.r], [-0.082, MOTOR.r], [-0.086, 0.014], [MOTOR.hasta, 0.011], [MOTOR.hasta, 0]],
   },
   { tipo: "disco", id: "motor-tapa", acabado: "junta", espejo: true, en: [MOTOR.r - 0.001, MOTOR.y, -0.069], normal: [1, 0, 0], radio: 0.011, grosor: 0.003 },
+  // El cono, negro y abombado como una bala, con un capuchón pequeño en la
+  // punta; las palas salen de dos ranuras de sus costados (se pliegan al
+  // aterrizar). Fotos italiana de cerca y de Polonia.
   {
     tipo: "tubo", id: "cono", acabado: "negro", centro: [0, MOTOR.y],
-    perfil: [[-0.088, 0.0115], [-0.097, 0.0105], [-0.107, 0.0075], [-0.115, 0.002], [-0.116, 0]],
+    perfil: [[-0.0875, 0.0116], [-0.093, 0.0121], [-0.099, 0.0117], [-0.1045, 0.0103], [-0.109, 0.008], [-0.112, 0.0055], [-0.1125, 0.0038], [-0.1145, 0.0034], [-0.1155, 0]],
   },
-  // Hélice de dos palas claras con el cono negro, parada en diagonal; de
-  // 18 cm (foto de detrás, a escala con el centro del ala).
-  { tipo: "helice", id: "helice", acabado: "blanco", en: [0, MOTOR.y, -0.093], radio: 0.09, palas: 2, giro: 60, ancho: 0.02 },
+  // Hélice de dos palas blancas, anchas en la raíz y afiladas hasta la punta, con una franja azul
+  // cerca de la raíz (fotos italiana de cerca, de Polonia y de detrás),
+  // parada en diagonal. De 13,5 cm: la pala sale unos 5,5 cm del cono
+  // (italianas y Polonia, a escala con el cono; Spangdahlem, 6,5 cm desde el
+  // eje). La de antes, de 18 cm, salía de una foto con la pala movida.
+  { tipo: "helice", id: "helice", acabado: "blanco", en: [0, MOTOR.y, -0.097], radio: HELICE.radio, palas: 2, giro: HELICE.giro, ancho: 0.017, buje: 0, punta: true },
 
   { tipo: "varilla", id: "botalon", acabado: "gris-et", desde: BOTALON.desde, hasta: BOTALON.hasta, radio: BOTALON.radio },
   // La junta del botalón: un manguito apenas más grueso.
@@ -191,8 +236,19 @@ const PIEZAS: Pieza[] = [
   },
   // El mando del timón: un cuerno en la cara izquierda y su varilla hacia
   // delante, a media altura de la deriva (fotos de perfil).
-  { tipo: "placa", id: "timon-cuerno", acabado: "negro", plano: "vertical", x: 0.0045, grosor: 0.0015, planta: [[-0.522, 0.022], [-0.534, 0.022], [-0.534, 0.034], [-0.527, 0.034]] },
-  { tipo: "varilla", id: "timon-varilla", acabado: "negro", desde: [0.0055, 0.03, -0.531], hasta: [0.0055, 0.03, -0.47], radio: 0.0011 },
+  // En la cara izquierda de la deriva (en la maqueta, x positiva), la tapa
+  // clara de los servos y, encima, los dos mandos que en las fotos parecen
+  // grapas: arriba, la varilla del timón con su cuerno amarillo pasada la
+  // bisagra; abajo, la del estabilizador, negra con un tramo rojo (fotos de
+  // Spangdahlem, del Raven español junto al VAMTAC y del de AeroVironment).
+  {
+    tipo: "placa", id: "servo-tapa", acabado: "hueso", plano: "vertical", x: 0.0035, grosor: 0.0012, bisel: 0.0004,
+    planta: [[-0.486, 0.03], [-0.492, 0.037], [-0.537, 0.037], [-0.537, -0.052], [-0.486, -0.052]],
+  },
+  { tipo: "varilla", id: "timon-varilla", acabado: "negro", desde: [0.0058, 0.024, -0.49], hasta: [0.0058, 0.024, -0.552], radio: 0.0016 },
+  { tipo: "placa", id: "timon-cuerno", acabado: "amarillo", plano: "vertical", x: 0.0045, grosor: 0.0015, planta: [[-0.548, 0.02], [-0.566, 0.02], [-0.566, 0.029], [-0.552, 0.029]] },
+  { tipo: "varilla", id: "estab-varilla", acabado: "negro", desde: [0.0058, -0.046, -0.504], hasta: [0.0058, -0.046, -0.548], radio: 0.0018 },
+  { tipo: "varilla", id: "estab-varilla-roja", acabado: "rojo-vivo", desde: [0.006, -0.046, -0.514], hasta: [0.006, -0.046, -0.526], radio: 0.0021 },
   {
     tipo: "placa", id: "estabilizador", acabado: "gris-et", plano: "horizontal", y: ESTAB.y, grosor: 0.006, bisel: 0.0025, simetrica: true,
     planta: [[0, ESTAB.ba], [ESTAB.semi, ESTAB.ba], [ESTAB.semi, ESTAB.ba - ESTAB.punta], [0, ESTAB.ba - ESTAB.raiz]],
@@ -213,13 +269,14 @@ const PIEZAS: Pieza[] = [
 // salida de cada junta; un parche grande en la punta izquierda, otro en el
 // centro y una tira negra en el borde de ataque de la punta izquierda.
 // Flechas rojas también en la junta del botalón y en la del estabilizador.
-// En los costados, el disco «DDL», las etiquetas de la tapa de la batería,
-// la rejilla de nervios y el aviso del láser (fotos del Ejército italiano,
+// En los costados, el disco «DDL» y el aviso del láser (fotos del Ejército italiano,
 // de Iowa y de la exposición de 2017 del Ejército de Tierra).
 const ARRIBA: [number, number, number] = [0, 1, 0];
 const LADO: [number, number, number] = [1, 0, 0];
 const sobreAla = (x: number) => ALA.y + 0.02 + (Math.abs(x) > ALA.centro ? (Math.abs(x) - ALA.centro) * Math.tan((ALA.diedro * Math.PI) / 180) : 0);
 const ALAS = ["ala", "ala-puntas"];
+// Giro de una flecha vista desde arriba para que apunte al morro o a la cola.
+const GIRO_ADELANTE = -90, GIRO_ATRAS = 90;
 // Los parches son cinta americana plateada; las tiras del borde de ataque,
 // cinta negra.
 const cinta = (x: number, z: number, tam: [number, number], giro = 0, color?: string): Calca =>
@@ -238,16 +295,27 @@ const CALCAS: Calca[] = [
   cinta(0.07, -0.045, [0.038, 0.032], 8),
   cinta(0.36, 0.079, [0.08, 0.012], 0, "#1d1f22"),
   cinta(0.66, 0.036, [0.05, 0.01], 0, "#1d1f22"),
+  // La franja azul de cada pala, por las dos caras.
+  ...[0, 180].flatMap((g): Calca[] => [-1, 1].map((cara): Calca => {
+    const a = ((HELICE.giro + g) * Math.PI) / 180;
+    return { sobre: ["helice"], en: [HELICE.franja * Math.cos(a), MOTOR.y + HELICE.franja * Math.sin(a), -0.097], desde: [0, 0, cara], tam: [0.024, 0.0042], giro: cara * (HELICE.giro + 90 + g), dibujo: { tipo: "rect", color: "#2546a8" } };
+  })),
+  // El roce de la panza, por debajo.
+  { sobre: ["panza"], en: [0, -0.15, 0.09], desde: [0, -1, 0], tam: [0.036, 0.15], giro: 0, dibujo: { tipo: "desgaste" } },
   // Botalón y estabilizador.
-  { sobre: ["botalon", "botalon-junta"], en: [0, 0, (JUNTA.delante + JUNTA.detras) / 2], desde: ARRIBA, tam: [0.045, 0.022], giro: 90, dibujo: { tipo: "flechas", color: "#c8202a" } },
-  { sobre: ["estabilizador"], en: [0.022, 0, ESTAB.ba - 0.014], desde: ARRIBA, tam: [0.024, 0.014], giro: 90, dibujo: { tipo: "flechas", color: "#c8202a" } },
+  // Las de la junta del botalón: una a cada lado, a lo largo del tubo y
+  // apuntándose (foto del Raven español desde arriba).
+  { sobre: ["botalon"], en: [0, 0, JUNTA.delante + 0.014], desde: ARRIBA, tam: [0.019, 0.011], giro: GIRO_ATRAS, dibujo: { tipo: "flecha", color: "#c8202a" } },
+  { sobre: ["botalon"], en: [0, 0, JUNTA.detras - 0.014], desde: ARRIBA, tam: [0.019, 0.011], giro: GIRO_ADELANTE, dibujo: { tipo: "flecha", color: "#c8202a" } },
+  // La del estabilizador: una, junto al pasador, apuntándole (fotos española
+  // e italiana).
+  { sobre: ["estabilizador"], en: [0.017, 0, ESTAB.ba - 0.017], desde: ARRIBA, tam: [0.019, 0.011], giro: GIRO_ADELANTE, dibujo: { tipo: "flecha", color: "#c8202a" } },
   // Costados: la rendija de cada lado del cuello (foto italiana de perfil).
   { sobre: ["barquilla"], en: [0.03, 0.03, 0.062], desde: LADO, tam: [0.0045, 0.02], dibujo: { tipo: "rect", color: "#1b1c1f" }, espejo: true },
   { sobre: ["barquilla"], en: [0.05, -0.043, -0.028], desde: LADO, tam: [0.017, 0.017], dibujo: { tipo: "ddl" }, espejo: true },
   { sobre: ["deriva"], en: [0.01, -0.014, -0.496], desde: LADO, tam: [0.02, 0.02], dibujo: { tipo: "ddl", color: "#b8262b" }, espejo: true },
-  { sobre: ["barquilla"], en: [0.05, -0.034, 0.155], desde: LADO, tam: [0.045, 0.026], dibujo: { tipo: "etiqueta" }, espejo: true },
-  { sobre: ["barquilla"], en: [0.05, -0.06, 0.135], desde: LADO, tam: [0.032, 0.016], dibujo: { tipo: "etiqueta" }, espejo: true },
-  { sobre: ["barquilla"], en: [0.05, -0.072, 0.1], desde: LADO, tam: [0.024, 0.032], dibujo: { tipo: "rejilla" }, espejo: true },
+  // La ranura de la tapa de la batería.
+  { sobre: ["tapa", "barquilla"], en: [0.05, (TAPA.arriba + TAPA.abajo) / 2, (TAPA.delante + TAPA.detras) / 2], desde: LADO, tam: [TAPA.delante - TAPA.detras + 0.004, TAPA.arriba - TAPA.abajo + 0.004], dibujo: { tipo: "marco" }, espejo: true },
   { sobre: ["capucha"], en: [0.05, -0.038, 0.262], desde: LADO, tam: [0.046, 0.022], dibujo: { tipo: "etiqueta", titulo: "CAUTION" }, espejo: true },
   // Los seis tornillos de la tapa de la bola.
   ...Array.from({ length: 6 }, (_, i): Calca => {
@@ -260,7 +328,9 @@ const CALCAS: Calca[] = [
 // La tapa de la batería en cada costado, con un tornillo en cada esquina; y
 // la tapa de lo alto del módulo, con cuatro.
 const COSTURAS: Costura[] = [
-  { sobre: ["barquilla"], desde: LADO, espejo: true, enVertices: true, puntos: [[0.05, -0.015, 0.192], [0.05, -0.015, 0.054], [0.05, -0.1, 0.054], [0.05, -0.1, 0.192], [0.05, -0.015, 0.192]] },
+  // La junta entre la caja y la panza, a lo largo de cada costado.
+  { sobre: ["panza"], desde: LADO, espejo: true, puntos: [[0.05, FONDO - 0.0008, 0.192], [0.05, FONDO - 0.0008, -0.06]] },
+  { sobre: ["tapa"], desde: LADO, espejo: true, enVertices: true, puntos: [[0.05, TAPA.arriba + 0.004, TAPA.delante - 0.004], [0.05, TAPA.arriba + 0.004, TAPA.detras + 0.004], [0.05, TAPA.abajo - 0.004, TAPA.detras + 0.004], [0.05, TAPA.abajo - 0.004, TAPA.delante - 0.004], [0.05, TAPA.arriba + 0.004, TAPA.delante - 0.004]] },
   { sobre: ["capucha"], desde: ARRIBA, enVertices: true, puntos: [[0.026, 0, 0.214], [-0.026, 0, 0.214], [-0.026, 0, 0.252], [0.026, 0, 0.252], [0.026, 0, 0.214]] },
 ];
 
@@ -277,7 +347,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Barquilla",
     en: [0, -0.2, 0.08],
-    piezas: ["barquilla", "sonda"],
+    piezas: ["barquilla", "panza", "tapa", "disipador", ...Array.from({ length: 13 }, (_, i) => `disipador-aleta-${i}`), "sonda"],
     respaldo: "foto",
     fuentes: ["perfil", "italiano-perfil", "iowa-morro", "suelo-gimbal", "et", "ficha-et"],
     texto: "El cuerpo, de kevlar, lleva la batería detrás de la tapa del costado. No tiene tren: aterriza de barriga, así que la panza baja y es lo que toca el suelo.",
@@ -304,7 +374,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Botalón y cola",
     en: [0, 0.15, -0.5],
-    piezas: ["botalon", "botalon-junta", "botalon-fin", "deriva", "timon", "timon-cuerno", "timon-varilla", "estabilizador", "estab-herraje", "estab-pasador"],
+    piezas: ["botalon", "botalon-junta", "botalon-fin", "deriva", "timon", "servo-tapa", "timon-cuerno", "timon-varilla", "estab-varilla", "estab-varilla-roja", "estabilizador", "estab-herraje", "estab-pasador"],
     respaldo: "foto",
     fuentes: ["perfil", "abajo", "eslovaquia", "suelo-gimbal", "italiano-perfil", "detras"],
     texto: "Un tubo fino, que se parte en dos para guardarlo, lleva la cola: la deriva con su timón y, detrás, el estabilizador, sujeto al final del tubo con un pasador para que salte en los aterrizajes de golpe sin romperse.",

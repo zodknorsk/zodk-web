@@ -34,7 +34,7 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // al sol, en la foto de El Español de 2024 desde arriba, #d9dfe6 (el
   // render, #d9dde1). La 1.0 tenía uno más oscuro y verdoso, de una foto
   // de 2009 bajo techo.
-  "gris-et": { color: "#b9c4cf", metal: 0, rugosidad: 0.65 },
+  "gris-et": { color: "#bdc1c4", metal: 0, rugosidad: 0.65 },
   // El gris de los TB2 turcos, algo más oscuro y azulado que el del MQ-9
   // (medido al sol en las fotos de Teknofest 2021 y del TC-SRM: #acb8bf).
   "gris-tr": { color: "#8d999f", metal: 0, rugosidad: 0.5 },
@@ -486,6 +486,37 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       }
       const x0 = d.titulo ? m : W * 0.48;
       for (let y = y0; y < H - m; y += H * 0.13) c.fillRect(x0, y, (W - m - x0) * (0.55 + 0.45 * ((y * 7) % 1)), H * 0.05);
+      break;
+    }
+    case "desgaste": {
+      // Rayas finas a lo largo (el eje largo del dibujo) y manchas suaves,
+      // claras y oscuras, más en el centro, donde apoya.
+      let semilla = 41;
+      const azar = () => ((semilla = (semilla * 16807) % 2147483647) / 2147483647);
+      const largo = H >= W;
+      for (let i = 0; i < 90; i++) {
+        const u = (0.5 + (azar() - 0.5) * (0.35 + 0.65 * azar())) * (largo ? W : H);
+        const v0 = azar() * (largo ? H : W), l = (0.05 + azar() * 0.3) * (largo ? H : W);
+        c.strokeStyle = azar() < 0.65 ? `rgba(245,244,238,${0.12 + azar() * 0.12})` : `rgba(70,70,66,${0.08 + azar() * 0.1})`;
+        c.lineWidth = Math.max(W, H) * (0.002 + azar() * 0.004);
+        c.beginPath();
+        if (largo) { c.moveTo(u, v0); c.lineTo(u + (azar() - 0.5) * W * 0.05, v0 + l); }
+        else { c.moveTo(v0, u); c.lineTo(v0 + l, u + (azar() - 0.5) * H * 0.05); }
+        c.stroke();
+      }
+      for (let i = 0; i < 14; i++) {
+        const x = W * (0.25 + azar() * 0.5), y = H * (0.1 + azar() * 0.8), r = Math.min(W, H) * (0.08 + azar() * 0.18);
+        const g = c.createRadialGradient(x, y, 0, x, y, r);
+        g.addColorStop(0, azar() < 0.5 ? "rgba(120,116,104,0.14)" : "rgba(240,238,230,0.16)"); g.addColorStop(1, "rgba(0,0,0,0)");
+        c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r);
+      }
+      break;
+    }
+    case "marco": {
+      // La ranura de una tapa: una línea oscura a todo el borde.
+      const g = Math.min(W, H) * 0.035;
+      c.strokeStyle = "rgba(30,32,36,0.8)"; c.lineWidth = g;
+      c.strokeRect(g / 2, g / 2, W - g, H - g);
       break;
     }
     case "rejilla": {

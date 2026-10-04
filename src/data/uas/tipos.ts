@@ -73,7 +73,11 @@ export type Pieza = (
   // ancho: cuerda máxima de la pala; con él, cada pala tiene forma (estrecha
   // en la raíz, más ancha a un tercio y con la punta redondeada) en vez de ser
   // una tabla.
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number; ancho?: number }
+  // buje: radio de la bola del centro (por defecto, una bola blanca algo
+  // mayor que el arranque de las palas); 0, sin ella (el cono la tapa).
+  // punta: palas anchas cerca de la raíz y afiladas hasta una punta (las de
+  // plástico del Raven), en vez de redondeadas.
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number; ancho?: number; buje?: number; punta?: boolean }
   // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
   // redondeo: radio de las esquinas vistas desde arriba (y bisel arriba y abajo).
   | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean; redondeo?: number }
@@ -125,7 +129,12 @@ export type Dibujo =
   | { tipo: "flecha"; color: string }
   | { tipo: "ddl"; color?: string }
   | { tipo: "etiqueta"; titulo?: string }
-  | { tipo: "rejilla" };
+  | { tipo: "rejilla" }
+  // Ranura alrededor de una tapa: un marco oscuro y fino.
+  | { tipo: "marco" }
+  // Roce de una panza que aterriza en el suelo: rayas claras finas a lo largo
+  // y alguna mancha; con poca tinta (en el pixel no sale).
+  | { tipo: "desgaste" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
 

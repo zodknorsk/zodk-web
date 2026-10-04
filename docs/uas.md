@@ -427,7 +427,9 @@ generadores de `arte/` leen estos archivos con Node.
   `arte/encajar-camara.mjs` sobre la captura. El visor no cambia.
 - **Palas con forma**: la `helice` admite `ancho` (la cuerda de la pala):
   estrecha en la raíz, más ancha a un tercio y con la punta redondeada. Sin
-  él, cada pala es una tabla.
+  él, cada pala es una tabla. Con `punta`, afiladas hasta una punta (las
+  de plástico del Raven); `buje: 0` quita la bola blanca del centro (cuando
+  un cono la tapa).
 - **Zoom del visor**: hacia el cursor (`zoomToCursor` de OrbitControls),
   de 1/16 a 1,2 veces la distancia de encuadre; al alejarse, el punto de
   mira vuelve al centro (`controles` «change» en `visor-uas.ts`). Todo lo
