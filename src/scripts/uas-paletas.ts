@@ -31,6 +31,7 @@ const COMUNES = {
   aluminio: ["#4a4e54", "#767b82", "#a5aab0", "#d3d6da"],
   ocre: ["#5a4718", "#86692a", "#b8953e", "#dcc072"],
   laton: ["#5a4718", "#86692a", "#b8953f", "#e0c271"],
+  hueso: ["#6a675e", "#9c988b", "#cac5b6", "#ece8dc"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre";
+export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -111,7 +111,21 @@ export type Dibujo =
   | { tipo: "qr" }
   | { tipo: "serie"; ano: string; numero: string }
   | { tipo: "disco"; color: string }
-  | { tipo: "escudo" };
+  | { tipo: "escudo" }
+  // El Raven: un rectángulo de color (cinta adhesiva); dos flechas que se
+  // miran a través de la junta de dos piezas (la junta es la línea vertical
+  // del centro del dibujo); el disco «DDL»; una etiqueta blanca con código
+  // de barras y líneas de texto (con `titulo`, una línea en negrita arriba,
+  // como «CAUTION»), y la rejilla de nervios del costado.
+  | { tipo: "rect"; color: string }
+  // Cinta americana (duct tape): plateada, con la trama de tela y los cortes
+  // de los extremos rasgados; con brillo de metal.
+  | { tipo: "cinta" }
+  | { tipo: "flechas"; color: string }
+  | { tipo: "flecha"; color: string }
+  | { tipo: "ddl"; color?: string }
+  | { tipo: "etiqueta"; titulo?: string }
+  | { tipo: "rejilla" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
 

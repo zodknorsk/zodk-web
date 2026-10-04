@@ -998,6 +998,27 @@ perfil en vuelo da el contorno de la barquilla, el gimbal y la cola; las
 de tierra, la altura del pilón (5 cm); la de detrás, el diedro (10°). El
 estabilizador (0,40 m) es una reconstrucción.
 
+Para el HD (4-oct-2026), en `arte/uas-fuentes/rq-11-raven/hd/` (fuera de
+Git): `indice.json` (las 552 de las categorías de Commons), `full/`, `es/`
+(las españolas, de prensa) y `ajustes/` (las cámaras encajadas). La pintura y
+las marcas, del Raven del Ejército de Tierra en Eslovaquia de octubre de
+2024; el tramo central del ala, de 0,50 m (ver `docs/uas-hd.md`).
+
+| Archivo (hd/full) | Qué enseña | URL |
+|---|---|---|
+| 244.jpg | De perfil, en manos de un soldado italiano, Cerdeña 2023 (OTAN, dominio público) | https://commons.wikimedia.org/wiki/File:Exercise_Noble_Jump_2023_(7762012).jpg |
+| 252.jpg | De 3/4 por delante: capucha, bola, tapa de la batería (OTAN, dominio público) | https://commons.wikimedia.org/wiki/File:Exercise_Noble_Jump_2023_(7762021).jpg |
+| 243.jpg | En el suelo junto a la mochila, flechas de las juntas (OTAN, dominio público) | https://commons.wikimedia.org/wiki/File:Exercise_Noble_Jump_2023_(7762011).jpg |
+| 439.jpg | El gimbal de cerca, desde abajo (Ejército de EE. UU., dominio público) | https://commons.wikimedia.org/wiki/File:Troopers_receive_new_Raven_UAS_camera_upgrade_150819-A-JE145-071.jpg |
+| 008.jpg | Morro y costado de cerca, Guardia Nacional de Iowa 2023 (ZLEA, CC BY-SA 4.0) | https://commons.wikimedia.org/wiki/File:AeroVironment_RQ-11B_Raven_(cn_22247)_(6-24-2023).jpg |
+| 198.jpg | Desde detrás: centro del ala, juntas, hélice (Ejército de EE. UU., dominio público) | https://commons.wikimedia.org/wiki/File:Dark_Rifles_take_Battle_Group_Poland_Raven_training_to_new_heights_(6768246).jpg |
+
+| Archivo (hd/es) | Qué enseña | URL |
+|---|---|---|
+| elespanol-2024.jpg | El Raven de las marcas, desde arriba, Eslovaquia 2024 | https://www.elespanol.com/espana/20241019/dias-cocina-mision-otan-espanola-eslovaquia-enemigo-entrado-territorio/893911100_0.html |
+| defensa-2024.jpg | El mismo, al lanzarlo | https://www.defensa.com/galeria/espectaculares-imagenes-tropas-espanolas-aliados-otan-ejercicio |
+| defensa-2017-expo.jpg | El gimbal del Ejército de Tierra en una exposición | https://www.defensa.com/espana/nuevos-raven-digitales-ejercito-tierra-espanol |
+
 | Archivo | Qué enseña | URL |
 |---|---|---|
 | perfil-vuelo.jpg | De perfil en vuelo, con gimbal y DDL (Fuerza Aérea de EE. UU., dominio público): el contorno | https://commons.wikimedia.org/wiki/File:52nd_SFS_trains_with_Raven_for_first_time_at_Spangdahlem_(6243202).jpg |
