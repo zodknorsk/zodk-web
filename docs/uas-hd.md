@@ -202,6 +202,10 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   (2-oct-2026) y el Shahed-136 (3-oct-2026, con su catapulta y el cohete de
   despegue), en `main` y publicados: en el visor, en las tarjetas de `/uas`
   y como naves de la portada.
+- **En curso**: el RQ-11 Raven (rama `hd-rq-11-raven`, con commit y subida
+  a GitHub, sin fusionar en `main`), con la
+  pintura y las marcas del Raven del Ejército de Tierra en Eslovaquia
+  (octubre de 2024); falta que lo revise el usuario. Ver el registro.
 - **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`; el Shahed con
   la catapulta, 150 piezas); las maquetas
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
@@ -213,7 +217,149 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
-está en `main`.
+está en `main` (salvo el Raven, en su rama).
+
+- **4-oct-2026, RQ-11 Raven en HD y pixel HD** (rama `hd-rq-11-raven`,
+  commit y subida; sin fusionar: el usuario lo mirará en el ordenador y dará
+  los últimos retoques). Lo eligió el usuario el día antes, **pintado como el del Ejército
+  de Tierra** y con la forma sacada de las muchas fotos de Raven americanos
+  («hay muchísimas fotos de este dron»). Hecho:
+  - **Fuentes**: `arte/uas-fuentes/rq-11-raven/hd/` (fuera de Git):
+    `indice.json` (las 552 fotos de las categorías de Commons del Raven),
+    `full/` (las que se usan, de la Guardia Nacional de Iowa, del Ejército de
+    EE. UU., las tres del Ejército italiano en Cerdeña de 2023 y las checas)
+    y `es/` (las españolas de prensa). Commons ya solo sirve miniaturas de
+    tamaños fijos (1920, 3840) y corta con 429 si se bajan originales
+    seguidos: bajarlas despacio.
+  - **Avión de las marcas**: el **Raven digital del Ejército de Tierra en la
+    misión de la OTAN en Eslovaquia, octubre de 2024** (El Español y la
+    galería de Defensa.com, desde arriba; el gimbal, también en la de la
+    exposición de 2017 de Defensa.com). Gris muy claro, sin bandera ni
+    números; flechas rojas en la junta del ala izquierda y verdes en la
+    derecha, rojas en la junta del botalón y en la del estabilizador; cinta
+    gris azulada en los bordes de cada junta, un parche grande en la punta
+    izquierda y otro en el centro, y tiras negras en el borde de ataque de la
+    punta izquierda.
+  - **Forma**: el perfil de la barquilla, sacado columna a columna contra el
+    cielo de la foto de Spangdahlem (1149 px/m con los 0,91 m), con la cámara
+    encajada después: errores de 1 a 10 px. **Barquilla de una pieza**
+    (`casco` con `lomo`): costados planos, panza abombada, el cuello del ala
+    fundido con un hombro cóncavo y la caída de detrás hasta el botalón (en
+    la 1.0, placas con bisel). **Ala**: el centro es de **0,50 m** (la 1.0,
+    0,40): encajando la foto española desde arriba, el error medio baja de
+    13 px a 8; la punta (12 cm) se estrecha por los dos bordes (con todo el
+    estrechamiento delante, como la 1.0, el doble de error). **Módulo de la
+    cámara**: capucha de casco más ancha abajo, bola de 8,8 cm con su tapa de
+    seis tornillos y dos ventanas, cuerpo del gimbal detrás y el cerco claro
+    de la cara delantera de la barquilla. **Hélice** de 18 cm (foto de
+    detrás, a escala con el centro del ala). Pestillo del ala, tapa del
+    motor, cuerno y varilla del timón.
+  - **Color**: `gris-et` pasa a #b9c4cf: al sol, el render da #d9dde1 y la
+    foto española desde arriba, #d9dfe6 (la 1.0 tenía un gris verdoso más
+    oscuro, de la foto de 2009 bajo techo). Acabado nuevo `hueso` (el cerco).
+  - **Detalle**: calcas nuevas `rect` (cinta), `flecha`, `flechas`, `ddl`,
+    `etiqueta` (con `titulo`, el «CAUTION» del módulo) y `rejilla` (la placa
+    de nervios del costado); tapa de la batería y tapa del módulo con sus
+    tornillos. Una calca solo cae en una pieza: las flechas y la cinta de las
+    juntas del ala van en dos, una a cada lado.
+  - **Pixel HD**: la pintura al sol caía justo en el borde de dos escalones
+    (6,0): `desfaseLuz` −0,5. Tarjeta con el ángulo del TB2 (`vistaTarjeta`
+    [61, 20]; con el de todas, el ala salía de canto) y planta regeneradas;
+    fuera los `giro-planta` 1.0. No sale en la portada (no es nave del hero).
+  - **Errores por el camino**: (1) la foto del Raven en el suelo junto a la
+    mochila (Cerdeña) no encaja: el ala de delante apoya en la mochila y se
+    dobla; no vale para medir el ala. (2) Las fotos de cerca con casi todos
+    los puntos en el eje del dron no fijan la cámara (sale desde detrás o
+    con teleobjetivo): hacen falta puntos de las puntas del ala.
+  - **Segunda pasada** (lo pidió el usuario: «matizar un poco más», para no
+    encontrarse fallos de diseño), con las fotos de cerca: la **sonda** de la
+    cara delantera del cuello, bajo el ala (base negra con tuerca y una
+    varilla de unos 3 cm; foto italiana de perfil y la de Iowa), la
+    **rendija** vertical a cada lado del cuello, el **borde de la capucha**
+    que vuela un poco hacia fuera, y la cara delantera del cuello casi
+    vertical con un empalme cóncavo abajo (antes, inclinada). Tarjeta y
+    planta regeneradas.
+  - **Cola corregida** (la señaló el usuario con la foto española desde
+    arriba; analizado con fotos y aprobado por él): el estabilizador iba
+    debajo de la deriva (error que venía de la 1.0) y va **detrás**,
+    enganchado al final del botalón con un **pasador amarillo** (se suelta en
+    los aterrizajes de golpe). Lo dicen la foto en vuelo desde abajo (la
+    deriva acaba y ahí empieza el estabilizador), la española desde arriba con
+    la cámara encajada, la de Spangdahlem de perfil (el botalón acaba en el
+    borde de salida del timón, con el pasador) y la italiana en el suelo.
+    Borde de ataque recto, el estrechamiento en el de salida: 8,5 cm de
+    cuerda en el centro y 6,5 en las puntas, 40 cm de punta a punta; herraje
+    negro bajo el pasador. El botalón acaba ahora en el timón (−0,572). La
+    deriva se queda (3 a 7 px en el perfil). Visto y sin tocar: en la foto de
+    Spangdahlem el estabilizador sale girado unos 6° respecto al ala (va
+    suelto, sujeto por el pasador); no se puede modelar fijo.
+  - **Cinta americana** (lo pidió el usuario): los parches de cinta son
+    plateados, con la trama de tela, los extremos rasgados y brillo de metal
+    (calca nueva `cinta`, con `metalness` 0,55); las tiras del borde de
+    ataque siguen negras.
+  - **Última revisión del usuario** (en local, con cinco fotos suyas,
+    guardadas como `hd/full/usuario-*.png`), analizada con fotos y hecha:
+    - **Panza**: era parte del mismo cuerpo, con el fondo curvo. En las fotos
+      es una quilla aparte: la caja acaba a −0,099 con una arista y debajo
+      abomba la panza (fondo a −0,138 en Spangdahlem), algo más estrecha,
+      con el frente redondo detrás del cerco. Ahora la caja tiene el fondo
+      plano y la panza es un `casco` propio.
+    - **Color** menos azulado: `gris-et` #bdc1c4 (al sol, #d8dadd).
+    - **Tapa de la batería**: placa apenas salida con su ranura (calca
+      nueva `marco`) y un tornillo en cada esquina, medida en Spangdahlem.
+      Fuera las dos pegatinas de la tapa y la rejilla pintada.
+    - **Disipador**: el «radiador» es una placa negra con aletas que
+      sobresalen, solo en la tapa del lado derecho (fotos italianas; en el
+      izquierdo, Spangdahlem, no hay), en el tercio de atrás.
+    - **Flechas**: las del botalón eran un par aplastado sobre la junta;
+      ahora una a cada lado, a lo largo del tubo, apuntándose. La del
+      estabilizador, una sola junto al pasador, apuntándole.
+    - **Las «grapas» de la cola**: en la cara izquierda de la deriva van la
+      tapa clara de los servos y dos mandos: la varilla del timón con su
+      cuerno amarillo y, abajo, la del estabilizador, negra con un tramo rojo
+      (Spangdahlem, VAMTAC y AeroVironment).
+  - **Panza y hélice, más matizadas** (lo pidió el usuario), con fotos de
+    cerca:
+    - **Panza** (tercera vuelta; el usuario, con razón: «¿no eres capaz
+      de ver que son dos piezas separadas?»). En todas las fotos (Spangdahlem,
+      la del usuario desde abajo, el render de AeroVironment, la del
+      Ejército de Tierra de 2009) la panza es **otra pieza**: una quilla
+      redondeada **más estrecha que la caja** (unos 6 de los 8 cm) colgada
+      bajo un **fondo plano** con el borde marcado; frente redondo detrás del
+      cerco, se mete en la caja hacia la mitad. Error mío por el camino: la
+      ensanché hasta el ancho de la caja para quitar un fallo de pintado y
+      acabé fundiéndola con ella, borrando justo lo que se ve. Además, el
+      **fondo de la caja y la parte de abajo del botalón son una sola línea
+      recta** de la barquilla a la cola (lo preguntó el usuario con la foto de
+      2009; la línea que marcó en Spangdahlem, llevada a la maqueta con la
+      cámara, lo confirma): `fondoCaja` es la prolongación del botalón
+      (−0,111 m detrás del cerco). Antes la caja bajaba más que el botalón y
+      quedaba un escalón. La silueta de la panza, ajustada contra la foto de
+      Spangdahlem con la cámara encajada (`hd/ajpanza.py`) a ±1–2 mm; el
+      cerco acaba en el fondo nuevo. Con la panza más estrecha la junta es una
+      arista, sin z-fighting.
+      Después (lo pidió el usuario: «hay algún borde como recto raro»), la
+      panza **suavizada**: 54 secciones calculadas, con la nariz y la cola en
+      media elipse en planta y en hondo, y la sección ovalada (n = 2). Con
+      las 15 secciones a mano, el ancho iba a saltos: caras planas, la cola
+      en flecha y, al final, una lámina fina y ancha pegada al fondo (allí
+      la cintura quedaba por debajo del fondo de la panza y la mitad de abajo
+      salía del revés). Ahora el ancho se cierra a la vez que el hondo. La
+      silueta sigue a ±1 mm de la foto (2–3 mm en la cola, donde se apaga).
+    - **Hélice**: de 13,5 cm (antes 18, de una foto movida): la pala sale
+      unos 5,5 cm del cono en las italianas y en la de Polonia, a escala con
+      el cono. Palas anchas en la raíz y afiladas hasta la punta (`helice`
+      admite `punta`), blancas con una franja azul a media pala por las dos
+      caras; sin bola blanca en el centro (`buje: 0`). Cono negro abombado
+      como una bala, con el capuchón de la punta.
+  - **Sin insignias españolas**: el usuario preguntó si el Ejército de Tierra
+    le pone algún dibujo de España. En ninguna de las fotos españolas (la de
+    Eslovaquia de 2024 desde arriba y al lanzarlo, la de la exposición de
+    2017, la del campo de 2024 de Defensa.com, la del VAMTAC de Infodron ni
+    la de la exposición de 2009 de Commons) lleva bandera, escarapela,
+    «ET» ni número pintado: solo las etiquetas del fabricante (DDL, aviso
+    del láser, códigos de barras), las flechas de las juntas y la cinta.
+  - Falta: que lo revise el usuario; rendimiento en Zen.
 
 - **3-oct-2026, Shahed-136 en HD y pixel HD** (rama `hd-shahed-136`, sin
   commit). El usuario eligió el Shahed («aprender de las lecciones del MQ-9 y

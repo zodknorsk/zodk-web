@@ -30,7 +30,11 @@ export const ESTILOS_HD: { id: EstiloHD; nombre: string }[] = [
 type Pintura = { color: string; metal: number; rugosidad: number };
 const PINTURAS: Record<Acabado, Pintura> = {
   gris: { color: "#a6b0bb", metal: 0, rugosidad: 0.5 },
-  "gris-et": { color: "#a3adab", metal: 0, rugosidad: 0.65 },
+  // El gris muy claro, algo azulado, de los Raven del Ejército de Tierra:
+  // al sol, en la foto de El Español de 2024 desde arriba, #d9dfe6 (el
+  // render, #d9dde1). La 1.0 tenía uno más oscuro y verdoso, de una foto
+  // de 2009 bajo techo.
+  "gris-et": { color: "#bdc1c4", metal: 0, rugosidad: 0.65 },
   // El gris de los TB2 turcos, algo más oscuro y azulado que el del MQ-9
   // (medido al sol en las fotos de Teknofest 2021 y del TC-SRM: #acb8bf).
   "gris-tr": { color: "#8d999f", metal: 0, rugosidad: 0.5 },
@@ -62,6 +66,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   ocre: { color: "#b8953e", metal: 0, rugosidad: 0.6 },
   // La corona dentada del arranque del motor del Shahed, dorada.
   laton: { color: "#d2ab4c", metal: 0.5, rugosidad: 0.4 },
+  // El cerco blanco hueso entre el módulo de la cámara y la barquilla del
+  // Raven (fotos del Ejército italiano y del Ejército de Tierra).
+  hueso: { color: "#d8d3c3", metal: 0, rugosidad: 0.6 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -395,6 +402,130 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.beginPath(); c.moveTo(W * 0.1, H * 0.78); c.quadraticCurveTo(W * 0.5, H * 1.02, W * 0.9, H * 0.78); c.stroke();
       break;
     }
+    case "rect": {
+      c.fillStyle = d.color; c.fillRect(0, 0, W, H);
+      break;
+    }
+    case "flechas": {
+      // Una flecha a cada lado de la junta (la vertical del centro), la de
+      // arriba apuntando a la derecha y la de abajo a la izquierda, con la
+      // punta tocando la junta (fotos del ala sola y del Raven español).
+      c.fillStyle = d.color;
+      const flecha = (x0: number, y0: number, s: number) => {
+        const L = W * 0.46, h = H * 0.44, cola = h * 0.42;
+        c.beginPath();
+        c.moveTo(x0, y0);
+        c.lineTo(x0 - s * L * 0.45, y0 - h / 2); c.lineTo(x0 - s * L * 0.45, y0 - cola / 2);
+        c.lineTo(x0 - s * L, y0 - cola / 2); c.lineTo(x0 - s * L, y0 + cola / 2);
+        c.lineTo(x0 - s * L * 0.45, y0 + cola / 2); c.lineTo(x0 - s * L * 0.45, y0 + h / 2);
+        c.closePath(); c.fill();
+      };
+      flecha(W / 2, H * 0.27, 1);
+      flecha(W / 2, H * 0.73, -1);
+      break;
+    }
+    case "cinta": {
+      // Cinta americana: gris plata, con la trama de tela (hilos finos a lo
+      // largo y a lo ancho, algo más claros y oscuros) y los extremos
+      // rasgados en zigzag, como cortada a mano.
+      let semilla = 23;
+      const azar = () => ((semilla = (semilla * 16807) % 2147483647) / 2147483647);
+      const diente = W * 0.035;
+      c.beginPath();
+      c.moveTo(diente, 0);
+      for (let y = 0; y <= H; y += H / 9) c.lineTo(diente * azar() * 1.6, y);
+      c.lineTo(W - diente, H);
+      for (let y = H; y >= 0; y -= H / 9) c.lineTo(W - diente * azar() * 1.6, y);
+      c.closePath();
+      c.save(); c.clip();
+      const g = c.createLinearGradient(0, 0, W * 0.4, H);
+      g.addColorStop(0, "#c3c7cb"); g.addColorStop(0.5, "#aeb2b7"); g.addColorStop(1, "#bcc0c4");
+      c.fillStyle = g; c.fillRect(0, 0, W, H);
+      const paso = Math.max(W, H) / 70;
+      for (let x = 0; x < W; x += paso) { c.fillStyle = azar() < 0.5 ? "rgba(255,255,255,0.06)" : "rgba(40,44,50,0.06)"; c.fillRect(x, 0, paso * 0.45, H); }
+      for (let y = 0; y < H; y += paso * 1.4) { c.fillStyle = "rgba(40,44,50,0.05)"; c.fillRect(0, y, W, paso * 0.4); }
+      c.restore();
+      c.strokeStyle = "rgba(60,64,70,0.35)"; c.lineWidth = Math.max(W, H) * 0.012; c.stroke();
+      break;
+    }
+    case "flecha": {
+      // Una sola flecha, con la punta en el borde derecho del dibujo.
+      c.fillStyle = d.color;
+      c.beginPath();
+      c.moveTo(W, H / 2); c.lineTo(W * 0.5, 0); c.lineTo(W * 0.5, H * 0.3); c.lineTo(0, H * 0.3);
+      c.lineTo(0, H * 0.7); c.lineTo(W * 0.5, H * 0.7); c.lineTo(W * 0.5, H); c.closePath(); c.fill();
+      break;
+    }
+    case "ddl": {
+      // Disco blanco con el aro y «DDL» en su color, y una línea fina debajo.
+      const r = Math.min(W, H) / 2, cx = W / 2, cy = H / 2, tinta = d.color ?? "#3b3d42";
+      c.fillStyle = "#f2f1ec"; c.beginPath(); c.arc(cx, cy, r * 0.97, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = tinta; c.lineWidth = r * 0.1; c.beginPath(); c.arc(cx, cy, r * 0.86, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = tinta; c.textAlign = "center"; c.textBaseline = "middle";
+      c.font = `700 ${Math.round(r * 0.62)}px "Helvetica Neue", Arial, sans-serif`;
+      c.fillText("DDL", cx, cy - r * 0.08, r * 1.4);
+      c.fillRect(cx - r * 0.42, cy + r * 0.38, r * 0.84, r * 0.07);
+      break;
+    }
+    case "etiqueta": {
+      // Etiqueta blanca: código de barras a la izquierda y renglones de texto
+      // (o un título en negrita arriba y los renglones debajo).
+      c.fillStyle = "#f3f2ed"; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#26282c";
+      const m = Math.min(W, H) * 0.1;
+      let y0 = m;
+      if (d.titulo) {
+        c.textAlign = "center"; c.textBaseline = "top";
+        c.font = `800 ${Math.round(H * 0.2)}px "Helvetica Neue", Arial, sans-serif`;
+        c.fillText(d.titulo, W / 2, m * 0.8, W - 2 * m);
+        y0 = m + H * 0.26;
+      } else {
+        let semilla = 11;
+        const azar = () => ((semilla = (semilla * 16807) % 2147483647) / 2147483647);
+        for (let x = m; x < W * 0.42; ) { const g = W * (0.006 + 0.012 * azar()); c.fillRect(x, m, g, H - 2 * m); x += g + W * (0.008 + 0.01 * azar()); }
+      }
+      const x0 = d.titulo ? m : W * 0.48;
+      for (let y = y0; y < H - m; y += H * 0.13) c.fillRect(x0, y, (W - m - x0) * (0.55 + 0.45 * ((y * 7) % 1)), H * 0.05);
+      break;
+    }
+    case "desgaste": {
+      // Rayas finas a lo largo (el eje largo del dibujo) y manchas suaves,
+      // claras y oscuras, más en el centro, donde apoya.
+      let semilla = 41;
+      const azar = () => ((semilla = (semilla * 16807) % 2147483647) / 2147483647);
+      const largo = H >= W;
+      for (let i = 0; i < 90; i++) {
+        const u = (0.5 + (azar() - 0.5) * (0.35 + 0.65 * azar())) * (largo ? W : H);
+        const v0 = azar() * (largo ? H : W), l = (0.05 + azar() * 0.3) * (largo ? H : W);
+        c.strokeStyle = azar() < 0.65 ? `rgba(245,244,238,${0.12 + azar() * 0.12})` : `rgba(70,70,66,${0.08 + azar() * 0.1})`;
+        c.lineWidth = Math.max(W, H) * (0.002 + azar() * 0.004);
+        c.beginPath();
+        if (largo) { c.moveTo(u, v0); c.lineTo(u + (azar() - 0.5) * W * 0.05, v0 + l); }
+        else { c.moveTo(v0, u); c.lineTo(v0 + l, u + (azar() - 0.5) * H * 0.05); }
+        c.stroke();
+      }
+      for (let i = 0; i < 14; i++) {
+        const x = W * (0.25 + azar() * 0.5), y = H * (0.1 + azar() * 0.8), r = Math.min(W, H) * (0.08 + azar() * 0.18);
+        const g = c.createRadialGradient(x, y, 0, x, y, r);
+        g.addColorStop(0, azar() < 0.5 ? "rgba(120,116,104,0.14)" : "rgba(240,238,230,0.16)"); g.addColorStop(1, "rgba(0,0,0,0)");
+        c.fillStyle = g; c.fillRect(x - r, y - r, 2 * r, 2 * r);
+      }
+      break;
+    }
+    case "marco": {
+      // La ranura de una tapa: una línea oscura a todo el borde.
+      const g = Math.min(W, H) * 0.035;
+      c.strokeStyle = "rgba(30,32,36,0.8)"; c.lineWidth = g;
+      c.strokeRect(g / 2, g / 2, W - g, H - g);
+      break;
+    }
+    case "rejilla": {
+      // Placa gris oscura con nervios a lo largo (la del costado del Raven).
+      c.fillStyle = "#a4aab0"; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#5d6268";
+      for (let i = 0; i < 9; i++) c.fillRect(W * 0.12, H * (0.1 + i * 0.09), W * 0.76, H * 0.045);
+      break;
+    }
   }
   return lienzo;
 }
@@ -462,8 +593,10 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       const textura = new CanvasTexture(dibujar(k.dibujo, k.tam[0], k.tam[1]));
       textura.colorSpace = SRGBColorSpace;
       textura.anisotropy = 4;
+      // La cinta americana brilla como el aluminio; el resto, mate.
+      const metal = k.dibujo.tipo === "cinta";
       const m = new MeshStandardMaterial({
-        map: textura, transparent: true, depthWrite: false, roughness: 0.55, metalness: 0,
+        map: textura, transparent: true, depthWrite: false, roughness: metal ? 0.38 : 0.55, metalness: metal ? 0.55 : 0,
         polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4, ...sinTocarAlfa,
       });
       m.onBeforeCompile = (sh) => {
