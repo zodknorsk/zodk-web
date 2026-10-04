@@ -320,18 +320,24 @@ está en `main` (salvo el Raven, en su rama).
       (Spangdahlem, VAMTAC y AeroVironment).
   - **Panza y hélice, más matizadas** (lo pidió el usuario), con fotos de
     cerca:
-    - **Panza** (segunda vuelta: el usuario la vio «no igual» en la
-      comparación 1:1; superpuesta con la foto, la panza salía unos 3 mm más
-      baja en todo el largo, el frente menos redondo, un escalón al final y
-      una junta rota con motas blancas donde en la foto el costado baja liso
-      y se curva). Ahora la caja y la panza son **una sola pieza**: hasta el
-      borde de abajo de la caja (−0,099, en la cintura) los costados bajan
-      rectos y debajo la panza se redondea. El fondo (`FONDO_PANZA`) se ajustó
-      contra la silueta de la foto de Spangdahlem con la cámara encajada, en
-      pasadas sección a sección (`hd/ajpanza.py`), hasta ±1 mm. Descartado:
-      la panza como pieza aparte (con las caras a 0,2–1,5 mm, z-fighting o
-      una línea rota de sombra en la junta). Por debajo, el roce de aterrizar
-      (calca `desgaste`, foto de Iowa).
+    - **Panza** (tercera vuelta; el usuario, con razón: «¿no eres capaz
+      de ver que son dos piezas separadas?»). En todas las fotos (Spangdahlem,
+      la del usuario desde abajo, el render de AeroVironment, la del
+      Ejército de Tierra de 2009) la panza es **otra pieza**: una quilla
+      redondeada **más estrecha que la caja** (unos 6 de los 8 cm) colgada
+      bajo un **fondo plano** con el borde marcado; frente redondo detrás del
+      cerco, se mete en la caja hacia la mitad. Error mío por el camino: la
+      ensanché hasta el ancho de la caja para quitar un fallo de pintado y
+      acabé fundiéndola con ella, borrando justo lo que se ve. Además, el
+      **fondo de la caja y la parte de abajo del botalón son una sola línea
+      recta** de la barquilla a la cola (lo preguntó el usuario con la foto de
+      2009; la línea que marcó en Spangdahlem, llevada a la maqueta con la
+      cámara, lo confirma): `fondoCaja` es la prolongación del botalón
+      (−0,111 m detrás del cerco). Antes la caja bajaba más que el botalón y
+      quedaba un escalón. La silueta de la panza, ajustada contra la foto de
+      Spangdahlem con la cámara encajada (`hd/ajpanza.py`) a ±1–2 mm; el
+      cerco acaba en el fondo nuevo. Con la panza más estrecha la junta es una
+      arista, sin z-fighting.
     - **Hélice**: de 13,5 cm (antes 18, de una foto movida): la pala sale
       unos 5,5 cm del cono en las italianas y en la de Polonia, a escala con
       el cono. Palas anchas en la raíz y afiladas hasta la punta (`helice`

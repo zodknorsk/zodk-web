@@ -50,61 +50,64 @@ const esfera = (z: number, r: number): [number, number][] =>
 // [z, medio ancho, lo alto (con el cuello, su cima), fondo, hombro, medio
 // ancho del cuello]; de la foto de perfil.
 const CUELLO = { delante: 0.077, detras: -0.078, alto: 0.052, ancho: 0.019 };
-const FONDO = -0.099;
-// El fondo de la panza a lo largo: [z, fondo]. Ajustado contra la foto de
-// Spangdahlem con la cámara encajada, sección a sección, hasta ±1 mm
-// (arte/uas-fuentes/rq-11-raven/hd/ajpanza.py).
-const FONDO_PANZA: [number, number][] = [[0.2, -0.1016], [0.197, -0.1169], [0.193, -0.1222], [0.188, -0.1286], [0.18, -0.1352], [0.17, -0.1384], [0.155, -0.1387], [0.135, -0.1382], [0.115, -0.1360], [0.095, -0.1316], [0.075, -0.1273], [0.055, -0.1216], [0.035, -0.1159], [0.015, -0.1095], [-0.005, -0.1050], [-0.025, -0.1050], [-0.045, -0.1025], [-0.065, -0.1019], [-0.078, -0.1005]];
-const fondoPanza = (z: number) => {
-  const i = FONDO_PANZA.findIndex(([zi]) => zi <= z);
-  if (i < 0) return FONDO_PANZA[FONDO_PANZA.length - 1][1];
-  if (i === 0) return FONDO_PANZA[0][1];
-  const [z0, a0] = FONDO_PANZA[i - 1], [z1, a1] = FONDO_PANZA[i];
-  return a0 + ((a1 - a0) * (z - z0)) / (z1 - z0);
-};
+// El fondo de la caja y la parte de abajo del botalón son una sola línea
+// recta, de la barquilla a la cola (foto del Raven del Ejército de Tierra en
+// la exposición de 2009, casi de lado; en la de Spangdahlem, la línea que
+// marcó el usuario). La caja acaba abajo en la prolongación del botalón.
+const PENDIENTE_BOTALON = (-0.0689 + 0.087) / (-0.572 + 0.1);
+const fondoCaja = (z: number) => -0.087 - 0.0125 + (z + 0.1) * PENDIENTE_BOTALON;
 
 
 const BARQUILLA: Seccion[] = ([
-  // La caja y la panza, en una sola pieza: hasta el borde de abajo de la caja
-  // (FONDO, en la cintura) los costados bajan rectos; debajo, la panza
-  // redondeada. Con la panza aparte, las dos caras casi pegadas hacían una
-  // línea rota al sol en la junta. La cara delantera del cuello sube casi
-  // vertical, con un empalme cóncavo abajo (foto de Iowa).
-  [0.199, 0.04, 0.0, fondoPanza(0.199)],
-  [0.197, 0.04, 0.0001, fondoPanza(0.197)],
-  [0.193, 0.04, 0.0004, fondoPanza(0.193)],
-  [0.188, 0.04, 0.0008, fondoPanza(0.188)],
-  [0.18, 0.04, 0.0013, fondoPanza(0.18)],
-  [0.17, 0.04, 0.002, fondoPanza(0.17)],
-  [0.155, 0.04, 0.003, fondoPanza(0.155)],
-  [0.135, 0.04, 0.0037, fondoPanza(0.135)],
-  [0.115, 0.04, 0.0045, fondoPanza(0.115)],
-  [0.1, 0.04, 0.005, fondoPanza(0.1)],
-  [0.092, 0.04, 0.005, fondoPanza(0.092), 0.005, CUELLO.ancho],
-  [0.085, 0.04, 0.0085, fondoPanza(0.085), 0.005, CUELLO.ancho],
-  [0.081, 0.04, 0.017, fondoPanza(0.081), 0.005, CUELLO.ancho],
-  [0.0785, 0.0399, 0.034, fondoPanza(0.0785), 0.005, CUELLO.ancho],
-  [0.0755, 0.0399, CUELLO.alto, fondoPanza(0.0755), 0.005, CUELLO.ancho],
-  [0.075, 0.0399, CUELLO.alto, fondoPanza(0.075), 0.005, CUELLO.ancho],
-  [0.055, 0.0392, CUELLO.alto, fondoPanza(0.055), 0.005, CUELLO.ancho],
-  [0.05, 0.039, CUELLO.alto, fondoPanza(0.05), 0.005, CUELLO.ancho],
-  [0.035, 0.038, CUELLO.alto, fondoPanza(0.035), 0.005, CUELLO.ancho],
-  [0.02, 0.037, CUELLO.alto, fondoPanza(0.02), 0.005, CUELLO.ancho],
-  [-0.01, 0.034, CUELLO.alto, fondoPanza(-0.01), 0.004, CUELLO.ancho],
-  [-0.025, 0.032, CUELLO.alto, fondoPanza(-0.025), 0.0035, CUELLO.ancho],
-  [-0.04, 0.03, CUELLO.alto, fondoPanza(-0.04), 0.003, CUELLO.ancho],
-  [-0.055, 0.0277, CUELLO.alto, fondoPanza(-0.055), 0.0024, CUELLO.ancho],
-  [-0.066, 0.026, CUELLO.alto, fondoPanza(-0.066), 0.002, CUELLO.ancho],
-  [-0.075, 0.024, 0.044, -0.1012, 0.0, 0.02], [-0.081, 0.022, 0.0, -0.1014, -0.02, 0.012],
-  [-0.087, 0.02, -0.06, -0.1016], [-0.1, 0.0165, -0.0686, -0.1008], [-0.115, 0.0138, -0.073, -0.1002], [-0.13, 0.0127, -0.0745, -0.0995],
+  // La caja, con el fondo plano y el borde marcado (todas las fotos de lado
+  // y desde abajo). La cara delantera del cuello sube casi vertical, con un
+  // empalme cóncavo abajo (foto de Iowa).
+  [0.199, 0.04, 0.0, fondoCaja(0.199)],
+  [0.197, 0.04, 0.0001, fondoCaja(0.197)],
+  [0.193, 0.04, 0.0004, fondoCaja(0.193)],
+  [0.188, 0.04, 0.0008, fondoCaja(0.188)],
+  [0.18, 0.04, 0.0013, fondoCaja(0.18)],
+  [0.17, 0.04, 0.002, fondoCaja(0.17)],
+  [0.155, 0.04, 0.003, fondoCaja(0.155)],
+  [0.135, 0.04, 0.0037, fondoCaja(0.135)],
+  [0.115, 0.04, 0.0045, fondoCaja(0.115)],
+  [0.1, 0.04, 0.005, fondoCaja(0.1)],
+  [0.092, 0.04, 0.005, fondoCaja(0.092), 0.005, CUELLO.ancho],
+  [0.085, 0.04, 0.0085, fondoCaja(0.085), 0.005, CUELLO.ancho],
+  [0.081, 0.04, 0.017, fondoCaja(0.081), 0.005, CUELLO.ancho],
+  [0.0785, 0.0399, 0.034, fondoCaja(0.0785), 0.005, CUELLO.ancho],
+  [0.0755, 0.0399, CUELLO.alto, fondoCaja(0.0755), 0.005, CUELLO.ancho],
+  [0.075, 0.0399, CUELLO.alto, fondoCaja(0.075), 0.005, CUELLO.ancho],
+  [0.055, 0.0392, CUELLO.alto, fondoCaja(0.055), 0.005, CUELLO.ancho],
+  [0.05, 0.039, CUELLO.alto, fondoCaja(0.05), 0.005, CUELLO.ancho],
+  [0.035, 0.038, CUELLO.alto, fondoCaja(0.035), 0.005, CUELLO.ancho],
+  [0.02, 0.037, CUELLO.alto, fondoCaja(0.02), 0.005, CUELLO.ancho],
+  [-0.01, 0.034, CUELLO.alto, fondoCaja(-0.01), 0.004, CUELLO.ancho],
+  [-0.025, 0.032, CUELLO.alto, fondoCaja(-0.025), 0.0035, CUELLO.ancho],
+  [-0.04, 0.03, CUELLO.alto, fondoCaja(-0.04), 0.003, CUELLO.ancho],
+  [-0.055, 0.0277, CUELLO.alto, fondoCaja(-0.055), 0.0024, CUELLO.ancho],
+  [-0.066, 0.026, CUELLO.alto, fondoCaja(-0.066), 0.002, CUELLO.ancho],
+  [-0.075, 0.024, 0.044, fondoCaja(-0.075), 0.0, 0.02], [-0.081, 0.022, 0.0, fondoCaja(-0.081), -0.02, 0.012],
+  [-0.087, 0.02, -0.06, fondoCaja(-0.087)], [-0.1, 0.0165, -0.0686, -0.1008], [-0.115, 0.0138, -0.073, -0.1002], [-0.13, 0.0127, -0.0745, -0.0995],
 ] as number[][]).map(([z, ancho, arriba, abajo, hombro, lomo]) => {
-  // Con la panza, la cintura (donde es más ancha) es el borde de abajo de la
-  // caja; en la cola, en el eje del botalón (antes del cuello de atrás, a
-  // media altura, como estaba).
-  const conPanza = z > -0.07;
-  const cintura = conPanza ? FONDO : z > -0.08 ? (Math.min(arriba, hombro ?? arriba) + abajo) / 2 : -0.087;
-  return { z, ancho, arriba, abajo, cintura, n: conPanza ? 6 : 3.4, nAbajo: conPanza ? 2.4 : 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
+  // La cintura (donde es más ancha), a media altura de la caja sin el
+  // cuello; en la cola, en el eje del botalón. El fondo, plano con las
+  // esquinas poco redondeadas.
+  const cintura = z > -0.08 ? (Math.min(arriba, hombro ?? arriba) + abajo) / 2 : -0.087;
+  return { z, ancho, arriba, abajo, cintura, n: 3.4, nAbajo: z > -0.08 ? 8 : 3.1, ...(lomo !== undefined && { hombro, lomo, nLomo: 2.6 }) };
 });
+
+// La panza: otra pieza, una quilla redondeada más estrecha que la caja
+// (unos 6 cm de los 8; fotos desde abajo del usuario y render de
+// AeroVironment), colgada bajo el fondo plano: frente redondo justo detrás
+// del cerco, lo más hondo en el primer tercio, y detrás se mete en la caja
+// hacia la mitad de la barquilla (foto de Spangdahlem, la línea que marcó el
+// usuario). Es lo que toca el suelo al aterrizar. El fondo, ajustado contra
+// la silueta de la foto de Spangdahlem con la cámara encajada
+// (arte/uas-fuentes/rq-11-raven/hd/ajpanza.py). [z, medio ancho, fondo].
+const PANZA: Seccion[] = ([
+  [0.194, 0.01, -0.1254], [0.19, 0.019, -0.1272], [0.184, 0.025, -0.1331], [0.176, 0.028, -0.1375], [0.165, 0.029, -0.1376], [0.15, 0.029, -0.1381], [0.13, 0.029, -0.1371], [0.11, 0.029, -0.1351], [0.09, 0.0285, -0.1307], [0.07, 0.0275, -0.1267], [0.05, 0.026, -0.1217], [0.033, 0.023, -0.1167], [0.018, 0.017, -0.1138], [0.006, 0.012, -0.1095], [-0.006, 0.004, -0.1045],
+] as number[][]).map(([z, ancho, abajo]) => ({ z, ancho, arriba: fondoCaja(z) + 0.007, abajo, cintura: fondoCaja(z) - 0.004, n: 2, nAbajo: 2.3 }));
 
 // ── Ala ────────────────────────────────────────────────────────────────────
 // En tres piezas: el centro, recto y plano, sobre el cuello; las puntas, más
@@ -163,7 +166,7 @@ const PIEZAS: Pieza[] = [
   {
     // El cerco claro de la cara delantera de la barquilla.
     tipo: "casco", id: "cerco", acabado: "hueso",
-    secciones: [MODULO.detras, MODULO.detras + 0.005].map((z) => ({ z, ancho: MODULO.ancho + 0.0015, arriba: -0.002, abajo: -0.121, n: 3.4, nAbajo: 3 })),
+    secciones: [MODULO.detras, MODULO.detras + 0.005].map((z) => ({ z, ancho: MODULO.ancho + 0.0015, arriba: -0.002, abajo: fondoCaja(MODULO.detras) - 0.0005, n: 3.4, nAbajo: 8 })),
   },
   {
     // El cuerpo del gimbal detrás de la bola, que baja hasta la panza.
@@ -181,6 +184,7 @@ const PIEZAS: Pieza[] = [
   { tipo: "disco", id: "bola-ventana-ir", acabado: "lente", en: [-0.019, BOLA.y - 0.012, BOLA.z + 0.038], normal: [-0.35, -0.3, 0.89], radio: 0.0055, grosor: 0.003 },
 
   { tipo: "casco", id: "barquilla", acabado: "gris-et", secciones: BARQUILLA },
+  { tipo: "casco", id: "panza", acabado: "gris-et", secciones: PANZA, polo: true },
   // La tapa de la batería en cada costado (se ve en todas las fotos de lado):
   // una placa apenas salida, de la foto de Spangdahlem, con un tornillo en
   // cada esquina y su ranura alrededor (calcas y costuras).
@@ -319,7 +323,7 @@ const CALCAS: Calca[] = [
     return { sobre: ["helice"], en: [HELICE.franja * Math.cos(a), MOTOR.y + HELICE.franja * Math.sin(a), -0.097], desde: [0, 0, cara], tam: [0.024, 0.0042], giro: cara * (HELICE.giro + 90 + g), dibujo: { tipo: "rect", color: "#2546a8" } };
   })),
   // El roce de la panza, por debajo.
-  { sobre: ["barquilla"], en: [0, -0.15, 0.09], desde: [0, -1, 0], tam: [0.036, 0.15], giro: 0, dibujo: { tipo: "desgaste" } },
+  { sobre: ["panza"], en: [0, -0.15, 0.1], desde: [0, -1, 0], tam: [0.03, 0.15], giro: 0, dibujo: { tipo: "desgaste" } },
   // Botalón y estabilizador.
   // Las de la junta del botalón: una a cada lado, a lo largo del tubo y
   // apuntándose (foto del Raven español desde arriba).
@@ -363,7 +367,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Barquilla",
     en: [0, -0.2, 0.08],
-    piezas: ["barquilla", "tapa", "disipador", ...Array.from({ length: 13 }, (_, i) => `disipador-aleta-${i}`), "sonda"],
+    piezas: ["barquilla", "panza", "tapa", "disipador", ...Array.from({ length: 13 }, (_, i) => `disipador-aleta-${i}`), "sonda"],
     respaldo: "foto",
     fuentes: ["perfil", "italiano-perfil", "iowa-morro", "suelo-gimbal", "et", "ficha-et"],
     texto: "El cuerpo, de kevlar, lleva la batería detrás de la tapa del costado. No tiene tren: aterriza de barriga, así que la panza baja y es lo que toca el suelo.",
