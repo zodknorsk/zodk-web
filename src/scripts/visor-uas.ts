@@ -100,7 +100,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
 
   const camara = new PerspectiveCamera(32, 1, 0.05, 50);
   const controles = new OrbitControls(camara, lienzo);
-  controles.enablePan = false;
+  // Con el botón derecho (o dos dedos), la vista se desliza de lado y arriba
+  // y abajo; con el izquierdo, gira como siempre.
+  controles.enablePan = true;
+  controles.screenSpacePanning = true;
   // La rueda y el pellizco acercan hacia lo que hay bajo el cursor (el
   // punto al que se mira se mueve con él); al alejarse, vuelve al centro
   // (ver «centrar»). Con la cámara siempre mirando al centro no se podía
@@ -458,13 +461,20 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     controles.update();
   };
 
-  // Al alejarse, el punto al que se mira vuelve al centro: puede apartarse
-  // más cuanto más cerca está la cámara, y nada a la distancia del encuadre.
-  // Se mueven los dos a la vez, así la vista no gira.
+  // Al alejarse (solo entonces: girar o deslizar no cambian la distancia),
+  // el punto al que se mira vuelve al centro: puede apartarse más cuanto más
+  // cerca está la cámara, y nada a la distancia del encuadre. Se mueven los
+  // dos a la vez, así la vista no gira. Al deslizar con el botón derecho, el
+  // punto de mira no se aparta más de un radio y medio del dron, para no
+  // perderlo de vista.
+  let distanciaPrevia = desdeObjetivo().length();
   controles.addEventListener("change", () => {
     if (camaraFija || animando) return;
-    const libre = radio * Math.max(0, 1 - desdeObjetivo().length() / distancia);
+    const ahora = desdeObjetivo().length();
+    const alejando = ahora > distanciaPrevia + 1e-6;
+    distanciaPrevia = ahora;
     const t = controles.target;
+    const libre = alejando ? radio * Math.max(0, 1 - ahora / distancia) : radio * 1.5;
     if (t.length() <= libre + 1e-6) return;
     const d = t.clone().setLength(t.length() - libre);
     t.sub(d);

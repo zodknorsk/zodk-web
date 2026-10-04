@@ -58,7 +58,7 @@ const VISTAS = [
           class="visor-lienzo"
           tabindex="0"
           role="img"
-          aria-label={`Maqueta 3D del ${m.nombre}. Arrastra para girarla; las flechas también giran y + y − acercan.`}></canvas>
+          aria-label={`Maqueta 3D del ${m.nombre}. Arrastra para girarla y, con el botón derecho, para moverla; las flechas también giran y + y − acercan.`}></canvas>
         <!-- Chinchetas con letra y el rótulo de la parte elegida, con su línea
              hasta la pieza. Las coloca el script. -->
         <svg class="visor-guia" aria-hidden="true"><line></line></svg>
@@ -68,7 +68,7 @@ const VISTAS = [
           ))}
           <p class="visor-rotulo" hidden></p>
         </div>
-        <p class="visor-ayuda" aria-hidden="true">Arrastra para girar · rueda o pellizco para acercar</p>
+        <p class="visor-ayuda" aria-hidden="true">Arrastra para girar · botón derecho para mover · rueda o pellizco para acercar</p>
         <p class="visor-sin-webgl-aviso">Este navegador no puede mostrar la maqueta 3D (sin WebGL).</p>
       </div>
       <div class="visor-barra">

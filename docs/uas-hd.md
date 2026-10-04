@@ -202,17 +202,17 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   (2-oct-2026) y el Shahed-136 (3-oct-2026, con su catapulta y el cohete de
   despegue), en `main` y publicados: en el visor, en las tarjetas de `/uas`
   y como naves de la portada.
-- **En curso**: el RQ-11 Raven (rama `hd-rq-11-raven`, con commit y subida
-  a GitHub, sin fusionar en `main`), con la
-  pintura y las marcas del Raven del Ejército de Tierra en Eslovaquia
-  (octubre de 2024); falta que lo revise el usuario. Ver el registro.
+- **Cerrado también el RQ-11 Raven** (4-oct-2026), con la pintura y las
+  marcas del Raven del Ejército de Tierra en Eslovaquia (octubre de 2024):
+  fusionado en `main` y publicado, rama `hd-rq-11-raven` borrada. Ver el
+  registro.
 - **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`; el Shahed con
   la catapulta, 150 piezas); las maquetas
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
   visores (abajo, «Para el final»); pasar los demás drones (objetivos de
   arriba).
 - **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9`,
-  `hd-bayraktar-tb2` y `hd-shahed-136`, fusionadas y borradas.
+  `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`, fusionadas y borradas.
 
 ### Registro
 
@@ -220,8 +220,8 @@ Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
 está en `main` (salvo el Raven, en su rama).
 
 - **4-oct-2026, RQ-11 Raven en HD y pixel HD** (rama `hd-rq-11-raven`,
-  commit y subida; sin fusionar: el usuario lo mirará en el ordenador y dará
-  los últimos retoques). Lo eligió el usuario el día antes, **pintado como el del Ejército
+  fusionada en `main` y borrada; el usuario lo dio por bueno: «ahora mejor
+  sí»). Lo eligió el usuario el día antes, **pintado como el del Ejército
   de Tierra** y con la forma sacada de las muchas fotos de Raven americanos
   («hay muchísimas fotos de este dron»). Hecho:
   - **Fuentes**: `arte/uas-fuentes/rq-11-raven/hd/` (fuera de Git):

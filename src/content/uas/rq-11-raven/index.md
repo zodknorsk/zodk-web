@@ -3,8 +3,8 @@ title: RQ-11 Raven
 date: '2026-09-29'
 description: >-
   El RQ-11 Raven es un avión de 1,4 m que un soldado lanza a mano para ver qué
-  hay detrás de la siguiente colina. Lo fabrica AeroVironment, en California, y…
-updated: '2026-09-29'
+  hay detrás de la siguiente loma. Lo fabrica AeroVironment, en California, y…
+updated: '2026-10-04'
 tags:
   - eeuu
   - dron
@@ -12,7 +12,7 @@ bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
 categoria: Dron ISR de Grupo 1
 ---
-> El RQ-11 Raven es un <mark>avión de 1,4 m que un soldado lanza a mano</mark> para ver qué hay detrás de la siguiente colina. Lo fabrica AeroVironment, en California, y es el dron militar pequeño más repartido del mundo: se han entregado [más de 19.000](https://en.wikipedia.org/wiki/AeroVironment_RQ-11_Raven) a una treintena de países. El Ejército de Tierra lo recibió [a principios de 2008](https://www.defensa.com/espana/asi-redistribuye-ejercito-tierra-sistemas-rpas-rq-11b-raven) por la urgencia de tener ojos en el aire en <mark>Afganistán</mark>, donde lo estrenó la Brigada Paracaidista; desde entonces ha sido [clave en las misiones fuera de España](https://www.elconfidencialdigital.com/articulo/defensa/Ejercito-Tierra-moderniza-drones-tacticos/20170102194101083968.html), y en 2026 sigue volando con los contingentes españoles en el extranjero.
+> El RQ-11 Raven es un <mark>avión de 1,4 m que un soldado lanza a mano</mark> para ver qué hay detrás de la siguiente loma. Lo fabrica AeroVironment, en California, y es el dron militar pequeño más repartido del mundo: se han entregado [más de 19.000](https://en.wikipedia.org/wiki/AeroVironment_RQ-11_Raven) a una treintena de países. El Ejército de Tierra lo recibió [a principios de 2008](https://www.defensa.com/espana/asi-redistribuye-ejercito-tierra-sistemas-rpas-rq-11b-raven) por la necesidad de tener ojos en el aire en <mark>Afganistán</mark>, donde lo estrenó la Brigada Paracaidista; desde entonces ha sido [clave en las misiones fuera de España](https://www.elconfidencialdigital.com/articulo/defensa/Ejercito-Tierra-moderniza-drones-tacticos/20170102194101083968.html), y en 2026 sigue volando con los contingentes españoles en el extranjero.
 
 <div class="visor-hueco"></div>
 

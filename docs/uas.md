@@ -432,7 +432,13 @@ generadores de `arte/` leen estos archivos con Node.
   un cono la tapa).
 - **Zoom del visor**: hacia el cursor (`zoomToCursor` de OrbitControls),
   de 1/16 a 1,2 veces la distancia de encuadre; al alejarse, el punto de
-  mira vuelve al centro (`controles` «change» en `visor-uas.ts`). Todo lo
+  mira vuelve al centro (`controles` «change» en `visor-uas.ts`).
+- **Mover la vista** (lo pidió el usuario el 4-oct-2026): con el botón
+  derecho (o dos dedos) la vista se desliza de lado y arriba y abajo; con el
+  izquierdo gira, como siempre. La vuelta al centro solo se hace al alejar
+  (girar o deslizar no cambian la distancia; antes se hacía en cada cambio y
+  habría deshecho el deslizamiento), y al deslizar el punto de mira no se
+  aparta más de 1,5 radios del dron. Todo lo
   que gira o acerca la cámara va alrededor de `controles.target`, no del
   origen.
 - **Comparar con fotos desde su mismo ángulo**: `arte/encajar-camara.mjs`,
