@@ -31,9 +31,8 @@ const bordeSalida = (x: number) => 0.115 + 0.078 * x;
 const grosorAla = (x: number) => ALA.tRaiz + ((ALA.tPunta - ALA.tRaiz) * x) / ALA.punta;
 
 // ── Cuerpo ─────────────────────────────────────────────────────────────────
-// [z, medio ancho, lomo, panza, cintura]. La arista viva del costado (la
-// cintura), cortando la vista en B con la vista en C: 0,69 m de medio ancho y
-// y = 0,15 en z = 2,7, y se cierra en un morro romo alrededor de la cámara
+// [z, medio ancho, lomo, panza]. La arista viva del costado (la cintura,
+// ARISTA), con 0,66 m de medio ancho en el centro (C), se cierra en un morro romo alrededor de la cámara
 // de la punta (z = 6,66). El lomo, a 0,47–0,49 (las antenas del lomo, en A y
 // en C); la panza, donde nacen la antena de pala y la aleta ventral (B).
 // Detrás del ala, encima, la góndola del motor, del mismo cuerpo (un lomo más
@@ -45,54 +44,69 @@ const grosorAla = (x: number) => ALA.tRaiz + ((ALA.tPunta - ALA.tRaiz) * x) / AL
 // cuchara, con la cámara de la punta metida en la arista; B).
 // Con `lomo` (medio ancho de la góndola) y `hombro` (lo alto del cuerpo de
 // debajo), `arriba` es lo alto de la góndola.
-const sec = ([z, ancho, arriba, abajo, cintura, lomo, hombro]: number[]): Seccion => ({
-  z, ancho, arriba, abajo, cintura, n: 2.3, nAbajo: z > 5 ? 3.2 : 2.4, arista: z > 5 ? 0.6 : 0.4,
-  ...(lomo !== undefined && { lomo, hombro, nLomo: 2.2, pLomo: 4 }),
-});
+// La arista va en línea recta de la cámara del morro a la hélice (en B se ve
+// recta de punta a punta); por debajo, el costado se mete enseguida hacia una
+// panza más estrecha (en C, desde arriba, solo asoma una franja fina del
+// costado de abajo).
+const ARISTA = (z: number) => -0.03 + (6.62 - z) * 0.0209;
+const HONDO = 1.0;
+const ANCHO = 0.8;
+const sec = ([z, ancho0, arriba, abajo, lomo, hombro]: number[]): Seccion => {
+  const ancho = ancho0 * (z > -0.5 ? ANCHO : ANCHO + (1 - ANCHO) * Math.min(1, (-0.5 - z) / 1.5));
+  return {
+  z, ancho, arriba, abajo: ARISTA(z) + (abajo - ARISTA(z)) * HONDO, cintura: ARISTA(z), n: 2.3, nAbajo: 2.2, arista: z > 5 ? 0.6 : 0.4, panza: ancho * 0.6,
+  ...(lomo !== undefined && { lomo, hombro, nLomo: 2.2, pLomo: z < -2.3 && z > -2.6 ? 12 : 4 }),
+  };
+};
 const CUERPO: Seccion[] = [
-  [6.7, 0, -0.01, -0.05, -0.03],
-  [6.65, 0.18, 0.08, -0.15, -0.03],
-  [6.55, 0.3, 0.17, -0.24, -0.03],
-  [6.4, 0.4, 0.26, -0.3, -0.03],
-  [6.2, 0.485, 0.34, -0.33, -0.03],
-  [6.0, 0.53, 0.39, -0.35, -0.025],
-  [5.77, 0.545, 0.43, -0.34, -0.022],
-  [5.16, 0.56, 0.47, -0.37, 0.018],
-  [4.5, 0.58, 0.49, -0.41, 0.057],
-  [4.0, 0.62, 0.49, -0.44, 0.094],
-  [3.35, 0.66, 0.49, -0.47, 0.128],
-  [2.7, 0.69, 0.49, -0.5, 0.15],
-  [1.5, 0.7, 0.48, -0.52, 0.18],
-  [0.5, 0.69, 0.47, -0.51, 0.2],
-  [-0.4, 0.65, 0.49, -0.49, 0.22],
+  [6.7, 0, -0.01, -0.05],
+  [6.65, 0.16, 0.08, -0.13],
+  [6.55, 0.27, 0.17, -0.21],
+  [6.4, 0.36, 0.26, -0.27],
+  [6.2, 0.44, 0.34, -0.31],
+  [6.0, 0.49, 0.39, -0.33],
+  [5.77, 0.52, 0.43, -0.35],
+  [5.16, 0.55, 0.47, -0.38],
+  [4.5, 0.58, 0.49, -0.41],
+  [4.0, 0.61, 0.49, -0.43],
+  [3.35, 0.64, 0.49, -0.45],
+  [2.7, 0.66, 0.49, -0.47],
+  [1.5, 0.67, 0.48, -0.49],
+  [0.5, 0.66, 0.47, -0.49],
+  [-0.4, 0.63, 0.49, -0.48],
   // La góndola: su cara de delante, casi vertical, con la boca de la toma
   // (0,35 × 0,22 m, centrada a 0,64 de alto: C, cortando con el eje); sube
   // hasta 0,92 y acaba de golpe en la salida del escape (0,45 × 0,29 m, con
   // lo alto a 0,91: A). Medio ancho de 0,2 a 0,3 m.
-  [-0.6, 0.635, 0.5, -0.48, 0.223, 0, 0.5],
-  [-0.64, 0.632, 0.775, -0.48, 0.224, 0.205, 0.5],
-  [-0.9, 0.615, 0.805, -0.47, 0.23, 0.235, 0.505],
-  [-1.4, 0.565, 0.865, -0.43, 0.245, 0.29, 0.53],
-  [-1.9, 0.52, 0.905, -0.37, 0.26, 0.31, 0.56],
-  [-2.2, 0.49, 0.915, -0.33, 0.27, 0.305, 0.58],
-  [-2.33, 0.478, 0.905, -0.31, 0.27, 0.29, 0.6],
-  [-2.4, 0.474, 0.89, -0.3, 0.27, 0.27, 0.61],
-  [-2.42, 0.473, 0.62, -0.3, 0.27, 0, 0.62],
+  [-0.6, 0.635, 0.5, -0.48, 0, 0.5],
+  [-0.64, 0.632, 0.73, -0.48, 0.165, 0.5],
+  [-0.9, 0.615, 0.79, -0.47, 0.22, 0.505],
+  [-1.4, 0.565, 0.865, -0.43, 0.29, 0.53],
+  [-1.9, 0.52, 0.905, -0.37, 0.31, 0.56],
+  [-2.2, 0.49, 0.915, -0.33, 0.305, 0.58],
+  // El escape: el corte va inclinado, lo de arriba más adelante y lo de
+  // abajo más atrás (A: la boca mira hacia arriba y atrás). La góndola baja
+  // siguiendo el corte, algo por debajo del conducto oscuro (escape-conducto,
+  // de lomo plano), que asoma rodeado por los costados de la góndola.
+  [-2.28, 0.483, 0.91, -0.31, 0.3, 0.6],
+  [-2.33, 0.478, 0.84, -0.305, 0.3, 0.6],
+  [-2.4, 0.474, 0.72, -0.3, 0.29, 0.605],
+  [-2.48, 0.468, 0.645, -0.295, 0.25, 0.612],
+  [-2.54, 0.465, 0.622, -0.29, 0.15, 0.618],
+  [-2.6, 0.461, 0.615, -0.287],
   // Detrás del escape, el cuerpo cae en tejadillo (A: la chapa con un
   // caballete, una cara al sol y otra en sombra) hasta la junta con el
   // capuchón (z = −3,2, a 0,48 de alto; A y C). Por debajo sube antes (B).
-  [-2.52, 0.465, 0.615, -0.29, 0.26],
-  [-2.9, 0.43, 0.58, -0.23, 0.24],
-  [-3.2, 0.37, 0.495, -0.13, 0.21],
-  [-3.3, 0.34, 0.455, -0.06, 0.2],
-  [-3.45, 0.27, 0.39, 0.02, 0.21],
-  [-3.58, 0.17, 0.31, 0.1, 0.22],
-].map(sec).map((q) => (q.z < -2.43 ? { ...q, n: 3 } : q));
+  [-2.9, 0.43, 0.58, -0.23],
+  [-3.2, 0.37, 0.495, -0.13],
+  [-3.3, 0.34, 0.455, -0.06],
+  [-3.45, 0.27, 0.39, 0.02],
+  [-3.58, 0.17, 0.31, 0.1],
+].map(sec).map((q) => ({ ...q, n: 2.3 + 0.7 * Math.min(1, Math.max(0, (-2.45 - q.z) / 0.75)) }));
 
 // Boca de la toma y salida del escape, en el eje (medio alto / medio ancho
 // de su óvalo en `alto`).
-const TOMA = { z: -0.585, y: 0.64, alto: 0.63 };
-const ESCAPE = { z: -2.46, y: 0.75, alto: 0.56 };
+const TOMA = { z: -0.585, y: 0.625, alto: 0.63, k: 0.78 };
 
 // ── Cola en V ──────────────────────────────────────────────────────────────
 // El plano de cada mitad, de la vista de canto de la izquierda en C (35° sobre
@@ -144,14 +158,17 @@ const secJsm = (d: number, ancho: number, arriba: number, abajo: number, cintura
   n, nAbajo: 3, arista: 0.45, panza: panza * KJ,
 });
 const CUERPO_JSM: Seccion[] = [
-  // El morro, en cuchara: el lomo baja hasta un borde delantero redondo,
-  // bajo, y debajo queda la cara inclinada de la ventana del buscador
-  // infrarrojo (la ventana va como calca). La junta del radomo, a 0,82 m.
-  secJsm(0, 0.05, -0.05, -0.075, -0.06, 2, 0.03),
-  secJsm(0.03, 0.1, -0.03, -0.1, -0.065, 2, 0.08),
-  secJsm(0.08, 0.14, 0.0, -0.135, -0.075, 2.1, 0.11),
-  secJsm(0.16, 0.175, 0.045, -0.163, -0.088, 2.2),
-  secJsm(0.3, 0.205, 0.1, -0.185, -0.1),
+  // El morro, romo: la cara de delante casi vertical y, en su mitad de
+  // abajo, la ventana del buscador mirando hacia delante como una boca
+  // abierta (VENTANA_JSM). Hasta 0,035 m solo existe lo de encima de la
+  // ventana; ahí el cuerpo baja de golpe y deja la cara donde va la ventana,
+  // que asoma rodeada de su marco. La junta del radomo, a 0,82 m.
+  secJsm(0, 0.14, 0.04, 0.0, 0.002, 2, 0.1),
+  secJsm(0.035, 0.18, 0.08, -0.004, -0.002, 2.2, 0.13),
+  secJsm(0.04, 0.183, 0.083, -0.165, -0.06, 2.2, 0.12),
+  secJsm(0.08, 0.195, 0.1, -0.172, -0.07, 2.2, 0.13),
+  secJsm(0.16, 0.205, 0.13, -0.18, -0.08, 2.3),
+  secJsm(0.3, 0.215, 0.155, -0.188, -0.1),
   secJsm(0.5, 0.222, 0.15, -0.19, -0.105),
   secJsm(0.72, 0.228, 0.18, -0.19, -0.11),
   secJsm(0.9, 0.23, 0.19, -0.19, -0.11),
@@ -165,6 +182,12 @@ const CUERPO_JSM: Seccion[] = [
 // Alas plegadas encima, en tijera: giran sobre un mismo eje en el lomo
 // (d = 2,15) y quedan una hacia delante y otra hacia atrás (corte de 2014).
 // Dos anclajes de 30" (0,76 m) para colgarlo (corte de 2014: «lugs»).
+// La ventana del buscador (renders de Kongsberg, maquetas de Farnborough y
+// Japan Aerospace): en la cara de delante, un rectángulo de esquinas
+// redondeadas más ancho que alto, de y = −0,01 a −0,15 m, con dos cristales
+// planos que se juntan en una arista vertical en el centro (una cuña que
+// apunta adelante: [d, medio ancho]).
+const VENTANA_JSM: [number, number][] = [[0.024, 0.012], [0.038, 0.16]];
 const ALA_JSM = { eje: 2.15, largo: 0.8, raiz: 0.32, punta: 0.14 };
 const ANCLAJES_JSM = [1.77, 2.53];
 const jsm = (x: number): Pieza[] => {
@@ -178,6 +201,9 @@ const jsm = (x: number): Pieza[] => {
   };
   return [
     { tipo: "casco", id: `jsm-${x}`, acabado: "gris-ga", x, secciones: CUERPO_JSM },
+    { tipo: "casco", id: `jsm-ventana-${x}`, acabado: "negro", x, secciones: VENTANA_JSM.map(([d, a]) => ({
+      z: zj(d), ancho: a * KJ, arriba: JSM.y - 0.012 * KJ, abajo: JSM.y - 0.15 * KJ, cintura: JSM.y - 0.08 * KJ, n: 5, nAbajo: 5,
+    })) },
     { tipo: "disco", id: `jsm-tobera-${x}`, acabado: "hueco", en: [x, JSM.y, zj(4.0) - 0.002], normal: [0, 0, -1], radio: 0.04 * KJ, grosor: 0.004 },
     // Toma de aire en el costado izquierdo, abajo, detrás del ala: una
     // ranura alta y estrecha que sale del costado y se funde con la cola
@@ -205,7 +231,7 @@ const jsm = (x: number): Pieza[] => {
   ];
 };
 const idsJsm = (x: number) => [
-  `jsm-${x}`, `jsm-tobera-${x}`, `jsm-toma-${x}`, `jsm-toma-boca-${x}`, `jsm-ala-1-${x}`, `jsm-ala-2-${x}`,
+  `jsm-${x}`, `jsm-ventana-${x}`, `jsm-tobera-${x}`, `jsm-toma-${x}`, `jsm-toma-boca-${x}`, `jsm-ala-1-${x}`, `jsm-ala-2-${x}`,
   ...[0, 1, 2, 3].map((i) => `jsm-aleta-${x}-${i}`), `jsm-gancho-${x}-0`, `jsm-gancho-${x}-1`,
 ];
 const MISILES = LADOS.flatMap((s) => JSM.xs.map((x) => s * x));
@@ -217,7 +243,7 @@ const esfera = (z: number, r: number): [number, number][] =>
   });
 // Torreta (B y C): la bola, de 0,54 m, colgada de un collar bajo el morro, con
 // la ventana grande delante, tres pequeñas encima y la pegatina amarilla.
-const TORRETA = { y: -0.63, z: 5.68, r: 0.27 };
+const TORRETA = { z: 5.68 };
 
 // Antenas redondas del lomo (A y C): ocho, dos de ellas en pareja; la tercera
 // es blanca (una luz).
@@ -245,20 +271,25 @@ const PIEZAS: Pieza[] = [
   // asoma un poco de la cara de la góndola, y el conducto oscuro y hondo
   // (C: una boca ovalada, negra, con el labio claro alrededor).
   { tipo: "tubo", id: "toma", acabado: "gris-ga", centro: [0, TOMA.y], seccion: [1, TOMA.alto], perfil: [
-    [TOMA.z, 0.168], [TOMA.z + 0.01, 0.185], [TOMA.z + 0.002, 0.202], [TOMA.z - 0.03, 0.207], [TOMA.z - 0.1, 0.207],
+    [TOMA.z, 0.168 * TOMA.k], [TOMA.z + 0.01, 0.185 * TOMA.k], [TOMA.z + 0.002, 0.202 * TOMA.k], [TOMA.z - 0.03, 0.207 * TOMA.k], [TOMA.z - 0.1, 0.207 * TOMA.k],
   ] },
   // El conducto: paredes y fondo oscuros. El fondo, justo delante de la cara
   // de la góndola (un casco no tiene agujeros: detrás estaría su cara clara).
-  { tipo: "tubo", id: "toma-conducto", acabado: "hueco", centro: [0, TOMA.y], seccion: [1, TOMA.alto], perfil: [[TOMA.z + 0.002, 0.17], [TOMA.z - 0.012, 0.17], [TOMA.z - 0.013, 0]] },
+  { tipo: "tubo", id: "toma-conducto", acabado: "hueco", centro: [0, TOMA.y], seccion: [1, TOMA.alto], perfil: [[TOMA.z + 0.002, 0.17 * TOMA.k], [TOMA.z - 0.012, 0.17 * TOMA.k], [TOMA.z - 0.013, 0]] },
   // El tabique que parte la boca, vertical (C: una raya clara en el negro).
-  { tipo: "placa", id: "toma-tabique", acabado: "gris-ga", plano: "vertical", x: 0, grosor: 0.025, bisel: 0.006, planta: [[TOMA.z - 0.004, TOMA.y + 0.105], [TOMA.z - 0.012, TOMA.y + 0.105], [TOMA.z - 0.012, TOMA.y - 0.105], [TOMA.z - 0.004, TOMA.y - 0.105]] },
-  // Salida del escape, también en el centro: el borde grueso asoma detrás de
-  // la góndola y deja ver el hueco oscuro, mirando atrás (A).
-  { tipo: "tubo", id: "escape", acabado: "gris-ga", centro: [0, ESCAPE.y], seccion: [1, ESCAPE.alto], perfil: [
-    [ESCAPE.z + 0.1, 0.255], [ESCAPE.z, 0.255], [ESCAPE.z - 0.014, 0.243], [ESCAPE.z - 0.006, 0.224],
-  ] },
-  { tipo: "tubo", id: "escape-conducto", acabado: "hueco", centro: [0, ESCAPE.y], seccion: [1, ESCAPE.alto], perfil: [[ESCAPE.z + 0.034, 0], [ESCAPE.z + 0.033, 0.226], [ESCAPE.z - 0.003, 0.226]] },
-  // En lo alto de la góndola (C), una ranura a lo largo y, delante, una
+  { tipo: "placa", id: "toma-tabique", acabado: "gris-ga", plano: "vertical", x: 0, grosor: 0.025, bisel: 0.006, planta: [[TOMA.z - 0.004, TOMA.y + 0.083], [TOMA.z - 0.012, TOMA.y + 0.083], [TOMA.z - 0.012, TOMA.y - 0.083], [TOMA.z - 0.004, TOMA.y - 0.083]] },
+  // Salida del escape: el conducto oscuro asoma por el corte inclinado de
+  // la góndola (sus costados hacen de borde). Arriba sigue la línea del
+  // corte unos milímetros por encima de la góndola; abajo acaba en la chapa.
+  { tipo: "casco", id: "escape-conducto", acabado: "hueco", secciones: [
+    // Más estrecho que la góndola y con los costados hundidos en ella: solo
+    // asoma por el corte, nunca por los lados (es el fondo del hueco).
+    { z: -2.29, ancho: 0.18, arriba: 0.905, abajo: 0.45, cintura: 0.5, n: 3 },
+    { z: -2.36, ancho: 0.18, arriba: 0.84, abajo: 0.45, cintura: 0.5, n: 3 },
+    { z: -2.45, ancho: 0.17, arriba: 0.75, abajo: 0.45, cintura: 0.5, n: 3 },
+    { z: -2.53, ancho: 0.14, arriba: 0.665, abajo: 0.45, cintura: 0.5, n: 3 },
+    { z: -2.575, ancho: 0, arriba: 0.63, abajo: 0.45, cintura: 0.5 },
+  ] },  // En lo alto de la góndola (C), una ranura a lo largo y, delante, una
   // toma pequeña de refrigeración en cuña, mirando adelante.
   { tipo: "caja", id: "ranura-gondola", acabado: "hueco", centro: [0, 0.872, -1.11], tam: [0.035, 0.02, 0.2], redondeo: 0.012 },
   { tipo: "placa", id: "toma-gondola", acabado: "gris-ga", plano: "vertical", x: 0, grosor: 0.07, bisel: 0.015, planta: [[-0.72, 0.818], [-0.9, 0.84], [-0.9, 0.875]] },
@@ -266,8 +297,7 @@ const PIEZAS: Pieza[] = [
   // La chapa de metal que sigue al escape hasta el capuchón (A: azulada, con
   // los bordes claros; desde arriba, en C, brilla). Apenas sale del cuerpo.
   { tipo: "casco", id: "chapa-escape", acabado: "metal", secciones: [
-    { z: -2.44, ancho: 0.2, arriba: 0.624, abajo: 0.5, cintura: 0.6, n: 3 },
-    { z: -2.55, ancho: 0.2, arriba: 0.618, abajo: 0.5, cintura: 0.597, n: 3 },
+    { z: -2.58, ancho: 0.19, arriba: 0.62, abajo: 0.5, cintura: 0.6, n: 3 },
     { z: -2.9, ancho: 0.185, arriba: 0.584, abajo: 0.46, cintura: 0.565, n: 3 },
     { z: -3.19, ancho: 0.17, arriba: 0.5, abajo: 0.38, cintura: 0.48, n: 3 },
   ] },
@@ -294,10 +324,18 @@ const PIEZAS: Pieza[] = [
   { tipo: "ala", id: "cola", acabado: "gris-ga", y: COLA.y, estaciones: [estCola(0, -0.84, -1.82, 0.17), estCola(0.9, -1.09, -1.85, 0.14), estCola(2.96, -1.65, -1.88, 0.07)] },
   { tipo: "ala", id: "timones", acabado: "gris-ga", y: COLA.y, estaciones: [estCola(0.95, -1.86, -1.93, 0.03), estCola(1.72, -1.87, -2.16, 0.04), estCola(2.94, -1.89, -2.22, 0.03)] },
   {
-    // Aleta ventral (B): el borde de detrás vertical, el de delante en flecha,
-    // el fondo a 1,33 m bajo el eje.
-    tipo: "ala", id: "aleta-ventral", acabado: "gris-ga", vertical: true, y: -0.43,
-    estaciones: [[0, -0.85, -1.98, 0.12], [0.9, -1.34, -1.97, 0.07]],
+    // Aleta ventral, medida en B y en A a la vez (las dos esquinas de abajo
+    // triangulando): el borde de detrás vertical en z = −2,02 (la raíz, metida
+    // en el cuerpo: con la panza nueva, más estrecha, quedaba separada), el de delante
+    // en flecha, el fondo a 1,33 m bajo el eje. Detrás, el timón (pieza aparte,
+    // con su hueco) y, a media altura, una barra que la cruza por los dos lados.
+    tipo: "ala", id: "aleta-ventral", acabado: "gris-ga", vertical: true, y: -0.25,
+    estaciones: [[0, -0.86, -1.72, 0.12], [1.08, -1.37, -1.79, 0.07]],
+  },
+  { tipo: "ala", id: "timon-ventral", acabado: "gris-ga", vertical: true, y: -0.25, estaciones: [[0, -1.735, -2.02, 0.05], [1.07, -1.805, -2.02, 0.03]] },
+  {
+    tipo: "placa", id: "aleta-ventral-barra", acabado: "gris-ga", plano: "horizontal", y: -0.79, grosor: 0.035, bisel: 0.015, simetrica: true,
+    planta: [[0, -1.4], [0.075, -1.42], [0.085, -1.48], [0.085, -1.93], [0, -1.96]],
   },
   {
     // Antena de pala bajo el ala (B y C): un rectángulo de 0,6 m de largo
@@ -314,22 +352,38 @@ const PIEZAS: Pieza[] = [
     { tipo: "disco", id: `antena-lomo-centro-${i}`, acabado: "junta", espejo: x > 0, en: [x, 0.502, z], normal: [0, 1, 0], radio: 0.018, grosor: 0.006 },
   ]),
   // Torreta y cámara de la punta del morro.
-  // La capucha de la torreta, abombada y algo más ancha que la bola (B).
-  { tipo: "casco", id: "torreta-collar", acabado: "gris-ga", secciones: [
-    { z: TORRETA.z - 0.3, ancho: 0, arriba: -0.33, abajo: -0.36 },
-    { z: TORRETA.z - 0.22, ancho: 0.17, arriba: -0.3, abajo: -0.4, cintura: -0.39 },
-    { z: TORRETA.z + 0.02, ancho: 0.26, arriba: -0.3, abajo: -0.42, cintura: -0.41 },
-    { z: TORRETA.z + 0.16, ancho: 0.22, arriba: -0.31, abajo: -0.41, cintura: -0.4 },
-    { z: TORRETA.z + 0.24, ancho: 0, arriba: -0.33, abajo: -0.38 },
-  ] },
-  { tipo: "tubo", id: "torreta", acabado: "gris-ga", centro: [0, TORRETA.y], perfil: esfera(TORRETA.z, TORRETA.r) },
-  // La cara de delante: una placa casi cuadrada y oscura con la ventana grande.
-  { tipo: "caja", id: "torreta-marco", acabado: "negro", centro: [0, TORRETA.y - 0.04, TORRETA.z + 0.215], tam: [0.26, 0.26, 0.08], redondeo: 0.06 },
-  { tipo: "disco", id: "torreta-ventana", acabado: "lente", en: [0, TORRETA.y - 0.07, TORRETA.z + 0.258], normal: [0, 0, 1], radio: 0.07, grosor: 0.01 },
-  ...([[-0.07, -0.44, 5.86], [0.02, -0.43, 5.87], [-0.03, -0.49, 5.89]] as [number, number, number][]).map((en, i): Pieza => ({
-    tipo: "disco", id: `torreta-ventanilla-${i}`, acabado: "lente", en, normal: [0, 0.3, 1], radio: 0.03, grosor: 0.01,
+  // La torreta (render B y foto del usuario, de frente y a un lado): una
+  // capucha como un plato, más ancha que la bola, pegada a la panza; debajo,
+  // la bola de la cámara, más alta que ancha, con el fondo redondo y la cara
+  // de delante plana. En la cara, la lente grande metida en un tubo corto con
+  // un aro oscuro grueso; encima, a un lado, tres ventanas pequeñas (dos
+  // juntas y una debajo) y en el costado la pegatina amarilla.
+  // Capucha redonda en planta (radio 0,3 m), abombada por arriba y plana
+  // por debajo.
+  { tipo: "casco", id: "torreta-collar", acabado: "gris-ga", secciones: [-0.3, -0.27, -0.2, -0.1, 0, 0.1, 0.2, 0.27, 0.3].map((dz) => {
+    const w = Math.sqrt(Math.max(0, 0.09 - dz * dz));
+    return { z: TORRETA.z - 0.02 + dz, ancho: w, arriba: -0.3, abajo: -0.33 - 0.1 * (w / 0.3), cintura: -0.325 - 0.1 * (w / 0.3), nAbajo: 4 };
+  }) },
+  // La bola, casi esférica (0,5 m), algo más alta que ancha y con la cara de
+  // delante plana.
+  { tipo: "casco", id: "torreta", acabado: "gris-ga", secciones: [-0.25, -0.23, -0.18, -0.1, 0, 0.1, 0.17, 0.215].map((dz) => {
+    const k = Math.sqrt(Math.max(0, 1 - (dz / 0.25) ** 2));
+    return { z: TORRETA.z + dz, ancho: 0.245 * k, arriba: -0.42 - 0.12 * (1 - k), abajo: -0.66 - 0.25 * k, cintura: -0.63, n: 2.3, nAbajo: 2 };
+  }) },
+  // La horquilla que la deja girar en elevación (render B): un brazo a cada
+  // lado, colgado de la capucha, con el eje redondo a media altura.
+  { tipo: "placa", id: "torreta-horquilla", acabado: "gris-ga", plano: "vertical", x: 0.248, grosor: 0.024, bisel: 0.008, espejo: true,
+    planta: [[TORRETA.z + 0.07, -0.43], [TORRETA.z - 0.12, -0.43], [TORRETA.z - 0.125, -0.64], [TORRETA.z - 0.1, -0.7], [TORRETA.z - 0.06, -0.73], [TORRETA.z - 0.02, -0.74], [TORRETA.z + 0.02, -0.73], [TORRETA.z + 0.055, -0.7], [TORRETA.z + 0.075, -0.64]] },
+  { tipo: "disco", id: "torreta-eje", acabado: "gris-ga", espejo: true, en: [0.27, -0.635, TORRETA.z - 0.025], normal: [1, 0, 0], radio: 0.06, grosor: 0.016 },
+  // La cara de delante, plana.
+  { tipo: "disco", id: "torreta-cara", acabado: "gris-ga", en: [0, -0.64, TORRETA.z + 0.205], normal: [0, 0, 1], radio: 0.19, grosor: 0.03 },
+  // La lente: tubo corto con el aro oscuro y el cristal metido.
+  { tipo: "tubo", id: "torreta-marco", acabado: "negro", centro: [0.04, -0.67], perfil: [[TORRETA.z + 0.275, 0.095], [TORRETA.z + 0.28, 0.12], [TORRETA.z + 0.27, 0.135], [TORRETA.z + 0.18, 0.135]] },
+  { tipo: "disco", id: "torreta-ventana", acabado: "lente", en: [0.04, -0.67, TORRETA.z + 0.266], normal: [0, 0, 1], radio: 0.095, grosor: 0.01 },
+  ...([[-0.1, -0.5, 0.032], [-0.025, -0.49, 0.032], [-0.095, -0.565, 0.022]] as [number, number, number][]).map(([x, y, r], i): Pieza => ({
+    tipo: "disco", id: `torreta-ventanilla-${i}`, acabado: "negro", en: [x, y, TORRETA.z + 0.222], normal: [0, 0, 1], radio: r, grosor: 0.012,
   })),
-  { tipo: "caja", id: "torreta-pegatina", acabado: "amarillo", centro: [-0.25, -0.55, 5.66], tam: [0.01, 0.05, 0.08] },
+  { tipo: "caja", id: "torreta-pegatina", acabado: "amarillo", centro: [-0.262, -0.49, TORRETA.z - 0.025], tam: [0.012, 0.03, 0.08], redondeo: 0.01 },
   { tipo: "disco", id: "camara-morro-aro", acabado: "gris-ga", en: [0, -0.02, 6.69], normal: [0, 0, 1], radio: 0.05, grosor: 0.03 },
   { tipo: "disco", id: "camara-morro", acabado: "lente", en: [0, -0.02, 6.707], normal: [0, 0, 1], radio: 0.032, grosor: 0.01 },
   { tipo: "varilla", id: "sonda", acabado: "metal", desde: [0, 0.04, 6.6], hasta: [0, 0.12, 7.0], radio: 0.014 },
@@ -358,7 +412,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Torreta de sensores",
     en: [0, -1.0, 5.68],
-    piezas: ["torreta", "torreta-collar", "torreta-marco", "torreta-ventana", "torreta-ventanilla-0", "torreta-ventanilla-1", "torreta-ventanilla-2", "torreta-pegatina"],
+    piezas: ["torreta", "torreta-collar", "torreta-horquilla", "torreta-eje", "torreta-cara", "torreta-marco", "torreta-ventana", "torreta-ventanilla-0", "torreta-ventanilla-1", "torreta-ventanilla-2", "torreta-pegatina"],
     respaldo: "fabricante",
     fuentes: ["abajo", "arriba"],
     texto: "Una bola con cámaras bajo el morro, como la de los últimos Reaper. Qué sensores lleva no se ha publicado.",
@@ -375,7 +429,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Cola en V",
     en: [2.0, 1.6, -1.9],
-    piezas: ["cola", "timones", "aleta-ventral"],
+    piezas: ["cola", "timones", "aleta-ventral", "timon-ventral", "aleta-ventral-barra"],
     respaldo: "fabricante",
     fuentes: ["enjambre", "arriba", "abajo"],
     texto: "Dos superficies en V sobre la joroba del motor y una aleta por debajo, que protege la hélice al despegar y aterrizar.",
@@ -391,7 +445,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Toma de aire y escape",
     en: [0, 1.1, -1.4],
-    piezas: ["toma", "toma-conducto", "toma-tabique", "escape", "escape-conducto", "chapa-escape", "ranura-gondola", "toma-gondola", "toma-gondola-boca"],
+    piezas: ["toma", "toma-conducto", "toma-tabique", "escape-conducto", "chapa-escape", "ranura-gondola", "toma-gondola", "toma-gondola-boca"],
     respaldo: "fabricante",
     fuentes: ["arriba", "enjambre"],
     texto: "El motor va dentro de la góndola de encima del cuerpo, detrás del ala: respira por la boca de delante y suelta los gases por la salida de detrás, sobre una chapa de metal que aguanta el calor hasta la cola.",
@@ -425,13 +479,7 @@ const LADO: [number, number, number] = [1, 0, 0];
 // Del JSM: la ventana del buscador en la cara de abajo del morro (Farnborough
 // y renders de Kongsberg: un trapecio oscuro, más ancho arriba) y la junta
 // del radomo, a 0,82 m de la punta, alrededor del cuerpo.
-const CALCAS: Calca[] = MISILES.flatMap((x): Calca[] => [
-  { sobre: [`jsm-${x}`], en: [x, JSM.y - 0.11 * KJ, zj(0.07)], desde: [0, -0.8, 1], tam: [0.3 * KJ, 0.22 * KJ], dibujo: { tipo: "ventana", abajo: 0.62 } },
-  // La ventana da la vuelta por los costados del morro, bajo la arista.
-  ...[1, -1].map((l): Calca => ({
-    sobre: [`jsm-${x}`], en: [x + l * 0.2 * KJ, JSM.y - 0.125 * KJ, zj(0.12)], desde: [l, -0.25, 0.35], tam: [0.26 * KJ, 0.1 * KJ], dibujo: { tipo: "ventana", abajo: 0.55 },
-  })),
-]);
+const CALCAS: Calca[] = [];
 const juntaJsm = (x: number, d: number): Costura[] => {
   const z = zj(d), w = 0.3 * KJ, y0 = JSM.y;
   return [
@@ -445,9 +493,7 @@ const juntaJsm = (x: number, d: number): Costura[] => {
 const COSTURAS: Costura[] = [
   ...MISILES.flatMap((x) => [...juntaJsm(x, 0.82), ...juntaJsm(x, 3.42)]),
   { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.7, 0.1, 3.67], [0.7, 0.1, 3.88], [0.7, -0.1, 3.88], [0.7, -0.1, 3.67], [0.7, 0.1, 3.67]] },
-  // Los cantos de la chapa del escape (A: dos rayas claras) y su junta con
-  // el capuchón.
-  { sobre: ["chapa-escape"], desde: [0, 1, 0], espejo: true, puntos: [[0.17, 0.8, -2.47], [0.16, 0.8, -2.9], [0.145, 0.8, -3.17]] },
+  // La junta de la chapa del escape con el capuchón.
   { sobre: ["cola-metal"], desde: [0, 1, 0], puntos: [[-0.18, 0.8, -3.2], [0.18, 0.8, -3.2]] },
 ];
 

@@ -352,6 +352,60 @@ está en `main` (salvo el Wildfire, en su rama).
     encima** (como van colgados; una hacia delante y otra hacia atrás, corte
     de 2014), cuatro aletas de cola en X, cola redondeada con la tobera y
     dos anclajes de 30" hasta la viga.
+  - **Revisión del usuario (5-oct-2026)**, analizada con fotos antes de tocar
+    y aprobada; hecho:
+    - **Boca del JSM**: era una calca plana. Ahora es una cavidad: el morro
+      hasta 0,25 m solo tiene la mitad de arriba (un labio que vuela) y
+      debajo, metida, la ventana (`jsm-ventana`, `lente`): dos cristales
+      planos en V (nAbajo 1,15). Calca `ventana` ya no se usa en el JSM.
+    - **Aleta ventral**: medida en B y A a la vez (esquinas de abajo
+      triangulando): borde de detrás en z = −2,02 (antes −1,98). Timón aparte
+      con su hueco (bisagra a −1,73/−1,79) y la barra que la cruza a media
+      altura (`aleta-ventral-barra`).
+    - **Línea del cuerpo**: la arista hacía una S (secciones medidas a
+      trozos); ahora es una recta (`ARISTA(z)`) de la cámara del morro a la
+      hélice. El cuerpo, un 20 % más estrecho por delante de la góndola
+      (`ANCHO`; con la silueta sobre B y C el de antes se salía por arriba) y
+      la mitad de abajo en trapecio (panza al 60 % del ancho).
+    - **Cámara**: capucha redonda en planta, bola casi esférica con la cara
+      de delante plana, lente en un tubo corto con aro oscuro, tres ventanas
+      pequeñas (dos juntas y una debajo) y la pegatina amarilla en el costado.
+    - **Toma de aire**: la boca, un 22 % más pequeña (`TOMA.k`), con la
+      góndola afinada hasta ella. **Escape al revés**: lo de abajo va más
+      atrás (corte inclinado, la boca mira arriba y atrás). Como un casco no
+      se abre por arriba, la góndola acaba en un corte recto y detrás van el
+      conducto oscuro con la cara de arriba inclinada (`escape-conducto`) y
+      dos bordes que bajan con el corte (`escape-borde-±1`). Cantos de la
+      chapa en relieve y claros (`reborde-±1`, aluminio) y las aristas del
+      capuchón como costura.
+  - **Segunda revisión (5-oct-2026)**:
+    - **Boca del JSM, otra vez** («la apertura es como una O, como una boca
+      abierta; el tuyo es una cavidad hacia abajo»). Mirando el render de
+      Kongsberg de frente y las maquetas de Farnborough y Japan Aerospace: la
+      ventana está en la **cara de delante** del morro, mirando adelante: un
+      rectángulo de esquinas redondeadas, más ancho que alto, en la mitad de
+      abajo de la cara, con su marco alrededor y dos cristales planos que se
+      juntan en una arista vertical. Ahora el morro es romo, solo existe lo
+      de encima de la ventana hasta 0,035 m y ahí el cuerpo baja de golpe;
+      en esa cara va la ventana (`jsm-ventana`, una cuña de 1,4 cm con la
+      sección casi rectangular, n = 5) y alrededor queda el marco.
+    - **Aleta ventral pegada al cuerpo**: con la panza nueva, más estrecha,
+      quedaba separada; la raíz va ahora metida (y = −0,25).
+    - **Horquilla de la cámara** (el soporte de elevación que señaló el
+      usuario en el render B): un brazo a cada lado colgado de la capucha,
+      con el eje redondo a media altura.
+    - **Escape suavizado**: fuera los dos bordes (`escape-borde`), los
+      cantos de la chapa en relieve y las aristas del capuchón (el usuario
+      los quería quitados). La góndola baja siguiendo el corte, algo por
+      debajo del conducto oscuro (de lomo plano, n = 5), y en ese tramo la
+      unión del lomo con el cuerpo va con `pLomo` 12 (con 4 abombaba el
+      centro por encima del conducto y lo partía en dos, como una pajarita).
+      La n del cuerpo pasa poco a poco de 2,3 a 3 detrás del escape (de golpe
+      dejaba una línea en el costado).
+    - **El conducto oscuro ya no sobresale por los lados** (el usuario: «la
+      oscuridad no tiene sentido que sobresalga»): más estrecho que la
+      góndola (0,18 m de medio ancho) y con los costados hundidos en ella
+      (cintura a 0,5); solo asoma por el corte.
   - **Falta**: que lo revise el usuario; rendimiento en Zen; la ficha de la
     bóveda dice «unos 20 m de envergadura» y la maqueta da unos 22 (no se ha
     tocado la nota). Visto y sin hacer: la hélice no se ve en ningún render
