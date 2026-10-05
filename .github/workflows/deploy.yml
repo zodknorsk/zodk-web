@@ -36,6 +36,10 @@ jobs:
         with:
           # Node 24, la versión LTS vigente (Astro 7 pide 22.12 o más).
           node-version: 24
+          # Sin caché de Astro: guarda el HTML de las notas y, si una nota no
+          # cambia, no vuelve a pasar el plugin del glosario (sus tarjetas se
+          # quedaban viejas). Sin ella el despliegue tarda unos segundos más.
+          cache: false
 
   deploy:
     needs: build
