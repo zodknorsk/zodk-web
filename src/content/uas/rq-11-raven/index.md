@@ -30,6 +30,7 @@ categoria: Dron ISR de Grupo 1
 | **Alcance** | 10 km de enlace LOS; hasta 90 minutos de autonomía |
 | **Carga** | Cámara EO/IR giratoria (gimbal) con láser para señalar; los primeros llevaban cámaras fijas, una de día y otra térmica |
 | **Motor** | Eléctrico, con hélice propulsora de dos palas; batería recargable o de un solo uso |
+| **Despegue** | A mano |
 | **Origen** | FQM-151 Pointer |
 
 ## Historia

@@ -29,7 +29,8 @@ categoria: Dron de ataque de un solo uso
 | **Envergadura / longitud / peso** | 2,5 m / 3,5 m / unos 200 kg                                                                            |
 | **Alcance**                       | Unos 2.000 km (estimación); con la cabeza de combate rusa de 90 kg, cerca de 1.000 km                  |
 | **Carga**                         | Cabeza de combate de unos 50 kg; las rusas, hasta 90 kg                                                |
-| **Motor**                         | De pistón, Mado MD-550 de 50 CV (copia del alemán Limbach L550E), con hélice propulsora; despegue RATO |
+| **Motor**                         | De pistón, Mado MD-550 de 50 CV (copia del alemán Limbach L550E), con hélice propulsora |
+| **Despegue**                      | RATO, desde una rampa                                                                   |
 | **Origen**                        | No público; el Shahed-131, más pequeño, es de la misma familia                                         |
 
 ## Historia

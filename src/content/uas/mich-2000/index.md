@@ -32,6 +32,7 @@ categoria: Dron de ataque de un solo uso
 | **Alcance** | Hasta 2.000 km (fabricante, sin verificar; lo más lejos documentado de «Alfa», ~900 km) |
 | **Carga** | Cabeza de combate de 25 a 60 kg, a elegir (fabricante) |
 | **Motor** | De explosión, fabricado en Ucrania; hélice propulsora. Modelo no público |
+| **Despegue** | RATO, desde una rampa |
 | **Origen** | ZTK-150 (China) |
 
 ## Historia

@@ -30,6 +30,7 @@ categoria: Dron armado MALE
 | **Alcance**                       | 5.900 km; más de 27 horas de autonomía (fabricante)                                                                                                                                      |
 | **Carga**                         | 1.700 kg, en siete soportes bajo las alas: misiles [Hellfire](/uas/armamento/agm-114-hellfire) y bombas guiadas [GBU-12](/uas/armamento/gbu-12-paveway-ii) y [GBU-38](/uas/armamento/gbu-38-jdam) |
 | **Motor**                         | Turbohélice Honeywell TPE331-10 de 900 CV, con hélice propulsora                                                                                                                         |
+| **Despegue**                      | Desde pista, con tren de aterrizaje                                                                                                                                                      |
 | **Origen**                        | MQ-1 Predator                                                                                                                                                                        |
 
 ## Historia

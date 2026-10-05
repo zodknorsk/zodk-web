@@ -213,20 +213,21 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   arriba).
 - **En marcha: el Wildfire** (rama `hd-wildfire`, sin commit), con los
   renders oficiales; falta que lo revise el usuario. Ver el registro.
-- **En marcha: el MICH-2000** (rama `hd-mich-2000`, subida a GitHub): la
-  forma de la 1.0 con el detalle de la fábrica y la catapulta. Falta
-  fusionarlo en `main`.
+- **Cerrado también el MICH-2000** (5-oct-2026): la forma de la 1.0 con el
+  detalle de la fábrica y la catapulta; fusionado en `main` y publicado,
+  rama `hd-mich-2000` borrada. Ver el registro.
   Ver el registro.
-- **Ramas**: `hd-mich-2000` y `hd-wildfire` abiertas; `uas-hd`, `hd-pixel-mq-9`,
-  `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`, fusionadas y borradas.
+- **Ramas**: ninguna abierta; `hd-mich-2000`, `hd-wildfire`, `uas-hd`,
+  `hd-pixel-mq-9`, `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`,
+  fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
 está en `main` (salvo el Wildfire, en su rama).
 
-- **5-oct-2026, MICH-2000 en HD y pixel HD** (rama `hd-mich-2000`, sin
-  commit). Lo pidió el usuario sin rehacer la maqueta («está bastante bien»,
+- **5-oct-2026, MICH-2000 en HD y pixel HD** (rama `hd-mich-2000`,
+  fusionada en `main` y borrada). Lo pidió el usuario sin rehacer la maqueta («está bastante bien»,
   «no te vuelvas loco»): pasarla a HD fijándose sobre todo en lo que se ve
   en las fotos de la fábrica (tornillería, dibujos). La forma de la 1.0 se
   queda; no hay medidas ni fotos para medirla mejor. Hecho:
@@ -325,7 +326,8 @@ está en `main` (salvo el Wildfire, en su rama).
     cuadradas»; si no se leen como un círculo amarillo y azul, nada): a 72 px
     cada escarapela ocupa unos 4 px. `plantaLisa` en la maqueta pinta la
     planta sin calcas ni costuras; queda el dron negro.
-  - Falta: rendimiento en Zen; fusionar en `main` cuando lo diga el usuario.
+  - Fusionado en `main` y publicado el 5-oct-2026, con la fila «Despegue»
+    importada. Falta: rendimiento en Zen.
 
 - **4-oct-2026, Wildfire en HD y pixel HD** (rama `hd-wildfire`, sin
   commit). Lo eligió el usuario entre el Wildfire y el MICH-2000, con los

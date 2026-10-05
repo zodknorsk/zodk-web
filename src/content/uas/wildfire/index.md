@@ -33,6 +33,7 @@ categoria: Dron armado MALE
 | **Alcance**                       | Más de 14.800 km de alcance de traslado (*ferry range*), según el fabricante; el concurso pide un radio de combate de 4.260 km |
 | **Carga**                         | Cuatro misiles [JSM](/uas/armamento/jsm) o dos [LRASM](/uas/armamento/agm-158c-lrasm) (fabricante); el concurso pide al menos 1.270 kg de carga útil                                               |
 | **Motor**                         | No publicado; hélice propulsora (probablemente un turbohélice)                                                                                                                 |
+| **Despegue**                      | No publicado                                                                                                                                                                   |
 | **Origen**                        | [MQ-9 Reaper](/uas/mq-9-reaper)                                                                                                                                              |
 
 ## Historia

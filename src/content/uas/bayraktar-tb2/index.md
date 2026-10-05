@@ -31,6 +31,7 @@ categoria: Dron armado MALE
 | **Alcance**                       | Enlace LOS de hasta 300 km; más de 18 horas de autonomía (fabricante)                                                                                  |
 | **Carga**                         | 150 kg (fabricante), en cuatro soportes bajo las alas: bombas guiadas [MAM-L](/uas/armamento/mam-l) y [MAM-C](/uas/armamento/mam-c) de Roketsan, entre otras |
 | **Motor**                         | De pistón, de 100 CV, con hélice propulsora: el austriaco Rotax 912 hasta 2020 y, desde entonces, motores turcos                                       |
+| **Despegue**                      | Desde pista, con tren de aterrizaje                                                                                                                    |
 | **Origen**                        | Bayraktar TB1                                                                                                                                      |
 
 ## Historia

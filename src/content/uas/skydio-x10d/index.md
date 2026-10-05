@@ -30,6 +30,7 @@ categoria: Microdrón de reconocimiento
 | **Alcance**                       | 12 km de enlace LOS (10 km declarados en la versión española)                                             |
 | **Carga**                         | Módulo EO/IR VT300-Z o VT300-L: térmica FLIR Boson+ (640 x 512) y cámaras de 48 a 64 MP                   |
 | **Motor**                         | Cuatro motores eléctricos; batería de 154 Wh; hasta 40 minutos de autonomía por batería y 72 km/h         |
+| **Despegue**                      | VTOL                                                                                                      |
 | **Origen**                        | Skydio X10 (versión civil, 2023)                                                                      |
 
 ## Historia
