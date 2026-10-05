@@ -1,0 +1,17 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103348424024195085",
+    "created_at": "2026-09-25T04:58:37.000Z",
+    "text": "Ha desaparecido Ceuta de los medios. Misión cumplida.",
+    "user": {
+      "name": "Philmore A. Mellows",
+      "screen_name": "PhilAMellows",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1648347665422249984/pRzmlGl9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

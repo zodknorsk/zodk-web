@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105719767604838731",
+    "created_at": "2026-10-01T18:01:29.000Z",
+    "text": "\"¡Ceuta no se vende, Ceuta se defiende!\"\n\nMientras los ciudadanos le muestran su rechazo en Pontevedra, Su Sanchidad pasa de la plebe y se pone tibio de pulpo.\n\nEs un psicópata sin empatía a quien los ceutís y el resto de españoles le importamos un comino.\nhttps://t.co/XRYgN9bWuu",
+    "user": {
+      "name": "Guaje Salvaje",
+      "screen_name": "GuajeSalvaje",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/918501506097311755/uqEJjgtg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/XRYgN9bWuu",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2105692608437653504/pu/img/QKZZbNPWCQNEZkOd.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2105692608437653504/pu/pl/WlNN9NjgOwOvtoMC.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2105692608437653504/pu/vid/avc1/320x568/xHkzzDQ4lnOzajMV.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2105692608437653504/pu/vid/avc1/480x852/HJ34fY3GFGRbC1fd.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2105692608437653504/pu/vid/avc1/720x1280/c3D8bV5SMZ5vKLkR.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

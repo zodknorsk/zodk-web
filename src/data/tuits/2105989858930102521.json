@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105989858930102521",
+    "created_at": "2026-10-02T11:54:44.000Z",
+    "text": "🔴 La playa del Trampolín en Ceuta registra una contaminación fecal crítica, con más de 10.000 bacterias de E. coli detectadas por Sanidad. https://t.co/fYRjXgcjcQ",
+    "user": {
+      "name": "La Bandera",
+      "screen_name": "labanderaes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1637054802797502465/F4Ubv7TT_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/fYRjXgcjcQ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2105989807436435456/img/cUFsY8QMlm1DnNod.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2105989807436435456/pl/DJWG8otbOoqaWoeB.m3u8?v=136"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2105989807436435456/vid/avc1/480x270/Bp_oN09zpZVruYjo.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2105989807436435456/vid/avc1/640x360/_vvfdOuR2rfUjLBg.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2105989807436435456/vid/avc1/1280x720/Z8vhxH89x_45Qkk1.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,8 +1,7 @@
 ---
 title: Semana 6
 date: '2026-09-03'
-description: >-
-  ![342](https://theobjective.com/wp-content/uploads/2026/09/informeceutaseptcompressed.pdf)
+description: El famoso informe del CENIF
 updated: '2026-09-12'
 tags:
   - marruecos
@@ -13,7 +12,9 @@ evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 6
 rango: 3 septiembre – 9 septiembre
 ---
-## 03 de septiembre - El famoso informe del CENIF
+## 03 de septiembre
+
+**El famoso informe del CENIF**
 
 [![342](./pasted-image-20260903180111.jpg)](https://theobjective.com/wp-content/uploads/2026/09/informe_ceuta_sept__compressed.pdf)
 
@@ -127,14 +128,15 @@ rango: 3 septiembre – 9 septiembre
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
 
 - Las ONG que protegen a los invasores de Ceuta se alojan en un edificio público cedido por el ministerio de Elma Saiz ([fuente](https://okdiario.com/espana/ong-que-protegen-invasores-ceuta-alojan-edificio-publico-cedido-ministerio-elma-saiz-20211151#Echobox=1788415699-2))
 - Los ministros Torres y Saiz huyen por una puerta trasera del acto institucional en Ceuta al grito de «¡Traidores dimisión!». ([fuente](https://okdiario.com/espana/ministros-torres-saiz-huyen-puerta-trasera-del-acto-institucional-ceuta-grito-traidores-dimision-20217293))
 - Jupol acusa al director de la Policía de «tener relación directa con servicios secretos marroquíes» ([fuente](https://www.eldebate.com/espana/20260902/jupol-acusa-director-policia-tener-relacion-directa-servicios-secretos-marroquies_454734.html))
 - Ceuta: mentira tras mentira ([fuente](https://www.abc.es/opinion/editorial-ceuta-mentira-tras-mentira-20260902193302-nt.html))
+
 ## 04 de septiembre
+
 
 <blockquote class="tweet" data-tweet-id="2095756469035475244">
   <a class="tweet-author" href="https://x.com/voz_populi/status/2095756469035475244" target="_blank" rel="noopener">
@@ -294,7 +296,6 @@ No llega con miles de bots. Llega con medios, dirigentes, influencers y cuentas 
 Abrimos hilo. 🧵</div>
   <a class="tweet-date" href="https://x.com/monitordisinfo/status/2095874757174386909" target="_blank" rel="noopener">4 de septiembre de 2026</a>
 </blockquote>
-
 
 
 **NOTICIAS DEL DÍA**
@@ -524,9 +525,10 @@ Y que, para que las personas migrantes puedan ser retornadas pronto, es necesari
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
+
 - Devueltos 21 migrantes a Marruecos tras apedrear a una patrulla de militares en Ceuta ([fuente](https://www.europapress.es/sociedad/noticia-devueltos-21-migrantes-marruecos-apedrear-patrulla-militares-ceuta-20260906160117.html))
+
 ## 07 de septiembre
 
 
@@ -723,8 +725,8 @@ Denuncian que el olor es insoportable y que las papeleras están llenas de botel
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
+
 - La Audiencia Nacional acuerda investigar la invasión de Ceuta y alerta de una «indudable gestión favorecedora desde Marruecos» ([fuente](https://www.abc.es/espana/audiencia-nacional-acuerda-investigar-invasion-ceuta-alerta-20260907144350-nt.html)) ([nota informativa](https://www.poderjudicial.es/cgpj/es/Poder-Judicial/Noticias-Judiciales/La-Audiencia-Nacional-acuerda-investigar-la-entrada-masiva-irregular-en-Ceuta-al-ser-un-ataque-grave-contra-la-integridad-territorial-de-Espana-y-afectar-a-la-paz-o-independencia-del-Estado))
 - El Gobierno incluye a Ceuta y Melilla en un mapa como zonas en disputa con Marruecos ([fuente](https://theobjective.com/espana/politica/2026-09-07/gobierno-ceuta-melilla-mapa-marruecos/))
 
@@ -856,18 +858,17 @@ Por <a href="https://x.com/Alex_Requeijo" target="_blank" rel="noopener">@Alex_R
 </blockquote>
 
 
-
 - El CNI calcula que Marruecos tiene más de 600 espías en España ([fuente](https://www.larazon.es/espana/cni-calcula-que-marruecos-tiene-mas-600-espias-espana_202609086a9f41fd3bfe5d1eff4738d5.html?mrfcid=202609086a9d1d80a565e715fcb74ca5))
 - El CNI reconoce que Pegasus 'robó' a Sánchez 5 millones de mensajes, 100.000 correos electrónicos, unas 1.200 fotos y 40 horas de audio grabado ([fuente](https://x.com/gaceta_es/status/2097286325296562372?s=20))
 - El jefe del Ejército de Tierra no pisa Ceuta para evitar una escalada de la crisis con Marruecos ([fuente](https://theobjective.com/espana/politica/2026-09-08/ejercito-tierra-ceuta-marruecos/))
 - Cumbre militar en Zarzuela: el Rey evalúa con Robles y el Jemad la defensa de Ceuta ([fuente](https://theobjective.com/espana/2026-09-08/zarzuela-rey-robles-jemad-defensa-ceuta/))
+
 ## 09 de septiembre
 
-**SESIÓN DE CONTROL AL GOBIERNO 09/09/2026** 
+**SESIÓN DE CONTROL AL GOBIERNO 09/09/2026**
 
 
 <div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/726L9U3PDMQ" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
-
 
 
 
@@ -1089,6 +1090,6 @@ Ay la hemeroteca.</div>
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
-- Bruselas aprueba una ayuda urgente de 114,7 millones para reforzar la frontera de Ceuta y acelerar las deportaciones([fuente](https://www.elespanol.com/mundo/europa/20260909/bruselas-aprueba-ayuda-emergencia-millones-reforzar-frontera-ceuta-acelerar-deportaciones/1003744377904_0.html))
+
+- Bruselas aprueba una ayuda urgente de 114,7 millones para reforzar la frontera de Ceuta y acelerar las deportaciones ([fuente](https://www.elespanol.com/mundo/europa/20260909/bruselas-aprueba-ayuda-emergencia-millones-reforzar-frontera-ceuta-acelerar-deportaciones/1003744377904_0.html))

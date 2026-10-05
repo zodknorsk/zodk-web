@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103087762559676845",
+    "created_at": "2026-09-24T11:42:50.000Z",
+    "text": "‼️ La policía sigue encontrando casas patera que esconden inmigrantes ilegales en Ceuta: «Se necesitan muchos más medios».\n\n🔗 https://t.co/x8rNQFZaDQ https://t.co/JbIASCpnIK",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/x8rNQFZaDQ",
+          "expanded_url": "https://okdiar.io/4y8adhD",
+          "display_url": "okdiar.io/4y8adhD"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/JbIASCpnIK",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2103087712282517504/pu/img/0P2hsiLIkf1n8pQ1.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2103087712282517504/pu/pl/7_2xozlXvQXuVqD8.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2103087712282517504/pu/vid/avc1/480x270/Rlrso2JNhdV6TBry.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2103087712282517504/pu/vid/avc1/640x360/0TQ06c6bDkBsjHf-.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2103087712282517504/pu/vid/avc1/1280x720/oBDYVQub6NcJUY2S.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

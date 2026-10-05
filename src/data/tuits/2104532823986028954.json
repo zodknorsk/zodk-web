@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104532823986028954",
+    "created_at": "2026-09-28T11:25:00.000Z",
+    "text": "🔴 Un párroco de Fuengirola se encomienda a la Virgen de África por Ceuta: «No son migrantes, son invasores».\n\n🔗 https://t.co/jKMVoyg5OY https://t.co/fkJr2eoZjH",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/jKMVoyg5OY",
+          "expanded_url": "https://okdiar.io/4xLWUSY",
+          "display_url": "okdiar.io/4xLWUSY"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/fkJr2eoZjH",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2104519801594904576/img/8nHnnxhUM-h9mahQ.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2104519801594904576/pl/AduFMiUcvlAWKZYb.m3u8?v=f3e"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2104519801594904576/vid/avc1/480x270/vz_1MUJqBwMfhoBZ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2104519801594904576/vid/avc1/640x360/zNj8q8_m1vK-n_Dj.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2104519801594904576/vid/avc1/1280x720/y_W-F81u-mWGxEgT.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2104519801594904576/vid/avc1/1920x1080/f9GXOIwHbEJezXAh.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105560849352106327",
+    "created_at": "2026-10-01T07:30:00.000Z",
+    "text": "🔴 OTRO ESCÁNDALO DE MARLASKA\n\nLa Policía Nacional sacó de su casa en Madrid, un domingo hacia las 19:00, a un técnico de una empresa subcontratada que preparaba datos para un informe sobre Ceuta de la Audiencia Nacional. Lo tuvo en comisaría de las 20:00 a las 08:00, se negó a",
+    "note_tweet": true,
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

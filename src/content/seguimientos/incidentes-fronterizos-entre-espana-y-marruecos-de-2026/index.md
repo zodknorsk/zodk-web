@@ -5,7 +5,7 @@ description: >-
   La mañana del pasado 30 de julio de 2026 se produjo el mayor incidente
   fronterizo entre España y Marruecos de la historia moderna. Aprovechando el
   pequeño…
-updated: '2026-09-22'
+updated: '2026-10-05'
 tags:
   - marruecos
   - osint
@@ -126,3 +126,13 @@ Tras el inicio de la crisis migratoria, Pese a que el Gobierno español evitó e
 - [28 de septiembre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-09#28-de-septiembre)
 - [29 de septiembre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-09#29-de-septiembre)
 - [30 de septiembre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-09#30-de-septiembre)
+
+## Semana 10 (01 - 07 oct)
+
+- [01 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#01-de-octubre)
+- [02 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#02-de-octubre)
+- [03 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#03-de-octubre)
+- [04 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#04-de-octubre)
+- [05 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#05-de-octubre)
+- [06 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#06-de-octubre)
+- [07 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-10#07-de-octubre)

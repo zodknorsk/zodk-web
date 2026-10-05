@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105591495021539704",
+    "created_at": "2026-10-01T09:31:47.000Z",
+    "text": "🔴 ÚLTIMA HORA\n\nSánchez no acompañará a los Reyes en su primer viaje oficial a Ceuta y Melilla.\n\nInforma Fran Serrato (@FcoSerrato).\n\n https://t.co/V0UGWxnXXg",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/V0UGWxnXXg",
+          "expanded_url": "https://theobjective.com/espana/politica/2026-10-01/sanchez-reyes-viaje-oficial-ceuta-melilla/",
+          "display_url": "theobjective.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

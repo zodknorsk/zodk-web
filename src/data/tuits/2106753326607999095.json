@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2106753326607999095",
+    "created_at": "2026-10-04T14:28:29.000Z",
+    "text": "Más de 1200 retornos voluntarios a Marruecos llevan desde esta mañana que han desmantelado el asentamiento de playa trampolín en Ceuta.\n\n1200 tíos que no han querido ser filiados. ¿Los motivos? Podéis imaginároslo.\n\nLo curioso es que la condición que han puesto ha sido no ser https://t.co/mLTRlwA9PG",
+    "note_tweet": true,
+    "user": {
+      "name": "Alt Right España 𝕏",
+      "screen_name": "AltRightEspan",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2028178342026084352/irWQPkK2_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/mLTRlwA9PG",
+        "media_url_https": "https://pbs.twimg.com/media/HTyw-5nXsAE04xf.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/mLTRlwA9PG",
+        "media_url_https": "https://pbs.twimg.com/media/HTyw-5sXMAA_YBX.jpg"
+      }
+    ]
+  }
+}

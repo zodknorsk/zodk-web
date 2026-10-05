@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103130421726756959",
+    "created_at": "2026-09-24T14:32:21.000Z",
+    "text": "💥 ¡Spray pimienta!\n\n🔗 Más info: https://t.co/OxfkrFzDRD https://t.co/aqEDRz63Gw",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/OxfkrFzDRD",
+          "expanded_url": "https://okdiar.io/4ySnaw1",
+          "display_url": "okdiar.io/4ySnaw1"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/aqEDRz63Gw",
+        "media_url_https": "https://pbs.twimg.com/media/HS_R-E7WIAAQ7YQ.jpg"
+      }
+    ]
+  }
+}

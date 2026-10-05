@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2106796182848627001",
+    "created_at": "2026-10-04T17:18:47.000Z",
+    "text": "A punto de culminar el desalojo de gran parte de la Playa del Trampolín, algunos invasores intentan eludir el cribado policial. Según fuentes policiales, al menos dos sujetos están siendo buscados en estos momentos.\n\nAproximadamente 1.000 han aceptado regresar de forma voluntaria https://t.co/OUNRxJLd9O",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/OUNRxJLd9O",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2106795585399316480/img/iRLZnAHQOh2W6Ko4.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/pl/AbJnq1U_MM2tmhAe.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/vid/avc1/480x270/ScqWnBkl0JOPWHFL.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/vid/avc1/640x360/3WJk4x9LIu1zIpQx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/vid/avc1/1280x720/JvXL3rgRwFaKO7BT.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/vid/avc1/1920x1080/QpI8pE7C9q3X0q_A.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2106795585399316480/vid/avc1/3840x2160/-7ZD9VN5MIoPXFGH.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

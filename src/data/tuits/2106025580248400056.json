@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2106025580248400056",
+    "created_at": "2026-10-02T14:16:41.000Z",
+    "text": "Esto ocurre todos los días. Sí, todos los días. He realizado tres rondas nocturnas con la Policía Nacional y siempre me he encontrado con lo mismo: delincuencia importada cada quince minutos, hechos delictivos que se reparten por toda la ciudad y que son consecuencia directa de https://t.co/LZgijyi3Vd",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LZgijyi3Vd",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2106024836589817857/img/BfP7OtcSDDA-AnHC.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/pl/G8IbV1KrrqPZX4QR.m3u8?v=dc3"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/vid/avc1/480x270/kj1Qb3lU2nxJT2_Y.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/vid/avc1/640x360/q7mL4JPjPflzStRq.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/vid/avc1/1280x720/cgogVdjNLRNwdlOm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/vid/avc1/1920x1080/mKaB5l0wEroPB5HQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 25128000,
+              "url": "https://video.twimg.com/amplify_video/2106024836589817857/vid/avc1/3840x2160/ioHX16hVCNNnM3eu.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

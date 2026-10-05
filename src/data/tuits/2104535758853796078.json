@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104535758853796078",
+    "created_at": "2026-09-28T11:36:39.000Z",
+    "text": "🔴 La sarna llega a los niños de Ceuta: un alumno de Infantil, contagiado\n\nInforma @yesicasc \n\nhttps://t.co/BKCFlRR6k7",
+    "user": {
+      "name": "Libertad Digital",
+      "screen_name": "libertaddigital",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1872197644967165952/Y3GFlRJI_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/BKCFlRR6k7",
+          "expanded_url": "https://www.libertaddigital.com/espana/2026-09-28/la-sarna-llega-a-los-ninos-de-ceuta-un-alumno-de-infantil-contagiado-7466818/",
+          "display_url": "libertaddigital.com/espana/2026-09…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103399652418625987",
+    "created_at": "2026-09-25T08:22:11.000Z",
+    "text": "💢 Un juez de Ceuta pide a la Policía que enumere los gatos muertos desmembrados tras la invasión.\n\n✍️ Información de Irene Tabera (@irenetabera).\n\nhttps://t.co/Idc1YemsDm",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Idc1YemsDm",
+          "expanded_url": "https://okdiario.com/espana/juez-ceuta-pide-policia-que-enumere-gatos-muertos-desmembrados-invasion-20384431?utm_medium=social&utm_source=Twitter#Echobox=1790319011-2",
+          "display_url": "okdiario.com/espana/juez-ce…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

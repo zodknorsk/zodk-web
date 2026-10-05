@@ -238,9 +238,11 @@ Aquí se le puede ver dando instrucciones.</div>
   <a class="tweet-date" href="https://x.com/CanarioToday/status/2092952442384077213" target="_blank" rel="noopener">27 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Moncloa descartó un estado de excepción que sacaría a todos los asaltantes en días ([fuente](https://theobjective.com/espana/2026-08-27/moncloa-estado-excepcion-ceuta-asaltantes/))
+
 ## 28 de agosto
 
 Episodios de subversión. Probablemente aguafuerte con papel albal.
@@ -265,7 +267,7 @@ Episodios de subversión. Probablemente aguafuerte con papel albal.
 
 **NOTICIAS DEL DÍA**
 
-- Albares apunta a «mega influencers ultraconservadores,» como Elon Musk, o «redes de desinformación rusa» como responsables de «un ataque a la unidad de los españoles y de los europeos» en redes aprovechando la crisis de Ceuta ([fuente](https://x.com/europapress/status/2093285536475537666?s=20))
+- Albares apunta a «mega influencers ultraconservadores», como Elon Musk, o «redes de desinformación rusa» como responsables de «un ataque a la unidad de los españoles y de los europeos» en redes aprovechando la crisis de Ceuta ([fuente](https://x.com/europapress/status/2093285536475537666?s=20))
 - El Gobierno acelera los trámites para sacar en dos semanas a todos los inmigrantes de la calle y poder devolver a la mayoría ([fuente](https://elpais.com/espana/2026-08-29/el-gobierno-acelera-los-tramites-para-sacar-en-dos-semanas-a-todos-los-inmigrantes-de-la-calle-y-poder-devolver-a-la-mayoria.html))
 
 ## 29 de agosto
@@ -328,14 +330,13 @@ Según la información que me llega, Marruecos ordenó a su gente dentro, escala
 </blockquote>
 
 
----
 **NOTICIAS DEL DÍA**
 
 - [Actuaciones de reclutamiento militar en Ceuta: invasores animan a soldados a desertar y les dicen que su Gobierno les ha abandonado](https://gaceta.es/espana/actuaciones-de-reclutamiento-militar-en-ceuta-invasores-animan-a-soldados-a-desertar-y-les-dicen-que-su-gobierno-les-ha-abandonado-20260829-0814/)
 - [Sánchez cuela en su decreto de Ceuta la censura a la GC y PN: si informan serán sancionados](https://www.libertaddigital.com/espana/2026-08-29/sanchez-cuela-en-su-decreto-de-ceuta-la-censura-a-la-guardia-civil-y-policia-nacional-si-informan-seran-sancionados-7452371/)
 
 > ONGs, qué hay detrás de ellas?
-> 
+>
 > - [Save the Children (operando actualmente en Ceuta) se dedica a enseñar a los inmigrantes ilegales que pueden negarse a realizarse las pruebas de edad](https://x.com/CanarioToday/status/2093756824713318668?s=20)
 > - [Una ONG alemana instala un puesto en la playa del Trampolín en Ceuta para regalar móviles y cargadores a los invasores](https://okdiario.com/espana/ong-alemana-instala-puesto-playa-del-trampolin-ceuta-regalar-moviles-cargadores-invasores-20194226)
 
@@ -528,8 +529,6 @@ Vergüenza de Gobierno.</div>
 </blockquote>
 
 
-
---- 
 ## 01 de septiembre
 
 
@@ -642,7 +641,6 @@ Dos de ellos son irrecuperables en el corto plazo</div>
 - Delegación de Gobierno pone trabas a la manifestación de Madrid, que se celebrará como «acto institucional» del Ayuntamiento ([fuente](https://www.elmundo.es/madrid/2026/09/01/6a970f72fc6c83502d8b4578.html))
 - El aviso del CNI sobre la avalancha en Ceuta incluía datos de un grupo marroquí que movilizaba a 180.000 personas ([fuente](https://www.eldebate.com/espana/20260901/aviso-cni-sobre-avalancha-ceuta-incluia-datos-grupo-marroqui-movilizaba-180000-personas_454277.html))
 - La Policía informa a la juez que la invasión de Ceuta fue guiada por gendarmes marroquíes a las órdenes de agentes de paisano con un fin distinto al migratorio ([fuente](https://www.elespanol.com/espana/tribunales/20260901/policia-informa-juez-invasion-ceuta-guiada-gendarmes-marroquies-ordenes-agentes-paisano-fin-distinto-migratorio/1003744369590_0.html))
-
 
 ## 02 de septiembre
 
@@ -796,7 +794,6 @@ Lo que […]</div>
   <img class="tweet-media" src="/tweets/media-hrpq92kaiaag2zb.jpg" alt="Imagen del tweet" loading="lazy" />
   <a class="tweet-date" href="https://x.com/elequidistante/status/2095276687407693906" target="_blank" rel="noopener">2 de septiembre de 2026</a>
 </blockquote>
-
 
 
 **NOTICIAS DEL DÍA**

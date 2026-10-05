@@ -1,0 +1,34 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105569932100464951",
+    "created_at": "2026-10-01T08:06:06.000Z",
+    "text": "OJO, al amparo del decreto Maricarmen cuelan un RD relativo a CEUTA para convertirla en un CETI permanente a gran escala.\nEsta gente no gobierna, si es que se le puede llamar así, para España ni por su bien. Esto es otra cosa.\nNo es una crisis migratoria.\nhttps://t.co/BZRiD4BzVa https://t.co/rxYHBcHvhB",
+    "user": {
+      "name": "Mónica. Ceuta no está sola.✊",
+      "screen_name": "MONICA78321384",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2019344921992282113/Opied5Bq_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/BZRiD4BzVa",
+          "expanded_url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20267",
+          "display_url": "boe.es/diario_boe/txt…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/rxYHBcHvhB",
+        "media_url_https": "https://pbs.twimg.com/media/HTh7ls1W8AAOeoE.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/rxYHBcHvhB",
+        "media_url_https": "https://pbs.twimg.com/media/HTh733IWoAA1jKd.jpg"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103142389686607954",
+    "created_at": "2026-09-24T15:19:54.000Z",
+    "text": "La Diputación socialista de Sevilla aprueba exigir a las comunidades autónomas acoger a los menas de Ceuta. https://t.co/RXE92qqOxh",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/RXE92qqOxh",
+          "expanded_url": "https://okdiario.com/andalucia/diputacion-socialista-sevilla-aprueba-exigir-comunidades-autonomas-acoger-menas-ceuta-20382511?utm_medium=social&utm_source=Twitter#Echobox=1790260091-1",
+          "display_url": "okdiario.com/andalucia/dipu…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

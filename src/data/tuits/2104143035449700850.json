@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104143035449700850",
+    "created_at": "2026-09-27T09:36:07.000Z",
+    "text": "Pedro Sánchez está solo. Marruecos reclama el regreso de los menores y el Parlamento Europeo también ha señalado que deben regresar.\n\nSi todos reclaman una solución, ¿a quién y qué debe Pedro Sánchez para mantener esta situación en Ceuta? https://t.co/4VAxoTwjxv",
+    "user": {
+      "name": "Miguel Barrachina Ros",
+      "screen_name": "BarrachinaM",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1983775596736884736/MAeBBRlg_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/4VAxoTwjxv",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2104142944529711104/img/fUleHW_j-PgoaIsX.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2104142944529711104/pl/A63c48yxcIyTqiTC.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 432000,
+              "url": "https://video.twimg.com/amplify_video/2104142944529711104/vid/avc1/320x320/4d35RuVq5rf22p2y.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2104142944529711104/vid/avc1/540x540/oYEyyuqlOLcV1iFN.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 1280000,
+              "url": "https://video.twimg.com/amplify_video/2104142944529711104/vid/avc1/720x720/YxBVZZiW9E1Kl2iB.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 8768000,
+              "url": "https://video.twimg.com/amplify_video/2104142944529711104/vid/avc1/1080x1080/HJvMaccn4y2ZKS9v.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

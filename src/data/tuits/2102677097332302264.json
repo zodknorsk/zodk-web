@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2102677097332302264",
+    "created_at": "2026-09-23T08:31:00.000Z",
+    "text": "🗣️ Lo último de Marlaska: «No dimito porque seguimos trabajando para mejorar la seguridad». https://t.co/G3x6m8BCAf",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/G3x6m8BCAf",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2102677057733828608/pu/img/QKpns1mnA1RG9vIc.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2102677057733828608/pu/pl/sCMQUtqqLhq4yUqA.m3u8?tag=12&v=908"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2102677057733828608/pu/vid/avc1/480x270/zRuP_IudUqThyhNy.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2102677057733828608/pu/vid/avc1/640x360/dz_YzR0CeqALLRay.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2102677057733828608/pu/vid/avc1/1280x720/fL7UjsWD3xL567Du.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

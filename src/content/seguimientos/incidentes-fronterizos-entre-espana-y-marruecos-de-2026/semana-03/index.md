@@ -127,12 +127,14 @@ En plena situación de especial vigilancia […]</div>
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2088048553973227677" target="_blank" rel="noopener">14 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Vox exige en el Congreso que Marruecos pague los costes de sanidad y seguridad de los inmigrantes en Ceuta ([fuente](https://www.eldebate.com/espana/20260813/vox-exige-congreso-marruecos-pague-costes-sanidad-seguridad-inmigrantes-ceuta_449137.html))
 - El Gobierno chino pone al servicio de España su unidad de rastreo de datos, para frenar la amenaza sobre Ceuta y Melilla. ([fuente](https://x.com/mrspain71/status/2087590842101858748?s=20))
 - Bruselas manda un equipo a Ceuta para evaluar la crisis migratoria «de primera mano» ([fuente](https://theobjective.com/espana/2026-08-13/bruselas-manda-equipo-ceuta-crisis-migratoria/))
 - 15 días después, 18 migrantes han sido expulsados a Marruecos por la vía judicial tras la entrada masiva en Ceuta ([fuente](https://cadenaser.com/nacional/2026/08/14/solo-18-migrantes-han-sido-expulsados-a-marruecos-por-la-via-judicial-tras-la-entrada-masiva-en-ceuta-cadena-ser/))
+
 ## 14 de agosto
 
 
@@ -222,9 +224,11 @@ Este bombero de <a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noope
   <a class="tweet-date" href="https://x.com/rubnpulido/status/2088355192857043195" target="_blank" rel="noopener">14 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Bolaños prepara entre risas el Mundial con el ministro marroquí que lidera la ofensiva sobre Ceuta y Melilla ([fuente](https://okdiario.com/espana/bolanos-prepara-risas-mundial-ministro-marroqui-que-lidera-ofensiva-sobre-ceuta-melilla-19175529#Echobox=1786646569-1))
+
 ## 15 de agosto
 
 
@@ -313,9 +317,11 @@ Rabat está pidiendo que EFE y RTVE abandonen Castillejos.</div>
   <a class="tweet-date" href="https://x.com/javiernegre10/status/2088652383660241404" target="_blank" rel="noopener">15 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Marruecos expulsa a los periodistas de EFE y TVE de Castillejos ([fuente](https://theobjective.com/internacional/2026-08-15/marruecos-expulsa-a-los-periodistas-de-efe-y-tve-de-castillejos/))
+
 ## 16 de agosto
 
 
@@ -409,6 +415,7 @@ Lo hablo aquí con <a href="https://x.com/AlbertCastillon" target="_blank" rel="
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-uwaeeqctmomgbmlm.jpg"><source src="https://video.twimg.com/amplify_video/2089088429950734336/vid/avc1/1080x1920/od98NhdOvsmc2VgJ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/ActivePatriotUK/status/2089088754783027595" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/ActivePatriotUK/status/2089088754783027595" target="_blank" rel="noopener">16 de agosto de 2026</a>
 </blockquote>
+
 
 **NOTICIAS DEL DÍA**
 
@@ -528,6 +535,7 @@ Es objetivo que Moncloa solo se ha preocupado de blanquear a Marruecos y de cubr
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-uytsvxhy5gvngigv.jpg"><source src="https://video.twimg.com/amplify_video/1397863570558255105/vid/1280x720/eBbkQxJ6QMN0YbYn.mp4?tag=14" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/moscardol/status/2089425686171660530" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/moscardol/status/2089425686171660530" target="_blank" rel="noopener">17 de agosto de 2026</a>
 </blockquote>
+
 
 **NOTICIAS DEL DÍA**
 
@@ -701,6 +709,7 @@ She finishes by saying: “It’s time for Africa”</div>
   <a class="tweet-date" href="https://x.com/visegrad24/status/2089786695621218365" target="_blank" rel="noopener">18 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - La realidad de Ceuta que oculta el Gobierno: los invasores marroquíes que violan a niñas se dan a la fuga y no pueden ser identificados ([fuente](https://okdiario.com/espana/realidad-ceuta-que-oculta-gobierno-invasores-marroquies-que-violan-ninas-dan-fuga-no-pueden-ser-identificados-19551241#Echobox=1787033264-1))
@@ -708,6 +717,7 @@ She finishes by saying: “It’s time for Africa”</div>
 - Legionarios activados en la crisis de Ceuta: «Una cosa es trabajo, otra explotación» ([fuente](https://elfarodeceuta.es/legionarios-activados-crisis-ceuta-cosa-trabajo-otra-explotacion/))
 - Mónica García recurre a Quirónsalud para prestar servicios médicos pese a criticarlo. ([fuente](https://theobjective.com/sanidad/2026-08-18/monica-garcia-quironsalud-ceuta-criticas-madrid/))
 - El PSOE acusa a la primera ministra danesa de «derecha radical» por alinearse con Meloni ante la crisis de Ceuta ([fuente](https://www.abc.es/espana/psoe-acusa-primera-ministra-danesa-derecha-radical-20260818183003-nt.html))
+
 ## 19 de agosto
 
 
@@ -854,6 +864,7 @@ Alguien con un móvil nos da una dimensión 1000 veces más real de esas playas 
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tidpw7d8hs2upynt.jpg"><source src="https://video.twimg.com/amplify_video/2090133936038912000/vid/avc1/720x1280/4uqES9xjHkFhUAPI.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/davidsantosvlog/status/2090133968087646647" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/davidsantosvlog/status/2090133968087646647" target="_blank" rel="noopener">19 de agosto de 2026</a>
 </blockquote>
+
 
 **NOTICIAS DEL DÍA**
 

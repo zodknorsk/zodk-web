@@ -1,7 +1,7 @@
 ---
 title: Semana 1
 date: '2026-08-29'
-description: Marlaska viaja a Ceuta de Urgencia
+description: Marlaska viaja a Ceuta de urgencia
 updated: '2026-09-08'
 tags:
   - marruecos
@@ -89,8 +89,8 @@ Vienen criminales y enfermos.</div>
 
 **NOTICIAS DEL DÍA**
 
-- Marlaska viaja a Ceuta de Urgencia ([fuente](https://x.com/EnBocaDe_Todos/status/2082782749153181908?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2082782749153181908%7Ctwgr%5E%7Ctwcon%5Es1_c10&ref_url=))
-- Todos los partidos de Ceuta piden al gobierno Cerrar la frontera ([fuente](https://theobjective.com/espana/politica/2026-07-30/partidos-ceuta-gobierno-cerrar-frontera-desplegar-ejercito/))
+- Marlaska viaja a Ceuta de urgencia ([fuente](https://x.com/EnBocaDe_Todos/status/2082782749153181908?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2082782749153181908%7Ctwgr%5E%7Ctwcon%5Es1_c10&ref_url=))
+- Todos los partidos de Ceuta piden al gobierno cerrar la frontera ([fuente](https://theobjective.com/espana/politica/2026-07-30/partidos-ceuta-gobierno-cerrar-frontera-desplegar-ejercito/))
 - 18:04 Bruselas ofrece a España reforzar Frontex ([fuente](https://x.com/magnusbrunner/status/2082874956648484922?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2082874956648484922%7Ctwgr%5E18ce54ea5200d11ebed9b275e2d11e0844fa1e4e%7Ctwcon%5Es1_c10&ref_url=https%3A%2F%2Felpais.com%2Fespana%2F2026-07-30%2Fultima-hora-de-la-entrada-de-inmigrantes-a-ceuta-en-directo.html))
 - 19:27 se suma un pelotón de 20 militares, en las próximas horas, 40 militares más ([fuente](https://elpais.com/espana/2026-07-30/ultima-hora-de-la-entrada-de-inmigrantes-a-ceuta-en-directo.html))
 - Italia estudia suspender el acuerdo de Schengen con España por la crisis migratoria en Ceuta ([fuente](https://x.com/GiorgiaMeloni/status/2082908470626422832?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2082908470626422832%7Ctwgr%5E18ce54ea5200d11ebed9b275e2d11e0844fa1e4e%7Ctwcon%5Es1_c10&ref_url=https%3A%2F%2Felpais.com%2Fespana%2F2026-07-30%2Fultima-hora-de-la-entrada-de-inmigrantes-a-ceuta-en-directo.html))
@@ -172,9 +172,7 @@ I tasked two Commissioners […]</div>
 </blockquote>
 
 
----
-
-Primeras imagenes que se ven de la policía marroquí escoltando inmigrantes hasta la frontera.
+Primeras imágenes que se ven de la policía marroquí escoltando inmigrantes hasta la frontera.
 
 
 <blockquote class="tweet" data-tweet-id="2083153767164170326">

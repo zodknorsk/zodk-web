@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104534594427015280",
+    "created_at": "2026-09-28T11:32:02.000Z",
+    "text": "🔴 #ÚLTIMAHORA || Alerta en Ceuta: Un vehículo entra de forma kamikaze y a toda velocidad en la ciudad sorteando todos los controles de Marruecos y de España.\n\n⚠️ Estuvo a punto de atropellar a la Guardia Civil.\n\nhttps://t.co/niEXdoS2qD",
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1552598821741420546/w9PbO19b_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/niEXdoS2qD",
+          "expanded_url": "https://gaceta.es/espana/alerta-en-ceuta-un-kamikaze-sortea-todos-los-controles-en-la-frontera-y-casi-atropella-a-agentes-de-la-guardia-civil-20260928-1326/",
+          "display_url": "gaceta.es/espana/alerta-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,10 +1,8 @@
 ---
 title: Semana 8
 date: '2026-09-18'
-description: >-
-  Sánchez oculta una nota militar del 27 de julio que incluía la orden de
-  acuartelamiento por alerta de asalto en Ceuta
-updated: '2026-09-22'
+description: Resolución del Parlamento Europeo y continúa el foco en Vivas.
+updated: '2026-10-05'
 tags:
   - marruecos
   - osint
@@ -14,7 +12,9 @@ evento: incidentes-fronterizos-entre-espana-y-marruecos-de-2026
 orden: 8
 rango: 17 septiembre – 23 septiembre
 ---
-## 17 de septiembre - Resolución del Parlamento Europeo y continua el foco en Vivas. 
+## 17 de septiembre
+
+**Resolución del Parlamento Europeo y continúa el foco en Vivas.**
 
 
 <blockquote class="tweet" data-tweet-id="2100465727136280962">
@@ -178,7 +178,6 @@ Una magnífica noticia, que nos permite seguir trabajando para alcanzar, lo ante
   <div class="tweet-text">Mónica García huye por la puerta de atrás y se esconde en un coche de sus escoltas para evitar los insultos en Ceuta.</div>
   <a class="tweet-date" href="https://x.com/eduardoinda/status/2100652820366024762" target="_blank" rel="noopener">17 de septiembre de 2026</a>
 </blockquote>
-
 
 
 ## 18 de septiembre
@@ -436,8 +435,8 @@ Lo cuenta Paloma Cervilla (<a href="https://x.com/palomacervilla" target="_blank
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
+
 - Sánchez oculta una nota militar del 27 de julio que incluía la orden de acuartelamiento por alerta de asalto en Ceuta ([fuente](https://www.libertaddigital.com/espana/politica/2026-09-18/sanchez-oculta-una-nota-militar-del-27-de-julio-que-incluia-la-orden-de-acuartelamiento-por-alerta-de-asalto-en-ceuta-7461551/))
 
 ## 19 de septiembre
@@ -820,7 +819,6 @@ Su nombre es Yahya Yahya, un marroquí nacido en Ceuta en 1967 que se […]</div
 </blockquote>
 
 
-
 ## 21 de septiembre
 
 
@@ -955,7 +953,6 @@ Habla de odio de una organización  con vínculos con el mundo y ambiente de ETA
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-fadtwxhal6-dse-0.jpg"><source src="https://video.twimg.com/amplify_video/2102097746337452032/vid/avc1/1080x1920/wIH2ptYBngDWOEMe.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/eldebate_com/status/2102097806534005012" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/eldebate_com/status/2102097806534005012" target="_blank" rel="noopener">21 de septiembre de 2026</a>
 </blockquote>
-
 
 
 ## 22 de septiembre
@@ -1115,8 +1112,100 @@ Razón: Pregunte en el trampolín</div>
 </blockquote>
 
 
-
 ## 23 de septiembre
 
-**NOTICIAS DEL DÍA**
--
+
+<blockquote class="tweet" data-tweet-id="2102611312211530083">
+  <a class="tweet-author" href="https://x.com/Sr_Donze/status/2102611312211530083" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2009397633983324160-ih32hp1y_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Javier Rubio Donzé</span>
+    <span class="tweet-handle">@Sr_Donze</span>
+  </a>
+  <div class="tweet-text">Acojonante está noticia. Varias de las joyas de la caja fuerte de Zapatero se las regaló Mohamed VI en 2008. 4 meses después de ese regalo, el Gobierno de ZP bendijo por primera vez el plan marroquí de autonomía para el Sáhara.</div>
+  <a class="tweet-date" href="https://x.com/Sr_Donze/status/2102611312211530083" target="_blank" rel="noopener">23 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102472565780607137">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2102472565780607137" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">Sánchez, en la CNN: «El control fronterizo de Marruecos falló, por eso hemos pedido acciones y respuestas. Sufrimos la falta de solidaridad de muchos de estos gobiernos durante la crisis. Los inmigrantes no son ganado, sino humanos».</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-2_n7rtv0z0_wm4fm.jpg"><source src="https://video.twimg.com/amplify_video/2102472388860338176/vid/avc1/1920x1080/-rT1ookrTBpepKRV.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TheObjective_es/status/2102472565780607137" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2102472565780607137" target="_blank" rel="noopener">22 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102385389335917034">
+  <a class="tweet-author" href="https://x.com/territorialgob/status/2102385389335917034" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074020455506153472-ay7rw0ee_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Ministerio P. Territorial y M. Democrática</span>
+    <span class="tweet-handle">@territorialgob</span>
+  </a>
+  <div class="tweet-text">El ministro <a href="https://x.com/avtorresp" target="_blank" rel="noopener">@avtorresp</a> remarca que el Gobierno de España nunca va a estar en la deshumanización. <br>
+<br>
+🗣️ “Un niño de nueve años que llora en Ceuta porque quiere estar con sus padres NO es un invasor”<br>
+<br>
+📺 <a href="https://x.com/hashtag/CMin" target="_blank" rel="noopener">#CMin</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tfg7juphgm7s5i0v.jpg"><source src="https://video.twimg.com/amplify_video/2102384716968026112/vid/avc1/1280x720/76GyDY_VIgJ9C2iG.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/territorialgob/status/2102385389335917034" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/territorialgob/status/2102385389335917034" target="_blank" rel="noopener">22 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102673873259098344">
+  <a class="tweet-author" href="https://x.com/el_pais/status/2102673873259098344" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2013261416153722880-tqll1glg_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL PAÍS</span>
+    <span class="tweet-handle">@el_pais</span>
+  </a>
+  <div class="tweet-text">📺 TV en DIRECTO | Armengol reprende a la diputada del PP Ana Vázquez por sacar un spray de gas pimienta: &quot;Tengo que llamarla al orden por haber enseñado un arma en el Congreso. Le ruego que salga del Hemiciclo y deposite lo que ha enseñado&quot;</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-tutlwezbhpklrlmm.jpg"><source src="https://video.twimg.com/amplify_video/2102668592529485824/vid/avc1/1920x1080/XkEqO56x1-gNLnP7.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/el_pais/status/2102673873259098344" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/el_pais/status/2102673873259098344" target="_blank" rel="noopener">23 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102677097332302264">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2102677097332302264" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🗣️ Lo último de Marlaska: «No dimito porque seguimos trabajando para mejorar la seguridad».</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-qkpns1mna1rg9vic.jpg"><source src="https://video.twimg.com/ext_tw_video/2102677057733828608/pu/vid/avc1/1280x720/fL7UjsWD3xL567Du.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2102677097332302264" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2102677097332302264" target="_blank" rel="noopener">23 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102768655624773829">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2102768655624773829" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text">🎙️ El «esperado» discurso de Pedro Sánchez sobre la inmigración, mientras Ceuta sigue crítica:<br>
+<br>
+‼️ Asegura que la migración «fortalece a España» y culpa a «políticos de ambos lados del Atlántico» de convencer a los trabajadores de que su problema es otro trabajador nacido en otro […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-hac2bl8zugavrpwf.jpg"><source src="https://video.twimg.com/ext_tw_video/2102768608094949376/pu/vid/avc1/1280x720/3TCJSUSk9_pgDc9b.mp4?tag=12" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/okdiario/status/2102768655624773829" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2102768655624773829" target="_blank" rel="noopener">23 de septiembre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2102748596030382503">
+  <a class="tweet-author" href="https://x.com/ElFarodeCeuta/status/2102748596030382503" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1090567697262354435-emwlzazk_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Faro de Ceuta</span>
+    <span class="tweet-handle">@ElFarodeCeuta</span>
+  </a>
+  <div class="tweet-text">🚩 La comida de los militares: pescado con escamas, acelgas que parecen algas y alimentos resecos<br>
+<br>
+<a href="https://x.com/hashtag/Ceuta" target="_blank" rel="noopener">#Ceuta</a> <a href="https://x.com/hashtag/Inmigración" target="_blank" rel="noopener">#Inmigración</a> <a href="https://x.com/hashtag/Frontera" target="_blank" rel="noopener">#Frontera</a> <a href="https://x.com/hashtag/FronteraSur" target="_blank" rel="noopener">#FronteraSur</a></div>
+  <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2102748596030382503" target="_blank" rel="noopener">23 de septiembre de 2026</a>
+</blockquote>

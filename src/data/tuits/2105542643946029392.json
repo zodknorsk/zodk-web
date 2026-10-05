@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105542643946029392",
+    "created_at": "2026-10-01T06:17:40.000Z",
+    "text": "📰 La portada del 8 de octubre.\n\nEl Rey pone fecha a su viaje a Ceuta: será en la semana del 12 de octubre o la siguiente . \n\n✍🏻 Por Luis Balcarce (@lbalcarce).\n\nhttps://t.co/1vGFRcWXfv",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/1vGFRcWXfv",
+          "expanded_url": "https://okdiario.com/espana/rey-pone-fecha-viaje-ceuta-sera-semana-del-12-octubre-o-siguiente-20447413?utm_medium=social&utm_source=Twitter#Echobox=1790835459-2",
+          "display_url": "okdiario.com/espana/rey-pon…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

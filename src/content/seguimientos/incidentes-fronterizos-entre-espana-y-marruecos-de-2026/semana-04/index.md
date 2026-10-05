@@ -141,6 +141,7 @@ Hablamos de niños y niñas y sus […]</div>
   <a class="tweet-date" href="https://x.com/egtegain/status/2090351559972462915" target="_blank" rel="noopener">20 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Amenaza a los médicos de Ceuta: «Tomaremos medidas contra los que hablen con medios» ([fuente](https://www.eldebate.com/sociedad/20260820/sanidad-amenaza-medicos-ceuta-tomaremos-medidas-contra-hablen-medios_450676.html))
@@ -220,10 +221,12 @@ Así lo afirma Guillermo Pulido, uno de los mayores especialistas en Estudios Es
   <a class="tweet-date" href="https://x.com/24horas_rne/status/2090863300770668608" target="_blank" rel="noopener">21 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - El Gobierno prevé mantener en Ceuta a más de 2.500 inmigrantes de la avalancha como mínimo seis meses ([fuente](https://www.abc.es/espana/gobierno-preve-mantener-ceuta-2500-inmigrantes-avalancha-20260821004154-nt.html))
 - Apple Maps incluye islas Chafarinas y el peñón de Alhucemas como territorio de Marruecos ([fuente](https://www.eldebate.com/tecnologia/20260820/apple-maps-incluye-islas-chafarinas-penon-alhucemas-como-territorio-marruecos_451033.html))
+
 ## 22 de agosto
 
 
@@ -355,9 +358,11 @@ Por lo que sea, esos cánticos no los veréis en &quot;canales oficiales&quot; .
   <a class="tweet-date" href="https://x.com/Political_Room/status/2091219836407861401" target="_blank" rel="noopener">22 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - El Ministerio de Sanidad convoca de urgencia a las comunidades para suministrar vacunas en Ceuta: varicela, polio, difteria... ([fuente](https://www.elmundo.es/andalucia/2026/08/22/6a8891e3fdddffaf398b4598.html#Echobox=1787380892))
+
 ## 23 de agosto
 
 
@@ -503,6 +508,7 @@ Informa Teresa Gómez (<a href="https://x.com/teresagomezgp" target="_blank" rel
   <a class="tweet-date" href="https://x.com/CanarioToday/status/2091580519301493214" target="_blank" rel="noopener">23 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - Detectan mensajes en Marruecos para aumentar la violencia ([fuente](https://www.abc.es/espana/ultima-hora-ceuta-directo-decenas-inmigrantes-logran-20260818091559-di.html))
@@ -646,8 +652,6 @@ Sin comentarios, no? Silencio, si decimos algo somos racistas.</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-hqglfdnxuaawfc3.jpg"><source src="https://video.twimg.com/tweet_video/HQgLfDnXUAAWfc3.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/EFEnoticias/status/2091934695718064372" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/EFEnoticias/status/2091934695718064372" target="_blank" rel="noopener">24 de agosto de 2026</a>
 </blockquote>
-
-
 
 
 ## 25 de agosto
@@ -808,10 +812,12 @@ La Hora de La 1 ha borrado de la red social X el corte donde exponía las contra
   <a class="tweet-date" href="https://x.com/wallstwolverine/status/2092374635488670014" target="_blank" rel="noopener">25 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - El día de la invasión el Gobierno dio 796.535 € a la agencia de la ONU para inmigrantes dirigida por la mujer de Planas ([fuente](https://okdiario.com/espana/dia-invasion-gobierno-dio-796-535-agencia-onu-inmigrantes-dirigida-mujer-planas-20165250#Echobox=1787637423-1))
 - El Gobierno impulsa una nueva ley de asilo y reformará la de extranjería tras el asalto a Ceuta ([fuente](https://theobjective.com/espana/politica/2026-08-25/gobierno-ley-extranjeria-asilo-ceuta/))
+
 ## 26 de agosto
 
 
@@ -960,6 +966,7 @@ Hoy esas mismas instalaciones aparecen en el BOE de forma oficial para albergar 
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-iuwpedgigvpfutb_.jpg"><source src="https://video.twimg.com/amplify_video/2092708196854951937/vid/avc1/356x640/jvta1NSpSXBwVwp0.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/joseriverof/status/2092708207663706587" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/joseriverof/status/2092708207663706587" target="_blank" rel="noopener">26 de agosto de 2026</a>
 </blockquote>
+
 
 **NOTICIAS DEL DÍA**
 

@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103779748656623908",
+    "created_at": "2026-09-26T09:32:33.000Z",
+    "text": "𝑀𝑎𝑛𝑖𝑓𝑒𝑠𝑡𝑎𝑐𝑖ó𝑛 𝑝𝑜𝑟 𝐶𝑒𝑢𝑡𝑎 𝑒𝑛 𝑀𝑎𝑑𝑟𝑖𝑑:\n\n«𝒏𝒐 𝒆𝒔 𝒖𝒏 𝒈𝒐𝒃𝒊𝒆𝒓𝒏𝒐, 𝒆𝒔 𝒖𝒏𝒂 𝒎𝒂𝒇𝒊𝒂». https://t.co/DewFxti664",
+    "user": {
+      "name": "🇪🇸 🆂🅰🅽🆃🅸 🇨🇭 🅶🆄🅸🆁🅸 🇪🇸",
+      "screen_name": "DGuirilandia",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2095833888417624064/zrSl-YkR_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/DewFxti664",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2103779702997463041/img/AQV21HMXYi0Oe8X-.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2103779702997463041/pl/xaPjL06EbEz0FPq-.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2103779702997463041/vid/avc1/320x568/TGv92iLT3-K83Vd7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2103779702997463041/vid/avc1/480x852/I9_8x-t1hfo-yi7c.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2103779702997463041/vid/avc1/720x1280/RyQRalwJEOWK3v6f.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

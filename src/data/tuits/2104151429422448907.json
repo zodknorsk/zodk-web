@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104151429422448907",
+    "created_at": "2026-09-27T10:09:28.000Z",
+    "text": "La Policía Nacional requisa el móvil de Barbie Gaza y podría acabar en la cárcel.\n\nSegún cuenta ella, se ha dedicado a recopilar datos de menores ilegales en Ceuta y da a entender que ha filtrado esos datos a las ONG. https://t.co/zEBPYgt93Y",
+    "user": {
+      "name": "David Santos",
+      "screen_name": "davidsantosvlog",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1728348204662403072/ZXRMcVJ7_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/zEBPYgt93Y",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2104151402457034752/img/Jloiesu2Xj-_SJLS.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2104151402457034752/pl/mxNZsmYmfe6Bp4DC.m3u8?v=c47"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2104151402457034752/vid/avc1/320x568/vQX212yZlyWMqI32.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2104151402457034752/vid/avc1/480x852/-fAw_w2KpNJ6SxMM.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2104151402457034752/vid/avc1/720x1280/bGf3LBsAvttSH1O_.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

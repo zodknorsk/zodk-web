@@ -237,8 +237,6 @@ Según medios locales, los servicios de inteligencia italianos consideran que la
 </blockquote>
 
 
----
-
 Las redes sociales de Marruecos multiplican los mensajes convocando un asalto a Ceuta el 15 de agosto ([fuente](https://www.elespanol.com/espana/20260809/redes-sociales-llaman-nueva-entrada-ceuta-proximo-agosto-ceuties-dicen-basta/1003744348107_0.html))
 
 ## 10 de agosto
@@ -299,6 +297,7 @@ Brunner señala así […]</div>
   <a class="tweet-date" href="https://x.com/EFEnoticias/status/2086787574790558127" target="_blank" rel="noopener">10 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - El primer ministro marroquí Al Othmani vuelve a la carga con su retórica imperialista refiriendo Ceuta y Melilla como ciudades ocupadas. ([fuente](https://x.com/Political_Room/status/2086740658870480902?s=20))
@@ -350,10 +349,12 @@ Esta sería la primera declaración oficial del gobierno marroquí sobre el tema
   <a class="tweet-date" href="https://x.com/TalebSahara/status/2087281265590354191" target="_blank" rel="noopener">11 de agosto de 2026</a>
 </blockquote>
 
+
 **NOTICIAS DEL DÍA**
 
 - EEUU y Marruecos estrenan un centro de ensayo de armamento frente a Canarias lanzando un misil de largo alcance ([fuente](https://x.com/elespanolcom/status/2087041662232998265?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2087041662232998265%7Ctwgr%5E%7Ctwcon%5Es1_c10&ref_url=))
 - Robles comparecerá en el Senado por la invasión de Ceuta tras la presión del PP: Marlaska y Albares callan. ([fuente](https://x.com/okdiario/status/2087149858314469474?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E2087149858314469474%7Ctwgr%5E%7Ctwcon%5Es1_c10&ref_url=))
+
 ## 12 de agosto
 
 
@@ -477,6 +478,7 @@ Vía: AlRojoVivo<br>
 Y parace que no ha pasado nada. Ni un cese o dimisión. Nada.</div>
   <a class="tweet-date" href="https://x.com/guidoprincesa/status/2087654435145367955" target="_blank" rel="noopener">12 de agosto de 2026</a>
 </blockquote>
+
 
 **NOTICIAS DEL DÍA**
 

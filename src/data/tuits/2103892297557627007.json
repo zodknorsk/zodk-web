@@ -1,0 +1,38 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103892297557627007",
+    "created_at": "2026-09-26T16:59:46.000Z",
+    "text": "🔴ÚLTIMA HORA | La Policía reanima a una menor marroquí tras sufrir una violación en el Trampolín\n\n✍️Información de @JaviBanuelos \nhttps://t.co/XaTb3hk1Yg https://t.co/nUZBevaixW",
+    "user": {
+      "name": "Cadena SER",
+      "screen_name": "La_SER",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1364858953230934017/4G6lyxVM_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/XaTb3hk1Yg",
+          "expanded_url": "https://cadenaser.com/nacional/2026/09/26/la-policia-reanima-a-una-menor-marroqui-tras-sufrir-una-violacion-en-el-trampolin-cadena-ser/",
+          "display_url": "cadenaser.com/nacional/2026/…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "animated_gif",
+        "url": "https://t.co/nUZBevaixW",
+        "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/HTKG4jhWYAA1jWP.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "video/mp4",
+              "bitrate": 0,
+              "url": "https://video.twimg.com/tweet_video/HTKG4jhWYAA1jWP.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

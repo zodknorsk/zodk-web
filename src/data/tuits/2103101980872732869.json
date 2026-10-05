@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103101980872732869",
+    "created_at": "2026-09-24T12:39:20.000Z",
+    "text": "🔴 #URGENTE | Los bomberos de Ceuta hallan asentamientos de inmigrantes en túneles de cientos de metros bajo el campus universitario\n\nLos ceutíes llevaban semanas sospechando que había inmigrantes en los túneles porque \"cada vez había más en los asentamientos de las playas\"\n\n✍️ https://t.co/yedxB2Q26w",
+    "note_tweet": true,
+    "user": {
+      "name": "EL ESPAÑOL",
+      "screen_name": "elespanolcom",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1582982443178541056/6y3_wIVo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/yedxB2Q26w",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2103101889340424192/img/zoa925pv6cRwDNfA.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2103101889340424192/pl/S77PYDJJ6mdqg-YE.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2103101889340424192/vid/avc1/320x568/HB4fiouTv-5NzpI9.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2103101889340424192/vid/avc1/480x852/LHsiWQXx5vps2vQc.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2103101889340424192/vid/avc1/720x1280/biwOu-VNgE78czR6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2103101889340424192/vid/avc1/1440x2560/rpiCabWOmLhXa6LA.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

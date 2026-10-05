@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2106334697345135039",
+    "created_at": "2026-10-03T10:45:00.000Z",
+    "text": "Un migrante detenido tras enfrentarse a agentes con grandes piedras en la playa del Trampolín de Ceuta\nhttps://t.co/KLTpeU7qRM",
+    "user": {
+      "name": "Informativos Telecinco",
+      "screen_name": "informativost5",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2077032038712934400/9ct-Qj2b_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/KLTpeU7qRM",
+          "expanded_url": "https://www.telecinco.es/noticias/sucesos/20261003/migrante-detenido-enfrentarse-agentes-grandes-piedras-playa-trampolin-ceuta_18_020341650.html",
+          "display_url": "telecinco.es/noticias/suces…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

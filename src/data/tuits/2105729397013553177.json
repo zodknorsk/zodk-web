@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105729397013553177",
+    "created_at": "2026-10-01T18:39:45.000Z",
+    "text": "Dos MENAS apuñalados por otros MENAS durante una reyerta en el centro de Ceuta https://t.co/aYX08NGe3H vía @TheObjective_es",
+    "user": {
+      "name": "Cristina Seguí",
+      "screen_name": "CristinaSegui",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1998163461574938624/ks543upb_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/aYX08NGe3H",
+          "expanded_url": "https://theobjective.com/sociedad/suceso/2026-10-01/dos-menores-inmigrantes-apunalados-reyerta-ceuta/",
+          "display_url": "theobjective.com/sociedad/suces…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

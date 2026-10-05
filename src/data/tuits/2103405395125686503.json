@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103405395125686503",
+    "created_at": "2026-09-25T08:45:00.000Z",
+    "text": "🔴 TREMENDO\n\nLa Delegación de Ceuta ordenó de palabra el 5 de agosto parar las salidas voluntarias: \"las ONG nos pueden denunciar\" \n\nhttps://t.co/JcdgIJcYYc",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/JcdgIJcYYc",
+          "expanded_url": "https://www.elespanol.com/espana/politica/20260925/delegacion-gobierno-ceuta-ordeno-parar-salidas-voluntarias-agosto-ong-pueden-denunciar/1003744395831_0.html",
+          "display_url": "elespanol.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

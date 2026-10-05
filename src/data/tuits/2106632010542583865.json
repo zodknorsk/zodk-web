@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2106632010542583865",
+    "created_at": "2026-10-04T06:26:25.000Z",
+    "text": "🔴🔴 #ÚLTIMAHORA | La Policía Nacional comienza el desalojo de la playa del Trampolín en Ceuta https://t.co/oGAeyUXtXU",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/oGAeyUXtXU",
+          "expanded_url": "https://eldbt.com/al1zw",
+          "display_url": "eldbt.com/al1zw"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

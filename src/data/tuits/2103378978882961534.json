@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103378978882961534",
+    "created_at": "2026-09-25T07:00:02.000Z",
+    "text": "🔴 EXCLUSIVA | Ceuta pagará el traslado de los menas a la península a 50 € el barco, 144 € la media hora de helicóptero, 21,64 € el km de taxi y 138,75 € la noche de hotel\n\nEn total hasta 200.000 euros https://t.co/efDTYZvVDI https://t.co/2KOvhXD0Kc",
+    "user": {
+      "name": "Pablo Haro Urquízar",
+      "screen_name": "pabloharour",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1804226965102043137/4maNQ6_1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/efDTYZvVDI",
+          "expanded_url": "https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=wxvCS2VusciS81gZFETWmA%3D%3D",
+          "display_url": "contrataciondelestado.es/wps/poc?uri=de…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/2KOvhXD0Kc",
+        "media_url_https": "https://pbs.twimg.com/media/HTCx4A3WAAAVYxf.png"
+      }
+    ]
+  }
+}

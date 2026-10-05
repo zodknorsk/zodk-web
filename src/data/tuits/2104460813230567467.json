@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104460813230567467",
+    "created_at": "2026-09-28T06:38:51.000Z",
+    "text": "🔴 ÚLTIMA HORA\n\nEl delegado del Gobierno de Ceuta dimite después de que su nº2 le acusara de conocer los avisos del CNI.\n\nhttps://t.co/H3UocGrK7k",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/H3UocGrK7k",
+          "expanded_url": "https://okdiario.com/espana/delegado-del-gobierno-ceuta-dimite-despues-que-no2-acusara-conocer-avisos-del-cni-20410506?utm_medium=social&utm_source=Twitter#Echobox=1790577263-1",
+          "display_url": "okdiario.com/espana/delegad…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

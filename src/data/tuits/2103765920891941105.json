@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103765920891941105",
+    "created_at": "2026-09-26T08:37:36.000Z",
+    "text": "🟢 Abascal: «Ceuta sigue invadida porque Sánchez sigue siendo el siervo del rey de Marruecos».\n\n📲 Siga la concentración en defensa de Ceuta, en directo: https://t.co/i4NULro0am https://t.co/S112lNEEW0",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/i4NULro0am",
+          "expanded_url": "https://okdiar.io/4jpTvFW",
+          "display_url": "okdiar.io/4jpTvFW"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/S112lNEEW0",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2103765897299066880/pu/img/2FyLb1Cjp0AZxUSq.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2103765897299066880/pu/pl/NfISKmXEdXgVI1gK.m3u8?tag=12&v=015"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2103765897299066880/pu/vid/avc1/480x270/AT5N18NonNoKzdel.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2103765897299066880/pu/vid/avc1/640x360/DJx39h0SowTOi6kd.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2103765897299066880/pu/vid/avc1/1280x720/NVYw5_FOMIWe-rNE.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2102768655624773829",
+    "created_at": "2026-09-23T14:34:49.000Z",
+    "text": "🎙️ El «esperado» discurso de Pedro Sánchez sobre la inmigración, mientras Ceuta sigue crítica:\n\n‼️ Asegura que la migración «fortalece a España» y culpa a «políticos de ambos lados del Atlántico» de convencer a los trabajadores de que su problema es otro trabajador nacido en otro https://t.co/inQfM1hVTB",
+    "note_tweet": true,
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/inQfM1hVTB",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2102768608094949376/pu/img/haC2bl8ZugaVRPwf.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2102768608094949376/pu/pl/6yLyiXLO-g_rH_VP.m3u8?tag=12&v=07d"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2102768608094949376/pu/vid/avc1/480x270/B1V7KLvo2Bgz6a_I.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2102768608094949376/pu/vid/avc1/640x360/39rmUkqJjU28ehzP.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2102768608094949376/pu/vid/avc1/1280x720/3TCJSUSk9_pgDc9b.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

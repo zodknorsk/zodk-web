@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2102748596030382503",
+    "created_at": "2026-09-23T13:15:07.000Z",
+    "text": "🚩 La comida de los militares: pescado con escamas, acelgas que parecen algas y alimentos resecos\n\n#Ceuta #Inmigración #Frontera #FronteraSur \n\nhttps://t.co/WW1ADmm7Nd",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/WW1ADmm7Nd",
+          "expanded_url": "https://elfarodeceuta.es/comida-militares-pescado-escamas-acelgasparecen-algas-alimentos-resecos/",
+          "display_url": "elfarodeceuta.es/comida-militar…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

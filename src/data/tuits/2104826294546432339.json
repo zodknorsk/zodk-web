@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104826294546432339",
+    "created_at": "2026-09-29T06:51:09.000Z",
+    "text": "🇪🇸🇲🇦 | Un grupo de jóvenes, atacado a pedradas mientras caminaba de noche junto a un asentamiento ilegal en Ceuta:\n\n«Nos acaban de tirar una pedazo de piedra que flipas. ¡Estáis en mi puto país!». https://t.co/WAtYxOSXhY",
+    "user": {
+      "name": "HerQles",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/WAtYxOSXhY",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2104826222928666624/img/x8fbcewdXaql-VTI.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2104826222928666624/pl/hHVk9VtAPtteJa7w.m3u8?v=fb5"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2104826222928666624/vid/avc1/320x568/CUGnwyZt9bD3CpL5.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2104826222928666624/vid/avc1/480x852/j2RYNeZjjm4H-GwW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2104826222928666624/vid/avc1/720x1280/80enD-r3JY7d6exw.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

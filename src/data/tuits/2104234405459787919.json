@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104234405459787919",
+    "created_at": "2026-09-27T15:39:11.000Z",
+    "text": "🇪🇸🇲🇦 | Quedan en libertad los detenidos por una violación en la zona del Trampolín, después de que la víctima no haya acudido este sábado al Palacio de Justicia para prestar declaración. Los arrestados habían sido puestos a disposición judicial tras su detención en relación con https://t.co/JYsplsQt9t",
+    "note_tweet": true,
+    "user": {
+      "name": "HerQles",
+      "screen_name": "herqles_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1535742491579895816/GTC6z0gJ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/JYsplsQt9t",
+        "media_url_https": "https://pbs.twimg.com/media/HTO-CP0W0AAy1wo.jpg"
+      }
+    ]
+  }
+}

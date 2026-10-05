@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103126797214785595",
+    "created_at": "2026-09-24T14:17:57.000Z",
+    "text": "🚩 Denuncian envíos de cartas a colegios e IES de Ceuta para avisarles que serán de #Marruecos\n\n#Ceuta #Inmigración #FronteraSur\n\nhttps://t.co/ftsDVQSu1H",
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ftsDVQSu1H",
+          "expanded_url": "https://elfarodeceuta.es/denuncian-envios-cartas-colegios-ies-ceuta-marruecos/",
+          "display_url": "elfarodeceuta.es/denuncian-envi…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

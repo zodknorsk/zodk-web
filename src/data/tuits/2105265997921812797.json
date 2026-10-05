@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105265997921812797",
+    "created_at": "2026-09-30T11:58:22.000Z",
+    "text": "Vivas dice al juez que llamó 10 veces a La Moncloa los días previos a la invasión: \"Sólo una vez me atendió Sánchez\". \n\n✍🏻 Por Irene Tabera (@irenetabera).\n\nhttps://t.co/9RTKiRWlaI",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/9RTKiRWlaI",
+          "expanded_url": "https://okdiario.com/espana/vivas-dice-juez-que-llamo-10-veces-moncloa-antes-invasion-solo-cogieron-telefono-tres-20440551?utm_medium=social&utm_source=Twitter#Echobox=1790769502-1",
+          "display_url": "okdiario.com/espana/vivas-d…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

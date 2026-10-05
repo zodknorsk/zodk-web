@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2102673873259098344",
+    "created_at": "2026-09-23T08:18:11.000Z",
+    "text": "📺 TV en DIRECTO | Armengol reprende a la diputada del PP Ana Vázquez por sacar un spray de gas pimienta: \"Tengo que llamarla al orden por haber enseñado un arma en el Congreso. Le ruego que salga del Hemiciclo y deposite lo que ha enseñado\" https://t.co/L128iMtUir https://t.co/ekV3uAoPF2",
+    "user": {
+      "name": "EL PAÍS",
+      "screen_name": "el_pais",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2013261416153722880/TqlL1GLg_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/L128iMtUir",
+          "expanded_url": "https://social.elpais.com/gska1",
+          "display_url": "social.elpais.com/gska1"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/ekV3uAoPF2",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2102668592529485824/img/tUtlWEZbhPklRLMm.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2102668592529485824/pl/5p5yO-AwiQ9tFWS2.m3u8?v=fd1"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2102668592529485824/vid/avc1/480x270/BMfH5nij5yrHJmXW.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2102668592529485824/vid/avc1/640x360/L59G3Ec_vGwnR2Ij.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2102668592529485824/vid/avc1/1280x720/dbDS56pHHhh7bWRx.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2102668592529485824/vid/avc1/1920x1080/XkEqO56x1-gNLnP7.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

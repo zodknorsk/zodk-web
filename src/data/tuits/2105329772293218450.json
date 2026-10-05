@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2105329772293218450",
+    "created_at": "2026-09-30T16:11:47.000Z",
+    "text": "💨 La ministra de Educación huye cuando OKDIARIO le pregunta cuándo van a dejar de mentirle a los ceutíes. https://t.co/X6xtjfsp6X",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/X6xtjfsp6X",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2105329682237329408/pu/img/l_u5VUMxjHbpUZ4I.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2105329682237329408/pu/pl/rxno3YsOaM8UiJh1.m3u8?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2105329682237329408/pu/vid/avc1/320x568/5ECV9l0K5C-DyRSv.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2105329682237329408/pu/vid/avc1/480x852/ua6VTBgoSNDebQH3.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2105329682237329408/pu/vid/avc1/720x1280/6YZKHKlAB9uM8HpC.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

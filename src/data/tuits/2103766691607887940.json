@@ -1,0 +1,57 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103766691607887940",
+    "created_at": "2026-09-26T08:40:40.000Z",
+    "text": "Militares españoles haciendo lo mismo que los norteamericanos en Guantánamo.\n\nShadi Boukhari de Border Sesistance: Les obligaban a bailar desnudos con \"Mohamed VI maricón\" escrito en la frente.\n\nEsto es un escándalo democrático. Exigimos una investigación.\nhttps://t.co/XuBIuJ9pfw https://t.co/HyhrH68FjA",
+    "user": {
+      "name": "Ione Belarra",
+      "screen_name": "ionebelarra",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1803683419777384448/szii50iR_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/XuBIuJ9pfw",
+          "expanded_url": "https://www.youtube.com/watch?v=Mj6jv6aaf7o",
+          "display_url": "youtube.com/watch?v=Mj6jv6…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/HyhrH68FjA",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2103500087125000193/img/7H8-3rIvEMgwKCzj.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2103500087125000193/pl/mI5SvVBzVb4WKbiM.m3u8?tag=16&v=c75"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2103500087125000193/vid/avc1/320x568/Ajvn8SdSu4OGfV0L.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2103500087125000193/vid/avc1/480x852/fHaLnK2EbT2u6Vzw.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2103500087125000193/vid/avc1/720x1280/mAv3e9BgHjl7ZyTB.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2103500087125000193/vid/avc1/1080x1920/4s8plpaxXkEguZvN.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

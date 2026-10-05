@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104912370778665401",
+    "created_at": "2026-09-29T12:33:11.000Z",
+    "text": "‼️ «Ley y orden»: la Policía desaloja por la fuerza una de las playas invadidas en Ceuta y muchos inmigrantes se ven obligados a huir a Marruecos para no ser identificados. https://t.co/GaxbVMJO1f",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/GaxbVMJO1f",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2104912334699339777/pu/img/xrTEu4yGiPceMHFt.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2104912334699339777/pu/pl/Gg_ri5Ku1nBJOScx.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/2104912334699339777/pu/vid/avc1/320x568/eqH5DJGz3lcNgNBD.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/2104912334699339777/pu/vid/avc1/480x852/xxVj_0WAPVYMI5Pq.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2104912334699339777/pu/vid/avc1/720x1280/xxuT9JXzmFQ9tMg8.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

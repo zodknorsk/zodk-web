@@ -194,12 +194,12 @@ El trato que deben recibir y la preocupación humanitaria se circunscribe a lo q
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
+
 - Marruecos ocultó al Gobierno y a la Guardia Civil la instalación de la nueva puerta en Ceuta ([fuente](https://www.abc.es/espana/marruecos-oculto-gobierno-guardia-civil-instalacion-nueva-20260910014522-nt.html))
 - “La final del Mundial 2030 será en Casablanca”, según el presidente de la federación de Fútbol de Marruecos ([fuente](https://elfarodeceuta.es/final-mundial-sera-casablanca-presidente-federacion-futbol-marruecos/))
 - La Casa Real prepara el viaje de los reyes a Ceuta y asegura que ya lo tenían previsto antes de la crisis ([fuente](https://efe.com/espana/2026-09-10/viaje-reyes-ceuta-felipe-letizia/))
-- La Fiscalía reprocha a Argelia y Marruecos las trabas para acoger a sus nacionales que expulsa la Justicia española([fuente](https://www.elespanol.com/espana/tribunales/20260910/fiscalia-reprocha-argelia-marruecos-trabas-acoger-nacionales-expulsa-justicia-espanola/1003744377961_0.html))
+- La Fiscalía reprocha a Argelia y Marruecos las trabas para acoger a sus nacionales que expulsa la Justicia española ([fuente](https://www.elespanol.com/espana/tribunales/20260910/fiscalia-reprocha-argelia-marruecos-trabas-acoger-nacionales-expulsa-justicia-espanola/1003744377961_0.html))
 - El documento clave que no enseña el Gobierno: dos 'pinchazos' a agentes marroquíes alertaron de la "entrada masiva" tres días antes ([fuente](https://www.elmundo.es/espana/2026/09/10/6aa2e777fdddff6f3a8b457f.html))
 - "Punto crítico": el CNI advirtió a la Delegación del Gobierno de que "una multitud espera para lanzarse al agua" a las 21.34 del 29 de julio ([fuente](https://www.elmundo.es/espana/2026/09/10/6aa2f270e4d4d87a4c8b4574.html))
 
@@ -335,8 +335,8 @@ Mi opinión al respecto en <a href="https://x.com/todoesmentiratv" target="_blan
 </blockquote>
 
 
-
 **NOTICIAS DEL DÍA**
+
 - Dimite el jefe de gabinete del delegado del Gobierno en Ceuta acusándolo de mentir: sí tuvo conocimiento del aviso del CNI ([fuente](https://www.elmundo.es/espana/2026/09/11/6aa3af19e4d4d8326b8b4574.html))
 
 ## 12 de septiembre
@@ -464,7 +464,6 @@ Los violadores próximamente estarán en tus calles.</div>
 </blockquote>
 
 
-
 ## 13 de septiembre
 
 
@@ -581,10 +580,11 @@ La Reflexión de Iker Jiménez en <a href="https://x.com/CuartoMileniotv" target
 
 **NOTICIAS DEL DÍA**
 
-- Sánchez ha financiado Marruecos con mil millones de euros desde el 'caso Pegasus'([fuente](https://theobjective.com/espana/politica/2026-09-13/sanchez-financiado-marruecos-mil-millones-caso-pegasus/))
+- Sánchez ha financiado Marruecos con mil millones de euros desde el 'caso Pegasus' ([fuente](https://theobjective.com/espana/politica/2026-09-13/sanchez-financiado-marruecos-mil-millones-caso-pegasus/))
 
+## 14 de septiembre
 
-## 14 de septiembre - ¿dónde estuvo el delegado del gobierno?
+**¿dónde estuvo el delegado del gobierno?**
 
 
 <blockquote class="tweet" data-tweet-id="2099271913365471601">
@@ -763,7 +763,6 @@ Sánchez exculpa a Marruecos por el asalto en 'El intermedio': «No vimos una ac
 </blockquote>
 
 
-
 ## 15 de septiembre
 
 
@@ -873,12 +872,9 @@ Seguir: <a href="https://x.com/elalcazar_es" target="_blank" rel="noopener">@ela
 </blockquote>
 
 
+## 16 de septiembre
 
-
-
-**NOTICIAS DEL DÍA**
-- 
-## 16 de septiembre - Comienza el foco en Vivas
+**Comienza el foco en Vivas**
 
 
 <blockquote class="tweet" data-tweet-id="2100318050956271825">
@@ -1041,9 +1037,3 @@ Cada uno tiene que asumir sus […]</div>
   <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-6nc859kc6ztaj8ma.jpg"><source src="https://video.twimg.com/amplify_video/2100204780991766529/vid/avc1/3840x2160/e5fVCowAGwYRjfJl.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/SG_UGT/status/2100205783967228265" target="_blank" rel="noopener">Verlo en X</a></video>
   <a class="tweet-date" href="https://x.com/SG_UGT/status/2100205783967228265" target="_blank" rel="noopener">16 de septiembre de 2026</a>
 </blockquote>
-
-
-
-
-**NOTICIAS DEL DÍA**
--

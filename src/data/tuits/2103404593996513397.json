@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103404593996513397",
+    "created_at": "2026-09-25T08:41:49.000Z",
+    "text": "La Justicia investiga ya los saltos a la Península negados por Marlaska desde el inicio de la invasión de Ceuta\n\n✍️ @carloscuestaLD\nhttps://t.co/HNftH4neQ8",
+    "user": {
+      "name": "Libertad Digital",
+      "screen_name": "libertaddigital",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1872197644967165952/Y3GFlRJI_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/HNftH4neQ8",
+          "expanded_url": "https://www.libertaddigital.com/espana/politica/2026-09-25/la-justicia-investiga-ya-los-saltos-a-la-peninsula-desde-ceuta-negados-por-marlaska-desde-el-inicio-de-la-invasion-7465161/",
+          "display_url": "libertaddigital.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103498336141443487",
+    "created_at": "2026-09-25T14:54:19.000Z",
+    "text": "Tres detenidos por intentar secuestrar a dos chicas menores en la playa del Trampolín de Ceuta. No hay maricármenes suficientes en el mundo para tapar el absolutamente miserable comportamiento de este Gobierno.\nhttps://t.co/8bm4MW7vAN",
+    "user": {
+      "name": "Philmore A. Mellows",
+      "screen_name": "PhilAMellows",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1648347665422249984/pRzmlGl9_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/8bm4MW7vAN",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2103476825959596032/img/jXt18cernuuIO3ob.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2103476825959596032/pl/rm4kf0EUjP-SIHzd.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2103476825959596032/vid/avc1/320x568/YK4zVSo9c8OXADH6.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2103476825959596032/vid/avc1/480x852/dNfv2RObRAlMMooa.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2103476825959596032/vid/avc1/720x1280/KM8OrG1Mb7wa0CsF.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2103476825959596032/vid/avc1/1080x1920/hoDgw8LCmKQcLwTv.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

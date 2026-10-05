@@ -1,0 +1,18 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2103443144612430029",
+    "created_at": "2026-09-25T11:15:00.000Z",
+    "text": "👑 Los Reyes irán a Finlandia a defender la frontera de Europa en el Ártico, y siguen sin fecha para Ceuta \n\nSegún el sorprendente comunicado, van a trasladar «el compromiso de España con la autonomía estratégica y la seguridad y defensa de Europa en todas sus fronteras»",
+    "note_tweet": true,
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-05",
+  "tuit": {
+    "id_str": "2104888931351409110",
+    "created_at": "2026-09-29T11:00:02.000Z",
+    "text": "El Gobierno de Ceuta (PP) rechaza una propuesta de VOX en defensa de la españolidad de la ciudad autónoma e incluye en el calendario oficial dos fiestas musulmanas\n\nhttps://t.co/e16wvhaE5H",
+    "user": {
+      "name": "LA GACETA",
+      "screen_name": "gaceta_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1805900859940704256/lWb1Aaao_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/e16wvhaE5H",
+          "expanded_url": "https://gaceta.es/espana/el-gobierno-de-ceuta-del-pp-vota-en-contra-de-la-espanolidad-de-la-ciudad-autonoma-e-incluye-en-el-calendario-oficial-dos-festividades-musulmanas-20260929-1220/",
+          "display_url": "gaceta.es/espana/el-gobi…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}
