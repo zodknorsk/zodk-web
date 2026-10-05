@@ -4,7 +4,7 @@ import type { Site, Metadata } from "@types";
 // de "hecho con" y los enlaces de contacto de la portada.
 
 export const SITE: Site = {
-  NAME: "zodk.eu",
+  NAME: "hegoimarquez.com",
   EMAIL: "zodknorsk@gmail.com",
   NUM_NOTAS_ON_HOMEPAGE: 2, // cuántas operaciones y cuántos análisis salen en la portada
 };

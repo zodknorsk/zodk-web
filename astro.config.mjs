@@ -17,11 +17,11 @@ const ANALISIS = new Set(
 // https://astro.build/config
 export default defineConfig({
   // "site" es la URL final del sitio. Astro la usa para el sitemap, el RSS y las
-  // URLs canónicas. Como el dominio zodk.eu apunta a la raíz (apex), no hace
+  // URLs canónicas. Como el dominio hegoimarquez.com apunta a la raíz (apex), no hace
   // falta "base".
   // Todo el contenido lo genera el importador como .md, que Astro entiende de
   // serie: no hay integración de MDX porque no hay ningún .mdx.
-  site: "https://zodk.eu",
+  site: "https://hegoimarquez.com",
   // Sin las páginas que solo redirigen a la dirección nueva (/eventos/…,
   // /notas y /notas/<análisis>, que pasaron a /seguimiento, /operaciones y
   // /analisis).

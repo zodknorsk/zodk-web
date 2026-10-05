@@ -1,6 +1,6 @@
 # UAS: el hangar de drones, las fichas y el visor
 
-La enciclopedia de UAS de zodk.eu («la gran enciclopedia de los UAS»; en la
+La enciclopedia de UAS de hegoimarquez.com («la gran enciclopedia de los UAS»; en la
 web, **«Hangar de UAS»**): una nota por dron en la bóveda
 (`02 - Temas/Hangar de UAS/`; hasta el 28-sep-2026, «La gran enciclopedia
 de los UAS.»), que en la web es una
@@ -221,7 +221,7 @@ pixel HD»). Para pasar al HD un dron que ya existe, lo mismo.
 
 0. **Antes de empezar.** `git status` y rama en `~/Documents/zodk-web`. El
    proyecto ya está en `main`: un dron nuevo va en `main` (el push a `main`
-   publica zodk.eu: nunca sin que lo pida). `npm run dev` en marcha
+   publica hegoimarquez.com: nunca sin que lo pida). `npm run dev` en marcha
    (`localhost:4321`).
 1. **Fuentes** (receta, paso 2): artículos (Infodefensa, medios que visitan
    la fábrica, la documentación del fabricante —Skydio tiene la suya—, Army

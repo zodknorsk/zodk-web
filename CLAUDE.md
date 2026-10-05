@@ -1,6 +1,6 @@
 # zodk-web — notas para Claude Code
 
-Blog personal de Hegoi en Astro, publicado en **zodk.eu** (GitHub Pages).
+Blog personal de Hegoi en Astro, publicado en **hegoimarquez.com** (GitHub Pages).
 Se trabaja desde un Mac (`~/Documents/zodk-web`) y un PC con Linux Mint en
 español (`~/Documentos/zodk-web`); se sincroniza solo por Git: `git pull` al
 empezar, `git push` al terminar.

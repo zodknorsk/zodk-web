@@ -1,6 +1,6 @@
 # zodk-web
 
-El código de mi web personal, **[zodk.eu](https://zodk.eu)**: un blog de
+El código de mi web personal, **[hegoimarquez.com](https://hegoimarquez.com)**: un blog de
 historia, inteligencia y OSINT con una portada en pixel art (la Tierra), dos
 páginas más para la Luna y Marte, el Hangar de UAS (`/uas`: fichas de drones
 con su visor 3D y pixel, el glosario y el armamento) y `/blog`, sobre la
@@ -132,7 +132,7 @@ public/                    Lo que se sirve tal cual
                            hangar de la portada (los hace arte/)
   tweets/  adjuntos/       Imágenes de tuits y vídeos (los hace el importador)
   zodk-*.png, zodk-*.svg   Naves, sol, luna, Marte, Tierra pequeña, estrellas, logo
-  CNAME                    El dominio zodk.eu para GitHub Pages
+  CNAME                    El dominio hegoimarquez.com para GitHub Pages
 ```
 
 ## Licencia
