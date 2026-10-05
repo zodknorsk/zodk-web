@@ -66,7 +66,8 @@ llevarlo.
 
 En cualquier artículo, la primera vez que sale un término del glosario
 de UAS (MALE, jamming…) o una munición del armamento (Hellfire, GBU-38…)
-se enlaza solo y enseña su tarjeta al pasar el ratón. **Solo si está escrito
+se enlaza solo y enseña su tarjeta al pasar el ratón (las tablas cuentan
+aparte: la primera vez en la tabla también se enlaza). **Solo si está escrito
 igual que en el glosario o el armamento**: al escribir notas en la bóveda,
 usar ese nombre exacto. Detalles en `docs/uas.md` («El glosario»).
 

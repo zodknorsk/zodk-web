@@ -294,7 +294,8 @@ del X10D).
     más reciente. Si no se encuentra la fecha, no se inventa: se deja sin
     ella y se avisa. (La plantilla de Templater aún tiene el formato viejo.)
 - **Nombres que se enlazan solos**: en la web, la primera vez que sale un
-  término del glosario o una munición del armamento lleva su tarjeta, pero
+  término del glosario o una munición del armamento lleva su tarjeta (y
+  otra vez la primera vez que sale en la tabla de características), pero
   solo si está escrito **igual que en su nota**. Términos: tal cual los
   pone el glosario, con las siglas en mayúsculas («MTOW», «jamming», no
   «peso máximo al despegue» ni «interferencia»). Municiones: el nombre de
@@ -711,7 +712,11 @@ decidido con espacio).
 **Los términos y las municiones en los artículos** (29-sep-2026). En las
 notas, el seguimiento y las fichas del Hangar, la primera vez que sale un
 término del glosario (MALE, MTOW, jamming…) o una munición del armamento
-(Hellfire, GBU-38…) queda enlazado a su entrada. Para que no se confunda con un enlace
+(Hellfire, GBU-38…) queda enlazado a su entrada. Las tablas llevan su
+propia cuenta (5-oct-2026): un término que ya salió en el texto se enlaza
+otra vez la primera vez que sale en la tabla de características, para quien
+va directo a ella. Enlazarlo todas las veces o una vez por apartado se
+descartó: el análisis de Starlink se llenaba de tarjetas. Para que no se confunda con un enlace
 normal (azul) va del color del texto, en IBM Plex Mono algo más pequeña,
 con rayas finas debajo (pintadas con un degradado: con `text-decoration`
 salían desiguales según lo que mide la palabra), y el puntero es una «i»

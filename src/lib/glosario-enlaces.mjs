@@ -2,7 +2,8 @@
 // cada artículo (análisis, operaciones, seguimientos, notas y fichas del
 // Hangar), la primera vez que sale
 // un término del glosario de UAS o una munición del armamento se convierte en
-// un enlace a su entrada, con su texto en atributos `data-gl-*`. La tarjeta
+// un enlace a su entrada (las tablas llevan su propia cuenta: quien va
+// directo a las características también ve la tarjeta), con su texto en atributos `data-gl-*`. La tarjeta
 // que sale al pasar el ratón la pone GlosarioTarjeta.astro.
 //
 // Todo sale de las notas ya importadas, así que crece con ellas:
@@ -149,7 +150,14 @@ export default function glosario({ fileURL, data }) {
   const { patron, porNombre, porHref } = cargar();
   // Una munición no se enlaza a sí misma.
   const propia = fileURL?.pathname.match(/\/uas\/armamento\/([^/]+)\/index\.md$/)?.[1];
-  const usados = new Set(propia ? [`${URL_ARMAMENTO}/${decodeURIComponent(propia)}`] : []);
+  const nuevo = () => new Set(propia ? [`${URL_ARMAMENTO}/${decodeURIComponent(propia)}`] : []);
+  const usados = { texto: nuevo(), tabla: nuevo() };
+  const cuenta = (nodo, ctx) => {
+    for (let p = ctx.parent(nodo); p && p.type === "element"; p = ctx.parent(p)) {
+      if (p.tagName === "table") return usados.tabla;
+    }
+    return usados.texto;
+  };
 
   const saltar = (nodo, ctx) => {
     for (let p = ctx.parent(nodo); p && p.type === "element"; p = ctx.parent(p)) {
@@ -170,19 +178,20 @@ export default function glosario({ fileURL, data }) {
         if (href.startsWith(URL_GLOSARIO)) x = buscar(porNombre, ctx.textContent(a).trim());
         else if (href.startsWith(`${URL_ARMAMENTO}/`)) x = porHref.get(decodeURI(href));
         if (!x) return;
-        usados.add(x.href);
+        cuenta(a, ctx).add(x.href);
         for (const [clave, valor] of Object.entries(propiedades(x))) ctx.setProperty(a, clave, valor);
       },
     },
     text(nodo, ctx) {
       const texto = nodo.value;
       if (!patron || !texto.match(patron) || saltar(nodo, ctx)) return;
+      const vistos = cuenta(nodo, ctx);
       const nuevos = [];
       let desde = 0;
       for (const m of texto.matchAll(patron)) {
         const x = buscar(porNombre, m[1]);
-        if (!x || usados.has(x.href)) continue;
-        usados.add(x.href);
+        if (!x || vistos.has(x.href)) continue;
+        vistos.add(x.href);
         if (m.index > desde) nuevos.push({ type: "text", value: texto.slice(desde, m.index) });
         nuevos.push({ type: "element", tagName: "a", properties: propiedades(x), children: [{ type: "text", value: m[0] }] });
         desde = m.index + m[0].length;
