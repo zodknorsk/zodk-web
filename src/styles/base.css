@@ -68,7 +68,10 @@ article {
 }
 
 /* Portada de un seguimiento: «Cronología» centrado y las semanas en dos
-   columnas (src/lib/cronologia-columnas.mjs); en móvil, una sola. */
+   columnas (src/lib/cronologia-columnas.mjs), como una línea de tiempo: una
+   línea a la izquierda con un punto azul por semana y, colgando de cada
+   punto, sus días en una línea discontinua con una rayita por día. En móvil,
+   una sola columna. */
 article .cronologia-titulo {
   text-align: center;
 }
@@ -77,8 +80,96 @@ article .cronologia-cols {
   grid-template-columns: 1fr 1fr;
   column-gap: 3rem;
 }
-article .cronologia-col > :first-child {
+article .cronologia-col {
+  margin-left: 0.4rem;
+  padding-left: 1.4rem;
+  border-left: 2px solid rgba(128, 128, 128, 0.35);
+}
+article .cronologia-col > h2 {
+  position: relative;
+  margin: 1.6rem 0 0.4rem;
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+article .cronologia-col > h2:first-child {
   margin-top: 0;
+}
+article .cronologia-col > h2::before {
+  content: "";
+  position: absolute;
+  left: -1.4rem;
+  top: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: #2576eb;
+  transform: translate(calc(-50% - 1px), -50%);
+}
+article .cronologia-col > ul {
+  margin: 0 0 0 0.2rem;
+  padding: 0 0 0 0.9rem;
+  list-style: none;
+  border-left: 1px dashed rgba(128, 128, 128, 0.5);
+}
+article .cronologia-col > ul > li {
+  position: relative;
+  margin: 0.1rem 0;
+  padding: 0;
+}
+article .cronologia-col > ul > li::before {
+  content: "";
+  position: absolute;
+  left: -0.9rem;
+  top: 50%;
+  width: 0.6rem;
+  border-top: 1px dashed rgba(128, 128, 128, 0.5);
+}
+/* La última semana de un seguimiento en curso: el punto en rojo y con el halo
+   del piloto de la portada (src/styles/portada.css): dos manchas que se abren
+   desde el punto y se desvanecen, una detrás de otra. Solo se mueven
+   transform y opacity. */
+article .cronologia-col > h2.cronologia-actual::before {
+  display: none;
+}
+article .cronologia-col > h2 > i.vivo {
+  position: absolute;
+  left: -1.4rem;
+  top: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: #e5484d;
+  transform: translate(calc(-50% - 1px), -50%);
+}
+article .cronologia-col > h2 > i.vivo::before,
+article .cronologia-col > h2 > i.vivo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 72, 77, 0.6) 0%, rgba(229, 72, 77, 0.35) 40%, rgba(229, 72, 77, 0) 70%);
+  opacity: 0;
+  transform: scale(0.2);
+  will-change: transform, opacity;
+  animation: cronologia-halo 3.6s linear infinite;
+}
+article .cronologia-col > h2 > i.vivo::before {
+  animation-delay: -1.8s;
+}
+@keyframes cronologia-halo {
+  0% { transform: scale(0.2); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  article .cronologia-col > h2 > i.vivo::before,
+  article .cronologia-col > h2 > i.vivo::after {
+    animation: none;
+  }
 }
 @media (max-width: 640px) {
   article .cronologia-cols {
