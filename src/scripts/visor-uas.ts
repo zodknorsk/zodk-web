@@ -21,7 +21,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e",
 };
 
 export type { Vista };
@@ -127,6 +127,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       malla.castShadow = malla.receiveShadow = true;
       mallas.push(malla);
       malla.userData.pieza = p.id;
+      malla.userData.acabado = p.acabado ?? "negro";
       raiz.add(malla);
       // Las juntas, sin raya: solo un tono algo más oscuro.
       if (p.acabado === "junta") continue;
@@ -196,6 +197,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       const malla = new Mesh(g, relleno);
       malla.castShadow = malla.receiveShadow = true;
       malla.userData.pieza = p.id;
+      malla.userData.acabado = p.acabado ?? "negro";
       mallasCatapulta.push(malla);
       grupoCatapulta.add(malla);
       const arista = new LineSegments(new EdgesGeometry(g, 28), linea);

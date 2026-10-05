@@ -33,11 +33,13 @@ const COMUNES = {
   ocre: ["#5a4718", "#86692a", "#b8953e", "#dcc072"],
   laton: ["#5a4718", "#86692a", "#b8953f", "#e0c271"],
   hueso: ["#6a675e", "#9c988b", "#cac5b6", "#ece8dc"],
+  cromato: ["#5a5630", "#86804a", "#b9b06e", "#dcd59a"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {
     ...COMUNES,
     negro: ["#101114", "#1c1e22", "#2c2f35", "#43474f"],
+    "negro-ua": ["#101114", "#1c1e22", "#2c2f35", "#43474f"],
     junta: ["#0d0e11", "#18191d", "#27292e", "#3c4047"],
     mando: ["#16181b", "#25282d", "#383c43", "#51565f"],
     resalte: ["#9aa0a8", "#bfc4ca", "#dfe2e6", "#f7f8f9"],
@@ -48,6 +50,7 @@ export const PALETAS: Record<"dia" | "noche", Paletas> = {
   noche: {
     ...COMUNES,
     negro: ["#15161a", "#23252a", "#34373e", "#4c5058"],
+    "negro-ua": ["#15161a", "#23252a", "#34373e", "#4c5058"],
     junta: ["#121316", "#1f2125", "#2f3238", "#464a52"],
     mando: ["#1b1d21", "#2b2e34", "#3f434a", "#5a5f67"],
     resalte: ["#8f959d", "#b4b9c0", "#d6d9de", "#f1f2f4"],

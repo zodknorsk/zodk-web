@@ -38,6 +38,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
       const malla = new Mesh(g, materialHD(p.acabado ?? "negro", "c", marcaPieza(i, p.acabado === "junta")));
       malla.castShadow = malla.receiveShadow = true;
       malla.userData.pieza = p.id;
+      malla.userData.acabado = p.acabado ?? "negro";
       mallas.push(malla);
       raiz.add(malla);
     }
@@ -182,7 +183,8 @@ export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, 
 // escala de todos los drones (pxPorMetro con la «escala» de la maqueta) o
 // reducida hasta caber en maxAncho x maxAlto. Sin la sombra, que la pone el
 // generador. Solo el de día (la portada es siempre oscura y va así).
-export function plantaHD(maqueta: Maqueta, vista: [number, number], pxPorMetro: number, maxAncho: number, maxAlto: number) {
+export function plantaHD(conDetalles: Maqueta, vista: [number, number], pxPorMetro: number, maxAncho: number, maxAlto: number) {
+  const maqueta = conDetalles.plantaLisa ? { ...conDetalles, detalles: undefined } : conDetalles;
   const medir = montar(maqueta, 8, 8, FOV_PLANTA);
   const [mx, my] = medir.ocupa(vista);
   medir.soltar();
