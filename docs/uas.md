@@ -964,16 +964,15 @@ la planta sale de las fotos de la fábrica china y del lanzador.
 | ejercito-tierra.jpg | Militar del Ejército de Tierra con el dron | https://www.infodefensa.com/images/showid2/8152692?w=1200&zc=4 |
 
 **Wildfire.** Solo renders de General Atomics (el dron no ha volado) y sin
-medidas: proporciones del Reaper, unos 20 m de envergadura.
+medidas: la 2.0 sale de los tres originales de su galería, reconstruidos en
+3D a escala con los JSM (ver `docs/uas-hd.md`). En `arte/uas-fuentes/
+wildfire/hd/` (fuera de Git), con las herramientas de medir.
 
 | Archivo | Qué enseña | URL |
 |---|---|---|
-| gaasi-comunicado.jpg | Enjambre sobre el mar, con JSM | https://www.ga-asi.com/images/BlogFeaturedImages/ga-asi-unveils-wildfire-uas.jpg |
-| twz-comparacion.jpg | Render junto a un MQ-9A | https://www.twz.com/wp-content/uploads/2026/09/wildfire-reaper-comparison.jpg |
-| twz-morro.jpg | Morro sin joroba y torreta | https://www.twz.com/wp-content/uploads/2026/09/wildfire-nose-end.jpg |
-| twz-jsm.jpg | Dos JSM en un soporte | https://www.twz.com/wp-content/uploads/2026/09/wildfire-jsm-cruise-missiles.jpg |
-| na-lrasm.jpg | Desde arriba, lanzando un LRASM (planta) | https://assets.newatlas.com/01/69/5b812ef848e48255875a40984a50/wildfire-media-graphics-scc-re-1290x726.jpg |
-| na-banda.jpg | Desde abajo, con cuatro JSM (perfil) | https://assets.newatlas.com/86/b8/98eff06a4272ab530fa0a87fe4a6/wildfire-media-graphics-scb-desktop-1920x600.jpg |
+| A.jpg | Enjambre sobre el mar, desde detrás y arriba | https://www.ga-asi.com/remotely-piloted-aircraft/imgs/Wildfire-Media-Graphics_ScA_rere_1290x726.jpg |
+| B.jpg | Desde abajo y delante, con cuatro JSM | https://www.ga-asi.com/remotely-piloted-aircraft/imgs/Wildfire-Media-Graphics_ScB_Desktop-1920X600.jpg |
+| C.jpg | Desde arriba, lanzando un LRASM | https://www.ga-asi.com/remotely-piloted-aircraft/imgs/Wildfire-Media-Graphics_ScC_re_1290x726.jpg |
 
 **MQ-9 Reaper.** Medidas de la ficha de la Fuerza Aérea (20,1 x 11 x 3,8
 m). Todas de Wikimedia Commons: las de la Fuerza Aérea, de dominio público;

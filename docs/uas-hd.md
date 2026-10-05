@@ -211,13 +211,205 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
   visores (abajo, «Para el final»); pasar los demás drones (objetivos de
   arriba).
-- **Ramas**: ninguna abierta; `uas-hd`, `hd-pixel-mq-9`,
+- **En marcha: el Wildfire** (rama `hd-wildfire`, sin commit), con los
+  renders oficiales; falta que lo revise el usuario. Ver el registro.
+- **Ramas**: `hd-wildfire` abierta; `uas-hd`, `hd-pixel-mq-9`,
   `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`, fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
-está en `main` (salvo el Raven, en su rama).
+está en `main` (salvo el Wildfire, en su rama).
+
+- **4-oct-2026, Wildfire en HD y pixel HD** (rama `hd-wildfire`, sin
+  commit). Lo eligió el usuario entre el Wildfire y el MICH-2000, con los
+  renders oficiales, la pintura de General Atomics tal cual y los cuatro JSM
+  («no es reciclar del MQ-9, es aprender de él para no cometer los mismos
+  fallos»: forma medida de cero, nada copiado del Reaper). Hecho:
+  - **Fuentes**: `arte/uas-fuentes/wildfire/hd/` (fuera de Git). Los
+    originales de la galería de `ga-asi.com/remotely-piloted-aircraft/
+    wildfire` (`imgs/Wildfire-Media-Graphics_Sc{A,B,C}_…`): **A** (enjambre,
+    desde detrás y arriba, 1290x726), **B** (desde abajo y delante con los
+    cuatro JSM, 1920x600, la más nítida) y **C** (desde arriba lanzando un
+    LRASM, 1290x726). Las de TWZ y el vídeo de YouTube son las mismas,
+    reescaladas: no aportan. B es un recorte del 16:9 del vídeo: encajándolo
+    por correlación, su centro óptico está en (955,7; 252,6) (`registrar.py`).
+    Sin medidas publicadas.
+  - **Cómo se midió** (nuevo; sin fotos no hay ni una medida): se marcaron
+    a mano en los tres renders unos 30 puntos que se reconocen en varios
+    (cámara de la punta del morro, sonda, torreta, antenas del lomo, puntas
+    de la V, las seis esquinas de cada aleta de las puntas, antena de pala,
+    aleta ventral, aro de la hélice, puntas y colas de los JSM) y
+    `reconstruir.py` encaja a la vez las tres cámaras (rotación, posición,
+    focal) y la posición 3D de los puntos, con el dron simétrico (los del eje
+    en x = 0, los de los lados en pareja). La escala, de los JSM (3,70 m;
+    las dos parejas paralelas y a la misma altura). Error medio 1,4 px.
+    Remuestreando los píxeles (±1,5 px, 12 veces): largo del morro al aro de
+    la hélice 10,26 ± 0,14 m, envergadura **22,1 ± 0,8 m** (lo menos seguro),
+    punta de la V a 1,94 ± 0,11 m de alto. Después `medir.py` lleva píxeles a
+    3D: cortando con un plano, triangulando un punto en dos renders, cortando
+    los planos de un borde visto en dos (los bordes del ala) o siguiendo una
+    línea viva de un render a otro (`epi`, la arista del costado).
+  - **Errores por el camino**: (1) en C y en A los lados salen cambiados
+    respecto a como los marqué (el espejo de las maquetas otra vez); con los
+    lados bien, el error de A bajó de 72 px a 0,4. (2) A es casi ortográfica
+    (campo de 10°) y la búsqueda de cámara caía en la vista espejo, desde
+    delante; `camara-sola.py` arranca desde un ángulo dado. (3)
+    `encajar-camara.mjs` también se atasca en A: su `.cam.json` sale de
+    `camara-sola.py`. (4) Puntos mal leídos que se fueron: el capuchón de la
+    cola tomado por el buje, un bulto del borde de salida en A, los
+    carenados en C (son varios y no se sabe cuál es cuál).
+  - **Forma**: cuerpo en un `casco` con la **arista viva** del costado (medida
+    con `epi`: 0,69 m de medio ancho y y = 0,15 en z = 2,7, bajando hasta la
+    cámara de la punta, metida en la arista), la cara de abajo del morro más
+    plana (una cuchara, como en B), la **joroba del motor** de la misma pieza
+    hasta la boca del escape (0,77 m en z = −2,4), que acaba de golpe en un
+    capuchón facetado de metal. Ala del corte de bordes de B y C: cuerda de
+    1,92 m a 0,76, plana; flap y alerón con su hueco (corte a 6,47 m, A),
+    pasando poco a poco a la bisagra (sin escalón: lección del Shahed);
+    carenados encima del borde de salida (A y C; desde abajo, en B, el ala
+    está limpia). **Cola en V** en el plano que da su vista de canto en C (35°
+    sobre la horizontal), con las esquinas de A llevadas a ese plano; nace
+    del costado; timón en la mitad de fuera. Aletas de las puntas en flecha
+    arriba y abajo (seis esquinas encajadas). Aleta ventral y antena de pala
+    medidas en B. Torreta con su capucha, la cara cuadrada
+    oscura, tres ventanillas y la pegatina amarilla. Ocho antenas redondas en
+    el lomo (una blanca).
+  - **JSM**: sección casi cuadrada y más ancha que alta, con la boca
+    trapezoidal abierta (`casco` con `abierto`), aletas en X, ganchos, viga y
+    soporte con perfil. El `casco` admite ahora `x` (desplazado del eje).
+  - **Color**: `gris-ga` nuevo (#a6a6b2): con el `gris` del MQ-9 el visor
+    salía azulado; medido en C sobre puntos proyectados de la maqueta, render
+    0,73 de media al sol y visor 0,75, los dos gris neutro.
+  - **Marcas**: en los renders no se ve ninguna (ni escarapela ni números);
+    solo la tapa del costado delante del ala y la junta del capuchón, como
+    costuras.
+  - **Pixel HD**: sin franjas en el ala con los escalones de siempre (no hace
+    falta `desfaseLuz`). Tarjeta con `vistaTarjeta` [61, 20] (con la de todas,
+    la mitad cercana de la V salía negra) y planta regeneradas; fuera los
+    `giro-planta` 1.0 y las seis miniaturas de fuentes viejas (TWZ y New
+    Atlas: las mismas imágenes, peores). No es nave del hero.
+  - **Toma de aire rehecha** (la señaló el usuario: «tiene una puñetera toma
+    de aire centrada arriba, como todos los aviones»; en la primera vuelta
+    la puse solo en el costado izquierdo porque en C se veía a un lado, y la
+    de verdad desapareció: el mismo error del MQ-9). **Va en el centro, en
+    lo alto**: una góndola del mismo cuerpo (`lomo` del `casco`, de 0,2 a
+    0,3 m de medio ancho, hasta 0,92 m de alto) detrás del ala, abierta por
+    los dos lados. **Boca** (C, cortando con el eje): z = −0,585, centro a
+    0,64 m, unos 0,35 × 0,22 m, con labio redondo y un tabique vertical; la
+    góndola se afina hasta ella como una bala. **Salida del escape** (A):
+    z = −2,4, 0,45 × 0,29 m, lo alto a 0,91, mirando atrás, con la chapa de
+    metal detrás hasta el capuchón. Las dos encajan con el eje en las dos
+    vistas (la boca de C proyectada en A y la salida de A en C caen donde
+    deben), y en C se ven además, justo en el eje, una ranura en lo alto de
+    la góndola (z ≈ −1,1) y una toma pequeña en cuña (z ≈ −0,8), añadidas.
+    Ojo con el motor: un `casco` no tiene agujeros; si la cara de la góndola
+    tapa la boca, el fondo «hueco» sale claro. La cara de delante va detrás
+    del labio y la de atrás delante de la salida, y el fondo oscuro de cada
+    conducto, justo fuera de la cara.
+  - **Segunda vuelta de la toma** (el usuario: «dale un poco más de trabajo…
+    suavizado, agujeros, formas; el trasero cae un poco diferente»), todo
+    comparado con A y C desde sus cámaras:
+    - **Suavizado**: el `casco` admite `pLomo` (norma de la unión del lomo
+      con el cuerpo; 8 por defecto, los demás drones igual): la góndola, con
+      4, se funde con el cuerpo sin el pliegue de antes. La góndola se afina
+      más despacio hasta el labio (en C, una bala) y se estrecha al final
+      hasta el borde del escape, sin escalón visto desde delante.
+    - **Escape**: el boquete ocupa casi toda la cara de atrás de la góndola;
+      el borde es la propia góndola (en la primera vuelta asomaba el aro por
+      encima).
+    - **El trasero**: midiendo con A y C, la junta de la chapa con el
+      capuchón está en z ≈ −3,2 a ~0,49 m (antes el capuchón empezaba en
+      −3,43). El cuerpo cae detrás del escape con la cara de arriba casi
+      plana (n = 3) y algo más alto (C: ~0,6 en z = −2,85), y por debajo
+      sube antes, cerrándose en el buje (z ≈ −3,58). El capuchón es una pieza
+      más estrecha, de aluminio, encima: un escudo con el borde de arriba
+      recto y los lados en punta abajo (A); antes era un bulbo de metal que
+      ocupaba toda la cola. La chapa, de metal más oscuro que la pintura
+      (en C, 0,54 frente a 0,73 al sol; en A sale azul porque refleja el
+      cielo), casi a ras, con los cantos como costura.
+    - Probado y quitado: dos rebordes a los lados de la chapa (las rayas
+      claras de A), como cascos aparte: salían como tubos posados; las rayas
+      son los cantos de la chapa.
+  - **JSM rehecho a partir del misil de verdad** (lo pidió el usuario: «no
+    tienes que fijarte tanto del render como del tipo de armamento»). Del
+    render solo queda cómo va colgado (dos por ala, viga y soporte); la
+    forma, de las maquetas 1:1 de Kongsberg (Farnborough, ILA 2024, la
+    entrega a Japón, Bruselas, Japan Aerospace 2016), el corte de la PSAR de
+    2014 y los renders de Kongsberg (`arte/uas-fuentes/jsm/`, con su
+    `FUENTES.md`). Medidas oficiales: 4,00 m, 0,48 × 0,52 m plegado. **Ojo:
+    el primer JSM se escaló con 3,70 m** (como el NSM); el dron se queda con
+    su escala (decisión del usuario: «es una maqueta»), y el misil se
+    escribe en metros reales y se reduce entero a los 3,70 m que ocupa
+    (`KJ`). Lo que tenía mal el de antes: la «boca trapezoidal abierta» del
+    morro era la **ventana del buscador infrarrojo** (cristal oscuro en la
+    cara de abajo del morro, que da la vuelta por los costados; calca nueva
+    `ventana`, un trapecio con brillo); el cuerpo era demasiado ancho; las
+    aletas no eran así. Ahora: morro en cuchara, cuerpo más ancho que alto
+    con arista baja y panza plana, junta del radomo a 0,82 m, **toma de aire
+    en el costado izquierdo**, abajo, detrás del ala (ranura alta, solo en
+    ese lado en la maqueta de Farnborough), alas **plegadas en tijera
+    encima** (como van colgados; una hacia delante y otra hacia atrás, corte
+    de 2014), cuatro aletas de cola en X, cola redondeada con la tobera y
+    dos anclajes de 30" hasta la viga.
+  - **Revisión del usuario (5-oct-2026)**, analizada con fotos antes de tocar
+    y aprobada; hecho:
+    - **Boca del JSM**: era una calca plana. Ahora es una cavidad: el morro
+      hasta 0,25 m solo tiene la mitad de arriba (un labio que vuela) y
+      debajo, metida, la ventana (`jsm-ventana`, `lente`): dos cristales
+      planos en V (nAbajo 1,15). Calca `ventana` ya no se usa en el JSM.
+    - **Aleta ventral**: medida en B y A a la vez (esquinas de abajo
+      triangulando): borde de detrás en z = −2,02 (antes −1,98). Timón aparte
+      con su hueco (bisagra a −1,73/−1,79) y la barra que la cruza a media
+      altura (`aleta-ventral-barra`).
+    - **Línea del cuerpo**: la arista hacía una S (secciones medidas a
+      trozos); ahora es una recta (`ARISTA(z)`) de la cámara del morro a la
+      hélice. El cuerpo, un 20 % más estrecho por delante de la góndola
+      (`ANCHO`; con la silueta sobre B y C el de antes se salía por arriba) y
+      la mitad de abajo en trapecio (panza al 60 % del ancho).
+    - **Cámara**: capucha redonda en planta, bola casi esférica con la cara
+      de delante plana, lente en un tubo corto con aro oscuro, tres ventanas
+      pequeñas (dos juntas y una debajo) y la pegatina amarilla en el costado.
+    - **Toma de aire**: la boca, un 22 % más pequeña (`TOMA.k`), con la
+      góndola afinada hasta ella. **Escape al revés**: lo de abajo va más
+      atrás (corte inclinado, la boca mira arriba y atrás). Como un casco no
+      se abre por arriba, la góndola acaba en un corte recto y detrás van el
+      conducto oscuro con la cara de arriba inclinada (`escape-conducto`) y
+      dos bordes que bajan con el corte (`escape-borde-±1`). Cantos de la
+      chapa en relieve y claros (`reborde-±1`, aluminio) y las aristas del
+      capuchón como costura.
+  - **Segunda revisión (5-oct-2026)**:
+    - **Boca del JSM, otra vez** («la apertura es como una O, como una boca
+      abierta; el tuyo es una cavidad hacia abajo»). Mirando el render de
+      Kongsberg de frente y las maquetas de Farnborough y Japan Aerospace: la
+      ventana está en la **cara de delante** del morro, mirando adelante: un
+      rectángulo de esquinas redondeadas, más ancho que alto, en la mitad de
+      abajo de la cara, con su marco alrededor y dos cristales planos que se
+      juntan en una arista vertical. Ahora el morro es romo, solo existe lo
+      de encima de la ventana hasta 0,035 m y ahí el cuerpo baja de golpe;
+      en esa cara va la ventana (`jsm-ventana`, una cuña de 1,4 cm con la
+      sección casi rectangular, n = 5) y alrededor queda el marco.
+    - **Aleta ventral pegada al cuerpo**: con la panza nueva, más estrecha,
+      quedaba separada; la raíz va ahora metida (y = −0,25).
+    - **Horquilla de la cámara** (el soporte de elevación que señaló el
+      usuario en el render B): un brazo a cada lado colgado de la capucha,
+      con el eje redondo a media altura.
+    - **Escape suavizado**: fuera los dos bordes (`escape-borde`), los
+      cantos de la chapa en relieve y las aristas del capuchón (el usuario
+      los quería quitados). La góndola baja siguiendo el corte, algo por
+      debajo del conducto oscuro (de lomo plano, n = 5), y en ese tramo la
+      unión del lomo con el cuerpo va con `pLomo` 12 (con 4 abombaba el
+      centro por encima del conducto y lo partía en dos, como una pajarita).
+      La n del cuerpo pasa poco a poco de 2,3 a 3 detrás del escape (de golpe
+      dejaba una línea en el costado).
+    - **El conducto oscuro ya no sobresale por los lados** (el usuario: «la
+      oscuridad no tiene sentido que sobresalga»): más estrecho que la
+      góndola (0,18 m de medio ancho) y con los costados hundidos en ella
+      (cintura a 0,5); solo asoma por el corte.
+  - **Falta**: que lo revise el usuario; rendimiento en Zen; la ficha de la
+    bóveda dice «unos 20 m de envergadura» y la maqueta da unos 22 (no se ha
+    tocado la nota). Visto y sin hacer: la hélice no se ve en ningún render
+    (tamaño y palas supuestos).
 
 - **4-oct-2026, RQ-11 Raven en HD y pixel HD** (rama `hd-rq-11-raven`,
   fusionada en `main` y borrada; el usuario lo dio por bueno: «ahora mejor

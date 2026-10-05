@@ -38,6 +38,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El gris de los TB2 turcos, algo más oscuro y azulado que el del MQ-9
   // (medido al sol en las fotos de Teknofest 2021 y del TC-SRM: #acb8bf).
   "gris-tr": { color: "#8d999f", metal: 0, rugosidad: 0.5 },
+  // El gris claro y neutro de los renders del Wildfire (General Atomics): al
+  // sol, desde arriba, #b5b2bb de media en el render; con el gris del MQ-9 el
+  // visor salía azulado.
+  "gris-ga": { color: "#a6a6b2", metal: 0, rugosidad: 0.5 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   junta: { color: "#7d838b", metal: 0, rugosidad: 0.7 },
   mando: { color: "#a0aab6", metal: 0, rugosidad: 0.5 },
@@ -406,6 +410,17 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.fillStyle = d.color; c.fillRect(0, 0, W, H);
       break;
     }
+    case "ventana": {
+      // Trapecio con las esquinas redondeadas (arcTo en cada vértice).
+      const b = (1 - (d.abajo ?? 0.7)) * W / 2, r = Math.min(W, H) * 0.18;
+      const v: [number, number][] = [[0, 0], [W, 0], [W - b, H], [b, H]];
+      c.fillStyle = "#101418";
+      c.beginPath();
+      c.moveTo((v[0][0] + v[1][0]) / 2, 0);
+      for (let i = 1; i <= 4; i++) { const p = v[i % 4], q = v[(i + 1) % 4]; c.arcTo(p[0], p[1], (p[0] + q[0]) / 2, (p[1] + q[1]) / 2, r); }
+      c.closePath(); c.fill();
+      break;
+    }
     case "flechas": {
       // Una flecha a cada lado de la junta (la vertical del centro), la de
       // arriba apuntando a la derecha y la de abajo a la izquierda, con la
@@ -594,9 +609,9 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       textura.colorSpace = SRGBColorSpace;
       textura.anisotropy = 4;
       // La cinta americana brilla como el aluminio; el resto, mate.
-      const metal = k.dibujo.tipo === "cinta";
+      const metal = k.dibujo.tipo === "cinta", cristal = k.dibujo.tipo === "ventana";
       const m = new MeshStandardMaterial({
-        map: textura, transparent: true, depthWrite: false, roughness: metal ? 0.38 : 0.55, metalness: metal ? 0.55 : 0,
+        map: textura, transparent: true, depthWrite: false, roughness: metal ? 0.38 : cristal ? 0.15 : 0.55, metalness: metal ? 0.55 : cristal ? 0.1 : 0,
         polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4, ...sinTocarAlfa,
       });
       m.onBeforeCompile = (sh) => {
