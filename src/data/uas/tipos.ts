@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -96,9 +96,12 @@ export type Pieza = (
 // `desde`; con `remaches`, un tornillo cada tantas unidades, o, con
 // `enVertices`, uno en cada punto de la polilínea (una tapa: esquinas y
 // centros de los lados). `espejo`
-// repite la calca o la costura al otro lado (x → −x).
+// repite la calca o la costura al otro lado (x → −x). `claro`: la línea y los
+// tornillos, más claros que la pintura (en un dron negro, como el MICH-2000).
 export type Dibujo =
   | { tipo: "escarapela" }
+  // Escarapela ucraniana: disco amarillo con el centro azul (el MICH-2000).
+  | { tipo: "escarapela-ua" }
   // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;
   // `fino`: letra de palo normal en vez de la negrita ancha.
   | { tipo: "texto"; texto: string; color?: string; fino?: boolean }
@@ -142,7 +145,7 @@ export type Dibujo =
   // y alguna mancha; con poca tinta (en el pixel no sale).
   | { tipo: "desgaste" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
-export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean };
+export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
 // Una sección de un casco (ver arriba).
 // Con `lomo` (su medio ancho) el cuerpo lleva encima un lomo más estrecho,
@@ -232,6 +235,9 @@ export type Maqueta = {
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
+  // La planta de la tira de la portada sin calcas ni costuras: a ese tamaño
+  // las escarapelas del MICH-2000 salían como cuadrados.
+  plantaLisa?: boolean;
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
   // de la pasada de pixel.
   contornoPixel?: boolean;

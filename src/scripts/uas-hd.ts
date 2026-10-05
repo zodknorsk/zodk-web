@@ -43,6 +43,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // visor salía azulado.
   "gris-ga": { color: "#a6a6b2", metal: 0, rugosidad: 0.5 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
+  // El negro mate del MICH-2000: neutro, sin el punto azulado del negro de
+  // las piezas, y muy mate (con menos rugosidad refleja el cielo y desde
+  // arriba sale gris; el usuario lo quiere negro).
+  "negro-ua": { color: "#1c1d1d", metal: 0, rugosidad: 0.82 },
   junta: { color: "#7d838b", metal: 0, rugosidad: 0.7 },
   mando: { color: "#a0aab6", metal: 0, rugosidad: 0.5 },
   metal: { color: "#9aa0a8", metal: 0.85, rugosidad: 0.32 },
@@ -73,6 +77,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El cerco blanco hueso entre el módulo de la cámara y la barquilla del
   // Raven (fotos del Ejército italiano y del Ejército de Tierra).
   hueso: { color: "#d8d3c3", metal: 0, rugosidad: 0.6 },
+  // El cromatado amarillo verdoso del cohete de arranque del MICH-2000 (la
+  // foto del cohete en su caja).
+  cromato: { color: "#b9b06e", metal: 0.45, rugosidad: 0.45 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -245,6 +252,15 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.globalCompositeOperation = "destination-out";
       estrella(cx, cy + R * 0.04, R * 0.92); c.fill();
       c.globalCompositeOperation = "source-over";
+      break;
+    }
+    case "escarapela-ua": {
+      // El azul ocupa la mitad del diámetro (fotos de la fábrica).
+      const r = Math.min(W, H) / 2;
+      c.fillStyle = "#e8c000";
+      c.beginPath(); c.arc(W / 2, H / 2, r * 0.97, 0, Math.PI * 2); c.fill();
+      c.fillStyle = "#1638a8";
+      c.beginPath(); c.arc(W / 2, H / 2, r * 0.5, 0, Math.PI * 2); c.fill();
       break;
     }
     case "texto": {
@@ -593,6 +609,7 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
   // píxeles, la tinta mezclada con el transparente era un gris que se perdía
   // en los escalones de luz (no se veían ni el «CH» ni la escarapela).
   const nitidez = { value: 0 };
+  const texturas = new Map<string, CanvasTexture>();
 
   for (const k of detalles.calcas) {
     for (const lado of k.espejo ? [false, true] : [false]) {
@@ -605,13 +622,22 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       ayuda.rotateZ(((k.giro ?? 0) * Math.PI) / 180);
       const tam = new Vector3(k.tam[0], k.tam[1], Math.min(k.tam[0], k.tam[1]) * 0.8);
       const g = soloDeCara(new DecalGeometry(s.malla, s.punto, ayuda.rotation, tam), desde);
-      const textura = new CanvasTexture(dibujar(k.dibujo, k.tam[0], k.tam[1]));
-      textura.colorSpace = SRGBColorSpace;
-      textura.anisotropy = 4;
-      // La cinta americana brilla como el aluminio; el resto, mate.
+      // Las calcas iguales (los tornillos) comparten la textura.
+      const clave = JSON.stringify([k.dibujo, k.tam]);
+      let textura = texturas.get(clave);
+      if (!textura) {
+        textura = new CanvasTexture(dibujar(k.dibujo, k.tam[0], k.tam[1]));
+        textura.colorSpace = SRGBColorSpace;
+        textura.anisotropy = 4;
+        texturas.set(clave, textura);
+      }
+      // La cinta americana brilla como el aluminio; el resto, mate. Sobre una
+      // pintura muy mate (el negro del MICH), la calca, igual de mate: más
+      // brillante, reflejaba el cielo y salía pastel.
       const metal = k.dibujo.tipo === "cinta", cristal = k.dibujo.tipo === "ventana";
+      const debajo = PINTURAS[(s.malla.userData.acabado as Acabado | undefined) ?? "negro"].rugosidad;
       const m = new MeshStandardMaterial({
-        map: textura, transparent: true, depthWrite: false, roughness: metal ? 0.38 : cristal ? 0.15 : 0.55, metalness: metal ? 0.55 : cristal ? 0.1 : 0,
+        map: textura, transparent: true, depthWrite: false, roughness: metal ? 0.38 : cristal ? 0.15 : debajo > 0.7 ? debajo : 0.55, metalness: metal ? 0.55 : cristal ? 0.1 : 0,
         polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4, ...sinTocarAlfa,
       });
       m.onBeforeCompile = (sh) => {
@@ -627,9 +653,12 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     }
   }
 
-  const lineas: number[] = [], remaches: number[] = [];
-  let puntos: Points | null = null;
+  // Dos juegos: las costuras de siempre y las claras (en un dron negro, las
+  // juntas y los tornillos de metal se ven más claros que la pintura).
+  const juegos = [false, true].map(() => ({ lineas: [] as number[], remaches: [] as number[] }));
+  const puntos: Points[] = [];
   for (const k of detalles.costuras) {
+    const { lineas, remaches } = juegos[k.claro ? 1 : 0];
     for (const lado of k.espejo ? [false, true] : [false]) {
       const desde = new Vector3(...(espejar(k.desde, lado) as [number, number, number])).normalize();
       const objetivos = deIds(k.sobre);
@@ -655,30 +684,33 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       }
     }
   }
-  if (lineas.length) {
-    const g = new BufferGeometry();
-    g.setAttribute("position", new Float32BufferAttribute(lineas, 3));
-    // Finas: en las fotos, las juntas son casi solo un cambio de tono.
-    const m = new LineBasicMaterial({ color: 0x4a4f56, transparent: true, opacity: 0.22, ...sinTocarAlfa });
-    grupo.add(new LineSegments(g, m));
-    aDesechar.push(g, m);
-  }
-  if (remaches.length) {
-    const g = new BufferGeometry();
-    g.setAttribute("position", new Float32BufferAttribute(remaches, 3));
-    // Tornillos redondos y pequeños (los puntos de WebGL son cuadrados: se
-    // recortan con un círculo).
-    const circulo = document.createElement("canvas");
-    circulo.width = circulo.height = 32;
-    const c = circulo.getContext("2d")!;
-    c.fillStyle = "#fff"; c.beginPath(); c.arc(16, 16, 14, 0, Math.PI * 2); c.fill();
-    const mapa = new CanvasTexture(circulo);
-    const m = new PointsMaterial({ color: 0x5a6068, size: 1.3, sizeAttenuation: false, transparent: true, opacity: 0.55, alphaMap: mapa, alphaTest: 0.3 });
-    aDesechar.push(mapa);
-    puntos = new Points(g, m);
-    grupo.add(puntos);
-    aDesechar.push(g, m);
-  }
+  // Tornillos redondos y pequeños (los puntos de WebGL son cuadrados: se
+  // recortan con un círculo).
+  const circulo = document.createElement("canvas");
+  circulo.width = circulo.height = 32;
+  const c = circulo.getContext("2d")!;
+  c.fillStyle = "#fff"; c.beginPath(); c.arc(16, 16, 14, 0, Math.PI * 2); c.fill();
+  const mapa = new CanvasTexture(circulo);
+  aDesechar.push(mapa);
+  juegos.forEach(({ lineas, remaches }, claro) => {
+    if (lineas.length) {
+      const g = new BufferGeometry();
+      g.setAttribute("position", new Float32BufferAttribute(lineas, 3));
+      // Finas: en las fotos, las juntas son casi solo un cambio de tono.
+      const m = new LineBasicMaterial({ color: claro ? 0x6c7279 : 0x4a4f56, transparent: true, opacity: 0.22, ...sinTocarAlfa });
+      grupo.add(new LineSegments(g, m));
+      aDesechar.push(g, m);
+    }
+    if (remaches.length) {
+      const g = new BufferGeometry();
+      g.setAttribute("position", new Float32BufferAttribute(remaches, 3));
+      const m = new PointsMaterial({ color: claro ? 0xb4b9bf : 0x5a6068, size: 1.3, sizeAttenuation: false, transparent: true, opacity: claro ? 0.8 : 0.55, alphaMap: mapa, alphaTest: 0.3 });
+      const p = new Points(g, m);
+      puntos.push(p);
+      grupo.add(p);
+      aDesechar.push(g, m);
+    }
+  });
   // Colgadas de la raíz, conservando su sitio: así giran con el dron cuando se
   // inclina sobre su catapulta.
   raiz.attach(grupo);
@@ -686,7 +718,7 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
     // En el pixel, sin tornillos: a un píxel cada uno solo serían ruido.
     ver(si: boolean, conTornillos = true) {
       grupo.visible = si;
-      if (puntos) puntos.visible = conTornillos;
+      for (const p of puntos) p.visible = conTornillos;
       nitidez.value = conTornillos ? 0 : 1;
     },
     dispose() { for (const d of aDesechar) d.dispose(); grupo.removeFromParent(); },

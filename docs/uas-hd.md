@@ -213,13 +213,119 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
   arriba).
 - **En marcha: el Wildfire** (rama `hd-wildfire`, sin commit), con los
   renders oficiales; falta que lo revise el usuario. Ver el registro.
-- **Ramas**: `hd-wildfire` abierta; `uas-hd`, `hd-pixel-mq-9`,
+- **En marcha: el MICH-2000** (rama `hd-mich-2000`, subida a GitHub): la
+  forma de la 1.0 con el detalle de la fábrica y la catapulta. Falta
+  fusionarlo en `main`.
+  Ver el registro.
+- **Ramas**: `hd-mich-2000` y `hd-wildfire` abiertas; `uas-hd`, `hd-pixel-mq-9`,
   `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`, fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
 está en `main` (salvo el Wildfire, en su rama).
+
+- **5-oct-2026, MICH-2000 en HD y pixel HD** (rama `hd-mich-2000`, sin
+  commit). Lo pidió el usuario sin rehacer la maqueta («está bastante bien»,
+  «no te vuelvas loco»): pasarla a HD fijándose sobre todo en lo que se ve
+  en las fotos de la fábrica (tornillería, dibujos). La forma de la 1.0 se
+  queda; no hay medidas ni fotos para medirla mejor. Hecho:
+  - **Fuentes**: las de la 1.0 y, en `arte/uas-fuentes/mich-2000/hd/full/`
+    (fuera de Git), dos más del artículo de Oboronka que no se usaban: el
+    corte de un tramo del cuerpo (`ob-321329`) y el montaje con la silueta
+    del dron en vuelo desde abajo (`doc-321324`). Las demás del artículo son
+    mapas, un robot de la fábrica y una caja: no sirven.
+  - **Cómo leer la foto de los drones de pie** (`cola-winglets.jpg`, mal
+    descrita en la 1.0 como «por detrás»): son las alas con el cuerpo, de
+    pie sobre la junta del morro, vistas **desde arriba**, con el borde de
+    salida arriba; los morros (con los canards y la escarapela) van aparte,
+    de pie delante. Los mandos van en la cara de arriba, como en el Shahed y
+    en la foto del centro del ala (el ala, del derecho en su soporte).
+  - **Pintura**: acabado nuevo `negro-ua`, neutro (el `negro` sale algo
+    azulado) y muy mate (ver la revisión). Elevones en negro (en la 1.0,
+    gris de mando).
+  - **Morro** (foto del morro de cerca): junta de la tapa de la punta
+    (z = 1,14) y del anillo de los canards (0,95), con un tornillo arriba en
+    cada una; canards más altos (y = 0,065: en la foto y en el «333» salen de
+    la parte alta del morro), algo más finos y con la **pieza de metal** de
+    la esquina de detrás de la punta; **escarapela** como calca (nueva,
+    `escarapela-ua`) bajo el canard, con el centro a la altura del borde de
+    salida de su raíz.
+  - **Tapa del costado izquierdo** (x > 0): la ranura negra del pulsador,
+    15 × 4 cm, con ocho tornillos de **arandela blanca**, entre la escarapela
+    y el ala. En la foto parece más lejos de la escarapela; con el ala de la
+    1.0 no cabe más atrás (en esa foto el cuerpo no tiene el ala puesta).
+  - **Juntas del cuerpo**: los anillos `junta` de la 1.0 pasan a costuras,
+    con un anillo de tornillos (foto de las secciones); la de 0,55 pasa a
+    0,42 (cruzaba la tapa del costado). Siguen a ojo.
+  - **Ala, por arriba** (los drones de pie): dos **mandos por elevón**, a 0,3
+    y 0,62 m: la tapa del servo con un tornillo en cada esquina, el brazo rojo
+    que asoma por una ranura, la varilla de metal y el cuerno blanco en el
+    elevón. Una tapa cuadrada atornillada entre los dos, la **escarapela**
+    hacia la punta, «**НЕ БРАТЬСЯ**» en blanco en cada elevón (leído en la
+    foto, del revés: se lee desde detrás del dron), y la tapa del lomo detrás
+    del ala con tres pestillos.
+  - **Costuras y tornillos** en claro (`claro` en la costura: línea
+    gris clara y tornillos de metal; en un dron negro, los oscuros no se
+    ven). Los tornillos que se miran de cerca van como calcas (`disco`),
+    que crecen con el zoom; las calcas iguales comparten la textura.
+  - **Pixel HD**: la pintura al sol, desde arriba, cae en 2,7–2,9
+    escalones: `desfaseLuz` −0,3. Tarjeta con `vistaTarjeta` [65, 30] (como
+    el Shahed: casi de lado, el ala en delta no se ve) y planta regeneradas;
+    fuera los `giro-planta` 1.0.
+  - **Visto y sin tocar**: las letras blancas grandes «H» y «V» de las alas
+    de pie (marcas de la fábrica: el «333» no las lleva; el usuario no las
+    quiere) y la placa de dos conectores de una de ellas, sin sitio claro.
+  - **Primera revisión del usuario (5-oct-2026)**, hecho:
+    - **Negro, no gris oscuro**: con rugosidad 0,6 el ala reflejaba el cielo
+      y desde arriba salía gris (~#666; bajar el color casi no cambiaba
+      nada). `negro-ua` pasa a #1c1d1d con rugosidad 0,82: desde arriba,
+      ~#323333, y la forma se sigue leyendo en 3D. `desfaseLuz` +0,15 (la
+      pintura cae en 1,35 escalones). Planta y tarjeta, negras.
+    - **Canard un 25 % más grande**: punta en x = 0,44, cuerda de 0,18 en la
+      raíz (de la junta de la punta a la del anillo) y 0,09 en la punta.
+    - **Hélice de 0,84 m** (un tercio de la envergadura; la 1.0, 0,56): las
+      de las alas de la fábrica china dan ~0,32 de la envergadura y la
+      silueta en vuelo algo más.
+    - Las letras «H» y «V» de la fábrica, **no** (decisión del usuario).
+    - **Escarapelas desde arriba, desvaídas** (las señaló el usuario en
+      pixel): la calca, con rugosidad 0,55 sobre el negro mate, reflejaba el
+      cielo y salían amarillo crema y azul lavanda (con colores más oscuros
+      no se arreglaba). Ahora, sobre una pintura muy mate (rugosidad > 0,7),
+      la calca va igual de mate; para eso cada malla lleva su `acabado` en
+      `userData`. Los demás drones no cambian.
+  - **Pies de foto del artículo**: `fuselaje-secciones.jpg` es «Бойова
+    частина», la **cabeza de combate** (el tramo del morro con la
+    escarapela); `cola-winglets.jpg`, «"Тушки"», los cuerpos de los drones
+    por terminar; y hay una foto del **cohete de arranque** en su caja
+    (`hd/full/ob-321333-booster.jpg`, «Ракетний прискорювач для старту
+    дрону українського виробництва»). El artículo cuenta que despega con
+    cohetes (бустери) desde lanzadores: RATO, como dice el glosario.
+  - **Catapulta** (la pidió el usuario, «igual que en el Shahed»; con lo
+    que no se ve, aproximado). Despega con **RATO**: el artículo de Oboronka
+    cuenta que lo sacan de lanzadores con cohetes (бустери) y que acabaron
+    haciéndolos ellos. La rampa, de las fotos del «333» al atardecer: dos
+    largueros negros en U a ±0,13 m, calados con agujeros, de z = −1,25 (casi
+    en el suelo) a 1,75 (0,35 m por delante del morro), inclinados 22°; dos
+    caballetes en A (bajo el morro, z = 1,2, y bajo el ala, z = 0) con aspa,
+    travesaño, una riostra entre ellos y patas de husillo sobre discos a
+    ±0,45 m; patines en la panza. El **cohete**, de la foto en su caja: cuerpo
+    cromatado (acabado nuevo `cromato`), tramo de delante de metal
+    escalonado, abrazadera negra y, en la tobera, una silla de bronce con dos
+    pasadores; 15 cm por algo más de 1 m, bajo la panza entre los largueros,
+    con dos colgadores (cómo se sujeta no se ve). Partes H («Rampa de
+    lanzamiento») e I («Cohete de arranque»), fuente nueva `cohete`.
+  - **«Despegue» en las características** (lo pidió el usuario): fila nueva
+    en las ocho notas de la bóveda, detrás de «Motor»: RATO desde una rampa
+    (MICH, Shahed, Geran; en los dos últimos estaba dentro de «Motor» y se
+    quitó de ahí), desde pista con tren (TB2, MQ-9), a mano (Raven), VTOL
+    (X10D) y no publicado (Wildfire). En la web sale al importar, que solo
+    se hace en `main`.
+  - **Planta de la portada lisa** (el usuario: las escarapelas «se ven
+    cuadradas»; si no se leen como un círculo amarillo y azul, nada): a 72 px
+    cada escarapela ocupa unos 4 px. `plantaLisa` en la maqueta pinta la
+    planta sin calcas ni costuras; queda el dron negro.
+  - Falta: rendimiento en Zen; fusionar en `main` cuando lo diga el usuario.
 
 - **4-oct-2026, Wildfire en HD y pixel HD** (rama `hd-wildfire`, sin
   commit). Lo eligió el usuario entre el Wildfire y el MICH-2000, con los

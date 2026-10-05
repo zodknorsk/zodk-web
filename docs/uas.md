@@ -421,6 +421,9 @@ generadores de `arte/` leen estos archivos con Node.
   la maqueta. El visor pone el botón «Catapulta» y, al pulsarlo, enseña esas
   piezas e inclina el dron `cabeceo` grados morro arriba (`?catapulta=1` en
   la URL). Las piezas, en los ejes del dron.
+- **Rampa con cohete** (el MICH-2000): la misma `catapulta`, con una viga
+  de dos largueros, caballetes en A y el cohete entre los largueros; acabado
+  `cromato` para el cohete cromatado.
 - **Ángulo propio de la tarjeta de `/uas`**: `vistaTarjeta: [acimut,
   elevación]` en la maqueta (si no, 79°, 11°). El TB2 lleva [61, 20], el
   ángulo que eligió el usuario con una captura del visor; para sacarlo,
@@ -430,6 +433,11 @@ generadores de `arte/` leen estos archivos con Node.
   él, cada pala es una tabla. Con `punta`, afiladas hasta una punta (las
   de plástico del Raven); `buje: 0` quita la bola blanca del centro (cuando
   un cono la tapa).
+- **Dron negro en HD** (el MICH-2000): acabado `negro-ua` (neutro) y
+  costuras con `claro` (línea gris clara y tornillos de metal; las de
+  siempre, oscuras, no se ven sobre negro). Los tornillos que se ven de
+  cerca, mejor como calcas `disco` (crecen con el zoom; los remaches de las
+  costuras son puntos de 1,3 px).
 - **Zoom del visor**: hacia el cursor (`zoomToCursor` de OrbitControls),
   de 1/16 a 1,2 veces la distancia de encuadre; al alejarse, el punto de
   mira vuelve al centro (`controles` «change» en `visor-uas.ts`).
@@ -952,6 +960,15 @@ la planta sale de las fotos de la fábrica china y del lanzador.
 | centro-ala-motor.jpg | Centro del ala y soporte del motor | https://img.mezha.ua/mezha/system/MediaPhoto/photo/c/7/321337/c749f73c418ea7150269e8dd965264391786534591.jpg |
 | ztk150-fabrica-china-a.jpg | ZTK-150 en China: planta completa | https://img.mezha.ua/mezha/system/MediaPhoto/photo/d/8/321349/d85dbea0c9b1a14fbac86d2689411b751786538636.jpeg |
 | ztk150-fabrica-china-b.jpg | La misma nave, más cerca | https://24tv.ua/resources/photos/news/202608/3122320_17882710.jpg |
+
+Para el HD (5-oct-2026), en `arte/uas-fuentes/mich-2000/hd/full/` (fuera de
+Git), dos más del mismo artículo. Ojo con `cola-winglets.jpg`: son las alas
+de pie vistas desde arriba (ver `docs/uas-hd.md`).
+
+| Archivo (hd/full) | Qué enseña | URL |
+|---|---|---|
+| ob-321329.jpg | Un tramo del cuerpo cortado con una radial: la junta | https://img.mezha.ua/mezha/system/MediaPhoto/photo/6/7/321329/67b03cc737462c1ea36a344b676b3b551786534126.jpg |
+| doc-321324.jpg | Montaje con la silueta del dron en vuelo, desde abajo | https://img.mezha.ua/mezha/images/doc/7/4/321324/74a47bc4f4eae82588040bf732587b31.jpeg |
 
 **Skydio X10D.** Medidas oficiales de la ficha técnica de Skydio (79 x 65 x
 14,5 cm desplegado).
