@@ -67,6 +67,25 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+/* Portada de un seguimiento: «Cronología» centrado y las semanas en dos
+   columnas (src/lib/cronologia-columnas.mjs); en móvil, una sola. */
+article .cronologia-titulo {
+  text-align: center;
+}
+article .cronologia-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3rem;
+}
+article .cronologia-col > :first-child {
+  margin-top: 0;
+}
+@media (max-width: 640px) {
+  article .cronologia-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Imágenes con versión de día y de noche («nombre-claro» y «nombre-oscuro» en
    la bóveda; el importador las pone seguidas): de día, solo la clara; de
    noche, solo la oscura. Una «-claro» sin pareja se ve siempre. */

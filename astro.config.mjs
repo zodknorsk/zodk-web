@@ -7,6 +7,7 @@ import { satteri } from "@astrojs/markdown-satteri";
 import glosario from "./src/lib/glosario-enlaces.mjs";
 import banderasTablas from "./src/lib/banderas-tablas.mjs";
 import carruselFotos from "./src/lib/carrusel-fotos.mjs";
+import cronologiaColumnas from "./src/lib/cronologia-columnas.mjs";
 
 // Los análisis tienen además una página en /notas/<slug> que solo redirige
 // (antes vivían allí).
@@ -34,8 +35,10 @@ export default defineConfig({
   // Sätteri es el procesador de Markdown que Astro 7 usa de serie. En las
   // tablas del hangar, las banderas en pixel art (src/lib/banderas-tablas.mjs).
   // En el armamento, las fotos seguidas van en carrusel (src/lib/carrusel-fotos.mjs).
+  // En la portada de un seguimiento, la cronología va en dos columnas
+  // (src/lib/cronologia-columnas.mjs).
   markdown: {
-    processor: satteri({ hastPlugins: [glosario, banderasTablas, carruselFotos] }),
+    processor: satteri({ hastPlugins: [glosario, banderasTablas, carruselFotos, cronologiaColumnas] }),
   },
 
   // Astro 7 quita por defecto los espacios con reglas de JSX: un salto de línea
