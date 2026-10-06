@@ -173,7 +173,11 @@ de cada `##`:
   entender el hecho. **Ni informe técnico ni redacción de colegio.**
 - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`), de este
   dron y no de sus variantes (buscar `"x.com" <dron>`). Si no se encuentra
-  ninguno, la sección no va y se dice.
+  ninguno, la sección no va y se dice. x.com no deja leer los tuits; para
+  ver el texto, la fecha y si lleva vídeo de cada candidato:
+  `curl -s "https://cdn.syndication.twimg.com/tweet-result?id=<id>&token=a"`
+  (JSON con `text`, `created_at` y `mediaDetails[].type`: `video` o
+  `photo`).
 - `## Fuentes`: una línea por fuente,
   `* **Medio**, mes año - Título real ([fuente](url))`:
   - el medio en negrita, con el nombre que use el usuario;
