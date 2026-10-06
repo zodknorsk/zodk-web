@@ -1,7 +1,7 @@
 // Maqueta del MICH-2000 sacada de fotos públicas (Oboronka, el ejemplar «333»
 // en el lanzador y las alas del ZTK-150 en la fábrica china). No hay medidas
 // publicadas: las proporciones son a ojo. Las fotos, a tamaño completo, en
-// arte/uas-fuentes/mich-2000/ (fuera de Git; enlaces en docs/uas.md).
+// arte/uas-fuentes/mich-2000/ (fuera de Git; enlaces en docs/hangar-de-uas.md).
 // En HD (docs/uas-hd.md), la forma de la 1.0 con el detalle de las fotos de
 // la fábrica ucraniana: juntas y tornillos del morro, la tapa del costado,
 // los mandos de los elevones, las tapas del ala y las escarapelas.

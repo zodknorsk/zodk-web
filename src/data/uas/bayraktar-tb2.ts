@@ -669,7 +669,7 @@ const maqueta: Maqueta = {
   contornoPixel: true,
   // Ángulo de la tarjeta de /uas, sacado de una captura del visor con
   // arte/encajar-camara.mjs (acimut 61°, elevación 20°), en vez del de todas
-  // (79°, 11°). Ver docs/uas.md, «Ángulo propio de la tarjeta».
+  // (79°, 11°). Ver docs/hangar-de-uas.md, «Ángulo propio de la tarjeta».
   vistaTarjeta: [61, 20],
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("TR"),

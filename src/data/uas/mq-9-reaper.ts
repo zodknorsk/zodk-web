@@ -7,7 +7,7 @@
 // Todo se escribe en metros y al final se pasa a unidades de la maqueta, a
 // la misma escala que el Wildfire (1 unidad = 7,8 m). Imágenes a tamaño
 // completo en arte/uas-fuentes/mq-9-reaper/ (fuera de Git; enlaces en
-// docs/uas.md).
+// docs/hangar-de-uas.md).
 import type { Calca, Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";
 import { bandera } from "../banderas.ts";
 

@@ -30,8 +30,9 @@ Cada push a `main` compila y publica la web sola
 | [`docs/tierra.md`](docs/tierra.md) | La portada: la Tierra, el título, la noche, qué se probó y rechazó |
 | [`docs/luna.md`](docs/luna.md) | `/luna`: la Luna, los alunizajes, los relés y la Orion |
 | [`docs/marte.md`](docs/marte.md) | `/marte`: Marte y los amartizajes |
-| [`docs/uas.md`](docs/uas.md) | El Hangar de UAS: fichas de drones, el visor, la tira de la portada y cómo se hace un dron nuevo |
-| [`docs/uas-hd.md`](docs/uas-hd.md) | Los drones en HD y en pixel HD: objetivos para pasar un dron, estado y lo probado |
+| [`docs/nuevodron.md`](docs/nuevodron.md) | Cómo se hace un dron nuevo, de la nota de Obsidian al dron publicado |
+| [`docs/hangar-de-uas.md`](docs/hangar-de-uas.md) | El Hangar de UAS: fichas de drones, el visor, la tira de la portada, el glosario y el armamento |
+| [`docs/uas-hd.md`](docs/uas-hd.md) | Historia del paso de los drones al HD y al pixel HD |
 | [`docs/astros.md`](docs/astros.md) | Lo común a los tres: motores, gestos, vuelos, nombres, versiones de datos |
 | [`docs/rendimiento.md`](docs/rendimiento.md) | Que no caliente: cómo medir y qué se aprendió |
 | [`docs/logo.md`](docs/logo.md) | El logo animado y los iconos |
@@ -53,7 +54,7 @@ src/
     eventos/, notas/index    Solo redirecciones a las direcciones nuevas
     uas/index.astro          /uas: la enciclopedia de drones, con filtro por país
     uas/[...slug].astro      La ficha de cada dron (con su visor), el glosario,
-                             el armamento y cada munición (docs/uas.md)
+                             el armamento y cada munición (docs/hangar-de-uas.md)
     404.astro                La página de las direcciones que no existen
     rss.xml.ts, robots.txt.ts
   layouts/PageLayout.astro   El esqueleto común: <head>, cabecera, pie

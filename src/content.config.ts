@@ -89,7 +89,7 @@ const seguimientos = defineCollection({
 
 // --- uas: la enciclopedia de drones. Una nota de la carpeta «Hangar de UAS»
 // de la bóveda = una ficha en /uas/<slug>. Si hay maqueta
-// (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/uas.md). El
+// (src/data/uas/<slug>.ts), la ficha lleva el visor (docs/hangar-de-uas.md). El
 // glosario y el armamento viven en la misma carpeta, pero no son drones
 // (`glosario`, `armamento`, y cada munición, `municion`, en
 // /uas/armamento/<slug>).

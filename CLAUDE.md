@@ -36,8 +36,9 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/tierra.md` | La portada (la Tierra) |
 | `docs/luna.md` | `/luna` |
 | `docs/marte.md` | `/marte` |
-| `docs/uas.md` | Hangar de UAS: fichas de drones, visor y tira de la portada. **Guion completo para hacer un dron nuevo desde cero** |
-| `docs/uas-hd.md` | Drones en HD y en pixel HD: objetivos para pasar un dron, estado y lo probado |
+| `docs/nuevodron.md` | **Cómo hacer un dron nuevo**, de la nota de Obsidian al dron publicado (con `/nuevodron`). Para un dron nuevo, solo este |
+| `docs/hangar-de-uas.md` | Todo lo del Hangar de UAS: fichas, visor, tira de la portada, glosario, armamento; decisiones, lo rechazado y las fotos de cada dron hecho |
+| `docs/uas-hd.md` | Historia del paso de los drones al HD y al pixel HD (cerrado el 6-oct-2026) |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
 | `docs/contenido.md` | Importador de Obsidian; secciones (análisis, operaciones, seguimiento) por el `tipo`; tuits |
 | `docs/rendimiento.md` | Consumo en Zen: cómo medir |
@@ -47,8 +48,9 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 ## Estado
 
 - **Proyecto UAS fusionado en `main` (27-sep-2026)**: el «Hangar de UAS»
-  (fichas de drones en `/uas`, visor 3D y pixel, tira en la portada). Receta,
-  estado y decisiones en `docs/uas.md`; un dron nuevo va en `main`. La rama
+  (fichas de drones en `/uas`, visor 3D y pixel, tira en la portada). Estado
+  y decisiones en `docs/hangar-de-uas.md`; un dron nuevo se hace con
+  `docs/nuevodron.md` y va en `main`. La rama
   `uas-project` se deja en GitHub como registro.
 - **Los tres astros, publicados.** La Tierra entera en la portada y el
   repaso de todo el repositorio (carpetas `arte/` y `docs/`, CSS partido por

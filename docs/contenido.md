@@ -69,7 +69,7 @@ de UAS (MALE, jamming…) o una munición del armamento (Hellfire, GBU-38…)
 se enlaza solo y enseña su tarjeta al pasar el ratón (las tablas cuentan
 aparte: la primera vez en la tabla también se enlaza). **Solo si está escrito
 igual que en el glosario o el armamento**: al escribir notas en la bóveda,
-usar ese nombre exacto. Detalles en `docs/uas.md` («El glosario»).
+usar ese nombre exacto. Detalles en `docs/hangar-de-uas.md` («El glosario»).
 
 ## El importador (`scripts/importar-notas.mjs`)
 

@@ -87,7 +87,7 @@ const EN_ESTA_RAMA = process.argv.includes("--en-esta-rama");
 
 // Las notas de los proyectos van por su etiqueta, sea cual sea su tipo.
 const ETIQUETAS_PROYECTO = new Set(["luna", "marte", "blog"]);
-// El Hangar de UAS: sus notas son fichas de drones en /uas (docs/uas.md),
+// El Hangar de UAS: sus notas son fichas de drones en /uas (docs/hangar-de-uas.md),
 // salvo el glosario y el armamento (notas que empiezan por «Glosario» y por
 // «Armamento»), que son páginas aparte. Las municiones son una nota cada una
 // en la carpeta «Armamento» (junto a la nota índice) y van en
@@ -458,7 +458,7 @@ function saltosEnListas(cuerpo) {
  * Sección `## Visor` de las notas de drones (enciclopedia de UAS): si hay
  * maqueta para esta nota (src/data/uas/<slug>.ts), la sección (título
  * incluido: en la web no sale) se cambia por un hueco donde la ficha pone el
- * visor; si no hay maqueta, se quita. Ver docs/uas.md.
+ * visor; si no hay maqueta, se quita. Ver docs/hangar-de-uas.md.
  */
 function colocarVisor(cuerpo, slug) {
   const seccion = /^##[ \t]+Visor[ \t]*\n[\s\S]*?(?=^##[ \t]|(?![\s\S]))/m;

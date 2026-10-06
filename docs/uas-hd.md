@@ -1,6 +1,10 @@
 # UAS HD: los drones del hangar en versión 2.0
 
-El visor del Hangar de UAS (ver `docs/uas.md`) pinta cada dron como una
+> Historia, cerrada el 6-oct-2026 (el X10D fue el último en pasar al HD).
+> Para hacer un dron nuevo, `docs/nuevodron.md`; si algo de aquí choca,
+> manda ese.
+
+El visor del Hangar de UAS (ver `docs/hangar-de-uas.md`) pinta cada dron como una
 maqueta: piezas sencillas (tubos, placas, alas) de un solo color y líneas de
 arista. El usuario pidió el 30-sep-2026 una **versión 2.0**: que el modo
 Maqueta deje de parecer una maqueta y sea «el propio dron, bien pintado, en
@@ -15,7 +19,7 @@ Cuando el usuario pida «pasa el <dron> al HD» (o «mejora el <dron> a la
 2.0»), esto es lo que tiene que cumplir el resultado. Lo fijó el usuario el
 1-oct-2026, después del MQ-9 y sus cuatro revisiones (ver el registro de
 abajo). El cómo, las piezas y las herramientas están en «Dónde estamos» y en
-`docs/uas.md`.
+`docs/hangar-de-uas.md`.
 
 **Calidad antes que rapidez.** Un dron en HD se trabaja despacio y bien; no
 se enseña una versión rápida para que el usuario la corrija.
@@ -26,7 +30,7 @@ hacen desde el principio en HD y pixel HD.
 
 **Antes de empezar**
 
-- Leer este documento y `docs/uas.md`.
+- Leer este documento y `docs/hangar-de-uas.md`.
 - Rama propia (`hd-<slug>`); al fusionar en `main` se borra.
 - Preguntar al usuario solo lo que no está fijado: qué avión concreto da
   las marcas y con qué carga va. Ya está decidido y no se pregunta: estilo
@@ -273,7 +277,7 @@ está en `main` (salvo el Wildfire y el X10D, en su rama).
     (−0,4; 14,7), el eje de cabeceo a 10,6 de alto y en z = 19,4 (triangulado
     en las fotos 2 y 4), la caja de 7,3 × 5,75 × 5,2 cm con su cara (de la
     vista de frente de Skydio, c69).
-  - **Piezas nuevas** del motor (ver `docs/uas.md`): `viga`, `prisma` (con
+  - **Piezas nuevas** del motor (ver `docs/hangar-de-uas.md`): `viga`, `prisma` (con
     `eje: "z"`), `pila`, `girar` en cualquier pieza, `lados` en la varilla,
     hélice con `forma`, `tramo`, `inversa` y `paso`; calcas `skydio` y
     `carbono`; acabados `gris-x10` y `azul-x10`.
@@ -1256,7 +1260,7 @@ está en `main` (salvo el Wildfire y el X10D, en su rama).
     percha (la de antes quedaba por delante).
   - **Raíz del ala y cuerpo, una sola pieza**: el `casco` admite un
     ensanche (`costado`, `costadoArriba`, `sobreArista`, `bajoArista`, ver
-    `docs/uas.md`). La arista nace en la punta del morro, sube por el
+    `docs/hangar-de-uas.md`). La arista nace en la punta del morro, sube por el
     costado y se abre en la raíz del ala (planta del plano); por arriba, un
     empalme cóncavo sube hasta el pie del lomo, sin hombro por encima del ala
     (foto polaca de frente); por abajo, otro baja a la panza. El ala, delgada,

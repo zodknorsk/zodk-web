@@ -1,4 +1,7 @@
-# UAS: el hangar de drones, las fichas y el visor
+# Hangar de UAS: el hangar de drones, las fichas y el visor
+
+> **Para hacer un dron nuevo, `docs/nuevodron.md`** (con `/nuevodron`). Este
+> documento recoge todo lo demás del Hangar y su historia.
 
 La enciclopedia de UAS de hegoimarquez.com («la gran enciclopedia de los UAS»; en la
 web, **«Hangar de UAS»**): una nota por dron en la bóveda
@@ -17,10 +20,8 @@ cuatro Hellfire y dos GBU-12, con el tren fuera), RQ-11 Raven (EE. UU., de
 mano, con el morro de gimbal del Ejército de Tierra), Bayraktar TB2
 (Turquía, con cuatro MAM-L), Shahed-136 (Irán, ala en delta, en el gris
 claro de los iraníes) y Geran-2 (Rusia, la versión rusa del Shahed, en
-negro). **Este documento es la receta**: con
-él se tiene que poder hacer un dron nuevo desde cero, sin más contexto. Al
-final, lo que hay que respetar, lo que se probó y el usuario rechazó, y las
-fotos de cada maqueta.
+negro). Al final, lo que hay que respetar, lo que se probó y el usuario
+rechazó, y las fotos de cada maqueta.
 
 ## Estado
 
@@ -207,6 +208,10 @@ Tierra turco de Teknofest 2021, gris propio y tarjeta y planta en pixel HD.
 Lo pendiente, en `docs/uas-hd.md`.
 
 ## Pedir una ficha nueva: el guion completo
+
+> Desde el 6-oct-2026, el guion y la receta están en `docs/nuevodron.md`. Lo
+> de aquí y la «Receta» de abajo quedan como historia; si chocan, manda
+> `docs/nuevodron.md`.
 
 El usuario pide «hazme la ficha del <dron>» (a veces con tuits o enlaces).
 Hay que entregar: **la nota en Obsidian, la maqueta con su visor y su pixel

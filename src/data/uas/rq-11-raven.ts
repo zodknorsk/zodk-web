@@ -4,7 +4,7 @@
 // del Ejército de Tierra en la misión de la OTAN en Eslovaquia, en octubre de
 // 2024 (fotos de El Español y de Defensa.com); la forma, de fotos de Raven del Ejército de EE. UU., de la Guardia
 // Nacional, del Ejército italiano y de Raven checos (arte/uas-fuentes/
-// rq-11-raven/, fuera de Git; enlaces en docs/uas.md).
+// rq-11-raven/, fuera de Git; enlaces en docs/hangar-de-uas.md).
 // Medidas de la ficha del Ejército de Tierra (1,4 m de envergadura, 0,91 m de
 // largo). El perfil, de la foto de perfil en vuelo de Spangdahlem (casi sin
 // perspectiva), sacado columna a columna contra el cielo a 1149 px/m.
