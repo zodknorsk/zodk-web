@@ -209,22 +209,176 @@ recogido y armado; el TB2 recoge solo la rueda del morro.
 - **Pendiente**: el rendimiento en Zen (`docs/rendimiento.md`; el Shahed con
   la catapulta, 150 piezas); las maquetas
   en espejo (abajo, «naves de la portada en pixel HD»); el zoom de los
-  visores (abajo, «Para el final»); pasar los demás drones (objetivos de
-  arriba).
+  visores (abajo, «Para el final»). Ya no se pasan más drones al HD: el
+  X10D es el último (lo decidió el usuario el 6-oct-2026).
 - **En marcha: el Wildfire** (rama `hd-wildfire`, sin commit), con los
   renders oficiales; falta que lo revise el usuario. Ver el registro.
 - **Cerrado también el MICH-2000** (5-oct-2026): la forma de la 1.0 con el
   detalle de la fábrica y la catapulta; fusionado en `main` y publicado,
   rama `hd-mich-2000` borrada. Ver el registro.
   Ver el registro.
-- **Ramas**: ninguna abierta; `hd-mich-2000`, `hd-wildfire`, `uas-hd`,
+- **Cerrado el Skydio X10D** (6-oct-2026), el último dron que pasa al HD:
+  sacado de cinco fotos de un X10D de verdad que hizo el usuario, con tres
+  vueltas de revisión; fusionado en `main` y publicado, rama
+  `hd-skydio-x10d` borrada. Ver el registro.
+- **Ramas**: `hd-skydio-x10d`, `hd-mich-2000`, `hd-wildfire`, `uas-hd`,
   `hd-pixel-mq-9`, `hd-bayraktar-tb2`, `hd-shahed-136` y `hd-rq-11-raven`,
   fusionadas y borradas.
 
 ### Registro
 
 Cada vuelta, tal como se fue apuntando. Lo que aquí dice «sin commit» ya
-está en `main` (salvo el Wildfire, en su rama).
+está en `main` (salvo el Wildfire y el X10D, en su rama).
+
+- **6-oct-2026, Skydio X10D en HD y pixel HD** (rama `hd-skydio-x10d`,
+  fusionada en `main` y borrada). El usuario sacó cinco fotos de un X10D real, en el suelo con las
+  hélices plegadas (`arte/uas-fuentes/skydio-x10d/hd/real1…real5.jpg`, fuera
+  de Git): 1 de frente por la izquierda, 2 de tres cuartos, 3 el sensor en
+  la mano, 4 de lado y por detrás, 5 desde arriba. Además, las 81 imágenes
+  de skydio.com (`cand/`; las mejores, c02, c16, c25, c26, c48, c69). Para
+  él lo importante: los cuatro brazos con sus hélices, el cuerpo y el
+  gimbal. Marcas: solo el logo de Skydio (lo único que se ve en sus fotos).
+  Hecho:
+  - **Cómo se midió** (herramientas en `hd/tools/`, con un Python con
+    numpy, scipy y OpenCV): en las cinco fotos se marcaron los puntos que se
+    reconocen en varias (ejes de los motores, apoyos de las patas, las tres
+    cámaras de navegación de arriba, el logo, los tornillos azules del
+    frente, el hexágono y los cuatro topes de goma de la jaula;
+    `hd/rec/puntos.json`). `pnp.py` saca la cámara de cada foto por
+    separado y `ajuste.py` encaja a la vez las cinco cámaras y los puntos
+    (los de los lados en pareja simétrica): **error medio de 2 a 5 px por
+    foto** (`rec/puntos.ajuste.json`). La escala, del plano de la foto 5
+    (14,8 px/cm, con las hélices de 16 cm, ver abajo). Después
+    `enderezar.py` endereza una foto sobre un plano de la maqueta con rejilla
+    en cm (la planta en la foto 5, el costado en la 4), `medir.py` lleva un
+    píxel a 3D (cortando con un plano o triangulando en dos fotos) y
+    `a-visor.py` pasa las cámaras a `ajustes/rN.json` para
+    `arte/comparar-foto.mjs`.
+  - **Error por el camino**: el `reconstruir.py` del Wildfire no encontraba
+    las cámaras (las buscaba a 40 m con teleobjetivo; el móvil está a medio
+    metro con gran angular) y, con los ejes de la mano equivocada (lo «_R»
+    en x positiva), PnP daba 60–80 px de error. Con la maqueta en espejo (la
+    derecha real del dron es x negativa), 2–5 px.
+  - **Medidas** (cm, y desde el suelo): motores de delante en (±23,5; 20,0),
+    de detrás en (±21,8; −13,2); patas en el suelo en (±25,6; 21,4) y
+    (±23,9; −15,1). **Los motores de delante van más altos que los de
+    detrás** (tapa a 11,2 frente a 10,1, y los brazos a 7,2 frente a 6,3),
+    al revés que en la 1.0: lo dicen las fotos 1, 2 y 4 a la vez (el texto
+    de la parte se corrigió). Cara de arriba del cuerpo a 12,6; cámaras de
+    detrás a 11,7 sobre los hombros. Brazos rectos (foto 5 enderezada):
+    2,9 cm de ancho en el medio y 2,2 junto al motor, con un ensanche al
+    llegar al cuerpo, y 2 cm de alto. La jaula: placa de carbono a 11,9 con
+    los topes de goma, otra negra debajo y, en las puntas, los topes grises,
+    que bajan solo a 10 cm (no hasta el suelo). Gimbal: la cabeza de giro en
+    (−0,4; 14,7), el eje de cabeceo a 10,6 de alto y en z = 19,4 (triangulado
+    en las fotos 2 y 4), la caja de 7,3 × 5,75 × 5,2 cm con su cara (de la
+    vista de frente de Skydio, c69).
+  - **Piezas nuevas** del motor (ver `docs/uas.md`): `viga`, `prisma` (con
+    `eje: "z"`), `pila`, `girar` en cualquier pieza, `lados` en la varilla,
+    hélice con `forma`, `tramo`, `inversa` y `paso`; calcas `skydio` y
+    `carbono`; acabados `gris-x10` y `azul-x10`.
+  - **Forma**: cuerpo en caja con la cara de arriba achaflanada y los
+    hombros de detrás más bajos (la «Y» de la foto 5); el escalón del frente
+    con los dos tornillos azules; brazos `viga`; la base gris de cada motor,
+    que sigue como pata sin escalón (más ancha de delante a atrás que de
+    lado, fotos 2 y 4); motores con el bobinado de cobre abajo, la campana y
+    la tapa; hélices de tres palas con la raíz gruesa y la **franja azul**
+    del borde de ataque (más ancha en la punta, con un escalón; fotos 2 y
+    5), cada pareja en diagonal girando al revés. Gimbal: cabeza de giro,
+    **un solo brazo de cabeceo**, por la izquierda (x positiva), hasta el
+    motor de cabeceo; la caja corrida a la derecha con el disipador de
+    aletas, las tres ranuras y los tres objetivos (el térmico, el grande, a
+    x negativa, en su aro saliente). Probado y quitado: una horquilla con un
+    brazo a cada lado (en las fotos 1, 3 y 5 al otro lado de la caja no hay
+    brazo).
+  - **Detalle**: el logo de Skydio (marca y nombre) delante de la cámara de
+    navegación del centro, que se lee desde detrás, como en la foto 5;
+    anillos azules de las cámaras; fibra de carbono de la jaula (sarga);
+    tornillos azules del frente, de la jaula y del costado; costuras de la
+    junta de la carcasa, la tapa del costado izquierdo, el hexágono y la «Y»
+    de detrás; el botón del costado; las dos ranuras de la base de cada
+    motor.
+  - **Color**: `gris-x10` (#b8cad2): al sol, en la cara de arriba, el render
+    da #d9dfe3 y las fotos #dbe4e7 de media (fotos 2 y 5, en los mismos
+    puntos). Las puntas, `azul-x10`. Las diferencias de luz en los costados
+    son de la luz de cada foto (comprobado con la foto 4 enderezada: la
+    altura del cuerpo cuadra).
+  - **Pixel HD**: sin franjas en la cara de arriba con los escalones de
+    siempre. Tarjeta con `vistaTarjeta` [58, 26] (con la de todas, casi de
+    perfil, las hélices salían de canto y el sensor no se veía) y planta
+    regeneradas; fuera los `giro-planta` 1.0. **La planta de la portada**: a
+    escala (26 px/m) los brazos miden medio píxel y desaparecían (quedaban
+    cuatro motores sueltos). Ahora se pinta al doble y se reduce quedándose
+    con el píxel más claro de cada 2x2 (`plantaDoble`; con el más oscuro, en
+    la tira, de fondo oscuro, ganaba el contorno negro), sin calcas
+    (`plantaLisa`). Comprobado en la tira junto a la 1.0. No es nave del
+    hero.
+  - **Comparado lado a lado** con las cinco fotos desde sus cámaras (sin
+    hélices: en las fotos van plegadas).
+  - **De paso**: `astro check` daba cuatro errores en el `aUnidades` del TB2,
+    el MQ-9, el Raven y el Wildfire (sin `default`); añadido.
+  - **Primera revisión del usuario** (6-oct-2026, con líneas dibujadas
+    sobre las fotos 2 y 4 y la vista de frente de Skydio): bien las patas,
+    las hélices, los brazos plegables, la tornillería y los materiales; la
+    forma, demasiado cuadrada. Corregido:
+    - **Dos hélices sin azul** (la de delante a la derecha y la de detrás
+      a la izquierda): las palas en espejo (`scale(1, −1, 1)`) quedaban con
+      los triángulos del revés y el contorno de tinta, que se pinta con las
+      caras de detrás, las tapaba enteras. `voltear()` en
+      `uas-geometria.ts` les da la vuelta tras el reflejo.
+    - **Cuerpo**: de caja a secciones a lo largo de z (`pila` tumbada con
+      `girar`; `aLoLargoZ` en la maqueta): cara de arriba más estrecha,
+      franja inclinada hasta el reborde de los tornillos, que sobresale, y
+      la tapa de la batería metida y estrechándose hacia abajo (fotos 1 y
+      4). Hombros con la misma franja. Fuera la costura de la junta (ahora
+      es el reborde).
+    - **Mejillas**: el cuerpo sigue hacia delante bajo los carriles de la
+      jaula hasta la punta (los «topes grises» eran su final); atrás bajan
+      hasta la raíz del brazo de delante, que ya sale de ellas y no queda
+      suelto.
+    - **Brazo del gimbal**: una pieza; el extremo redondo encima de la
+      cabeza de giro, una banda ancha por encima de la esquina de la caja,
+      codo redondo y la carcasa redonda del motor de cabeceo (`aLoLargoX`).
+    - **Caja del sensor**: toda la caja con la forma de la cara (antes
+      solo la placa de 3 mm, sobre una caja rectangular): esquina de arriba
+      redondeada y curva grande abajo por el lado del térmico, y la esquina
+      de detrás de ese lado recortada (foto 2: las aletas, más cortas ahí).
+    - De paso: la tapa de la cabeza y el brazo acababan a la misma altura
+      y parpadeaban en el pixel HD.
+  - **Segunda revisión** (6-oct-2026, líneas sobre las fotos 4, 5 y 2):
+    - **Final del cuerpo**: la «Y» de detrás era un bloque hasta abajo. Se
+      probó como carcasa aparte (dos prismas inclinados) y el usuario la vio
+      «a trozos»: aristas y picos donde se juntaba con el cuerpo. Queda en
+      la misma pieza que el cuerpo: cada sección lleva `W`, el medio ancho
+      del reborde (3,18 en el cuerpo), que detrás crece con la planta de la
+      foto 5 enderezada a 12 cm (`Y_PLANTA`, curva Catmull-Rom); la cara de
+      arriba, la franja y el reborde se abren con él (la cara baja 10° hacia
+      fuera, del 12,55 del centro a las cámaras) y la batería sigue debajo.
+      Cámaras de detrás en su sitio del ajuste (±4,77; −7,87). El escalón
+      de los tornillos azules, de todo el ancho y más corto (z 8,1 a
+      10,15), bajando por los costados.
+    - **Brazos de detrás**: nacían por delante y abajo (raíz a 6,4 cm, en
+      z −4,3, con un ensanche hacia delante), planos hasta el motor. En la
+      foto 4, encajada encima, salen justo de debajo de la punta de la «Y»,
+      tocándola (arriba, a 9,8 cm), y bajan rectos hasta el motor: raíz a
+      8,9 cm de centro, 0,5 a 0,9 cm más atrás, la misma recta hasta el
+      motor. Comprobado encima de las fotos 4 y 5.
+    - **Detalle de arriba** (foto 5): las pastillas ovaladas A3 y A4, las
+      ranuras junto a las cámaras de detrás, las costuras de la «Y» del
+      hexágono a las cámaras (fuera el trapecio que no estaba), y la
+      ranura y el tornillo de la cámara del centro en su z.
+    - **Bisel de la caja del sensor**: se probó un plano liso cortando la
+      esquina de delante y de arriba del lado del térmico, con las aletas
+      acabando en diagonal. Al usuario no le gustó nada: vuelve la caja de
+      la primera revisión.
+  - **Tarjeta** con `vistaTarjeta` [30, 27], de tres cuartos por delante
+    con el sensor de frente (lo eligió el usuario con una captura).
+  - **Cerrado** (6-oct-2026): «dron terminado». Fusionado en `main` y
+    publicado; rama `hd-skydio-x10d` borrada.
+  - **Falta**: rendimiento en Zen. Visto y sin
+    hacer: las tres cámaras de navegación de abajo (no se ven en ninguna
+    foto); la etiqueta con código QR de la placa negra de la jaula (foto 3,
+    no se lee).
 
 - **5-oct-2026, MICH-2000 en HD y pixel HD** (rama `hd-mich-2000`,
   fusionada en `main` y borrada). Lo pidió el usuario sin rehacer la maqueta («está bastante bien»,

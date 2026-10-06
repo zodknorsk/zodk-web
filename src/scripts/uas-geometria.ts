@@ -4,7 +4,7 @@
 // mismo.
 import {
   BoxGeometry, BufferGeometry, CylinderGeometry, ExtrudeGeometry,
-  Float32BufferAttribute, LatheGeometry, Quaternion, Shape, SphereGeometry,
+  Float32BufferAttribute, LatheGeometry, Quaternion, Shape, ShapeUtils, SphereGeometry,
   Vector2, Vector3,
 } from "three";
 import type { Pieza, Seccion, Toma } from "../data/uas/tipos";
@@ -620,7 +620,165 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   return g;
 }
 
+
+// Caras planas sueltas (cada triángulo con sus vértices, para que cada cara
+// tenga su normal): de una lista de triángulos, una geometría. `espejo`
+// refleja x y da la vuelta a los triángulos.
+function carasPlanas(tris: [number, number, number][][], espejo = false): BufferGeometry {
+  const pos: number[] = [];
+  for (const t of tris) {
+    const v = espejo ? [t[0], t[2], t[1]].map(([x, y, z]): [number, number, number] => [-x, y, z]) : t;
+    for (const [x, y, z] of v) pos.push(x, y, z);
+  }
+  const g = new BufferGeometry();
+  g.setAttribute("position", new Float32BufferAttribute(pos, 3));
+  g.computeVertexNormals();
+  return g;
+}
+
+// Tras un reflejo, los triángulos quedan del revés (su cara de delante mira
+// hacia dentro y el contorno de tinta, que se pinta con las de detrás, tapa
+// la pieza): se cambia el orden de dos vértices de cada uno.
+function voltear(g: BufferGeometry): BufferGeometry {
+  if (g.index) {
+    const ix = g.index.array;
+    for (let i = 0; i < ix.length; i += 3) [ix[i + 1], ix[i + 2]] = [ix[i + 2], ix[i + 1]];
+    g.index.needsUpdate = true;
+    return g;
+  }
+  for (const a of Object.values(g.attributes)) {
+    const s = a.itemSize, v = a.array;
+    for (let i = 0; i < v.length; i += 3 * s) {
+      for (let k = 0; k < s; k++) [v[i + s + k], v[i + 2 * s + k]] = [v[i + 2 * s + k], v[i + s + k]];
+    }
+    a.needsUpdate = true;
+  }
+  return g;
+}
+
+// Unir dos anillos de la misma cantidad de vértices con caras planas (cada
+// cuadrilátero, dos triángulos), con el anillo en sentido antihorario visto
+// desde su cara de delante.
+function unirAnillos(a: [number, number, number][], b: [number, number, number][], tris: [number, number, number][][]) {
+  const n = a.length;
+  for (let k = 0; k < n; k++) {
+    const k1 = (k + 1) % n;
+    tris.push([a[k], a[k1], b[k]], [a[k1], b[k1], b[k]]);
+  }
+}
+
+// Viga (ver tipos.ts): el anillo de seis vértices de cada punto de la ruta,
+// con el eje horizontal perpendicular a la ruta vista desde arriba.
+function geometriaViga(p: Extract<Pieza, { tipo: "viga" }>, espejo: boolean): BufferGeometry {
+  const ta = p.arriba ?? 0.7, tb = p.abajo ?? 0.5, tc = p.cintura ?? 0.55;
+  const anillos = p.ruta.map(([x, y, z, ancho, alto], i) => {
+    const a = p.ruta[Math.max(0, i - 1)], b = p.ruta[Math.min(p.ruta.length - 1, i + 1)];
+    let dx = b[0] - a[0], dz = b[2] - a[2];
+    const l = Math.hypot(dx, dz) || 1;
+    dx /= l; dz /= l;
+    // Perpendicular horizontal (a la derecha de la marcha, vista desde arriba).
+    const nx = -dz, nz = dx;
+    const punto = (u: number, v: number): [number, number, number] => [x + nx * u * ancho, y + v * alto, z + nz * u * ancho];
+    return [punto(-ta / 2, 0.5), punto(ta / 2, 0.5), punto(0.5, 0.5 - tc), punto(tb / 2, -0.5), punto(-tb / 2, -0.5), punto(-0.5, 0.5 - tc)];
+  });
+  const tris: [number, number, number][][] = [];
+  for (let i = 0; i < anillos.length - 1; i++) unirAnillos(anillos[i], anillos[i + 1], tris);
+  // Tapas: abanico desde el centro del anillo.
+  const tapa = (r: [number, number, number][], dentro: boolean) => {
+    const c = r.reduce((s, q) => [s[0] + q[0] / 6, s[1] + q[1] / 6, s[2] + q[2] / 6], [0, 0, 0]) as [number, number, number];
+    for (let k = 0; k < 6; k++) tris.push(dentro ? [c, r[(k + 1) % 6], r[k]] : [c, r[k], r[(k + 1) % 6]]);
+  };
+  tapa(anillos[0], true);
+  tapa(anillos[anillos.length - 1], false);
+  return carasPlanas(tris, espejo);
+}
+
+// Contorno desplazado hacia dentro `d` (esquinas a inglete).
+function metido(c: [number, number][], d: number): [number, number][] {
+  // Sentido: con área positiva (antihorario en x, z), «dentro» es a la izquierda.
+  const area = c.reduce((s, [x, z], i) => { const [x2, z2] = c[(i + 1) % c.length]; return s + (x * z2 - x2 * z); }, 0);
+  const sg = area > 0 ? 1 : -1;
+  return c.map(([x, z], i) => {
+    const [x0, z0] = c[(i + c.length - 1) % c.length], [x1, z1] = c[(i + 1) % c.length];
+    const n = (ax: number, az: number, bx: number, bz: number): [number, number] => {
+      const l = Math.hypot(bx - ax, bz - az) || 1;
+      return [(-(bz - az) / l) * sg, ((bx - ax) / l) * sg];
+    };
+    const [n0x, n0z] = n(x0, z0, x, z), [n1x, n1z] = n(x, z, x1, z1);
+    const mx = n0x + n1x, mz = n0z + n1z;
+    const k = 1 + (n0x * n1x + n0z * n1z);
+    return [x + (d * mx) / (k || 1), z + (d * mz) / (k || 1)];
+  });
+}
+
+// Prisma (ver tipos.ts): cuatro contornos (borde de abajo metido, costado de
+// abajo, costado de arriba, borde de arriba metido) con sus caras y las dos
+// tapas triangulando la planta.
+function geometriaPrisma(p: Extract<Pieza, { tipo: "prisma" }>, espejo: boolean): BufferGeometry {
+  const completa: [number, number][] = p.simetrica
+    ? [...p.planta, ...p.planta.slice().reverse().filter(([x]) => x > 0).map(([x, z]): [number, number] => [-x, z])]
+    : p.planta;
+  const [ta, tad = 0] = p.chaflanArriba ?? [0, 0], [tb, tbd = 0] = p.chaflanAbajo ?? [0, 0];
+  const y0 = p.y, y1 = p.y + p.alto;
+  const nivel = (c: [number, number][], y: number): [number, number, number][] => c.map(([x, z]) => [x, y, z]);
+  const anillos = [nivel(metido(completa, tb), y0), nivel(completa, y0 + tbd), nivel(completa, y1 - tad), nivel(metido(completa, ta), y1)];
+  const tris: [number, number, number][][] = [];
+  // Un anillo dado como lista de [x, z] es antihorario en (x, z) o no: se
+  // unen siempre en el sentido que da caras hacia fuera.
+  const area = completa.reduce((s, [x, z], i) => { const [x2, z2] = completa[(i + 1) % completa.length]; return s + (x * z2 - x2 * z); }, 0);
+  const orden = (r: [number, number, number][]) => (area > 0 ? r.slice().reverse() : r);
+  const rs = anillos.map(orden);
+  for (let i = 0; i < 3; i++) unirAnillos(rs[i], rs[i + 1], tris);
+  const tapa = (r: [number, number, number][], arriba: boolean) => {
+    const c2 = r.map(([x, , z]) => new Vector2(x, z));
+    for (const [a, b, c] of ShapeUtils.triangulateShape(c2, [])) {
+      tris.push(arriba ? [r[a], r[c], r[b]] : [r[a], r[b], r[c]]);
+    }
+  };
+  tapa(rs[3], true);
+  tapa(rs[0], false);
+  // A lo largo de z: (x, y, z) → (x, z, y), que refleja: los triángulos, del revés.
+  if (p.eje === "z") return carasPlanas(tris.map((t) => [t[0], t[2], t[1]].map(([x, y, z]): [number, number, number] => [x, z, y])), espejo);
+  return carasPlanas(tris, espejo);
+}
+
+// Pila (ver tipos.ts): los anillos de cada nivel unidos de abajo arriba y
+// las dos tapas.
+function geometriaPila(p: Extract<Pieza, { tipo: "pila" }>, espejo: boolean): BufferGeometry {
+  const niveles = p.niveles.slice().sort((a, b) => a.y - b.y);
+  const c0 = niveles[0].planta;
+  const area = c0.reduce((s, [x, z], i) => { const [x2, z2] = c0[(i + 1) % c0.length]; return s + (x * z2 - x2 * z); }, 0);
+  const rs = niveles.map(({ y, planta }) => {
+    const r = planta.map(([x, z]): [number, number, number] => [x, y, z]);
+    return area > 0 ? r.reverse() : r;
+  });
+  const tris: [number, number, number][][] = [];
+  for (let i = 0; i < rs.length - 1; i++) unirAnillos(rs[i], rs[i + 1], tris);
+  const tapa = (r: [number, number, number][], arriba: boolean) => {
+    for (const [a, b, c] of ShapeUtils.triangulateShape(r.map(([x, , z]) => new Vector2(x, z)), [])) {
+      tris.push(arriba ? [r[a], r[c], r[b]] : [r[a], r[b], r[c]]);
+    }
+  };
+  tapa(rs[rs.length - 1], true);
+  tapa(rs[0], false);
+  return carasPlanas(tris, espejo);
+}
+
 export function geometriaDe(p: Pieza): BufferGeometry[] {
+  const gs = geometriaBase(p);
+  if (p.girar) {
+    const { centro: [cx, cy, cz], eje, grados } = p.girar;
+    const a = (grados * Math.PI) / 180;
+    for (const g of gs) {
+      g.translate(-cx, -cy, -cz);
+      if (eje === "x") g.rotateX(a); else if (eje === "y") g.rotateY(a); else g.rotateZ(a);
+      g.translate(cx, cy, cz);
+    }
+  }
+  return gs;
+}
+
+function geometriaBase(p: Pieza): BufferGeometry[] {
   switch (p.tipo) {
     case "ala": {
       // Media ala (x ≥ 0) y su reflejo. Si no empieza en x = 0 (las puntas de
@@ -703,12 +861,18 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
         return g;
       });
     }
+    case "viga":
+      return (p.espejo ? [false, true] : [false]).map((m) => geometriaViga(p, m));
+    case "prisma":
+      return (p.espejo ? [false, true] : [false]).map((m) => geometriaPrisma(p, m));
+    case "pila":
+      return (p.espejo ? [false, true] : [false]).map((m) => geometriaPila(p, m));
     case "varilla": {
       return (p.espejo ? [1, -1] : [1]).map((sx) => {
         const a = new Vector3(p.desde[0] * sx, p.desde[1], p.desde[2]);
         const b = new Vector3(p.hasta[0] * sx, p.hasta[1], p.hasta[2]);
         const dir = b.clone().sub(a);
-        const g = new CylinderGeometry(p.radio, p.radio, dir.length(), 12);
+        const g = new CylinderGeometry(p.radio, p.radio, dir.length(), p.lados ?? 12);
         g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), dir.clone().normalize()));
         g.translate((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
         return g;
@@ -764,26 +928,48 @@ export function geometriaDe(p: Pieza): BufferGeometry[] {
           if (p.ancho) {
             // Planta de la pala, de la raíz (x = 0) a la punta (x = radio).
             const c = p.ancho, R = p.radio, forma = new Shape();
-            const borde: [number, number][] = p.punta
-              ? [[0.12, 0.42], [0.3, 0.5], [0.5, 0.42], [0.7, 0.3], [0.86, 0.17], [0.96, 0.06], [1, 0]]
-              : [[0.08, 0.32], [0.3, 0.5], [0.6, 0.45], [0.85, 0.36], [0.96, 0.24], [1, 0]];
-            forma.moveTo(R * 0.06, -c * 0.22);
-            for (const [t, a] of borde) forma.lineTo(R * t, c * a * (t === 1 ? 0 : 1));
-            for (const [t, a] of borde.slice(0, -1).reverse()) forma.lineTo(R * t, -c * a * 0.8);
-            forma.lineTo(R * 0.06, -c * 0.22);
-            pala = new ExtrudeGeometry(forma, { depth: c * 0.06, bevelEnabled: false });
+            if (p.forma) {
+              // [t, delante, detrás], interpolada y recortada a `tramo`.
+              const [t0, t1] = p.tramo ?? [p.forma[0][0], p.forma[p.forma.length - 1][0]];
+              const en = (t: number, k: 1 | 2) => {
+                const f = p.forma!;
+                let i = 0;
+                while (i < f.length - 2 && f[i + 1][0] < t) i++;
+                const [ta, ...a] = f[i], [tb, ...b] = f[i + 1];
+                const u = Math.min(1, Math.max(0, (t - ta) / (tb - ta || 1)));
+                return a[k - 1] + (b[k - 1] - a[k - 1]) * u;
+              };
+              const ts = [t0, ...p.forma.map(([t]) => t).filter((t) => t > t0 && t < t1), t1];
+              forma.moveTo(R * ts[0], c * en(ts[0], 1));
+              for (const t of ts.slice(1)) forma.lineTo(R * t, c * en(t, 1));
+              for (const t of ts.slice().reverse()) forma.lineTo(R * t, -c * en(t, 2));
+              pala = new ExtrudeGeometry(forma, { depth: c * 0.06, bevelEnabled: false });
+            } else {
+              const borde: [number, number][] = p.punta
+                ? [[0.12, 0.42], [0.3, 0.5], [0.5, 0.42], [0.7, 0.3], [0.86, 0.17], [0.96, 0.06], [1, 0]]
+                : [[0.08, 0.32], [0.3, 0.5], [0.6, 0.45], [0.85, 0.36], [0.96, 0.24], [1, 0]];
+              forma.moveTo(R * 0.06, -c * 0.22);
+              for (const [t, a] of borde) forma.lineTo(R * t, c * a * (t === 1 ? 0 : 1));
+              for (const [t, a] of borde.slice(0, -1).reverse()) forma.lineTo(R * t, -c * a * 0.8);
+              forma.lineTo(R * 0.06, -c * 0.22);
+              pala = new ExtrudeGeometry(forma, { depth: c * 0.06, bevelEnabled: false });
+            }
             pala.translate(0, 0, -c * 0.03);
           } else {
             pala = new BoxGeometry(p.radio, ancho, 0.008);
             pala.translate(p.radio / 2, 0, 0);
           }
-          pala.rotateX(0.35);  // paso de la pala
+          pala.rotateX(p.paso ?? 0.35);  // paso de la pala
           pala.rotateZ((i / p.palas) * Math.PI * 2 + ((p.giro ?? 0) * Math.PI) / 180);
           hoja.push(pala);
         }
         const buje = p.buje ?? Math.max(0.035, p.radio * 0.08);
         if (buje > 0) hoja.push(new SphereGeometry(buje, 12, 8));
+        // Al revés: la pala en espejo (el reflejo da la vuelta a las caras;
+        // el material va por las dos).
+        const espejoPala = p.forma && (p.inversa ? sx > 0 : sx < 0);
         for (const g of hoja) {
+          if (espejoPala) voltear(g.scale(1, -1, 1));
           if (p.eje === "y") g.rotateX(-Math.PI / 2);  // a plano horizontal
           g.translate(...en);
           piezas.push(g);

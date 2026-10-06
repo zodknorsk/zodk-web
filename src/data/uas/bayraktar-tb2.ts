@@ -649,6 +649,8 @@ const aUnidades = (p: Pieza): Pieza => {
       return { ...p, centro: u3(p.centro), tam: u3(p.tam), ...(p.redondeo && { redondeo: u(p.redondeo) }) };
     case "disco":
       return { ...p, en: u3(p.en), radio: u(p.radio), grosor: u(p.grosor) };
+    default:
+      throw new Error(`Pieza sin convertir: ${p.tipo}`);
   }
 };
 const aCalca = (k: Calca): Calca => ({ ...k, en: u3(k.en), tam: u2(k.tam) });

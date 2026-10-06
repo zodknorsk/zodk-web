@@ -88,13 +88,37 @@ try {
       expression: `(async () => {
         const { plantaHD } = await import("/src/scripts/uas-miniatura-hd.ts");
         const { default: maqueta } = await import("/src/data/uas/${modelo}.ts");
-        return JSON.stringify(plantaHD(maqueta, ${JSON.stringify(ARRIBA)}, ${PX_POR_METRO}, ${PLANTA_MAX[0] - SOMBRA[0]}, ${PLANTA_MAX[1] - SOMBRA[1]}));
+        const k = maqueta.plantaDoble ? 2 : 1;
+        return JSON.stringify({ k, ...plantaHD(maqueta, ${JSON.stringify(ARRIBA)}, ${PX_POR_METRO} * k, ${PLANTA_MAX[0] - SOMBRA[0]} * k, ${PLANTA_MAX[1] - SOMBRA[1]} * k) });
       })()`,
       awaitPromise: true, returnByValue: true,
     });
     if (rp.exceptionDetails) throw new Error(`${modelo}: ${rp.exceptionDetails.exception?.description ?? rp.exceptionDetails.text}`);
     const planta = JSON.parse(rp.result.value);
-    const { data: dron } = await sharp(Buffer.from(planta.png.split(",")[1], "base64")).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    let { data: dron } = await sharp(Buffer.from(planta.png.split(",")[1], "base64")).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    // `plantaDoble` (drones pequeños de piezas finas, el X10D): pintada al
+    // doble y reducida a la mitad quedándose en cada bloque de 2x2 con el
+    // píxel más claro, para que los brazos queden como rayas de un píxel en
+    // vez de desaparecer (con el más oscuro, en la tira, de fondo oscuro,
+    // ganaba el contorno negro y no se veía el dron).
+    if (planta.k === 2) {
+      const W2 = planta.ancho, H2 = planta.alto, w = Math.ceil(W2 / 2), h = Math.ceil(H2 / 2);
+      const red = new Uint8Array(w * h * 4);
+      for (let y = 0; y < h; y++)
+        for (let x = 0; x < w; x++) {
+          let mejor = -1, luz = -1;
+          for (const [dx, dy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) {
+            const xx = 2 * x + dx, yy = 2 * y + dy;
+            if (xx >= W2 || yy >= H2) continue;
+            const i = (yy * W2 + xx) * 4;
+            if (dron[i + 3] <= 127) continue;
+            const l = dron[i] + dron[i + 1] + dron[i + 2];
+            if (l > luz) { luz = l; mejor = i; }
+          }
+          if (mejor >= 0) red.set(dron.subarray(mejor, mejor + 4), (y * w + x) * 4);
+        }
+      dron = red; planta.ancho = w; planta.alto = h;
+    }
     const ancho = planta.ancho + SOMBRA[0], alto = planta.alto + SOMBRA[1];
     const img = new Uint8Array(ancho * alto * 4);
     for (let y = 0; y < alto; y++)

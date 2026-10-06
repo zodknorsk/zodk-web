@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -67,7 +67,7 @@ export type Pieza = (
   // (el ensanche del TB2), y va sin tapa.
   | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[]; sola?: boolean; vertical?: boolean; x?: number; espejo?: boolean; raizDentro?: boolean }
   // Varilla recta (mástiles, antenas, brazos, patas).
-  | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean }
+  | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean; lados?: number }
   // Hélice: por defecto gira en el plano vertical (empuja a lo largo de z, como
   // la del MICH); con eje "y", en el horizontal (multirrotores).
   // espejo: se repite al otro lado (x → −x). giro: grados que se giran las
@@ -79,14 +79,42 @@ export type Pieza = (
   // mayor que el arranque de las palas); 0, sin ella (el cono la tapa).
   // punta: palas anchas cerca de la raíz y afiladas hasta una punta (las de
   // plástico del Raven), en vez de redondeadas.
-  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number; ancho?: number; buje?: number; punta?: boolean }
+  // `forma`: planta propia de la pala, [t, delante, detrás] con t de 0 a 1
+  // (fracción del radio) y los anchos en fracción de `ancho`. `tramo` [t0,
+  // t1]: solo ese trozo de la pala (las puntas de otro color, como pieza
+  // aparte). `inversa`: gira al revés (pala en espejo); con `espejo`, la del
+  // otro lado sale además en espejo de esta.
+  | { tipo: "helice"; id: string; en: Punto3; radio: number; palas: number; eje?: "z" | "y"; espejo?: boolean; giro?: number; ancho?: number; buje?: number; punta?: boolean; forma?: [number, number, number][]; tramo?: Punto2; inversa?: boolean; paso?: number }
   // Caja (cuerpos, sensores): centro y medidas [ancho x, alto y, largo z].
   // redondeo: radio de las esquinas vistas desde arriba (y bisel arriba y abajo).
   | { tipo: "caja"; id: string; centro: Punto3; tam: Punto3; espejo?: boolean; redondeo?: number }
+  // Viga: un brazo o una pata hecha de secciones de seis lados (cara de
+  // arriba, dos costados inclinados y cara de abajo) que se unen a lo largo
+  // de una ruta. Cada punto: [x, y, z, ancho, alto], con y en el centro de
+  // la sección; el ancho se mide horizontal y perpendicular a la ruta vista
+  // desde arriba. `arriba` y `abajo` (por uno del ancho, 0,7 y 0,5 por
+  // defecto) dan el ancho de las caras de arriba y de abajo, y `cintura`
+  // (por uno del alto, 0,55) dónde es más ancha. Caras planas, sin suavizar.
+  | { tipo: "viga"; id: string; ruta: [number, number, number, number, number][]; arriba?: number; abajo?: number; cintura?: number; espejo?: boolean }
+  // Prisma: la planta [x, z] extruida entre y y y + alto, con el borde de
+  // arriba y el de abajo achaflanados ([metido, caída], en horizontal y en
+  // vertical). `simetrica`: la planta es media (x ≥ 0) y se completa.
+  // Con `eje: "z"`, la planta es [x, y] y se extruye a lo largo de z, de `y`
+  // a `y + alto` (`y` hace entonces de z): cajas vistas de frente.
+  | { tipo: "prisma"; id: string; planta: Punto2[]; y: number; alto: number; chaflanArriba?: Punto2; chaflanAbajo?: Punto2; simetrica?: boolean; espejo?: boolean; eje?: "y" | "z" }
+  // Pila: secciones horizontales (cada una, la planta [x, z] a su altura y,
+  // todas con los mismos puntos) unidas con caras planas, de abajo arriba:
+  // patas inclinadas que se afinan, piezas que bajan en vertical.
+  | { tipo: "pila"; id: string; niveles: { y: number; planta: Punto2[] }[]; espejo?: boolean }
   // Disco plano (insignias): centro, hacia dónde mira, radio y grosor.
   // espejo: se repite al otro lado (x → −x, la normal también).
   | { tipo: "disco"; id: string; en: Punto3; normal: Punto3; radio: number; grosor: number; espejo?: boolean }
-) & { acabado?: Acabado };
+) & {
+  acabado?: Acabado;
+  // Girada `grados` alrededor de una recta paralela al eje dado que pasa por
+  // `centro` (la caja del sensor de un gimbal sobre su eje de cabeceo).
+  girar?: { centro: Punto3; eje: "x" | "y" | "z"; grados: number };
+};
 
 // Detalle pintado del HD (docs/uas-hd.md), en las mismas unidades que las
 // piezas. Una calca se proyecta sobre las piezas `sobre` desde la dirección
@@ -143,7 +171,12 @@ export type Dibujo =
   | { tipo: "ventana"; abajo?: number }
   // Roce de una panza que aterriza en el suelo: rayas claras finas a lo largo
   // y alguna mancha; con poca tinta (en el pixel no sale).
-  | { tipo: "desgaste" };
+  | { tipo: "desgaste" }
+  // Logo de Skydio: la marca (un cuadrado partido por una curva, con una
+  // punta arriba a la derecha y otra abajo a la izquierda) y «Skydio» debajo.
+  | { tipo: "skydio"; color?: string }
+  // Fibra de carbono: sarga de cuadros oscuros (la jaula del sensor del X10D).
+  | { tipo: "carbono" };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
@@ -238,6 +271,13 @@ export type Maqueta = {
   // La planta de la tira de la portada sin calcas ni costuras: a ese tamaño
   // las escarapelas del MICH-2000 salían como cuadrados.
   plantaLisa?: boolean;
+  // Piezas que no salen en esa planta (id o prefijo «id-»): las palas finas
+  // de un cuadricóptero, que a ese tamaño son píxeles sueltos.
+  plantaSin?: string[];
+  // Planta pintada al doble y reducida quedándose con el píxel más claro de
+  // cada 2x2 (arte/generar-uas-miniaturas-hd.mjs): drones pequeños con piezas
+  // finas, que a escala miden menos de un píxel.
+  plantaDoble?: boolean;
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
   // de la pasada de pixel.
   contornoPixel?: boolean;

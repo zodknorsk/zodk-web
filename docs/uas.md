@@ -439,6 +439,20 @@ generadores de `arte/` leen estos archivos con Node.
   siempre, oscuras, no se ven sobre negro). Los tornillos que se ven de
   cerca, mejor como calcas `disco` (crecen con el zoom; los remaches de las
   costuras son puntos de 1,3 px).
+- **Cuadricóptero con piezas de caras planas** (el X10D 2.0): `viga` (un
+  brazo de secciones de seis lados a lo largo de una ruta, `[x, y, z,
+  ancho, alto]`), `prisma` (una planta extruida con los bordes
+  achaflanados; con `eje: "z"`, la planta es la cara de delante: la caja de
+  un sensor) y `pila` (secciones horizontales unidas de abajo arriba: patas
+  que se afinan). Cualquier pieza admite `girar` (alrededor de una recta) y
+  la `varilla`, `lados` (32 para que un cilindro grande no salga
+  facetado). La `helice` admite `forma` (planta propia de la pala), `tramo`
+  (solo un trozo: las puntas de otro color, como pieza aparte), `inversa`
+  (gira al revés) y `paso`. Calcas `skydio` (el logo) y `carbono` (sarga).
+- **Planta de la portada de un dron pequeño** (el X10D): `plantaDoble` la
+  pinta al doble y la reduce quedándose con el píxel más claro de cada 2x2;
+  a escala, los brazos medían medio píxel. `plantaSin` quita piezas de la
+  planta.
 - **Zoom del visor**: hacia el cursor (`zoomToCursor` de OrbitControls),
   de 1/16 a 1,2 veces la distancia de encuadre; al alejarse, el punto de
   mira vuelve al centro (`controles` «change» en `visor-uas.ts`).
@@ -976,7 +990,10 @@ de pie vistas desde arriba (ver `docs/uas-hd.md`).
 | doc-321324.jpg | Montaje con la silueta del dron en vuelo, desde abajo | https://img.mezha.ua/mezha/images/doc/7/4/321324/74a47bc4f4eae82588040bf732587b31.jpeg |
 
 **Skydio X10D.** Medidas oficiales de la ficha técnica de Skydio (79 x 65 x
-14,5 cm desplegado).
+14,5 cm desplegado). La 2.0 (6-oct-2026) sale sobre todo de cinco fotos de
+un X10D de verdad que sacó el usuario (`hd/real1…real5.jpg`, sin publicar)
+y de las 81 imágenes de skydio.com (`cand/`, lista en `cand/lista.txt`); ver
+`docs/uas-hd.md`.
 
 | Archivo | Qué enseña | URL |
 |---|---|---|

@@ -185,12 +185,12 @@ export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, 
 // generador. Solo el de día (la portada es siempre oscura y va así).
 export function plantaHD(conDetalles: Maqueta, vista: [number, number], pxPorMetro: number, maxAncho: number, maxAlto: number) {
   const maqueta = conDetalles.plantaLisa ? { ...conDetalles, detalles: undefined } : conDetalles;
-  const medir = montar(maqueta, 8, 8, FOV_PLANTA);
+  const medir = montar(maqueta, 8, 8, FOV_PLANTA, maqueta.plantaSin);
   const [mx, my] = medir.ocupa(vista);
   medir.soltar();
   const escala = Math.min(pxPorMetro * maqueta.escala, (maxAncho - 4) / (2 * mx), (maxAlto - 4) / (2 * my));
   const ancho = Math.ceil(2 * mx * escala) + 4, alto = Math.ceil(2 * my * escala) + 4;
-  const m = montar(maqueta, ancho, alto, FOV_PLANTA);
+  const m = montar(maqueta, ancho, alto, FOV_PLANTA, maqueta.plantaSin);
   const { dia } = m.pintar(vista, escala);
   m.soltar();
   return { png: dia, ancho, alto };

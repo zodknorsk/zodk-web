@@ -42,6 +42,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // sol, desde arriba, #b5b2bb de media en el render; con el gris del MQ-9 el
   // visor salía azulado.
   "gris-ga": { color: "#a6a6b2", metal: 0, rugosidad: 0.5 },
+  // El gris claro y algo frío del Skydio X10D: la cara de arriba, en las
+  // fotos del usuario, #dbe4e7 de media (el render, #d9dfe3); y el azul de
+  // las puntas de sus hélices (#1a57a6 en la foto, a la sombra).
+  "gris-x10": { color: "#b8cad2", metal: 0, rugosidad: 0.55 },
+  "azul-x10": { color: "#2470cc", metal: 0, rugosidad: 0.45 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   // El negro mate del MICH-2000: neutro, sin el punto azulado del negro de
   // las piezas, y muy mate (con menos rugosidad refleja el cielo y desde
@@ -424,6 +429,41 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
     }
     case "rect": {
       c.fillStyle = d.color; c.fillRect(0, 0, W, H);
+      break;
+    }
+    case "carbono": {
+      // Sarga 2/2: cada mechón ocupa dos casillas y se corre una por fila.
+      const n = 64, k = W / n;
+      c.fillStyle = "#26272a"; c.fillRect(0, 0, W, H);
+      c.fillStyle = "#3a3c40";
+      for (let j = 0; j < Math.ceil(H / k); j++) {
+        for (let i = 0; i < n; i++) {
+          if ((i + j) % 4 < 2) c.fillRect(i * k, j * k, k, k * 0.9);
+        }
+      }
+      break;
+    }
+    case "skydio": {
+      // La marca arriba, en un cuadrado de lado L, y el nombre debajo.
+      const L = Math.min(W, H * 0.72), x0 = (W - L) / 2, y0 = 0;
+      const P = (u: number, v: number): [number, number] => [x0 + u * L, y0 + v * L];
+      c.fillStyle = d.color ?? TINTA_CALCA;
+      // Pieza de arriba: el lado de arriba, la punta a la derecha y la curva
+      // que baja hasta media altura por la izquierda.
+      c.beginPath();
+      c.moveTo(...P(0, 0)); c.lineTo(...P(0.88, 0)); c.lineTo(...P(1, 0.1));
+      c.bezierCurveTo(...P(0.62, 0.2), ...P(0.25, 0.3), ...P(0, 0.48));
+      c.closePath(); c.fill();
+      // Pieza de abajo: la curva que sube por la derecha y la punta abajo a
+      // la izquierda.
+      c.beginPath();
+      c.moveTo(...P(0.88, 0.28)); c.lineTo(...P(0.88, 1)); c.lineTo(...P(0.08, 1));
+      c.quadraticCurveTo(...P(-0.04, 0.96), ...P(0.02, 0.88));
+      c.bezierCurveTo(...P(0.22, 0.58), ...P(0.55, 0.38), ...P(0.88, 0.28));
+      c.closePath(); c.fill();
+      c.font = `600 ${Math.round(H * 0.2)}px "Helvetica Neue", Arial, sans-serif`;
+      c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText("Skydio", W / 2, H * 0.88, W);
       break;
     }
     case "ventana": {
