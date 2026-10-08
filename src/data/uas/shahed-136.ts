@@ -51,7 +51,7 @@ const ANILLO = { delante: 0.75, detras: 0.79 };
 // 0,23 m del centro, plano desde arriba). Puntas cortadas a 1,27 m.
 const ba = (x: number) => z(0.988 + (x - 0.185) * 1.34);
 const SALIDA = { hueco: 2.845, bisagra: 2.895, elevon: 3.055 };
-const HUECO_X = 0.23, PUNTA = 1.27;
+const PUNTA = 1.27;
 // Grueso (plano de frente): 0,19 m a 0,3 m del centro y 0,055 m en la punta,
 // en línea recta. El plano medio del ala va 2 cm por debajo del eje.
 const grueso = (x: number) => 0.21 - 0.1445 * (x - 0.147);

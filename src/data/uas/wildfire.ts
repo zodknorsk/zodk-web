@@ -236,11 +236,7 @@ const idsJsm = (x: number) => [
 ];
 const MISILES = LADOS.flatMap((s) => JSM.xs.map((x) => s * x));
 
-const esfera = (z: number, r: number): [number, number][] =>
-  Array.from({ length: 17 }, (_, i) => {
-    const a = (i / 16) * Math.PI;
-    return [z + r * Math.cos(a), r * Math.sin(a)];
-  });
+
 // Torreta (B y C): la bola, de 0,54 m, colgada de un collar bajo el morro, con
 // la ventana grande delante, tres pequeñas encima y la pegatina amarilla.
 const TORRETA = { z: 5.68 };
