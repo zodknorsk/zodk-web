@@ -8,7 +8,7 @@
 - **Fase 3 (maqueta HD) hecha** el 08-10-2026, a falta de que la revise el usuario: forma, color (`gris-qs`), calcas, costuras, 6 partes (A–F) y 13 fuentes con miniaturas en `public/uas/quantum-systems-vector/fuentes/`.
 - **Fase 6 (revisión del usuario) cerrada** y commiteada (`0b80e6c`): el usuario dio la maqueta por buena con el tren nuevo.
 - Sin commitear: solo la ficha provisional `src/content/uas/quantum-systems-vector/index.md` (para ver el visor en local; la sustituye el importador en la fase 5, no se commitea).
-- **Fase 4 (pixel HD) hecha** el 08-10-2026, a falta de que la vea el usuario: tarjeta (día y noche) y planta en `public/uas/quantum-systems-vector/`, `plantaSin` con las tres hélices. Sin commitear: eso y este diario.
+- **Fase 4 (pixel HD) hecha** el 08-10-2026, a falta de que la vea el usuario: tarjeta (día y noche) y planta en `public/uas/quantum-systems-vector/`, `plantaSin` con las tres hélices. Commiteado.
 - Siguiente paso: que el usuario vea el pixel; luego, la fase 5.
 
 ## Decisiones del usuario
@@ -70,6 +70,7 @@ Medidas: envergadura 2,8 m y MTOW 9,5 kg (folleto Vector AI, mayo y agosto 2025)
   - Luz: la pintura al sol cae en 5,56-5,84 escalones (de 7) en 3D y desde arriba, cerca del centro del escalón 5: sin `desfaseLuz`. El pixel da #c8c9c9 donde el HD da #cacbcb. Desde abajo sale casi negro en los dos (#15171a en el HD), como manda la guía.
   - Vistas comparadas con el HD: 3D, perfil, frente, planta, abajo y noche. De frente, el ala sale con contorno negro (tiene 3-4 px de grueso) y en las puntas, raya oscura. La marca de dos rayas del costado sale como una sola barra en el pixel.
   - Tarjeta con `vistaTarjeta: [61, 20]`; los rotores en vertical salen bien.
+  - Letras de las partes: estaban de la fase 3, a 15-40 cm de sus piezas. Movidas encima de cada pieza (A en la cara de la Raptor, B en el lomo, C en el ala, D delante del rotor izquierdo, E en la deriva, F en la pata del tren). Comprobadas en 3D, perfil, frente y planta.
   - Planta (72x45): las palas de las tres hélices eran píxeles sueltos; fuera con `plantaSin`. Las góndolas quedan como raya fina con la carcasa del rotor en la punta.
 
 - 08-10-2026, fase 6 (correcciones del usuario):

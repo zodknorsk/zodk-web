@@ -343,7 +343,7 @@ const COSTURAS: Costura[] = [
 const PARTES: Parte[] = [
   {
     nombre: "Cámara Raptor-360",
-    en: [0, -0.32, RAPTOR.eje],
+    en: [0, RAPTOR.ejeY, RAPTOR.delante + 0.01],
     piezas: ["raptor-brazo", "raptor-eje", "raptor-cuerpo", "raptor-franja", "raptor-aro-objetivo", "raptor-objetivo", "raptor-lente-0", "raptor-lente-1", "raptor-lente-2"],
     respaldo: "foto",
     fuentes: ["raptor", "et-morro", "lado-fabrica", "ficha", "infodefensa-2025"],
@@ -352,7 +352,7 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Barquilla",
-    en: [0, 0.3, 0.02],
+    en: [0, 0.07, 0.2],
     piezas: ["barquilla", "mastil", "mastil-casquillo", "antena", "antena-punta", "disipador", ...Array.from({ length: 9 }, (_, i) => `disipador-aleta-${i}`), "morro-agujero", "morro-lente", "antena-abajo"],
     respaldo: "foto",
     fuentes: ["et-morro", "lado-fabrica", "frente", "suelo-sol"],
@@ -361,7 +361,7 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Ala",
-    en: [1.0, 0.18, -0.1],
+    en: [1.0, 0, -0.05],
     piezas: ["ala", "ala-cajita"],
     respaldo: "foto",
     fuentes: ["abajo-vuelo", "et-ala", "frente", "web-qs"],
@@ -370,7 +370,7 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Rotores delanteros",
-    en: [-GONDOLA.x, 0.3, GONDOLA.delante],
+    en: [-GONDOLA.x, GONDOLA.y, GONDOLA.delante + 0.05],
     piezas: ["gondola-izq", "gondola-der", ...["rotor-izq", "rotor-der"].flatMap((r) => ["carcasa", "motor", "bisagra", "bisagra-2", "helice"].map((k) => `${r}-${k}`))],
     respaldo: "foto",
     fuentes: ["et-ala", "abajo-fabrica", "abajo-vuelo", "kipprotoren"],
@@ -379,7 +379,7 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Cola y rotor trasero",
-    en: [0, 0.42, -1.05],
+    en: [0, 0.06, -1.1],
     piezas: ["estabilizador", "deriva", ...["carcasa", "motor", "bisagra", "bisagra-2", "helice"].map((k) => `rotor-cola-${k}`), "antena-pulgar", "abrazadera", "antena-cupula"],
     respaldo: "foto",
     fuentes: ["suelo-sol", "abajo-vuelo", "et-cola", "kipprotoren"],
@@ -388,7 +388,7 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Tren",
-    en: [0.3, -0.32, 0.05],
+    en: [0.11, -0.175, 0.035],
     piezas: ["tren"],
     respaldo: "foto",
     fuentes: ["abajo-fabrica", "et-morro"],
