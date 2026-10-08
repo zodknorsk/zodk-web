@@ -82,5 +82,11 @@
     "nota": "Cruz nórdica azul con borde blanco sobre rojo.",
     "filas": ["rrrwbwrrrrr", "rrrwbwrrrrr", "wwwwbwwwwww", "bbbbbbbbbbb", "wwwwbwwwwww", "rrrwbwrrrrr", "rrrwbwrrrrr"],
     "paleta": { "r": "#ba0c2f", "w": "#f4f4f0", "b": "#00205b" }
+  },
+  "DE": {
+    "nombre": "Alemania", "bandera": "🇩🇪",
+    "nota": "Negro, rojo y oro, 2/3/2 de las 7 filas, como Rusia. El negro va algo levantado (K), como en el Sáhara: con el de verdad, la franja de arriba se fundía con el contorno.",
+    "filas": ["KKKKKKKKKKK", "KKKKKKKKKKK", "RRRRRRRRRRR", "RRRRRRRRRRR", "RRRRRRRRRRR", "GGGGGGGGGGG", "GGGGGGGGGGG"],
+    "paleta": { "K": "#2c2c30", "R": "#dd0000", "G": "#ffce00" }
   }
 }

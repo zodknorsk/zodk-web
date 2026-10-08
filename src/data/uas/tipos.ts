@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.

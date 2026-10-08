@@ -47,6 +47,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // las puntas de sus hélices (#1a57a6 en la foto, a la sombra).
   "gris-x10": { color: "#b8cad2", metal: 0, rugosidad: 0.55 },
   "azul-x10": { color: "#2470cc", metal: 0, rugosidad: 0.45 },
+  // El gris claro y neutro del Vector AI de Quantum Systems: al sol, encima
+  // del ala, #c4c7c6 en la foto de Militarnyi en el suelo (el render, desde
+  // la misma cámara, #cbccce); con el cielo cubierto, en las fotos
+  // españolas, algo más frío.
+  "gris-qs": { color: "#a5a6a3", metal: 0, rugosidad: 0.55 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   // El negro mate del MICH-2000: neutro, sin el punto azulado del negro de
   // las piezas, y muy mate (con menos rugosidad refleja el cielo y desde

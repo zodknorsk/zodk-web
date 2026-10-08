@@ -22,6 +22,7 @@ const COMUNES = {
   "gris-ga": ["#53535b", "#7f7f88", "#acacb5", "#dedde3"],
   "gris-x10": ["#525a60", "#7f888f", "#aeb7bd", "#e0e6ea"],
   "azul-x10": ["#0f3a72", "#1a55a0", "#2470cc", "#4d95e8"],
+  "gris-qs": ["#565b5f", "#848a8f", "#b3b9bd", "#e2e6e9"],
   lente: ["#070a10", "#0f1622", "#1b2738", "#324a6e"],
   amarillo: ["#8a6d00", "#b89200", "#e0b400", "#ffd500"],
   azul: ["#0b2a66", "#12398a", "#1a4fb5", "#2f68d6"],
