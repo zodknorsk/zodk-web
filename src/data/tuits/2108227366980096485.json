@@ -1,0 +1,38 @@
+{
+  "capturado": "2026-10-08",
+  "tuit": {
+    "id_str": "2108227366980096485",
+    "created_at": "2026-10-08T16:05:47.000Z",
+    "text": "ÚLTIMA HORA | La Abogacía del Estado dice que el adelanto electoral hace “imposible” aplicar el fallo del Supremo sobre la ley de nietos\n\nhttps://t.co/Fc5RYk8A3o Por @elenaherrerad https://t.co/I6Z5o8lgUc",
+    "user": {
+      "name": "elDiario.es",
+      "screen_name": "eldiarioes",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1677814602992701441/jStj6omO_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Fc5RYk8A3o",
+          "expanded_url": "https://www.eldiario.es/politica/abogacia-dice-adelanto-electoral-imposible-aplicar-fallo-supremo-ley-nietos_1_13573282.html",
+          "display_url": "eldiario.es/politica/aboga…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "animated_gif",
+        "url": "https://t.co/I6Z5o8lgUc",
+        "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/HUHtne8WYAARrDG.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "video/mp4",
+              "bitrate": 0,
+              "url": "https://video.twimg.com/tweet_video/HUHtne8WYAARrDG.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

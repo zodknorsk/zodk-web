@@ -4,7 +4,7 @@ date: '2026-09-03'
 description: >-
   Vamos con lo básico, la 'Ley de Nietos' es una disposición dentro de la Ley de
   Memoria Democrática (LMD) aprobada en España en octubre de 2022. Permite a…
-updated: '2026-09-22'
+updated: '2026-10-08'
 tags:
   - españa
 opinion: true
@@ -182,7 +182,6 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
 </blockquote>
 
 
-
 ---
 *Actualización 10 de septiembre de 2026* 
 
@@ -242,6 +241,22 @@ Hace 2 años exigía este derecho, y ahora celebra que no puedan votar. […]</d
   <a class="tweet-date" href="https://x.com/elespanolcom/status/2102266944124817773" target="_blank" rel="noopener">22 de septiembre de 2026</a>
 </blockquote>
 
+
+_Actualización 08 de octubre_
+
+
+<blockquote class="tweet" data-tweet-id="2108227366980096485">
+  <a class="tweet-author" href="https://x.com/eldiarioes/status/2108227366980096485" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1677814602992701441-jstj6omo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">elDiario.es</span>
+    <span class="tweet-handle">@eldiarioes</span>
+  </a>
+  <div class="tweet-text">ÚLTIMA HORA | La Abogacía del Estado dice que el adelanto electoral hace “imposible” aplicar el fallo del Supremo sobre la ley de nietos<br>
+<br>
+<a href="https://www.eldiario.es/politica/abogacia-dice-adelanto-electoral-imposible-aplicar-fallo-supremo-ley-nietos_1_13573282.html" target="_blank" rel="noopener">eldiario.es/politica/aboga…</a> Por <a href="https://x.com/elenaherrerad" target="_blank" rel="noopener">@elenaherrerad</a></div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/tweet_video_thumb-huhtne8wyaarrdg.jpg"><source src="https://video.twimg.com/tweet_video/HUHtne8WYAARrDG.mp4" type="video/mp4" /><source src="/tweets/tweet_video-huhtne8wyaarrdg.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/eldiarioes/status/2108227366980096485" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/eldiarioes/status/2108227366980096485" target="_blank" rel="noopener">8 de octubre de 2026</a>
+</blockquote>
 
 
 ## Multimedia y noticias relacionadas
