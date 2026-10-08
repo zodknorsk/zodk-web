@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-08",
+  "tuit": {
+    "id_str": "1517901725532839936",
+    "created_at": "2022-04-23T16:22:27.000Z",
+    "text": "Ukrainian forces with the Quantum-Systems Vector VTOL drone https://t.co/9Jw1ZBVU1y",
+    "user": {
+      "name": "OSINTtechnical",
+      "screen_name": "Osinttechnical",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1191175818933932032/W4GF6Nbe_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/9Jw1ZBVU1y",
+        "media_url_https": "https://pbs.twimg.com/media/FRCrkqnXIAUaSG8.jpg"
+      }
+    ]
+  }
+}

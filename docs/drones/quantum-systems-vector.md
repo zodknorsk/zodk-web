@@ -2,6 +2,7 @@
 
 ## Dónde estamos
 
+- **Cerrado** el 08-10-2026: fases 1 a 7 hechas, commit y push en los dos repos. Para cambios nuevos, abrir una vuelta de revisión (fase 6).
 - **Fase 1 (la nota) hecha**: `02 - Temas/Hangar de UAS/🇩🇪 Quantum Systems Vector.md` en la bóveda. El usuario la revisó: `estado: en-desarrollo-avanzado`, `publicar: false`, y añadió los tuits de «En acción».
 - 06-10-2026: el usuario solo pidió la nota, para probar `/nuevodron`. El 08-10-2026 siguió con la fase 2.
 - **Fase 2 (fuentes y fotos) hecha** el 08-10-2026, a falta de que la vea el usuario. Versión, carga y avión de las marcas decididos (abajo). Fotos y fotogramas en `arte/uas-fuentes/quantum-systems-vector/full/` (fuera de Git); tabla abajo.
@@ -9,7 +10,7 @@
 - **Fase 6 (revisión del usuario) cerrada** y commiteada (`0b80e6c`): el usuario dio la maqueta por buena con el tren nuevo.
 - Sin commitear: solo la ficha provisional `src/content/uas/quantum-systems-vector/index.md` (para ver el visor en local; la sustituye el importador en la fase 5, no se commitea).
 - **Fase 4 (pixel HD) hecha** el 08-10-2026, a falta de que la vea el usuario: tarjeta (día y noche) y planta en `public/uas/quantum-systems-vector/`, `plantaSin` con las tres hélices. Commiteado.
-- Siguiente paso: que el usuario vea el pixel; luego, la fase 5.
+- **Fase 5 (en la web) hecha** el 08-10-2026, a falta de que la vea el usuario: con su permiso, la nota pasó a `publicar: true` y ganó el largo (1,6 m) y la Raptor-360 en «Carga»; importada (`src/content/uas/quantum-systems-vector/`, tuits nuevos en `src/data/tuits/` y `public/tweets/`). Commiteado y publicado.
 
 ## Decisiones del usuario
 
@@ -65,6 +66,8 @@ Medidas: envergadura 2,8 m y MTOW 9,5 kg (folleto Vector AI, mayo y agosto 2025)
 - **Dudoso**: el dron que vuela desde abajo en Militarnyi (rotores en las puntas del ala, aletas en las dos puntas de la cola) no casa con esto; no medir con él.
 
 ## Registro
+
+- 08-10-2026, fase 5: importada y probada en `/uas/quantum-systems-vector` (ficha, tabla con términos enlazados, visor, partes y fuentes) y en `/uas` (tarjeta y filtro «Alemania»). `astro check` sin errores; el lint da dos errores viejos de `shahed-136.ts` y `wildfire.ts`, no de este dron.
 
 - 08-10-2026, fase 4 (pixel HD):
   - Luz: la pintura al sol cae en 5,56-5,84 escalones (de 7) en 3D y desde arriba, cerca del centro del escalón 5: sin `desfaseLuz`. El pixel da #c8c9c9 donde el HD da #cacbcb. Desde abajo sale casi negro en los dos (#15171a en el HD), como manda la guía.

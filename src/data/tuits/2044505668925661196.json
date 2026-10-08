@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-10-08",
+  "tuit": {
+    "id_str": "2044505668925661196",
+    "created_at": "2026-04-15T19:58:31.000Z",
+    "text": "🇺🇸 The USA Army has selected the Vector Reconnaissance UAV from the German company Quantum Systems for its company-level sUAS directed requirement 2 initiative and awarded a 15,3 million USD contract to Quantum Systems.\n\nhttps://t.co/CKDhKYVnEM https://t.co/tUmtOSaOgB",
+    "user": {
+      "name": "Jeff2146🇧🇪",
+      "screen_name": "Jeff21461",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1965165526709075968/tDt3-rBr_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/CKDhKYVnEM",
+          "expanded_url": "https://quantum-systems.com/news/us-army-selects-quantum-systems-vector-ai/",
+          "display_url": "quantum-systems.com/news/us-army-s…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/tUmtOSaOgB",
+        "media_url_https": "https://pbs.twimg.com/media/HF-KhyiWsAAYkXE.jpg"
+      }
+    ]
+  }
+}
