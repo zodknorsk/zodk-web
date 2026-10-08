@@ -3,7 +3,7 @@
 // (arte/generar-uas-miniaturas.mjs y uas-miniatura-hd.ts): todo sale de lo
 // mismo.
 import {
-  BoxGeometry, BufferGeometry, CylinderGeometry, ExtrudeGeometry,
+  BoxGeometry, BufferGeometry, CatmullRomCurve3, CylinderGeometry, ExtrudeGeometry,
   Float32BufferAttribute, LatheGeometry, Quaternion, Shape, ShapeUtils, SphereGeometry,
   Vector2, Vector3,
 } from "three";
@@ -764,6 +764,58 @@ function geometriaPila(p: Extract<Pieza, { tipo: "pila" }>, espejo: boolean): Bu
   return carasPlanas(tris, espejo);
 }
 
+// Codo (ver tipos.ts): anillos a lo largo de una curva suave por los puntos.
+// El costado de cada anillo es la x quitándole lo que va a lo largo del tubo
+// (o la z, si el tubo va de lado); el otro eje, perpendicular a los dos.
+function geometriaCodo(p: Extract<Pieza, { tipo: "codo" }>, espejo: boolean): BufferGeometry {
+  const LADOS = 24;
+  const pts = p.puntos.map(([x, y, z]) => new Vector3(x, y, z));
+  const curva = new CatmullRomCurve3(pts, false, "centripetal");
+  const tramos = (pts.length - 1) * 10;
+  const pos: number[] = [], idx: number[] = [];
+  const medida = (t: number, k: 3 | 4) => {
+    const f = t * (pts.length - 1), i = Math.min(pts.length - 2, Math.floor(f)), u = f - i;
+    const a = p.puntos[i][k] ?? p.puntos[i][3], b = p.puntos[i + 1][k] ?? p.puntos[i + 1][3];
+    return a + (b - a) * u;
+  };
+  const X = new Vector3(1, 0, 0), Z = new Vector3(0, 0, 1);
+  for (let j = 0; j <= tramos; j++) {
+    const t = j / tramos;
+    const c = curva.getPoint(t), tg = curva.getTangent(t).normalize();
+    const ref = Math.abs(tg.x) < 0.9 ? X : Z;
+    const s = ref.clone().sub(tg.clone().multiplyScalar(ref.dot(tg))).normalize();
+    const n = tg.clone().cross(s);
+    const a = medida(t, 3), b = medida(t, 4);
+    for (let k = 0; k < LADOS; k++) {
+      const th = (k / LADOS) * Math.PI * 2;
+      pos.push(c.x + s.x * a * Math.cos(th) + n.x * b * Math.sin(th), c.y + s.y * a * Math.cos(th) + n.y * b * Math.sin(th), c.z + s.z * a * Math.cos(th) + n.z * b * Math.sin(th));
+    }
+  }
+  for (let j = 0; j < tramos; j++) {
+    for (let k = 0; k < LADOS; k++) {
+      const a = j * LADOS + k, a1 = j * LADOS + ((k + 1) % LADOS), b = a + LADOS, b1 = a1 + LADOS;
+      idx.push(a, a1, b, a1, b1, b);
+    }
+  }
+  // Tapas planas en las puntas que no cierran.
+  const tapa = (j: number, fin: boolean) => {
+    const c = curva.getPoint(j / tramos), ci = pos.length / 3;
+    pos.push(c.x, c.y, c.z);
+    for (let k = 0; k < LADOS; k++) {
+      const a = j * LADOS + k, a1 = j * LADOS + ((k + 1) % LADOS);
+      idx.push(...(fin ? [ci, a, a1] : [ci, a1, a]));
+    }
+  };
+  if (p.puntos[0][3] > 0) tapa(0, false);
+  if (p.puntos[p.puntos.length - 1][3] > 0) tapa(tramos, true);
+  const g = new BufferGeometry();
+  g.setAttribute("position", new Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  if (espejo) { g.scale(-1, 1, 1); voltear(g); }
+  g.computeVertexNormals();
+  return g;
+}
+
 export function geometriaDe(p: Pieza): BufferGeometry[] {
   const gs = geometriaBase(p);
   if (p.girar) {
@@ -867,6 +919,8 @@ function geometriaBase(p: Pieza): BufferGeometry[] {
       return (p.espejo ? [false, true] : [false]).map((m) => geometriaPrisma(p, m));
     case "pila":
       return (p.espejo ? [false, true] : [false]).map((m) => geometriaPila(p, m));
+    case "codo":
+      return (p.espejo ? [false, true] : [false]).map((m) => geometriaCodo(p, m));
     case "varilla": {
       return (p.espejo ? [1, -1] : [1]).map((sx) => {
         const a = new Vector3(p.desde[0] * sx, p.desde[1], p.desde[2]);

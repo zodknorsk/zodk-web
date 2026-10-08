@@ -68,6 +68,13 @@ export type Pieza = (
   | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[]; sola?: boolean; vertical?: boolean; x?: number; espejo?: boolean; raizDentro?: boolean }
   // Varilla recta (mástiles, antenas, brazos, patas).
   | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean; lados?: number }
+  // Codo: un tubo liso que sigue una curva por sus puntos (el cuello del
+  // mástil del Vector, que sube y se dobla hacia delante; antenas de pulgar).
+  // Cada punto: [x, y, z, ancho] o [x, y, z, ancho, alto]: medio ancho de la
+  // sección hacia x (el costado) y medio alto en el otro sentido (hacia z si
+  // el tubo sube, hacia y si va a lo largo); una sección oval da una pala
+  // redonda. Un ancho 0 cierra en punta; si no, la punta va con tapa plana.
+  | { tipo: "codo"; id: string; puntos: ([number, number, number, number] | [number, number, number, number, number])[]; espejo?: boolean }
   // Hélice: por defecto gira en el plano vertical (empuja a lo largo de z, como
   // la del MICH); con eje "y", en el horizontal (multirrotores).
   // espejo: se repite al otro lado (x → −x). giro: grados que se giran las
