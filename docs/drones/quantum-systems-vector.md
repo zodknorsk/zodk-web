@@ -6,9 +6,10 @@
 - 06-10-2026: el usuario solo pidió la nota, para probar `/nuevodron`. El 08-10-2026 siguió con la fase 2.
 - **Fase 2 (fuentes y fotos) hecha** el 08-10-2026, a falta de que la vea el usuario. Versión, carga y avión de las marcas decididos (abajo). Fotos y fotogramas en `arte/uas-fuentes/quantum-systems-vector/full/` (fuera de Git); tabla abajo.
 - **Fase 3 (maqueta HD) hecha** el 08-10-2026, a falta de que la revise el usuario: forma, color (`gris-qs`), calcas, costuras, 6 partes (A–F) y 13 fuentes con miniaturas en `public/uas/quantum-systems-vector/fuentes/`.
-- Sin commitear: las correcciones de la fase 6 (la maqueta, la pieza nueva `codo` en `tipos.ts` y `uas-geometria.ts`, este diario) y una ficha provisional en `src/content/uas/quantum-systems-vector/index.md` (solo para ver el visor en local; la sustituye el importador en la fase 5, no se commitea).
-- 08-10-2026: el usuario ve la maqueta pobre y con errores flagrantes que no se señalaron al entregarla. Siguiente paso: **fase 6, su revisión**: analizar cada fallo que marque con fotos antes de tocar código. La fase 4 espera.
-- 08-10-2026, fase 6: el usuario marcó sus fallos con cuatro fotos (guardadas como `full/usuario-1…4-*.png`): unión cuerpo-cola, estabilizador encima del tubo, antenas negras de la cola, mástil, cola sin nada debajo, los tres rotores basculantes, planta del ala, la antena negra de debajo que falta, morro con su lente, Raptor-360 y las marcas. Dio el visto bueno y eligió los rotores **en vertical**. Segunda vuelta (4 puntos más) corregida; el usuario dijo que con eso **se da por terminada la revisión**. Siguiente: fase 4 cuando lo diga. El tren, a petición suya: dos patas finas que bajan en V invertida (~40° de la vertical, puntas a ±0,18 m y −0,255), de las fotos de frente de Militarnyi y la del folleto; antes era una pieza de gaviota casi horizontal.
+- **Fase 6 (revisión del usuario) cerrada** y commiteada (`0b80e6c`): el usuario dio la maqueta por buena con el tren nuevo.
+- Sin commitear: solo la ficha provisional `src/content/uas/quantum-systems-vector/index.md` (para ver el visor en local; la sustituye el importador en la fase 5, no se commitea).
+- **Fase 4 (pixel HD) hecha** el 08-10-2026, a falta de que la vea el usuario: tarjeta (día y noche) y planta en `public/uas/quantum-systems-vector/`, `plantaSin` con las tres hélices. Sin commitear: eso y este diario.
+- Siguiente paso: que el usuario vea el pixel; luego, la fase 5.
 
 ## Decisiones del usuario
 
@@ -64,6 +65,12 @@ Medidas: envergadura 2,8 m y MTOW 9,5 kg (folleto Vector AI, mayo y agosto 2025)
 - **Dudoso**: el dron que vuela desde abajo en Militarnyi (rotores en las puntas del ala, aletas en las dos puntas de la cola) no casa con esto; no medir con él.
 
 ## Registro
+
+- 08-10-2026, fase 4 (pixel HD):
+  - Luz: la pintura al sol cae en 5,56-5,84 escalones (de 7) en 3D y desde arriba, cerca del centro del escalón 5: sin `desfaseLuz`. El pixel da #c8c9c9 donde el HD da #cacbcb. Desde abajo sale casi negro en los dos (#15171a en el HD), como manda la guía.
+  - Vistas comparadas con el HD: 3D, perfil, frente, planta, abajo y noche. De frente, el ala sale con contorno negro (tiene 3-4 px de grueso) y en las puntas, raya oscura. La marca de dos rayas del costado sale como una sola barra en el pixel.
+  - Tarjeta con `vistaTarjeta: [61, 20]`; los rotores en vertical salen bien.
+  - Planta (72x45): las palas de las tres hélices eran píxeles sueltos; fuera con `plantaSin`. Las góndolas quedan como raya fina con la carcasa del rotor en la punta.
 
 - 08-10-2026, fase 6 (correcciones del usuario):
   - **Largo: 1,6 m, no 1,49.** Con la foto de Militarnyi en el suelo (`hd/ajustes/m01.json`, encajada con las puntas del ala, la deriva, el estabilizador y el cono del rotor: 2-16 px) y la del fabricante en vuelo (`u3.json`), la punta del morro sale en z ≈ 0,44-0,46 y el mástil, la Raptor y el asa negra unos 10 cm más adelante de lo puesto. Con la vista de lado del fabricante cuadra (el asa, a 0,07-0,08 en las dos). El morro va a 0,45: 1,6 m de punta a punta, lo que daba Quantum Systems para el Vector en 2023. Los 4,9 pies de la web de EE. UU. no casan con las fotos.

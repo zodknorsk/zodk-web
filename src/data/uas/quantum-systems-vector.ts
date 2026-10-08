@@ -448,6 +448,8 @@ const maqueta: Maqueta = {
   hd: true,
   // Tarjeta de /uas: de más arriba, como el TB2 y el Raven (ala larga).
   vistaTarjeta: [61, 20],
+  // En la planta de la portada, las palas de las hélices quedan en píxeles sueltos.
+  plantaSin: ["rotor-izq-helice", "rotor-der-helice", "rotor-cola-helice"],
   contornoPixel: true,
   detalles: { calcas: CALCAS.map(calcaAUnidades), costuras: COSTURAS.map(costuraAUnidades) },
   piezas: PIEZAS.map(aUnidades),
