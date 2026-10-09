@@ -1,0 +1,39 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2101033828014063780",
+    "created_at": "2026-09-18T19:41:14.000Z",
+    "text": "✈️ @62dAirliftWing Maintenance Group personnel completed a four-day, hands-on training program on the Skydio X10D small unmanned aircraft system at Joint Base Lewis-McChord, Sept. 3, 2026. The training, which is the first of its kind in Air Mobility Command, included classroom https://t.co/tYhDWKkZhc",
+    "note_tweet": true,
+    "user": {
+      "name": "Skydio",
+      "screen_name": "SkydioHQ",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1687215301979688965/bv1E8_y1_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/tYhDWKkZhc",
+        "media_url_https": "https://pbs.twimg.com/media/HShd8sAaAAENe5F.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/tYhDWKkZhc",
+        "media_url_https": "https://pbs.twimg.com/media/HShd-gMa4AAKdhb.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/tYhDWKkZhc",
+        "media_url_https": "https://pbs.twimg.com/media/HShd_hPboAED6ah.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/tYhDWKkZhc",
+        "media_url_https": "https://pbs.twimg.com/media/HSheGnJbkAAvxCD.jpg"
+      }
+    ]
+  }
+}

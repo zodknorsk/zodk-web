@@ -1,0 +1,44 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2035737998617420140",
+    "created_at": "2026-03-22T15:18:55.000Z",
+    "text": "BREAKING NEWS: The @USArmy just placed a $52M+ order for over 2,500 Skydio X10D drones. \n\nThis is the largest single-vendor tactical sUAS order in Army history and went from bid to award in under 72 hours.\n\nFull story: https://t.co/Y1QQPL9pJu https://t.co/qPM0zeHv3R",
+    "user": {
+      "name": "Skydio",
+      "screen_name": "SkydioHQ",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1687215301979688965/bv1E8_y1_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/Y1QQPL9pJu",
+          "expanded_url": "https://www.skydio.com/blog/u-s-army-usd52-million-order-skydio-x10d",
+          "display_url": "skydio.com/blog/u-s-army-…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/qPM0zeHv3R",
+        "media_url_https": "https://pbs.twimg.com/media/HEBk4h3agAAQxEj.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/qPM0zeHv3R",
+        "media_url_https": "https://pbs.twimg.com/media/HEBk4h_bYAAYq6m.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/qPM0zeHv3R",
+        "media_url_https": "https://pbs.twimg.com/media/HEBk4h4a4AAGFJx.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/qPM0zeHv3R",
+        "media_url_https": "https://pbs.twimg.com/media/HEBk4h4bMAE3fgO.jpg"
+      }
+    ]
+  }
+}

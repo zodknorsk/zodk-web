@@ -19,20 +19,20 @@ categoria: Dron de reconocimiento de ala fija
 
 ## CARACTERÍSTICAS
 
-|                                   |                                                                                                                                                                  |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **País**                          | 🇩🇪 Alemania                                                                                                                                                    |
-| **Fabricante**                    | Quantum Systems                                                                                                                                                  |
-| **Operador**                      | Ucrania; Alemania (fuerzas especiales); España (Ejército de Tierra e Infantería de Marina); Rumanía; Países Bajos; Australia; Nueva Zelanda; Ejército de EE. UU. |
-| **Categoría**                     | Dron de reconocimiento de ala fija                                                                                                                               |
-| **Situación**                     | En servicio                                                                                                                                                      |
-| **Primer uso en combate**         | Mayo de 2022, en Ucrania, en la batalla del río Donets                                                                                                           |
-| **Envergadura / longitud / peso** | 2,8 m / 1,5 m / 9,5 kg de MTOW (fabricante)                                                                                                                      |
-| **Alcance**                       | Enlace LOS de hasta 60 km; más de 3 horas de autonomía (fabricante)                                                                                              |
-| **Carga**                         | Torreta EO/IR Raptor-360 de día y de noche, con láser opcional; en el Vector AI, el sensor acústico WASP                                                         |
-| **Motor**                         | Eléctrico, con batería; 72 km/h (fabricante)                                                                                                                     |
-| **Despegue**                      | eVTOL                                                                                                                                                            |
-| **Origen**                        | Diseño propio de Quantum Systems (2019)                                                                                                                          |
+|                                   |                                                                                                                                 |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **País**                          | 🇩🇪 Alemania                                                                                                                   |
+| **Fabricante**                    | Quantum Systems                                                                                                                 |
+| **Operador**                      | Ucrania; Alemania; España (Ejército de Tierra e Infantería de Marina); Rumanía; Países Bajos; Australia; Nueva Zelanda; EE. UU. |
+| **Categoría**                     | Dron de reconocimiento de ala fija                                                                                              |
+| **Situación**                     | En servicio                                                                                                                     |
+| **Primer uso en combate**         | Mayo de 2022, en Ucrania, en la batalla del río Donets                                                                          |
+| **Envergadura / longitud / peso** | 2,8 m / 1,5 m / 9,5 kg de MTOW (fabricante)                                                                                     |
+| **Alcance**                       | Enlace LOS de hasta 60 km; más de 3 horas de autonomía (fabricante)                                                             |
+| **Carga**                         | Torreta EO/IR Raptor-360 de día y de noche, con láser opcional; <br>En el Vector AI, sensor acústico WASP                       |
+| **Motor**                         | Eléctrico, con batería; 72 km/h (fabricante)                                                                                    |
+| **Despegue**                      | eVTOL                                                                                                                           |
+| **Origen**                        | Diseño propio de Quantum Systems (2019)                                                                                         |
 
 ## Historia
 
@@ -112,6 +112,7 @@ La Compañía de Inteligencia de la <a href="https://x.com/hashtag/BrigadaAragó
 ## Fuentes
 
 * **Wikipedia** - Quantum-Systems ([fuente](https://en.wikipedia.org/wiki/Quantum-Systems))
+* **Quantum Systems** - Discover Vector AI ([fuente](https://quantum-systems.com/vector-ai/))
 * **Quantum Systems**, junio 2019 - VECTOR – The 2in1 vertical take-off reconnaissance #UAV ([fuente](https://x.com/quantumdrones/status/1135814729971224576))
 * **Defense News**, enero 2024 - German drone maker helps Ukrainian forces own the night ([fuente](https://www.defensenews.com/global/europe/2024/01/23/german-drone-maker-helps-ukrainian-forces-own-the-night/))
 * **Rubryka**, agosto 2024 - United to win: Ukraine launches production of German Vector drones ([fuente](https://rubryka.com/en/2024/08/30/bezpilotnyk-vector/))

@@ -109,6 +109,8 @@ glosario: true
 
 - **Data-link** *(enlace de datos)* — Canal de radio entre el dron y el operador. Puede ser **analógico** (muy poco retraso, habitual en los FPV), **digital** (vídeo de más calidad y cifrado) o **por satélite** (SATCOM o Starlink), que no depende del horizonte ni del terreno, aunque también se puede interferir.
 
+- **AES-256** *(Advanced Encryption Standard, clave de 256 bits)* — Cifrado estándar con el que se protegen las comunicaciones del dron, sobre todo el data-link y los datos guardados a bordo. Quien intercepta la señal sin la clave solo ve datos ilegibles, así que no puede ver el vídeo ni dar órdenes al dron. No impide el jamming: la señal sigue pudiendo taparse con ruido, aunque no leerse.
+
 - **ExpressLRS** *(ELRS)* — Sistema de radio de código abierto para mandar órdenes al dron, muy extendido en los FPV. Va del mando al dron con muy poco retraso y llega más lejos que las radios de aficionado clásicas. Usa sobre todo la banda de 2,4 GHz y las de 868 y 915 MHz. Es solo el enlace de control; el vídeo va por otro canal (ver **Data-link**).
 
 - **GCS** *(Ground Control Station)* — Estación de control en tierra. El puesto (pantallas, mandos, antenas y software de mapas) desde el que el piloto o el equipo vigila el dron, lo pilota o le programa la ruta.
