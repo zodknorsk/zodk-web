@@ -629,10 +629,6 @@ Dos de ellos son irrecuperables en el corto plazo</div>
 </blockquote>
 
 
-
-> ⚠️ [Publicación de X no disponible](https://x.com/i/status/2094888112816009691)
-
-
 **NOTICIAS DEL DÍA**
 
 - Se investiga una posible red de cesión y compraventa de documentos de identidad ceutíes. ([fuente](https://ceutaahora.com/art/22722/detenido-en-el-helipuerto-de-ceuta-un-marroqui-que-intentaba-viajar-a-la-peninsula-con-un-dni-ajeno/))
