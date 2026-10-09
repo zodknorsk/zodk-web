@@ -146,8 +146,7 @@ tags:
 de cada `##`:
 
 - **Una cita `>`** justo debajo, sin título: un párrafo con qué es, quién lo
-  usa y dónde ha destacado. **Cada hecho con su enlace** (la foto, la
-  noticia o el tuit). `==resaltado==` para lo clave. Si las cifras son del
+  fabrica y para qué se usa. **Sin enlaces.** `==resaltado==` para lo clave. Si las cifras son del
   fabricante, un aviso ⚠️ en un párrafo aparte.
 - `## Visor` con `*Aquí se inserta el visor creado para el blog*` (en la web
   se cambia por el visor).
@@ -167,10 +166,19 @@ de cada `##`:
   - Lo que no se sepa: «No publicado». Lo que solo dice el fabricante:
     «(fabricante)». En una tabla, el alias de un enlace va con la barra
     escapada: `[[🇹🇷 MAM-L\|MAM-L]]`.
-- `## Historia`: dos párrafos y uno corto del uso reciente, con enlaces.
-  Se cuenta como un relato que se lee de corrido, con frases de largo normal.
-  Las cifras van en la tabla; en el texto, solo la que hace falta para
-  entender el hecho. **Ni informe técnico ni redacción de colegio.**
+- `## Historia`: **solo el origen**: quién lo hizo, de dónde sale, por qué
+  nace y cómo llega a su primer uso. Uno o dos párrafos, sin balance de
+  derribos ni de uso reciente. Se cuenta como un relato que se lee de
+  corrido, con frases de largo normal. **Ni informe técnico ni redacción de
+  colegio.**
+- `## Especificaciones y Uso`: todo lo demás, **en párrafos sueltos, sin
+  subtítulos**: diseño y prestaciones, carga y cámaras, versiones y
+  variantes, cómo se maneja y se emplea, hitos y contra qué se usa. Amplía
+  la tabla, no la repite; las cifras del texto, solo las que hacen falta.
+- **Enlaces en el texto: pocos**, solo donde el lector querrá comprobar algo
+  (una cifra discutible, un hito, el vídeo del primer derribo). Lo demás se
+  apoya en `## Fuentes`. Los balances del tipo «en 2024 llevaba tantos
+  derribos» solo van si definen al dron, no por defecto en todos.
 - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`), de este
   dron y no de sus variantes (buscar `"x.com" <dron>`). Si no se encuentra
   ninguno, la sección no va y se dice. x.com no deja leer los tuits; para
@@ -203,6 +211,10 @@ Wikipedia sirven para orientarse, no como base.
   su nombre.
 - Nombrar los hechos (qué se atacó, cuándo) en vez de resumirlos.
 - Decir siempre lo que solo afirma el fabricante.
+- **Carga útil no es cabeza de combate.** Si la ficha solo da la carga útil
+  máxima, se dice eso y que no se publica cuánto es explosivo.
+- Cuando dos fuentes dan cifras distintas (autonomía, velocidad), se ponen
+  las dos con su atribución y la tabla se queda con la del fabricante.
 - Comillas latinas «», raya pegada para los incisos (`—así—`). Las fotos,
   con su pie en cursiva en la línea siguiente.
 
