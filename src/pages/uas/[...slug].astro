@@ -41,7 +41,7 @@ const indice = ficha.data.glosario ? { secciones: leerGlosario(cuerpo) } : null;
 const grupos = ficha.data.armamento ? gruposDeMuniciones(await getCollection("uas")) : null;
 const volver = ficha.data.municion
   ? { href: "/uas/armamento", texto: "Volver al armamento" }
-  : { href: "/uas", texto: "Volver a la enciclopedia" };
+  : { href: "/uas", texto: "Volver al hangar" };
 ---
 
 <PageLayout title={ficha.data.title} description={ficha.data.description ?? ""}>

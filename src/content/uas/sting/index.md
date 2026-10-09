@@ -2,7 +2,7 @@
 title: Sting
 date: '2026-10-09'
 description: >-
-  El Sting es un interceptor drone ucraniano que derriba otros drones chocando
+  El Sting es un dron interceptor ucraniano que derriba otros drones chocando
   contra ellos: un cuadricóptero FPV con forma de bala que un operador pilota…
 updated: '2026-10-09'
 tags:
@@ -10,9 +10,9 @@ tags:
   - dron
 bandera: "\U0001F1FA\U0001F1E6"
 pais: Ucrania
-categoria: Interceptor drone
+categoria: Dron interceptor
 ---
-> El Sting es un <mark>interceptor drone ucraniano que derriba otros drones chocando contra ellos</mark>: un cuadricóptero FPV con forma de bala que un operador pilota con gafas de realidad virtual. Lo fabrica Wild Hornets, se presentó en octubre de 2024 y se usa sobre todo contra los Shahed y Geran rusos.
+> El Sting es un <mark>dron interceptor ucraniano que derriba otros drones chocando contra ellos</mark>: un cuadricóptero FPV con forma de bala que un operador pilota con gafas de realidad virtual. Lo fabrica Wild Hornets, se presentó en octubre de 2024 y se usa sobre todo contra los Shahed y Geran rusos.
 >
 > ⚠️ Las cifras de peso, velocidad, alcance y derribos las da el fabricante, y han ido cambiando con el tiempo.
 
@@ -25,7 +25,7 @@ categoria: Interceptor drone
 | **País**                          | 🇺🇦 Ucrania                                                                                                                                                              |
 | **Fabricante**                    | Wild Hornets                                                                                                                                                              |
 | **Operador**                      | Ucrania                                                                                                                                                                   |
-| **Categoría**                     | Interceptor drone, cuadricóptero FPV con cabeza de combate                                                                                                                |
+| **Categoría**                     | Dron interceptor, cuadricóptero FPV con cabeza de combate                                                                                                                |
 | **Situación**                     | En servicio y en producción en serie                                                                                                                                      |
 | **Primer uso en combate**         | Mayo de 2025, contra un Shahed (el primer derribo que publicó el fabricante)                                                                                              |
 | **Envergadura / longitud / peso** | No publicada / No publicada / 4 ± 0,2 kg de MTOW con la carga (fabricante)                                                                                                |

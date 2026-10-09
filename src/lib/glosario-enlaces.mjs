@@ -59,6 +59,7 @@ function leerSiCambia(ruta, leer, vacio) {
 // pidan: «interferencia» o «autonomía» son palabras demasiado corrientes.
 const ALIAS = {
   "Loitering munition": ["munición merodeadora", "municiones merodeadoras"],
+  "Interceptor drone": ["dron interceptor", "drones interceptores"],
 };
 
 // Cada entrada: { t, en, def, href, ir?, nombres }. `t` es el título de la
