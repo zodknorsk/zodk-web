@@ -109,8 +109,8 @@ Full story:</div>
 
 * **Skydio** - Skydio X10D ([fuente](https://www.skydio.com/x10d))
 * **Skydio** - Skydio X10D technical specs ([fuente](https://www.skydio.com/x10d/technical-specs))
-* **Skydio** - Getting Started with Skydio X10D ([fuente](https://support.skydio.com/hc/en-us/articles/30193790084635-Getting-Started-with-Skydio-X10D))
-* **Skydio** - How to fly Skydio X10 at night ([fuente](https://support.skydio.com/hc/en-us/articles/21479288051867-How-to-fly-Skydio-X10-at-night))
+* **Skydio** - Introducción a Skydio X10D ([fuente](https://support.skydio.com/hc/es/articles/30193790084635-Introducci%C3%B3n-a-Skydio-X10D))
+* **Skydio** - Cómo volar Skydio X10 de noche ([fuente](https://support.skydio.com/hc/es/articles/21479288051867-C%C3%B3mo-volar-Skydio-X10-de-noche))
 * **Defensa.com** - El Ejército de Tierra despliega los drones Skydio X10D en Letonia tras iniciar su incorporación a las unidades ([fuente](https://www.defensa.com/espana/ejercito-tierra-despliega-drones-skydio-x10d-letonia-tras))
 * **Plataforma de Contratación del Sector Público**, junio 2024 - Pliego de Prescripciones Técnicas: Adquisición RPAS Clase I Categoría Micro Ala Rotatoria para Protección de la Fuerza ([fuente](https://contrataciondelestado.es/wps/poc?uri=deeplink:detalle_licitacion&idEvl=e0wDEiu0gPES7pcxhTeWOg%3D%3D))
 * **Infodefensa**, febrero 2025 - El Ejército de Tierra formaliza la compra de drones X10D de la estadounidense Skydio ([fuente](https://www.infodefensa.com/texto-diario/mostrar/5196185/ejercito-tierra-formaliza-compra-drones-skydio-x10d))
