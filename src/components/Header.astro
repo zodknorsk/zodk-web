@@ -2,17 +2,84 @@
 import Container from "@components/Container.astro";
 import ThemeToggle from "@components/ThemeToggle.astro";
 import { SITE } from "@consts";
+
+type Props = { title?: string };
+const { title } = Astro.props;
+
+// Miga: sección (primer tramo de la URL) y título de la página.
+const SECCIONES: Record<string, string> = {
+  uas: "Hangar de UAS",
+  analisis: "Análisis",
+  operaciones: "Operaciones",
+  seguimiento: "Seguimiento",
+  eventos: "Eventos",
+  notas: "Notas",
+  blog: "Blog",
+};
+const primero = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "";
+const seccion = SECCIONES[primero];
+const titulo = title && title !== seccion ? title : undefined;
 ---
 
 <header>
   <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between items-center">
+    <div class="hdr-fila flex justify-between items-center">
       <!-- El logo va de fondo (.logo-home en base.css) y no como <img>: así
            solo se baja el SVG del tema activo (89 KB el de día, 154 KB el de
            noche). -->
       <a href="/" aria-label={SITE.NAME} class="logo-home"></a>
+      <nav class="hdr-miga" aria-label="Dónde estás">
+        {seccion ? (
+          <>
+            <a href={`/${primero}`}>{seccion}</a>
+            {titulo && (
+              <>
+                <span aria-hidden="true">/</span>
+                <span class="hdr-titulo" aria-current="page">{titulo}</span>
+              </>
+            )}
+          </>
+        ) : (
+          <a href="/">{SITE.NAME}</a>
+        )}
+      </nav>
+      <span class="hdr-pct" aria-hidden="true">0 %</span>
       <!-- Sin menú: a cada sección se llega desde la portada. -->
       <ThemeToggle />
     </div>
   </Container>
 </header>
+
+<script is:inline>
+  // Cabecera según el scroll: data-abajo (ya se ha bajado) la pasa a barra
+  // compacta; --lectura (0 a 1) mueve la línea azul y el porcentaje. Va con
+  // rAF y solo escribe cuando algo cambia.
+  (function () {
+    if (window.__hdrScroll) return;
+    window.__hdrScroll = true;
+    var raf = 0, pct = -1, abajo = null, lectura = -1;
+    function actualiza() {
+      var h = document.querySelector("header");
+      if (!h) return;
+      var y = window.scrollY;
+      var b = y > 40;
+      if (b !== abajo) { abajo = b; h.toggleAttribute("data-abajo", b); }
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      var f = total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
+      if (Math.abs(f - lectura) > 0.001) { lectura = f; h.style.setProperty("--lectura", f.toFixed(3)); }
+      var n = Math.round(f * 100);
+      if (n !== pct) {
+        pct = n;
+        var t = h.querySelector(".hdr-pct");
+        if (t) t.textContent = n + " %";
+      }
+    }
+    document.addEventListener("scroll", function () {
+      if (!raf) raf = requestAnimationFrame(function () { raf = 0; actualiza(); });
+    }, { passive: true });
+    // La cabecera es nueva en cada página (ClientRouter cambia el <body>).
+    document.addEventListener("astro:page-load", function () {
+      pct = -1; abajo = null; lectura = -1; actualiza();
+    });
+  })();
+</script>

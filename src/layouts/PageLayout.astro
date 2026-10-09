@@ -23,7 +23,7 @@ const { title, description, hero = false, cabecera = true } = Astro.props;
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
   </head>
   <body>
-    {cabecera && <Header />}
+    {cabecera && <Header title={title} />}
     {hero && <slot name="hero" />}
     <main>
       <slot />
