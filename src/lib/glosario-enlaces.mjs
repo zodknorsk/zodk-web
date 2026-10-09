@@ -54,6 +54,13 @@ function leerSiCambia(ruta, leer, vacio) {
   return valor;
 }
 
+// Nombres en español que llevan a una entrada del glosario sin ser entrada
+// aparte (el plural, a mano: el patrón solo admite la «s»). Solo los que se
+// pidan: «interferencia» o «autonomía» son palabras demasiado corrientes.
+const ALIAS = {
+  "Loitering munition": ["munición merodeadora", "municiones merodeadoras"],
+};
+
 // Cada entrada: { t, en, def, href, ir?, nombres }. `t` es el título de la
 // tarjeta y `nombres`, cómo se la reconoce en el texto.
 function leerTerminos(nota) {
@@ -63,7 +70,7 @@ function leerTerminos(nota) {
     if (!m) continue;
     const t = limpiar(m[1]);
     const en = m[2] ? limpiar(m[2]) : "";
-    const nombres = [t];
+    const nombres = [t, ...(ALIAS[t] ?? [])];
     const alias = en.match(/,\s*([A-Z]{2,})$/);
     if (alias) nombres.push(alias[1]);
     entradas.push({ t, en, def: m[3] ? limpiar(m[3]) : "", href: `${URL_GLOSARIO}#${anclaTermino(t)}`, nombres });

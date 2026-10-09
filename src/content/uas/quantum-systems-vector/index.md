@@ -50,7 +50,7 @@ La óptica principal es la cámara EO/IR [Raptor-360](https://nextvision-sys.com
 
 En Ucrania se usa sobre todo para corregir el tiro de la artillería. Desde diciembre de 2022 los rusos lo interfirieron cada vez más, y la empresa abrió un grupo de Signal con unos 200 operadores ucranianos para ir arreglando lo que fallaba: cambió el programa, le dio una hora más de batería y mejoró el aterrizaje. En la primavera de 2024 abrió una fábrica en Ucrania, que monta los drones con [alas y antenas de GPS ucranianas](https://rubryka.com/en/2024/08/30/bezpilotnyk-vector/).
 
-En julio de 2025 uno volvió a casa [con once impactos de bala](https://www.kyivpost.com/post/55825) y solo dejó de grabar cuando le dieron en la cámara. Ese agosto llegaron los primeros Vector AI y, en Zaporiyia, uno encontró un obús autopropulsado ruso escondido en un bosque que destruyó un Virtus, una loitering munition alemana de Stark, en su estreno en combate.
+En julio de 2025 uno volvió a casa [con once impactos de bala](https://www.kyivpost.com/post/55825) y solo dejó de grabar cuando le dieron en la cámara. Ese agosto llegaron los primeros Vector AI y, en Zaporiyia, uno encontró un obús autopropulsado ruso escondido en un bosque que destruyó un Virtus, una munición merodeadora alemana de Stark, en su estreno en combate.
 
 Más allá de Ucrania, España lo compró en mayo de 2025: [91 sistemas de dos drones](https://www.army-technology.com/news/quantum-reconnaissance-spain/) para el Ejército de Tierra y la Infantería de Marina. En abril de 2026 lo compró el Ejército de EE. UU. para sus compañías de infantería.
 
