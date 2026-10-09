@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2107541405799256080",
+    "created_at": "2026-10-06T18:40:02.000Z",
+    "text": "Detenida en Ceuta la propietaria de una casa patera con 12 inmigrantes hacinados.\n\nhttps://t.co/5HP1bs6cHi",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/5HP1bs6cHi",
+          "expanded_url": "https://theobjective.com/espana/2026-10-06/detenida-ceuta-casa-patera-inmigrantes/",
+          "display_url": "theobjective.com/espana/2026-10…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

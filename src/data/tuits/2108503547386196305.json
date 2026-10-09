@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2108503547386196305",
+    "created_at": "2026-10-09T10:23:14.000Z",
+    "text": "ÚLTIMA HORA | Los Reyes rendirán homenaje en un cementerio musulmán de Ceuta a los muertos en la invasión.\n\nhttps://t.co/ez696LmHAE",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ez696LmHAE",
+          "expanded_url": "https://theobjective.com/espana/politica/2026-10-09/reyes-cementerio-musulman-ceuta/",
+          "display_url": "theobjective.com/espana/politic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2107397516211745023",
+    "created_at": "2026-10-06T09:08:16.000Z",
+    "text": "Ceuta mantiene el control policial tras el desalojo de la playa del Trampolín\n\n#Córdoba #NoticiasCórdoba https://t.co/GLtvnALhTQ",
+    "user": {
+      "name": "El Día de Córdoba",
+      "screen_name": "eldiacordoba",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/931155279668023297/C19G1boO_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/GLtvnALhTQ",
+          "expanded_url": "https://www.eldiadecordoba.es/espana/ceuta-mantiene-control-policial-desalojo-playa-trampolin_0_2008163142.html?utm_campaign=mrf-twitter-eldiacordoba&utm_source=twitter&utm_medium=social&mrfcid=202610066ac20780ebe6446e50d5a5e6",
+          "display_url": "eldiadecordoba.es/espana/ceuta-m…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

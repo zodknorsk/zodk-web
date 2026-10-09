@@ -1,7 +1,7 @@
 ---
 title: Semana 10
 date: '2026-10-05'
-updated: '2026-10-05'
+updated: '2026-10-09'
 tags:
   - marruecos
   - osint
@@ -365,6 +365,104 @@ Esta es la imagen que presenta ahora la playa, donde lo servicios de limpieza es
 
 ## 05 de octubre
 
+
+<blockquote class="tweet" data-tweet-id="2107132683708944649">
+  <a class="tweet-author" href="https://x.com/avtorresp/status/2107132683708944649" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2074026499808669696-d946orrq_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Ángel Víctor Torres Pérez</span>
+    <span class="tweet-handle">@avtorresp</span>
+  </a>
+  <div class="tweet-text">Después de lograr con éxito y sin incidencias el desalojo completo del Trampolín, hoy se recupera todo el espacio que hasta ayer estaba ocupado por los asentamientos de migrantes. <br>
+<br>
+Esta es la imagen que presenta ahora la playa, donde lo servicios de limpieza están culminando su […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-e-oyyaskusxqjarg.jpg"><source src="https://video.twimg.com/amplify_video/2107132655414202368/vid/avc1/848x480/8bu-KPrgF78HWZaA.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/avtorresp/status/2107132683708944649" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/avtorresp/status/2107132683708944649" target="_blank" rel="noopener">5 de octubre de 2026</a>
+</blockquote>
+
+
 ## 06 de octubre
 
+
+<blockquote class="tweet" data-tweet-id="2107397516211745023">
+  <a class="tweet-author" href="https://x.com/eldiacordoba/status/2107397516211745023" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/931155279668023297-c19g1boo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Día de Córdoba</span>
+    <span class="tweet-handle">@eldiacordoba</span>
+  </a>
+  <div class="tweet-text">Ceuta mantiene el control policial tras el desalojo de la playa del Trampolín<br>
+<br>
+<a href="https://x.com/hashtag/Córdoba" target="_blank" rel="noopener">#Córdoba</a> <a href="https://x.com/hashtag/NoticiasCórdoba" target="_blank" rel="noopener">#NoticiasCórdoba</a></div>
+  <a class="tweet-date" href="https://x.com/eldiacordoba/status/2107397516211745023" target="_blank" rel="noopener">6 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2107480352600080648">
+  <a class="tweet-author" href="https://x.com/ElFarodeCeuta/status/2107480352600080648" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1090567697262354435-emwlzazk_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Faro de Ceuta</span>
+    <span class="tweet-handle">@ElFarodeCeuta</span>
+  </a>
+  <div class="tweet-text">◼️ Incluye vídeo ▶  &quot;En la calle y sin opciones de alquiler&quot;: una madre de cinco hijos afronta un desahucio definitivo <br>
+<br>
+➡ La familia consiguió aplazar el desahucio previsto en junio para ganar tiempo, pero 3 meses después sigue sin encontrar una vivienda para 9 personas   <br>
+<br>
+➡ […]</div>
+  <a class="tweet-date" href="https://x.com/ElFarodeCeuta/status/2107480352600080648" target="_blank" rel="noopener">6 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2107536229063328074">
+  <a class="tweet-author" href="https://x.com/eldebate_com/status/2107536229063328074" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1442418106752802819-jfs68qcx_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">El Debate</span>
+    <span class="tweet-handle">@eldebate_com</span>
+  </a>
+  <div class="tweet-text">‼️ La sección de CCOO en Ceuta se desmarca de la huelga por la vivienda<br>
+<br>
+«Nuestra Ceuta sigue invadida»</div>
+  <a class="tweet-date" href="https://x.com/eldebate_com/status/2107536229063328074" target="_blank" rel="noopener">6 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2107541405799256080">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2107541405799256080" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">Detenida en Ceuta la propietaria de una casa patera con 12 inmigrantes hacinados.</div>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2107541405799256080" target="_blank" rel="noopener">6 de octubre de 2026</a>
+</blockquote>
+
+
+
 ## 07 de octubre
+
+
+<blockquote class="tweet" data-tweet-id="2107723526618636755">
+  <a class="tweet-author" href="https://x.com/elmundoes/status/2107723526618636755" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1854121701396852738-t89707ny_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL MUNDO</span>
+    <span class="tweet-handle">@elmundoes</span>
+  </a>
+  <div class="tweet-text">La extraña 'desaparición' de 1.200 inmigrantes en el maquillaje de Ceuta ante el adelanto electoral y la visita del Rey</div>
+  <img class="tweet-media" src="/tweets/media-huajxrrwuaah_ec.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/elmundoes/status/2107723526618636755" target="_blank" rel="noopener">7 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2107803126216466718">
+  <a class="tweet-author" href="https://x.com/abc_es/status/2107803126216466718" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2023769418250285060-tiouigrt_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">ABC.es</span>
+    <span class="tweet-handle">@abc_es</span>
+  </a>
+  <div class="tweet-text">‼️La Policía identifica a militares marroquíes en el desalojo de El Trampolín<br>
+<br>
+✍️Por <a href="https://x.com/Borjamendez" target="_blank" rel="noopener">@Borjamendez</a></div>
+  <a class="tweet-date" href="https://x.com/abc_es/status/2107803126216466718" target="_blank" rel="noopener">7 de octubre de 2026</a>
+</blockquote>

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2107536229063328074",
+    "created_at": "2026-10-06T18:19:27.000Z",
+    "text": "‼️ La sección de CCOO en Ceuta se desmarca de la huelga por la vivienda\n\n«Nuestra Ceuta sigue invadida» https://t.co/qOl5Uvcpcm",
+    "user": {
+      "name": "El Debate",
+      "screen_name": "eldebate_com",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1442418106752802819/JFS68qcx_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/qOl5Uvcpcm",
+          "expanded_url": "https://www.eldebate.com/espana/20261006/seccion-ccoo-ceuta-desmarca-huelga-vivienda-nuestra-ceuta-sigue-invadida_466773.html?utm_campaign=mrf-twitter-eldebate_com&utm_source=twitter&utm_medium=social&mrfcid=202610066ac51157b46e0915e146f6fa",
+          "display_url": "eldebate.com/espana/2026100…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2108209102492979560",
+    "created_at": "2026-10-08T14:53:13.000Z",
+    "text": "El trabajo continúa en Ceuta sin descanso, y está dando sus frutos.\n\nMe han preguntado por avances en este último mes.\n\n✅️ Hemos pasado 2.000 plazas en dos espacios, a más de 7.000 en 10 espacios que han sido indispensables para agilizar los trámites.\n\n✅️ De 2.700 retornos https://t.co/Gg1nuHGSZJ",
+    "note_tweet": true,
+    "user": {
+      "name": "Ángel Víctor Torres Pérez",
+      "screen_name": "avtorresp",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2074026499808669696/D946OrrQ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Gg1nuHGSZJ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2108208679350607872/img/0XCLShKYCC6tu3Ix.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2108208679350607872/pl/UrWzKv2H4rIC7gmH.m3u8?v=e01"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 432000,
+              "url": "https://video.twimg.com/amplify_video/2108208679350607872/vid/avc1/320x320/8x6DEp4QNGbYY0t_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2108208679350607872/vid/avc1/540x540/_TEwvJQeWfGDvcUQ.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 1280000,
+              "url": "https://video.twimg.com/amplify_video/2108208679350607872/vid/avc1/720x720/JDIMwWSF8iKIMPz_.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 8768000,
+              "url": "https://video.twimg.com/amplify_video/2108208679350607872/vid/avc1/1080x1080/68IutuCmfCGGiqz4.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
