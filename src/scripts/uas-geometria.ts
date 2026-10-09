@@ -818,8 +818,9 @@ function geometriaCodo(p: Extract<Pieza, { tipo: "codo" }>, espejo: boolean): Bu
 
 export function geometriaDe(p: Pieza): BufferGeometry[] {
   const gs = geometriaBase(p);
-  if (p.girar) {
-    const { centro: [cx, cy, cz], eje, grados } = p.girar;
+  for (const giro of [p.girar, p.girarLuego]) {
+    if (!giro) continue;
+    const { centro: [cx, cy, cz], eje, grados } = giro;
     const a = (grados * Math.PI) / 180;
     for (const g of gs) {
       g.translate(-cx, -cy, -cz);

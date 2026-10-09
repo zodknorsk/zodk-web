@@ -21,7 +21,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e",
 };
 
 export type { Vista };
@@ -382,8 +382,10 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // margen): lo que ocupa de verdad desde ahí, no la esfera que lo envuelve
   // (con ella, un ala vista de canto dejaba el dron pequeñísimo).
   const punto = new Vector3();
+  // La vista «3D» puede ser propia del dron (`vista3d`).
+  const vistaDe = (vista: Vista): [number, number] => (vista === "3d" && maqueta.vista3d) || VISTAS[vista];
   const distanciaVista = (vista: Vista) => {
-    const [az, el] = VISTAS[vista];
+    const [az, el] = vistaDe(vista);
     const giro = new PerspectiveCamera();
     giro.position.setFromSpherical(new Spherical(1, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
     giro.lookAt(0, 0, 0);
@@ -408,7 +410,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // Vistas fijas: la cámara viaja hasta ellas en medio segundo.
   let animando = false;
   const ponerVista = (vista: Vista, sinViaje = false) => {
-    const [az, el] = VISTAS[vista];
+    const [az, el] = vistaDe(vista);
     // Desde donde se mire, con el punto de mira de vuelta al centro.
     const desde = new Spherical().setFromVector3(desdeObjetivo());
     const objetivo0 = controles.target.clone();

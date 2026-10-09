@@ -52,6 +52,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // la misma cámara, #cbccce); con el cielo cubierto, en las fotos
   // españolas, algo más frío.
   "gris-qs": { color: "#a5a6a3", metal: 0, rugosidad: 0.55 },
+  // La arena del Sting, plástico impreso mate (TWZ, al sol: #b49462).
+  "arena-st": { color: "#9c8156", metal: 0, rugosidad: 0.7 },
+  // Alas, brazos y góndolas: otra tanda de impresión, un punto más clara.
+  "arena-st2": { color: "#a58b60", metal: 0, rugosidad: 0.66 },
   negro: { color: "#2b2d31", metal: 0, rugosidad: 0.55 },
   // El negro mate del MICH-2000: neutro, sin el punto azulado del negro de
   // las piezas, y muy mate (con menos rugosidad refleja el cielo y desde
@@ -469,6 +473,34 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.font = `600 ${Math.round(H * 0.2)}px "Helvetica Neue", Arial, sans-serif`;
       c.textAlign = "center"; c.textBaseline = "middle";
       c.fillText("Skydio", W / 2, H * 0.88, W);
+      break;
+    }
+    case "sting": {
+      // El avispón del logo oficial de Wild Hornets (wildhornets.com) y, pegado
+      // debajo, «STING» con su misma letra octogonal (la G, hecha como su O).
+      const AVISPON = "M114.954 100.919V75.885L123.918 66.9213V99.0601L132.881 108.024V120.7L120.365 108.184L103.59 124.96H90.9133L114.954 100.919ZM177.698 111.739H141.844V129.667L150.807 138.63H168.735L177.698 129.667V111.739ZM150.807 129.667V120.703H168.735V129.667H150.807ZM141.844 138.63H150.807V147.594H168.735V138.63H177.698V174.789L159.771 192.616L141.844 174.789V138.63ZM150.807 156.558H168.735V171.061L159.771 179.974L150.807 171.061V156.558ZM204.59 75.885V100.919L228.629 124.96H215.954L199.178 108.184L186.662 120.7V108.024L195.626 99.0601V66.9213L204.59 75.885ZM132.88 149.491L112.348 170.023L94.6259 152.301H81.9494L105.989 176.341V210.339L114.953 201.376V180.095L132.88 162.167V149.491ZM207.194 170.023L186.662 149.491V162.167L204.589 180.095V201.376L213.552 210.339V176.341L237.593 152.301H224.916L207.194 170.023Z";
+      const LETRAS: [string, number, number][] = [
+        ["M798.924 116.374H820.877L829.751 125.334V129.812H820.883V125.334H798.918V131.008L829.751 139.35L829.75 151.902L820.877 160.862H798.924L790.05 151.902V147.424H798.918V151.902H820.883V146.228L790.05 137.886L790.051 125.333L798.924 116.374Z", 790.05, 39.7], ["M741.698 124.763V116.374H784.81V124.763H767.692V160.862H758.817V124.763H741.698Z", 741.7, 43.1], ["M349.979 116.405V160.893H358.853V116.405H349.979Z", 349.98, 8.88], ["M650.548 116.374H641.674V160.862H650.548V129.466L676.353 160.862H685.164V116.374H676.353V147.77L650.548 116.374Z", 641.67, 43.5],
+        ["M8.9 0H36.1L45 8.9V13H36.1V8.9H8.9V35.6H36.1V26.5H24V18.6H45V35.6L36.1 44.5H8.9L0 35.6V8.9Z", 0, 45],
+      ];
+      const hueco = 9, anchoTexto = LETRAS.reduce((t, [, , w]) => t + w, 0) + hueco * (LETRAS.length - 1);
+      const altoTodo = 143.4 + 10 + 44.5, anchoTodo = Math.max(anchoTexto, 155.7);
+      const k = Math.min(W / anchoTodo, H / altoTodo);
+      c.fillStyle = d.color ?? TINTA_CALCA;
+      c.save();
+      c.translate(W / 2 - (155.7 * k) / 2, (H - altoTodo * k) / 2);
+      c.scale(k, k); c.translate(-81.95, -66.92);
+      c.fill(new Path2D(AVISPON));
+      c.restore();
+      let x = W / 2 - (anchoTexto * k) / 2;
+      for (const [d0, x0, w] of LETRAS) {
+        c.save();
+        c.translate(x, (H - altoTodo * k) / 2 + (143.4 + 10) * k);
+        c.scale(k, k); c.translate(-x0, x0 === 0 ? 0 : -116.37);
+        c.fill(new Path2D(d0));
+        c.restore();
+        x += (w + hueco) * k;
+      }
       break;
     }
     case "ventana": {

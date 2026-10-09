@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -121,6 +121,9 @@ export type Pieza = (
   // Girada `grados` alrededor de una recta paralela al eje dado que pasa por
   // `centro` (la caja del sensor de un gimbal sobre su eje de cabeceo).
   girar?: { centro: Punto3; eje: "x" | "y" | "z"; grados: number };
+  // Un segundo giro, después de `girar` (el Sting: cada pata va girada hacia
+  // su diagonal y después todo el dron se pone de pie).
+  girarLuego?: { centro: Punto3; eje: "x" | "y" | "z"; grados: number };
 };
 
 // Detalle pintado del HD (docs/uas-hd.md), en las mismas unidades que las
@@ -183,7 +186,10 @@ export type Dibujo =
   // punta arriba a la derecha y otra abajo a la izquierda) y «Skydio» debajo.
   | { tipo: "skydio"; color?: string }
   // Fibra de carbono: sarga de cuadros oscuros (la jaula del sensor del X10D).
-  | { tipo: "carbono" };
+  | { tipo: "carbono" }
+  // Logo del Sting: el avispón del logo oficial de Wild Hornets y «STING»
+  // pegado debajo, con su misma letra; en relieve, del color de la pintura.
+  | { tipo: "sting"; color?: string };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
@@ -272,6 +278,9 @@ export type Maqueta = {
   // Ángulo propio de la tarjeta de /uas: [acimut, elevación] en grados (si
   // no, el de todas, en arte/generar-uas-miniaturas-hd.mjs).
   vistaTarjeta?: [number, number];
+  // Vista «3D» propia del visor (con la que abre): [acimut, elevación] en
+  // grados, en vez de la de todos (el Sting, de pie y visto por el lomo).
+  vista3d?: [number, number];
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;

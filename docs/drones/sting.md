@@ -5,7 +5,9 @@
 - **Fase 1 (la nota) hecha** el 09-10-2026: `02 - Temas/Hangar de UAS/🇺🇦 Sting.md` en la bóveda, `estado: borrador`, `publicar: true`. Sin revisar por el usuario.
 - **Fase 2 (fuentes y fotos) hecha** el 09-10-2026, a falta de que la vea el usuario: 25 fotos elegidas en `arte/uas-fuentes/sting/full/` (fuera de Git, solo en la nube; se pasan al Mac en un zip), `FUENTES.md`, la tabla y la lectura de la forma, abajo.
 - Trabajado en la nube, en la rama `claude/nifty-faraday-wj1m34` de los dos repositorios (no en `main`): el importador no se ha ejecutado y no hay nada publicado.
-- Siguiente paso: que el usuario vea la fase 2; la fase 3 (maqueta HD) se haría en el Mac con las fotos del zip y las herramientas de `arte/`.
+- **Fase 3 (maqueta HD) hecha** el 09-10-2026 en el Mac, en `main`, **commiteada y subida** (revisada por el usuario en cinco vueltas): `src/data/uas/sting.ts`, acabado nuevo `arena-st` (en `tipos.ts`, `uas-paletas.ts`, `uas-hd.ts` y `visor-uas.ts`) y dibujo nuevo `sting` (el logo) en `tipos.ts` y `uas-hd.ts`. Comparación en `~/Downloads/sting/sting-fase3-comparacion.html`; segunda vuelta (correcciones del usuario) en `sting-fase3-correcciones.html`.
+- **Provisional, fuera de Git**: `src/content/uas/sting/index.md` es una ficha mínima solo para ver el visor en local (sin commitear, a propósito: publicaría una página vacía). La sustituye el importador en la fase 5. En otro ordenador hay que volver a crearla o importar la nota.
+- Siguiente paso: **la fase 4 (pixel HD)**. Antes, decidir con el usuario cómo salen la planta de la portada, la tarjeta y los iconos de vista con el dron de pie (ver Registro). Faltan las miniaturas de `fuentes` (`public/uas/sting/fuentes/`, con `sips`), que van con la fase 5.
 
 ## Decisiones del usuario
 
@@ -13,6 +15,8 @@
 - 09-10-2026: versión **Sting estándar** (no la Sting S ni la 2.0) y **carga estándar**.
 - 09-10-2026: las fotos se usan **aunque no tengan licencia libre**, para enlazar las partes del dron en el visor con la foto en el blog.
 - 09-10-2026: el avión de las marcas lo elige Claude (el que tenga más fotos de varios lados).
+- 09-10-2026 (fase 3, revisión): el **logo, el oficial** de Wild Hornets con «STING» pegado debajo; **fuera la varilla azul con bolas**; patas, alas y cámara corregidas; más juntas y tornillería; el dron **abre de pie** y se gira con el ratón. Para la revisión vale cualquier acabado de las fotos, no solo el arena.
+- 09-10-2026 (fase 3): medidas **aproximadas**, sin buscar fidelidad al 100 %; antes los detalles de la maqueta. Color **arena con los detalles en negro** (la ojiva, que es la carga, motores y bridas), aunque los del lote llevan la ojiva arena.
 
 ## Fuentes
 
@@ -64,9 +68,47 @@ Fotos en `full/` (25, 2,3 MB). Ninguna con licencia libre: uso autorizado por el
 Elegido por Claude (el usuario lo dejó a su criterio): **ejemplar arena de lote de producción**, el más fotografiado y con vistas desde arriba, de frente, de lado y por debajo (u24-lote-arriba, twz-dos-en-mano, tg5138-noche-arriba, tg4567-vuelo-abajo, tg4158-noche-lado). Sus marcas: logo STING y hexágono en el lomo, etiquetas blancas en las alas. El verde oliva (defender-oliva-mano, tg5098-*) aporta los detalles de cerca. Si el usuario prefiere otro acabado, es una decisión de la fase 3.
 
 
+### Medidas (fase 3)
+
+Todo en diámetros del cuerpo (D), medido en las fotos de prensa, y D pasado a metros con personas:
+
+| Medida | Valor | De dónde | Fotos |
+|---|---|---|---|
+| D (grueso del cuerpo) | ≈ 10 cm | Manos en la ojiva (tg4567-furgoneta, ~9 cm) y estatura de los soldados (tg4685, ~8 cm); redondeado a 10 por los 4 kg | 2 |
+| Envergadura del ala | 3,67 D = 37 cm | u24-lote-arriba y twz-dos-en-mano (3,68 y 3,67 D) | 2 |
+| Cuerda del ala | 0,7 D = 7 cm | u24 (corregida por la inclinación de la cámara) y twz | 2 |
+| Del morro al borde de ataque | 1,85 D | Encaje de u24 y twz | 2 |
+| Del eje al motor | 1,95 D = 19,5 cm | twz (1,92) y wh-web-vuelo (2,1) | 2 |
+| Del morro a los brazos | 3,1 D | twz y encaje de u24 | 2 |
+| Góndola y motor | Ø 0,48 y 0,42 D | u24-lote-arriba de cerca | 1 |
+| Hélices | 7" (radio 8,9 cm), dos palas | Supuesto: radio ≈ 0,9 D en wh-web-vuelo y devua; dos palas en tg4595 | 2 |
+| Varilla de los pies | 34 cm de punta a punta | tg4567-vuelo-abajo (1,7 D por lado) | 1 |
+
+Encajes de cámara (`arte/uas-fuentes/sting/hd/ajustes/`): u24 (10 puntos, error medio 3,4 px, campo fijo a 14° porque suelto se iba a 3,7° y el visor no lo pintaba) y twz-a (9 puntos, 2,8 px). La medida de dev.ua no se usa: es un oliva de otra tanda (brazos y góndolas negros, raíl en el costado) y sale más corto.
+
+### Motores y patas (confirmado en la fase 3)
+
+- **Cuatro brazos en X, a 45° del plano de las alas, un motor en la punta de cada uno**, con el cono hacia el morro y el motor y la hélice detrás. Trazado en cinco fotos: tg4595 (de pie, tres cuartos: un brazo a cada lado y otro hacia la cámara), u24-lote-arriba (desde arriba los de abajo quedan tapados y solo asoman sus conos delante del ala), tg5098-oliva-mesa (igual), wh-web-vuelo y twz (dos góndolas fuera y dos dentro según el giro) y tg4567-vuelo-abajo (las cuatro; el mejor reparto de las 24 posibles es una X). No son dos motores por brazo.
+- **Patas** (tercera vuelta, corregido por el usuario): **cuatro**, finas, en X como los brazos, cada una una chapa que baja del costado de la cola hasta un pie, sin travesaño. En wh-web-vuelo salen dos fuera y dos dentro por el mismo giro que los motores. (Las dos patas con travesaño de la segunda vuelta estaban mal.)
+- **Cuerpo de la batería**: plano por el lado del logo, a lo largo (corrección del usuario: lo plano es el cuerpo, **no la ojiva**, que es redonda; se interpretó mal y se aplanó la ojiva). En el lote sin ojiva, el arco apuntado de u24 es donde ese plano corta la tapa redonda del cuerpo. Pitón en la punta de la ojiva.
+- La varilla azul con dos bolas de madera de algunas fotos de campo (tg4567, twz, tg5098) no se sabe qué es y no está en el lote ni en wh-web-vuelo: **no se pone**.
+- **Cámara** (corregida): FPV de caja negra con el objetivo y su aro claro, en la cola, entre los dos cierres, mirando hacia el lomo (tg3907, tg4595, u24).
+
 ## Registro
 
 - 09-10-2026: la red del entorno estaba cerrada; el usuario la abrió y se pudo investigar.
 - 09-10-2026: nota escrita con cada cifra enlazada a su fuente. Dato descartado por no comprobarse en la fuente que lo cita: los «213 mph» de Wikipedia (Kyiv Post dice 160 km/h). La primera interceptación desde un dron naval (Kyiv Independent, abril 2026) no nombra el Sting, así que no se usa; sí el MV11 con 18 Sting de TWZ (agosto 2026).
 - 09-10-2026: vídeos de la web del fabricante (`videos/wh-*.mp4`): no valen para modelar (el dron sale como un punto lejano o es la vista térmica del que persigue).
 - 09-10-2026: las fotos del Sting se ven en varios colores (verde oliva, arena y gris), con la misma forma: cuerpo en forma de bala con ojiva negra y banda, dos alas cortas rectangulares, dos brazos con motores y patas en la cola.
+- 09-10-2026, fase 3: primera forma, encajada con u24 y twz (error medio 8 px). Corregido tras comparar: ojiva más alta (punta a 3,1 D de los brazos), ala con más cuerda y 1 cm más atrás (error a menos de 3 px); góndolas y motores más gordos, brazos de 3 cm, patas más robustas, cámara en su caja en el lomo y espiga de cola (de la foto del lote de cerca).
+- 09-10-2026, fase 3: marcas, sobre la forma final: el logo del avispón y «STING» en relieve (calca `sting`, del color de la pintura algo más oscuro), la etiqueta blanca pequeña del lote a su izquierda y dos bridas negras por brazo. En las alas del lote no hay etiquetas (las grandes de tg5098 son del oliva): no se ponen.
+- Visto y sin hacer: el relieve del lomo delante del logo (una tapa en punta de flecha con dos aletas junto a la ojiva) y el anillo de unión de cada brazo cerca del cuerpo (u24). Se pueden añadir si el usuario quiere más detalle.
+- 09-10-2026, fase 3, revisión del usuario: logo con los trazos del SVG oficial (`wh_logosign_eng_-v3_yellow.svg` de wildhornets.com): el avispón tal cual y «STING» con sus letras S, T, I y N; la G, hecha como su O. Alas con perfil (`ala`) y la punta redondeada en las dos esquinas. Patas, cámara y antena rehechas; fuera la varilla con bolas. Juntas: aros con tornillos al final de la banda (z 0,157) y a la altura de los brazos, tira y aletas en flecha del lomo; ranura doble y conector negro en la panza; filas de tornillos en los costados.
+- De pie: el dron se escribe tumbado y al final todo gira −90° sobre x (`girar` en cada pieza; calcas, costuras y chinchetas con `dePie`), sin tocar el visor. Ojo para la fase 4: la planta de la tira de la portada y la tarjeta salen ahora con el dron de pie (la planta, vista desde la ojiva); habrá que decidir allí.
+- Los encajes de cámara de `hd/ajustes/` (u24, twz-a) están en los ejes tumbados: con el dron de pie ya no sirven tal cual.
+- 09-10-2026, tercera vuelta: cuatro patas en X sin travesaño; ojiva y anillo con la cara plana (`casco` con `arriba` cortado) y el pitón; hélices negras (como en las fotos); bobinado cobrizo y tuerca en cada motor; capas de impresión (dibujo nuevo `capas`) en el cuerpo y las alas, para que no parezca de plástico liso.
+- Motor y visor, ampliados (sin cambiar los demás drones): `girarLuego` en las piezas (un segundo giro tras `girar`: cada pata a su diagonal y después todo de pie) y `vista3d` en la maqueta (la vista «3D» con la que abre el visor; el Sting, [200, 8], de pie y por el lomo).
+- Visto y sin hacer: los iconos de los botones de vista (Planta, Abajo, Perfil, Frente) se pintan con el dron de pie y se nombran como si estuviera tumbado; decidir en la fase 4 junto con la planta y la tarjeta.
+- 09-10-2026, cuarta vuelta: ojiva redonda otra vez; el cuerpo, `casco` con la cara plana del logo (a 4 cm del eje). Fuera las capas de impresión (no le gustaron al usuario; dibujo `capas` quitado). Contra el «efecto maqueta»: cartelas entre el borde de salida del ala y el cuerpo (u24), cabeza en cada brida, hélices con torsión (`paso`), tornillos algo más grandes y oscuros. Lección: ante una indicación breve («la ojiva no es redonda»), preguntar a qué pieza se refiere si hay dos lecturas.
+- 09-10-2026, quinta vuelta: cuerpo redondo otra vez (decisión del usuario, aunque en el lote sea plano por el lado del logo). Detalles: dos tonos de arena (`arena-st2` en alas, brazos y góndolas), cables negros del motor por cada brazo, estrías del anillo de la ojiva, roces en la cola (`desgaste`), cierres laterales y junta de la tapa de la batería. **Cartelas quitadas**: no se ven en ninguna foto (lo que se tomó por cartelas en u24 eran los brazos de abajo); el usuario lo marcó como inventado.
+- 09-10-2026: **quitada la «antena»** de la punta de la cola (varilla gris): no se sabe qué es y, junto a la cámara, parecía un mechero. Decisión del usuario.
