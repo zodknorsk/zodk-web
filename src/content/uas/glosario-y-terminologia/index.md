@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-10-02'
+updated: '2026-10-09'
 tags:
   - dron
 glosario: true
@@ -109,6 +109,8 @@ glosario: true
 
 - **Data-link** *(enlace de datos)* — Canal de radio entre el dron y el operador. Puede ser **analógico** (muy poco retraso, habitual en los FPV), **digital** (vídeo de más calidad y cifrado) o **por satélite** (SATCOM o Starlink), que no depende del horizonte ni del terreno, aunque también se puede interferir.
 
+- **ExpressLRS** *(ELRS)* — Sistema de radio de código abierto para mandar órdenes al dron, muy extendido en los FPV. Va del mando al dron con muy poco retraso y llega más lejos que las radios de aficionado clásicas. Usa sobre todo la banda de 2,4 GHz y las de 868 y 915 MHz. Es solo el enlace de control; el vídeo va por otro canal (ver **Data-link**).
+
 - **GCS** *(Ground Control Station)* — Estación de control en tierra. El puesto (pantallas, mandos, antenas y software de mapas) desde el que el piloto o el equipo vigila el dron, lo pilota o le programa la ruta.
 
 - **SATCOM** *(Satellite Communications)* — Comunicaciones por satélite. Permiten controlar un dron al otro lado del mundo. En el MQ-9 Reaper, la antena va en la joroba del morro. El [Wildfire](/uas/wildfire) no la tiene porque se controlará a través de constelaciones en órbita baja como Starlink.
@@ -141,6 +143,8 @@ glosario: true
 
 - **VTOL** *(Vertical Take-Off and Landing)* — Despegue y aterrizaje en vertical, sin pista. Lo hacen los multicópteros como el [Skydio X10D](/uas/skydio-x10d) y los drones híbridos de ala fija con rotores para despegar.
 
+- **eVTOL** *(electric Vertical Take-Off and Landing)* — VTOL eléctrico: despega y aterriza en vertical con motores eléctricos y baterías, sin combustible, y vuela como un avión de ala fija. Es más silencioso que uno de combustible. El [Quantum Systems Vector](/uas/quantum-systems-vector) es de este tipo.
+
 ## Vuelo y navegación
 
 - **FPV** *(First Person View)* — Vuelo en primera persona. El piloto lleva unas gafas en las que ve en directo lo que ve la cámara del dron, y lo pilota como si fuera a bordo. Los FPV pequeños cargados con explosivo son hoy el arma más habitual del frente en Ucrania. Algunos se guían por un cable de fibra óptica que la guerra electrónica no puede interferir.
@@ -154,6 +158,8 @@ glosario: true
 - **GNSS** *(Global Navigation Satellite System)* — Nombre general de los sistemas de navegación por satélite. GPS (EE. UU), GLONASS (Rusia), Galileo (Unión Europea) y BeiDou (China).
 
 - **INS** *(Inertial Navigation System)* — Navegación inercial. Unos acelerómetros y giróscopos miden cada movimiento del dron y calculan su posición a partir de la última conocida. No se puede interferir, pero acumula error con el tiempo, por lo que suele combinarse con el GNSS.
+
+- **ADS-B** *(Automatic Dependent Surveillance-Broadcast)* — Sistema por el que los aviones emiten por radio su posición, altura y velocidad, obtenidas por GNSS, para que el control aéreo y otros aviones los vean. **ADS-B In** es recibir esas señales y **ADS-B Out**, emitirlas. Sirve a un dron para ver el tráfico aéreo y no cruzarse con él. 
 
 - **Waypoint** *(punto de paso)* — Cada una de las coordenadas por las que se programa que pase un dron. Unidas forman su ruta. Los drones de ataque de un solo uso vuelan así, cambiando de rumbo en cada punto para esquivar las defensas.
 

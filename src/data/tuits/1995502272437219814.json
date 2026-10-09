@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "1995502272437219814",
+    "created_at": "2025-12-01T14:36:31.000Z",
+    "text": "Another exclusive: the Darknode battalion of the 412th Nemesis Brigade used an interceptor STING drone to shoot down a Shahed carrying an R-60 air-to-air missile. https://t.co/UseJQNAlpA",
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/UseJQNAlpA",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1995501862611492864/img/V6XI95bFN8svqJpb.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1995501862611492864/pl/WRQTQPJ0qoOeMUWs.m3u8?v=cbe"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/1995501862611492864/vid/avc1/480x270/Y06lbst_iZvrNv4-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1995501862611492864/vid/avc1/640x360/BZVOnMP5oqxYHWzz.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1995501862611492864/vid/avc1/1280x720/mSX9-zbXsgI24nK0.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/1995501862611492864/vid/avc1/1920x1080/tHK2z55S-SpOs0BD.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2076379723387523116",
+    "created_at": "2026-07-12T18:54:37.000Z",
+    "text": "🌙 #Buenasnoches. Finalizamos la semana 👉 | INTELIGENCIA, VIGILANCIA Y RECONOCIMIENTO 🛩️\nLa Compañía de Inteligencia de la #BrigadaAragón pone a prueba las capacidades del «Vector AI», un sistema aéreo no tripulado de pequeño tamaño —sUAS— con capacidad de despegue y aterrizaje https://t.co/rBEHJXNItP",
+    "note_tweet": true,
+    "user": {
+      "name": "Ejército de Tierra 🇪🇸",
+      "screen_name": "EjercitoTierra",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2072323547859501058/G818dogF_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/rBEHJXNItP",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/2076379418029662208/pu/img/9crrDdb66syib5s_.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/2076379418029662208/pu/pl/2LsXt6VoHZZqpB1m.m3u8?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/2076379418029662208/pu/vid/avc1/480x270/OvkwxssoU9fmg5dz.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/2076379418029662208/pu/vid/avc1/640x360/PLuougezqzLZIxfc.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/2076379418029662208/pu/vid/avc1/1280x720/xxtccnwAijVtsp5l.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

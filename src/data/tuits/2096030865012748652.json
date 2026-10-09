@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2096030865012748652",
+    "created_at": "2026-09-05T00:21:15.000Z",
+    "text": "Esto es una auténtica locura.\n\nUn buque de superficie no tripulado MAGURA 🇺🇦 ha sido equipado con una plataforma para poder transportar y lanzar drones interceptores STING 🇺🇦 de control remoto.\n\nEl lanzador consta de 3х6 bloques de interceptores, lo que permite que un solo dron https://t.co/A8wvr2DDCu",
+    "note_tweet": true,
+    "user": {
+      "name": "SergioLR🪖",
+      "screen_name": "CasetaBosque",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1897045494293028864/mZB1YTZd_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/A8wvr2DDCu",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2096030819861360640/img/LavxMp5QyRmbI0So.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2096030819861360640/pl/Ugb0yVlfd_sImIPn.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2096030819861360640/vid/avc1/320x568/M_XHCix0GKfJLbKM.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2096030819861360640/vid/avc1/480x852/NRcjHi5cIdFbzkq4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2096030819861360640/vid/avc1/720x1280/KuYSngnXeFRBt1W9.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2096030819861360640/vid/avc1/1080x1920/WkR4XBQZMOgGy7jk.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

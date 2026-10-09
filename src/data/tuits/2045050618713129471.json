@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2045050618713129471",
+    "created_at": "2026-04-17T08:03:57.000Z",
+    "text": "‼️ Incredible record: controlling interceptor STING at a distance of 2,000 km using HORNET VISION Ctrl\n\nWhile abroad, the pilot controlled interceptor STING operating in northern Ukraine.\n\nWe have already begun serial deployment of HORNET VISION Ctrl. It previously enabled Roman https://t.co/i7vzI2jnqv",
+    "note_tweet": true,
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/i7vzI2jnqv",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2045050552594341888/img/JY8Oo2cjY2evxPco.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2045050552594341888/pl/SGRQg7p20ySJED-E.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2045050552594341888/vid/avc1/320x400/GuwV0OYcz6O3MTSG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2045050552594341888/vid/avc1/480x600/zVQn2nVTVwJlk3MH.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2045050552594341888/vid/avc1/720x900/_xRmibCiJgCAIfCm.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2045050552594341888/vid/avc1/1080x1350/w60V4mp9jXeFp-2L.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

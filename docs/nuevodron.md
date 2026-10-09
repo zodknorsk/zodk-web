@@ -211,6 +211,16 @@ Wikipedia sirven para orientarse, no como base.
   su nombre.
 - Nombrar los hechos (qué se atacó, cuándo) en vez de resumirlos.
 - Decir siempre lo que solo afirma el fabricante.
+- **No se resaltan con `==` los términos del glosario** (VTOL, MTOW, jamming,
+  EO/IR…): en la web ya se enlazan solos. El resaltado es solo para lo clave
+  de la frase, como en la cita.
+- **Nada de información absurda.** Cada dato tiene que servir para entender
+  qué es el dron, cómo funciona o cómo se usa. Fuera lo que no cambia nada:
+  pedidos y entregas de países que no interesan, cuántos derribos o salidas
+  lleva, cifras sueltas de balance. Ante la duda, no va.
+- **La tabla es una guía rápida**: nombres y cifras clave. El detalle (alcance
+  de un sensor, variantes de cámara, matices, minutos de autonomía) va en
+  `Especificaciones y Uso`, no en la tabla.
 - **Carga útil no es cabeza de combate.** Si la ficha solo da la carga útil
   máxima, se dice eso y que no se publica cuánto es explosivo.
 - Cuando dos fuentes dan cifras distintas (autonomía, velocidad), se ponen

@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2104957606427083149",
+    "created_at": "2026-09-29T15:32:56.000Z",
+    "text": "The first Geran-5 interception as part of Shahedoriz 🫡\n\nRead more in the post 👇 https://t.co/CJXgyhUzQu",
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/CJXgyhUzQu",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2104957589318430720/img/ywKsH7c7u9O4ipz4.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2104957589318430720/pl/ammZ9TtIVvWIEJZb.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2104957589318430720/vid/avc1/342x270/mK3R9LvpVtLpTWa7.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2104957589318430720/vid/avc1/456x360/flYbYwIiqttt6usd.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2104957589318430720/vid/avc1/608x480/P4BjvBrUXqIA9-7W.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

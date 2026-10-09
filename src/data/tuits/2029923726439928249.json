@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-10-09",
+  "tuit": {
+    "id_str": "2029923726439928249",
+    "created_at": "2026-03-06T14:15:05.000Z",
+    "text": "Wild Hornets’ STING is the most effective interceptor drone by the number of Shaheds and Gerberas destroyed for five months in a row 🔥\n\nAccording to official data, STING leads in successful interceptions of Shahed-type enemy targets. The combat work of the units, their constant https://t.co/r0Ao4m7M1T",
+    "note_tweet": true,
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/r0Ao4m7M1T",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2029923641245220864/img/UCCmfwgOcNmOIP1-.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2029923641245220864/pl/ICAHyH9rprdmwj2U.m3u8?v=1b9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2029923641245220864/vid/avc1/416x270/TSf8IVhhA4ScjBMp.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2029923641245220864/vid/avc1/554x360/jhXb7gSrCnvoNrVP.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2029923641245220864/vid/avc1/1080x700/oFvb_KZeOij1saeF.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
