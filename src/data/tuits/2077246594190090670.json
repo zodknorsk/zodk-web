@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "2077246594190090670",
+    "created_at": "2026-07-15T04:19:16.000Z",
+    "text": "Irański dron Shahed-136 trafia w amerykański magazyn w Kuwejcie... https://t.co/iksJXQEDsj",
+    "user": {
+      "name": "Tomek Niewęgłowski",
+      "screen_name": "tomek525",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2006064639344246784/gNUbwRt__normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/iksJXQEDsj",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2077246508206858240/img/6iw8DGmxifCf7nI9.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2077246508206858240/pl/nPnAQUgJeJkXKgfj.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2077246508206858240/vid/avc1/320x566/PawkGiH6fDcAW17C.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2077246508206858240/vid/avc1/480x850/84hSMch5foe0n9Ec.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2077246508206858240/vid/avc1/720x1276/USjespcXeCQ2sj2D.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

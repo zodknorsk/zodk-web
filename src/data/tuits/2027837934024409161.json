@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "2027837934024409161",
+    "created_at": "2026-02-28T20:06:53.000Z",
+    "text": "An Iranian one-way attack drone, likely a Shahed-136, filmed scoring a direct hit earlier Saturday on the U.S. Navy’s 5th Fleet Headquarters at Naval Support Activity Bahrain in Juffair, located in Manama, the capital of Bahrain. https://t.co/O9AVD7DmzC",
+    "user": {
+      "name": "OSINTdefender",
+      "screen_name": "sentdefender",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1505052393750384642/XNFUztL2_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/O9AVD7DmzC",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2027837882363215872/img/rlQzDgYlKMiHC6pU.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2027837882363215872/pl/vMIlSw81LmZ-p9lZ.m3u8"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2027837882363215872/vid/avc1/320x562/qnGEbuZbjhTmeRg8.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2027837882363215872/vid/avc1/364x640/rHRH4cv2G8R-b7fm.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

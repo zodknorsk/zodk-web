@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "2031078670463324472",
+    "created_at": "2026-03-09T18:44:25.000Z",
+    "text": "You are at the beach in the UAE and see a Shahed-136 flying overhead, and later a UAEAF F-16 firing a Sidewinder to shoot down the drone. That’s how crazy the war in the Gulf region is nowadays. https://t.co/w3uCtpdLnz",
+    "user": {
+      "name": "The Aviationist",
+      "screen_name": "TheAviationist",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1440166402812383234/EVurpfGH_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/w3uCtpdLnz",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2030864193570914305/img/-1Sn_HU8pyHFOEUR.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2030864193570914305/pl/K5qaNOKMcemDz8HB.m3u8?v=132"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2030864193570914305/vid/avc1/320x568/6mGsM7Mm33xUJ6_P.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2030864193570914305/vid/avc1/480x852/Z0GMGjfR9nzuXyse.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2030864193570914305/vid/avc1/720x1280/ICY0DhPsMAx6Fu_t.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

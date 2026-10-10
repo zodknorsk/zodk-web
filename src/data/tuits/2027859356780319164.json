@@ -1,0 +1,36 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "2027859356780319164",
+    "created_at": "2026-02-28T21:32:01.000Z",
+    "text": "Este es un dron Shahed 136 impactando un edificio en Bahrein, Ucrania los viene sufriendo a razón de cientos por noche, si apoyás al régimen Iraní apoyás el ataque sistemático a civiles y te importa una mierda la paz mundial, sos un sorete hipócrita https://t.co/Hb87Ix2bMZ",
+    "user": {
+      "name": "Fabio Baccaglioni",
+      "screen_name": "fabiomb",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1433162132401664003/7ciHatNF_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/Hb87Ix2bMZ",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2027859333426393088/img/8wG0O4cl4oQOORZb.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2027859333426393088/pl/IyJXb-Q72PPF5PYH.m3u8?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2027859333426393088/vid/avc1/220x386/xZ6laxrE9SZTH6F3.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

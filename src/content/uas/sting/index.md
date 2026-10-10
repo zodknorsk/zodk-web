@@ -4,7 +4,7 @@ date: '2026-10-09'
 description: >-
   El Sting es un dron interceptor ucraniano que derriba otros drones chocando
   contra ellos: un cuadricóptero FPV con forma de bala que un operador pilota…
-updated: '2026-10-09'
+updated: '2026-10-10'
 tags:
   - ucrania
   - dron
@@ -37,23 +37,23 @@ categoria: Dron interceptor
 
 ## Historia
 
-[Wild Hornets](https://wildhornets.com/en/) nació en la primavera de 2023 como un grupo de voluntarios ucranianos que hacía drones FPV para el ejército. A finales de 2024, Rusia lanzaba hasta 80 Shahed al día y Ucrania gastaba en pararlos misiles antiaéreos mucho más caros que el propio dron. La empresa empezó pensando en un interceptor contra helicópteros y acabó centrándose en los Shahed. [Presentó el Sting en octubre de 2024](https://www.kyivpost.com/post/40882) y probó el primer prototipo a finales de ese año.
+[Wild Hornets](https://wildhornets.com/en/) nació en primavera de 2023 como un grupo de voluntarios ucranianos que hacía drones FPV para el ejército. A finales de 2024, Rusia lanzaba hasta 80 Shahed al día y Ucrania gastaba en pararlos misiles antiaéreos mucho más caros que el propio dron. La empresa empezó pensando en un interceptor contra helicópteros y acabó centrándose en los Shahed. [Presentó el Sting en octubre de 2024](https://www.kyivpost.com/post/40882) y probó el primer prototipo a finales de ese año.
 
 Lo planteó como un dron barato, de unos 2.200 dólares, frente a los 20.000 o 70.000 que se calcula que vale un [Shahed](/uas/shahed-136). El fabricante lo presenta contra los drones kamikaze Shahed, Geran y Lancet y contra los de reconocimiento. En la práctica empezó con Shahed y Gerbera. Es un diseño propio de la empresa, sin partir de otro modelo.
 
 ## Especificaciones y Uso
 
-Es un <mark>cuadricóptero</mark> de unos 4 kg que despega en VTOL, desde el suelo o desde una caja de lanzamiento. Según el fabricante, la velocidad de crucero va de 140 a 170 km/h y llega a 280 km/h de máxima. A máxima velocidad aguanta unos 6 minutos y hasta 15 a la de crucero, según la ficha del fabricante; Business Insider, citado por [RuntimeWire](https://www.runtimewire.com/article/wild-hornets-sting-interceptor-speed-tradeoff), habla de más de 20 minutos en la versión actual, según la velocidad, la altura y el piloto. Su altura de trabajo va de 0 a 5.000 m, con un techo de vuelo de 7.000 m, y sube a 30 m/s. Su alcance máximo es de 37 km y su radio de acción con vuelta, de 18,5 km, que depende de la batería, el tiempo y el peso de la carga. La batería es una 8s3p.
+Es un <mark>cuadricóptero</mark> de unos 4 kg que despega en VTOL, desde el suelo o desde una caja de lanzamiento. Su velocidad de crucero va de 140 a 170 km/h y llega a 280 km/h de velocidad máxima. A esta velocidad aguanta unos 6 minutos y hasta 15 a la de crucero, según la ficha del fabricante; Business Insider, citado por [RuntimeWire](https://www.runtimewire.com/article/wild-hornets-sting-interceptor-speed-tradeoff), habla de más de 20 minutos en la versión actual, según la velocidad, la altura y el piloto. Su altura de trabajo va de 0 a 5.000 m, con un techo de vuelo de 7.000 m, y sube a 30 m/s. Su alcance máximo es de 37 km y su radio de acción con vuelta, de 18,5 km, que depende de la batería, el tiempo y el peso de la carga. La batería es una 8s3p.
 
-La ficha del fabricante da una carga útil de 500 g con detonación a distancia, sin decir cuánto de eso es explosivo. Existen cuatro combinaciones de <mark>cámara</mark> (de día o térmica, digital o analógica). La cámara térmica es la [Kurbas-640-Alpha](https://oddsystems.io/en/#kurbas-640), de la empresa ucraniana Odd Systems, que según su fundador [aguanta mejor las vibraciones y la humedad](https://dev.ua/en/news/kurbas-poliuie-na-shakhedy-1754046607) que la china Caddx.
+La ficha del fabricante da una carga útil de 500 g con detonación a distancia. Existen cuatro combinaciones de <mark>cámara</mark> (de día o térmica, digital o analógica). La cámara térmica es la [Kurbas-640-Alpha](https://oddsystems.io/en/#kurbas-640), de la empresa ucraniana Odd Systems, que según su fundador [aguanta mejor las vibraciones y la humedad](https://dev.ua/en/news/kurbas-poliuie-na-shakhedy-1754046607) que la china Caddx.
 
-El <mark>Sting S</mark> se estrenó en septiembre de 2026 para los drones con motor a reacción. La empresa dice que es un producto nuevo y no una mejora del Sting, y que empezó a trabajar en él a principios de 2026; no ha publicado sus características y avisa de que pueden cambiar tras el uso en combate. Pero ya hay vídeos derribando [Geran-5](https://x.com/wilendhornets/status/2101304449289363650?s=20) y Geran-4, gracias a la ayuda de Hornet Vision CTRL.
+El <mark>Sting S</mark> apareció en septiembre de 2026 para derribar drones con motor a reacción. La empresa dice que es un producto nuevo y no una mejora del Sting, y que empezó a trabajar en él a principios de 2026; no ha publicado sus características y avisa de que pueden cambiar tras el uso en combate. Pero ya hay vídeos derribando [Geran-5](https://x.com/wilendhornets/status/2101304449289363650?s=20) y Geran-4, gracias a la ayuda de Hornet Vision CTRL.
 
 <mark>Hornet Vision CTRL</mark> es la tecnología propietaria que permite a los pilotos volar el dron desde lugares seguros, lejos del punto de lanzamiento. Un equipo sobre el terreno prepara el dron, y un piloto lo vuela de forma segura desde retaguardia. El récord lo tiene un piloto que lo [controló 2.000 km a distancia](https://united24media.com/latest-news/ukraine-sets-record-with-2000-km-remote-drone-control-from-abroad-18004), desde el extranjero. No se ha terminado de explicar cómo se dirige la señal, aunque personal suyo dice que se puede hacer con [Starlink](/analisis/starlink-en-la-guerra-de-ucrania).
 
-El piloto lo maneja en primera persona con gafas de realidad virtual, con un mando por radio ExpressLRS y vídeo digital o analógico. Según el fabricante, el curso dura 6 días, y hasta 2 para un piloto FPV ya cualificado. El primer derribo que publicó Wild Hornets, [el 19 de mayo de 2025](https://t.me/wild_hornets/2972), lo muestra: la cámara térmica sigue a un Shahed por encima de las nubes y el Sting lo golpea desde abajo, por donde menos se ve. El fabricante da un acierto de entre el 80 y el 90 %, según condiciones y piloto.
+El piloto lo maneja con gafas en primera persona, un mando por radio ELRS y vídeo digital o analógico. Según el fabricante, el curso dura 6 días, y hasta 2 para un piloto FPV ya cualificado. El primer derribo que publicó Wild Hornets, [el 19 de mayo de 2025](https://t.me/wild_hornets/2972), lo muestra: la cámara térmica sigue a un Shahed por encima de las nubes y el Sting lo golpea desde abajo, por donde menos se ve. El fabricante da un acierto de entre el 80 y el 90 %, según condiciones y piloto.
 
-En noviembre de 2025 Wild Hornets denunció que General Chereshnya, otra empresa ucraniana, vendía una copia exacta, el Bullet.
+En noviembre de 2025 Wild Hornets denunció que General Chereshnya, otra empresa ucraniana, vendía una copia exacta del Sting, el Bullet.
 
 Ucrania tiene prohibido exportarlo desde marzo de 2026.
 
