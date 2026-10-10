@@ -56,8 +56,10 @@ function leerSiCambia(ruta, leer, vacio) {
 
 // Nombres en español que llevan a una entrada del glosario sin ser entrada
 // aparte (el plural, a mano: el patrón solo admite la «s»). Solo los que se
-// pidan: «interferencia» o «autonomía» son palabras demasiado corrientes.
+// pidan: «interferencia» es una palabra demasiado corriente; «autonomía»
+// se pidió a mano.
 const ALIAS = {
+  Endurance: ["autonomía"],
   "Loitering munition": ["munición merodeadora", "municiones merodeadoras"],
   "Interceptor drone": ["dron interceptor", "drones interceptores"],
   Ceiling: ["techo de vuelo", "techo de servicio"],
