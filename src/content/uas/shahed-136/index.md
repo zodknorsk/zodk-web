@@ -12,7 +12,7 @@ bandera: "\U0001F1EE\U0001F1F7"
 pais: Irán
 categoria: Dron de ataque de un solo uso
 ---
-> El Shahed-136 es el <mark>dron iraní de ataque de un solo uso</mark> que ha convertido los ataques de largo alcance en algo barato y masivo: un ala en delta de 2,5 m, con un motor de pistón detrás, que vuela hasta unas coordenadas y se estrella sobre el objetivo. Irán lo estrenó en 2021 contra el petrolero [Mercer Street](https://iranprimer.usip.org/blog/2021/aug/10/centcom-iran-behind-drone-attack-tanker). Desde 2022, <mark>Rusia lo fabrica con el nombre de Geran-2</mark> y lo lanza cada noche contra Ucrania. En 2026, en la guerra con EE. UU. e Israel, Irán lo usó en masa contra los países del Golfo: [1.422 drones solo contra Emiratos](https://www.csis.org/analysis/unpacking-irans-drone-campaign-gulf-early-lessons-future-drone-warfare) en la primera semana.
+> El Shahed-136 es el <mark>dron iraní de ataque de un solo uso</mark> que ha convertido los ataques de largo alcance en algo barato y masivo: un ala en delta de 2,5 m, con un motor de pistón detrás, que vuela hasta unas coordenadas y se estrella sobre el objetivo. Irán lo estrenó en 2021 contra el petrolero [Mercer Street](https://iranprimer.usip.org/blog/2021/aug/10/centcom-iran-behind-drone-attack-tanker). Desde 2022, <mark>Rusia lo fabrica con el nombre de [Geran-2](/uas/geran-2)</mark> y lo lanza cada noche contra Ucrania. En 2026, en la guerra con EE. UU. e Israel, Irán lo usó en masa contra los países del Golfo: [1.422 drones solo contra Emiratos](https://www.csis.org/analysis/unpacking-irans-drone-campaign-gulf-early-lessons-future-drone-warfare) en la primera semana.
 
 <div class="visor-hueco"></div>
 

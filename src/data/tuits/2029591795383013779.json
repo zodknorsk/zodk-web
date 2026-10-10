@@ -1,0 +1,41 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "2029591795383013779",
+    "created_at": "2026-03-05T16:16:06.000Z",
+    "text": "Some Russian “Geran-2” (Shahed) UAVs are flying lower than ever, controlled by an operator in Russia via a mesh radio network.\nFlying just over 5-story Khrushchev-era buildings in Mirgorod means that ground defenses won’t shoot at them. https://t.co/AziW3ywvdB",
+    "user": {
+      "name": "Roy🇨🇦",
+      "screen_name": "GrandpaRoy2",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1914529711147114496/ckBpnNbA_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/AziW3ywvdB",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2029591745760239616/img/S4Y78QlOAR_XKuqM.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2029591745760239616/pl/piMOX3IHFN3GOj_Y.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2029591745760239616/vid/avc1/320x580/kl8iF6sXSKjYpVG4.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2029591745760239616/vid/avc1/352x640/w73WprEUY82g700C.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

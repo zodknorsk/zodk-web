@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-10",
+  "tuit": {
+    "id_str": "1980765398573203660",
+    "created_at": "2025-10-21T22:37:26.000Z",
+    "text": "🇷🇺⚡Drone strike on Sumy, Ukraine. Footage shows the Geran-2 kamikaze drone in its final dive phase.\n\nOof, that's scary. https://t.co/1isum4Ffcf",
+    "user": {
+      "name": "Spetsnaℤ 007 🇷🇺",
+      "screen_name": "Alex_Oloyede2",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1655609438055587843/HJaLi3QF_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/1isum4Ffcf",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1980765321196621824/pu/img/SpsYGChdGtZ7FDoc.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1980765321196621824/pu/pl/29VI9ErlfQfW-CTa.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/1980765321196621824/pu/vid/avc1/320x566/EEwhHKY-Y8W5eakc.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/1980765321196621824/pu/vid/avc1/480x850/jSux5l6sIGUF79zg.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1980765321196621824/pu/vid/avc1/720x1276/DllmoHTz3xF2ewzy.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
