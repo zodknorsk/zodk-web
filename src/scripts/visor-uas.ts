@@ -8,7 +8,7 @@ import {
   Color, DoubleSide, EdgesGeometry, Group, HemisphereLight, LineBasicMaterial,
   LineSegments, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene,
   Spherical, Vector3, WebGLRenderer, DirectionalLight, Box3, MeshBasicMaterial,
-  OrthographicCamera, type ShaderMaterial,
+  OrthographicCamera, Quaternion, type ShaderMaterial,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { Acabado, Maqueta } from "../data/uas/tipos";
@@ -142,6 +142,22 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   let radio = caja3.getSize(new Vector3()).length() / 2;
   raiz.position.sub(centro);
   escena.add(raiz);
+  // Postura de la vista de perfil (`posturaPerfil`): el dron gira entero
+  // sobre su centro; en las demás vistas, como está escrito.
+  const centroLocal = centro.clone();
+  const SIN_GIRO = new Quaternion();
+  const posturaDe = (vista: Vista) => {
+    const p = maqueta.posturaPerfil;
+    if (vista !== "lado" || !p) return SIN_GIRO;
+    const eje = new Vector3(p.eje === "x" ? 1 : 0, p.eje === "y" ? 1 : 0, p.eje === "z" ? 1 : 0);
+    return new Quaternion().setFromAxisAngle(eje, (p.grados * Math.PI) / 180);
+  };
+  const ponerPostura = (q: Quaternion) => {
+    raiz.quaternion.copy(q);
+    raiz.position.copy(centroLocal).applyQuaternion(q).negate();
+    raiz.updateMatrixWorld(true);
+    renderer.shadowMap.needsUpdate = true;
+  };
 
   // HD: estilo C (realista con filete). Con ?hd=a|b|c|no en la URL se prueba
   // otro y sale el selector de pruebas sobre el lienzo (en la web normal no
@@ -178,6 +194,14 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   for (const b of botonesVista) {
     const url = siluetas.get(b.dataset.vista as Vista);
     const s = b.querySelector<HTMLElement>(".visor-silueta");
+    if (url && s) { s.style.maskImage = `url(${url})`; s.style.webkitMaskImage = `url(${url})`; }
+  }
+  // Con postura propia, el icono del perfil se pinta en ella.
+  if (maqueta.posturaPerfil) {
+    ponerPostura(posturaDe("lado"));
+    const url = pintarSiluetas(raiz, radio, ["lado"]).get("lado");
+    ponerPostura(SIN_GIRO);
+    const s = caja.querySelector<HTMLElement>("[data-vista=lado] .visor-silueta");
     if (url && s) { s.style.maskImage = `url(${url})`; s.style.webkitMaskImage = `url(${url})`; }
   }
 
@@ -382,14 +406,19 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   // margen): lo que ocupa de verdad desde ahí, no la esfera que lo envuelve
   // (con ella, un ala vista de canto dejaba el dron pequeñísimo).
   const punto = new Vector3();
-  // La vista «3D» puede ser propia del dron (`vista3d`).
-  const vistaDe = (vista: Vista): [number, number] => (vista === "3d" && maqueta.vista3d) || VISTAS[vista];
+  // Las vistas «3D» y «Frente» pueden ser propias del dron (`vista3d`,
+  // `vistaFrente`).
+  const vistaDe = (vista: Vista): [number, number] =>
+    (vista === "3d" && maqueta.vista3d) || (vista === "frente" && maqueta.vistaFrente) || VISTAS[vista];
   const distanciaVista = (vista: Vista) => {
     const [az, el] = vistaDe(vista);
     const giro = new PerspectiveCamera();
     giro.position.setFromSpherical(new Spherical(1, ((90 - el) * Math.PI) / 180, (az * Math.PI) / 180));
     giro.lookAt(0, 0, 0);
     giro.updateMatrixWorld();
+    // Medida con el dron en la postura de esa vista.
+    const postura = raiz.quaternion.clone();
+    if (maqueta.posturaPerfil) ponerPostura(posturaDe(vista));
     raiz.updateMatrixWorld(true);
     // Cada punto cabe si la cámara está, como poco, a la distancia que lo
     // deja dentro del 88 % del lienzo contando con lo que está más cerca de
@@ -404,6 +433,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
         d = Math.max(d, Math.max(Math.abs(punto.x) / tanH, Math.abs(punto.y) / tanV) + punto.z + 1);
       }
     }
+    if (maqueta.posturaPerfil) ponerPostura(postura);
     return Math.min(distancia, d);
   };
 
@@ -419,7 +449,11 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     let dTheta = hasta.theta - desde.theta;
     dTheta = Math.atan2(Math.sin(dTheta), Math.cos(dTheta));
     botonesVista.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.vista === vista)));
+    // El dron, a la postura de esa vista (a la vez que viaja la cámara).
+    const q0 = raiz.quaternion.clone(), q1 = posturaDe(vista);
+    const girarDron = !!maqueta.posturaPerfil && !q0.equals(q1);
     if (sinViaje) {
+      if (girarDron) ponerPostura(q1);
       controles.target.set(0, 0, 0);
       camara.position.setFromSpherical(hasta);
       camara.lookAt(0, 0, 0);
@@ -437,6 +471,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
         desde.phi + (hasta.phi - desde.phi) * e,
         desde.theta + dTheta * e,
       );
+      if (girarDron) ponerPostura(q0.clone().slerp(q1, e));
       controles.target.copy(objetivo0).multiplyScalar(1 - e);
       camara.position.copy(controles.target).add(new Vector3().setFromSpherical(s));
       controles.update();

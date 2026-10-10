@@ -11,7 +11,8 @@
 // Uso (desde la raíz del repo, con `npm run dev` en marcha):
 //   node arte/generar-uas-miniaturas-hd.mjs <modelo…>
 // Pruebas de ángulo: --vista=ACIMUT,ELEVACIÓN --nombre=tarjeta-x escribe solo
-// esa tarjeta (tarjeta-x.png y tarjeta-x-noche.png), sin la planta.
+// esa tarjeta (tarjeta-x.png y tarjeta-x-noche.png), sin la planta;
+// --vuelo=si|no la pinta con el dron en su postura de vuelo o sin ella.
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
@@ -70,7 +71,8 @@ try {
         const { default: maqueta } = await import("/src/data/uas/${modelo}.ts");
         if (!maqueta.hd) throw new Error("${modelo} no tiene HD");
         const vista = ${op.vista ? "null" : "maqueta.vistaTarjeta"} ?? ${JSON.stringify(VISTA_3D)};
-        return JSON.stringify(tarjetaHD(maqueta, vista, ${W}, ${H}));
+        const conPostura = ${op.vuelo ? `{ ...maqueta, tarjetaEnVuelo: ${op.vuelo === "si"} }` : "maqueta"};
+        return JSON.stringify(tarjetaHD(conPostura, vista, ${W}, ${H}));
       })()`,
       awaitPromise: true, returnByValue: true,
     });

@@ -220,6 +220,19 @@ const maqueta: Maqueta = {
   pais: bandera("UA"),
   // Abre de pie, visto por el lomo y algo de lado (el lomo mira atrás).
   vista3d: [200, 8],
+  // Frente por la cara del logo (de pie, el lomo mira atrás).
+  vistaFrente: [180, 0],
+  // La tarjeta de /uas, de pie como abre el visor (elegido por el usuario
+  // frente a dos en vuelo).
+  vistaTarjeta: [200, 8],
+  // En el perfil, tumbado como vuela: el morro a la izquierda y la cámara
+  // arriba (se deshace el giro de `dePie`).
+  posturaPerfil: { eje: "x", grados: -GIRO },
+  // En la planta de la portada, tumbado y visto por el lomo, como los demás.
+  plantaEnVuelo: true,
+  // Pixel: la arena al sol cae en 5,0 escalones y la cara del logo, en la
+  // vista con que abre, en 2,45; con 0,25 las dos quedan a un cuarto del borde.
+  desfaseLuz: 0.25,
   hd: true,
   contornoPixel: true,
   detalles: { calcas: CALCAS.map(calcaAUnidades), costuras: COSTURAS.map(costuraAUnidades) },

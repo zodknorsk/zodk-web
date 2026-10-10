@@ -5,7 +5,7 @@
 // Lo usan arte/generar-uas-miniaturas-hd.mjs y arte/generar-naves-uas-hd.mjs
 // (naveHD) desde un Chrome sin ventana con `npm run dev` en marcha; la web no
 // lo carga.
-import { Box3, Group, Mesh, PerspectiveCamera, Scene, Spherical, Vector3, WebGLRenderer } from "three";
+import { Box3, Group, Mesh, PerspectiveCamera, Quaternion, Scene, Spherical, Vector3, WebGLRenderer } from "three";
 import type { Maqueta } from "../data/uas/tipos";
 import { geometriaDe } from "./uas-geometria";
 import { crearLuzHD, materialHD, montarDetalles } from "./uas-hd";
@@ -25,7 +25,8 @@ const fuera = (id: string, quitar: string[]) => quitar.some((q) => id === q || i
 
 // La escena del dron en HD, lista para pintar en pixel a ancho x alto.
 // `quitar`: piezas que no se montan (las armas o el tren, en la portada).
-function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: string[] = []) {
+// `enVuelo`: el dron en su `posturaPerfil` (el Sting, tumbado).
+function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: string[] = [], enVuelo = false) {
   const lienzo = document.createElement("canvas");
   const renderer = new WebGLRenderer({ canvas: lienzo, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(1);
@@ -44,7 +45,8 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
     }
   const caja = new Box3().setFromObject(raiz);
   const radio = caja.getSize(new Vector3()).length() / 2;
-  raiz.position.sub(caja.getCenter(new Vector3()));
+  const centro = caja.getCenter(new Vector3());
+  raiz.position.sub(centro);
   escena.add(raiz);
   raiz.updateMatrixWorld(true);
   const luz = crearLuzHD(renderer, escena, radio);
@@ -54,6 +56,15 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
     ? montarDetalles(escena, raiz, mallas, { calcas: sinQuitadas(maqueta.detalles.calcas), costuras: sinQuitadas(maqueta.detalles.costuras) }, radio)
     : null;
   detalles?.ver(true, false);
+  // La postura, con las calcas ya montadas (cuelgan de la raíz y giran con
+  // ella), girando sobre el centro como en el visor.
+  const p = maqueta.posturaPerfil;
+  if (enVuelo && p) {
+    const eje = new Vector3(p.eje === "x" ? 1 : 0, p.eje === "y" ? 1 : 0, p.eje === "z" ? 1 : 0);
+    raiz.quaternion.copy(new Quaternion().setFromAxisAngle(eje, (p.grados * Math.PI) / 180));
+    raiz.position.copy(centro).applyQuaternion(raiz.quaternion).negate();
+    raiz.updateMatrixWorld(true);
+  }
   const pixelado = crearPixelado(renderer);
   pixelado.ponerHD(true, 1, maqueta.desfaseLuz ?? 0);
   const camara = new PerspectiveCamera(FOV, W / H, 0.05, 50);
@@ -173,7 +184,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
 // su cámara y a 1 px por píxel como el modo Pixel, llenando el recuadro.
 // De día y de noche (data URL).
 export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, H: number) {
-  const m = montar(maqueta, W, H, FOV_TARJETA);
+  const m = montar(maqueta, W, H, FOV_TARJETA, [], maqueta.tarjetaEnVuelo);
   const salida = m.pintar(vista, m.llenar(vista, 4));
   m.soltar();
   return salida;
@@ -185,12 +196,12 @@ export function tarjetaHD(maqueta: Maqueta, vista: [number, number], W: number, 
 // generador. Solo el de día (la portada es siempre oscura y va así).
 export function plantaHD(conDetalles: Maqueta, vista: [number, number], pxPorMetro: number, maxAncho: number, maxAlto: number) {
   const maqueta = conDetalles.plantaLisa ? { ...conDetalles, detalles: undefined } : conDetalles;
-  const medir = montar(maqueta, 8, 8, FOV_PLANTA, maqueta.plantaSin);
+  const medir = montar(maqueta, 8, 8, FOV_PLANTA, maqueta.plantaSin, maqueta.plantaEnVuelo);
   const [mx, my] = medir.ocupa(vista);
   medir.soltar();
   const escala = Math.min(pxPorMetro * maqueta.escala, (maxAncho - 4) / (2 * mx), (maxAlto - 4) / (2 * my));
   const ancho = Math.ceil(2 * mx * escala) + 4, alto = Math.ceil(2 * my * escala) + 4;
-  const m = montar(maqueta, ancho, alto, FOV_PLANTA, maqueta.plantaSin);
+  const m = montar(maqueta, ancho, alto, FOV_PLANTA, maqueta.plantaSin, maqueta.plantaEnVuelo);
   const { dia } = m.pintar(vista, escala);
   m.soltar();
   return { png: dia, ancho, alto };

@@ -281,6 +281,17 @@ export type Maqueta = {
   // Vista «3D» propia del visor (con la que abre): [acimut, elevación] en
   // grados, en vez de la de todos (el Sting, de pie y visto por el lomo).
   vista3d?: [number, number];
+  // Vista «Frente» propia: [acimut, elevación] (el Sting, por la cara del
+  // logo, que de pie mira atrás).
+  vistaFrente?: [number, number];
+  // Postura propia en la vista de perfil: toda la maqueta girada sobre su
+  // centro, en grados (el Sting, de pie en las demás, sale tumbado, en vuelo).
+  // Se queda así al girar con el ratón hasta que se pulsa otra vista.
+  posturaPerfil?: { eje: "x" | "y" | "z"; grados: number };
+  // La tarjeta de /uas y la planta de la portada, con el dron en esa postura
+  // (el Sting, tumbado como vuela) en vez de como está escrito.
+  tarjetaEnVuelo?: boolean;
+  plantaEnVuelo?: boolean;
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
