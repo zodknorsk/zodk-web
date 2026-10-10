@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-10-09'
+updated: '2026-10-10'
 tags:
   - dron
 glosario: true
@@ -109,6 +109,8 @@ glosario: true
 
 - **Data-link** *(enlace de datos)* — Canal de radio entre el dron y el operador. Puede ser **analógico** (muy poco retraso, habitual en los FPV), **digital** (vídeo de más calidad y cifrado) o **por satélite** (SATCOM o Starlink), que no depende del horizonte ni del terreno, aunque también se puede interferir.
 
+- **Link 16** — Enlace de datos táctico cifrado de la OTAN con el que aviones, barcos y estaciones en tierra comparten en tiempo real posiciones, blancos y amenazas, sin hablar por radio. Con él, un MQ-9 Reaper aparece en la pantalla de los demás y ve lo que ven ellos.
+
 - **AES-256** *(Advanced Encryption Standard, clave de 256 bits)* — Cifrado estándar con el que se protegen las comunicaciones del dron, sobre todo el data-link y los datos guardados a bordo. Quien intercepta la señal sin la clave solo ve datos ilegibles, así que no puede ver el vídeo ni dar órdenes al dron. No impide el jamming: la señal sigue pudiendo taparse con ruido, aunque no leerse.
 
 - **ExpressLRS** *(ELRS)* — Sistema de radio de código abierto para mandar órdenes al dron, muy extendido en los FPV. Va del mando al dron con muy poco retraso y llega más lejos que las radios de aficionado clásicas. Usa sobre todo la banda de 2,4 GHz y las de 868 y 915 MHz. Es solo el enlace de control; el vídeo va por otro canal (ver **Data-link**).
@@ -124,6 +126,10 @@ glosario: true
 - **EO/IR** *(Electro-Optical / Infrared)* — Módulo que junta dos cámaras: una de luz visible para el día (**EO**) y otra térmica, que detecta el calor, para la noche (**IR**).
 
 - **FLIR** *(Forward Looking Infrared)* — Cámara térmica que mira hacia delante. En lugar de captar la luz visible, como el ojo o una cámara normal, detecta la **radiación infrarroja (el calor)** que emiten los objetos y las personas. Suele mostrar la imagen en escala de grises, con lo caliente en blanco (*white hot*) o en negro (*black hot*).
+
+- **SAR** *(Synthetic Aperture Radar)* — Radar de apertura sintética. Con el movimiento del avión junta muchas lecturas y forma una imagen del terreno parecida a una foto, de día o de noche y a través de nubes y humo. El radar Lynx del MQ-9 Reaper lo usa para dar coordenadas a las bombas [GBU-38](/uas/armamento/gbu-38-jdam).
+
+- **AIS** *(Automatic Identification System)* — Sistema con el que los barcos emiten por radio su nombre, posición, rumbo y velocidad. Un dron con receptor AIS identifica los barcos que vigila. En el MQ-9 Reaper es un kit opcional para vigilancia marítima.
 
 - **LiDAR** *(Light Detection and Ranging)* — Sensor que mide distancias con láser. Lanza cientos de miles de pulsos por segundo contra el suelo o una estructura y mide lo que tarda cada uno en volver. Con eso calcula distancias exactas y crea un modelo en 3D muy preciso del terreno.
 
@@ -146,6 +152,8 @@ glosario: true
 - **VTOL** *(Vertical Take-Off and Landing)* — Despegue y aterrizaje en vertical, sin pista. Lo hacen los multicópteros como el [Skydio X10D](/uas/skydio-x10d) y los drones híbridos de ala fija con rotores para despegar.
 
 - **eVTOL** *(electric Vertical Take-Off and Landing)* — VTOL eléctrico: despega y aterriza en vertical con motores eléctricos y baterías, sin combustible, y vuela como un avión de ala fija. Es más silencioso que uno de combustible. El [Quantum Systems Vector](/uas/quantum-systems-vector) es de este tipo.
+
+- **ATLC** *(Automatic Takeoff and Landing Capability)* — Capacidad de despegar y aterrizar sin que nadie pilote el avión. En el MQ-9 Reaper es un kit opcional y permite operar desde aeródromos sin estación de control en visión directa (ver **LOS**).
 
 ## Vuelo y navegación
 

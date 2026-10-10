@@ -63,6 +63,7 @@ const ALIAS = {
   "Loitering munition": ["munición merodeadora", "municiones merodeadoras"],
   "Interceptor drone": ["dron interceptor", "drones interceptores"],
   Ceiling: ["techo de vuelo", "techo de servicio"],
+  "Pusher configuration": ["hélice propulsora"],
 };
 
 // Cada entrada: { t, en, def, href, ir?, nombres }. `t` es el título de la

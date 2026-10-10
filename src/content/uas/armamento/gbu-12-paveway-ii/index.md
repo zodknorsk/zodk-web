@@ -35,7 +35,7 @@ categoria: Bomba guiada por láser
 
 La GBU-12 no es una bomba nueva: es la Mk 82 de toda la vida, de 500 libras, a la que se le pone delante un buscador láser y detrás unas aletas que se abren al soltarla ([Air & Space Forces](https://www.airandspaceforces.com/weapons/gbu-10-12-49-paveway-ii/)). Igual que el Hellfire, va hacia el punto que alguien ilumina con un láser, pero no tiene motor: cae planeando. Se hizo famosa en la guerra del Golfo de 1991, cuando los F-111F y los F-15E la usaron de noche contra los tanques iraquíes. Los pilotos lo llamaban [«tank plinking»](https://www.airandspaceforces.com/article/1093plinking/), como quien tira latas con una escopeta de balines, y alguna vez dos F-15E destruyeron dieciséis blindados en una sola salida.
 
-Hasta 2017, el Reaper solo tenía [dos armas](https://www.twz.com/10046/usaf-reaper-drones-can-finally-drop-gps-guided-joint-direct-attack-munitions): el Hellfire y esta bomba. Las dos tienen el mismo punto débil: el láser no atraviesa bien las nubes ni el humo, y si no se puede iluminar el blanco, no hay ataque. Por eso la Fuerza Aérea quiso darle al Reaper también la [GBU-38 JDAM](/uas/armamento/gbu-38-jdam).
+Hasta 2017, el Reaper solo usaba en combate [dos armas](https://www.twz.com/10046/usaf-reaper-drones-can-finally-drop-gps-guided-joint-direct-attack-munitions): el Hellfire y esta bomba. Las dos tienen el mismo punto débil: el láser no atraviesa bien las nubes ni el humo, y si no se puede iluminar el blanco, no hay ataque. Por eso la Fuerza Aérea quiso darle al Reaper también la [GBU-38 JDAM](/uas/armamento/gbu-38-jdam).
 
 ## Fuentes
 

@@ -21,6 +21,7 @@ grupos:
   - titulo: Bombas guiadas
     municiones:
       - gbu-12-paveway-ii
+      - gbu-49-enhanced-paveway-ii
       - gbu-38-jdam
       - mam-l
       - mam-c
