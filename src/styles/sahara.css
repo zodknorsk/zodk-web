@@ -100,6 +100,21 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-ficha-texto a { color: var(--rojo); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .sahara-ficha-nota { margin-top: 14px; transform: rotate(-3deg); color: var(--rojo); outline-color: var(--rojo); }
 .sahara-ficha [hidden] { display: none; }
+/* La tecla de plegar, al final de la pestaña; plegada, del cuerpo solo
+   queda el título con su bandera. */
+.sahara-ficha-plegar {
+  flex: none;
+  margin: -6px -10px -6px 4px;
+  padding: 6px 10px;
+  border: 0;
+  background: none;
+  font: 600 10px/1.3 "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--pestana-tinta);
+  cursor: pointer;
+}
+.sahara-ficha-plegar:hover { color: var(--papel); background: var(--rojo); }
+.sahara-ficha-plegar:focus-visible { outline: 2px solid var(--rojo); outline-offset: -2px; }
+.sahara-ficha.plegada .sahara-ficha-cuerpo > :not(.sahara-ficha-cabeza) { display: none; }
 
 /* --- El deslizador: una regla. Una marca por hito (las rojas y altas, con
    nota), las décadas debajo y el hito de ahora con un triángulo rojo. El

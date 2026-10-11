@@ -20,8 +20,11 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
   cámara en un vuelo a su lugar y pone la chincheta; los de Ceuta, Melilla,
   Perejil, Rabat o el monte Tropic están en el mapa pero fuera del cajón:
   la cámara va y, mientras dura el hito, se puede mirar el mapa entero.
-- **La ficha** (arriba a la derecha): número de hito y fecha en la pestaña,
-  título, lugar, foto de la nota (si la tiene), texto y «Leer la nota».
+- **La ficha** (arriba a la derecha): en la pestaña, el número («01/61»,
+  sin «Hito» delante, a petición del usuario), las banderas, la fecha y la
+  tecla de plegar (plegada, solo queda el título; se recuerda en el
+  navegador); debajo, título, lugar, foto de la nota (si la tiene), texto y
+  «Leer la nota».
 - **Capas por fecha**: líneas que salen según el hito, a bloques de píxel
   sobre el mapa (`public/sahara/sahara-capas.json`). Por ahora: la cinta de
   Bucraa (desde 1969; aproximada, en línea recta de la mina a El Marsa), el

@@ -49,7 +49,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
 
     <!-- La ficha del hito. -->
     <article class="sahara-ficha sahara-papel" data-sin-arrastre aria-live="polite">
-      <div class="sahara-ficha-pestana"><span class="sahara-ficha-num"></span><span class="sahara-ficha-banderas"></span><span class="sahara-ficha-fecha"></span></div>
+      <div class="sahara-ficha-pestana"><span class="sahara-ficha-num"></span><span class="sahara-ficha-banderas"></span><span class="sahara-ficha-fecha"></span><button class="sahara-ficha-plegar" type="button" aria-expanded="true" aria-label="Plegar la ficha">▲</button></div>
       <div class="sahara-ficha-cuerpo">
         <div class="sahara-ficha-cabeza">
           <span class="sahara-ficha-insignia"></span>
@@ -105,6 +105,22 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
     const svg = (c: string) => BANDERAS[c]?.svg ?? "";
     const $ = (sel: string) => zona.querySelector(sel) as HTMLElement;
     const deslizador = $(".sahara-deslizador") as HTMLInputElement;
+    // Plegar la ficha: se quedan la pestaña y el título, para ver el mapa. Se
+    // recuerda en el navegador.
+    const ficha = $(".sahara-ficha");
+    const plegar = $(".sahara-ficha-plegar");
+    const ponPlegada = (si: boolean) => {
+      ficha.classList.toggle("plegada", si);
+      plegar.textContent = si ? "▼" : "▲";
+      plegar.setAttribute("aria-expanded", String(!si));
+      plegar.setAttribute("aria-label", si ? "Desplegar la ficha" : "Plegar la ficha");
+      try { localStorage.setItem("sahara-plegada", si ? "1" : ""); } catch { /* sin localStorage */ }
+    };
+    let plegada = false;
+    try { plegada = localStorage.getItem("sahara-plegada") === "1"; } catch { /* sin localStorage */ }
+    ponPlegada(plegada);
+    const alPlegar = () => ponPlegada(!ficha.classList.contains("plegada"));
+    plegar.addEventListener("click", alPlegar);
     let actual = -1;
     // Dónde va el hito i en la regla.
     const pos = (i: number) => `${(i / Math.max(1, hitos.length - 1)) * 100}%`;
@@ -123,7 +139,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
       const h = hitos[i];
       deslizador.value = String(i);
       $(".sahara-cursor span").style.left = pos(i);
-      $(".sahara-ficha-num").textContent = `Hito ${String(i + 1).padStart(2, "0")}/${hitos.length}`;
+      $(".sahara-ficha-num").textContent = `${String(i + 1).padStart(2, "0")}/${hitos.length}`;
       $(".sahara-ficha-fecha").textContent = h.fecha;
       $(".sahara-ficha-titulo").textContent = h.titulo;
       $(".sahara-ficha-banderas").innerHTML = h.banderas.map((c) => `<span class="sahara-bandera" title="${BANDERAS[c]?.nombre ?? c}">${svg(c)}</span>`).join("");
@@ -194,6 +210,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
       () => observador.disconnect(),
       () => zona.removeEventListener("click", pasos),
       () => document.removeEventListener("keydown", teclas),
+      () => plegar.removeEventListener("click", alPlegar),
     ];
   });
 
