@@ -1,7 +1,7 @@
 ---
 title: Semana 11
 date: '2026-10-09'
-updated: '2026-10-09'
+updated: '2026-10-11'
 tags:
   - marruecos
   - osint
@@ -84,9 +84,51 @@ Me han preguntado por avances en este último mes.<br>
 </blockquote>
 
 
+
+<blockquote class="tweet" data-tweet-id="2108620488235012380">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2108620488235012380" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">Mohamed VI: «El modelo de cooperación ha quedado superado, y las recurrentes crisis son el mejor testimonio de ello. Lo mismo se aplica a España, donde nuestra asociación ha experimentado importantes avances en diversos campos, incluida la lucha contra la inmigración ilegal».</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-x6qwin1bj8c2mfdf.jpg"><source src="https://video.twimg.com/amplify_video/2108620192146145280/vid/avc1/1920x1080/8f1PLJMWA_-XWVxJ.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/TheObjective_es/status/2108620488235012380" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2108620488235012380" target="_blank" rel="noopener">9 de octubre de 2026</a>
+</blockquote>
+
+
 ## 10 de octubre
 
+
+<blockquote class="tweet" data-tweet-id="2108828951825326197">
+  <a class="tweet-author" href="https://x.com/rubnpulido/status/2108828951825326197" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2107541682350604288-hzbkwofz_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Rubén Pulido</span>
+    <span class="tweet-handle">@rubnpulido</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/ÚLTIMAHORA" target="_blank" rel="noopener">#ÚLTIMAHORA</a> || Melilla casi triplica la entrada de inmigrantes ilegales tras la invasión de Ceuta: el 86% de los llegados son marroquíes y el 97% varones con edad media de 24 años.<br>
+<br>
+⚠️ Chafarinas se sitúa como punto de escalada para llegar a la ciudad.</div>
+  <a class="tweet-date" href="https://x.com/rubnpulido/status/2108828951825326197" target="_blank" rel="noopener">10 de octubre de 2026</a>
+</blockquote>
+
+
+
 ## 11 de octubre
+
+
+<blockquote class="tweet" data-tweet-id="2109211563613696397">
+  <a class="tweet-author" href="https://x.com/rubnpulido/status/2109211563613696397" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2107541682350604288-hzbkwofz_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Rubén Pulido</span>
+    <span class="tweet-handle">@rubnpulido</span>
+  </a>
+  <div class="tweet-text">Durante la mañana de este domingo se ha ejecutado el desalojo de la playa de El Guano, donde permanecían asentados entre 500 y 1.000 invasores. Un grupo numeroso ha huido de inmediato y se ha ocultado en las montañas próximas al asentamiento. Las ONG que operaban en la zona […]</div>
+  <video class="tweet-media tweet-media-video" controls preload="none" playsinline poster="/tweets/img-vfbzkosore9dktat.jpg"><source src="https://video.twimg.com/amplify_video/2109208829745328128/vid/avc1/1080x1350/YCuCqs-wTD5zbyAb.mp4" type="video/mp4" />Tu navegador no admite vídeo. <a href="https://x.com/rubnpulido/status/2109211563613696397" target="_blank" rel="noopener">Verlo en X</a></video>
+  <a class="tweet-date" href="https://x.com/rubnpulido/status/2109211563613696397" target="_blank" rel="noopener">11 de octubre de 2026</a>
+</blockquote>
+
+
 
 ## 12 de octubre
 

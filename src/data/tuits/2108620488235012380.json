@@ -1,0 +1,51 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "2108620488235012380",
+    "created_at": "2026-10-09T18:07:55.000Z",
+    "text": "Mohamed VI: «El modelo de cooperación ha quedado superado, y las recurrentes crisis son el mejor testimonio de ello. Lo mismo se aplica a España, donde nuestra asociación ha experimentado importantes avances en diversos campos, incluida la lucha contra la inmigración ilegal». https://t.co/yBjZv5M4xm",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/yBjZv5M4xm",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2108620192146145280/img/x6qWiN1bj8C2mfdF.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2108620192146145280/pl/ON2TxPyzkbWKNf-T.m3u8?v=0dd"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/amplify_video/2108620192146145280/vid/avc1/480x270/5x27u68lm1EeZ-jh.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/2108620192146145280/vid/avc1/640x360/hA09hcWFT8kiHTjy.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2108620192146145280/vid/avc1/1280x720/2-NRQ_AEIwPsAPpB.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2108620192146145280/vid/avc1/1920x1080/8f1PLJMWA_-XWVxJ.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

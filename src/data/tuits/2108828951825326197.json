@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "2108828951825326197",
+    "created_at": "2026-10-10T07:56:16.000Z",
+    "text": "🔴 #ÚLTIMAHORA || Melilla casi triplica la entrada de inmigrantes ilegales tras la invasión de Ceuta: el 86% de los llegados son marroquíes y el 97% varones con edad media de 24 años.\n\n⚠️ Chafarinas se sitúa como punto de escalada para llegar a la ciudad.\n\nhttps://t.co/JXaOwbeuzu",
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2107541682350604288/hzbkwofZ_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/JXaOwbeuzu",
+          "expanded_url": "https://gaceta.es/espana/melilla-casi-triplica-la-entrada-de-inmigrantes-ilegales-tras-la-invasion-de-ceuta-el-86-de-los-llegados-son-marroquies-y-el-97-varones-en-edad-militar-20261010-0754/",
+          "display_url": "gaceta.es/espana/melilla…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

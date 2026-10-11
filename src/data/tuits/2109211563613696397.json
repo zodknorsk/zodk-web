@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "2109211563613696397",
+    "created_at": "2026-10-11T09:16:38.000Z",
+    "text": "Durante la mañana de este domingo se ha ejecutado el desalojo de la playa de El Guano, donde permanecían asentados entre 500 y 1.000 invasores. Un grupo numeroso ha huido de inmediato y se ha ocultado en las montañas próximas al asentamiento. Las ONG que operaban en la zona https://t.co/gdPj6Odkrv",
+    "note_tweet": true,
+    "user": {
+      "name": "Rubén Pulido",
+      "screen_name": "rubnpulido",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2107541682350604288/hzbkwofZ_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/gdPj6Odkrv",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2109208829745328128/img/vfbZkosoRe9DKtAt.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2109208829745328128/pl/WjlBtQKFE2IOY-vN.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2109208829745328128/vid/avc1/320x400/1MaQXA6IsIqmjlRO.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2109208829745328128/vid/avc1/480x600/glMhojjSJch8wPXG.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2109208829745328128/vid/avc1/720x900/u_fWtu6WHoUVz-4p.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/2109208829745328128/vid/avc1/1080x1350/YCuCqs-wTD5zbyAb.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
