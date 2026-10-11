@@ -88,12 +88,14 @@ const paises = recuento((f) => f.data.pais);
           <div class="animate space-y-2">
             <div class="uas-filtros" data-filtro="pais" role="group" aria-label="Filtrar por país">
               <span class="uas-filtros-titulo">País</span>
+              <div class="uas-filtros-botones">
               <button type="button" data-valor="" aria-pressed="true">Todos <span>{fichas.length}</span></button>
               {paises.map(([p, n]) => (
                 <button type="button" data-valor={p} aria-pressed="false">
                   {banderas.get(p) && <span class="uas-bandera"><BanderaUAS modelo={modeloDe.get(p)!} emoji={banderas.get(p)} /></span>}{p} <span>{n}</span>
                 </button>
               ))}
+              </div>
             </div>
           </div>
 
@@ -235,8 +237,10 @@ const paises = recuento((f) => f.data.pais);
      líneas, como el «A–Z» del glosario. */
   .uas-armamento-letras { line-height: 1.15; text-align: center; letter-spacing: 0.04em; }
 
-  .uas-filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
-  .uas-filtros-titulo { width: 3.2rem; font-size: 0.62rem; opacity: 0.6; }
+  /* El rótulo en su columna, para que lo que baje de línea quede alineado con «Todos». */
+  .uas-filtros { display: grid; grid-template-columns: 3.2rem 1fr; align-items: start; gap: 0.75rem; }
+  .uas-filtros-titulo { padding-top: 0.55rem; font-size: 0.62rem; opacity: 0.6; }
+  .uas-filtros-botones { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .uas-filtros button {
     display: inline-flex;
     align-items: center;
