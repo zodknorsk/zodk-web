@@ -774,14 +774,14 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
       const g = new BufferGeometry();
       g.setAttribute("position", new Float32BufferAttribute(lineas, 3));
       // Finas: en las fotos, las juntas son casi solo un cambio de tono.
-      const m = new LineBasicMaterial({ color: claro ? 0x6c7279 : 0x4a4f56, transparent: true, opacity: 0.22, ...sinTocarAlfa });
+      const m = new LineBasicMaterial({ color: claro ? 0x6c7279 : 0x4a4f56, transparent: true, opacity: detalles.opacidad?.juntas ?? 0.22, ...sinTocarAlfa });
       grupo.add(new LineSegments(g, m));
       aDesechar.push(g, m);
     }
     if (remaches.length) {
       const g = new BufferGeometry();
       g.setAttribute("position", new Float32BufferAttribute(remaches, 3));
-      const m = new PointsMaterial({ color: claro ? 0xb4b9bf : 0x5a6068, size: 1.3, sizeAttenuation: false, transparent: true, opacity: claro ? 0.8 : 0.55, alphaMap: mapa, alphaTest: 0.3 });
+      const m = new PointsMaterial({ color: claro ? 0xb4b9bf : 0x5a6068, size: 1.3, sizeAttenuation: false, transparent: true, opacity: detalles.opacidad?.tornillos ?? (claro ? 0.8 : 0.55), alphaMap: mapa, alphaTest: 0.3 });
       const p = new Points(g, m);
       puntos.push(p);
       grupo.add(p);

@@ -571,7 +571,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     detallesHD?.ver(!!hd || pixelHD, !pixelHD);
     // Pixel HD a 1 px por píxel de arte (ver docs/uas-hd.md, «Pasar un dron
     // al pixel HD»).
-    pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined, maqueta.desfaseLuz ?? 0);
+    pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined, maqueta.desfaseLuz ?? 0, maqueta.sombraNegra);
     // En HD, cámara de teleobjetivo: casi sin perspectiva, como en las fotos.
     const fov = hdMat ? 18 : 32;
     const distanciaAntes = distancia;

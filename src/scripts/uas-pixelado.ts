@@ -93,6 +93,8 @@ export function crearPixelado(renderer: WebGLRenderer) {
       exposicion: { value: 0.95 },
       // Desfase de los escalones de luz (en escalones), por dron.
       desfase: { value: 0 },
+      // 1: el escalón más oscuro no aclara (ver `sombraNegra` en la maqueta).
+      sombraNegra: { value: 0 },
     },
     vertexShader: /* glsl */ `
       varying vec2 vUv;
@@ -109,6 +111,7 @@ export function crearPixelado(renderer: WebGLRenderer) {
       uniform float hd;
       uniform float exposicion;
       uniform float desfase;
+      uniform float sombraNegra;
       varying vec2 vUv;
       float distancia(vec2 uv) {
         return -perspectiveDepthToViewZ(texture2D(tProf, uv).x, cerca, lejos);
@@ -142,7 +145,9 @@ export function crearPixelado(renderer: WebGLRenderer) {
       vec3 aNivel(vec3 c, float k) {
         float l = luma(c);
         if (l < 0.002) return c;
-        return clamp(c * (((k + 0.5 - desfase) / NIVELES) / l), 0.0, 1.0);
+        float f = ((k + 0.5 - desfase) / NIVELES) / l;
+        if (sombraNegra > 0.5 && k < 0.5) f = min(f, 1.0);
+        return clamp(c * f, 0.0, 1.0);
       }
       void main() {
         vec2 v[4];
@@ -226,9 +231,10 @@ export function crearPixelado(renderer: WebGLRenderer) {
     // En las miniaturas cada píxel abarca más dron y el salto tiene que ser
     // mayor (si no, una superficie grande vista de lado sale entera como línea).
     ponerSalto(unidades: number) { final.uniforms.salto.value = unidades; },
-    ponerHD(si: boolean, tamano = TAM_PIXEL, desfase = 0) {
+    ponerHD(si: boolean, tamano = TAM_PIXEL, desfase = 0, sombraNegra = false) {
       final.uniforms.hd.value = si ? 1 : 0;
       final.uniforms.desfase.value = si ? desfase : 0;
+      final.uniforms.sombraNegra.value = si && sombraNegra ? 1 : 0;
       // Cada píxel de arte, un número entero de píxeles de la pantalla.
       const r = renderer.getPixelRatio();
       tamPixel = Math.max(1, Math.round(tamano * r)) / r;

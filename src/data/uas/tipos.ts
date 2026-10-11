@@ -274,7 +274,12 @@ export type Maqueta = {
   // Versión 2.0 (docs/uas-hd.md): el modo Maqueta pinta el dron en HD, con
   // sus calcas y costuras.
   hd?: boolean;
-  detalles?: { calcas: Calca[]; costuras: Costura[] };
+  detalles?: {
+    calcas: Calca[]; costuras: Costura[];
+    // Opacidad propia de las juntas y de sus tornillos (si no, la de todos:
+    // 0,22 las juntas; 0,55 los tornillos, 0,8 en el juego claro).
+    opacidad?: { juntas?: number; tornillos?: number };
+  };
   // Ángulo propio de la tarjeta de /uas: [acimut, elevación] en grados (si
   // no, el de todas, en arte/generar-uas-miniaturas-hd.mjs).
   vistaTarjeta?: [number, number];
@@ -295,6 +300,10 @@ export type Maqueta = {
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
+  // Pixel HD: el escalón de luz más oscuro no aclara el color, solo lo
+  // oscurece. En un dron negro, la sombra casi negra del HD (con un punto
+  // azul del cielo) salía azul marino al subirla al centro del escalón.
+  sombraNegra?: boolean;
   // La planta de la tira de la portada sin calcas ni costuras: a ese tamaño
   // las escarapelas del MICH-2000 salían como cuadrados.
   plantaLisa?: boolean;

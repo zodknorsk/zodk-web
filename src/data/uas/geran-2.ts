@@ -3,7 +3,7 @@
 // en el negro de los ataques nocturnos y con el panel de la antena CRPA en el
 // ala derecha, del plano de 2025. Fotos de restos en Ucrania. En metros
 // (escala 1), con las mismas z que el Shahed: el morro en z = 1,555.
-import type { Maqueta, Pieza } from "./tipos";
+import type { Calca, Maqueta, Pieza } from "./tipos";
 import { bandera } from "../banderas.ts";
 import shahed from "./shahed-136.ts";
 
@@ -12,18 +12,59 @@ const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 // Distancia desde la punta del morro (como se mide en el plano) a z.
 const z = (d: number) => +(1.555 - d).toFixed(3);
 
-// Todas las piezas del Shahed, de negro (el motor, de metal; los elevones,
-// un punto más claros). El anillo oscuro del iraní, sobre el negro, es solo
-// una junta.
+// Todas las piezas del Shahed 2.0: lo pintado en crema, en negro (también
+// los elevones, negros en todas las fotos) y la hélice, negra (decisión del
+// usuario); el motor y los pernos, como en el iraní. El anillo oscuro del iraní, sobre el negro, es solo una
+// junta.
 const DEL_SHAHED: Pieza[] = shahed.piezas
   .filter((p) => p.id !== "anillo")
-  .map((p) => ({ ...p, acabado: p.acabado === "metal" ? "metal" : p.id.startsWith("elevon") ? "mando" : "negro" }));
+  .map((p) => (p.acabado === "crema-ir" || p.id === "helice" ? { ...p, acabado: "negro" } : p));
+
+// El panel de la CRPA, sobre el ala derecha.
+const CRPA = { y: 0.047, giro: { centro: [-0.57, 0.047, z(2.19)] as [number, number, number], eje: "x" as const, grados: -4 } };
+
+// Calcas: del Shahed, los tornillos del morro, las juntas y los agujeros de
+// debajo; fuera lo iraní (banderas, QR) y los puntos de la CRPA, que aquí es
+// el panel en relieve. Lo ruso: «НЕ БРАТЬСЯ» («no agarrar») en amarillo en
+// cada elevón, junto al borde de salida y leído desde detrás (Sumy,
+// Vínnytsia), y «ГЕРАНЬ-2» en blanco en la cara de fuera de los winglets
+// (Kiev, 2022).
+const ARRIBA: [number, number, number] = [0, 1, 0];
+const CALCAS: Calca[] = [
+  // Los tornillos del morro, en gris metálico: con el del Shahed no se veían
+  // sobre el negro.
+  ...shahed.detalles!.calcas
+    .filter((k) => !["bandera-ir", "qr"].includes(k.dibujo.tipo) && !(k.dibujo.tipo === "disco" && k.dibujo.color === "#4a4b4d"))
+    .map((k): Calca => (k.dibujo.tipo === "disco" && k.dibujo.color === "#6a6862" ? { ...k, dibujo: { tipo: "disco", color: "#9a9da2" } } : k)),
+  ...[0.475, 0.97].map((x): Calca => ({
+    sobre: ["elevon-dentro", "elevon-fuera"], en: [x, 0.3, z(3.0)], desde: ARRIBA, tam: [0.26, 0.04], giro: 180, espejo: true,
+    dibujo: { tipo: "texto", texto: "НЕ БРАТЬСЯ", color: "#e3c13f" },
+  })),
+  { sobre: ["winglets"], en: [1.3, 0.16, z(2.97)], desde: [1, 0, 0], tam: [0.22, 0.045], espejo: true, dibujo: { tipo: "texto", texto: "ГЕРАНЬ-2", color: "#e9e9e6" } },
+];
+
+// Partes del Shahed que aquí se juntan en una.
+const piezasDe = (...nombres: string[]) => shahed.partes.filter((p) => nombres.includes(p.nombre)).flatMap((p) => p.piezas);
 
 const maqueta: Maqueta = {
   nombre: "Geran-2",
   subtitulo: "Dron de ataque de un solo uso",
   escala: 1,
   pais: bandera("RU"),
+  hd: true,
+  contornoPixel: true,
+  // Pixel: el negro al sol cae entre 2,9 y 3,2 escalones en la planta (en el
+  // borde con el 3: el ala a franjas) y en 1,7 en la vista 3D; corridos 0,4
+  // abajo, en 2,5–2,8 y 1,2–1,4.
+  desfaseLuz: -0.4,
+  // Sin ella, las sombras salían azul marino en el pixel.
+  sombraNegra: true,
+  // Tarjeta de /uas desde el mismo ángulo que la del Shahed.
+  vistaTarjeta: [65, 30],
+  // Las juntas y los tornillos, en el juego claro (como el MICH-2000): en
+  // el gris del Shahed se perdían sobre el negro. Las juntas, algo más
+  // marcadas, y los tornillos, más suaves (revisión del usuario).
+  detalles: { calcas: CALCAS, costuras: shahed.detalles!.costuras.map((k) => ({ ...k, claro: true })), opacidad: { juntas: 0.32, tornillos: 0.55 } },
   piezas: [
     ...DEL_SHAHED,
     {
@@ -31,13 +72,16 @@ const maqueta: Maqueta = {
       perfil: [[z(0.745), 0.1462], [z(0.755), 0.1462]],
     },
     {
-      // Panel de la antena CRPA en el ala derecha: el Kometa-M4 de cuatro
-      // elementos que dibuja el plano (luego los hubo de 8, 12 y 16).
-      tipo: "placa", id: "crpa", acabado: "gris", plano: "horizontal", y: 0.07, grosor: 0.012, bisel: 0.003,
-      planta: [[0.5, z(2.12)], [0.635, z(2.12)], [0.635, z(2.26)], [0.5, z(2.26)]],
+      // Panel de la antena CRPA en el ala derecha (−x, como los puntos del
+      // Shahed): el Kometa-M4 de cuatro elementos que dibuja el plano (luego
+      // los hubo de 8, 12 y 16).
+      // Apoyado en el extradós, que ahí baja de 4,9 a 3,8 cm del eje de
+      // delante atrás: inclinado 4° (medido con un rayo sobre el ala).
+      tipo: "placa", id: "crpa", acabado: "gris", plano: "horizontal", y: CRPA.y, grosor: 0.012, bisel: 0.003, girar: CRPA.giro,
+      planta: [[-0.635, z(2.12)], [-0.5, z(2.12)], [-0.5, z(2.26)], [-0.635, z(2.26)]],
     },
-    ...[[0.535, 2.155], [0.6, 2.155], [0.535, 2.225], [0.6, 2.225]].map(([x, d], i): Pieza => ({
-      tipo: "disco", id: `crpa-elemento-${i}`, acabado: "junta", en: [x, 0.077, z(d)], normal: [0, 1, 0], radio: 0.022, grosor: 0.004,
+    ...[[-0.535, 2.155], [-0.6, 2.155], [-0.535, 2.225], [-0.6, 2.225]].map(([x, d], i): Pieza => ({
+      tipo: "disco", id: `crpa-elemento-${i}`, acabado: "junta", en: [x, CRPA.y + 0.008, z(d)], normal: [0, 1, 0], radio: 0.022, grosor: 0.004, girar: CRPA.giro,
     })),
   ],
   partes: [
@@ -60,7 +104,7 @@ const maqueta: Maqueta = {
     },
     {
       nombre: "Antena CRPA",
-      en: [0.57, 0.08, z(2.19)],
+      en: [-0.57, 0.08, z(2.19)],
       piezas: ["crpa", ...[0, 1, 2, 3].map((i) => `crpa-elemento-${i}`)],
       respaldo: "reconstruccion",
       fuentes: ["plano", "csis"],
@@ -87,7 +131,7 @@ const maqueta: Maqueta = {
     {
       nombre: "Elevones",
       en: [-0.9, 0.02, -1.42],
-      piezas: ["elevon-dentro", "elevon-fuera", "varilla-0.7", "varilla-0.82"],
+      piezas: piezasDe("Elevones"),
       respaldo: "foto",
       fuentes: ["plano", "vinnytsia"],
       texto: "Dos superficies móviles a cada lado del borde de salida, con sus varillas encima del ala.",
@@ -95,7 +139,7 @@ const maqueta: Maqueta = {
     {
       nombre: "Motor y hélice",
       en: [0.22, 0.02, -1.42],
-      piezas: ["carter", "cilindro--1.35", "cilindro--1.48", "buje", "helice"],
+      piezas: piezasDe("Motor MD-550", "Hélice propulsora"),
       respaldo: "foto",
       fuentes: ["plano", "motor", "csis"],
       texto: "Motor de cuatro cilindros opuestos con hélice de dos palas que empuja desde atrás. El iraní MD-550 se cambió en Izhevsk por copias chinas del mismo Limbach alemán.",

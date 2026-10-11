@@ -53,7 +53,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
   luz.encender(true, "c");
   const sinQuitadas = <T extends { sobre: string[] }>(l: T[]) => l.filter((d) => !d.sobre.some((id) => fuera(id, quitar)));
   const detalles = maqueta.detalles
-    ? montarDetalles(escena, raiz, mallas, { calcas: sinQuitadas(maqueta.detalles.calcas), costuras: sinQuitadas(maqueta.detalles.costuras) }, radio)
+    ? montarDetalles(escena, raiz, mallas, { ...maqueta.detalles, calcas: sinQuitadas(maqueta.detalles.calcas), costuras: sinQuitadas(maqueta.detalles.costuras) }, radio)
     : null;
   detalles?.ver(true, false);
   // La postura, con las calcas ya montadas (cuelgan de la raíz y giran con
@@ -66,7 +66,7 @@ function montar(maqueta: Maqueta, W: number, H: number, FOV: number, quitar: str
     raiz.updateMatrixWorld(true);
   }
   const pixelado = crearPixelado(renderer);
-  pixelado.ponerHD(true, 1, maqueta.desfaseLuz ?? 0);
+  pixelado.ponerHD(true, 1, maqueta.desfaseLuz ?? 0, maqueta.sombraNegra);
   const camara = new PerspectiveCamera(FOV, W / H, 0.05, 50);
   const v = new Vector3();
   const direccion = ([az, el]: [number, number]) =>

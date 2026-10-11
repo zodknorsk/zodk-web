@@ -20,7 +20,7 @@ cuatro Hellfire y dos GBU-12, con el tren fuera), RQ-11 Raven (EE. UU., de
 mano, con el morro de gimbal del Ejército de Tierra), Bayraktar TB2
 (Turquía, con cuatro MAM-L), Shahed-136 (Irán, ala en delta, en el gris
 claro de los iraníes), Geran-2 (Rusia, la versión rusa del Shahed, en
-negro), Quantum Systems Vector (Alemania, ala fija de despegue vertical,
+negro, sacado del Shahed 2.0), Quantum Systems Vector (Alemania, ala fija de despegue vertical,
 con la Raptor-360 de los españoles) y Sting (Ucrania, interceptor FPV de
 pie, en arena). Al final, lo que hay que respetar, lo que se probó y el usuario
 rechazó, y las fotos de cada maqueta.
