@@ -1,0 +1,33 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "1733192448124338682",
+    "created_at": "2023-12-08T18:30:55.000Z",
+    "text": "El Estado Mayor Conjunto presentó en Magdalena las municiones merodeadoras UVision HERO.\n\nLa actividad incluyó la demostración de capacidades del sistema https://t.co/wqAQ8XUq2h",
+    "user": {
+      "name": "Zona Militar",
+      "screen_name": "Zonamilitar1",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2008519855108952064/2EE5oh6D_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/wqAQ8XUq2h",
+        "media_url_https": "https://pbs.twimg.com/media/GA2JTklWQAAQ4-I.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/wqAQ8XUq2h",
+        "media_url_https": "https://pbs.twimg.com/media/GA2JTkkXIAAy3PG.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/wqAQ8XUq2h",
+        "media_url_https": "https://pbs.twimg.com/media/GA2JTkkWYAI9qVP.jpg"
+      }
+    ]
+  }
+}

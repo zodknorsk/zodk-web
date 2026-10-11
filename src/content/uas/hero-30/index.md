@@ -13,62 +13,68 @@ bandera: "\U0001F1EE\U0001F1F1"
 pais: Israel
 categoria: Munición merodeadora portátil
 ---
-> El Hero-30 es la munición merodeadora <mark>más pequeña de la familia Hero</mark> de la israelí UVision. Es un dron de un solo uso, de unos 3 kg, que un soldado lleva a la espalda dentro de su tubo. Lo lanza en un par de minutos, busca el objetivo con la cámara y se estrella contra él. Está pensado para que un pelotón o una compañía ataque <mark>personas y vehículos ligeros a pocos kilómetros</mark> sin pedir apoyo a la artillería ni a la aviación.
+> El Hero-30 es la munición merodeadora <mark>más pequeña de la familia Hero</mark> de la israelí UVision. Es un dron de un solo uso, de unos 3 kg, que un soldado lleva a la espalda dentro de su tubo. Lo lanza en un par de minutos, busca el objetivo con la cámara y se estrella contra él. Está pensado para que un pelotón o una compañía ataque <mark>personas y vehículos ligeros a varios kilómetros</mark> sin necesidad de pedir apoyo.
 >
-> ⚠️ Las cifras de peso, alcance, autonomía y precisión las da el fabricante y cambian de un folleto a otro.
+
 
 <div class="visor-hueco"></div>
 
 ## CARACTERÍSTICAS
 
-|                                   |                                                                                                                  |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **País**                          | 🇮🇱 Israel                                                                                                       |
-| **Fabricante**                    | UVision Air; en Europa, con Rheinmetall a través de RWM Italia                                                   |
-| **Operador**                      | Israel, Italia (fuerzas especiales), Argentina y Hungría                                                         |
-| **Categoría**                     | Munición merodeadora portátil, de mochila                                                                        |
-| **Situación**                     | En servicio y en producción                                                                                      |
-| **Primer uso en combate**         | No publicado; en 2020 UVision dijo que el ejército israelí ya lo había usado en combate                          |
-| **Envergadura / longitud / peso** | 0,8 m / 0,78 m / 3 kg; de 7,8 a 8,5 kg con el tubo (fabricante)                                                  |
-| **Alcance**                       | 15 km (fabricante)                                                                                               |
-| **Carga**                         | Warhead de 0,5 kg, antipersonal o anticarro; cámara EO/IR (fabricante)                                           |
-| **Motor**                         | Eléctrico, con hélice propulsora; hasta 185 km/h                                                                 |
-| **Despegue**                      | Lanzamiento neumático desde su tubo                                                                              |
-| **Origen**                        | Diseño propio de UVision; el primero de la familia Hero                                                          |
+|                                   |                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------- |
+| **País**                          | 🇮🇱 Israel                                                                 |
+| **Fabricante**                    | UVision Air; en Europa, con Rheinmetall a través de RWM Italia              |
+| **Operador**                      | Israel, Italia, Argentina y Hungría                                         |
+| **Categoría**                     | Munición merodeadora portátil                                               |
+| **Situación**                     | En servicio y en producción                                                 |
+| **Primer uso en combate**         | No publicado; UVision afirma que el ejército israelí la ha usado en combate |
+| **Envergadura / longitud / peso** | 0,8 m / 0,78 m / 3 kg; de 7,8 a 8,5 kg con el tubo                          |
+| **Alcance**                       | 15 km                                                                       |
+| **Carga**                         | Cabeza de combate de 0,5 kg, antipersonal o anticarro; cámara EO/IR         |
+| **Motor**                         | Eléctrico, con hélice propulsora; hasta 185 km/h                            |
+| **Despegue**                      | Lanzamiento neumático desde su tubo                                         |
+| **Origen**                        | Diseño propio de UVision; el primero de la familia Hero                     |
 
 ## Historia
 
-UVision Air nació en Israel en 2011 y su primer producto fue el Hero-30, el más pequeño de una familia de municiones merodeadoras que luego creció con modelos mayores, como el Hero-120 o el Hero-400. La idea era dar a una unidad pequeña de infantería un arma propia con la que ver y golpear más allá de donde llegan sus fusiles, sin depender de nadie. En abril de 2015 se supo el primer pedido, de las fuerzas especiales de un país que no se dijo: un dron de 78 cm de largo, con las alas en cruz y motor eléctrico, que salía de su tubo con aire comprimido.
+[UVision Air](https://uvisionuav.com/) nació en Israel en 2011 y su primer producto fue el Hero-30, el más pequeño de una familia de municiones merodeadoras que luego creció con modelos mayores, como el [Hero-120](https://uvisionuav.com/loitering-munitions/hero-120/) o el [Hero-400](https://uvisionuav.com/loitering-munitions/hero-400/). La idea era dar a una unidad pequeña de infantería un arma propia con la que ver y golpear más allá de sus capacidades, sin depender de apoyos. En abril de 2015 llegó el primer pedido de un país sin nombrar.
 
-En julio de 2020 UVision anunció que el Ministerio de Defensa israelí lo había comprado después de probarlo, y que varias unidades del ejército ya lo habían usado en combate. No dijo dónde ni contra qué.
+En julio de 2020 UVision anunció que el Ministerio de Defensa israelí lo había comprado después de probarlo, y que varias unidades del ejército ya lo habían usado en combate. No se ha confirmado, pero por las fechas es probable que fuera en Gaza o en el norte, en la frontera con Siria y Líbano.
+
+Desde 2021 Rheinmetall lo fabrica y lo vende en Europa a través de su filial italiana RWM Italia. En 2022 lo compraron las fuerzas especiales italianas, el primer cliente de la OTAN, y Argentina para sus operaciones especiales también. Hungría lo recibió a partir de 2024.
 
 ## Especificaciones y Uso
 
-Tiene dos juegos de alas en cruz: cuatro largas delante y cuatro aletas más cortas detrás. Van plegadas dentro del tubo y se abren al salir. El motor eléctrico y la hélice van en la cola, y la cámara EO/IR en el morro. El dron pesa unos 3 kg, y con el tubo, entre 7,8 y 8,5 kg según el folleto. El tubo mide unos 95 cm, y un soldado puede llevar uno o dos a la espalda. Se lanza con aire comprimido, sin fogonazo y casi sin ruido, y en menos de dos minutos está en el aire.
+Las alas y aletas en cruz van plegadas dentro del tubo y se abren al salir. El motor eléctrico y la hélice van en la cola, y la cámara EO/IR en el morro. El dron pesa unos 3 kg, y con el tubo, entre 7,8 y 8,5 kg. El tubo mide unos 95 cm, y un soldado podría llevar uno o incluso dos a la espalda. Se lanza con aire comprimido, sin fogonazo y casi sin ruido, y en menos de dos minutos está en el aire.
 
-Vuela hasta 30 minutos, normalmente entre 200 y 450 m de altura, y llega a 100 nudos. El alcance depende de la antena: la web de UVision da 15 km, y otras fuentes, entre 10 y 20 km según la antena que se use. El operador lo maneja desde una tablet reforzada viendo el vídeo de la cámara. Puede llevarlo a mano o dejar que siga solo al objetivo con un seguidor de imagen, pero el ataque siempre lo decide una persona (Human-in-the-loop). El enlace va cifrado con AES-256 y, según el fabricante, puede seguir la misión sin GPS.
+El Hero-30 tiene una autonomía de 30 minutos, normalmente entre 200 y 450 m de altura, y llega a 185 km/h. Su alcance es de 15 km, según UVision. El operador lo maneja desde una tablet. Puede guiarlo o dejar que siga solo al objetivo con función de seguimiento automático, pero el ataque siempre lo decide una persona (Human-in-the-loop). El enlace va cifrado con AES-256 y puede seguir la misión sin GPS.
 
-Lleva una warhead de <mark>medio kilo</mark>, antipersonal o anticarro, con espoleta de impacto, de proximidad o de retardo. Es para soldados al descubierto, vehículos sin blindaje y puestos de mando, no para carros de combate. UVision dice que cae a menos de un metro del punto elegido. Hasta unos segundos antes del impacto, el operador puede <mark>abortar el ataque</mark>: volver a merodear y atacar de nuevo, buscar otro blanco o desarmar la carga y traer el dron en paracaídas a una zona de recogida.
+Lleva una cabeza de combate de <mark>0,5 kg</mark>, antipersonal o anticarro, con espoleta de impacto, de proximidad o de retardo. Está pensada para tropas al descubierto, vehículos sin blindaje y puestos de mando, no para carros de combate. UVision dice que cae a menos de un metro del punto elegido. Hasta unos segundos antes del impacto, el operador puede <mark>abortar el ataque</mark>: volver a merodear y atacar de nuevo, buscar otro blanco o desarmar la carga y traer el dron en paracaídas a una zona de recogida. La lanzadera se puede montar en múltiples plataformas terrestres o marítimas.
 
-Además de a la espalda, el tubo se puede montar en vehículos ligeros y blindados y en lanchas neumáticas. Desde 2021 Rheinmetall lo fabrica y lo vende en Europa a través de su filial italiana RWM Italia. En 2022 lo compraron las fuerzas especiales italianas, el primer cliente de la OTAN, y Argentina, que lo prueba sobre todo con sus unidades de operaciones especiales. Hungría lo recibió a partir de 2024 y lo enseñó en junio de 2025.
-
-En España, Infodefensa contó en enero de 2020 que UVision acababa de presentar la familia Hero al Ejército de Tierra, con un simulador, en la base Príncipe de Paracuellos del Jarama (Madrid), sede de la Brigada Paracaidista. Para entonces ya había montado el Hero-30 en el Netón, el vehículo ligero de operaciones especiales de la española Einsa, y lo había enseñado así en ferias desde 2019. El plan de contratación de Defensa de 2024 recoge la [primera compra de municiones merodeadoras](https://www.defensa.com/espana/espana-inicia-compra-municiones-merodeadoras), sin decir de qué modelo.
+En España, UVision presentó la familia Hero al Ejército de Tierra, con un simulador, en la base Príncipe de la Brigada Paracaidista. Para entonces ya había montado el Hero-30 en el Netón, el vehículo ligero de operaciones especiales. El plan de contratación de Defensa de 2024 recoge la [primera compra de municiones merodeadoras](https://www.defensa.com/espana/espana-inicia-compra-municiones-merodeadoras), sin especificar qué modelos.
 
 ## En acción
 
 
-<blockquote class="tweet" data-tweet-id="1733251189506965730">
-  <a class="tweet-author" href="https://x.com/Ejercito_Arg/status/1733251189506965730" target="_blank" rel="noopener">
-    <img class="tweet-avatar" src="/tweets/1332293384216711168-xja6k43y_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
-    <span class="tweet-name">Ejército Argentino</span>
-    <span class="tweet-handle">@Ejercito_Arg</span>
-  </a>
-  <div class="tweet-text"><a href="https://x.com/hashtag/Magdalena" target="_blank" rel="noopener">#Magdalena</a> El Ministerio de Defensa adquirió municiones merodeadoras HERO 30 y HERO 120 de la empresa israelí UVISION. Esta munición recopila información cercana al objetivo antes de atacar, potenciando el poder de combate del usuario.</div>
-  <img class="tweet-media" src="/tweets/media-ga26gnkw4aaahvp.jpg" alt="Imagen del tweet" loading="lazy" />
-  <img class="tweet-media" src="/tweets/media-ga26gniwuaaxpo7.jpg" alt="Imagen del tweet" loading="lazy" />
-  <a class="tweet-date" href="https://x.com/Ejercito_Arg/status/1733251189506965730" target="_blank" rel="noopener">8 de diciembre de 2023</a>
-</blockquote>
+<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/6U_4Tf3Z2EA" title="Vídeo de YouTube" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
 
+
+
+<blockquote class="tweet" data-tweet-id="1733192448124338682">
+  <a class="tweet-author" href="https://x.com/Zonamilitar1/status/1733192448124338682" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/2008519855108952064-2ee5oh6d_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Zona Militar</span>
+    <span class="tweet-handle">@Zonamilitar1</span>
+  </a>
+  <div class="tweet-text">El Estado Mayor Conjunto presentó en Magdalena las municiones merodeadoras UVision HERO.<br>
+<br>
+La actividad incluyó la demostración de capacidades del sistema</div>
+  <img class="tweet-media" src="/tweets/media-ga2jtklwqaaq4-i.jpg" alt="Imagen del tweet" loading="lazy" />
+  <img class="tweet-media" src="/tweets/media-ga2jtkkxiaay3pg.jpg" alt="Imagen del tweet" loading="lazy" />
+  <img class="tweet-media" src="/tweets/media-ga2jtkkwyai9qvp.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/Zonamilitar1/status/1733192448124338682" target="_blank" rel="noopener">8 de diciembre de 2023</a>
+</blockquote>
 
 
 <blockquote class="tweet" data-tweet-id="1934896848461762628">
