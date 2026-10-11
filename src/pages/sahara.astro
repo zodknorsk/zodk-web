@@ -30,44 +30,41 @@ const hitos = HITOS.map((h) => {
     <canvas class="sahara-mapa" role="img" aria-label="Mapa del Sáhara Occidental, Marruecos y Canarias"></canvas>
     <!-- Nombres de países, regiones, ciudades… (src/scripts/sahara-nombres.js). -->
     <div class="sahara-nombres" aria-hidden="true"></div>
-    <a class="sahara-volver" href="/">← portada</a>
+    <a class="sahara-volver sahara-tecla" href="/">← Portada</a>
 
-    <!-- Los hitos de fuera del mapa (Madrid, Washington…): src/scripts/sahara-lejos.js. -->
-    <div class="sahara-lejos" hidden aria-hidden="true">
-      <div class="sahara-lejos-globo"><canvas class="sahara-lejos-tierra"></canvas></div>
+    <!-- Los hitos de fuera del mapa (Madrid, Washington…), en una ventana con
+         su zona: src/scripts/sahara-lejos.js. -->
+    <div class="sahara-lejos sahara-papel" hidden aria-hidden="true">
+      <p class="sahara-lejos-pestana"></p>
       <div class="sahara-lejos-marco">
         <img class="sahara-lejos-zona" alt="" />
         <canvas class="sahara-lejos-marca"></canvas>
       </div>
-      <p class="sahara-lejos-nombre"></p>
     </div>
 
-    <!-- La marca del lugar, encima del mapa (en el diseño B la pinta el
-         propio mapa). -->
-    <div class="sahara-marca" hidden aria-hidden="true"><span class="sahara-marca-rotulo"></span></div>
-
     <!-- La ficha del hito. -->
-    <article class="sahara-ficha" data-sin-arrastre aria-live="polite">
-      <p class="sahara-ficha-exp"></p>
-      <p class="sahara-ficha-fecha"></p>
-      <h1 class="sahara-ficha-titulo"></h1>
-      <p class="sahara-ficha-lugar"></p>
-      <img class="sahara-ficha-foto" alt="" hidden />
-      <div class="sahara-ficha-texto"></div>
-      <a class="sahara-ficha-nota" hidden>Ir a la nota →</a>
-      <span class="sahara-ficha-sello" hidden>Con nota</span>
+    <article class="sahara-ficha sahara-papel" data-sin-arrastre aria-live="polite">
+      <div class="sahara-ficha-pestana"><span class="sahara-ficha-num"></span><span class="sahara-ficha-fecha"></span></div>
+      <div class="sahara-ficha-cuerpo">
+        <h1 class="sahara-ficha-titulo"></h1>
+        <p class="sahara-ficha-lugar"></p>
+        <img class="sahara-ficha-foto" alt="" hidden />
+        <div class="sahara-ficha-texto"></div>
+        <a class="sahara-ficha-nota sahara-tecla" hidden>Leer la nota →</a>
+      </div>
     </article>
 
     <!-- El deslizador: un hito por paso, por fecha. Las marcas altas son los
-         hitos con nota; debajo, las décadas. -->
-    <div class="sahara-barra" data-sin-arrastre>
-      <button class="sahara-paso" type="button" data-paso="-1" aria-label="Hito anterior">◀</button>
+         hitos con nota; debajo, las décadas; el triángulo, el de ahora. -->
+    <div class="sahara-barra sahara-papel" data-sin-arrastre>
+      <button class="sahara-paso sahara-tecla" type="button" data-paso="-1" aria-label="Hito anterior">◀</button>
       <div class="sahara-pista">
         <div class="sahara-marcas" aria-hidden="true"></div>
-        <input class="sahara-deslizador" type="range" min="0" max={hitos.length - 1} step="1" value="0" aria-label="Hito" />
         <div class="sahara-decadas" aria-hidden="true"></div>
+        <input class="sahara-deslizador" type="range" min="0" max={hitos.length - 1} step="1" value="0" aria-label="Hito" />
+        <div class="sahara-cursor" aria-hidden="true"><span></span></div>
       </div>
-      <button class="sahara-paso" type="button" data-paso="1" aria-label="Hito siguiente">▶</button>
+      <button class="sahara-paso sahara-tecla" type="button" data-paso="1" aria-label="Hito siguiente">▶</button>
     </div>
     <script is:inline type="application/json" id="sahara-hitos" set:html={JSON.stringify(hitos)} />
   </section>
@@ -96,30 +93,12 @@ const hitos = HITOS.map((h) => {
     const $ = (sel: string) => zona.querySelector(sel) as HTMLElement;
     const deslizador = $(".sahara-deslizador") as HTMLInputElement;
     let actual = -1;
-    // PRUEBA: tres diseños de marca, deslizador y ficha (?diseno=a|b|c).
-    const diseno = new URLSearchParams(location.search).get("diseno") ?? "a";
-    zona.dataset.diseno = diseno;
-    const marcaEl = $(".sahara-marca");
-    const enMapaAhora = () => !$(".sahara-lejos").classList.contains("dentro") && $(".sahara-lejos").hidden;
-    // Coordenada al estilo de la mira de la portada: 27°09′N 13°12′O.
-    const gms = (v: number, pos: string, neg: string) => {
-      const a = Math.abs(v), g = Math.floor(a), m = Math.round((a - g) * 60);
-      return `${g}°${String(m).padStart(2, "0")}′${v >= 0 ? pos : neg}`;
-    };
-    // (el mapa pinta una vez antes de estar montado: entonces aún no hay marca)
-    const listo: { mapa?: { posMarca: () => number[] | null }, nombres?: { coloca: () => void } } = {};
-    const colocarMarca = () => {
-      const p = listo.mapa?.posMarca();
-      marcaEl.hidden = diseno === "b" || !p || !enMapaAhora();
-      if (p) {
-        marcaEl.style.left = `${p[0]}px`;
-        marcaEl.style.top = `${p[1]}px`;
-      }
-    };
-
-    const alPintar = () => { colocarMarca(); listo.nombres?.coloca(); };
-    const mapa = await montarMapaSahara(canvas, { alPintar, pin: diseno === "b" });
-    listo.mapa = mapa;
+    // Dónde va el hito i en la regla.
+    const pos = (i: number) => `${(i / Math.max(1, hitos.length - 1)) * 100}%`;
+    // (el mapa pinta una vez antes de que estén montados los nombres)
+    const listo: { nombres?: { coloca: () => void } } = {};
+    const alPintar = () => listo.nombres?.coloca();
+    const mapa = await montarMapaSahara(canvas, { alPintar });
     const nombres = await montarNombresSahara($(".sahara-nombres"), mapa);
     listo.nombres = nombres;
     const lejos = montarLejos(zona, $(".sahara-lejos"));
@@ -130,13 +109,11 @@ const hitos = HITOS.map((h) => {
       actual = i;
       const h = hitos[i];
       deslizador.value = String(i);
+      $(".sahara-cursor span").style.left = pos(i);
+      $(".sahara-ficha-num").textContent = `Hito ${String(i + 1).padStart(2, "0")}/${hitos.length}`;
       $(".sahara-ficha-fecha").textContent = h.fecha;
-      $(".sahara-ficha-exp").textContent = `Hito ${String(i + 1).padStart(2, "0")} / ${hitos.length}`;
-      $(".sahara-ficha-sello").hidden = !h.nota;
-      $(".sahara-marca-rotulo").textContent = diseno === "c" && h.coordenadas
-        ? `${gms(h.coordenadas[0], "N", "S")} ${gms(h.coordenadas[1], "E", "O")}` : h.lugar;
       $(".sahara-ficha-titulo").textContent = h.titulo;
-      $(".sahara-ficha-lugar").textContent = `📍 ${h.lugar}`;
+      $(".sahara-ficha-lugar").textContent = h.lugar;
       $(".sahara-ficha-texto").innerHTML = h.texto;
       const foto = $(".sahara-ficha-foto") as HTMLImageElement;
       foto.hidden = !h.foto;
@@ -151,14 +128,12 @@ const hitos = HITOS.map((h) => {
         const [x, y] = mapa.aPantalla(...h.coordenadas);
         lejos.mostrar(h, [x - canvas.clientWidth / 2, y - canvas.clientHeight / 2]);
       }
-      colocarMarca();
       try { sessionStorage.setItem("sahara-hito", h.id); } catch { /* sin sessionStorage */ }
     };
 
     // Marcas de los hitos y décadas (sin pisarse: una etiqueta solo si
     // queda a 40 px de la anterior).
     const marcas = $(".sahara-marcas"), decadas = $(".sahara-decadas");
-    const pos = (i: number) => `${(i / Math.max(1, hitos.length - 1)) * 100}%`;
     marcas.innerHTML = hitos.map((h, i) => `<span class="${h.nota ? "con-nota" : ""}" style="left:${pos(i)}"></span>`).join("");
     const ponerDecadas = () => {
       const ancho = decadas.clientWidth;

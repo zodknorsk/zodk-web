@@ -1,9 +1,15 @@
 /* --- El Sáhara (/sahara) -----------------------------------------------------
    El mapa en pixel art (src/scripts/sahara-mapa.js) a pantalla completa: se
    arrastra y se acerca con la rueda o el trackpad, así que la página no hace
-   scroll. */
+   scroll. Encima, los nombres, la ficha del hito, el deslizador y la ventana
+   de los lugares de fuera del mapa, en papel claro con tinta y rojo, a
+   píxeles: bordes con las esquinas en escalón y sombra dura. */
 html:has(.sahara-hero) { overflow: hidden; }
 .sahara-hero {
+  --papel: #f2f2ef;
+  --tinta: #141418;
+  --rojo: #d4231c;
+  --gris: #5d5d63;
   touch-action: none;
   background: #1d508c;                      /* OCEAN_DEEP, mientras carga */
 }
@@ -17,199 +23,147 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-hero.arrastrable { cursor: grab; }
 .sahara-hero.agarrando, .sahara-hero.agarrando * { cursor: grabbing; user-select: none; }
 
-/* Volver a la portada, arriba a la izquierda. */
-.sahara-volver {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 2;
+/* Papel a píxeles: el borde de 2 px son cuatro sombras (así las esquinas
+   quedan en escalón) y debajo, la sombra dura. */
+.sahara-papel, .sahara-tecla {
+  color: var(--tinta);
+  background: var(--papel);
+  box-shadow: 0 -2px 0 var(--tinta), 0 2px 0 var(--tinta), -2px 0 0 var(--tinta), 2px 0 0 var(--tinta),
+    4px 6px 0 rgb(5 6 10 / 0.45);
+}
+/* Las teclas: se hunden al pulsarlas y se vuelven rojas al pasar el ratón. */
+.sahara-tecla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 6px 10px;
-  font: 600 13px/1 "IBM Plex Mono", monospace;
+  border: 0;
+  font: 600 12px/1 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: 0.08em;
-  color: #f6f0e0;
-  background: rgb(5 6 10 / 0.7);
-  border-radius: 4px;
+  text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
 }
-.sahara-volver:hover { background: rgb(5 6 10 / 0.9); }
+.sahara-tecla:hover { color: var(--papel); background: var(--rojo); }
+.sahara-tecla:active { transform: translate(2px, 2px); box-shadow: 0 -2px 0 var(--tinta), 0 2px 0 var(--tinta), -2px 0 0 var(--tinta), 2px 0 0 var(--tinta), 2px 3px 0 rgb(5 6 10 / 0.45); }
+.sahara-tecla:focus-visible { outline: 2px solid var(--rojo); outline-offset: 4px; }
 
-/* --- Hitos ------------------------------------------------------------------
-   La ficha arriba a la derecha (en el móvil, abajo, encima de la barra), el
-   deslizador abajo y la flecha hacia los lugares de fuera del mapa. Mismo
-   papel oscuro que las tiras de la web. */
-.sahara-ficha, .sahara-barra {
-  position: absolute;
-  z-index: 2;
-  color: #f6f0e0;
-  background: rgb(5 6 10 / 0.82);
-  border-radius: 6px;
-}
+.sahara-volver { position: absolute; top: 18px; left: 18px; z-index: 2; }
+
+/* --- La ficha del hito: una pestaña roja con el número y la fecha, y debajo
+   el título, el lugar, la foto, el texto y la tecla de la nota. */
 .sahara-ficha {
-  top: 16px;
-  right: 16px;
-  width: min(360px, calc(100% - 32px));
-  max-height: calc(100% - 140px);
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  width: min(360px, calc(100% - 36px));
+  max-height: calc(100% - 150px);
   overflow-y: auto;
-  padding: 16px 18px;
   cursor: auto;
 }
-.sahara-ficha-fecha, .sahara-ficha-lugar {
-  margin: 0;
-  font: 400 13px/1.4 "IBM Plex Mono", monospace;
-  letter-spacing: 0.04em;
+.sahara-ficha-pestana {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 14px;
+  font: 600 11px/1.3 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--papel);
+  background: var(--rojo);
 }
-.sahara-ficha-fecha { color: #e6b450; }
-.sahara-ficha-titulo { margin: 6px 0 4px; font: 600 18px/1.3 "IBM Plex Sans", sans-serif; color: inherit; }
-.sahara-ficha-lugar { color: rgb(246 240 224 / 0.7); }
-.sahara-ficha-foto { display: block; width: 100%; margin: 12px 0 0; border-radius: 4px; }
-.sahara-ficha-texto { margin-top: 10px; font: 400 14px/1.55 "IBM Plex Serif", serif; }
-.sahara-ficha-texto a, .sahara-ficha-nota { color: #e6b450; }
-.sahara-ficha-nota {
-  display: inline-block;
-  margin-top: 12px;
-  font: 600 13px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-}
-.sahara-ficha-nota:hover { text-decoration: underline; }
-/* Sin foto o sin nota: el display de arriba no debe pisar el hidden. */
-.sahara-ficha [hidden] { display: none; }
-
-.sahara-barra {
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
+.sahara-ficha-cuerpo { padding: 12px 14px 16px; }
+.sahara-ficha-titulo { margin: 0; font: 600 18px/1.3 "IBM Plex Sans", sans-serif; color: inherit; }
+/* El lugar, con un cuadrado rojo de píxel delante. */
+.sahara-ficha-lugar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px 8px;
+  gap: 7px;
+  margin: 6px 0 0;
+  font: 500 12px/1.3 "IBM Plex Mono", ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  color: var(--gris);
+}
+.sahara-ficha-lugar::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--rojo); box-shadow: 0 0 0 1px var(--tinta); }
+.sahara-ficha-foto { display: block; width: 100%; margin-top: 12px; image-rendering: auto; box-shadow: 0 0 0 2px var(--tinta); }
+.sahara-ficha-texto { margin-top: 10px; font: 400 14px/1.55 "IBM Plex Sans", sans-serif; color: #2a2a2f; }
+.sahara-ficha-texto a { color: var(--rojo); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.sahara-ficha-nota { margin-top: 14px; }
+.sahara-ficha [hidden] { display: none; }
+
+/* --- El deslizador: una regla. Una marca por hito (las rojas y altas, con
+   nota), las décadas debajo y el hito de ahora con un triángulo rojo. El
+   <input> va encima, transparente: es el que se arrastra. */
+.sahara-barra {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
   cursor: auto;
 }
-.sahara-paso {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  color: #f6f0e0;
-  background: rgb(246 240 224 / 0.1);
-  border: 0;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.sahara-paso:hover { background: rgb(246 240 224 / 0.2); }
-.sahara-pista { position: relative; flex: 1; height: 44px; }
-/* Las marcas de los hitos detrás del deslizador: las altas y doradas, con nota. */
-.sahara-marcas { position: absolute; left: 8px; right: 8px; top: 4px; height: 16px; }
-.sahara-marcas span {
-  position: absolute;
-  top: 5px;
-  width: 2px;
-  height: 6px;
-  margin-left: -1px;
-  background: rgb(246 240 224 / 0.45);
-}
-.sahara-marcas span.con-nota { top: 1px; height: 14px; background: #e6b450; }
-.sahara-deslizador {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: 100%;
-  height: 24px;
-  margin: 0;
-  background: transparent;
-  appearance: none;
-  cursor: pointer;
-}
-.sahara-deslizador::-webkit-slider-runnable-track { height: 2px; background: rgb(246 240 224 / 0.3); }
-.sahara-deslizador::-moz-range-track { height: 2px; background: rgb(246 240 224 / 0.3); }
-.sahara-deslizador::-webkit-slider-thumb {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  margin-top: -7px;
-  background: #d8402f;
-  border: 2px solid #f6f0e0;
-  border-radius: 0;
-}
-.sahara-deslizador::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  background: #d8402f;
-  border: 2px solid #f6f0e0;
-  border-radius: 0;
-}
-.sahara-decadas { position: absolute; left: 8px; right: 8px; top: 26px; height: 16px; }
+.sahara-paso { flex: none; width: 34px; height: 34px; padding: 0; }
+.sahara-pista { position: relative; flex: 1; height: 42px; }
+.sahara-marcas, .sahara-decadas, .sahara-cursor { position: absolute; left: 8px; right: 8px; }
+.sahara-marcas { top: 10px; height: 14px; border-bottom: 2px solid var(--tinta); }
+.sahara-marcas span { position: absolute; bottom: 0; width: 2px; height: 6px; margin-left: -1px; background: var(--tinta); }
+.sahara-marcas span.con-nota { height: 12px; background: var(--rojo); }
+.sahara-decadas { top: 28px; height: 14px; }
 .sahara-decadas span {
   position: absolute;
   transform: translateX(-50%);
-  font: 400 11px/16px "IBM Plex Mono", monospace;
-  color: rgb(246 240 224 / 0.6);
+  font: 500 11px/14px "IBM Plex Mono", ui-monospace, monospace;
+  color: var(--gris);
   white-space: nowrap;
 }
+.sahara-cursor { top: 0; height: 0; pointer-events: none; }
+/* El triángulo, a escalones de 2 px, apuntando a la regla. */
+.sahara-cursor span {
+  position: absolute;
+  top: 0;
+  width: 14px;
+  height: 8px;
+  margin-left: -7px;
+  background: var(--rojo);
+  clip-path: polygon(0 0, 100% 0, 100% 2px, calc(100% - 2px) 2px, calc(100% - 2px) 4px, calc(100% - 4px) 4px,
+    calc(100% - 4px) 6px, calc(100% - 6px) 6px, calc(100% - 6px) 8px, 6px 8px, 6px 6px, 4px 6px, 4px 4px, 2px 4px, 2px 2px, 0 2px);
+}
+.sahara-cursor span::after { content: ""; position: absolute; left: 6px; top: 8px; width: 2px; height: 16px; background: var(--rojo); }
+.sahara-deslizador { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.sahara-deslizador:focus-visible + .sahara-cursor span { outline: 2px solid var(--tinta); }
 
-/* Los hitos de fuera del mapa (sahara-lejos.js). PRUEBA: tres modos
-   (data-modo), para elegir uno. */
-.sahara-lejos { position: absolute; z-index: 1; pointer-events: none; }
+/* --- La ventana de los lugares de fuera del mapa (sahara-lejos.js): su zona
+   en un recuadro de papel con la pestaña del nombre, que entra por el lado
+   del lugar; el mapa del Sáhara se queda detrás. */
+.sahara-lejos {
+  position: absolute;
+  left: 18px;
+  top: 72px;
+  z-index: 1;
+  pointer-events: none;
+  transform: translate(calc(var(--dx, 0%) * 3), calc(var(--dy, 0%) * 3));
+  transition: transform 0.9s ease-in-out;
+}
+.sahara-lejos.dentro { transform: none; }
 .sahara-lejos[hidden] { display: none; }
-.sahara-lejos-nombre {
+.sahara-lejos-pestana {
   margin: 0;
-  font: 600 13px/1 "IBM Plex Mono", monospace;
+  padding: 6px 12px;
+  font: 600 11px/1.3 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #f6f0e0;
+  color: var(--papel);
+  background: var(--tinta);
 }
-.sahara-lejos-zona { display: block; max-width: none; height: auto; image-rendering: pixelated; }
+.sahara-lejos-marco { position: relative; padding: 8px; line-height: 0; }
+.sahara-lejos-zona { display: block; max-width: none; height: auto; image-rendering: pixelated; box-shadow: 0 0 0 2px var(--tinta); }
 .sahara-lejos-marca { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; margin: -18px 0 0 -9px; image-rendering: pixelated; }
-.sahara-mapa, .sahara-nombres { transition: transform 0.9s ease-in-out; }
-.lejos-zona :is(.sahara-mapa, .sahara-nombres) { transform: translate(calc(-1 * var(--dx-mapa, 0%)), calc(-1 * var(--dy-mapa, 0%))); }
-
-/* tierra: la Tierra pequeña abajo a la izquierda, con el nombre debajo */
-.sahara-lejos[data-modo="tierra"] { left: 16px; bottom: 96px; width: 200px; text-align: center; }
-.sahara-lejos[data-modo="tierra"] .sahara-lejos-marco { display: none; }
-/* (caja fija: el motor de la Tierra se ajusta a su contenedor) */
-.sahara-lejos-globo { position: relative; width: 200px; height: 200px; }
-.sahara-lejos-tierra { position: absolute; inset: 0; width: 100%; height: 100%; }
-.sahara-lejos[data-modo="tierra"] .sahara-lejos-nombre {
-  display: inline-block;
-  padding: 6px 10px;
-  background: rgb(5 6 10 / 0.82);
-  border-radius: 4px;
-}
-
-/* zona: la zona a pantalla completa; entra desde el lado del lugar mientras
-   el mapa sale por el otro */
-.sahara-lejos[data-modo="zona"], .sahara-lejos[data-modo="ventana"] { transition: transform 0.9s ease-in-out; }
-.sahara-lejos[data-modo="zona"] {
-  inset: 0;
-  overflow: hidden;
-  background: #1d508c;
-  transform: translate(var(--dx), var(--dy));
-}
-.sahara-lejos[data-modo="zona"].dentro, .sahara-lejos[data-modo="ventana"].dentro { transform: none; }
-.sahara-lejos[data-modo="zona"] .sahara-lejos-globo,
-.sahara-lejos[data-modo="ventana"] .sahara-lejos-globo { display: none; }
-.sahara-lejos[data-modo="zona"] .sahara-lejos-marco { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
-.sahara-lejos[data-modo="zona"] .sahara-lejos-nombre {
-  position: absolute;
-  left: 16px;
-  bottom: 96px;
-  padding: 6px 10px;
-  background: rgb(5 6 10 / 0.82);
-  border-radius: 4px;
-}
-
-/* ventana: la zona en un recuadro, a la izquierda, que entra por el lado del
-   lugar; el mapa del Sáhara se queda detrás */
-.sahara-lejos[data-modo="ventana"] {
-  left: 16px;
-  top: 64px;
-  padding: 8px 8px 10px;
-  background: rgb(5 6 10 / 0.82);
-  border-radius: 6px;
-  transform: translate(calc(var(--dx) * 3), calc(var(--dy) * 3));
-}
-.sahara-lejos[data-modo="ventana"] .sahara-lejos-marco { position: relative; overflow: hidden; border-radius: 3px; }
-.sahara-lejos[data-modo="ventana"] .sahara-lejos-nombre { margin-top: 8px; }
 
 /* --- Nombres (sahara-nombres.js): el estilo de los de la Luna y Marte (mono,
    contorno negro de 1 px). Los de ciudad, pueblo y cabo con su punto a la
@@ -247,116 +201,7 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-nombre.cabo { font-size: 10px; font-weight: 500; color: #f3ead3; }
 .sahara-nombre.cabo::before { width: 2px; height: 2px; margin-top: -1px; left: 2px; }
 
-/* --- PRUEBA: tres diseños de marca, deslizador y ficha (data-diseno, de
-   ?diseno= en la dirección). El elegido se queda y los demás se quitan. ---- */
-.sahara-ficha-exp, .sahara-ficha-sello { display: none; }
-.sahara-marca { position: absolute; z-index: 1; pointer-events: none; }
-.sahara-marca[hidden] { display: none; }
-.sahara-marca-rotulo { position: absolute; white-space: nowrap; }
-
-/* A, Hangar: el amarillo de la tira del hangar de la portada (recuadro con
-   rótulo, línea de suelo, separaciones discontinuas). */
-[data-diseno="a"] .sahara-marca { width: 26px; height: 26px; transform: translate(-50%, -50%); outline: 1px solid rgb(255 210 63 / 0.9); outline-offset: 4px; }
-[data-diseno="a"] .sahara-marca::after { content: ""; position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; background: #ffd23f; }
-[data-diseno="a"] .sahara-marca-rotulo,
-[data-diseno="a"] .sahara-ficha-fecha,
-[data-diseno="a"] .sahara-ficha-nota {
-  padding: 2px 6px;
-  background: rgb(0 0 0 / 0.75);
-  font: 500 11px/1.4 "IBM Plex Mono", monospace;
-  letter-spacing: 0.06em;
-  color: #ffd23f;
-  text-transform: uppercase;
-}
-[data-diseno="a"] .sahara-marca-rotulo { bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%); }
-[data-diseno="a"] .sahara-ficha { background: rgb(5 6 10 / 0.85); border-radius: 0; outline: 1px solid rgb(255 210 63 / 0.55); outline-offset: 4px; }
-[data-diseno="a"] .sahara-ficha-fecha { display: inline-block; }
-[data-diseno="a"] .sahara-ficha-lugar { margin-top: 6px; }
-[data-diseno="a"] .sahara-ficha-titulo { font-size: 17px; }
-[data-diseno="a"] .sahara-ficha-nota { outline: 1px solid rgb(255 210 63 / 0.85); outline-offset: 3px; }
-[data-diseno="a"] .sahara-barra { border-radius: 0; background: rgb(5 6 10 / 0.8); box-shadow: inset 0 -3px 0 #c9a227; }
-[data-diseno="a"] .sahara-paso { border-radius: 0; background: none; outline: 1px dashed rgb(255 255 255 / 0.3); color: #ffd23f; }
-[data-diseno="a"] .sahara-marcas span { width: 0; height: 10px; top: 3px; background: none; border-left: 1px dashed rgb(255 255 255 / 0.35); }
-[data-diseno="a"] .sahara-marcas span.con-nota { height: 14px; top: 1px; border-left: 2px solid #ffd23f; }
-[data-diseno="a"] .sahara-deslizador::-webkit-slider-runnable-track { background: rgb(255 255 255 / 0.18); }
-[data-diseno="a"] .sahara-deslizador::-webkit-slider-thumb { width: 14px; height: 14px; margin-top: -6px; background: rgb(0 0 0 / 0.6); border: 2px solid #ffd23f; }
-[data-diseno="a"] .sahara-deslizador::-moz-range-thumb { background: rgb(0 0 0 / 0.6); border: 2px solid #ffd23f; }
-[data-diseno="a"] .sahara-decadas span { color: rgb(255 210 63 / 0.8); }
-
-/* B, Expediente: ficha de papel con letra de máquina y sello, el deslizador
-   como una regla, la chincheta roja (la pinta el mapa). */
-[data-diseno="b"] .sahara-ficha, [data-diseno="b"] .sahara-barra {
-  color: #1d1a14;
-  background: #f3ecdc;
-  border: 2px solid #1d1a14;
-  border-radius: 0;
-  box-shadow: 4px 4px 0 rgb(0 0 0 / 0.45);
-}
-[data-diseno="b"] .sahara-ficha-exp { display: block; margin: 0 0 8px; font: 600 11px/1 "IBM Plex Mono", monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #b3261e; }
-[data-diseno="b"] .sahara-ficha-fecha, [data-diseno="b"] .sahara-ficha-lugar { color: #1d1a14; }
-[data-diseno="b"] .sahara-ficha-titulo { font: 600 19px/1.25 "IBM Plex Serif", serif; }
-[data-diseno="b"] .sahara-ficha-texto a, [data-diseno="b"] .sahara-ficha-nota { color: #b3261e; }
-[data-diseno="b"] .sahara-ficha-sello:not([hidden]) {
-  display: block;
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  padding: 2px 6px;
-  border: 2px solid #b3261e;
-  font: 600 11px/1.2 "IBM Plex Mono", monospace;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #b3261e;
-  transform: rotate(-7deg);
-  opacity: 0.85;
-}
-[data-diseno="b"] .sahara-paso { color: #1d1a14; background: none; border: 2px solid #1d1a14; border-radius: 0; }
-[data-diseno="b"] .sahara-marcas span { background: #1d1a14; width: 1px; }
-[data-diseno="b"] .sahara-marcas span.con-nota { background: #b3261e; width: 2px; }
-[data-diseno="b"] .sahara-deslizador::-webkit-slider-runnable-track { background: #1d1a14; }
-[data-diseno="b"] .sahara-deslizador::-moz-range-track { background: #1d1a14; }
-[data-diseno="b"] .sahara-deslizador::-webkit-slider-thumb { background: #b3261e; border: 2px solid #1d1a14; }
-[data-diseno="b"] .sahara-deslizador::-moz-range-thumb { background: #b3261e; border: 2px solid #1d1a14; }
-[data-diseno="b"] .sahara-decadas span { color: #1d1a14; }
-
-/* C, Mira: la mira de la portada con la coordenada, sin cajas. */
-[data-diseno="c"] .sahara-marca {
-  width: 33px;
-  height: 33px;
-  margin: -16.5px 0 0 -16.5px;
-  background:
-    linear-gradient(#fff, #fff) center top / 2px 11px no-repeat,
-    linear-gradient(#fff, #fff) center bottom / 2px 11px no-repeat,
-    linear-gradient(#fff, #fff) left center / 11px 2px no-repeat,
-    linear-gradient(#fff, #fff) right center / 11px 2px no-repeat;
-  filter: drop-shadow(0 0 1px #05060a) drop-shadow(0 0 1px #05060a);
-}
-[data-diseno="c"] .sahara-marca-rotulo {
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-  font: 500 12px/1 "IBM Plex Mono", monospace;
-  letter-spacing: 0.04em;
-  color: #fff;
-  text-shadow: 0 0 2px #05060a, 0 0 2px #05060a;
-}
-[data-diseno="c"] .sahara-ficha {
-  border-radius: 0;
-  background: linear-gradient(90deg, rgb(5 6 10 / 0.72), rgb(5 6 10 / 0.5));
-  border-left: 2px solid #fff;
-  text-shadow: 0 1px 2px rgb(5 6 10 / 0.8);
-}
-[data-diseno="c"] .sahara-ficha-fecha { color: #fff; letter-spacing: 0.12em; text-transform: uppercase; }
-[data-diseno="c"] .sahara-ficha-texto a, [data-diseno="c"] .sahara-ficha-nota { color: #fff; text-decoration: underline; }
-[data-diseno="c"] .sahara-barra { background: linear-gradient(0deg, rgb(5 6 10 / 0.6), transparent); border-radius: 0; }
-[data-diseno="c"] .sahara-paso { background: none; color: #fff; text-shadow: 0 0 2px #05060a; }
-[data-diseno="c"] .sahara-marcas span { width: 3px; height: 3px; top: 7px; margin-left: -1.5px; background: rgb(255 255 255 / 0.6); }
-[data-diseno="c"] .sahara-marcas span.con-nota { width: 5px; height: 5px; top: 6px; margin-left: -2.5px; background: #fff; }
-[data-diseno="c"] .sahara-deslizador::-webkit-slider-runnable-track { background: rgb(255 255 255 / 0.25); }
-[data-diseno="c"] .sahara-deslizador::-webkit-slider-thumb { background: none; border: 2px solid #fff; box-shadow: 0 0 2px #05060a; }
-[data-diseno="c"] .sahara-deslizador::-moz-range-thumb { background: none; border: 2px solid #fff; }
-[data-diseno="c"] .sahara-decadas span { color: #fff; text-shadow: 0 0 2px #05060a; }
-
 @media (max-width: 640px) {
-  .sahara-ficha { top: auto; bottom: 92px; right: 16px; max-height: 40%; }
+  .sahara-ficha { top: auto; bottom: 96px; right: 18px; max-height: 40%; }
+  .sahara-lejos { top: 64px; }
 }

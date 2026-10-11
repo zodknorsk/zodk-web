@@ -22,7 +22,7 @@ import os
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SALIDA = os.path.join(AQUI, "..", "public", "sahara", "sahara-nombres.json")
-CAJA = (20.0, 37.2, -19.0, -1.0)       # la de generar-sahara.py
+CAJA = (20.0, 37.2, -21.5, -1.0)       # la de generar-sahara.py
 
 # GeoNames trae el nombre local o el inglés: los que tienen nombre en
 # castellano.
@@ -56,27 +56,32 @@ A_MANO = [
     ("Océano Atlántico", "mar", 30.5, -14.6, 0, 0),
     ("Mar Mediterráneo", "mar", 36.35, -2.6, 0, 1.5),
     ("Estrecho de Gibraltar", "mar", 35.98, -5.62, 0, 4),
+    ("Monte Tropic", "mar", 23.83, -20.73, 0, 2),
     ("Cabo Bojador", "cabo", 26.13, -14.49, 0, 3),
     ("Cabo Blanco", "cabo", 20.77, -17.05, 0, 3),
     ("Cabo Juby", "cabo", 27.95, -12.97, 0, 4),
     ("Cabo Ghir", "cabo", 30.63, -9.88, 0, 4),
-    # Pueblos y sitios del Sáhara que GeoNames no trae (o con menos de 15.000)
-    ("Tarfaya", "pueblo", 27.94, -12.93, 8000, 0),
-    ("La Güera", "pueblo", 20.83, -17.10, 500, 0),
-    ("Bucraa", "pueblo", 26.33, -12.85, 2000, 0),
-    ("El Marsa", "pueblo", 27.09, -13.40, 3000, 0),
-    ("Guerguerat", "pueblo", 21.37, -16.95, 100, 0),
-    ("Mahbes", "pueblo", 27.42, -9.06, 500, 0),
-    ("Tifariti", "pueblo", 26.16, -10.57, 300, 0),
-    ("Bir Lehlu", "pueblo", 26.35, -9.57, 300, 0),
-    ("Haouza", "pueblo", 27.13, -11.10, 1500, 0),
-    ("Guelta Zemmur", "pueblo", 25.13, -12.36, 1500, 0),
-    ("Auserd", "pueblo", 22.55, -14.33, 1000, 0),
-    ("Bir Gandús", "pueblo", 21.61, -16.48, 300, 0),
-    ("Tichla", "pueblo", 21.60, -14.95, 300, 0),
-    ("Mijek", "pueblo", 23.45, -12.83, 200, 0),
-    ("Agüenit", "pueblo", 22.18, -13.11, 200, 0),
-    ("Edchera", "pueblo", 27.03, -13.05, 100, 0),
+    # Pueblos y sitios del Sáhara que no están en cities15000 (menos de 15.000
+    # habitantes): coordenadas y población del GeoNames de cada país (EH, MA,
+    # MR); los campamentos de Tinduf y Gdeim Izik, que no están, aproximados.
+    ("Tarfaya", "pueblo", 27.939, -12.926, 5615, 0),
+    ("La Güera", "pueblo", 20.832, -17.09, 3127, 0),
+    ("Bucraa", "pueblo", 26.354, -12.784, 2519, 0),
+    ("El Marsa", "pueblo", 27.096, -13.416, 28848, 0),
+    ("Guerguerat", "pueblo", 21.427, -16.96, 30, 0),
+    ("Mahbes", "pueblo", 27.414, -9.048, 130, 0),
+    ("Tifariti", "pueblo", 26.158, -10.559, 3000, 0),
+    ("Bir Lehlu", "pueblo", 26.35, -9.577, 1000, 0),
+    ("Haouza", "pueblo", 27.1, -11.01, 2400, 0),
+    ("Guelta Zemmur", "pueblo", 25.133, -12.367, 500, 0),
+    ("Auserd", "pueblo", 22.554, -14.33, 5832, 0),
+    ("Bir Gandús", "pueblo", 21.603, -16.45, 4625, 0),
+    ("Tichla", "pueblo", 21.584, -14.972, 6036, 0),
+    ("Mijek", "pueblo", 23.449, -12.825, 519, 0),
+    ("Agüenit", "pueblo", 22.193, -13.141, 222, 0),
+    ("Edchera", "pueblo", 27.026, -13.052, 1745, 0),
+    ("Amgala", "pueblo", 26.287, -11.135, 4398, 0),
+    ("Gdeim Izik", "pueblo", 27.08, -13.11, 0, 2.5),       # el campamento de 2010, 12 km al SE de El Aaiún
     ("Campamentos de Tinduf", "pueblo", 27.53, -8.02, 90000, 0),
     ("Smara", "ciudad", 26.74, -11.67, 60000, 0),
     ("Bojador", "ciudad", 26.13, -14.48, 40000, 0),
@@ -133,6 +138,42 @@ def main():
     with open(SALIDA, "w", encoding="utf-8") as fh:
         json.dump(nombres, fh, ensure_ascii=False, separators=(",", ":"))
     print(f"{SALIDA}: {len(nombres)} nombres")
+    comprobar_tierra(nombres)
+
+
+EN_EL_MAR = {"Monte Tropic", "Océano Atlántico", "Mar Mediterráneo", "Estrecho de Gibraltar"}
+
+
+def comprobar_tierra(nombres):
+    """Avisa de las ciudades, pueblos y lugares de los hitos que caen en el
+    mar según el relieve fino (sahara240.i16): un sitio de tierra puesto mal."""
+    import array
+    ruta = os.path.join(AQUI, "tierra-fuentes", "sahara240.json")
+    if not os.path.exists(ruta):
+        print("(sin el relieve fino no se comprueba que caigan en tierra)")
+        return
+    with open(ruta) as fh:
+        d = json.load(fh)
+    alt = array.array("h")
+    with open(os.path.splitext(ruta)[0] + ".i16", "rb") as fh:
+        alt.frombytes(fh.read())
+    S, N, O, E = d["zona"]
+
+    def en_tierra(lat, lon):
+        if not (S <= lat < N and O <= lon < E):
+            return None
+        # el punto o algo de tierra a menos de ~1 km (los de la orilla)
+        r0, c0 = int((N - lat) * d["ppd"]), int((lon - O) * d["ppd"])
+        return any(alt[(r0 + i) * d["ancho"] + c0 + j] > 0 for i in (-2, 0, 2) for j in (-2, 0, 2))
+
+    with open(os.path.join(AQUI, "..", "src", "data", "sahara", "lugares.json"), encoding="utf-8") as fh:
+        lugares = [(k, *v) for k, v in json.load(fh).items() if not k.startswith("_")]
+    sitios = [(n["nombre"], n["lat"], n["lon"]) for n in nombres if n["clase"] in ("ciudad", "pueblo")] + lugares
+    malos = [s for s in sitios if s[0] not in EN_EL_MAR and en_tierra(s[1], s[2]) is False]
+    for n, la, lo in malos:
+        print(f"  ⚠ cae en el mar: {n} ({la}, {lo})")
+    if not malos:
+        print("Todos los sitios de tierra caen en tierra.")
 
 
 if __name__ == "__main__":

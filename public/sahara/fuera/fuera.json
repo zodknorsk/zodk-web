@@ -76,17 +76,6 @@
   "coslat": 0.7613120246213396,
   "ppd": 128
  },
- "Monte Tropic": {
-  "archivo": "monte-tropic.png",
-  "caja": [
-   22.840791366906473,
-   24.819208633093524,
-   -21.8113998679454,
-   -19.6486001320546
-  ],
-  "coslat": 0.9147482466157199,
-  "ppd": 128
- },
  "Nueva York": {
   "archivo": "nueva-york.png",
   "caja": [

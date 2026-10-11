@@ -19,7 +19,7 @@ import subprocess
 from PIL import Image
 
 PPD = 240
-ZONA = (17.0, 41.0, -22.0, 2.0)        # S, N, O, E: la caja de generar-sahara.py con su margen
+ZONA = (17.0, 41.0, -28.0, 2.0)        # S, N, O, E: la caja de generar-sahara.py con su margen
 TROZO = 6                              # grados por lado de cada trozo
 AQUI = os.path.dirname(os.path.abspath(__file__))
 DIR = os.path.join(AQUI, "tierra-fuentes", "sahara-dem")

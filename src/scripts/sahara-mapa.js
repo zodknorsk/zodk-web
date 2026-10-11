@@ -46,7 +46,7 @@ const MARCA = [
   "...XOX...",
   "....X....",
 ];
-const MARCA_COL = { X: "#0e1813", O: "#d8402f", W: "#f6f0e0" };
+const MARCA_COL = { X: "#141418", O: "#d4231c", W: "#f2f2ef" };   // tinta, rojo y papel del CSS
 
 /** Pinta la marca con su esquina en (x, y), a bloques de `p` px. */
 export function dibujarMarca(ctx, x, y, p) {
@@ -59,10 +59,9 @@ export function dibujarMarca(ctx, x, y, p) {
 
 /**
  * @param {HTMLCanvasElement} canvas
- * @param {{ alPintar?: () => void, pin?: boolean }} [opciones]  `pin`: pintar la
- *   marca en el lienzo (si no, la pone la página encima, con `posMarca`)
+ * @param {{ alPintar?: () => void }} [opciones]
  */
-export async function montarMapaSahara(canvas, { alPintar = () => {}, pin = true } = {}) {
+export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   const datos = await fetch(`/sahara/sahara-mapa.json?v=${SAHARA_V}`).then((r) => r.json());
   const niveles = datos.niveles.map((n) => ({ ...n, hay: new Set(n.teselas) }));
   const base = niveles[0];
@@ -148,7 +147,7 @@ export async function montarMapaSahara(canvas, { alPintar = () => {}, pin = true
         }
       }
     }
-    if (marca && pin) {
+    if (marca) {
       // A bloques de px enteros, con la punta en el sitio.
       const p = Math.max(2, Math.round(2 * dpr));
       dibujarMarca(ctx, Math.round(ox + marca[0] * escala) - 4 * p, Math.round(oy + marca[1] * escala) - 9 * p, p);
@@ -241,12 +240,6 @@ export async function montarMapaSahara(canvas, { alPintar = () => {}, pin = true
     aPantalla(lat, lon) {
       const [x, y] = aMapa(lat, lon);
       return [(W / 2 + (x - cx) * escala) / dpr, (H / 2 + (y - cy) * escala) / dpr];
-    },
-    /** Dónde está la marca, en px CSS del lienzo, o null. */
-    posMarca() {
-      if (!marca) return null;
-      const ox = Math.round(W / 2 - cx * escala), oy = Math.round(H / 2 - cy * escala);
-      return [(ox + marca[0] * escala) / dpr, (oy + marca[1] * escala) / dpr];
     },
     /** Px CSS por píxel del mapa base. */
     escalaCss: () => escala / dpr,

@@ -67,9 +67,9 @@ def _arg(nombre, defecto):
 
 
 # La caja (S, N, O, E en grados): del sur de Mauritania (La Güera, Cabo
-# Blanco) a la costa española del Estrecho, y de El Hierro a Melilla. Es
-# todo el mapa; el nivel base la cubre entera.
-CAJA = (20.0, 37.2, -19.0, -1.0)
+# Blanco) a la costa española del Estrecho, y del monte Tropic (al oeste de
+# El Hierro) a Melilla. Es todo el mapa; el nivel base la cubre entera.
+CAJA = (20.0, 37.2, -21.5, -1.0)
 # Las zonas de fuera del mapa (--zonas): para los hitos de Madrid,
 # Washington…, una zona suelta de ZONA_KM de lado alrededor del lugar, a
 # 128 px/grado, en public/sahara/fuera/<lugar>.png. Se calcula como la caja,
@@ -91,8 +91,11 @@ TESELA = 512
 WEB = os.path.join(AQUI, "..", "public", "sahara")
 
 if "--zonas" in sys.argv:
-    # Una zona por cada lugar de fuera de la caja, cada una en su proceso.
+    # Una zona por cada lugar de fuera de la caja, cada una en su proceso,
+    # desde cero (sin las de lugares que ya no hacen falta).
+    import shutil
     import subprocess
+    shutil.rmtree(os.path.join(AQUI, "..", "public", "sahara", "fuera"), ignore_errors=True)
     with open(LUGARES) as fh:
         _todos = {k: v for k, v in json.load(fh).items() if not k.startswith("_")}
     for _n, (_la, _lo) in _todos.items():
@@ -234,8 +237,11 @@ REG = (0xc2, 0xb0, 0x8e)
 SEA_KM = (4.0, 12.0, 30.0)
 SEA_WOBBLE_KM = 8.0
 # Con --mar fondo: la turquesa sigue pegada a la costa y el resto va por
-# profundidad (m): intermedia hasta FONDO[0], plataforma hasta FONDO[1].
-FONDO = (-80.0, -600.0)
+# profundidad (m): intermedia hasta FONDO[0], plataforma hasta FONDO[1] y
+# talud hasta FONDO[2] (entre la plataforma y el profundo: así salen el
+# talud y los montes submarinos, como el Tropic, a ~1.000 m).
+FONDO = (-80.0, -600.0, -1500.0)
+OCEAN_TALUD = (0x2f, 0x6e, 0xab)
 
 # ------------------------------------------------ rampas (de generar-tierra.py)
 STEP        = 0.84
@@ -741,9 +747,56 @@ for dlat, dlon, ang, hl in _dunas:
 paso(f"dunas ({len(_dunas)})")
 
 
+# ------------------------------------------ manchas urbanas, carreteras, ríos
+# De Natural Earth 1:10m (tierra-fuentes/, como las costas): el contorno real
+# de las áreas urbanas, las carreteras (autovías y nacionales) y los ríos y
+# lagos. Sin ellos, una zona como Madrid era campo con un círculo.
+def _geo(nombre):
+    with open(os.path.join(AQUI, "tierra-fuentes", f"ne_10m_{nombre}.geojson")) as fh:
+        return [f for f in json.load(fh)["features"] if f["geometry"]]
+
+
+def _lineas(f):
+    g = f["geometry"]
+    return [g["coordinates"]] if g["type"] == "LineString" else g["coordinates"]
+
+
+def trazar(puntos, rejilla, valor):
+    """Una línea (lista de [lon, lat]) en la rejilla, celda a celda, sin
+    huecos; si dos se cruzan, se queda el valor mayor."""
+    for (lo1, la1), (lo2, la2) in zip(puntos, puntos[1:]):
+        r1, c1 = (N - la1) * PPD, (lo1 - O) / DLON
+        r2, c2 = (N - la2) * PPD, (lo2 - O) / DLON
+        n = int(max(abs(r2 - r1), abs(c2 - c1)) * 2) + 1
+        for k in range(n + 1):
+            r, c = int(r1 + (r2 - r1) * k / n), int(c1 + (c2 - c1) * k / n)
+            if 0 <= r < H and 0 <= c < W and rejilla[r][c] < valor:
+                rejilla[r][c] = valor
+
+
+URBANA = [bytearray(W) for _ in range(H)]
+rasterizar([f for f in _geo("urban_areas") if _en_la_rejilla(f)], URBANA, 1)
+LAGO = [bytearray(W) for _ in range(H)]
+rasterizar([f for f in _geo("lakes") if _en_la_rejilla(f)], LAGO, 1)
+CAMINO = [bytearray(W) for _ in range(H)]           # 0 nada, 1 carretera, 2 autovía
+for f in _geo("roads"):
+    tipo = f["properties"].get("type")
+    if tipo in ("Major Highway", "Secondary Highway", "Road"):
+        for linea in _lineas(f):
+            trazar(linea, CAMINO, 2 if tipo == "Major Highway" else 1)
+RIO = [bytearray(W) for _ in range(H)]
+for f in _geo("rivers_lake_centerlines"):
+    for linea in _lineas(f):
+        trazar(linea, RIO, 1)
+CAMINO_COL = (None, (0x8a, 0x7b, 0x68), (0x5a, 0x4f, 0x45))
+RIO_COL = (0x3f, 0x8c, 0xc8)
+paso("manchas urbanas, carreteras y ríos")
+
+
 # ------------------------------------------------------------ ciudades
-# Cada ciudad y pueblo de sahara-nombres.json (generar-nombres-sahara.py),
-# como una mancha de casas: radio según la población (~0,012·√habitantes km,
+# Cada ciudad y pueblo de sahara-nombres.json (generar-nombres-sahara.py)
+# (y en las zonas de fuera, todos los de GeoNames) suma a la mancha urbana una
+# de casas: radio según la población (~0,012·√habitantes km,
 # al menos un píxel), con el borde roto por ruido; dentro, tejados de dos
 # tonos y alguno en sombra, y desde 128 px/grado manzanas de 3 px con calles.
 URB = [bytearray(W) for _ in range(H)]                # 0 nada, 1-3 tono de la manzana
@@ -753,6 +806,14 @@ _pueblos = []
 if os.path.exists(_NOMBRES):
     with open(_NOMBRES) as fh:
         _pueblos = [n for n in json.load(fh) if n.get("poblacion")]
+if FUERA:
+    # En las zonas de fuera, también todos los pueblos de GeoNames de la zona.
+    with open(os.path.join(AQUI, "cities15000.txt"), encoding="utf-8") as fh:
+        for linea in fh:
+            c = linea.split("\t")
+            la, lo = float(c[4]), float(c[5])
+            if S <= la <= N and O <= lo <= E and c[7] != "PPLX":
+                _pueblos.append({"lat": la, "lon": lo, "poblacion": int(c[14] or 0)})
 _borde = ruido_geo([(0.02, 1.0)], 3)
 for n in _pueblos:
     rad = max(0.8, 0.012 * math.sqrt(n["poblacion"]) / KM)   # en celdas
@@ -764,12 +825,18 @@ for n in _pueblos:
                 continue
             d = math.hypot(r - r0, c - c0) / rad + (_borde(r, c) - 0.5) * (0.6 if rad > 2 else 0)
             if d < 1.0:
-                R, C = r - MR + RA, c - MC + CA               # en la rejilla del nivel
-                if PPD >= 128 and (R % 4 == 0 or C % 4 == 0):
-                    URB[r][c] = 3                             # calle (desde 128 px/grado)
-                else:
-                    h = _hash01(R // 4 if PPD >= 128 else R, C // 4 if PPD >= 128 else C, 7)
-                    URB[r][c] = 3 if h < 0.15 else 2 if h < 0.55 else 1
+                URBANA[r][c] = 1
+# Las manzanas, en la mancha (la de Natural Earth más la de cada pueblo).
+for r in range(H):
+    for c in range(W):
+        if not (URBANA[r][c] and LAND[r][c]):
+            continue
+        R, C = r - MR + RA, c - MC + CA                   # en la rejilla del nivel
+        if PPD >= 128 and (R % 4 == 0 or C % 4 == 0):
+            URB[r][c] = 3                                 # calle (desde 128 px/grado)
+        else:
+            h = _hash01(R // 4 if PPD >= 128 else R, C // 4 if PPD >= 128 else C, 7)
+            URB[r][c] = 3 if h < 0.15 else 2 if h < 0.55 else 1
 paso(f"ciudades ({len(_pueblos)})")
 
 
@@ -786,7 +853,8 @@ def color(r, c):
             surf = OCEAN_COAST
         elif MAR == "fondo":
             e = elev(lat, lon) + (_mix_noise(r, c) - 0.5) * 60.0
-            surf = OCEAN_MID if e > FONDO[0] else OCEAN_SHALLOW if e > FONDO[1] else OCEAN_DEEP
+            surf = (OCEAN_MID if e > FONDO[0] else OCEAN_SHALLOW if e > FONDO[1]
+                    else OCEAN_TALUD if e > FONDO[2] else OCEAN_DEEP)
         else:
             d = sd * KM + (_mix_noise(r, c) - 0.5) * SEA_WOBBLE_KM
             surf = OCEAN_MID if d <= SEA_KM[1] else OCEAN_SHALLOW if d <= SEA_KM[2] else OCEAN_DEEP
@@ -830,7 +898,13 @@ def color(r, c):
         surf, tex_k = ROCK, mk
     else:
         tex_k += mk
-    if URB[r][c]:
+    if LAGO[r][c]:
+        surf, tex_k = OCEAN_MID, 0
+    elif CAMINO[r][c]:                                    # (por encima de los ríos: puentes)
+        surf, tex_k = CAMINO_COL[CAMINO[r][c]], 0
+    elif RIO[r][c]:
+        surf, tex_k = RIO_COL, 0
+    elif URB[r][c]:
         surf, tex_k = URB_COL[URB[r][c]], 0
     lvl = COASTLVL[r][c]
     if lvl:
