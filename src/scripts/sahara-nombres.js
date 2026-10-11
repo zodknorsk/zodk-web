@@ -25,9 +25,9 @@ export async function montarNombresSahara(capa, mapa) {
     capa.append(el);
     return { n, el, w: el.offsetWidth, h: el.offsetHeight, visto: false };
   });
-  // Los que llevan punto (ciudades, pueblos, cabos) van a su derecha; los
-  // demás, centrados en su sitio.
-  const conPunto = new Set(["ciudad", "pueblo", "cabo"]);
+  // Los que llevan punto (ciudades, pueblos, cabos y el triángulo de los
+  // picos) van a su derecha; los demás, centrados en su sitio.
+  const conPunto = new Set(["ciudad", "pueblo", "cabo", "pico"]);
 
   const coloca = () => {
     const zoom = mapa.escalaCss();

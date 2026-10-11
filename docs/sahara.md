@@ -7,19 +7,26 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
 ## Qué se ve
 
 - **El mapa**, a pantalla completa: del sur de Mauritania al Estrecho y del
-  monte Tropic a Melilla (la caja). Con el ratón solo se puede mirar el
-  **cajón**, el Sáhara Occidental y alrededores; arrastrar y acercar con la
-  rueda, el trackpad o el pellizco, como la Luna y Marte.
-- **Niveles de detalle**, como el zoom de la Tierra: 64 px/grado la caja
-  entera, y el cajón también a 128, 256 y 512. Se pinta el más fino cuyo
+  monte Tropic a Melilla (la caja). Se mira entero: arrastrar y acercar con
+  la rueda, el trackpad o el pellizco, como la Luna y Marte. (Antes solo se
+  podía mirar un «cajón», el Sáhara Occidental y alrededores, salvo en los
+  hitos de fuera de él; el usuario lo quitó: se quiere navegar todo.)
+- **Niveles de detalle**, como el zoom de la Tierra: la caja entera a 64,
+  128, 256 y 512 px/grado (el de 512, por trozos). Se pinta el más fino cuyo
   píxel mida al menos 2 px CSS. El zoom es continuo y al pararse se asienta
   en una escala entera (pixel art sin píxeles de dos tamaños).
 - **Nombres** de países, regiones, mares, cabos, ciudades y pueblos, con el
-  estilo de los de la Luna y Marte; salen según el zoom y sin pisarse.
+  estilo de los de la Luna y Marte; salen según el zoom y sin pisarse. En
+  Marruecos, fuera del Sáhara, solo las ciudades de 100.000 habitantes o más
+  (lo llenaban). Accidentes geográficos, pocos y conocidos, al acercarse:
+  picos con su altura (triángulo), ríos y bahías (azul, cursiva), sebjas,
+  ergs y valles (cursiva).
+- **Ciudades dibujadas**: manchas de tejados con calles en rejilla, salvo en
+  las Canarias, donde no se dibujan (sobre la vegetación tapaban las islas).
+  Probadas y descartadas: sin calles, calles irregulares y una mancha
+  mezclada con el suelo.
 - **El deslizador** (abajo): un hito por paso, por fecha. Cada hito lleva la
-  cámara en un vuelo a su lugar y pone la chincheta; los de Ceuta, Melilla,
-  Perejil, Rabat o el monte Tropic están en el mapa pero fuera del cajón:
-  la cámara va y, mientras dura el hito, se puede mirar el mapa entero.
+  cámara en un vuelo a su lugar y pone la chincheta.
 - **La ficha** (arriba a la derecha): en la pestaña, el número («01/61»,
   sin «Hito» delante, a petición del usuario), las banderas, la fecha y la
   tecla de plegar (plegada, solo queda el título; se recuerda en el
@@ -45,12 +52,21 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
   toque IA»; luego, entre siete temas probados en la página (píxel, papiro,
   terminal, teletexto, atlas, campaña y cuaderno), el usuario volvió al
   papiro.
-- **Banderas en la ficha**: la del primer implicado en grande junto al
-  título y las demás pequeñas en la pestaña. Descartadas: todas pequeñas en
-  la pestaña y una línea de implicados con su nombre. La de Argelia se queda
-  como está aunque a 2× recuerde a una cruz.
+- **Banderas en la ficha**: una grande junto al título y las demás pequeñas
+  en la pestaña. Van a mano, hito por hito, en
+  `src/data/sahara/banderas-hitos.json` (buscarlas por palabras en el texto
+  fallaba mucho: un «Argelia» de pasada la ponía de protagonista). La
+  grande es la del **sitio donde ocurre**: el país; en el Sáhara
+  Occidental, España hasta el 26-feb-1976 y **la ONU después** (territorio
+  pendiente de descolonización: la opción neutral); la ONU o la UE si es
+  una institución suya (La Haya, Nueva York, Estrasburgo, Luxemburgo);
+  ninguna en el monte Tropic (solo las pequeñas de España y Marruecos). Las
+  pequeñas, los demás implicados. Un hito nuevo sin banderas lo avisa
+  `importar-sahara` con una propuesta. Descartadas en la forma: todas
+  pequeñas en la pestaña y una línea de implicados con su nombre. La de
+  Argelia se queda como está aunque a 2× recuerde a una cruz.
 - **Relieve sombreado desde 0 m** (la Tierra empieza en 250): se ve el
-  valle de la Saguía y lo bajo del cajón, aunque se pierdan algunas dunas en
+  valle de la Saguía y lo bajo del Sáhara, aunque se pierdan algunas dunas en
   las laderas. `--relieve-desde` lo cambia.
 - Lugares de fuera: la ventana. Probadas y descartadas: una flecha en el
   borde con la distancia («Madrid · 1880 km»), una Tierra pequeña en la
@@ -98,9 +114,9 @@ el docstring de cada script.
 ```bash
 cd arte
 python3 elevacion-sahara.py          # relieve de 15" (NOAA), ~200 MB
-python3 elevacion-sahara-90.py       # relieve de 90 m del cajón (Copernicus), ~400 MB
+python3 elevacion-sahara-90.py       # relieve de 90 m de la caja (Copernicus), ~1 GB
 python3 generar-nombres-sahara.py    # nombres, ciudades y pueblos
-python3 generar-sahara.py            # los cuatro niveles (~15 min)
+python3 generar-sahara.py            # los cuatro niveles (~45 min; el de 512, en 3 trozos)
 python3 generar-sahara.py --zonas    # las zonas de los lugares de fuera
 python3 generar-capas-sahara.py      # capas por fecha (muro, reparto, cinta)
 cd .. && npm run importar-sahara -- --borradores
@@ -117,6 +133,13 @@ ciudades y pueblos de GeoNames (CC BY); la línea del reparto de 1976, del
 convenio de Rabat (ONU, Treaty Series n.º 15406).
 
 ## Pendiente
+
+Para el siguiente día: a 512 el Atlas sale casi entero verde bosque, también
+la vertiente sur (árida); viene de la vegetación por lluvia.
+
+Dudoso: el lugar del hito de los Acuerdos de Cintra (1958). En la bóveda es
+la Angra de Cintra, en el Sáhara; otras fuentes dicen que se firmaron en
+Sintra (Portugal). El usuario lo deja como está hasta aclararlo.
 
 Más capas por fecha: Cabo Juby (franja de Tarfaya, hasta 1958; falta el
 curso del Draa, que Natural Earth no trae), Ifni (entero hasta 1958 y

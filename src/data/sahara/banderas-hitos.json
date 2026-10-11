@@ -1,0 +1,392 @@
+{
+ "_": "Banderas de cada hito del Sáhara (id del hito -> grande y otras). La grande es la del sitio donde ocurre: el país; en el Sáhara Occidental, España hasta el 26-feb-1976 y la ONU después; la ONU o la UE si es una institución suya (La Haya, Nueva York, Estrasburgo, Luxemburgo); null si no tiene (monte Tropic). Las otras, los demás implicados, de más a menos. Códigos de src/data/banderas.json. Un hito que no esté aquí lo avisa importar-sahara.",
+ "1947-01-01-descubrimiento-del-yacimiento-de-fosfatos-de-bu-craa": {
+  "grande": "ES",
+  "otras": []
+ },
+ "1956-03-02-independencia-de-marruecos-y-la-doctrina-del-gran-marruecos": {
+  "grande": "MA",
+  "otras": [
+   "FR",
+   "ES"
+  ]
+ },
+ "1957-10-01-guerra-de-ifni-sahara-y-acuerdos-de-cintra": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "FR"
+  ]
+ },
+ "1958-01-10-el-sahara-se-convierte-en-la-provincia-nº-53": {
+  "grande": "ES",
+  "otras": []
+ },
+ "1958-01-13-desastre-de-edchera": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "1958-02-10-operacion-conjunta-ecouvillon-teide": {
+  "grande": "ES",
+  "otras": [
+   "FR",
+   "MA"
+  ]
+ },
+ "1958-04-01-acuerdos-de-cintra": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "1962-01-01-explotacion-industrial-de-los-fosfatos-de-bucraa": {
+  "grande": "ES",
+  "otras": []
+ },
+ "1962-12-01-tension-pesquera-hispano-marroqui-y-distension-diplomatica": {
+  "grande": "MA",
+  "otras": [
+   "ES"
+  ]
+ },
+ "1969-01-01-antigua-cintra-transportadora-de-bucraa": {
+  "grande": "ES",
+  "otras": []
+ },
+ "1970-06-17-protestas-de-zemla-y-desaparicion-de-mohamed-basiri": {
+  "grande": "ES",
+  "otras": [
+   "EH"
+  ]
+ },
+ "1973-05-10-fundacion-del-frente-polisario": {
+  "grande": "MR",
+  "otras": [
+   "EH",
+   "ES",
+   "MA"
+  ]
+ },
+ "1975-10-16-dictamen-de-la-corte-internacional-de-justicia-de-la-haya": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "MR",
+   "EH"
+  ]
+ },
+ "1975-11-02-juan-carlos-i-en-su-visita-a-el-aaiun": {
+  "grande": "ES",
+  "otras": []
+ },
+ "1975-11-06-la-marcha-verde-de-1975": {
+  "grande": "MA",
+  "otras": [
+   "ES",
+   "US",
+   "FR"
+  ]
+ },
+ "1975-11-14-acuerdos-tripartitos-de-madrid": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "MR"
+  ]
+ },
+ "1976-02-26-operacion-golondrina-y-proclamacion-de-la-rasd": {
+  "grande": "ES",
+  "otras": [
+   "EH"
+  ]
+ },
+ "1977-01-01-ataques-del-polisario-a-pesqueros-espanoles": {
+  "grande": "UN",
+  "otras": [
+   "EH",
+   "ES"
+  ]
+ },
+ "1980-01-01-construccion-del-muro-marroqui": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "EH",
+   "US",
+   "FR"
+  ]
+ },
+ "1991-09-06-alto-el-fuego-y-despliegue-de-la-minurso": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "1995-01-01-crisis-de-las-vallas-de-ceuta-y-melilla": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "EU"
+  ]
+ },
+ "2001-10-27-retirada-del-embajador-marroqui": {
+  "grande": "MA",
+  "otras": [
+   "ES"
+  ]
+ },
+ "2002-07-11-crisis-de-la-isla-de-perejil": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "US"
+  ]
+ },
+ "2003-01-01-plan-baker-ii": {
+  "grande": "UN",
+  "otras": [
+   "US",
+   "EH",
+   "MA"
+  ]
+ },
+ "2004-03-11-atentados-del-11m-en-atocha": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2005-09-01-asaltos-masivos-a-la-valla-de-melilla": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2007-11-05-visita-real-a-ceuta-y-melilla": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2009-11-01-caso-aminatou-haidar": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2010-10-01-campamento-de-gdeim-izik": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2014-02-06-tragedia-del-tarajal": {
+  "grande": "ES",
+  "otras": []
+ },
+ "2020-01-01-disputa-por-las-aguas-canarias-y-recursos-mineros": {
+  "grande": null,
+  "otras": [
+   "ES",
+   "MA"
+  ]
+ },
+ "2020-11-13-ruptura-del-alto-el-fuego-en-guerguerat": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2020-12-10-reconocimiento-estadounidense-de-la-soberania-marroqui": {
+  "grande": "US",
+  "otras": [
+   "MA",
+   "IL"
+  ]
+ },
+ "2020-12-22-marruecos-e-israel-formalizan-la-normalizacion": {
+  "grande": "MA",
+  "otras": [
+   "IL",
+   "US"
+  ]
+ },
+ "2021-01-01-ee-uu-convierte-a-marruecos-en-su-principal-comprador-de-armas-en-africa": {
+  "grande": "US",
+  "otras": [
+   "MA",
+   "IL"
+  ]
+ },
+ "2021-03-01-crisis-diplomatica-entre-alemania-y-marruecos": {
+  "grande": "DE",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2021-04-01-caso-ghali-e-invasion-migratoria-de-ceuta": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2021-05-19-marruecos-infecta-el-movil-de-pedro-sanchez-con-software-pegasus": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "IL"
+  ]
+ },
+ "2021-06-19-el-parlamento-europeo-denuncia-el-chantaje-migratorio-marroqui": {
+  "grande": "EU",
+  "otras": [
+   "MA",
+   "ES"
+  ]
+ },
+ "2021-08-01-argelia-rompe-relaciones-diplomaticas-con-marruecos": {
+  "grande": "DZ",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2021-09-29-la-justicia-de-la-ue-anula-los-acuerdos-comerciales-ue-marruecos-sobre-el-sahara": {
+  "grande": "EU",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2021-10-31-argelia-cierra-el-gasoducto-magreb-europa": {
+  "grande": "DZ",
+  "otras": [
+   "MA",
+   "ES"
+  ]
+ },
+ "2021-11-24-marruecos-e-israel-firman-su-primer-memorando-de-cooperacion-militar": {
+  "grande": "MA",
+  "otras": [
+   "IL"
+  ]
+ },
+ "2022-01-01-la-audiencia-nacional-apunta-a-la-dgst-marroqui-en-el-caso-pegasus": {
+  "grande": "ES",
+  "otras": [
+   "MA",
+   "IL"
+  ]
+ },
+ "2022-03-01-argelia-castiga-a-espana-embajador-y-amenaza-gasistica": {
+  "grande": "DZ",
+  "otras": [
+   "ES"
+  ]
+ },
+ "2022-03-18-el-giro-historico-de-espana-sobre-el-sahara": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2022-05-01-estalla-el-caso-pegasus-espana-revela-el-espionaje-a-sanchez-y-cesa-a-la-directora-del-cni": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2022-06-08-argelia-suspende-el-tratado-de-amistad-con-espana": {
+  "grande": "DZ",
+  "otras": [
+   "ES"
+  ]
+ },
+ "2022-06-24-tragedia-en-la-valla-de-melilla": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2024-07-30-francia-respalda-la-soberania-marroqui": {
+  "grande": "FR",
+  "otras": [
+   "MA",
+   "DZ"
+  ]
+ },
+ "2024-10-04-el-tjue-confirma-la-anulacion-de-los-acuerdos-ue-marruecos": {
+  "grande": "EU",
+  "otras": [
+   "MA",
+   "EH"
+  ]
+ },
+ "2024-11-07-argelia-levanta-el-bloqueo-comercial-a-espana": {
+  "grande": "DZ",
+  "otras": [
+   "ES",
+   "FR"
+  ]
+ },
+ "2025-01-01-israel-desbanca-a-francia-como-segundo-proveedor-de-armas-de-marruecos": {
+  "grande": "IL",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2025-02-11-reapertura-de-las-aduanas-comerciales-de-ceuta-y-melilla": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2025-02-21-marruecos-detiene-y-expulsa-a-eurodiputados-en-el-aaiun": {
+  "grande": "UN",
+  "otras": [
+   "MA",
+   "EU",
+   "ES"
+  ]
+ },
+ "2025-06-01-reino-unido-respalda-el-plan-de-autonomia-marroqui": {
+  "grande": "GB",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2025-12-03-xiii-reunion-de-alto-nivel-ran-espana-marruecos": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ },
+ "2026-07-01-un-exespia-marroqui-confirma-el-uso-sistematico-de-software-pegasus-contra-espana": {
+  "grande": "MA",
+  "otras": [
+   "ES"
+  ]
+ },
+ "2026-07-08-el-tribunal-supremo-limita-el-rechazo-en-frontera": {
+  "grande": "ES",
+  "otras": []
+ },
+ "2026-07-20-sanchez-viaja-a-argelia-para-pasar-pagina-y-asegurar-gas": {
+  "grande": "DZ",
+  "otras": [
+   "ES"
+  ]
+ },
+ "2026-07-30-la-crisis-migratoria-de-los-espigones-de-ceuta": {
+  "grande": "ES",
+  "otras": [
+   "MA"
+  ]
+ }
+}

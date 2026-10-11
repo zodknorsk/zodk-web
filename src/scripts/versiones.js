@@ -7,4 +7,4 @@
 export const PLANETA_V = 16;
 export const LUNA_V = 5;
 export const MARTE_V = 7;
-export const SAHARA_V = 7;
+export const SAHARA_V = 8;

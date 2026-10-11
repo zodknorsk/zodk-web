@@ -1,6 +1,6 @@
 ---
 // /sahara: los conflictos con Marruecos en un mapa del Sáhara en pixel art.
-// El mapa a pantalla completa (arrastre y zoom dentro de su cajón) y, abajo,
+// El mapa a pantalla completa (arrastre y zoom) y, abajo,
 // el deslizador con los hitos por fecha: cada uno lleva la cámara a su lugar
 // y enseña su ficha. Motor: src/scripts/sahara-mapa.js; datos del mapa en
 // public/sahara/ (arte/generar-sahara.py); hitos en src/data/sahara/ (npm run
@@ -24,9 +24,9 @@ const hitos = HITOS.map((h) => {
   const nota = h.nota && publicadas.has(h.nota) ? h.nota : null;
   return { ...h, nota, foto: nota ? fotos[nota] ?? null : null };
 });
-// Las banderas que salen (implicados de los hitos y lugares de fuera), con
+// Las banderas que salen (las de los hitos y las de los lugares de fuera), con
 // su nombre y su SVG de pixel art.
-const codigos = new Set(HITOS.flatMap((h) => [...h.banderas, ...(h.banderaLugar ? [h.banderaLugar] : [])]));
+const codigos = new Set(HITOS.flatMap((h) => [h.bandera, h.banderaLugar, ...h.banderas].filter((c) => c !== null)));
 const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bandera(c).nombre, svg: svgBandera(bandera(c)) }]));
 ---
 
@@ -91,7 +91,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
   type Hito = {
     id: string; fecha: string; orden: string; titulo: string; texto: string;
     lugar: string; coordenadas: [number, number] | null; nota: string | null; foto: string | null;
-    banderas: string[]; banderaLugar: string | null;
+    bandera: string | null; banderas: string[]; banderaLugar: string | null;
   };
   let quitar: (() => void)[] = [];
 
@@ -143,7 +143,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
       $(".sahara-ficha-fecha").textContent = h.fecha;
       $(".sahara-ficha-titulo").textContent = h.titulo;
       $(".sahara-ficha-banderas").innerHTML = h.banderas.map((c) => `<span class="sahara-bandera" title="${BANDERAS[c]?.nombre ?? c}">${svg(c)}</span>`).join("");
-      $(".sahara-ficha-insignia").innerHTML = h.banderas[0] ? `<span class="sahara-bandera">${svg(h.banderas[0])}</span>` : "";
+      $(".sahara-ficha-insignia").innerHTML = h.bandera ? `<span class="sahara-bandera" title="${BANDERAS[h.bandera]?.nombre ?? h.bandera}">${svg(h.bandera)}</span>` : "";
       $(".sahara-ficha-lugar").textContent = h.lugar;
       $(".sahara-ficha-texto").innerHTML = h.texto;
       const foto = $(".sahara-ficha-foto") as HTMLImageElement;

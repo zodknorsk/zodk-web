@@ -223,6 +223,24 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-nombre.pueblo { font-size: 10px; font-weight: 500; color: #e4e7ea; }
 .sahara-nombre.cabo { font-size: 10px; font-weight: 500; color: #f3ead3; }
 .sahara-nombre.cabo::before { width: 2px; height: 2px; margin-top: -1px; left: 2px; }
+/* Accidentes geográficos: los picos con un triángulo en la cumbre; el agua
+   (ríos, bahías) en azul y los accidentes (sebjas, ergs, valles) en arena,
+   los dos en cursiva y más pequeños que las ciudades. */
+.sahara-nombre:is(.pico, .agua, .accidente) { font-size: 10px; font-weight: 500; font-style: italic; }
+.sahara-nombre.pico { padding-left: 10px; color: #f3ead3; }
+.sahara-nombre.pico::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 7px;
+  height: 6px;
+  margin-top: -4px;
+  background: #05060a;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.sahara-nombre.agua { color: #cfe8ff; }
+.sahara-nombre.accidente { letter-spacing: 0.08em; color: #f3ead3; }
 
 @media (max-width: 640px) {
   .sahara-ficha { top: auto; bottom: 96px; right: 18px; max-height: 40%; }
@@ -230,8 +248,8 @@ html:has(.sahara-hero) { overflow: hidden; }
 }
 
 /* --- Banderas (las de src/data/banderas.json, 13x9 con el contorno), a 2 px
-   por píxel. En la ficha, la primera en grande junto al título y las demás
-   pequeñas en la pestaña. */
+   por píxel. En la ficha, la del sitio en grande junto al título y las de
+   los demás implicados pequeñas en la pestaña. */
 .sahara-bandera { display: inline-block; line-height: 0; }
 .sahara-bandera[hidden] { display: none; }
 .sahara-bandera svg { width: 26px; height: 18px; image-rendering: pixelated; shape-rendering: crispEdges; }
@@ -241,7 +259,6 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-ficha-fecha { text-align: right; }
 .sahara-ficha-banderas { display: flex; gap: 4px; margin-left: auto; }
 .sahara-ficha-banderas .sahara-bandera svg { width: 22px; height: 15px; }
-.sahara-ficha-banderas .sahara-bandera:first-child { display: none; }
 .sahara-ficha-banderas:not(:empty) + .sahara-ficha-fecha { margin-left: 8px; }
 .sahara-ficha-cabeza { display: flex; align-items: flex-start; gap: 10px; }
 .sahara-ficha-insignia { display: block; flex: none; margin-top: 3px; }

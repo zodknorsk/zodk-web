@@ -2,11 +2,11 @@
 """Relieve más fino del mapa del Sáhara, para su nivel de 512 px/grado: el
 Copernicus DEM GLO-90 (3", ~90 m; ESA, libre con atribución: «Copernicus DEM
 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided
-under COPERNICUS by the European Union and ESA»), solo en el cajón. Se baja
+under COPERNICUS by the European Union and ESA»), en toda la caja. Se baja
 por piezas de 1° (las de solo mar no existen y se saltan) a
 tierra-fuentes/sahara-dem90/ y se junta en un archivo de enteros de 16 bits
 (metros, little-endian), fila 0 = el norte:
-  tierra-fuentes/sahara1200.i16 (~400 MB, fuera de Git) y sahara1200.json
+  tierra-fuentes/sahara1200.i16 (~1,1 GB, fuera de Git) y sahara1200.json
 Lo lee generar-sahara.py antes que el de 15" (elevacion-sahara.py) donde lo
 cubre.
 
@@ -21,7 +21,7 @@ import subprocess
 from PIL import Image
 
 PPD = 1200
-ZONA = (20, 31, -19, -6)               # S, N, O, E (grados enteros): el cajón de generar-sahara.py
+ZONA = (20, 38, -22, -1)               # S, N, O, E (grados enteros): la caja de generar-sahara.py
 AQUI = os.path.dirname(os.path.abspath(__file__))
 DIR = os.path.join(AQUI, "tierra-fuentes", "sahara-dem90")
 SALIDA = os.path.join(AQUI, "tierra-fuentes", "sahara1200.i16")

@@ -25,9 +25,9 @@ Fuentes (fuera de Git):
     curl -sSLo tierra-fuentes/ne_10m_admin_0_countries.geojson \\
       https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson
 
-Niveles de zoom: el mapa entero va a 64 px/grado y, para ganar detalle al
-acercarse, el cajón (lo que se puede mirar en la web) va también a 128 y
-256. Todos comparten la misma rejilla (la de CAJA a su resolución), en
+Niveles de zoom: el mapa entero, a 64, 128, 256 y 512 px/grado (el de 512
+por trozos de filas de teselas, cada uno en su proceso: entero no cabe en
+memoria). Todos comparten la misma rejilla (la de CAJA a su resolución), en
 teselas de TESELA px: public/sahara/n<ppd>/<fila>-<columna>.png, con lo que
 queda fuera de la zona en transparente. Las manchas grandes (biomas, erg y
 reg) salen de un ruido en grados, igual en todos los niveles: al cambiar de
@@ -35,7 +35,7 @@ nivel no se mueven; lo que mide lo mismo en píxeles (copas, dunas) sí es
 más fino.
 
 Uso (desde arte/), y después subir SAHARA_V en src/scripts/versiones.js:
-  python3 generar-sahara.py                       # los tres niveles de la web
+  python3 generar-sahara.py                       # los cuatro niveles de la web
   python3 generar-sahara.py --ppd 128 [--zona S,N,O,E] [--prueba salida.png]
       [--mar fondo|distancia] [--frontera discontinua|continua|clara|no]
       [--grosor 1|2]
@@ -82,12 +82,11 @@ if FUERA:
         _la, _lo = json.load(fh)[FUERA][:2]       # (el tercero, si lo hay, es la bandera)
     _m = ZONA_KM / 2 / 111.2
     CAJA = (_la - _m, _la + _m, _lo - _m / math.cos(math.radians(_la)), _lo + _m / math.cos(math.radians(_la)))
-# El cajón: lo que se puede mirar en la web (CAJON en sahara-mapa.js), un
-# poco más ancho para que al arrastrar hasta el borde no falte detalle.
-CAJON = (20.4, 30.2, -18.6, -6.8)
-# Niveles de la web: (px/grado, zona). El base, la caja; los finos, el cajón
-# (el de 512, con el relieve de 90 m de elevacion-sahara-90.py).
-NIVELES = ((64, CAJA), (128, CAJON), (256, CAJON), (512, CAJON))
+# Niveles de la web: (px/grado, trozos). Todos, la caja entera; el de 512
+# (con el relieve de 90 m de elevacion-sahara-90.py), en TROZOS bandas de
+# filas de teselas, cada una en su proceso (con el margen, la caja entera a
+# 512 pide ~13 GB; un tercio, ~5).
+NIVELES = ((64, 1), (128, 1), (256, 1), (512, 3))
 TESELA = 512
 WEB = os.path.join(AQUI, "..", "public", "sahara")
 
@@ -109,12 +108,16 @@ if "--zonas" in sys.argv:
 
 if "--ppd" not in sys.argv:
     # Sin nivel: los de la web, cada uno en su proceso (cada nivel tiene su
-    # rejilla, y así la memoria se libera entre uno y otro).
+    # rejilla, y así la memoria se libera entre uno y otro); los de varios
+    # trozos, una banda de filas de teselas por proceso (--filas).
     import subprocess
-    for _ppd, _z in NIVELES:
-        print(f"nivel {_ppd} px/grado", file=sys.stderr)
-        subprocess.run([sys.executable, os.path.abspath(__file__), "--ppd", str(_ppd),
-                        "--zona", ",".join(str(v) for v in _z)] + sys.argv[1:], check=True)
+    for _ppd, _trozos in NIVELES:
+        _nf = math.ceil(round((CAJA[1] - CAJA[0]) * _ppd) / TESELA)       # filas de teselas
+        _cortes = [round(_nf * k / _trozos) for k in range(_trozos + 1)]
+        for k in range(_trozos):
+            print(f"nivel {_ppd} px/grado" + (f", trozo {k + 1}/{_trozos}" if _trozos > 1 else ""), file=sys.stderr)
+            subprocess.run([sys.executable, os.path.abspath(__file__), "--ppd", str(_ppd),
+                            "--filas", f"{_cortes[k]},{_cortes[k + 1]}"] + sys.argv[1:], check=True)
     sys.exit(0)
 
 PPD = int(_arg("--ppd", "64"))         # celdas (píxeles) por grado de latitud
@@ -133,6 +136,11 @@ ALTO = round((CAJA[1] - CAJA[0]) * PPD)
 ANCHO = round((CAJA[3] - CAJA[2]) / DLON)
 RA, RB = max(0, math.floor((CAJA[1] - ZONA[1]) * PPD)), min(ALTO, math.ceil((CAJA[1] - ZONA[0]) * PPD))
 CA, CB = max(0, math.floor((ZONA[2] - CAJA[2]) / DLON)), min(ANCHO, math.ceil((ZONA[3] - CAJA[2]) / DLON))
+# --filas f0,f1: un trozo del nivel, las filas de teselas f0..f1-1 (exactas,
+# sin redondeos de grados, para que dos trozos no se pisen una tesela).
+FILAS = tuple(int(v) for v in _arg("--filas", "").split(",")) if "--filas" in sys.argv else None
+if FILAS:
+    RA, RB = FILAS[0] * TESELA, min(ALTO, FILAS[1] * TESELA)
 MR, MC = math.ceil(MARGEN * PPD), math.ceil(MARGEN / DLON)
 N = CAJA[1] - (RA - MR) * DLAT         # borde norte y oeste de la rejilla con margen
 O = CAJA[2] + (CA - MC) * DLON
@@ -335,8 +343,8 @@ def rasterizar(features, rejilla, valor):
 
 # ------------------------------------------------------------- relieve
 # Por fuentes, de la más fina a la más basta, y en cada punto la primera que
-# lo cubre: Copernicus a 90 m (elevacion-sahara-90.py, solo el cajón; solo
-# desde 512 px/grado, que es cuando se nota y pesa 400 MB), el de 15"
+# lo cubre: Copernicus a 90 m (elevacion-sahara-90.py, la caja; solo
+# desde 512 px/grado, que es cuando se nota y pesa 1,1 GB), el de 15"
 # (elevacion-sahara.py, la caja con margen) y ETOPO1 (el del zoom de la
 # Tierra, para las zonas de fuera). Con --etopo1, solo ETOPO1.
 def _fuente(nombre, ppd_minimo=0):
@@ -622,7 +630,7 @@ paso("costa y mar")
 # --------------------------------------------- relieve en escalones, roca, nieve
 MTN_CONTRAST = 1.5
 # Altura (m) desde la que se sombrea el relieve: desde 0, para que se vean
-# el valle de la Saguía y lo bajo del cajón (la Tierra empieza en 250);
+# el valle de la Saguía y lo bajo del Sáhara (la Tierra empieza en 250);
 # --relieve-desde lo cambia.
 RELIEVE_DESDE = float(_arg("--relieve-desde", "0"))
 # Pendiente medida a ±RELIEVE_DD grados: 3 celdas, como las teselas de la
@@ -902,9 +910,15 @@ for n in _pueblos:
             if d < 1.0:
                 URBANA[r][c] = 1
 # Las manzanas, en la mancha (la de Natural Earth más la de cada pueblo).
+# En las Canarias no: sobre la vegetación la rejilla tapaba las islas (los
+# nombres de las ciudades sí salen).
+CANARIAS = (27.5, 29.5, -18.3, -13.3)
 for r in range(H):
+    lat = lat_de(r)
     for c in range(W):
         if not (URBANA[r][c] and LAND[r][c]):
+            continue
+        if CANARIAS[0] <= lat <= CANARIAS[1] and CANARIAS[2] <= lon_de(c) <= CANARIAS[3]:
             continue
         R, C = r - MR + RA, c - MC + CA                   # en la rejilla del nivel
         if PPD >= 128 and (R % 4 == 0 or C % 4 == 0):
@@ -1056,11 +1070,13 @@ if PRUEBA:
     paso(f"{PRUEBA}: {CB - CA} x {RB - RA} px, {len(_RAMP)} colores")
     sys.exit(0)
 
-# Teselas de la web. Se borran antes las del nivel que haya.
+# Teselas de la web. Se borran antes las del nivel que haya (en un nivel por
+# trozos, al empezar el primero).
 import shutil
 carpeta = os.path.join(WEB, f"n{PPD}")
-shutil.rmtree(carpeta, ignore_errors=True)
-os.makedirs(carpeta)
+if not FILAS or FILAS[0] == 0:
+    shutil.rmtree(carpeta, ignore_errors=True)
+os.makedirs(carpeta, exist_ok=True)
 teselas = []
 for f in range(RA // TESELA, (RB - 1) // TESELA + 1):
     for k in range(CA // TESELA, (CB - 1) // TESELA + 1):
@@ -1080,6 +1096,9 @@ try:
         datos = json.load(fh)
 except (OSError, ValueError):
     datos = {}
+anterior = next((n for n in datos.get("niveles", []) if n["ppd"] == PPD), None)
+if FILAS and FILAS[0] > 0 and anterior:
+    teselas = sorted(set(anterior["teselas"]) | set(teselas))      # los trozos de antes
 niveles = [n for n in datos.get("niveles", []) if n["ppd"] != PPD]
 niveles.append({"ppd": PPD, "ancho": ANCHO, "alto": ALTO, "teselas": teselas})
 datos = {"caja": CAJA, "coslat": COSLAT, "tesela": TESELA,

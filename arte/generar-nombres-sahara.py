@@ -6,11 +6,16 @@ y generar-sahara.py (dibuja la mancha de cada ciudad y pueblo en el mapa).
 Salen de dos sitios:
   - las ciudades de GeoNames de más de 15.000 habitantes (cities15000.txt,
     el de las luces de la Tierra) que caen en la caja del mapa, sin los
-    barrios (PPLX), con su nombre en castellano si está en EXONIMOS;
+    barrios (PPLX), con su nombre en castellano si está en EXONIMOS; en
+    Marruecos, fuera del Sáhara, solo las de MARRUECOS_MIN o más (eran casi
+    todas las del mapa y lo llenaban);
   - lo que se pone a mano (A_MANO): países, regiones, mares, cabos y los
-    pueblos del Sáhara que GeoNames no trae (Tarfaya, La Güera, Tifariti...).
+    pueblos del Sáhara que GeoNames no trae (Tarfaya, La Güera, Tifariti...);
+    y los accidentes geográficos (ACCIDENTES): picos con su altura, ríos,
+    bahías, sebjas, ergs y valles, pocos y de los conocidos.
 
-Cada nombre lleva su clase (pais, region, mar, cabo, ciudad, pueblo), la
+Cada nombre lleva su clase (pais, region, mar, cabo, ciudad, pueblo, pico,
+agua, accidente), la
 población (las ciudades y pueblos) y `desde`: a partir de qué zoom sale en la
 web, en px CSS por píxel del mapa base (64 px/grado; al abrir son ~2).
 
@@ -98,6 +103,37 @@ A_MANO = [
 ]
 A_MANO_NOMBRES = {n for n, *_ in A_MANO}
 
+# Accidentes geográficos: (nombre, clase, lat, lon, desde). pico, con su
+# altura (el punto, en la cumbre); agua, ríos y bahías (los ríos, sobre su
+# trazo de Natural Earth; el Draa no viene y va sobre su valle); accidente,
+# sebjas, ergs y valles (centrados). Salen al acercarse, para no llenar el
+# mapa. La sebja de Tah, centrada en lo que el relieve fino tiene bajo el
+# nivel del mar al noreste de Tarfaya.
+ACCIDENTES = [
+    ("Teide · 3.715 m", "pico", 28.2724, -16.6425, 1.5),
+    ("Toubkal · 4.167 m", "pico", 31.0597, -7.9156, 1.5),
+    ("Mulhacén · 3.479 m", "pico", 37.0531, -3.3114, 2.5),
+    ("M'Goun · 4.071 m", "pico", 31.51, -6.45, 3.5),
+    ("Jbel Siroua · 3.305 m", "pico", 30.737, -7.607, 4),
+    ("Roque de los Muchachos · 2.426 m", "pico", 28.754, -17.885, 3.5),
+    ("Pico de las Nieves · 1.949 m", "pico", 27.9592, -15.5733, 3.5),
+    ("Kediet ej Jill · 915 m", "pico", 22.633, -12.55, 2.5),
+    ("Uad Draa", "agua", 28.65, -10.4, 2.5),
+    ("Sus", "agua", 30.394, -9.331, 3),
+    ("Oum er Rbia", "agua", 32.414, -7.35, 3.5),
+    ("Sebú", "agua", 34.336, -5.469, 3.5),
+    ("Muluya", "agua", 34.013, -3.418, 3.5),
+    ("Guadalquivir", "agua", 37.099, -6.099, 3.5),
+    ("Bahía de Dajla", "agua", 23.62, -15.83, 3),
+    ("Bahía de Cintra", "agua", 23.05, -16.22, 3.5),
+    ("Sebja de Tah", "accidente", 28.0, -12.55, 3),
+    ("Valle del Draa", "accidente", 30.25, -5.8, 3),
+    ("Erg Chebbi", "accidente", 31.15, -3.97, 3),
+    ("Erg Iguidi", "accidente", 26.8, -5.0, 1.5),
+]
+# En Marruecos, fuera del Sáhara, solo las ciudades de tantos habitantes.
+MARRUECOS_MIN = 100_000
+
 
 # Lo del Sáhara Occidental sale antes que lo de fuera: es de lo que va el mapa.
 SAHARA = (20.7, 27.7, -17.2, -8.6)
@@ -120,6 +156,9 @@ def main():
             lat, lon, codigo, pob = float(c[4]), float(c[5]), c[7], int(c[14] or 0)
             if not (CAJA[0] <= lat <= CAJA[1] and CAJA[2] <= lon <= CAJA[3]) or codigo == "PPLX":
                 continue
+            fuera_del_sahara = not (SAHARA[0] <= lat <= SAHARA[1] and SAHARA[2] <= lon <= SAHARA[3])
+            if c[8] == "MA" and pob < MARRUECOS_MIN and fuera_del_sahara:
+                continue
             nombre = EXONIMOS.get(c[1], c[1])
             if nombre in A_MANO_NOMBRES:
                 continue
@@ -132,8 +171,11 @@ def main():
             if clase == "ciudad":
                 n["desde"] = desde_por_poblacion(pob, lat, lon)
         nombres.append(n)
+    for nombre, clase, lat, lon, desde in ACCIDENTES:
+        nombres.append({"nombre": nombre, "clase": clase, "lat": lat, "lon": lon, "desde": desde})
     # Primero lo que más importa: así, si dos se pisan, la web deja el primero.
-    orden = {"pais": 0, "mar": 1, "region": 2, "ciudad": 3, "cabo": 4, "pueblo": 5}
+    orden = {"pais": 0, "mar": 1, "region": 2, "ciudad": 3, "cabo": 4, "pico": 5, "agua": 6,
+             "accidente": 7, "pueblo": 8}
     nombres.sort(key=lambda n: (orden[n["clase"]], n["desde"], -n.get("poblacion", 0)))
     with open(SALIDA, "w", encoding="utf-8") as fh:
         json.dump(nombres, fh, ensure_ascii=False, separators=(",", ":"))
@@ -141,7 +183,8 @@ def main():
     comprobar_tierra(nombres)
 
 
-EN_EL_MAR = {"Monte Tropic", "Océano Atlántico", "Mar Mediterráneo", "Estrecho de Gibraltar"}
+EN_EL_MAR = {"Monte Tropic", "Océano Atlántico", "Mar Mediterráneo", "Estrecho de Gibraltar",
+             "Bahía de Dajla", "Bahía de Cintra"}
 
 
 def comprobar_tierra(nombres):

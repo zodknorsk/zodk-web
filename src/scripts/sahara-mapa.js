@@ -1,21 +1,16 @@
 // El mapa del Sáhara (/sahara): el pixel art de arte/generar-sahara.py en un
-// <canvas> 2D, con arrastre y zoom dentro de un cajón.
-// - El mapa cubre del sur de Mauritania al Estrecho, pero con el ratón solo
-//   se puede mirar dentro de CAJON (el Sáhara Occidental y alrededores): la
-//   vista nunca se sale de él. Más allá (Ceuta, Melilla, Perejil) solo irá la
-//   cámara cuando lo pida un hito.
-// - Niveles de detalle, como el zoom de la Tierra: el mapa entero a 64
-//   px/grado y el cajón también a 128 y 256, en teselas
-//   (public/sahara/n<ppd>/). Se pinta el más fino cuyo píxel mida al menos
+// <canvas> 2D, con arrastre y zoom.
+// - El mapa cubre del sur de Mauritania al Estrecho; la vista nunca se sale
+//   de él.
+// - Niveles de detalle, como el zoom de la Tierra: el mapa entero a 64, 128,
+//   256 y 512 px/grado, en teselas (public/sahara/n<ppd>/). Se pinta el más fino cuyo píxel mida al menos
 //   PX_ARTE CSS; mientras llegan sus teselas se ve el de debajo.
 // - El zoom es continuo y suave (va hacia el objetivo de los gestos como el
 //   de la Tierra) y, al pararse, se asienta en una escala entera de píxeles
 //   del dispositivo por píxel del nivel, para que el pixel art quieto no
 //   tenga píxeles de dos tamaños.
 // - Los hitos (irA) llevan la cámara en un vuelo corto hasta su lugar y
-//   ponen ahí la marca. Si el lugar está en el mapa pero fuera del cajón
-//   (Ceuta, Melilla, Perejil, Rabat), mientras dure ese hito se puede mirar
-//   el mapa entero.
+//   ponen ahí la marca.
 // - Capas por fecha (public/sahara/sahara-capas.json, de
 //   arte/generar-capas-sahara.py): el muro, la cinta de Bucraa… Salen las
 //   que tocan a la fecha del hito (ponFecha), en líneas a bloques de píxel
@@ -26,10 +21,6 @@
 
 import { SAHARA_V } from "./versiones.js";
 
-// El cajón, en grados (S, N, O, E): de La Güera a Sidi Ifni y de El Hierro a
-// Tinduf. Los niveles finos del generador (CAJON en generar-sahara.py) lo
-// cubren con algo de margen.
-const CAJON = [20.6, 30.0, -18.4, -7.0];
 const PX_ARTE = 2;                                // px CSS mínimos del píxel del nivel que se pinta
 const PX_ARTE_MAX = 6;                            // zoom máximo: el píxel del nivel más fino, a esto
 const TAU = 0.07;                                 // s, suavizado del zoom (el de la Tierra)
@@ -84,16 +75,12 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   const [, norte, oeste] = datos.caja;
   /** Grados a píxeles del nivel base. */
   const aMapa = (lat, lon) => [(lon - oeste) * base.ppd * datos.coslat, (norte - lat) * base.ppd];
-  const [x0, y1] = aMapa(CAJON[0], CAJON[2]);
-  const [x1, y0] = aMapa(CAJON[1], CAJON[3]);
-  const CAJONPX = [x0, y0, x1, y1];
-  const MAPAPX = [0, 0, base.ancho, base.alto];
-  let lim = CAJONPX;                              // lo que se puede mirar ahora
+  const lim = [0, 0, base.ancho, base.alto];     // lo que se puede mirar: el mapa entero
   const dentro = ([a, b, c, d], x, y) => x >= a && x <= c && y >= b && y <= d;
 
   const ctx = canvas.getContext("2d");
   let W = 0, H = 0, dpr = 1;                      // lienzo en px del dispositivo
-  let cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;    // centro de la vista, en px del nivel base
+  let cx = base.ancho / 2, cy = base.alto / 2;   // centro de la vista, en px del nivel base
   let escala = 0, objetivo = 0;                   // px del dispositivo por px del nivel base
   let ancla = null;                               // { px, py, mx, my }: punto que el zoom deja quieto
   let ultimoGesto = 0, raf = 0, antes = 0, vivo = true;
@@ -118,7 +105,7 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
     if (k * f < escalaMin()) k = Math.ceil(escalaMin() / f);
     return Math.min(k * f, escalaMax());
   };
-  // El centro, dentro del cajón.
+  // El centro, dentro del mapa.
   const encajado = (x, y, e) => {
     const mx = W / (2 * e), my = H / (2 * e);
     return [Math.min(Math.max(x, lim[0] + mx), lim[2] - mx), Math.min(Math.max(y, lim[1] + my), lim[3] - my)];
@@ -264,7 +251,7 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
     H = Math.round(canvas.clientHeight * dpr);
     canvas.width = W;
     canvas.height = H;
-    escala = objetivo = escala ? limitar(escala) : asentada(escalaMin());   // la primera vez: el cajón entero
+    escala = objetivo = escala ? limitar(escala) : asentada(escalaMin());   // la primera vez: el mapa entero
     encajar();
     pintar();
   };
@@ -280,12 +267,11 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
      */
     irA(lat, lon, { alMomento = false } = {}) {
       const [x, y] = aMapa(lat, lon);
-      if (!dentro(MAPAPX, x, y)) {
+      if (!dentro(lim, x, y)) {
         marca = null;
         repintar();
         return false;
       }
-      lim = dentro(CAJONPX, x, y) ? CAJONPX : MAPAPX;
       marca = [x, y];
       const e = asentada(limitar(PX_HITO * dpr));
       const [ax, ay] = encajado(x, y, e);

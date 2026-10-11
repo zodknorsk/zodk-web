@@ -11,9 +11,8 @@
    -12.784
   ],
   "banderaLugar": null,
-  "banderas": [
-   "ES"
-  ],
+  "bandera": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -28,12 +27,10 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA",
    "FR",
-   "ES",
-   "MR",
-   "DZ"
+   "ES"
   ],
   "nota": null
  },
@@ -49,9 +46,9 @@
    -10.17
   ],
   "banderaLugar": null,
+  "bandera": "ES",
   "banderas": [
    "MA",
-   "ES",
    "FR"
   ],
   "nota": "guerra-de-ifni-sahara"
@@ -61,17 +58,15 @@
   "fecha": "10 de enero de 1958",
   "orden": "1958-01-10",
   "titulo": "El Sáhara se Convierte en la Provincia N.º 53",
-  "texto": "Para frenar la presión descolonizadora de la ONU, el régimen franquista transforma el Sáhara Español (junto con Ifni) en provincia mediante decreto, publicado en el BOE del 14 de enero. Sus habitantes obtienen DNI y nacionalidad española, fijando la capitalidad provisional en El Aaiún.",
+  "texto": "Para frenar la presión descolonizadora de la ONU, el régimen franquista transforma el Sáhara Español (junto con Ifni) en provincia mediante decreto, publicado en el BOE del 14 de enero. Fija la capitalidad provisional en El Aaiún. Sobre el papel sus habitantes pasan a ser españoles, pero muchos nunca recibieron el DNI en igualdad de condiciones y, al irse España en 1976, el Gobierno dio por perdida esa nacionalidad.",
   "lugar": "El Aaiún",
   "coordenadas": [
    27.153,
    -13.203
   ],
   "banderaLugar": null,
-  "banderas": [
-   "UN",
-   "ES"
-  ],
+  "bandera": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -86,7 +81,10 @@
    -13.052
   ],
   "banderaLugar": null,
-  "banderas": [],
+  "bandera": "ES",
+  "banderas": [
+   "MA"
+  ],
   "nota": "desastre-de-edchera"
  },
  {
@@ -101,8 +99,10 @@
    -11.67
   ],
   "banderaLugar": null,
+  "bandera": "ES",
   "banderas": [
-   "FR"
+   "FR",
+   "MA"
   ],
   "nota": "operacion-conjunta-ecouvillon-teide"
  },
@@ -118,7 +118,10 @@
    -16.152
   ],
   "banderaLugar": null,
-  "banderas": [],
+  "bandera": "ES",
+  "banderas": [
+   "MA"
+  ],
   "nota": "acuerdos-de-cintra"
  },
  {
@@ -133,9 +136,8 @@
    -12.784
   ],
   "banderaLugar": null,
-  "banderas": [
-   "MA"
-  ],
+  "bandera": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -150,8 +152,8 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA",
    "ES"
   ],
   "nota": null
@@ -168,6 +170,7 @@
    -12.784
   ],
   "banderaLugar": null,
+  "bandera": "ES",
   "banderas": [],
   "nota": "antigua-cintra-transportadora-de-bucraa"
  },
@@ -183,8 +186,8 @@
    -13.203
   ],
   "banderaLugar": null,
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "EH"
   ],
   "nota": null
@@ -201,6 +204,7 @@
    -12.47
   ],
   "banderaLugar": null,
+  "bandera": "MR",
   "banderas": [
    "EH",
    "ES",
@@ -220,8 +224,8 @@
    4.31
   ],
   "banderaLugar": "UN",
+  "bandera": "UN",
   "banderas": [
-   "UN",
    "MA",
    "MR",
    "EH"
@@ -240,9 +244,8 @@
    -13.203
   ],
   "banderaLugar": null,
-  "banderas": [
-   "ES"
-  ],
+  "bandera": "ES",
+  "banderas": [],
   "nota": "juan-carlos-i-en-su-visita-a-el-aaiun"
  },
  {
@@ -257,11 +260,11 @@
    -12.926
   ],
   "banderaLugar": null,
+  "bandera": "MA",
   "banderas": [
    "ES",
    "US",
-   "FR",
-   "MA"
+   "FR"
   ],
   "nota": "marcha-verde-de-1975"
  },
@@ -277,11 +280,10 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "MA",
-   "MR",
-   "EH"
+   "MR"
   ],
   "nota": "acuerdos-tripartitos-de-madrid"
  },
@@ -297,10 +299,9 @@
    -13.203
   ],
   "banderaLugar": null,
+  "bandera": "ES",
   "banderas": [
-   "EH",
-   "ES",
-   "UN"
+   "EH"
   ],
   "nota": "operacion-golondrina"
  },
@@ -316,10 +317,10 @@
    -14.49
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
    "EH",
-   "ES",
-   "MA"
+   "ES"
   ],
   "nota": null
  },
@@ -335,11 +336,12 @@
    -11.4
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
    "MA",
+   "EH",
    "US",
-   "FR",
-   "EH"
+   "FR"
   ],
   "nota": "muro-marroqui"
  },
@@ -355,8 +357,8 @@
    -13.203
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
-   "UN",
    "MA",
    "EH"
   ],
@@ -374,8 +376,8 @@
    -5.317
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "MA",
    "EU"
   ],
@@ -393,8 +395,9 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA"
+   "ES"
   ],
   "nota": null
  },
@@ -410,9 +413,9 @@
    -5.418
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA",
-   "ES",
    "US"
   ],
   "nota": null
@@ -429,9 +432,9 @@
    -73.97
   ],
   "banderaLugar": "UN",
+  "bandera": "UN",
   "banderas": [
    "US",
-   "UN",
    "EH",
    "MA"
   ],
@@ -449,6 +452,7 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA"
   ],
@@ -466,8 +470,9 @@
    -2.938
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES"
+   "MA"
   ],
   "nota": null
  },
@@ -483,7 +488,10 @@
    -5.317
   ],
   "banderaLugar": "ES",
-  "banderas": [],
+  "bandera": "ES",
+  "banderas": [
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -498,10 +506,10 @@
    -13.55
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA",
-   "EH",
-   "ES"
+   "EH"
   ],
   "nota": null
  },
@@ -517,6 +525,7 @@
    -13.11
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
    "MA",
    "EH"
@@ -535,6 +544,7 @@
    -5.317
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [],
   "nota": null
  },
@@ -550,10 +560,10 @@
    -20.73
   ],
   "banderaLugar": null,
+  "bandera": null,
   "banderas": [
-   "MA",
-   "EU",
-   "ES"
+   "ES",
+   "MA"
   ],
   "nota": null
  },
@@ -569,6 +579,7 @@
    -16.96
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
    "MA",
    "EH"
@@ -587,8 +598,8 @@
    -77.04
   ],
   "banderaLugar": "US",
+  "bandera": "US",
   "banderas": [
-   "US",
    "MA",
    "IL"
   ],
@@ -606,8 +617,8 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA",
    "IL",
    "US"
   ],
@@ -625,8 +636,8 @@
    -77.04
   ],
   "banderaLugar": "US",
+  "bandera": "US",
   "banderas": [
-   "US",
    "MA",
    "IL"
   ],
@@ -644,10 +655,9 @@
    13.4
   ],
   "banderaLugar": "DE",
+  "bandera": "DE",
   "banderas": [
-   "DE",
-   "MA",
-   "ES"
+   "MA"
   ],
   "nota": null
  },
@@ -663,8 +673,9 @@
    -5.317
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
+   "MA",
    "EH"
   ],
   "nota": null
@@ -681,10 +692,10 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA",
-   "IL",
-   "ES"
+   "IL"
   ],
   "nota": "software-pegasus"
  },
@@ -700,8 +711,8 @@
    7.75
   ],
   "banderaLugar": "EU",
+  "bandera": "EU",
   "banderas": [
-   "EU",
    "MA",
    "ES"
   ],
@@ -719,11 +730,9 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
-   "MA",
-   "IL",
-   "ES"
+   "MA"
   ],
   "nota": null
  },
@@ -739,8 +748,8 @@
    6.13
   ],
   "banderaLugar": "EU",
+  "bandera": "EU",
   "banderas": [
-   "EU",
    "MA",
    "EH"
   ],
@@ -758,8 +767,8 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
    "MA",
    "ES"
   ],
@@ -777,8 +786,8 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA",
    "IL"
   ],
   "nota": null
@@ -795,10 +804,9 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA",
-   "ES",
-   "EH",
    "IL"
   ],
   "nota": null
@@ -815,10 +823,9 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
-   "ES",
-   "MA"
+   "ES"
   ],
   "nota": null
  },
@@ -834,8 +841,8 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "MA"
   ],
   "nota": null
@@ -852,8 +859,8 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "MA"
   ],
   "nota": null
@@ -870,10 +877,9 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
-   "ES",
-   "MA"
+   "ES"
   ],
   "nota": null
  },
@@ -889,6 +895,7 @@
    -2.938
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
    "MA"
   ],
@@ -906,11 +913,9 @@
    2.35
   ],
   "banderaLugar": "FR",
+  "bandera": "FR",
   "banderas": [
-   "FR",
    "MA",
-   "US",
-   "ES",
    "DZ"
   ],
   "nota": null
@@ -927,11 +932,10 @@
    6.13
   ],
   "banderaLugar": "EU",
+  "bandera": "EU",
   "banderas": [
-   "EU",
    "MA",
-   "EH",
-   "ES"
+   "EH"
   ],
   "nota": null
  },
@@ -947,8 +951,8 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
    "ES",
    "FR"
   ],
@@ -966,11 +970,9 @@
    34.78
   ],
   "banderaLugar": "IL",
+  "bandera": "IL",
   "banderas": [
-   "IL",
-   "FR",
-   "MA",
-   "US"
+   "MA"
   ],
   "nota": null
  },
@@ -986,9 +988,9 @@
    -5.317
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "MA",
-   "ES"
+   "MA"
   ],
   "nota": null
  },
@@ -1004,6 +1006,7 @@
    -13.203
   ],
   "banderaLugar": null,
+  "bandera": "UN",
   "banderas": [
    "MA",
    "EU",
@@ -1023,13 +1026,9 @@
    -0.13
   ],
   "banderaLugar": "GB",
+  "bandera": "GB",
   "banderas": [
-   "GB",
-   "MA",
-   "US",
-   "FR",
-   "ES",
-   "DE"
+   "MA"
   ],
   "nota": null
  },
@@ -1045,8 +1044,8 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "ES",
    "MA"
   ],
   "nota": null
@@ -1063,8 +1062,8 @@
    -6.84
   ],
   "banderaLugar": "MA",
+  "bandera": "MA",
   "banderas": [
-   "MA",
    "ES"
   ],
   "nota": "software-pegasus"
@@ -1081,6 +1080,7 @@
    -3.7
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [],
   "nota": null
  },
@@ -1096,8 +1096,8 @@
    3.06
   ],
   "banderaLugar": "DZ",
+  "bandera": "DZ",
   "banderas": [
-   "DZ",
    "ES"
   ],
   "nota": null
@@ -1114,10 +1114,9 @@
    -5.317
   ],
   "banderaLugar": "ES",
+  "bandera": "ES",
   "banderas": [
-   "DZ",
-   "MA",
-   "ES"
+   "MA"
   ],
   "nota": null
  }

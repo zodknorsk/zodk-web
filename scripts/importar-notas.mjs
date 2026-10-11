@@ -89,6 +89,7 @@ const ETIQUETA_SAHARA = "sahara-project";
 const DESTINO_SAHARA = path.join(RAIZ, "src", "content", "sahara");
 const HITOS_SAHARA = path.join(RAIZ, "src", "data", "sahara", "hitos.json");
 const LUGARES_SAHARA = path.join(RAIZ, "src", "data", "sahara", "lugares.json");
+const BANDERAS_SAHARA = path.join(RAIZ, "src", "data", "sahara", "banderas-hitos.json");
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 const ARCHIVO_TUITS = path.join(RAIZ, "src", "data", "tuits");
@@ -789,9 +790,10 @@ function hitosDeTimeline(content) {
   return hitos;
 }
 
-// Los implicados de cada hito, por lo que dice su texto: palabra -> bandera
-// (el código de src/data/banderas.json). Van en la ficha, en el orden en que
-// salen. Los lugares (Madrid, Rabat) no cuentan: son el sitio, no el actor.
+// Las banderas de cada hito van a mano en src/data/sahara/banderas-hitos.json.
+// Para uno que aún no esté, una propuesta por lo que dice su texto (palabra
+// -> bandera, el código de src/data/banderas.json), con aviso: buscar
+// palabras se equivoca a menudo (un «Argelia» de pasada).
 const IMPLICADOS = [
   [/\bEspañ(a|ola|oles|olas|ol)\b|franquista|\bFranco\b/i, "ES"],
   [/Marruecos|marroqu[ií](es)?|Hasán|Hassán|Mohamed VI|\bDGST\b|\bDGED\b/i, "MA"],
@@ -822,6 +824,7 @@ function implicados(texto) {
  */
 function escribirHitosSahara(items, resolver) {
   const lugares = JSON.parse(fs.readFileSync(LUGARES_SAHARA, "utf8"));
+  const banderasHitos = JSON.parse(fs.readFileSync(BANDERAS_SAHARA, "utf8"));
   const delSahara = items.filter((it) => it.clase.tipo === "sahara");
   const notas = delSahara.filter((it) => !it.clase.timeline);
   const porSlug = new Map();
@@ -854,11 +857,18 @@ function escribirHitosSahara(items, resolver) {
     if (!h.lugar) avisos.push(`sin lugar: ${h.titulo}`);
     else if (!lugares[h.lugar]) avisos.push(`lugar desconocido: «${h.lugar}» (${h.titulo}); añadirlo a src/data/sahara/lugares.json`);
     const lugar = lugares[h.lugar];
+    const id = generarSlug(`${orden ?? ""} ${h.titulo}`);
+    let banderas = banderasHitos[id];
+    if (!banderas) {
+      const [grande = null, ...otras] = implicados(`${h.titulo} ${h.texto.replace(/<[^>]+>/g, "")}`).slice(0, 4);
+      banderas = { grande: lugar?.[2] ?? grande, otras: otras.filter((b) => b !== lugar?.[2]) };
+      avisos.push(`sin banderas fijas: ${id}; propuesta ${JSON.stringify(banderas)}, ponerla en src/data/sahara/banderas-hitos.json`);
+    }
     return {
-      id: generarSlug(`${orden ?? ""} ${h.titulo}`),
+      id,
       fecha: h.fecha, orden: orden ?? "9999-12-31", titulo: h.titulo, texto: h.texto,
       lugar: h.lugar, coordenadas: lugar ? lugar.slice(0, 2) : null, banderaLugar: lugar?.[2] ?? null,
-      banderas: implicados(`${h.titulo} ${h.texto.replace(/<[^>]+>/g, "")}`).slice(0, 4),   // como mucho 4
+      bandera: banderas.grande, banderas: banderas.otras,
       nota: h.nota ? path.basename(h.nota.carpetaDestino) : null,
     };
   }).sort((a, b) => a.orden.localeCompare(b.orden));
