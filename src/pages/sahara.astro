@@ -28,23 +28,34 @@ const hitos = HITOS.map((h) => {
 <PageLayout title="Sáhara" description="Los conflictos con Marruecos en los siglos XX y XXI, en un mapa del Sáhara en pixel art." hero cabecera={false}>
   <section slot="hero" class="hero sahara-hero" aria-label="Mapa del Sáhara">
     <canvas class="sahara-mapa" role="img" aria-label="Mapa del Sáhara Occidental, Marruecos y Canarias"></canvas>
+    <!-- Nombres de países, regiones, ciudades… (src/scripts/sahara-nombres.js). -->
+    <div class="sahara-nombres" aria-hidden="true"></div>
     <a class="sahara-volver" href="/">← portada</a>
 
-    <!-- La flecha hacia el lugar de un hito que cae fuera del mapa (Madrid,
-         Washington…): en el borde, apuntando hacia allí. -->
-    <div class="sahara-fuera" hidden>
-      <span class="sahara-fuera-flecha" aria-hidden="true">➜</span>
-      <span class="sahara-fuera-texto"></span>
+    <!-- Los hitos de fuera del mapa (Madrid, Washington…): src/scripts/sahara-lejos.js. -->
+    <div class="sahara-lejos" hidden aria-hidden="true">
+      <div class="sahara-lejos-globo"><canvas class="sahara-lejos-tierra"></canvas></div>
+      <div class="sahara-lejos-marco">
+        <img class="sahara-lejos-zona" alt="" />
+        <canvas class="sahara-lejos-marca"></canvas>
+      </div>
+      <p class="sahara-lejos-nombre"></p>
     </div>
+
+    <!-- La marca del lugar, encima del mapa (en el diseño B la pinta el
+         propio mapa). -->
+    <div class="sahara-marca" hidden aria-hidden="true"><span class="sahara-marca-rotulo"></span></div>
 
     <!-- La ficha del hito. -->
     <article class="sahara-ficha" data-sin-arrastre aria-live="polite">
+      <p class="sahara-ficha-exp"></p>
       <p class="sahara-ficha-fecha"></p>
       <h1 class="sahara-ficha-titulo"></h1>
       <p class="sahara-ficha-lugar"></p>
       <img class="sahara-ficha-foto" alt="" hidden />
       <div class="sahara-ficha-texto"></div>
       <a class="sahara-ficha-nota" hidden>Ir a la nota →</a>
+      <span class="sahara-ficha-sello" hidden>Con nota</span>
     </article>
 
     <!-- El deslizador: un hito por paso, por fecha. Las marcas altas son los
@@ -68,19 +79,14 @@ const hitos = HITOS.map((h) => {
   // guarda (sessionStorage) para volver a él desde una nota.
   import { montarMapaSahara } from "../scripts/sahara-mapa.js";
   import { montarMano, montarZoom } from "../scripts/gestos.js";
+  import { montarLejos } from "../scripts/sahara-lejos.js";
+  import { montarNombresSahara } from "../scripts/sahara-nombres.js";
 
   type Hito = {
     id: string; fecha: string; orden: string; titulo: string; texto: string;
     lugar: string; coordenadas: [number, number] | null; nota: string | null; foto: string | null;
   };
   let quitar: (() => void)[] = [];
-
-  // Distancia en km por la superficie de la Tierra.
-  const km = ([a, b]: number[], [c, d]: number[]) => {
-    const r = Math.PI / 180;
-    const h = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2;
-    return 2 * 6371 * Math.asin(Math.sqrt(h));
-  };
 
   document.addEventListener("astro:page-load", async () => {
     const zona = document.querySelector<HTMLElement>(".sahara-hero");
@@ -89,31 +95,34 @@ const hitos = HITOS.map((h) => {
     const hitos: Hito[] = JSON.parse(document.getElementById("sahara-hitos")?.textContent ?? "[]");
     const $ = (sel: string) => zona.querySelector(sel) as HTMLElement;
     const deslizador = $(".sahara-deslizador") as HTMLInputElement;
-    const fuera = $(".sahara-fuera");
     let actual = -1;
-
-    // La flecha: en el borde de la parte libre del mapa (sin la ficha, si
-    // está a la derecha, ni la barra), en la línea desde su centro hacia el
-    // lugar.
-    const colocarFlecha = () => {
-      const h = hitos[actual];
-      if (!h?.coordenadas || !fuera.dataset.activa) return;
-      const z = zona.getBoundingClientRect(), f = $(".sahara-ficha").getBoundingClientRect();
-      const b = $(".sahara-barra").getBoundingClientRect(), m = 80;
-      const derecha = f.top - z.top < z.height / 2 ? f.left - z.left : z.width;
-      const [x0, y0, x1, y1] = [m, m, derecha - m, b.top - z.top - m / 2];
-      const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
-      const [x, y] = mapa.aPantalla(...h.coordenadas);
-      const dx = x - cx, dy = y - cy;
-      const t = Math.min((x1 - cx) / Math.abs(dx || 1e-6), (y1 - cy) / Math.abs(dy || 1e-6));
-      fuera.style.left = `${cx + dx * t}px`;
-      fuera.style.top = `${cy + dy * t}px`;
-      $(".sahara-fuera-flecha").style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
-      const d = Math.round(km(mapa.centro(), h.coordenadas) / 10) * 10;
-      $(".sahara-fuera-texto").textContent = `${h.lugar} · ${d.toLocaleString("es-ES")} km`;
+    // PRUEBA: tres diseños de marca, deslizador y ficha (?diseno=a|b|c).
+    const diseno = new URLSearchParams(location.search).get("diseno") ?? "a";
+    zona.dataset.diseno = diseno;
+    const marcaEl = $(".sahara-marca");
+    const enMapaAhora = () => !$(".sahara-lejos").classList.contains("dentro") && $(".sahara-lejos").hidden;
+    // Coordenada al estilo de la mira de la portada: 27°09′N 13°12′O.
+    const gms = (v: number, pos: string, neg: string) => {
+      const a = Math.abs(v), g = Math.floor(a), m = Math.round((a - g) * 60);
+      return `${g}°${String(m).padStart(2, "0")}′${v >= 0 ? pos : neg}`;
+    };
+    // (el mapa pinta una vez antes de estar montado: entonces aún no hay marca)
+    const listo: { mapa?: { posMarca: () => number[] | null }, nombres?: { coloca: () => void } } = {};
+    const colocarMarca = () => {
+      const p = listo.mapa?.posMarca();
+      marcaEl.hidden = diseno === "b" || !p || !enMapaAhora();
+      if (p) {
+        marcaEl.style.left = `${p[0]}px`;
+        marcaEl.style.top = `${p[1]}px`;
+      }
     };
 
-    const mapa = await montarMapaSahara(canvas, { alPintar: colocarFlecha });
+    const alPintar = () => { colocarMarca(); listo.nombres?.coloca(); };
+    const mapa = await montarMapaSahara(canvas, { alPintar, pin: diseno === "b" });
+    listo.mapa = mapa;
+    const nombres = await montarNombresSahara($(".sahara-nombres"), mapa);
+    listo.nombres = nombres;
+    const lejos = montarLejos(zona, $(".sahara-lejos"));
 
     const ir = (i: number, alMomento = false) => {
       i = Math.max(0, Math.min(hitos.length - 1, i));
@@ -122,6 +131,10 @@ const hitos = HITOS.map((h) => {
       const h = hitos[i];
       deslizador.value = String(i);
       $(".sahara-ficha-fecha").textContent = h.fecha;
+      $(".sahara-ficha-exp").textContent = `Hito ${String(i + 1).padStart(2, "0")} / ${hitos.length}`;
+      $(".sahara-ficha-sello").hidden = !h.nota;
+      $(".sahara-marca-rotulo").textContent = diseno === "c" && h.coordenadas
+        ? `${gms(h.coordenadas[0], "N", "S")} ${gms(h.coordenadas[1], "E", "O")}` : h.lugar;
       $(".sahara-ficha-titulo").textContent = h.titulo;
       $(".sahara-ficha-lugar").textContent = `📍 ${h.lugar}`;
       $(".sahara-ficha-texto").innerHTML = h.texto;
@@ -132,10 +145,13 @@ const hitos = HITOS.map((h) => {
       nota.hidden = !h.nota;
       if (h.nota) nota.href = `/sahara/${h.nota}`;
       const enMapa = h.coordenadas ? mapa.irA(...h.coordenadas, { alMomento }) : false;
-      fuera.hidden = enMapa || !h.coordenadas;
-      if (enMapa) delete fuera.dataset.activa;
-      else fuera.dataset.activa = "1";
-      colocarFlecha();
+      if (enMapa || !h.coordenadas) lejos.ocultar();
+      else {
+        // hacia dónde queda, desde el centro de la pantalla
+        const [x, y] = mapa.aPantalla(...h.coordenadas);
+        lejos.mostrar(h, [x - canvas.clientWidth / 2, y - canvas.clientHeight / 2]);
+      }
+      colocarMarca();
       try { sessionStorage.setItem("sahara-hito", h.id); } catch { /* sin sessionStorage */ }
     };
 
@@ -183,7 +199,7 @@ const hitos = HITOS.map((h) => {
     ir(Math.max(0, hitos.findIndex((h) => h.id === guardado)), true);
 
     quitar = [
-      mapa.quitar, montarMano(zona, mapa), montarZoom(zona, mapa),
+      mapa.quitar, lejos.quitar, nombres.quitar, montarMano(zona, mapa), montarZoom(zona, mapa),
       () => observador.disconnect(),
       () => zona.removeEventListener("click", pasos),
       () => document.removeEventListener("keydown", teclas),

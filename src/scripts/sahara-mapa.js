@@ -48,11 +48,21 @@ const MARCA = [
 ];
 const MARCA_COL = { X: "#0e1813", O: "#d8402f", W: "#f6f0e0" };
 
+/** Pinta la marca con su esquina en (x, y), a bloques de `p` px. */
+export function dibujarMarca(ctx, x, y, p) {
+  MARCA.forEach((fila, j) => [...fila].forEach((k, i) => {
+    if (k === ".") return;
+    ctx.fillStyle = MARCA_COL[k];
+    ctx.fillRect(x + i * p, y + j * p, p, p);
+  }));
+}
+
 /**
  * @param {HTMLCanvasElement} canvas
- * @param {{ alPintar?: () => void }} [opciones]
+ * @param {{ alPintar?: () => void, pin?: boolean }} [opciones]  `pin`: pintar la
+ *   marca en el lienzo (si no, la pone la página encima, con `posMarca`)
  */
-export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
+export async function montarMapaSahara(canvas, { alPintar = () => {}, pin = true } = {}) {
   const datos = await fetch(`/sahara/sahara-mapa.json?v=${SAHARA_V}`).then((r) => r.json());
   const niveles = datos.niveles.map((n) => ({ ...n, hay: new Set(n.teselas) }));
   const base = niveles[0];
@@ -82,7 +92,8 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   /** El nivel que toca a una escala: el más fino con píxel de PX_ARTE CSS o más. */
   const nivelPara = (e) => {
     let n = base;
-    for (const m of niveles) if ((e / dpr) * base.ppd / m.ppd >= PX_ARTE) n = m;
+    // (con margen: 7,99999 tiene que contar como 8, o el nivel parpadea)
+    for (const m of niveles) if ((e / dpr) * base.ppd / m.ppd >= PX_ARTE - 1e-6) n = m;
     return n;
   };
   /** La escala entera más cercana para el nivel que toca (sin bajar de la mínima). */
@@ -137,15 +148,10 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
         }
       }
     }
-    if (marca) {
+    if (marca && pin) {
       // A bloques de px enteros, con la punta en el sitio.
       const p = Math.max(2, Math.round(2 * dpr));
-      const px = Math.round(ox + marca[0] * escala) - 4 * p, py = Math.round(oy + marca[1] * escala) - 9 * p;
-      MARCA.forEach((fila, j) => [...fila].forEach((k, i) => {
-        if (k === ".") return;
-        ctx.fillStyle = MARCA_COL[k];
-        ctx.fillRect(px + i * p, py + j * p, p, p);
-      }));
+      dibujarMarca(ctx, Math.round(ox + marca[0] * escala) - 4 * p, Math.round(oy + marca[1] * escala) - 9 * p, p);
     }
     alPintar();
   };
@@ -162,7 +168,8 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
       const k = u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u);
       cx = vuelo.de[0] + (vuelo.a[0] - vuelo.de[0]) * k;
       cy = vuelo.de[1] + (vuelo.a[1] - vuelo.de[1]) * k;
-      escala = objetivo = Math.exp(Math.log(vuelo.de[2]) + (Math.log(vuelo.a[2]) - Math.log(vuelo.de[2])) * k);
+      escala = objetivo = u === 1 || vuelo.de[2] === vuelo.a[2] ? vuelo.a[2]
+        : Math.exp(Math.log(vuelo.de[2]) + (Math.log(vuelo.a[2]) - Math.log(vuelo.de[2])) * k);
       if (u === 1) vuelo = null;
       pintar();
       seguir();
@@ -235,6 +242,14 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
       const [x, y] = aMapa(lat, lon);
       return [(W / 2 + (x - cx) * escala) / dpr, (H / 2 + (y - cy) * escala) / dpr];
     },
+    /** Dónde está la marca, en px CSS del lienzo, o null. */
+    posMarca() {
+      if (!marca) return null;
+      const ox = Math.round(W / 2 - cx * escala), oy = Math.round(H / 2 - cy * escala);
+      return [(ox + marca[0] * escala) / dpr, (oy + marca[1] * escala) / dpr];
+    },
+    /** Px CSS por píxel del mapa base. */
+    escalaCss: () => escala / dpr,
     /** El centro de la vista, en grados. */
     centro() {
       return [norte - cy / base.ppd, oeste + cx / (base.ppd * datos.coslat)];

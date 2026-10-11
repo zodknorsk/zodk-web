@@ -43,15 +43,18 @@ Uso (desde arte/), y después subir SAHARA_V en src/scripts/versiones.js:
       # en vez de en las teselas de la web
 """
 import colorsys
+import json
 import math
 import os
 import random
+import re
 import sys
 import time
 from array import array
 from collections import deque
 from itertools import accumulate
 from operator import add
+import unicodedata
 
 from png8 import write_rgba
 
@@ -67,6 +70,18 @@ def _arg(nombre, defecto):
 # Blanco) a la costa española del Estrecho, y de El Hierro a Melilla. Es
 # todo el mapa; el nivel base la cubre entera.
 CAJA = (20.0, 37.2, -19.0, -1.0)
+# Las zonas de fuera del mapa (--zonas): para los hitos de Madrid,
+# Washington…, una zona suelta de ZONA_KM de lado alrededor del lugar, a
+# 128 px/grado, en public/sahara/fuera/<lugar>.png. Se calcula como la caja,
+# pero con la del lugar.
+ZONA_KM = 220
+LUGARES = os.path.join(AQUI, "..", "src", "data", "sahara", "lugares.json")
+FUERA = _arg("--fuera", None)          # (uso interno de --zonas: el lugar)
+if FUERA:
+    with open(LUGARES) as fh:
+        _la, _lo = json.load(fh)[FUERA]
+    _m = ZONA_KM / 2 / 111.2
+    CAJA = (_la - _m, _la + _m, _lo - _m / math.cos(math.radians(_la)), _lo + _m / math.cos(math.radians(_la)))
 # El cajón: lo que se puede mirar en la web (CAJON en sahara-mapa.js), un
 # poco más ancho para que al arrastrar hasta el borde no falte detalle.
 CAJON = (20.4, 30.2, -18.6, -6.8)
@@ -74,6 +89,19 @@ CAJON = (20.4, 30.2, -18.6, -6.8)
 NIVELES = ((64, CAJA), (128, CAJON), (256, CAJON))
 TESELA = 512
 WEB = os.path.join(AQUI, "..", "public", "sahara")
+
+if "--zonas" in sys.argv:
+    # Una zona por cada lugar de fuera de la caja, cada una en su proceso.
+    import subprocess
+    with open(LUGARES) as fh:
+        _todos = {k: v for k, v in json.load(fh).items() if not k.startswith("_")}
+    for _n, (_la, _lo) in _todos.items():
+        if CAJA[0] <= _la <= CAJA[1] and CAJA[2] <= _lo <= CAJA[3]:
+            continue
+        print(f"zona de {_n}", file=sys.stderr)
+        subprocess.run([sys.executable, os.path.abspath(__file__), "--ppd", "128", "--fuera", _n],
+                       check=True)
+    sys.exit(0)
 
 if "--ppd" not in sys.argv:
     # Sin nivel: los de la web, cada uno en su proceso (cada nivel tiene su
@@ -260,7 +288,6 @@ def ramp(col, k, hue_mul=1.0):
 
 
 # ------------------------------------------------------- tierra / mar
-import json
 
 
 def rasterizar(features, rejilla, valor):
@@ -303,9 +330,15 @@ def rasterizar(features, rejilla, valor):
 # El fino (elevacion-sahara.py: 240 px/grado, solo la zona del mapa) si
 # está; si no, ETOPO1 a 24 px/grado (el del zoom de la Tierra).
 _FINO = os.path.join(AQUI, "tierra-fuentes", "sahara240.json")
+_d = None
 if os.path.exists(_FINO) and "--etopo1" not in sys.argv:
     with open(_FINO) as fh:
         _d = json.load(fh)
+    # (solo si cubre toda la rejilla: las zonas de fuera caen lejos)
+    _z = _d["zona"]
+    if not (_z[0] <= S and N <= _z[1] and _z[2] <= O and E <= _z[3]):
+        _d = None
+if _d:
     _EPPD, (_, _EN, _EO, _) = _d["ppd"], _d["zona"]
     _EFW, _ruta = _d["ancho"], os.path.splitext(_FINO)[0] + ".i16"
 else:
@@ -365,16 +398,28 @@ paso(f"costas: {W} x {H} celdas con margen, {KM:.2f} km/celda")
 # aquí el Sáhara Occidental va entero, con su frontera de 1975 (la de la
 # ONU): lo de Marruecos al sur del paralelo 27°40' pasa al Sáhara.
 # El muro y los cambios de frontera de cada época van en capas aparte.
-PAISES = ["ESP", "PRT", "GIB", "DZA", "MRT", "MLI", "MAR", "SAH"]
 LIMITE_SAHARA = 27.0 + 40.0 / 60.0
 PAIS = [bytearray(W) for _ in range(H)]              # 0 = ninguno, i+1 = PAISES[i]
 with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_admin_0_countries.geojson")) as fh:
     _feats = {f["properties"]["ADM0_A3"]: f for f in json.load(fh)["features"]}
+
+
+def _en_la_rejilla(f):
+    g = f["geometry"]
+    polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
+    return any(min(p[0] for p in poly[0]) <= E and max(p[0] for p in poly[0]) >= O and
+               min(p[1] for p in poly[0]) <= N and max(p[1] for p in poly[0]) >= S for poly in polys)
+
+
+# Los países que tocan la rejilla, el Sáhara Occidental el último (tapa a
+# Marruecos).
+PAISES = sorted((iso for iso, f in _feats.items() if _en_la_rejilla(f)), key=lambda iso: iso == "SAH")
 for i, iso in enumerate(PAISES):
     rasterizar([_feats[iso]], PAIS, i + 1)
 del _feats
-_MAR, _SAH = PAISES.index("MAR") + 1, PAISES.index("SAH") + 1
-for r in range(H):
+_MAR = PAISES.index("MAR") + 1 if "MAR" in PAISES else -1
+_SAH = PAISES.index("SAH") + 1 if "SAH" in PAISES else -1
+for r in range(H if _SAH > 0 else 0):
     if lat_de(r) < LIMITE_SAHARA:
         fila = PAIS[r]
         for c in range(W):
@@ -696,6 +741,38 @@ for dlat, dlon, ang, hl in _dunas:
 paso(f"dunas ({len(_dunas)})")
 
 
+# ------------------------------------------------------------ ciudades
+# Cada ciudad y pueblo de sahara-nombres.json (generar-nombres-sahara.py),
+# como una mancha de casas: radio según la población (~0,012·√habitantes km,
+# al menos un píxel), con el borde roto por ruido; dentro, tejados de dos
+# tonos y alguno en sombra, y desde 128 px/grado manzanas de 3 px con calles.
+URB = [bytearray(W) for _ in range(H)]                # 0 nada, 1-3 tono de la manzana
+URB_COL = (None, (0xdc, 0xd3, 0xc2), (0xbd, 0xb0, 0x98), (0x92, 0x84, 0x6e))
+_NOMBRES = os.path.join(WEB, "sahara-nombres.json")
+_pueblos = []
+if os.path.exists(_NOMBRES):
+    with open(_NOMBRES) as fh:
+        _pueblos = [n for n in json.load(fh) if n.get("poblacion")]
+_borde = ruido_geo([(0.02, 1.0)], 3)
+for n in _pueblos:
+    rad = max(0.8, 0.012 * math.sqrt(n["poblacion"]) / KM)   # en celdas
+    r0, c0 = celda(n["lat"], n["lon"])
+    alc = int(rad * 1.4) + 1
+    for r in range(max(0, r0 - alc), min(H, r0 + alc + 1)):
+        for c in range(max(0, c0 - alc), min(W, c0 + alc + 1)):
+            if not LAND[r][c]:
+                continue
+            d = math.hypot(r - r0, c - c0) / rad + (_borde(r, c) - 0.5) * (0.6 if rad > 2 else 0)
+            if d < 1.0:
+                R, C = r - MR + RA, c - MC + CA               # en la rejilla del nivel
+                if PPD >= 128 and (R % 4 == 0 or C % 4 == 0):
+                    URB[r][c] = 3                             # calle (desde 128 px/grado)
+                else:
+                    h = _hash01(R // 4 if PPD >= 128 else R, C // 4 if PPD >= 128 else C, 7)
+                    URB[r][c] = 3 if h < 0.15 else 2 if h < 0.55 else 1
+paso(f"ciudades ({len(_pueblos)})")
+
+
 # ------------------------------------------------------ color de cada celda
 _COAST_MIXK = (0.0, 0.20, 0.48, 0.84)
 
@@ -753,6 +830,8 @@ def color(r, c):
         surf, tex_k = ROCK, mk
     else:
         tex_k += mk
+    if URB[r][c]:
+        surf, tex_k = URB_COL[URB[r][c]], 0
     lvl = COASTLVL[r][c]
     if lvl:
         surf = mix(surf, COAST_COL, _COAST_MIXK[lvl])
@@ -802,6 +881,25 @@ def pixel(R, C):
     col = con_frontera(color(r, c), r, c)
     return bytes((col[0], col[1], col[2], 255))
 
+
+if FUERA:
+    # Zona de fuera: un solo PNG, y su caja en fuera.json.
+    carpeta = os.path.join(WEB, "fuera")
+    os.makedirs(carpeta, exist_ok=True)
+    nombre = re.sub(r"[^a-z0-9]+", "-", unicodedata.normalize("NFKD", FUERA).encode("ascii", "ignore").decode().lower()).strip("-")
+    filas = [b"".join(pixel(R, C) for C in range(CA, CB)) for R in range(RA, RB)]
+    write_rgba(os.path.join(carpeta, f"{nombre}.png"), CB - CA, RB - RA, filas)
+    ruta = os.path.join(carpeta, "fuera.json")
+    try:
+        with open(ruta) as fh:
+            indice = json.load(fh)
+    except (OSError, ValueError):
+        indice = {}
+    indice[FUERA] = {"archivo": f"{nombre}.png", "caja": CAJA, "coslat": COSLAT, "ppd": PPD}
+    with open(ruta, "w") as fh:
+        json.dump(dict(sorted(indice.items())), fh, ensure_ascii=False, indent=1)
+    paso(f"{carpeta}/{nombre}.png: {CB - CA} x {RB - RA} px")
+    sys.exit(0)
 
 if PRUEBA:
     filas = [b"".join(pixel(R, C) for C in range(CA, CB)) for R in range(RA, RB)]
