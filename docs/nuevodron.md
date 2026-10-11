@@ -493,6 +493,14 @@ en HD.
   tinta del HD vuelve rayas gruesas los finos.
 - Si el usuario pregunta si lleva tal insignia, se mira en todas sus fotos
   antes de contestar.
+- **Piezas repetidas (alas en X, molinillo) no llevan por fuerza las mismas
+  marcas**: rayas y letras pueden ir solo en alguna ala o cara. Antes de
+  pintarlas en todas, identificar en el render o la foto cuál es cada una
+  (ocultándolas de una en una en `comparar-foto.mjs`) y poner en cada una
+  lo suyo (el Hero-30).
+- **Una calca con `espejo` da la vuelta al dibujo entero**: en el otro
+  costado, una flecha acaba apuntando al revés. Lo que tenga dirección
+  (flechas, «DIRECTION OF LAUNCH») lleva una calca propia en cada costado.
 
 ### 5. Cámaras y armamento
 
