@@ -1,0 +1,39 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "1934896848461762628",
+    "created_at": "2025-06-17T08:52:11.000Z",
+    "text": "The Hungarian National Defence presented the HERO-30 loitering munition for the first time. The HERO-30 loitering munition is jointly produced and distributed by Rheinmetall and UVision from Israel. The HERO-30 weighs about 3.5 kg, has a flight time of half an hour and a range of https://t.co/nxd5QncQMC",
+    "note_tweet": true,
+    "user": {
+      "name": "Junsupreme",
+      "screen_name": "RyszardJonski",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1972294646362443776/MiqyxWKy_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/nxd5QncQMC",
+        "media_url_https": "https://pbs.twimg.com/media/GtoiCPCW4AAYczg.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/nxd5QncQMC",
+        "media_url_https": "https://pbs.twimg.com/media/GtoiF0FbAAAWF4S.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/nxd5QncQMC",
+        "media_url_https": "https://pbs.twimg.com/media/GtoiJNEXkAAhnyG.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/nxd5QncQMC",
+        "media_url_https": "https://pbs.twimg.com/media/GtoiM3oW4AAsq5A.jpg"
+      }
+    ]
+  }
+}

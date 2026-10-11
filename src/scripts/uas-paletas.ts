@@ -39,6 +39,9 @@ const COMUNES = {
   laton: ["#5a4718", "#86692a", "#b8953f", "#e0c271"],
   hueso: ["#6a675e", "#9c988b", "#cac5b6", "#ece8dc"],
   cromato: ["#5a5630", "#86804a", "#b9b06e", "#dcd59a"],
+  "blanco-h30": ["#959ba1", "#c0c6cc", "#dfe4e8", "#f3f6f8"],
+  "tubo-h30": ["#22231d", "#34352c", "#4a4b3f", "#666858"],
+  espuma: ["#262628", "#38383b", "#4e4e52", "#6c6c71"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

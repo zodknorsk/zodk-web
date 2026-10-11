@@ -21,8 +21,9 @@ mano, con el morro de gimbal del Ejército de Tierra), Bayraktar TB2
 (Turquía, con cuatro MAM-L), Shahed-136 (Irán, ala en delta, en el gris
 claro de los iraníes), Geran-2 (Rusia, la versión rusa del Shahed, en
 negro, sacado del Shahed 2.0), Quantum Systems Vector (Alemania, ala fija de despegue vertical,
-con la Raptor-360 de los españoles) y Sting (Ucrania, interceptor FPV de
-pie, en arena). Al final, lo que hay que respetar, lo que se probó y el usuario
+con la Raptor-360 de los españoles), Sting (Ucrania, interceptor FPV de
+pie, en arena) y Hero-30 (Israel, munición merodeadora de alas en X, copiada
+del render de UVision, con el tubo lanzador de la feria checa). Al final, lo que hay que respetar, lo que se probó y el usuario
 rechazó, y las fotos de cada maqueta.
 
 ## Estado

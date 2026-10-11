@@ -21,7 +21,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e", "blanco-h30": "#eef1f3", "tubo-h30": "#4a4b3f", espuma: "#4e4e52",
 };
 
 export type { Vista };
@@ -236,6 +236,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
       }
     }
   }
+  // Sus calcas y costuras, con ella.
+  const detallesCatapulta = luzHD && maqueta.catapulta?.detalles ? montarDetalles(escena, raiz, mallasCatapulta, maqueta.catapulta.detalles, radio, grupoCatapulta) : null;
   const radioSinCatapulta = radio;
   // Su botón va en la tira de vistas, con la silueta del dron sobre ella, de
   // perfil: se pinta con la catapulta puesta y el dron inclinado, y se deja
@@ -569,6 +571,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     cielo.visible = sol.visible = !hdMat;
     luzHD?.encender(!!hdMat, hdMat ?? "a");
     detallesHD?.ver(!!hd || pixelHD, !pixelHD);
+    detallesCatapulta?.ver(!!hd || pixelHD, !pixelHD);
     // Pixel HD a 1 px por píxel de arte (ver docs/uas-hd.md, «Pasar un dron
     // al pixel HD»).
     pixelado.ponerHD(pixelHD, pixelHD ? 1 : undefined, maqueta.desfaseLuz ?? 0, maqueta.sombraNegra);
@@ -756,6 +759,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     luzHD?.dispose();
     tintaContorno?.dispose();
     detallesHD?.dispose();
+    detallesCatapulta?.dispose();
     renderer.dispose();
     // Soltar el contexto WebGL: si no, al ir y volver entre páginas se
     // acumulan y el navegador acaba tirando alguno (el visor sale mal).

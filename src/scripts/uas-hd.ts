@@ -94,6 +94,13 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El cromatado amarillo verdoso del cohete de arranque del MICH-2000 (la
   // foto del cohete en su caja).
   cromato: { color: "#b9b06e", metal: 0.45, rugosidad: 0.45 },
+  // El Hero-30: blanco algo frío, satinado (al sol, en el lomo, la foto de la
+  // ILA da #e0e5e9 y el render desde su mismo ángulo, #dde1e5). El tubo de
+  // la feria checa, negro verdoso (la foto, corregida con el blanco de la
+  // mesa), y sus bloques de espuma gris muy oscuro, muy mates.
+  "blanco-h30": { color: "#d8e6f3", metal: 0, rugosidad: 0.45 },
+  "tubo-h30": { color: "#3d3e33", metal: 0, rugosidad: 0.45 },
+  espuma: { color: "#4a4a4d", metal: 0, rugosidad: 0.95 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -285,6 +292,7 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
         ? `600 ${Math.round(alto * 0.86)}px "Helvetica Neue", Arial, sans-serif`
         : `900 ${Math.round(alto * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`;
       c.textAlign = "center"; c.textBaseline = "middle";
+      if (d.espejo) { c.translate(W, 0); c.scale(-1, 1); }
       lineas.forEach((l, i) => c.fillText(l, W / 2, alto * (i + 0.54), W * 0.98));
       break;
     }
@@ -440,6 +448,33 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       c.fillStyle = d.color; c.fillRect(0, 0, W, H);
       break;
     }
+    case "rayas": {
+      // Franjas a 45°, del ancho de la mitad del alto.
+      const n = d.franjas ?? 5, paso = W / n;
+      c.fillStyle = d.fondo; c.fillRect(0, 0, W, H);
+      c.fillStyle = d.color;
+      for (let i = -1; i <= n; i++) {
+        const x = i * paso;
+        c.beginPath(); c.moveTo(x, H); c.lineTo(x + paso / 2, H); c.lineTo(x + paso / 2 + H, 0); c.lineTo(x + H, 0); c.closePath(); c.fill();
+      }
+      break;
+    }
+    case "flecha-texto": {
+      // Contorno de flecha (cuerpo de media altura y punta en el último quinto)
+      // y el texto dentro del cuerpo.
+      const lw = H * 0.07, m = lw / 2, cuerpo = H * 0.26, punta = W * 0.8;
+      c.strokeStyle = c.fillStyle = d.color; c.lineWidth = lw; c.lineJoin = "miter";
+      c.save();
+      if (d.izquierda) { c.translate(W, 0); c.scale(-1, 1); }
+      c.beginPath();
+      c.moveTo(m, H / 2 - cuerpo); c.lineTo(punta, H / 2 - cuerpo); c.lineTo(punta, m); c.lineTo(W - m * 2, H / 2);
+      c.lineTo(punta, H - m); c.lineTo(punta, H / 2 + cuerpo); c.lineTo(m, H / 2 + cuerpo); c.closePath(); c.stroke();
+      c.restore();
+      c.font = `600 ${Math.round(cuerpo * 1.05)}px "Helvetica Neue", Arial, sans-serif`;
+      c.textAlign = "center"; c.textBaseline = "middle";
+      c.fillText(d.texto, d.izquierda ? W - punta * 0.52 : punta * 0.52, H / 2 + cuerpo * 0.04, punta * 0.9);
+      break;
+    }
     case "carbono": {
       // Sarga 2/2: cada mechón ocupa dos casillas y se corre una por fila.
       const n = 64, k = W / n;
@@ -501,6 +536,47 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
         c.restore();
         x += (w + hueco) * k;
       }
+      break;
+    }
+    case "uvision": {
+      // «UVision» arriba, en una letra de palo redondeada, y el trazo rojo,
+      // inclinado y que se afina, en lugar del punto de la segunda i. Con
+      // Rheinmetall, debajo y a la izquierda su marca (una barra azul arriba
+      // y otra marino que baja, como una F inclinada) y el nombre.
+      const marino = "#1f2552", alto = d.rheinmetall ? H * 0.55 : H * 0.9;
+      c.fillStyle = marino;
+      c.textBaseline = "alphabetic"; c.textAlign = "left";
+      let fuente = alto * 0.95;
+      c.font = `600 ${Math.round(fuente)}px "Helvetica Neue", Arial, sans-serif`;
+      const ancho = c.measureText("UVisıon").width;
+      if (ancho > W * 0.98) { fuente *= (W * 0.98) / ancho; c.font = `600 ${Math.round(fuente)}px "Helvetica Neue", Arial, sans-serif`; }
+      const x0 = d.rheinmetall ? 0 : (W - c.measureText("UVisıon").width) / 2, base = alto * 0.92;
+      c.fillText("UVisıon", x0, base);
+      const xi = x0 + c.measureText("UVis").width, wi = c.measureText("ı").width, yi = base - fuente * 0.78;
+      c.fillStyle = "#d4213d";
+      c.beginPath();
+      c.moveTo(xi - wi * 1.6, yi + fuente * 0.05); c.lineTo(xi + wi * 0.6, yi - fuente * 0.12);
+      c.lineTo(xi + wi * 2.6, yi - fuente * 0.02); c.lineTo(xi + wi * 0.5, yi - fuente * 0.03);
+      c.closePath(); c.fill();
+      if (d.rheinmetall) {
+        const m = H * 0.36, my = H * 0.6;
+        c.fillStyle = "#1e6fc0";
+        c.beginPath(); c.moveTo(m * 0.22, my); c.lineTo(m * 1.05, my); c.lineTo(m * 0.95, my + m * 0.3); c.lineTo(m * 0.12, my + m * 0.3); c.closePath(); c.fill();
+        c.fillStyle = marino;
+        c.beginPath(); c.moveTo(m * 0.1, my + m * 0.38); c.lineTo(m * 0.42, my + m * 0.38); c.lineTo(m * 0.3, my + m); c.lineTo(0, my + m); c.closePath(); c.fill();
+        c.fillStyle = "#2b2c32";
+        const fr = H * 0.22;
+        c.font = `600 ${Math.round(fr)}px "Helvetica Neue", Arial, sans-serif`;
+        c.fillText("RHEINMETALL", m * 1.25, my + m * 0.95 + fr * 0.25, W - m * 1.3);
+      }
+      break;
+    }
+    case "triangulo": {
+      c.fillStyle = "#141516";
+      c.beginPath();
+      c.moveTo(0, H * 0.25); c.lineTo(W, 0);
+      c.quadraticCurveTo(W * 0.78, H * 0.45, W * 0.72, H);
+      c.closePath(); c.fill();
       break;
     }
     case "ventana": {
@@ -663,7 +739,9 @@ function soloDeCara(g: BufferGeometry, desde: Vector3): BufferGeometry {
   return h;
 }
 
-export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], detalles: NonNullable<Maqueta["detalles"]>, radio: number) {
+// `padre`: de quién cuelgan (por defecto, la raíz del dron; las de la
+// catapulta, de su grupo, para que salgan y se vayan con ella).
+export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], detalles: NonNullable<Maqueta["detalles"]>, radio: number, padre: Object3D = raiz) {
   const grupo = new Group();
   grupo.visible = false;
   escena.add(grupo);
@@ -790,7 +868,7 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
   });
   // Colgadas de la raíz, conservando su sitio: así giran con el dron cuando se
   // inclina sobre su catapulta.
-  raiz.attach(grupo);
+  padre.attach(grupo);
   return {
     // En el pixel, sin tornillos: a un píxel cada uno solo serían ruido.
     ver(si: boolean, conTornillos = true) {

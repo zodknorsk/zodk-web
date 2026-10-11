@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "1928836402994667974",
+    "created_at": "2025-05-31T15:30:09.000Z",
+    "text": "Die Rheinmetall/UVision Loitering Munition \"HERO 30\"\n7,8kg, 0,5kg Gefechtskopf, 20km Reichweite, 30Min. Flugdauer.\n\nAlter Falter...😉\n\n#WarOfDrones https://t.co/Ggp5LIzFcV",
+    "user": {
+      "name": "Martin Rosenkranz🇦🇹🇪🇺🇺🇳🇺🇦🇮🇱",
+      "screen_name": "MartinRosenkra3",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1567393701139193858/VJ-GPdke_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/Ggp5LIzFcV",
+        "media_url_https": "https://pbs.twimg.com/media/GsSZeczXAAACEuZ.jpg"
+      }
+    ]
+  }
+}

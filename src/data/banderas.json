@@ -88,5 +88,11 @@
     "nota": "Negro, rojo y oro, 2/3/2 de las 7 filas, como Rusia. El negro va algo levantado (K), como en el Sáhara: con el de verdad, la franja de arriba se fundía con el contorno.",
     "filas": ["KKKKKKKKKKK", "KKKKKKKKKKK", "RRRRRRRRRRR", "RRRRRRRRRRR", "RRRRRRRRRRR", "GGGGGGGGGGG", "GGGGGGGGGGG"],
     "paleta": { "K": "#2c2c30", "R": "#dd0000", "G": "#ffce00" }
+  },
+  "IL": {
+    "nombre": "Israel", "bandera": "🇮🇱",
+    "nota": "Blanca con las dos franjas azules y la estrella de David en medio. En 3 filas la estrella no cabe con sus puntas: va como un anillo de 3x3, que a ese tamaño se lee como la estrella.",
+    "filas": ["WWWWWWWWWWW", "BBBBBBBBBBB", "WWWWBBBWWWW", "WWWWBWBWWWW", "WWWWBBBWWWW", "BBBBBBBBBBB", "WWWWWWWWWWW"],
+    "paleta": { "W": "#f4f4f0", "B": "#0038b8" }
   }
 }

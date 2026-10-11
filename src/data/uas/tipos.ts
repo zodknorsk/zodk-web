@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -141,8 +141,9 @@ export type Dibujo =
   // Escarapela ucraniana: disco amarillo con el centro azul (el MICH-2000).
   | { tipo: "escarapela-ua" }
   // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;
-  // `fino`: letra de palo normal en vez de la negrita ancha.
-  | { tipo: "texto"; texto: string; color?: string; fino?: boolean }
+  // `fino`: letra de palo normal en vez de la negrita ancha; `espejo`, las
+  // letras al revés, como vistas por detrás (las de las alas del Hero-30).
+  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean }
   // Bandera turca, escarapela turca (roja, blanca y roja) y logo de Baykar
   // (el TB2).
   | { tipo: "bandera-tr" }
@@ -189,7 +190,21 @@ export type Dibujo =
   | { tipo: "carbono" }
   // Logo del Sting: el avispón del logo oficial de Wild Hornets y «STING»
   // pegado debajo, con su misma letra; en relieve, del color de la pintura.
-  | { tipo: "sting"; color?: string };
+  | { tipo: "sting"; color?: string }
+  // Logo de UVision: «UVision» en azul marino con el trazo rojo sobre la
+  // segunda i; con `rheinmetall`, debajo, la marca y el nombre de Rheinmetall
+  // (el Hero-30 de la ILA 2022).
+  | { tipo: "uvision"; rheinmetall?: boolean }
+  // Triángulo negro con un lado algo hundido, apuntando a la izquierda del
+  // dibujo (el del costado del Hero-30).
+  | { tipo: "triangulo" }
+  // Rayas de aviso: franjas en diagonal de dos colores alternos (las de las
+  // puntas de las alas del Hero-30, amarillas y grises).
+  | { tipo: "rayas"; color: string; fondo: string; franjas?: number }
+  // Flecha hueca con un texto dentro, a lo largo (la «DIRECTION OF LAUNCH»
+  // del tubo del Hero-30): contorno en `color`, punta a la derecha o, con
+  // `izquierda`, a la izquierda (la del otro costado), con el texto al derecho.
+  | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean };
 export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
@@ -320,6 +335,9 @@ export type Maqueta = {
   // Catapulta o lanzador (el Shahed): piezas en los mismos ejes que el dron,
   // que el visor enseña con el botón «Catapulta». Al ponerla, todo se inclina
   // `cabeceo` grados morro arriba (el bastidor queda con las ruedas en el
-  // suelo). No sale en las siluetas, las tarjetas ni las naves.
-  catapulta?: { piezas: Pieza[]; cabeceo: number };
+  // suelo). No sale en las siluetas, las tarjetas ni las naves. `nombre`: el
+  // del botón, si no es «Catapulta» (el tubo del Hero-30, «Lanzadera»).
+  // `detalles`: calcas y costuras sobre sus piezas (los textos del tubo del
+  // Hero-30), que salen y se van con ella.
+  catapulta?: { piezas: Pieza[]; cabeceo: number; nombre?: string; detalles?: NonNullable<Maqueta["detalles"]> };
 };

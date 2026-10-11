@@ -80,9 +80,9 @@ const VISTAS = [
             </button>
           ))}
           {m.catapulta && (
-            <button type="button" data-accion="catapulta" aria-pressed="false" title="El dron sobre su catapulta">
+            <button type="button" data-accion="catapulta" aria-pressed="false" title={m.catapulta.nombre ? `El dron en su ${m.catapulta.nombre.toLowerCase()}` : "El dron sobre su catapulta"}>
               <span class="visor-silueta" aria-hidden="true"></span>
-              <span class="visor-silueta-nombre">Catapulta</span>
+              <span class="visor-silueta-nombre">{m.catapulta.nombre ?? "Catapulta"}</span>
             </button>
           )}
         </div>

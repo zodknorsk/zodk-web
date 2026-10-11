@@ -1,0 +1,28 @@
+{
+  "capturado": "2026-10-11",
+  "tuit": {
+    "id_str": "1733251189506965730",
+    "created_at": "2023-12-08T22:24:20.000Z",
+    "text": "#Magdalena El Ministerio de Defensa adquirió municiones merodeadoras HERO 30 y HERO 120 de la empresa israelí UVISION. Esta munición recopila información cercana al objetivo antes de atacar, potenciando el poder de combate del usuario. https://t.co/an0yaxyKyV",
+    "user": {
+      "name": "Ejército Argentino",
+      "screen_name": "Ejercito_Arg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1332293384216711168/xja6K43y_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/an0yaxyKyV",
+        "media_url_https": "https://pbs.twimg.com/media/GA26GnKW4AAahVP.jpg"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/an0yaxyKyV",
+        "media_url_https": "https://pbs.twimg.com/media/GA26GnIWUAAxpo7.jpg"
+      }
+    ]
+  }
+}
