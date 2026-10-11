@@ -22,6 +22,12 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
   la cámara va y, mientras dura el hito, se puede mirar el mapa entero.
 - **La ficha** (arriba a la derecha): número de hito y fecha en la pestaña,
   título, lugar, foto de la nota (si la tiene), texto y «Leer la nota».
+- **Capas por fecha**: líneas que salen según el hito, a bloques de píxel
+  sobre el mapa (`public/sahara/sahara-capas.json`). Por ahora: la cinta de
+  Bucraa (desde 1969; aproximada, en línea recta de la mina a El Marsa), el
+  reparto con Mauritania (14-abr-1976 a 5-ago-1979; del tratado: de la
+  costa en 24°N al cruce de 23°N y 13°O) y el muro (desde 1980, entero; de
+  Natural Earth, simplificado).
 - **Los lugares de fuera del mapa** (Madrid, Washington, Argel…): una
   ventana con su zona dibujada que entra por el lado por el que queda.
 
@@ -40,9 +46,9 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
   título y las demás pequeñas en la pestaña. Descartadas: todas pequeñas en
   la pestaña y una línea de implicados con su nombre. La de Argelia se queda
   como está aunque a 2× recuerde a una cruz.
-- **Relieve sombreado desde 250 m**, como la Tierra. Probado desde 0 m
-  (`--relieve-desde 0`): se ve el valle de la Saguía, pero se pierden las
-  dunas en las laderas.
+- **Relieve sombreado desde 0 m** (la Tierra empieza en 250): se ve el
+  valle de la Saguía y lo bajo del cajón, aunque se pierdan algunas dunas en
+  las laderas. `--relieve-desde` lo cambia.
 - Lugares de fuera: la ventana. Probadas y descartadas: una flecha en el
   borde con la distancia («Madrid · 1880 km»), una Tierra pequeña en la
   esquina que giraba hasta el sitio (el motor de la portada) y la zona a
@@ -67,6 +73,7 @@ en pixel art con un deslizador que recorre los hitos por fecha. Rama
  src/data/sahara/lugares.json (nombre → coordenadas)  ─────────────┘
  arte/generar-nombres-sahara.py → public/sahara/sahara-nombres.json (nombres y pueblos)
  arte/generar-sahara.py         → public/sahara/n<ppd>/, fuera/   (el mapa y las zonas)
+arte/generar-capas-sahara.py   → public/sahara/sahara-capas.json (capas por fecha)
 ```
 
 - **Hitos**: ver `docs/contenido.md` («El Sáhara»). Una nota nueva con la
@@ -92,6 +99,7 @@ python3 elevacion-sahara-90.py       # relieve de 90 m del cajón (Copernicus), 
 python3 generar-nombres-sahara.py    # nombres, ciudades y pueblos
 python3 generar-sahara.py            # los cuatro niveles (~15 min)
 python3 generar-sahara.py --zonas    # las zonas de los lugares de fuera
+python3 generar-capas-sahara.py      # capas por fecha (muro, reparto, cinta)
 cd .. && npm run importar-sahara -- --borradores
 ```
 
@@ -102,11 +110,15 @@ relieve de 90 m, Copernicus DEM GLO-90 («© DLR e.V. 2010-2014 and © Airbus
 Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European
 Union and ESA»: hay que citarlo en la web al publicar); países, manchas
 urbanas, carreteras, ríos y lagos de Natural Earth 1:10m (dominio público);
-ciudades y pueblos de GeoNames (CC BY).
+ciudades y pueblos de GeoNames (CC BY); la línea del reparto de 1976, del
+convenio de Rabat (ONU, Treaty Series n.º 15406).
 
 ## Pendiente
 
-Capas por fecha (fronteras de cada época, el muro, la cinta de Bucraa, la
-Marcha Verde…), el recuadro del Estrecho a mano, el bloque de la portada,
+Más capas por fecha: Cabo Juby (franja de Tarfaya, hasta 1958; falta el
+curso del Draa, que Natural Earth no trae), Ifni (entero hasta 1958 y
+reducido hasta 1969), la Línea Negra de 1975, Guerguerat, las fases del muro
+(1980-87) y la cinta con su trazado real (OpenStreetMap no respondió);
+animaciones (Marcha Verde, Golondrina), el recuadro del Estrecho a mano, el bloque de la portada,
 el móvil, medir en vatios, citar las fuentes en la página e importar sin
 borradores antes de fusionar en `main`.

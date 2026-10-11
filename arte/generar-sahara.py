@@ -621,9 +621,10 @@ paso("costa y mar")
 
 # --------------------------------------------- relieve en escalones, roca, nieve
 MTN_CONTRAST = 1.5
-# Altura (m) desde la que se sombrea el relieve: en la Tierra, 250 (lo bajo,
-# liso); --relieve-desde lo cambia.
-RELIEVE_DESDE = float(_arg("--relieve-desde", "250"))
+# Altura (m) desde la que se sombrea el relieve: desde 0, para que se vean
+# el valle de la Saguía y lo bajo del cajón (la Tierra empieza en 250);
+# --relieve-desde lo cambia.
+RELIEVE_DESDE = float(_arg("--relieve-desde", "0"))
 # Pendiente medida a ±RELIEVE_DD grados: 3 celdas, como las teselas de la
 # Tierra (--relieve 3), así que cada nivel tiene su relieve; sin bajar de lo
 # que da el dato.

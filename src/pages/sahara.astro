@@ -136,6 +136,7 @@ const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bander
       const nota = $(".sahara-ficha-nota") as HTMLAnchorElement;
       nota.hidden = !h.nota;
       if (h.nota) nota.href = `/sahara/${h.nota}`;
+      mapa.ponFecha(h.orden);
       const enMapa = h.coordenadas ? mapa.irA(...h.coordenadas, { alMomento }) : false;
       if (enMapa || !h.coordenadas) lejos.ocultar();
       else {

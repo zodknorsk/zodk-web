@@ -16,6 +16,10 @@
 //   ponen ahí la marca. Si el lugar está en el mapa pero fuera del cajón
 //   (Ceuta, Melilla, Perejil, Rabat), mientras dure ese hito se puede mirar
 //   el mapa entero.
+// - Capas por fecha (public/sahara/sahara-capas.json, de
+//   arte/generar-capas-sahara.py): el muro, la cinta de Bucraa… Salen las
+//   que tocan a la fecha del hito (ponFecha), en líneas a bloques de píxel
+//   pegados a la rejilla del mapa, para que no tiemblen al arrastrar.
 // - Solo se repinta cuando algo cambia. Tras cada repintado llama a
 //   `alPintar` (la página coloca encima lo suyo, como la flecha de los
 //   lugares de fuera del mapa).
@@ -48,6 +52,16 @@ const MARCA = [
 ];
 const MARCA_COL = { X: "#141418", O: "#d4231c", W: "#f2f2ef" };   // tinta, rojo y papel del CSS
 
+// Las capas, por estilo: [color de dentro, color del borde, patrón]. El
+// patrón dice qué bloques se pintan a lo largo de la línea: «#» dentro,
+// «=» con el color de borde, «.» hueco.
+const CAPA_COL = { tinta: "#1d1a14", rojo: "#b3261e", papel: "#f3ecdc" };      // los del CSS
+const ESTILOS = {
+  muro: { dentro: CAPA_COL.rojo, borde: CAPA_COL.tinta, patron: "#" },
+  reparto: { dentro: CAPA_COL.papel, borde: CAPA_COL.tinta, patron: "###..." },
+  cinta: { dentro: CAPA_COL.papel, borde: CAPA_COL.tinta, patron: "##==" },
+};
+
 /** Pinta la marca con su esquina en (x, y), a bloques de `p` px. */
 export function dibujarMarca(ctx, x, y, p) {
   MARCA.forEach((fila, j) => [...fila].forEach((k, i) => {
@@ -63,6 +77,7 @@ export function dibujarMarca(ctx, x, y, p) {
  */
 export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   const datos = await fetch(`/sahara/sahara-mapa.json?v=${SAHARA_V}`).then((r) => r.json());
+  const capas = await fetch(`/sahara/sahara-capas.json?v=${SAHARA_V}`).then((r) => r.json());
   const niveles = datos.niveles.map((n) => ({ ...n, hay: new Set(n.teselas) }));
   const base = niveles[0];
   const T = datos.tesela;
@@ -84,6 +99,7 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   let ultimoGesto = 0, raf = 0, antes = 0, vivo = true;
   let vuelo = null;                               // { de: [cx, cy, e], a: [cx, cy, e], t0 }
   let marca = null;                               // [x, y] en px del nivel base
+  let fecha = "";                                 // AAAA-MM-DD del hito: qué capas salen
 
   const escalaMin = () => Math.max(W / (lim[2] - lim[0]), H / (lim[3] - lim[1]));
   const escalaMax = () => PX_ARTE_MAX * dpr * niveles[niveles.length - 1].ppd / base.ppd;
@@ -147,12 +163,60 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
         }
       }
     }
+    pintarCapas(ox, oy);
     if (marca) {
       // A bloques de px enteros, con la punta en el sitio.
       const p = Math.max(2, Math.round(2 * dpr));
       dibujarMarca(ctx, Math.round(ox + marca[0] * escala) - 4 * p, Math.round(oy + marca[1] * escala) - 9 * p, p);
     }
     alPintar();
+  };
+
+  // Las capas de la fecha: cada línea, celda a celda (Bresenham) en una
+  // rejilla de bloques de p px del dispositivo con origen en el del mapa;
+  // primero el borde de todas (un bloque más ancho) y luego el dentro.
+  const pintarCapas = (ox, oy) => {
+    const p = Math.max(2, Math.round(2 * dpr)), q = Math.max(1, Math.round(dpr));
+    const gx = ((ox % p) + p) % p, gy = ((oy % p) + p) % p;
+    const celdas = [];
+    for (const capa of capas) {
+      if (fecha < capa.desde || (capa.hasta && fecha >= capa.hasta)) continue;
+      const estilo = ESTILOS[capa.estilo];
+      if (!estilo) continue;
+      for (const linea of capa.lineas) {
+        const pts = linea.map(([lat, lon]) => {
+          const [x, y] = aMapa(lat, lon);
+          return [Math.floor((ox + x * escala - gx) / p), Math.floor((oy + y * escala - gy) / p)];
+        });
+        let k = 0;
+        for (let i = 1; i < pts.length; i++) {
+          let [x, y] = pts[i - 1];
+          const [x2, y2] = pts[i];
+          const dx = Math.abs(x2 - x), dy = -Math.abs(y2 - y), sx = x < x2 ? 1 : -1, sy = y < y2 ? 1 : -1;
+          let err = dx + dy;
+          for (;;) {
+            if (x * p >= -p && x * p <= W && y * p >= -p && y * p <= H) {
+              celdas.push([gx + x * p, gy + y * p, estilo, estilo.patron[k % estilo.patron.length]]);
+            }
+            k++;
+            if (x === x2 && y === y2) break;
+            const e2 = 2 * err;
+            if (e2 >= dy) { err += dy; x += sx; }
+            if (e2 <= dx) { err += dx; y += sy; }
+          }
+        }
+      }
+    }
+    for (const [x, y, estilo, t] of celdas) {
+      if (t === ".") continue;
+      ctx.fillStyle = estilo.borde;
+      ctx.fillRect(x - q, y - q, p + 2 * q, p + 2 * q);
+    }
+    for (const [x, y, estilo, t] of celdas) {
+      if (t !== "#") continue;
+      ctx.fillStyle = estilo.dentro;
+      ctx.fillRect(x, y, p, p);
+    }
   };
 
   // Un fotograma: el zoom se acerca a su objetivo con el punto agarrado
@@ -235,6 +299,12 @@ export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
         seguir();
       }
       return true;
+    },
+    /** La fecha (AAAA-MM-DD) del hito: salen las capas que le tocan. */
+    ponFecha(f) {
+      if (f === fecha) return;
+      fecha = f;
+      repintar();
     },
     /** Un punto en grados, en px CSS del lienzo (puede caer fuera). */
     aPantalla(lat, lon) {
