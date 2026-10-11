@@ -9,6 +9,7 @@ import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 import PageLayout from "@layouts/PageLayout.astro";
 import { primeraFoto } from "@lib/contenido";
+import { bandera, svgBandera } from "../data/banderas";
 import HITOS from "../data/sahara/hitos.json";
 
 // La foto de la ficha: la primera de la nota del hito, si la tiene.
@@ -23,6 +24,10 @@ const hitos = HITOS.map((h) => {
   const nota = h.nota && publicadas.has(h.nota) ? h.nota : null;
   return { ...h, nota, foto: nota ? fotos[nota] ?? null : null };
 });
+// Las banderas que salen (implicados de los hitos y lugares de fuera), con
+// su nombre y su SVG de pixel art.
+const codigos = new Set(HITOS.flatMap((h) => [...h.banderas, ...(h.banderaLugar ? [h.banderaLugar] : [])]));
+const banderas = Object.fromEntries([...codigos].map((c) => [c, { nombre: bandera(c).nombre, svg: svgBandera(bandera(c)) }]));
 ---
 
 <PageLayout title="Sáhara" description="Los conflictos con Marruecos en los siglos XX y XXI, en un mapa del Sáhara en pixel art." hero cabecera={false}>
@@ -35,7 +40,7 @@ const hitos = HITOS.map((h) => {
     <!-- Los hitos de fuera del mapa (Madrid, Washington…), en una ventana con
          su zona: src/scripts/sahara-lejos.js. -->
     <div class="sahara-lejos sahara-papel" hidden aria-hidden="true">
-      <p class="sahara-lejos-pestana"></p>
+      <p class="sahara-lejos-pestana"><span class="sahara-bandera"></span><span class="sahara-lejos-nombre"></span></p>
       <div class="sahara-lejos-marco">
         <img class="sahara-lejos-zona" alt="" />
         <canvas class="sahara-lejos-marca"></canvas>
@@ -44,9 +49,12 @@ const hitos = HITOS.map((h) => {
 
     <!-- La ficha del hito. -->
     <article class="sahara-ficha sahara-papel" data-sin-arrastre aria-live="polite">
-      <div class="sahara-ficha-pestana"><span class="sahara-ficha-num"></span><span class="sahara-ficha-fecha"></span></div>
+      <div class="sahara-ficha-pestana"><span class="sahara-ficha-num"></span><span class="sahara-ficha-banderas"></span><span class="sahara-ficha-fecha"></span></div>
       <div class="sahara-ficha-cuerpo">
-        <h1 class="sahara-ficha-titulo"></h1>
+        <div class="sahara-ficha-cabeza">
+          <span class="sahara-ficha-insignia"></span>
+          <h1 class="sahara-ficha-titulo"></h1>
+        </div>
         <p class="sahara-ficha-lugar"></p>
         <img class="sahara-ficha-foto" alt="" hidden />
         <div class="sahara-ficha-texto"></div>
@@ -67,6 +75,7 @@ const hitos = HITOS.map((h) => {
       <button class="sahara-paso sahara-tecla" type="button" data-paso="1" aria-label="Hito siguiente">▶</button>
     </div>
     <script is:inline type="application/json" id="sahara-hitos" set:html={JSON.stringify(hitos)} />
+    <script is:inline type="application/json" id="sahara-banderas" set:html={JSON.stringify(banderas)} />
   </section>
 </PageLayout>
 
@@ -82,6 +91,7 @@ const hitos = HITOS.map((h) => {
   type Hito = {
     id: string; fecha: string; orden: string; titulo: string; texto: string;
     lugar: string; coordenadas: [number, number] | null; nota: string | null; foto: string | null;
+    banderas: string[]; banderaLugar: string | null;
   };
   let quitar: (() => void)[] = [];
 
@@ -90,6 +100,9 @@ const hitos = HITOS.map((h) => {
     const canvas = document.querySelector<HTMLCanvasElement>(".sahara-mapa");
     if (!zona || !canvas) return;
     const hitos: Hito[] = JSON.parse(document.getElementById("sahara-hitos")?.textContent ?? "[]");
+    const BANDERAS: Record<string, { nombre: string, svg: string }> =
+      JSON.parse(document.getElementById("sahara-banderas")?.textContent ?? "{}");
+    const svg = (c: string) => BANDERAS[c]?.svg ?? "";
     const $ = (sel: string) => zona.querySelector(sel) as HTMLElement;
     const deslizador = $(".sahara-deslizador") as HTMLInputElement;
     let actual = -1;
@@ -113,6 +126,8 @@ const hitos = HITOS.map((h) => {
       $(".sahara-ficha-num").textContent = `Hito ${String(i + 1).padStart(2, "0")}/${hitos.length}`;
       $(".sahara-ficha-fecha").textContent = h.fecha;
       $(".sahara-ficha-titulo").textContent = h.titulo;
+      $(".sahara-ficha-banderas").innerHTML = h.banderas.map((c) => `<span class="sahara-bandera" title="${BANDERAS[c]?.nombre ?? c}">${svg(c)}</span>`).join("");
+      $(".sahara-ficha-insignia").innerHTML = h.banderas[0] ? `<span class="sahara-bandera">${svg(h.banderas[0])}</span>` : "";
       $(".sahara-ficha-lugar").textContent = h.lugar;
       $(".sahara-ficha-texto").innerHTML = h.texto;
       const foto = $(".sahara-ficha-foto") as HTMLImageElement;
@@ -126,7 +141,7 @@ const hitos = HITOS.map((h) => {
       else {
         // hacia dónde queda, desde el centro de la pantalla
         const [x, y] = mapa.aPantalla(...h.coordenadas);
-        lejos.mostrar(h, [x - canvas.clientWidth / 2, y - canvas.clientHeight / 2]);
+        lejos.mostrar(h, [x - canvas.clientWidth / 2, y - canvas.clientHeight / 2], h.banderaLugar ? svg(h.banderaLugar) : "");
       }
       try { sessionStorage.setItem("sahara-hito", h.id); } catch { /* sin sessionStorage */ }
     };

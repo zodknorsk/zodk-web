@@ -36,6 +36,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/tierra.md` | La portada (la Tierra) |
 | `docs/luna.md` | `/luna` |
 | `docs/marte.md` | `/marte` |
+| `docs/sahara.md` | `/sahara`, el mapa del Sáhara (rama `sahara-project`) |
 | `docs/nuevodron.md` | **Cómo hacer un dron nuevo**, de la nota de Obsidian al dron publicado (con `/nuevodron`). Para un dron nuevo, solo este |
 | `docs/hangar-de-uas.md` | Todo lo del Hangar de UAS: fichas, visor, tira de la portada, glosario, armamento; decisiones, lo rechazado y las fotos de cada dron hecho |
 | `docs/uas-hd.md` | Historia del paso de los drones al HD y al pixel HD (cerrado el 6-oct-2026) |

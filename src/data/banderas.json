@@ -94,5 +94,28 @@
     "nota": "Blanca con las dos franjas azules y la estrella de David en medio. En 3 filas la estrella no cabe con sus puntas: va como un anillo de 3x3, que a ese tamaño se lee como la estrella.",
     "filas": ["WWWWWWWWWWW", "BBBBBBBBBBB", "WWWWBBBWWWW", "WWWWBWBWWWW", "WWWWBBBWWWW", "BBBBBBBBBBB", "WWWWWWWWWWW"],
     "paleta": { "W": "#f4f4f0", "B": "#0038b8" }
+  },
+  "DZ": {
+    "nombre": "Argelia", "bandera": "🇩🇿",
+    "nota": "La media luna, una C gruesa a caballo entre el verde y el blanco, abierta hacia la estrella (a este tamaño, una cruz).",
+    "filas": ["gggggWWWWWW", "ggggrrrWWWW", "gggrrWWWrWW", "gggrgWWrrrW", "gggrrWWWrWW", "ggggrrrWWWW", "gggggWWWWWW"],
+    "paleta": { "g": "#006233", "W": "#f4f4f0", "r": "#d21034" }
+  },
+  "MR": {
+    "nombre": "Mauritania", "bandera": "🇲🇷",
+    "nota": "La de 2017, con las franjas rojas arriba y abajo. La estrella encima de la media luna, abierta hacia arriba.",
+    "filas": ["rrrrrrrrrrr", "gggggyggggg", "ggggyyygggg", "ggyggyggygg", "gggyyyyyggg", "ggggggggggg", "rrrrrrrrrrr"],
+    "paleta": { "r": "#d01c1f", "g": "#00a95c", "y": "#ffd700" }
+  },
+  "FR": {
+    "nombre": "Francia", "bandera": "🇫🇷",
+    "filas": ["bbbbWWWrrrr", "bbbbWWWrrrr", "bbbbWWWrrrr", "bbbbWWWrrrr", "bbbbWWWrrrr", "bbbbWWWrrrr", "bbbbWWWrrrr"],
+    "paleta": { "b": "#002395", "W": "#f4f4f0", "r": "#ed2939" }
+  },
+  "UN": {
+    "nombre": "Naciones Unidas", "bandera": "🇺🇳",
+    "nota": "El globo con los laureles, en blanco sobre el azul de la ONU.",
+    "filas": ["bbbbbbbbbbb", "bbbbwwwbbbb", "bbbwbwbwbbb", "bbbwwwwwbbb", "bbbwbwbwbbb", "bbbbwwwbbbb", "bbbbbbbbbbb"],
+    "paleta": { "b": "#4b92db", "w": "#f4f4f0" }
   }
 }

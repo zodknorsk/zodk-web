@@ -2,14 +2,21 @@
    El mapa en pixel art (src/scripts/sahara-mapa.js) a pantalla completa: se
    arrastra y se acerca con la rueda o el trackpad, así que la página no hace
    scroll. Encima, los nombres, la ficha del hito, el deslizador y la ventana
-   de los lugares de fuera del mapa, en papel claro con tinta y rojo, a
-   píxeles: bordes con las esquinas en escalón y sombra dura. */
+   de los lugares de fuera del mapa, en papel crema con tinta y rojo: serifa,
+   borde liso y sombra dura. */
 html:has(.sahara-hero) { overflow: hidden; }
 .sahara-hero {
-  --papel: #f2f2ef;
-  --tinta: #141418;
-  --rojo: #d4231c;
-  --gris: #5d5d63;
+  --papel: #f3ecdc;
+  --tinta: #1d1a14;
+  --rojo: #b3261e;
+  --gris: #5b5246;
+  --texto: #1d1a14;
+  --letra-titulo: "IBM Plex Serif", serif;
+  --letra-texto: "IBM Plex Serif", serif;
+  --pestana-fondo: transparent;
+  --pestana-tinta: var(--rojo);
+  --lejos-fondo: var(--tinta);
+  --sombra: rgb(5 6 10 / 0.45);
   touch-action: none;
   background: #1d508c;                      /* OCEAN_DEEP, mientras carga */
 }
@@ -23,13 +30,12 @@ html:has(.sahara-hero) { overflow: hidden; }
 .sahara-hero.arrastrable { cursor: grab; }
 .sahara-hero.agarrando, .sahara-hero.agarrando * { cursor: grabbing; user-select: none; }
 
-/* Papel a píxeles: el borde de 2 px son cuatro sombras (así las esquinas
-   quedan en escalón) y debajo, la sombra dura. */
+/* El papel: borde liso de 2 px y debajo, la sombra dura. */
 .sahara-papel, .sahara-tecla {
   color: var(--tinta);
   background: var(--papel);
-  box-shadow: 0 -2px 0 var(--tinta), 0 2px 0 var(--tinta), -2px 0 0 var(--tinta), 2px 0 0 var(--tinta),
-    4px 6px 0 rgb(5 6 10 / 0.45);
+  outline: 2px solid var(--tinta);
+  box-shadow: 4px 4px 0 rgb(0 0 0 / 0.45);
 }
 /* Las teclas: se hunden al pulsarlas y se vuelven rojas al pasar el ratón. */
 .sahara-tecla {
@@ -46,13 +52,14 @@ html:has(.sahara-hero) { overflow: hidden; }
   cursor: pointer;
 }
 .sahara-tecla:hover { color: var(--papel); background: var(--rojo); }
-.sahara-tecla:active { transform: translate(2px, 2px); box-shadow: 0 -2px 0 var(--tinta), 0 2px 0 var(--tinta), -2px 0 0 var(--tinta), 2px 0 0 var(--tinta), 2px 3px 0 rgb(5 6 10 / 0.45); }
+.sahara-tecla:active { transform: translate(2px, 2px); }
 .sahara-tecla:focus-visible { outline: 2px solid var(--rojo); outline-offset: 4px; }
 
 .sahara-volver { position: absolute; top: 18px; left: 18px; z-index: 2; }
 
-/* --- La ficha del hito: una pestaña roja con el número y la fecha, y debajo
-   el título, el lugar, la foto, el texto y la tecla de la nota. */
+/* --- La ficha del hito: una pestaña con el número, las banderas y la fecha
+   en rojo, como a máquina; debajo, la primera bandera en grande junto al
+   título, el lugar, la foto, el texto y la tecla de la nota. */
 .sahara-ficha {
   position: absolute;
   top: 18px;
@@ -71,11 +78,12 @@ html:has(.sahara-hero) { overflow: hidden; }
   font: 600 11px/1.3 "IBM Plex Mono", ui-monospace, monospace;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--papel);
-  background: var(--rojo);
+  color: var(--pestana-tinta);
+  background: var(--pestana-fondo);
+  border-bottom: 1px dashed rgb(29 26 20 / 0.35);
 }
 .sahara-ficha-cuerpo { padding: 12px 14px 16px; }
-.sahara-ficha-titulo { margin: 0; font: 600 18px/1.3 "IBM Plex Sans", sans-serif; color: inherit; }
+.sahara-ficha-titulo { margin: 0; font: 600 18px/1.3 var(--letra-titulo); color: inherit; }
 /* El lugar, con un cuadrado rojo de píxel delante. */
 .sahara-ficha-lugar {
   display: flex;
@@ -88,9 +96,9 @@ html:has(.sahara-hero) { overflow: hidden; }
 }
 .sahara-ficha-lugar::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--rojo); box-shadow: 0 0 0 1px var(--tinta); }
 .sahara-ficha-foto { display: block; width: 100%; margin-top: 12px; image-rendering: auto; box-shadow: 0 0 0 2px var(--tinta); }
-.sahara-ficha-texto { margin-top: 10px; font: 400 14px/1.55 "IBM Plex Sans", sans-serif; color: #2a2a2f; }
+.sahara-ficha-texto { margin-top: 10px; font: 400 14px/1.55 var(--letra-texto); color: var(--texto); }
 .sahara-ficha-texto a { color: var(--rojo); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-.sahara-ficha-nota { margin-top: 14px; }
+.sahara-ficha-nota { margin-top: 14px; transform: rotate(-3deg); color: var(--rojo); outline-color: var(--rojo); }
 .sahara-ficha [hidden] { display: none; }
 
 /* --- El deslizador: una regla. Una marca por hito (las rojas y altas, con
@@ -159,7 +167,7 @@ html:has(.sahara-hero) { overflow: hidden; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--papel);
-  background: var(--tinta);
+  background: var(--lejos-fondo);
 }
 .sahara-lejos-marco { position: relative; padding: 8px; line-height: 0; }
 .sahara-lejos-zona { display: block; max-width: none; height: auto; image-rendering: pixelated; box-shadow: 0 0 0 2px var(--tinta); }
@@ -205,3 +213,22 @@ html:has(.sahara-hero) { overflow: hidden; }
   .sahara-ficha { top: auto; bottom: 96px; right: 18px; max-height: 40%; }
   .sahara-lejos { top: 64px; }
 }
+
+/* --- Banderas (las de src/data/banderas.json, 13x9 con el contorno), a 2 px
+   por píxel. En la ficha, la primera en grande junto al título y las demás
+   pequeñas en la pestaña. */
+.sahara-bandera { display: inline-block; line-height: 0; }
+.sahara-bandera[hidden] { display: none; }
+.sahara-bandera svg { width: 26px; height: 18px; image-rendering: pixelated; shape-rendering: crispEdges; }
+.sahara-lejos-pestana { display: flex; align-items: center; gap: 8px; }
+.sahara-ficha-pestana { align-items: center; }
+.sahara-ficha-num { white-space: nowrap; }
+.sahara-ficha-fecha { text-align: right; }
+.sahara-ficha-banderas { display: flex; gap: 4px; margin-left: auto; }
+.sahara-ficha-banderas .sahara-bandera svg { width: 22px; height: 15px; }
+.sahara-ficha-banderas .sahara-bandera:first-child { display: none; }
+.sahara-ficha-banderas:not(:empty) + .sahara-ficha-fecha { margin-left: 8px; }
+.sahara-ficha-cabeza { display: flex; align-items: flex-start; gap: 10px; }
+.sahara-ficha-insignia { display: block; flex: none; margin-top: 3px; }
+.sahara-ficha-insignia:empty { display: none; }
+.sahara-ficha-insignia svg { width: 52px; height: 36px; }

@@ -7,8 +7,12 @@
   "texto": "El geólogo español Manuel Alía Medina localiza el gran yacimiento de fosfatos de Bu Craa, cerca de El Aaiún. Los costes de extracción y la baja calidad inicial del mineral llevan a suspender los trabajos en 1956, aplazando su explotación industrial más de una década.",
   "lugar": "Bucraa",
   "coordenadas": [
-   26.33,
-   -12.85
+   26.354,
+   -12.784
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "ES"
   ],
   "nota": null
  },
@@ -23,6 +27,14 @@
    34.02,
    -6.84
   ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA",
+   "FR",
+   "ES",
+   "MR",
+   "DZ"
+  ],
   "nota": null
  },
  {
@@ -35,6 +47,12 @@
   "coordenadas": [
    29.38,
    -10.17
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "ES",
+   "FR"
   ],
   "nota": "guerra-de-ifni-sahara"
  },
@@ -49,6 +67,11 @@
    27.153,
    -13.203
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "UN",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -59,9 +82,11 @@
   "texto": "La batalla de Edchera tuvo lugar el 13 de enero de 1958, en pleno frente sahariano de la Guerra de Ifni, y se recuerda como el episodio más sangriento y…",
   "lugar": "Edchera",
   "coordenadas": [
-   27.03,
-   -13.05
+   27.026,
+   -13.052
   ],
+  "banderaLugar": null,
+  "banderas": [],
   "nota": "desastre-de-edchera"
  },
  {
@@ -75,6 +100,10 @@
    26.74,
    -11.67
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "FR"
+  ],
   "nota": "operacion-conjunta-ecouvillon-teide"
  },
  {
@@ -85,9 +114,11 @@
   "texto": "Tratado que puso fin formalmente a la Guerra de Ifni.",
   "lugar": "Angra de Cintra",
   "coordenadas": [
-   23.07,
-   -16.23
+   22.998,
+   -16.152
   ],
+  "banderaLugar": null,
+  "banderas": [],
   "nota": "acuerdos-de-cintra"
  },
  {
@@ -98,8 +129,12 @@
   "texto": "El Instituto Nacional de Industria (INI) retoma el yacimiento descubierto en 1947 y constituye ENMINSA (1962), rebautizada Fosfatos de Bucraa en 1968. Se confirma uno de los mayores depósitos del mundo y se construye una <a href=\"/sahara/antigua-cintra-transportadora-de-bucraa\">cinta transportadora</a> de más de 100 km hasta la costa, disparando el interés estratégico de Marruecos sobre el territorio.",
   "lugar": "Bucraa",
   "coordenadas": [
-   26.33,
-   -12.85
+   26.354,
+   -12.784
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA"
   ],
   "nota": null
  },
@@ -114,6 +149,11 @@
    34.02,
    -6.84
   ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -124,9 +164,11 @@
   "texto": "Es una cintra transportadora de exactamente 100km por el desierto desde Bu Craa, en el Sáhara Occidental, hasta El Marsa, a 25km al suroeste de El-Aaiún,…",
   "lugar": "Bucraa",
   "coordenadas": [
-   26.33,
-   -12.85
+   26.354,
+   -12.784
   ],
+  "banderaLugar": null,
+  "banderas": [],
   "nota": "antigua-cintra-transportadora-de-bucraa"
  },
  {
@@ -139,6 +181,11 @@
   "coordenadas": [
    27.153,
    -13.203
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "ES",
+   "EH"
   ],
   "nota": null
  },
@@ -153,6 +200,12 @@
    22.73,
    -12.47
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "EH",
+   "ES",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -165,6 +218,13 @@
   "coordenadas": [
    52.08,
    4.31
+  ],
+  "banderaLugar": "UN",
+  "banderas": [
+   "UN",
+   "MA",
+   "MR",
+   "EH"
   ],
   "nota": null
  },
@@ -179,6 +239,10 @@
    27.153,
    -13.203
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "ES"
+  ],
   "nota": "juan-carlos-i-en-su-visita-a-el-aaiun"
  },
  {
@@ -189,8 +253,15 @@
   "texto": "Aprovechando la agonía de Franco y con respaldo de EE. UU. y Francia, Hasán II moviliza a 350.000 civiles y tropas armadas camufladas hacia la frontera norte del Sáhara. España repliega a sus tropas a la \"Línea Negra\" para evitar una guerra abierta.",
   "lugar": "Tarfaya",
   "coordenadas": [
-   27.94,
-   -12.93
+   27.939,
+   -12.926
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "ES",
+   "US",
+   "FR",
+   "MA"
   ],
   "nota": "marcha-verde-de-1975"
  },
@@ -205,6 +276,13 @@
    40.42,
    -3.7
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "MA",
+   "MR",
+   "EH"
+  ],
   "nota": "acuerdos-tripartitos-de-madrid"
  },
  {
@@ -217,6 +295,12 @@
   "coordenadas": [
    27.153,
    -13.203
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "EH",
+   "ES",
+   "UN"
   ],
   "nota": "operacion-golondrina"
  },
@@ -231,6 +315,12 @@
    26.13,
    -14.49
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "EH",
+   "ES",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -243,6 +333,13 @@
   "coordenadas": [
    26.3,
    -11.4
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "US",
+   "FR",
+   "EH"
   ],
   "nota": "muro-marroqui"
  },
@@ -257,6 +354,12 @@
    27.153,
    -13.203
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "UN",
+   "MA",
+   "EH"
+  ],
   "nota": null
  },
  {
@@ -269,6 +372,12 @@
   "coordenadas": [
    35.889,
    -5.317
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "MA",
+   "EU"
   ],
   "nota": null
  },
@@ -283,6 +392,10 @@
    34.02,
    -6.84
   ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -295,6 +408,12 @@
   "coordenadas": [
    35.914,
    -5.418
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA",
+   "ES",
+   "US"
   ],
   "nota": null
  },
@@ -309,6 +428,13 @@
    40.75,
    -73.97
   ],
+  "banderaLugar": "UN",
+  "banderas": [
+   "US",
+   "UN",
+   "EH",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -321,6 +447,10 @@
   "coordenadas": [
    40.42,
    -3.7
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA"
   ],
   "nota": null
  },
@@ -335,6 +465,10 @@
    35.293,
    -2.938
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -348,6 +482,8 @@
    35.889,
    -5.317
   ],
+  "banderaLugar": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -361,6 +497,12 @@
    28.96,
    -13.55
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA",
+   "EH",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -371,8 +513,13 @@
   "texto": "El desmantelamiento violento por Marruecos de un campamento de protesta saharaui a las afueras de El Aaiún causa graves disturbios, considerado un antecedente directo de la Primavera Árabe.",
   "lugar": "Gdeim Izik",
   "coordenadas": [
-   27.07,
-   -13.08
+   27.08,
+   -13.11
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "EH"
   ],
   "nota": null
  },
@@ -387,6 +534,8 @@
    35.889,
    -5.317
   ],
+  "banderaLugar": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -400,6 +549,12 @@
    23.83,
    -20.73
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "EU",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -410,8 +565,13 @@
   "texto": "El ejército marroquí interviene en la zona desmilitarizada de Guerguerat para desbloquear una carretera comercial. El Polisario declara roto el alto el fuego de 1991 y reanuda los ataques.",
   "lugar": "Guerguerat",
   "coordenadas": [
-   21.37,
-   -16.95
+   21.427,
+   -16.96
+  ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "EH"
   ],
   "nota": null
  },
@@ -426,6 +586,12 @@
    38.9,
    -77.04
   ],
+  "banderaLugar": "US",
+  "banderas": [
+   "US",
+   "MA",
+   "IL"
+  ],
   "nota": null
  },
  {
@@ -438,6 +604,12 @@
   "coordenadas": [
    34.02,
    -6.84
+  ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA",
+   "IL",
+   "US"
   ],
   "nota": null
  },
@@ -452,6 +624,12 @@
    38.9,
    -77.04
   ],
+  "banderaLugar": "US",
+  "banderas": [
+   "US",
+   "MA",
+   "IL"
+  ],
   "nota": null
  },
  {
@@ -464,6 +642,12 @@
   "coordenadas": [
    52.52,
    13.4
+  ],
+  "banderaLugar": "DE",
+  "banderas": [
+   "DE",
+   "MA",
+   "ES"
   ],
   "nota": null
  },
@@ -478,6 +662,11 @@
    35.889,
    -5.317
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "EH"
+  ],
   "nota": null
  },
  {
@@ -490,6 +679,12 @@
   "coordenadas": [
    40.42,
    -3.7
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA",
+   "IL",
+   "ES"
   ],
   "nota": "software-pegasus"
  },
@@ -504,6 +699,12 @@
    48.58,
    7.75
   ],
+  "banderaLugar": "EU",
+  "banderas": [
+   "EU",
+   "MA",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -516,6 +717,13 @@
   "coordenadas": [
    36.75,
    3.06
+  ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "MA",
+   "IL",
+   "ES"
   ],
   "nota": null
  },
@@ -530,6 +738,12 @@
    49.61,
    6.13
   ],
+  "banderaLugar": "EU",
+  "banderas": [
+   "EU",
+   "MA",
+   "EH"
+  ],
   "nota": null
  },
  {
@@ -542,6 +756,12 @@
   "coordenadas": [
    36.75,
    3.06
+  ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "MA",
+   "ES"
   ],
   "nota": null
  },
@@ -556,6 +776,11 @@
    34.02,
    -6.84
   ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA",
+   "IL"
+  ],
   "nota": null
  },
  {
@@ -568,6 +793,13 @@
   "coordenadas": [
    40.42,
    -3.7
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA",
+   "ES",
+   "EH",
+   "IL"
   ],
   "nota": null
  },
@@ -582,6 +814,12 @@
    36.75,
    3.06
   ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "ES",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -594,6 +832,11 @@
   "coordenadas": [
    40.42,
    -3.7
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "MA"
   ],
   "nota": null
  },
@@ -608,6 +851,11 @@
    40.42,
    -3.7
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -620,6 +868,12 @@
   "coordenadas": [
    36.75,
    3.06
+  ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "ES",
+   "MA"
   ],
   "nota": null
  },
@@ -634,6 +888,10 @@
    35.293,
    -2.938
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -646,6 +904,14 @@
   "coordenadas": [
    48.86,
    2.35
+  ],
+  "banderaLugar": "FR",
+  "banderas": [
+   "FR",
+   "MA",
+   "US",
+   "ES",
+   "DZ"
   ],
   "nota": null
  },
@@ -660,6 +926,13 @@
    49.61,
    6.13
   ],
+  "banderaLugar": "EU",
+  "banderas": [
+   "EU",
+   "MA",
+   "EH",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -672,6 +945,12 @@
   "coordenadas": [
    36.75,
    3.06
+  ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "ES",
+   "FR"
   ],
   "nota": null
  },
@@ -686,6 +965,13 @@
    32.08,
    34.78
   ],
+  "banderaLugar": "IL",
+  "banderas": [
+   "IL",
+   "FR",
+   "MA",
+   "US"
+  ],
   "nota": null
  },
  {
@@ -698,6 +984,11 @@
   "coordenadas": [
    35.889,
    -5.317
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "MA",
+   "ES"
   ],
   "nota": null
  },
@@ -712,6 +1003,12 @@
    27.153,
    -13.203
   ],
+  "banderaLugar": null,
+  "banderas": [
+   "MA",
+   "EU",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -724,6 +1021,15 @@
   "coordenadas": [
    51.51,
    -0.13
+  ],
+  "banderaLugar": "GB",
+  "banderas": [
+   "GB",
+   "MA",
+   "US",
+   "FR",
+   "ES",
+   "DE"
   ],
   "nota": null
  },
@@ -738,6 +1044,11 @@
    40.42,
    -3.7
   ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "ES",
+   "MA"
+  ],
   "nota": null
  },
  {
@@ -750,6 +1061,11 @@
   "coordenadas": [
    34.02,
    -6.84
+  ],
+  "banderaLugar": "MA",
+  "banderas": [
+   "MA",
+   "ES"
   ],
   "nota": "software-pegasus"
  },
@@ -764,6 +1080,8 @@
    40.42,
    -3.7
   ],
+  "banderaLugar": "ES",
+  "banderas": [],
   "nota": null
  },
  {
@@ -777,6 +1095,11 @@
    36.75,
    3.06
   ],
+  "banderaLugar": "DZ",
+  "banderas": [
+   "DZ",
+   "ES"
+  ],
   "nota": null
  },
  {
@@ -789,6 +1112,12 @@
   "coordenadas": [
    35.889,
    -5.317
+  ],
+  "banderaLugar": "ES",
+  "banderas": [
+   "DZ",
+   "MA",
+   "ES"
   ],
   "nota": null
  }

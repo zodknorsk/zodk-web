@@ -14,7 +14,8 @@ const LADO = 300;                                 // px CSS que mide la zona com
  * @param {HTMLElement} capa  el contenedor .sahara-lejos
  */
 export function montarLejos(hero, capa) {
-  const pestana = capa.querySelector(".sahara-lejos-pestana");
+  const nombre = capa.querySelector(".sahara-lejos-nombre");
+  const banderaEl = capa.querySelector(".sahara-bandera");
   const img = capa.querySelector(".sahara-lejos-zona");
   // La marca, la misma del mapa, pintada una vez.
   const marca = capa.querySelector(".sahara-lejos-marca");
@@ -24,11 +25,16 @@ export function montarLejos(hero, capa) {
   const zonas = () => (indice ??= fetch(`/sahara/fuera/fuera.json?v=${SAHARA_V}`).then((r) => r.json()));
 
   return {
-    /** Enseña el lugar del hito `h`; `dir`: [x, y] en pantalla hacia él. */
-    async mostrar(h, dir) {
+    /**
+     * Enseña el lugar del hito `h`, con su bandera (`svgBandera`: el SVG de
+     * la del lugar, o ""); `dir`: [x, y] en pantalla hacia él.
+     */
+    async mostrar(h, dir, svgBandera = "") {
       const z = (await zonas())[h.lugar];
       if (!z) return;
-      pestana.textContent = h.lugar;
+      nombre.textContent = h.lugar;
+      banderaEl.innerHTML = svgBandera;
+      banderaEl.hidden = !svgBandera;
       img.src = `/sahara/fuera/${z.archivo}?v=${SAHARA_V}`;
       await img.decode().catch(() => {});
       // Escala entera de píxeles del dispositivo por píxel de la zona.

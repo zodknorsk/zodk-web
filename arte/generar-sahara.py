@@ -79,14 +79,15 @@ LUGARES = os.path.join(AQUI, "..", "src", "data", "sahara", "lugares.json")
 FUERA = _arg("--fuera", None)          # (uso interno de --zonas: el lugar)
 if FUERA:
     with open(LUGARES) as fh:
-        _la, _lo = json.load(fh)[FUERA]
+        _la, _lo = json.load(fh)[FUERA][:2]       # (el tercero, si lo hay, es la bandera)
     _m = ZONA_KM / 2 / 111.2
     CAJA = (_la - _m, _la + _m, _lo - _m / math.cos(math.radians(_la)), _lo + _m / math.cos(math.radians(_la)))
 # El cajón: lo que se puede mirar en la web (CAJON en sahara-mapa.js), un
 # poco más ancho para que al arrastrar hasta el borde no falte detalle.
 CAJON = (20.4, 30.2, -18.6, -6.8)
-# Niveles de la web: (px/grado, zona). El base, la caja; los finos, el cajón.
-NIVELES = ((64, CAJA), (128, CAJON), (256, CAJON))
+# Niveles de la web: (px/grado, zona). El base, la caja; los finos, el cajón
+# (el de 512, con el relieve de 90 m de elevacion-sahara-90.py).
+NIVELES = ((64, CAJA), (128, CAJON), (256, CAJON), (512, CAJON))
 TESELA = 512
 WEB = os.path.join(AQUI, "..", "public", "sahara")
 
@@ -98,7 +99,7 @@ if "--zonas" in sys.argv:
     shutil.rmtree(os.path.join(AQUI, "..", "public", "sahara", "fuera"), ignore_errors=True)
     with open(LUGARES) as fh:
         _todos = {k: v for k, v in json.load(fh).items() if not k.startswith("_")}
-    for _n, (_la, _lo) in _todos.items():
+    for _n, (_la, _lo, *_) in _todos.items():
         if CAJA[0] <= _la <= CAJA[1] and CAJA[2] <= _lo <= CAJA[3]:
             continue
         print(f"zona de {_n}", file=sys.stderr)
@@ -333,44 +334,57 @@ def rasterizar(features, rejilla, valor):
 
 
 # ------------------------------------------------------------- relieve
-# El fino (elevacion-sahara.py: 240 px/grado, solo la zona del mapa) si
-# está; si no, ETOPO1 a 24 px/grado (el del zoom de la Tierra).
-_FINO = os.path.join(AQUI, "tierra-fuentes", "sahara240.json")
-_d = None
-if os.path.exists(_FINO) and "--etopo1" not in sys.argv:
-    with open(_FINO) as fh:
-        _d = json.load(fh)
-    # (solo si cubre toda la rejilla: las zonas de fuera caen lejos)
-    _z = _d["zona"]
-    if not (_z[0] <= S and N <= _z[1] and _z[2] <= O and E <= _z[3]):
-        _d = None
-if _d:
-    _EPPD, (_, _EN, _EO, _) = _d["ppd"], _d["zona"]
-    _EFW, _ruta = _d["ancho"], os.path.splitext(_FINO)[0] + ".i16"
-else:
-    _EPPD, _EN, _EO, _EFW = 24, 90.0, -180.0, 8640
-    _ruta = os.path.join(AQUI, "tierra-fuentes", "etopo24.i16")
-_EF = array("h")
-with open(_ruta, "rb") as fh:
-    _EF.frombytes(fh.read())
+# Por fuentes, de la más fina a la más basta, y en cada punto la primera que
+# lo cubre: Copernicus a 90 m (elevacion-sahara-90.py, solo el cajón; solo
+# desde 512 px/grado, que es cuando se nota y pesa 400 MB), el de 15"
+# (elevacion-sahara.py, la caja con margen) y ETOPO1 (el del zoom de la
+# Tierra, para las zonas de fuera). Con --etopo1, solo ETOPO1.
+def _fuente(nombre, ppd_minimo=0):
+    ruta = os.path.join(AQUI, "tierra-fuentes", nombre)
+    if "--etopo1" in sys.argv or PPD < ppd_minimo or not os.path.exists(ruta):
+        return None
+    with open(ruta) as fh:
+        d = json.load(fh)
+    s, n, o, e = d["zona"]
+    if n <= S or s >= N or e <= O or o >= E:
+        return None                               # no toca esta rejilla
+    datos = array("h")
+    with open(os.path.splitext(ruta)[0] + ".i16", "rb") as fh:
+        datos.frombytes(fh.read())
+    if sys.byteorder != "little":
+        datos.byteswap()
+    return (d["ppd"], n, o, s, e, d["ancho"], len(datos) // d["ancho"], datos)
+
+
+_ETOPO = array("h")
+with open(os.path.join(AQUI, "tierra-fuentes", "etopo24.i16"), "rb") as fh:
+    _ETOPO.frombytes(fh.read())
 if sys.byteorder != "little":
-    _EF.byteswap()
-_EFH = len(_EF) // _EFW
+    _ETOPO.byteswap()
+FUENTES = [f for f in (_fuente("sahara1200.json", 512), _fuente("sahara240.json")) if f]
+FUENTES.append((24, 90.0, -180.0, -90.0, 180.0, 8640, 4320, _ETOPO))
+_EPPD = FUENTES[0][0]                     # la más fina que hay en esta rejilla
+
+
+def _bilineal(f, lat, lon):
+    ppd, n, o, _, _, ancho, alto, datos = f
+    # fuera del dato (las cuentas de nieve miran 1° alrededor), el borde
+    fr = min(max((n - lat) * ppd - 0.5, 0.0), alto - 1.001)
+    fc = min(max((lon - o) * ppd - 0.5, 0.0), ancho - 1.001)
+    r0, c0 = int(fr), int(fc)
+    tr, tc = fr - r0, fc - c0
+    i0, i1 = r0 * ancho, (r0 + 1) * ancho
+    a = datos[i0 + c0] * (1 - tc) + datos[i0 + c0 + 1] * tc
+    b = datos[i1 + c0] * (1 - tc) + datos[i1 + c0 + 1] * tc
+    return a * (1 - tr) + b * tr
 
 
 def elev(lat, lon):
-    """Altura (m), interpolada."""
-    fr = (_EN - lat) * _EPPD - 0.5
-    fc = (lon - _EO) * _EPPD - 0.5
-    # fuera del dato (las cuentas de nieve miran 1° alrededor), el borde
-    fr = min(max(fr, 0.0), _EFH - 1.001)
-    fc = min(max(fc, 0.0), _EFW - 1.001)
-    r0, c0 = math.floor(fr), math.floor(fc)
-    tr, tc = fr - r0, fc - c0
-    i0, i1 = r0 * _EFW, (r0 + 1) * _EFW
-    a = _EF[i0 + c0] * (1 - tc) + _EF[i0 + c0 + 1] * tc
-    b = _EF[i1 + c0] * (1 - tc) + _EF[i1 + c0 + 1] * tc
-    return a * (1 - tr) + b * tr
+    """Altura (m), interpolada, de la fuente más fina que cubre el punto."""
+    for f in FUENTES:
+        if f[3] <= lat < f[1] and f[2] <= lon < f[4]:
+            return _bilineal(f, lat, lon)
+    return _bilineal(FUENTES[-1], lat, lon)
 
 
 # La costa: con el relieve fino, donde la altura pasa de 0, y es mar solo lo
@@ -462,23 +476,77 @@ _mix_noise = _ruido([(max(1, round(6 * KC / SCALE)), 0.65), (max(1, round(3 * KC
 # Manchas grandes (claros, erg y reg), cada 6° y 2,25°.
 _patch_noise = ruido_geo([(6.0, 0.68), (2.25, 0.32)], 2)
 
-# ---------------------------------------------------- biomas (como la Tierra)
+# ---------------------------------------------------------------- biomas
+# Por la lluvia de verdad (WorldClim 2.1, lluvia anual a 10', libre:
+# tierra-fuentes/wc2.1_10m_bio_12.tif, ver LLUVIA_URL), que sube con la
+# altura (en los montes llueve más): desierto, estepa o verde. La Tierra los
+# reparte por latitud con cajas de desierto, y aquí eso dejaba verde la costa
+# del Sáhara al sur de Dajla y Fuerteventura. Con --biomas-tierra, como la
+# Tierra.
+LLUVIA_URL = "https://geodata.ucdavis.edu/climate/worldclim/2_1/base/wc2.1_10m_bio.zip"
+LLUVIA_DESIERTO, LLUVIA_ESTEPA = 200.0, 450.0     # mm al año (con la altura)
+# La altura suma lluvia desde 300 m (el mar de nubes canario, los montes): sin
+# eso, el dato de 10' (18 km) pone igual de verde la costa y las cumbres de
+# una isla.
+LLUVIA_ALTURA = (300.0, 1200.0)                   # desde dónde y cada cuánto se dobla
+# En Canarias, los alisios: las laderas que miran al noreste (barlovento)
+# reciben la humedad y las del sur (sotavento) quedan secas. Hasta ±ALISIO en
+# la lluvia, según hacia dónde mire la ladera y lo empinada que sea.
+CANARIAS = (27.4, 29.6, -18.5, -13.2)
+ALISIO = 0.7
 _N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
 BIOME = [bytearray(W) for _ in range(H)]
-for r in range(H):
-    lat = lat_de(r)
-    for c in range(W):
-        if not LAND[r][c]:
-            continue
-        lon = lon_de(c)
-        nf = _vnoise(r, c) - 0.5
-        des = max(min(lat - a0, a1 - lat, lon - o0, o1 - lon) for a0, a1, o0, o1 in DESIERTOS)
-        if des > 2.0 or (des > -4.0 and nf * 9.0 < des):
-            b = 2
-        else:
-            la = abs(lat) + nf * 4.0
-            b = 1 if la < 12 else 3 if la < 34 else 0 if la < 52 else 4 if la < 66 else 5
-        BIOME[r][c] = b
+_LLUVIA = os.path.join(AQUI, "tierra-fuentes", "wc2.1_10m_bio_12.tif")
+if os.path.exists(_LLUVIA) and "--biomas-tierra" not in sys.argv:
+    from PIL import Image
+    _ll = Image.open(_LLUVIA).load()
+
+    def lluvia(lat, lon):
+        """mm al año, interpolada (el mar de WorldClim, como el vecino más seco)."""
+        fx, fy = (lon + 180) * 6 - 0.5, (90 - lat) * 6 - 0.5
+        x0, y0 = int(fx), int(fy)
+        tx, ty = fx - x0, fy - y0
+        v = [_ll[x, y] for y in (y0, y0 + 1) for x in (x0, x0 + 1)]
+        tierra = [a for a in v if a > -1e30] or [0.0]
+        v = [a if a > -1e30 else min(tierra) for a in v]
+        return (v[0] * (1 - tx) + v[1] * tx) * (1 - ty) + (v[2] * (1 - tx) + v[3] * tx) * ty
+
+    _umbral = (math.log(LLUVIA_DESIERTO), math.log(LLUVIA_ESTEPA))
+    for r in range(H):
+        lat = lat_de(r)
+        for c in range(W):
+            if not LAND[r][c]:
+                continue
+            lon = lon_de(c)
+            e = elev(lat, lon)
+            sube = 1 + max(0.0, e - LLUVIA_ALTURA[0]) / LLUVIA_ALTURA[1]
+            if CANARIAS[0] <= lat <= CANARIAS[1] and CANARIAS[2] <= lon <= CANARIAS[3] and e > 50:
+                d = 0.03                                # ~3 km a cada lado
+                gx = (elev(lat, lon + d) - elev(lat, lon - d)) / (2 * d * 111 * math.cos(math.radians(lat)))
+                gy = (elev(lat + d, lon) - elev(lat - d, lon)) / (2 * d * 111)
+                pend = math.hypot(gx, gy)               # m por km
+                if pend > 1:
+                    # hacia dónde baja la ladera, contra el noreste
+                    cara = (-gx * 0.707 - gy * 0.707) / pend
+                    sube *= 1 + ALISIO * cara * min(1.0, pend / 60)
+            x = math.log(max(1.0, lluvia(lat, lon) * sube))
+            x += (_vnoise(r, c) - 0.5) * 0.4           # borde ondulado, como el de la Tierra
+            BIOME[r][c] = 2 if x < _umbral[0] else 3 if x < _umbral[1] else 0
+else:
+    for r in range(H):
+        lat = lat_de(r)
+        for c in range(W):
+            if not LAND[r][c]:
+                continue
+            lon = lon_de(c)
+            nf = _vnoise(r, c) - 0.5
+            des = max(min(lat - a0, a1 - lat, lon - o0, o1 - lon) for a0, a1, o0, o1 in DESIERTOS)
+            if des > 2.0 or (des > -4.0 and nf * 9.0 < des):
+                b = 2
+            else:
+                la = abs(lat) + nf * 4.0
+                b = 1 if la < 12 else 3 if la < 34 else 0 if la < 52 else 4 if la < 66 else 5
+            BIOME[r][c] = b
 # filtro de moda 3x3: quita celdas de bioma sueltas
 _nuevo = [bytearray(BIOME[r]) for r in range(H)]
 for r in range(1, H - 1):
@@ -553,6 +621,9 @@ paso("costa y mar")
 
 # --------------------------------------------- relieve en escalones, roca, nieve
 MTN_CONTRAST = 1.5
+# Altura (m) desde la que se sombrea el relieve: en la Tierra, 250 (lo bajo,
+# liso); --relieve-desde lo cambia.
+RELIEVE_DESDE = float(_arg("--relieve-desde", "250"))
 # Pendiente medida a ±RELIEVE_DD grados: 3 celdas, como las teselas de la
 # Tierra (--relieve 3), así que cada nivel tiene su relieve; sin bajar de lo
 # que da el dato.
@@ -565,7 +636,7 @@ for r in range(H):
         if not LAND[r][c]:
             continue
         lon = lon_de(c)
-        if elev(lat, lon) < 250:
+        if elev(lat, lon) < RELIEVE_DESDE:
             continue
         dd = RELIEVE_DD
         ex = (elev(lat, lon + dd) - elev(lat, lon - dd)) * (0.5 / dd)
@@ -599,7 +670,10 @@ def roca_nieve(lat, lon):
 
 
 # ------------------------------------- mezcla de biomas a manchas y sabana
-MEZCLA_R = round(9 * KC)
+# Franja de mezcla: 2,25° en la Tierra (se ve el planeta entero); aquí
+# 0,1°: más ancha repartía manchas verdes a 200 km dentro del desierto y el
+# verde de las cumbres canarias por toda la isla.
+MEZCLA_R = round((9 if "--biomas-tierra" in sys.argv else 0.4) * KC)
 MIXBIO = [bytearray(BIOME[r]) for r in range(H)]
 SAV = [bytearray(W) for _ in range(H)]
 

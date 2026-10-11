@@ -789,6 +789,28 @@ function hitosDeTimeline(content) {
   return hitos;
 }
 
+// Los implicados de cada hito, por lo que dice su texto: palabra -> bandera
+// (el código de src/data/banderas.json). Van en la ficha, en el orden en que
+// salen. Los lugares (Madrid, Rabat) no cuentan: son el sitio, no el actor.
+const IMPLICADOS = [
+  [/\bEspañ(a|ola|oles|olas|ol)\b|franquista|\bFranco\b/i, "ES"],
+  [/Marruecos|marroqu[ií](es)?|Hasán|Hassán|Mohamed VI|\bDGST\b|\bDGED\b/i, "MA"],
+  [/Polisario|saharaui|\bRASD\b/i, "EH"],
+  [/Mauritania|mauritan[oa]s?/i, "MR"],
+  [/Argelia|argelin[oa]s?|\bArgel\b/i, "DZ"],
+  [/Francia|franc[eé]s|francesa|Macron/i, "FR"],
+  [/EE\. ?UU\.|Estados Unidos|estadounidense|Trump|Kissinger/i, "US"],
+  [/Israel|israel[ií]/i, "IL"],
+  [/Alemania|alem[aá]n(a)?/i, "DE"],
+  [/Reino Unido|brit[aá]nic[oa]|Londres/i, "GB"],
+  [/\bONU\b|Naciones Unidas|MINURSO|\bCIJ\b|Corte Internacional/i, "UN"],
+  [/\bUE\b|Unión Europea|Parlamento Europeo|Eurocámara|TJUE|Justicia de la UE|eurodiputad/i, "EU"],
+];
+
+function implicados(texto) {
+  return IMPLICADOS.map(([re, b]) => [texto.search(re), b]).filter(([i]) => i >= 0).sort((a, b) => a[0] - b[0]).map(([, b]) => b);
+}
+
 /**
  * src/data/sahara/hitos.json, lo que recorre el deslizador de /sahara, por
  * fecha. Salen de dos sitios:
@@ -831,10 +853,12 @@ function escribirHitosSahara(items, resolver) {
     if (!orden) avisos.push(`sin año en la fecha: «${h.fecha}» (${h.titulo})`);
     if (!h.lugar) avisos.push(`sin lugar: ${h.titulo}`);
     else if (!lugares[h.lugar]) avisos.push(`lugar desconocido: «${h.lugar}» (${h.titulo}); añadirlo a src/data/sahara/lugares.json`);
+    const lugar = lugares[h.lugar];
     return {
       id: generarSlug(`${orden ?? ""} ${h.titulo}`),
       fecha: h.fecha, orden: orden ?? "9999-12-31", titulo: h.titulo, texto: h.texto,
-      lugar: h.lugar, coordenadas: lugares[h.lugar] ?? null,
+      lugar: h.lugar, coordenadas: lugar ? lugar.slice(0, 2) : null, banderaLugar: lugar?.[2] ?? null,
+      banderas: implicados(`${h.titulo} ${h.texto.replace(/<[^>]+>/g, "")}`).slice(0, 4),   // como mucho 4
       nota: h.nota ? path.basename(h.nota.carpetaDestino) : null,
     };
   }).sort((a, b) => a.orden.localeCompare(b.orden));
