@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "dev:network": "astro dev --host",
     "importar": "node scripts/importar-notas.mjs",
+    "importar-sahara": "node scripts/importar-notas.mjs --solo-sahara",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "preview:network": "astro preview --host",

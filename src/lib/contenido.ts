@@ -26,16 +26,17 @@ export function porFecha(a: { data: { date: Date } }, b: { data: { date: Date } 
   return b.data.date.valueOf() - a.data.date.valueOf();
 }
 
-type Articulo = CollectionEntry<"notas"> | CollectionEntry<"analisis"> | CollectionEntry<"operaciones"> | CollectionEntry<"seguimientos">;
+type Articulo = CollectionEntry<"notas"> | CollectionEntry<"analisis"> | CollectionEntry<"operaciones"> | CollectionEntry<"seguimientos"> | CollectionEntry<"sahara">;
 
-// Fotos de las tres secciones y de las notas, para las miniaturas de la
-// portada y de /blog.
+// Fotos de las tres secciones, de las notas y del Sáhara, para las
+// miniaturas de la portada, de /blog y de las fichas de /sahara.
 const FOTOS = import.meta.glob<ImageMetadata>(
   [
     "/src/content/notas/*/*.{jpg,jpeg,png,webp}",
     "/src/content/analisis/*/*.{jpg,jpeg,png,webp}",
     "/src/content/operaciones/*/*.{jpg,jpeg,png,webp}",
     "/src/content/seguimientos/**/*.{jpg,jpeg,png,webp}",
+    "/src/content/sahara/*/*.{jpg,jpeg,png,webp}",
   ],
   { eager: true, import: "default" },
 );

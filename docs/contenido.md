@@ -41,6 +41,17 @@ Fuera de esta regla, como siempre: las notas con etiqueta `luna`, `marte` o
 `blog` (colección `notas`, `/notas/<slug>`) y las del Hangar de UAS (por su
 carpeta, `/uas`).
 
+**El Sáhara** (`/sahara`, en la rama `sahara-project`) va aparte: las notas
+con la etiqueta `sahara-project`, estén en la carpeta que estén, y su línea de
+tiempo (la nota «0 Timeline») las trae `npm run importar-sahara`, que funciona
+en cualquier rama y solo toca lo suyo (`src/content/sahara/` y
+`src/data/sahara/hitos.json`). `npm run importar` no las toca. Con
+`-- --borradores` entran también las que no llevan `publicar: true`.
+Cada hito de la línea de tiempo lleva su lugar en una línea `📍 Lugar`, y las
+notas que son hitos, `periodo` y `lugar` en el frontmatter; los lugares
+válidos están en `src/data/sahara/lugares.json` (el importador avisa de los
+que falten).
+
 Las direcciones de antes (`/eventos/…`, `/notas` y `/notas/<análisis>`)
 redirigen a las nuevas (`Redireccion.astro`, con `<meta refresh>` porque la
 web es estática) y no salen en el sitemap.

@@ -1,6 +1,6 @@
 ---
 // La página de un artículo suelto: los análisis, las operaciones y las notas
-// de los proyectos (Luna, Marte y el blog). Arriba, «volver»; debajo, la
+// de los proyectos (Luna, Marte, el blog y el Sáhara). Arriba, «volver»; debajo, la
 // fecha (o el periodo del suceso, en las operaciones) y lo que se tarda en
 // leer, el título, la etiqueta «Opinión» si la lleva y las etiquetas.
 import type { CollectionEntry } from "astro:content";
@@ -13,7 +13,7 @@ import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
 import { readingTime } from "@lib/utils";
 
 interface Props {
-  entrada: CollectionEntry<"notas"> | CollectionEntry<"analisis"> | CollectionEntry<"operaciones">;
+  entrada: CollectionEntry<"notas"> | CollectionEntry<"analisis"> | CollectionEntry<"operaciones"> | CollectionEntry<"sahara">;
   volver: { href: string; texto: string };
   periodo?: string;
   opinion?: boolean;

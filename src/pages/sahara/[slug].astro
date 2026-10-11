@@ -1,0 +1,17 @@
+---
+// Las notas del Sáhara: /sahara/<slug>, con su «volver» al mapa. Con su
+// periodo arriba en vez de la fecha de creación, como las operaciones.
+import { type CollectionEntry, getCollection } from "astro:content";
+import ArticuloPagina from "@components/ArticuloPagina.astro";
+
+export async function getStaticPaths() {
+  return (await getCollection("sahara"))
+    .filter((n) => !n.data.draft)
+    .map((nota) => ({ params: { slug: nota.id }, props: { nota } }));
+}
+type Props = { nota: CollectionEntry<"sahara"> };
+
+const { nota } = Astro.props;
+---
+
+<ArticuloPagina entrada={nota} volver={{ href: "/sahara", texto: "Volver al mapa del Sáhara" }} periodo={nota.data.periodo} />

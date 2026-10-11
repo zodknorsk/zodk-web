@@ -32,6 +32,7 @@
 // Uso:   npm run importar                          (BOVEDA_PATH=... para otra ruta)
 //        npm run importar -- --refrescar-tuits     vuelve a pedir a X todos los tuits
 //        npm run importar -- --en-esta-rama        importa aunque no se esté en main
+//        npm run importar-sahara [-- --borradores] solo el Sáhara (ver abajo)
 // ---------------------------------------------------------------------------
 
 import fs from "node:fs";
@@ -78,12 +79,24 @@ const DESTINO_OPERACIONES = path.join(RAIZ, "src", "content", "operaciones");
 const DESTINO_SEGUIMIENTOS = path.join(RAIZ, "src", "content", "seguimientos");
 const DESTINO_UAS = path.join(RAIZ, "src", "content", "uas");
 const DESTINOS = [DESTINO_NOTAS, DESTINO_ANALISIS, DESTINO_OPERACIONES, DESTINO_SEGUIMIENTOS, DESTINO_UAS];
+// El Sáhara (/sahara, docs/sahara.md): las notas con la etiqueta
+// ETIQUETA_SAHARA, estén donde estén, y su línea de tiempo (la que se llama
+// «… Timeline»). Van aparte: `npm run importar` no las toca, y
+// `npm run importar-sahara` (--solo-sahara) solo trata esas, en cualquier rama,
+// para que el proyecto no se mezcle con lo demás. Con --borradores entran
+// también las que no llevan `publicar: true` (para trabajar en la rama).
+const ETIQUETA_SAHARA = "sahara-project";
+const DESTINO_SAHARA = path.join(RAIZ, "src", "content", "sahara");
+const HITOS_SAHARA = path.join(RAIZ, "src", "data", "sahara", "hitos.json");
+const LUGARES_SAHARA = path.join(RAIZ, "src", "data", "sahara", "lugares.json");
 const PUBLICO_TWEETS = path.join(RAIZ, "public", "tweets");
 const PUBLICO_ADJUNTOS = path.join(RAIZ, "public", "adjuntos");
 const ARCHIVO_TUITS = path.join(RAIZ, "src", "data", "tuits");
 
 const REFRESCAR_TUITS = process.argv.includes("--refrescar-tuits");
 const EN_ESTA_RAMA = process.argv.includes("--en-esta-rama");
+const SOLO_SAHARA = process.argv.includes("--solo-sahara");
+const BORRADORES = process.argv.includes("--borradores");
 
 // Las notas de los proyectos van por su etiqueta, sea cual sea su tipo.
 const ETIQUETAS_PROYECTO = new Set(["luna", "marte", "blog"]);
@@ -332,6 +345,10 @@ function frontmatterDe(ruta) {
   return frontmatterIndices.get(ruta);
 }
 
+function esDelSahara(data) {
+  return [].concat(data.tags ?? []).some((t) => String(t).toLowerCase() === ETIQUETA_SAHARA);
+}
+
 /**
  * Decide a qué colección va un archivo. Devuelve { tipo: "uas" | "nota" |
  * "analisis" | "operacion" | "seguimiento" | null, … }; los seguimientos,
@@ -345,6 +362,7 @@ function clasificar(ruta, data) {
     const municion = !armamento && partes.includes(CARPETA_ARMAMENTO);
     return { tipo: "uas", glosario: RE_GLOSARIO_UAS.test(stem), armamento, municion };
   }
+  if (esDelSahara(data)) return { tipo: "sahara", timeline: /timeline/i.test(stem) };
   if ([].concat(data.tags ?? []).some((t) => ETIQUETAS_PROYECTO.has(String(t).toLowerCase()))) {
     return { tipo: "nota" };
   }
@@ -706,6 +724,128 @@ function escribirSiCambia(ruta, texto) {
   return existe ? "cambiada" : "nueva";
 }
 
+// --- Hitos del Sáhara --------------------------------------------------
+
+const MESES_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+/**
+ * El día con el que se ordena un hito, como AAAA-MM-DD: el primero que diga
+ * su fecha («6 de noviembre de 1975», «Octubre de 1957 – Abril de 1958»,
+ * «31 de octubre – 1 de noviembre de 2021», «Finales de 1962»). Del texto
+ * hasta el primer año, el primer mes y el primer número.
+ */
+function ordenDeFecha(texto) {
+  const t = texto.toLowerCase();
+  const ano = t.match(/\b(1[5-9]\d\d|20\d\d)\b/);
+  if (!ano) return null;
+  const antes = t.slice(0, ano.index);
+  const conMes = MESES_ES.map((m, i) => [antes.indexOf(m), i]).filter(([p]) => p >= 0).sort((x, y) => x[0] - y[0]);
+  const mes = conMes.length ? conMes[0][1] : /finales/.test(antes) ? 11 : /mediados/.test(antes) ? 5 : 0;
+  const dia = antes.match(/\b(\d{1,2})\b/);
+  return `${ano[1]}-${String(mes + 1).padStart(2, "0")}-${String(dia ? dia[1] : 1).padStart(2, "0")}`;
+}
+
+/** [[Nota|texto]] -> texto, sin ** ni ==: los títulos de los hitos. */
+function textoPlano(md) {
+  return md.replace(/\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]+))?\]\]/g, (_, d, alias) => alias ?? d)
+    .replace(/\*\*|==/g, "").trim();
+}
+
+/** El texto de un hito, a HTML: enlaces a lo publicado y negritas. */
+function enLinea(md, resolver) {
+  return md.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]+))?\]\]/g, (_, d, alias) => {
+      const url = resolver(d);
+      return url ? `<a href="${url}">${alias ?? d}</a>` : (alias ?? d);
+    })
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/==(.+?)==/g, "$1");
+}
+
+/**
+ * Los hitos de la línea de tiempo del Sáhara: cada bloque que empieza por la
+ * fecha (`>==**fecha**==`), con el título en la línea siguiente, el texto y
+ * el lugar (`📍 Lugar`) hasta la línea en blanco.
+ */
+function hitosDeTimeline(content) {
+  const hitos = [];
+  let h = null;
+  for (const linea of content.split("\n")) {
+    const l = linea.trim();
+    const fecha = l.match(/^>\s*==\*\*(.+?)\*\*==$/);
+    if (fecha) {
+      h = { fecha: fecha[1].trim(), titulo: null, texto: [], lugar: null };
+      hitos.push(h);
+    } else if (!h || !l || l.startsWith("#")) {
+      h = null;
+    } else if (h.titulo === null) {
+      h.titulo = l.replace(/^[>*=\s]+|[*=\s]+$/g, "");
+    } else if (l.startsWith("📍")) {
+      h.lugar = l.replace(/^📍\s*/, "");
+    } else {
+      h.texto.push(l.replace(/^>\s?/, ""));
+    }
+  }
+  return hitos;
+}
+
+/**
+ * src/data/sahara/hitos.json, lo que recorre el deslizador de /sahara, por
+ * fecha. Salen de dos sitios:
+ *  - los bloques de la línea de tiempo; si su título enlaza a una nota del
+ *    Sáhara (o se llama como ella), el hito lleva a esa nota;
+ *  - las notas del Sáhara con `periodo` y `lugar` a las que no lleva ningún
+ *    hito de la línea de tiempo, con su primer párrafo como texto.
+ * Las notas sin `periodo` (el Polisario, el Muro) son páginas, no hitos.
+ */
+function escribirHitosSahara(items, resolver) {
+  const lugares = JSON.parse(fs.readFileSync(LUGARES_SAHARA, "utf8"));
+  const delSahara = items.filter((it) => it.clase.tipo === "sahara");
+  const notas = delSahara.filter((it) => !it.clase.timeline);
+  const porSlug = new Map();
+  for (const n of notas) {
+    porSlug.set(generarSlug(n.titulo), n);
+    porSlug.set(generarSlug(n.stem), n);
+  }
+  const timeline = delSahara.find((it) => it.clase.timeline);
+  const hitos = [];
+  const cubiertas = new Set();
+  for (const h of timeline ? hitosDeTimeline(timeline.content) : []) {
+    const enlazadas = [...h.titulo.matchAll(/\[\[([^\]|#]+)/g)].map((m) => porSlug.get(generarSlug(m[1]))).filter(Boolean);
+    const nota = enlazadas[0] ?? porSlug.get(generarSlug(textoPlano(h.titulo))) ?? null;
+    if (nota) cubiertas.add(nota);
+    hitos.push({ fecha: h.fecha, titulo: textoPlano(h.titulo), texto: enLinea(h.texto.join(" "), resolver), lugar: h.lugar, nota });
+  }
+  for (const n of notas) {
+    const periodo = primero(n.data.periodo), lugar = primero(n.data.lugar);
+    if (cubiertas.has(n) || !periodo || !lugar) continue;
+    hitos.push({
+      fecha: String(periodo).trim(), titulo: n.titulo, lugar: String(lugar).trim(), nota: n,
+      texto: enLinea(extraerDescripcion(n.content) ?? "", resolver),
+    });
+  }
+
+  const avisos = [];
+  const salida = hitos.map((h) => {
+    const orden = ordenDeFecha(h.fecha);
+    if (!orden) avisos.push(`sin año en la fecha: «${h.fecha}» (${h.titulo})`);
+    if (!h.lugar) avisos.push(`sin lugar: ${h.titulo}`);
+    else if (!lugares[h.lugar]) avisos.push(`lugar desconocido: «${h.lugar}» (${h.titulo}); añadirlo a src/data/sahara/lugares.json`);
+    return {
+      id: generarSlug(`${orden ?? ""} ${h.titulo}`),
+      fecha: h.fecha, orden: orden ?? "9999-12-31", titulo: h.titulo, texto: h.texto,
+      lugar: h.lugar, coordenadas: lugares[h.lugar] ?? null,
+      nota: h.nota ? path.basename(h.nota.carpetaDestino) : null,
+    };
+  }).sort((a, b) => a.orden.localeCompare(b.orden));
+
+  fs.mkdirSync(path.dirname(HITOS_SAHARA), { recursive: true });
+  const estado = escribirSiCambia(HITOS_SAHARA, JSON.stringify(salida, null, 1) + "\n");
+  console.log(`\nHitos del Sáhara: ${salida.length} (${salida.filter((h) => h.nota).length} con nota)${estado ? `, ${estado === "nueva" ? "nuevos" : "cambiados"}` : ", sin cambios"}.`);
+  if (!timeline) console.warn("  ⚠ no encuentro la línea de tiempo (una nota del Sáhara que se llame «… Timeline»)");
+  for (const a of avisos) console.warn(`  ⚠ ${a}`);
+}
+
 async function main() {
   if (!fs.existsSync(BOVEDA)) {
     console.error(`No encuentro la bóveda en: ${BOVEDA}`);
@@ -714,7 +854,7 @@ async function main() {
   // Las notas se publican desde main: en una rama de proyecto el contenido se
   // mezclaría con el proyecto.
   const rama = ramaActual();
-  if (rama && rama !== "main" && !EN_ESTA_RAMA) {
+  if (rama && rama !== "main" && !EN_ESTA_RAMA && !SOLO_SAHARA) {
     console.error(
       `Estás en la rama «${rama}». Las notas se publican desde main:\n\n` +
       "  git switch main\n\n" +
@@ -724,7 +864,7 @@ async function main() {
   }
   console.log(`Bóveda: ${BOVEDA}\n`);
 
-  for (const d of [...DESTINOS, PUBLICO_ADJUNTOS]) fs.mkdirSync(d, { recursive: true });
+  for (const d of [...DESTINOS, DESTINO_SAHARA, PUBLICO_ADJUNTOS]) fs.mkdirSync(d, { recursive: true });
 
   // Lo que escribe (o deja como estaba) esta importación en src/content/ y
   // public/adjuntos/. Al final se borra de ahí todo lo demás: es lo que ya
@@ -765,7 +905,9 @@ async function main() {
   const items = [];
   for (const ruta of buscarMarkdown(BOVEDA)) {
     const { data, content } = matter(fs.readFileSync(ruta, "utf8"));
-    if (data.publicar !== true) continue;
+    const sahara = esDelSahara(data);
+    if (data.publicar !== true && !(SOLO_SAHARA && BORRADORES && sahara)) continue;
+    if (sahara && !SOLO_SAHARA) continue;            // el Sáhara va con importar-sahara
     const titulo = primero(data.titulo) || primero(data.title) || path.basename(ruta, ".md");
     const stem = path.basename(ruta, ".md");
     const clase = clasificar(ruta, data);
@@ -775,7 +917,7 @@ async function main() {
     }
 
     let url, carpetaDestino;
-    const plana = { nota: ["notas", DESTINO_NOTAS], uas: ["uas", DESTINO_UAS], analisis: ["analisis", DESTINO_ANALISIS], operacion: ["operaciones", DESTINO_OPERACIONES] };
+    const plana = { nota: ["notas", DESTINO_NOTAS], uas: ["uas", DESTINO_UAS], analisis: ["analisis", DESTINO_ANALISIS], operacion: ["operaciones", DESTINO_OPERACIONES], sahara: ["sahara", DESTINO_SAHARA] };
     if (plana[clase.tipo]) {
       const [base, destino] = plana[clase.tipo];
       const slug = generarSlug(titulo);
@@ -794,8 +936,12 @@ async function main() {
         ? path.join(DESTINO_SEGUIMIENTOS, clase.eventoSlug)
         : path.join(DESTINO_SEGUIMIENTOS, clase.eventoSlug, clase.subSlug);
     }
-    items.push({ ruta, data, content, titulo, stem, clase, url, carpetaDestino });
+    // Con --solo-sahara las demás notas solo sirven para resolver enlaces, y
+    // la línea de tiempo no es una página: da los hitos.
+    const escribe = !SOLO_SAHARA || (sahara && !clase.timeline);
+    items.push({ ruta, data, content, titulo, stem, clase, url, carpetaDestino, escribe });
   }
+  const aEscribir = items.filter((it) => it.escribe);
 
   if (items.length === 0) {
     console.log("No hay ninguna nota con `publicar: true`. Nada que importar.");
@@ -827,7 +973,7 @@ async function main() {
 
   // --- Tuits: salen del archivo; a X solo se piden los que no están ---
   const archivo = leerArchivo(ARCHIVO_TUITS);
-  const idsTweets = [...new Set(items.flatMap((it) => idsDeTweets(it.content)))];
+  const idsTweets = [...new Set(aEscribir.flatMap((it) => idsDeTweets(it.content)))];
   const pedir = idsTweets.filter((id) => REFRESCAR_TUITS || !archivo.has(id));
   let tuitsNuevos = 0;
   const noDisponibles = [];
@@ -868,7 +1014,7 @@ async function main() {
   // Imágenes y vídeos: solo se bajan los que no están ya en public/tweets/.
   const mediaMapa = await descargarMedia([...tweets.values()].flatMap(mediaDeTweet), PUBLICO_TWEETS, "/tweets");
   const idsSinVideoLocal = new Set(
-    items.filter((it) => !permiteVideoLocal(it)).flatMap((it) => idsDeTweets(it.content)),
+    aEscribir.filter((it) => !permiteVideoLocal(it)).flatMap((it) => idsDeTweets(it.content)),
   );
   const videoUrls = [...tweets.values()]
     .filter((t) => !idsSinVideoLocal.has(t.id_str))
@@ -879,7 +1025,7 @@ async function main() {
   const cuenta = {};
   const resumen = { nueva: [], cambiada: [] };
 
-  for (const it of items) {
+  for (const it of aEscribir) {
     fs.mkdirSync(it.carpetaDestino, { recursive: true });
 
     // Reducir una foto es asíncrono y transformarCuerpo no, así que aquí se
@@ -940,9 +1086,14 @@ async function main() {
     } else if (esDron) Object.assign(fm, paisDeFicha(it.content));
 
     if (it.clase.opinion) fm.opinion = true;
-    if (it.clase.tipo === "operacion") {
+    if (it.clase.tipo === "operacion" || it.clase.tipo === "sahara") {
       const periodo = primero(it.data.periodo);
       if (periodo) fm.periodo = String(periodo).trim();
+    }
+    if (it.clase.tipo === "sahara") {
+      const lugar = primero(it.data.lugar);
+      if (lugar) fm.lugar = String(lugar).trim();
+      if (it.data.publicar !== true) fm.borrador = true;
     }
     if (it.clase.tipo === "seguimiento") {
       fm.kind = it.clase.kind;
@@ -968,8 +1119,18 @@ async function main() {
   }
 
   // --- Limpieza: lo que ya no se publica ---
+  // Los vídeos de public/adjuntos/ que usan las notas del Sáhara se quedan
+  // aunque esta importación no las trate (y al revés).
+  const tocadas = SOLO_SAHARA ? [DESTINO_SAHARA] : [...DESTINOS, PUBLICO_ADJUNTOS];
+  const ajenas = SOLO_SAHARA ? [] : [DESTINO_SAHARA];
+  for (const ruta of ajenas.flatMap(archivosBajo)) {
+    if (!ruta.endsWith(".md")) continue;
+    for (const m of fs.readFileSync(ruta, "utf8").matchAll(/\/adjuntos\/([^"\s)]+)/g)) {
+      vigentes.add(path.join(PUBLICO_ADJUNTOS, m[1]));
+    }
+  }
   const retiradas = [];
-  for (const dir of [...DESTINOS, PUBLICO_ADJUNTOS]) {
+  for (const dir of tocadas) {
     for (const ruta of archivosBajo(dir)) {
       if (vigentes.has(ruta)) continue;
       if (path.basename(ruta) === "index.md") {
@@ -984,16 +1145,18 @@ async function main() {
   // salgan en ninguna nota, y lo que enlace alguna tarjeta. Lo demás (avatares
   // que X cambió, restos de antes del archivo) sobra.
   const enUso = new Set([...archivo.values()].flatMap(archivosDeTuit));
-  for (const ruta of DESTINOS.flatMap(archivosBajo)) {
+  for (const ruta of [...DESTINOS, DESTINO_SAHARA].flatMap(archivosBajo)) {
     if (!ruta.endsWith(".md")) continue;
     for (const m of fs.readFileSync(ruta, "utf8").matchAll(/\/tweets\/([^"\s)]+)/g)) enUso.add(m[1]);
   }
   let tuitsSobrantes = 0;
-  for (const nombre of fs.readdirSync(PUBLICO_TWEETS)) {
+  for (const nombre of SOLO_SAHARA ? [] : fs.readdirSync(PUBLICO_TWEETS)) {
     if (enUso.has(nombre)) continue;
     fs.rmSync(path.join(PUBLICO_TWEETS, nombre));
     tuitsSobrantes++;
   }
+
+  if (SOLO_SAHARA) escribirHitosSahara(items, resolver);
 
   // --- Resumen ---
   const lista = (titulos) => (titulos.length ? titulos.map((t) => `\n    ${t}`).join("") : " —");

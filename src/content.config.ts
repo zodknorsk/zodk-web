@@ -118,4 +118,23 @@ const uas = defineCollection({
   }),
 });
 
-export const collections = { notas, analisis, operaciones, seguimientos, uas };
+// --- sahara: las notas del mapa del Sáhara (etiqueta `sahara-project` en la
+// bóveda, con `npm run importar-sahara`). Una nota = una página en
+// /sahara/<slug>, con su «volver» al mapa. Las que tienen `periodo` y
+// `lugar` son además hitos del deslizador (src/data/sahara/hitos.json).
+const sahara = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/sahara" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().optional(),
+    periodo: z.string().optional(), // las fechas del suceso, escritas a mano en la bóveda
+    lugar: z.string().optional(), // uno de src/data/sahara/lugares.json
+    borrador: z.boolean().optional(), // sin `publicar: true` (importada con --borradores)
+  }),
+});
+
+export const collections = { notas, analisis, operaciones, seguimientos, uas, sahara };

@@ -12,7 +12,13 @@
 //   de la Tierra) y, al pararse, se asienta en una escala entera de píxeles
 //   del dispositivo por píxel del nivel, para que el pixel art quieto no
 //   tenga píxeles de dos tamaños.
-// - Solo se repinta cuando algo cambia.
+// - Los hitos (irA) llevan la cámara en un vuelo corto hasta su lugar y
+//   ponen ahí la marca. Si el lugar está en el mapa pero fuera del cajón
+//   (Ceuta, Melilla, Perejil, Rabat), mientras dure ese hito se puede mirar
+//   el mapa entero.
+// - Solo se repinta cuando algo cambia. Tras cada repintado llama a
+//   `alPintar` (la página coloca encima lo suyo, como la flecha de los
+//   lugares de fuera del mapa).
 
 import { SAHARA_V } from "./versiones.js";
 
@@ -24,11 +30,29 @@ const PX_ARTE = 2;                                // px CSS mínimos del píxel 
 const PX_ARTE_MAX = 6;                            // zoom máximo: el píxel del nivel más fino, a esto
 const TAU = 0.07;                                 // s, suavizado del zoom (el de la Tierra)
 const ASIENTO = 150;                              // ms quieto antes de asentar la escala
+const VUELO = 900;                                // ms del vuelo hasta un hito
+const PX_HITO = 4;                                // px CSS del píxel del nivel base al llegar a un hito
+
+// La marca del lugar del hito, en pixel art (la punta, abajo en medio, es el
+// sitio): X borde, O rojo, W centro claro.
+const MARCA = [
+  "..XXXXX..",
+  ".XOOOOOX.",
+  "XOOWWWOOX",
+  "XOOWWWOOX",
+  "XOOWWWOOX",
+  ".XOOOOOX.",
+  "..XOOOX..",
+  "...XOX...",
+  "....X....",
+];
+const MARCA_COL = { X: "#0e1813", O: "#d8402f", W: "#f6f0e0" };
 
 /**
  * @param {HTMLCanvasElement} canvas
+ * @param {{ alPintar?: () => void }} [opciones]
  */
-export async function montarMapaSahara(canvas) {
+export async function montarMapaSahara(canvas, { alPintar = () => {} } = {}) {
   const datos = await fetch(`/sahara/sahara-mapa.json?v=${SAHARA_V}`).then((r) => r.json());
   const niveles = datos.niveles.map((n) => ({ ...n, hay: new Set(n.teselas) }));
   const base = niveles[0];
@@ -38,6 +62,10 @@ export async function montarMapaSahara(canvas) {
   const aMapa = (lat, lon) => [(lon - oeste) * base.ppd * datos.coslat, (norte - lat) * base.ppd];
   const [x0, y1] = aMapa(CAJON[0], CAJON[2]);
   const [x1, y0] = aMapa(CAJON[1], CAJON[3]);
+  const CAJONPX = [x0, y0, x1, y1];
+  const MAPAPX = [0, 0, base.ancho, base.alto];
+  let lim = CAJONPX;                              // lo que se puede mirar ahora
+  const dentro = ([a, b, c, d], x, y) => x >= a && x <= c && y >= b && y <= d;
 
   const ctx = canvas.getContext("2d");
   let W = 0, H = 0, dpr = 1;                      // lienzo en px del dispositivo
@@ -45,8 +73,10 @@ export async function montarMapaSahara(canvas) {
   let escala = 0, objetivo = 0;                   // px del dispositivo por px del nivel base
   let ancla = null;                               // { px, py, mx, my }: punto que el zoom deja quieto
   let ultimoGesto = 0, raf = 0, antes = 0, vivo = true;
+  let vuelo = null;                               // { de: [cx, cy, e], a: [cx, cy, e], t0 }
+  let marca = null;                               // [x, y] en px del nivel base
 
-  const escalaMin = () => Math.max(W / (x1 - x0), H / (y1 - y0));
+  const escalaMin = () => Math.max(W / (lim[2] - lim[0]), H / (lim[3] - lim[1]));
   const escalaMax = () => PX_ARTE_MAX * dpr * niveles[niveles.length - 1].ppd / base.ppd;
   const limitar = (e) => Math.min(Math.max(e, escalaMin()), escalaMax());
   /** El nivel que toca a una escala: el más fino con píxel de PX_ARTE CSS o más. */
@@ -63,11 +93,11 @@ export async function montarMapaSahara(canvas) {
     return Math.min(k * f, escalaMax());
   };
   // El centro, dentro del cajón.
-  const encajar = () => {
-    const mx = W / (2 * escala), my = H / (2 * escala);
-    cx = Math.min(Math.max(cx, x0 + mx), x1 - mx);
-    cy = Math.min(Math.max(cy, y0 + my), y1 - my);
+  const encajado = (x, y, e) => {
+    const mx = W / (2 * e), my = H / (2 * e);
+    return [Math.min(Math.max(x, lim[0] + mx), lim[2] - mx), Math.min(Math.max(y, lim[1] + my), lim[3] - my)];
   };
+  const encajar = () => { [cx, cy] = encajado(cx, cy, escala); };
 
   // Teselas: se piden al hacer falta y al llegar se repinta.
   const teselas = new Map();
@@ -107,6 +137,17 @@ export async function montarMapaSahara(canvas) {
         }
       }
     }
+    if (marca) {
+      // A bloques de px enteros, con la punta en el sitio.
+      const p = Math.max(2, Math.round(2 * dpr));
+      const px = Math.round(ox + marca[0] * escala) - 4 * p, py = Math.round(oy + marca[1] * escala) - 9 * p;
+      MARCA.forEach((fila, j) => [...fila].forEach((k, i) => {
+        if (k === ".") return;
+        ctx.fillStyle = MARCA_COL[k];
+        ctx.fillRect(px + i * p, py + j * p, p, p);
+      }));
+    }
+    alPintar();
   };
 
   // Un fotograma: el zoom se acerca a su objetivo con el punto agarrado
@@ -115,6 +156,18 @@ export async function montarMapaSahara(canvas) {
     raf = 0;
     const dt = antes ? Math.min(0.1, (t - antes) / 1000) : 1 / 60;
     antes = t;
+    if (vuelo) {
+      // Suave al salir y al llegar; la escala, en logaritmo.
+      const u = Math.min(1, (performance.now() - vuelo.t0) / VUELO);
+      const k = u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u);
+      cx = vuelo.de[0] + (vuelo.a[0] - vuelo.de[0]) * k;
+      cy = vuelo.de[1] + (vuelo.a[1] - vuelo.de[1]) * k;
+      escala = objetivo = Math.exp(Math.log(vuelo.de[2]) + (Math.log(vuelo.a[2]) - Math.log(vuelo.de[2])) * k);
+      if (u === 1) vuelo = null;
+      pintar();
+      seguir();
+      return;
+    }
     if (escala !== objetivo) {
       escala += (objetivo - escala) * (1 - Math.exp(-dt / TAU));
       if (Math.abs(objetivo - escala) < objetivo * 1e-3) escala = objetivo;
@@ -150,8 +203,45 @@ export async function montarMapaSahara(canvas) {
   medir();
 
   return {
+    /**
+     * Lleva la cámara al lugar de un hito y pone ahí la marca (`al momento`:
+     * sin vuelo). Si está fuera del mapa, no se mueve, quita la marca y
+     * devuelve false.
+     */
+    irA(lat, lon, { alMomento = false } = {}) {
+      const [x, y] = aMapa(lat, lon);
+      if (!dentro(MAPAPX, x, y)) {
+        marca = null;
+        repintar();
+        return false;
+      }
+      lim = dentro(CAJONPX, x, y) ? CAJONPX : MAPAPX;
+      marca = [x, y];
+      const e = asentada(limitar(PX_HITO * dpr));
+      const [ax, ay] = encajado(x, y, e);
+      ancla = null;
+      if (alMomento) {
+        vuelo = null;
+        cx = ax; cy = ay; escala = objetivo = e;
+        pintar();
+      } else {
+        vuelo = { de: [cx, cy, escala], a: [ax, ay, e], t0: performance.now() };
+        seguir();
+      }
+      return true;
+    },
+    /** Un punto en grados, en px CSS del lienzo (puede caer fuera). */
+    aPantalla(lat, lon) {
+      const [x, y] = aMapa(lat, lon);
+      return [(W / 2 + (x - cx) * escala) / dpr, (H / 2 + (y - cy) * escala) / dpr];
+    },
+    /** El centro de la vista, en grados. */
+    centro() {
+      return [norte - cy / base.ppd, oeste + cx / (base.ppd * datos.coslat)];
+    },
     /** Arrastre de la mano (px CSS). */
     mueve(dx, dy) {
+      vuelo = null;
       cx -= (dx * dpr) / escala;
       cy -= (dy * dpr) / escala;
       encajar();
@@ -164,6 +254,7 @@ export async function montarMapaSahara(canvas) {
     suelta() {},
     /** Zoom hacia el punto (clientX, clientY): ese punto del mapa no se mueve. */
     zoom(factor, clientX, clientY) {
+      vuelo = null;
       const caja = canvas.getBoundingClientRect();
       const px = clientX === undefined ? W / 2 : (clientX - caja.left) * dpr;
       const py = clientY === undefined ? H / 2 : (clientY - caja.top) * dpr;
