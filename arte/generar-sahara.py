@@ -16,9 +16,11 @@ Diferencias con la Tierra:
     Tierra están pensadas para ver el planeta entero y aquí eran enormes;
   - con --mar fondo, las franjas salen de la profundidad real (ETOPO1).
 
-Fuentes (las mismas del zoom de la Tierra, fuera de Git):
-  tierra-fuentes/ne_10m_land.geojson   costas (ver rasterizar.py)
-  tierra-fuentes/etopo24.i16           relieve (ver elevacion-fina.py)
+Fuentes (fuera de Git):
+  tierra-fuentes/sahara240.i16         relieve fino y costa (elevacion-sahara.py)
+  tierra-fuentes/etopo24.i16           sin el fino (o con --etopo1): el relieve del
+                                       zoom de la Tierra (elevacion-fina.py)...
+  tierra-fuentes/ne_10m_land.geojson   ...y la costa de Natural Earth (rasterizar.py)
   tierra-fuentes/ne_10m_admin_0_countries.geojson   fronteras:
     curl -sSLo tierra-fuentes/ne_10m_admin_0_countries.geojson \\
       https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson
@@ -297,9 +299,65 @@ def rasterizar(features, rejilla, valor):
                 fila[c] = valor
 
 
-with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_land.geojson")) as fh:
-    LAND = [bytearray(W) for _ in range(H)]
-    rasterizar(json.load(fh)["features"], LAND, 1)
+# ------------------------------------------------------------- relieve
+# El fino (elevacion-sahara.py: 240 px/grado, solo la zona del mapa) si
+# está; si no, ETOPO1 a 24 px/grado (el del zoom de la Tierra).
+_FINO = os.path.join(AQUI, "tierra-fuentes", "sahara240.json")
+if os.path.exists(_FINO) and "--etopo1" not in sys.argv:
+    with open(_FINO) as fh:
+        _d = json.load(fh)
+    _EPPD, (_, _EN, _EO, _) = _d["ppd"], _d["zona"]
+    _EFW, _ruta = _d["ancho"], os.path.splitext(_FINO)[0] + ".i16"
+else:
+    _EPPD, _EN, _EO, _EFW = 24, 90.0, -180.0, 8640
+    _ruta = os.path.join(AQUI, "tierra-fuentes", "etopo24.i16")
+_EF = array("h")
+with open(_ruta, "rb") as fh:
+    _EF.frombytes(fh.read())
+if sys.byteorder != "little":
+    _EF.byteswap()
+_EFH = len(_EF) // _EFW
+
+
+def elev(lat, lon):
+    """Altura (m), interpolada."""
+    fr = (_EN - lat) * _EPPD - 0.5
+    fc = (lon - _EO) * _EPPD - 0.5
+    # fuera del dato (las cuentas de nieve miran 1° alrededor), el borde
+    fr = min(max(fr, 0.0), _EFH - 1.001)
+    fc = min(max(fc, 0.0), _EFW - 1.001)
+    r0, c0 = math.floor(fr), math.floor(fc)
+    tr, tc = fr - r0, fc - c0
+    i0, i1 = r0 * _EFW, (r0 + 1) * _EFW
+    a = _EF[i0 + c0] * (1 - tc) + _EF[i0 + c0 + 1] * tc
+    b = _EF[i1 + c0] * (1 - tc) + _EF[i1 + c0 + 1] * tc
+    return a * (1 - tr) + b * tr
+
+
+# La costa: con el relieve fino, donde la altura pasa de 0, y es mar solo lo
+# que está por debajo y conectado con el borde del mapa (las sebjas bajo el
+# nivel del mar, como la de Tah junto a Tarfaya, siguen siendo tierra). Con
+# ETOPO1, de Natural Earth 1:10m (a esta escala el relieve no da la costa).
+LAND = [bytearray(W) for _ in range(H)]
+if _EPPD >= 240:
+    _bajo = [bytearray(1 if elev(lat_de(r), lon_de(c)) <= 0 else 0 for c in range(W)) for r in range(H)]
+    _mar = [bytearray(W) for _ in range(H)]
+    _cola = deque((r, c) for r in range(H) for c in (0, W - 1) if _bajo[r][c])
+    _cola.extend((r, c) for r in (0, H - 1) for c in range(W) if _bajo[r][c])
+    for r, c in _cola:
+        _mar[r][c] = 1
+    while _cola:
+        r, c = _cola.popleft()
+        for rr, cc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1)):
+            if 0 <= rr < H and 0 <= cc < W and _bajo[rr][cc] and not _mar[rr][cc]:
+                _mar[rr][cc] = 1
+                _cola.append((rr, cc))
+    for r in range(H):
+        LAND[r] = bytearray(1 - v for v in _mar[r])
+    del _bajo, _mar
+else:
+    with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_land.geojson")) as fh:
+        rasterizar(json.load(fh)["features"], LAND, 1)
 paso(f"costas: {W} x {H} celdas con margen, {KM:.2f} km/celda")
 
 # Países, de Natural Earth 1:10m. Natural Earth pone en Marruecos lo que
@@ -323,27 +381,6 @@ for r in range(H):
             if fila[c] == _MAR:
                 fila[c] = _SAH
 paso("países")
-
-# ------------------------------------------------------------- relieve
-_EF = array("h")
-with open(os.path.join(AQUI, "tierra-fuentes", "etopo24.i16"), "rb") as fh:
-    _EF.frombytes(fh.read())
-if sys.byteorder != "little":
-    _EF.byteswap()
-_EFW, _EFH = 8640, 4320
-
-
-def elev(lat, lon):
-    """Altura (m) de ETOPO1 a 24 px/grado, interpolada."""
-    fr = (90.0 - lat) * 24.0 - 0.5
-    fc = (lon + 180.0) * 24.0 - 0.5
-    r0, c0 = math.floor(fr), math.floor(fc)
-    tr, tc = fr - r0, fc - c0
-    i0, i1 = r0 * _EFW, (r0 + 1) * _EFW
-    a = _EF[i0 + c0] * (1 - tc) + _EF[i0 + c0 + 1] * tc
-    b = _EF[i1 + c0] * (1 - tc) + _EF[i1 + c0 + 1] * tc
-    return a * (1 - tr) + b * tr
-
 
 # ----------------------------------------------- ruidos (de generar-tierra.py)
 # El de la frontera de los biomas, cada 1,75° (7 celdas de 0,25°).
@@ -465,8 +502,10 @@ paso("costa y mar")
 
 # --------------------------------------------- relieve en escalones, roca, nieve
 MTN_CONTRAST = 1.5
-RELIEVE_DD = 3.0 / 32.0                # pendiente medida a ±este paso (grados), el de las
-                                       # teselas de la Tierra con --relieve 3 a 32 px/grado
+# Pendiente medida a ±RELIEVE_DD grados: 3 celdas, como las teselas de la
+# Tierra (--relieve 3), así que cada nivel tiene su relieve; sin bajar de lo
+# que da el dato.
+RELIEVE_DD = max(3.0 / PPD, 1.5 / _EPPD)
 MTNK = [bytearray(W) for _ in range(H)]              # escalón de relieve + 8
 for r in range(H):
     lat = lat_de(r)
