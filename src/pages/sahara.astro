@@ -1,0 +1,36 @@
+---
+// /sahara: los conflictos con Marruecos en un mapa del Sáhara en pixel art.
+// Prototipo: el mapa a pantalla completa, con arrastre y zoom dentro de su
+// cajón. Motor: src/scripts/sahara-mapa.js; datos en public/sahara/, de
+// arte/generar-sahara.py.
+import PageLayout from "@layouts/PageLayout.astro";
+---
+
+<PageLayout title="Sáhara" description="Los conflictos con Marruecos en los siglos XX y XXI, en un mapa del Sáhara en pixel art." hero cabecera={false}>
+  <section slot="hero" class="hero sahara-hero" aria-label="Mapa del Sáhara">
+    <canvas class="sahara-mapa" role="img" aria-label="Mapa del Sáhara Occidental, Marruecos y Canarias"></canvas>
+    <a class="sahara-volver" href="/">← portada</a>
+  </section>
+</PageLayout>
+
+<script>
+  // La web cambia de página sin recargar (ClientRouter): el mapa se monta en
+  // cada llegada y se desmonta al salir.
+  import { montarMapaSahara } from "../scripts/sahara-mapa.js";
+  import { montarMano, montarZoom } from "../scripts/gestos.js";
+
+  let quitar: (() => void)[] = [];
+
+  document.addEventListener("astro:page-load", async () => {
+    const zona = document.querySelector<HTMLElement>(".sahara-hero");
+    const canvas = document.querySelector<HTMLCanvasElement>(".sahara-mapa");
+    if (!zona || !canvas) return;
+    const mapa = await montarMapaSahara(canvas);
+    quitar = [mapa.quitar, montarMano(zona, mapa), montarZoom(zona, mapa)];
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    quitar.forEach((q) => q());
+    quitar = [];
+  });
+</script>

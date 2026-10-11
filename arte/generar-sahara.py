@@ -19,9 +19,26 @@ Diferencias con la Tierra:
 Fuentes (las mismas del zoom de la Tierra, fuera de Git):
   tierra-fuentes/ne_10m_land.geojson   costas (ver rasterizar.py)
   tierra-fuentes/etopo24.i16           relieve (ver elevacion-fina.py)
+  tierra-fuentes/ne_10m_admin_0_countries.geojson   fronteras:
+    curl -sSLo tierra-fuentes/ne_10m_admin_0_countries.geojson \\
+      https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson
 
-Uso (desde arte/):
-  python3 generar-sahara.py salida.png [--ppd 64] [--mar fondo|distancia]
+Niveles de zoom: el mapa entero va a 64 px/grado y, para ganar detalle al
+acercarse, el cajón (lo que se puede mirar en la web) va también a 128 y
+256. Todos comparten la misma rejilla (la de CAJA a su resolución), en
+teselas de TESELA px: public/sahara/n<ppd>/<fila>-<columna>.png, con lo que
+queda fuera de la zona en transparente. Las manchas grandes (biomas, erg y
+reg) salen de un ruido en grados, igual en todos los niveles: al cambiar de
+nivel no se mueven; lo que mide lo mismo en píxeles (copas, dunas) sí es
+más fino.
+
+Uso (desde arte/), y después subir SAHARA_V en src/scripts/versiones.js:
+  python3 generar-sahara.py                       # los tres niveles de la web
+  python3 generar-sahara.py --ppd 128 [--zona S,N,O,E] [--prueba salida.png]
+      [--mar fondo|distancia] [--frontera discontinua|continua|clara|no]
+      [--grosor 1|2]
+      # un nivel (sin --zona, la caja entera); con --prueba, en un solo PNG
+      # en vez de en las teselas de la web
 """
 import colorsys
 import math
@@ -44,23 +61,51 @@ def _arg(nombre, defecto):
     return sys.argv[sys.argv.index(nombre) + 1] if nombre in sys.argv else defecto
 
 
+# La caja (S, N, O, E en grados): del sur de Mauritania (La Güera, Cabo
+# Blanco) a la costa española del Estrecho, y de El Hierro a Melilla. Es
+# todo el mapa; el nivel base la cubre entera.
+CAJA = (20.0, 37.2, -19.0, -1.0)
+# El cajón: lo que se puede mirar en la web (CAJON en sahara-mapa.js), un
+# poco más ancho para que al arrastrar hasta el borde no falte detalle.
+CAJON = (20.4, 30.2, -18.6, -6.8)
+# Niveles de la web: (px/grado, zona). El base, la caja; los finos, el cajón.
+NIVELES = ((64, CAJA), (128, CAJON), (256, CAJON))
+TESELA = 512
+WEB = os.path.join(AQUI, "..", "public", "sahara")
+
+if "--ppd" not in sys.argv:
+    # Sin nivel: los de la web, cada uno en su proceso (cada nivel tiene su
+    # rejilla, y así la memoria se libera entre uno y otro).
+    import subprocess
+    for _ppd, _z in NIVELES:
+        print(f"nivel {_ppd} px/grado", file=sys.stderr)
+        subprocess.run([sys.executable, os.path.abspath(__file__), "--ppd", str(_ppd),
+                        "--zona", ",".join(str(v) for v in _z)] + sys.argv[1:], check=True)
+    sys.exit(0)
+
 PPD = int(_arg("--ppd", "64"))         # celdas (píxeles) por grado de latitud
 MAR = _arg("--mar", "fondo")
-SALIDA = [a for i, a in enumerate(sys.argv[1:], 1)
-          if not a.startswith("--") and not sys.argv[i - 1].startswith("--")][0]
-
-# La caja (S, N, O, E en grados): del sur de Mauritania (La Güera, Cabo
-# Blanco) a la costa española del Estrecho, y de El Hierro a Melilla.
-CAJA = (20.0, 37.2, -19.0, -1.0)
+ZONA = tuple(float(v) for v in _arg("--zona", ",".join(str(v) for v in CAJA)).split(","))
+PRUEBA = _arg("--prueba", None)
 MARGEN = 3.0                           # se calcula con margen para que la mezcla
                                        # de biomas y las franjas no se corten en el borde
-S, N, O, E = CAJA[0] - MARGEN, CAJA[1] + MARGEN, CAJA[2] - MARGEN, CAJA[3] + MARGEN
 COSLAT = math.cos(math.radians((CAJA[0] + CAJA[1]) / 2))
 DLAT = 1.0 / PPD
 DLON = 1.0 / (PPD * COSLAT)            # celdas cuadradas en km
-H = round((N - S) / DLAT)
-W = round((E - O) / DLON)
 KM = 111.2 / PPD                       # km por celda
+# La rejilla del nivel: la de CAJA a PPD (ANCHO x ALTO px). De ella se
+# calculan las filas RA..RB y columnas CA..CB de la zona, más el margen.
+ALTO = round((CAJA[1] - CAJA[0]) * PPD)
+ANCHO = round((CAJA[3] - CAJA[2]) / DLON)
+RA, RB = max(0, math.floor((CAJA[1] - ZONA[1]) * PPD)), min(ALTO, math.ceil((CAJA[1] - ZONA[0]) * PPD))
+CA, CB = max(0, math.floor((ZONA[2] - CAJA[2]) / DLON)), min(ANCHO, math.ceil((ZONA[3] - CAJA[2]) / DLON))
+MR, MC = math.ceil(MARGEN * PPD), math.ceil(MARGEN / DLON)
+N = CAJA[1] - (RA - MR) * DLAT         # borde norte y oeste de la rejilla con margen
+O = CAJA[2] + (CA - MC) * DLON
+H = RB - RA + 2 * MR
+W = CB - CA + 2 * MC
+S = N - H * DLAT
+E = O + W * DLON
 
 # Equivalencias con los niveles de la Tierra (nivel K = 8K px/grado):
 #   KC    = celdas por cada 0,25° (lo que mide lo mismo RESPECTO AL PLANETA)
@@ -79,6 +124,42 @@ def lon_de(c):
 
 def celda(lat, lon):
     return int((N - lat) * PPD), int((lon - O) / DLON)
+
+
+def _hash01(i, j, semilla):
+    """Azar fijo para un nodo (i, j): el mismo en todos los niveles."""
+    h = (i * 374761393 + j * 668265263 + semilla * 1442695041) & 0xFFFFFFFF
+    h = ((h ^ (h >> 13)) * 1274126177) & 0xFFFFFFFF
+    return ((h ^ (h >> 16)) & 0xFFFFFF) / float(0x1000000)
+
+
+def ruido_geo(capas, semilla, suave=True):
+    """Ruido de valor en grados: [(separación de nodos en grados, peso)].
+    Los nodos van en la rejilla de CAJA, así que es igual en todos los
+    niveles y zonas. Devuelve f(r, c) para las celdas de esta rejilla."""
+    gs = []
+    for k, (sep, w) in enumerate(capas):
+        i0 = math.floor((CAJA[1] - N) / sep) - 1
+        j0 = math.floor((O - CAJA[2]) * COSLAT / sep) - 1
+        ni = int(H * DLAT / sep) + 4
+        nj = int(W * DLON * COSLAT / sep) + 4
+        g = [[_hash01(i0 + i, j0 + j, semilla * 31 + k) for j in range(nj)] for i in range(ni)]
+        gs.append((sep, w, i0, j0, g))
+
+    def f(r, c):
+        tot = 0.0
+        for sep, w, i0, j0, g in gs:
+            fy = (CAJA[1] - lat_de(r)) / sep - i0
+            fx = (lon_de(c) - CAJA[2]) * COSLAT / sep - j0
+            a0, b0 = int(fy), int(fx)
+            ty, tx = fy - a0, fx - b0
+            if suave:
+                ty, tx = ty * ty * (3 - 2 * ty), tx * tx * (3 - 2 * tx)
+            a = g[a0][b0] * (1 - tx) + g[a0][b0 + 1] * tx
+            b = g[a0 + 1][b0] * (1 - tx) + g[a0 + 1][b0 + 1] * tx
+            tot += (a * (1 - ty) + b * ty) * w
+        return tot
+    return f
 
 
 def smooth(e0, e1, x):
@@ -177,45 +258,71 @@ def ramp(col, k, hue_mul=1.0):
 
 
 # ------------------------------------------------------- tierra / mar
-# Rasterizado de las costas de Natural Earth 1:10m, como rasterizar.py
-# (cruces por fila y relleno par-impar), solo en la caja.
 import json
-with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_land.geojson")) as fh:
-    _geo = json.load(fh)
-_cruces = [[] for _ in range(H)]
-for feat in _geo["features"]:
-    g = feat["geometry"]
-    polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
-    for poly in polys:
-        for ring in poly:
-            lons = [p[0] for p in ring]
-            lats = [p[1] for p in ring]
-            if max(lons) < O or min(lons) > E or max(lats) < S or min(lats) > N:
-                continue
-            n = len(ring)
-            for i in range(n):
-                lon1, lat1 = ring[i]
-                lon2, lat2 = ring[(i + 1) % n]
-                if lat1 == lat2:
+
+
+def rasterizar(features, rejilla, valor):
+    """Pone `valor` en las celdas de `rejilla` que caen dentro de los
+    polígonos GeoJSON, como rasterizar.py (cruces por fila y relleno
+    par-impar), solo en la caja."""
+    cruces = [[] for _ in range(H)]
+    for feat in features:
+        g = feat["geometry"]
+        polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
+        for poly in polys:
+            for ring in poly:
+                lons = [p[0] for p in ring]
+                lats = [p[1] for p in ring]
+                if max(lons) < O or min(lons) > E or max(lats) < S or min(lats) > N:
                     continue
-                y1, y2 = (N - lat1) * PPD, (N - lat2) * PPD
-                x1, x2 = (lon1 - O) / DLON, (lon2 - O) / DLON
-                if y1 > y2:
-                    y1, y2, x1, x2 = y2, y1, x2, x1
-                for r in range(max(0, math.floor(y1)), min(H - 1, math.ceil(y2)) + 1):
-                    yc = r + 0.5
-                    if y1 <= yc < y2:
-                        _cruces[r].append(x1 + (x2 - x1) * (yc - y1) / (y2 - y1))
-del _geo
-LAND = [bytearray(W) for _ in range(H)]
-for r in range(H):
-    xs = sorted(_cruces[r])
-    fila = LAND[r]
-    for i in range(0, len(xs) - 1, 2):
-        for c in range(max(0, int(xs[i] + 0.5)), min(W, int(xs[i + 1] + 0.5))):
-            fila[c] = 1
-del _cruces
+                n = len(ring)
+                for i in range(n):
+                    lon1, lat1 = ring[i]
+                    lon2, lat2 = ring[(i + 1) % n]
+                    if lat1 == lat2:
+                        continue
+                    y1, y2 = (N - lat1) * PPD, (N - lat2) * PPD
+                    x1, x2 = (lon1 - O) / DLON, (lon2 - O) / DLON
+                    if y1 > y2:
+                        y1, y2, x1, x2 = y2, y1, x2, x1
+                    for r in range(max(0, math.floor(y1)), min(H - 1, math.ceil(y2)) + 1):
+                        yc = r + 0.5
+                        if y1 <= yc < y2:
+                            cruces[r].append(x1 + (x2 - x1) * (yc - y1) / (y2 - y1))
+    for r in range(H):
+        xs = sorted(cruces[r])
+        fila = rejilla[r]
+        for i in range(0, len(xs) - 1, 2):
+            for c in range(max(0, int(xs[i] + 0.5)), min(W, int(xs[i + 1] + 0.5))):
+                fila[c] = valor
+
+
+with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_land.geojson")) as fh:
+    LAND = [bytearray(W) for _ in range(H)]
+    rasterizar(json.load(fh)["features"], LAND, 1)
 paso(f"costas: {W} x {H} celdas con margen, {KM:.2f} km/celda")
+
+# Países, de Natural Earth 1:10m. Natural Earth pone en Marruecos lo que
+# controla al oeste del muro y deja al Sáhara Occidental solo lo de detrás;
+# aquí el Sáhara Occidental va entero, con su frontera de 1975 (la de la
+# ONU): lo de Marruecos al sur del paralelo 27°40' pasa al Sáhara.
+# El muro y los cambios de frontera de cada época van en capas aparte.
+PAISES = ["ESP", "PRT", "GIB", "DZA", "MRT", "MLI", "MAR", "SAH"]
+LIMITE_SAHARA = 27.0 + 40.0 / 60.0
+PAIS = [bytearray(W) for _ in range(H)]              # 0 = ninguno, i+1 = PAISES[i]
+with open(os.path.join(AQUI, "tierra-fuentes", "ne_10m_admin_0_countries.geojson")) as fh:
+    _feats = {f["properties"]["ADM0_A3"]: f for f in json.load(fh)["features"]}
+for i, iso in enumerate(PAISES):
+    rasterizar([_feats[iso]], PAIS, i + 1)
+del _feats
+_MAR, _SAH = PAISES.index("MAR") + 1, PAISES.index("SAH") + 1
+for r in range(H):
+    if lat_de(r) < LIMITE_SAHARA:
+        fila = PAIS[r]
+        for c in range(W):
+            if fila[c] == _MAR:
+                fila[c] = _SAH
+paso("países")
 
 # ------------------------------------------------------------- relieve
 _EF = array("h")
@@ -239,18 +346,8 @@ def elev(lat, lon):
 
 
 # ----------------------------------------------- ruidos (de generar-tierra.py)
-random.seed(20260910)
-_NC = max(1, round(7 * KC))
-_NG = [[random.random() for _ in range(W // _NC + 2)] for _ in range(H // _NC + 2)]
-
-
-def _vnoise(r, c):
-    fr, fc = r / _NC, c / _NC
-    r0, c0 = int(fr), int(fc)
-    tr, tc = fr - r0, fc - c0
-    a = _NG[r0][c0] * (1 - tc) + _NG[r0][c0 + 1] * tc
-    b = _NG[r0 + 1][c0] * (1 - tc) + _NG[r0 + 1][c0 + 1] * tc
-    return a * (1 - tr) + b * tr
+# El de la frontera de los biomas, cada 1,75° (7 celdas de 0,25°).
+_vnoise = ruido_geo([(1.75, 1.0)], 1, suave=False)
 
 
 def _ruido(capas):
@@ -274,8 +371,8 @@ def _ruido(capas):
 
 random.seed(4711)
 _mix_noise = _ruido([(max(1, round(6 * KC / SCALE)), 0.65), (max(1, round(3 * KC / SCALE)), 0.35)])
-random.seed(777)
-_patch_noise = _ruido([(round(24 * KC), 0.68), (round(9 * KC), 0.32)])
+# Manchas grandes (claros, erg y reg), cada 6° y 2,25°.
+_patch_noise = ruido_geo([(6.0, 0.68), (2.25, 0.32)], 2)
 
 # ---------------------------------------------------- biomas (como la Tierra)
 _N4 = ((1, 0), (-1, 0), (0, 1), (0, -1))
@@ -623,15 +720,83 @@ def color(r, c):
     return ramp(surf, int(tex_k), 1.0)
 
 
-# Recorte a la caja, sin el margen.
-r0, r1 = round((N - CAJA[1]) * PPD), round((N - CAJA[0]) * PPD)
-c0, c1 = round((CAJA[2] - O) / DLON), round((CAJA[3] - O) / DLON)
-filas = []
-for r in range(r0, r1):
-    fila = bytearray((c1 - c0) * 4)
-    for i, c in enumerate(range(c0, c1)):
-        col = color(r, c)
-        fila[i * 4:i * 4 + 4] = bytes((col[0], col[1], col[2], 255))
-    filas.append(fila)
-write_rgba(SALIDA, c1 - c0, r1 - r0, filas)
-paso(f"{SALIDA}: {c1 - c0} x {r1 - r0} px, {len(_RAMP)} colores")
+# ------------------------------------------------------------ fronteras
+# Una celda es frontera si su vecina de la derecha o de abajo es de otro país
+# (así la línea sale de 1 px). Solo entre celdas de tierra con país: donde la
+# costa de Natural Earth y la de los países no coinciden no sale línea.
+FRONTERA = _arg("--frontera", "discontinua")   # continua | discontinua | clara
+FRONTERA_COL = {"continua": (COAST_COL, 0.55), "discontinua": (COAST_COL, 0.70),
+                "clara": ((0xf6, 0xf0, 0xe0), 0.85)}
+TRAZO = 3                              # px de trazo y de hueco en las discontinuas
+GROSOR = int(_arg("--grosor", "2"))    # 1: la línea a un lado; 2: a los dos
+_VECINAS = ((0, 1), (1, 0)) if GROSOR == 1 else ((0, 1), (1, 0), (0, -1), (-1, 0))
+
+
+def es_frontera(r, c):
+    p = PAIS[r][c]
+    if not p or not LAND[r][c]:
+        return False
+    for dr, dc in _VECINAS:
+        rr, cc = r + dr, c + dc
+        if 0 <= rr < H and 0 <= cc < W and LAND[rr][cc] and PAIS[rr][cc] and PAIS[rr][cc] != p:
+            return True
+    return False
+
+
+def con_frontera(col, r, c):
+    if FRONTERA == "no" or not es_frontera(r, c):
+        return col
+    if FRONTERA != "continua" and (r // TRAZO + c // TRAZO) % 2:
+        return col
+    tinta, a = FRONTERA_COL[FRONTERA]
+    return mix(col, tinta, a)
+
+
+# ------------------------------------------------------------- salida
+# La zona, sin el margen: filas RA..RB y columnas CA..CB de la rejilla del
+# nivel, que en la rejilla con margen empiezan en MR y MC.
+def pixel(R, C):
+    """RGBA del píxel (R, C) de la rejilla del nivel; transparente fuera de la zona."""
+    if not (RA <= R < RB and CA <= C < CB):
+        return b"\0\0\0\0"
+    r, c = R - RA + MR, C - CA + MC
+    col = con_frontera(color(r, c), r, c)
+    return bytes((col[0], col[1], col[2], 255))
+
+
+if PRUEBA:
+    filas = [b"".join(pixel(R, C) for C in range(CA, CB)) for R in range(RA, RB)]
+    write_rgba(PRUEBA, CB - CA, RB - RA, filas)
+    paso(f"{PRUEBA}: {CB - CA} x {RB - RA} px, {len(_RAMP)} colores")
+    sys.exit(0)
+
+# Teselas de la web. Se borran antes las del nivel que haya.
+import shutil
+carpeta = os.path.join(WEB, f"n{PPD}")
+shutil.rmtree(carpeta, ignore_errors=True)
+os.makedirs(carpeta)
+teselas = []
+for f in range(RA // TESELA, (RB - 1) // TESELA + 1):
+    for k in range(CA // TESELA, (CB - 1) // TESELA + 1):
+        R0, C0 = f * TESELA, k * TESELA
+        alto, ancho = min(TESELA, ALTO - R0), min(TESELA, ANCHO - C0)
+        filas = [b"".join(pixel(R, C) for C in range(C0, C0 + ancho)) for R in range(R0, R0 + alto)]
+        write_rgba(os.path.join(carpeta, f"{f}-{k}.png"), ancho, alto, filas)
+        teselas.append(f"{f}-{k}")
+paso(f"{carpeta}: {len(teselas)} teselas, {len(_RAMP)} colores")
+
+# sahara-mapa.json: lo que necesita la web para pasar de grados a píxeles
+# (x = (lon - caja[2]) * ppd * coslat, y = (caja[1] - lat) * ppd) y qué
+# teselas hay de cada nivel.
+ruta = os.path.join(WEB, "sahara-mapa.json")
+try:
+    with open(ruta) as fh:
+        datos = json.load(fh)
+except (OSError, ValueError):
+    datos = {}
+niveles = [n for n in datos.get("niveles", []) if n["ppd"] != PPD]
+niveles.append({"ppd": PPD, "ancho": ANCHO, "alto": ALTO, "teselas": teselas})
+datos = {"caja": CAJA, "coslat": COSLAT, "tesela": TESELA,
+         "niveles": sorted(niveles, key=lambda n: n["ppd"])}
+with open(ruta, "w") as fh:
+    json.dump(datos, fh, separators=(",", ":"))
