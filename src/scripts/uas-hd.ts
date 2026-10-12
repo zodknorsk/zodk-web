@@ -107,7 +107,7 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "gris-fu": { color: "#565b5f", metal: 0, rugosidad: 0.75 },
   "gris-fu2": { color: "#4a5053", metal: 0, rugosidad: 0.75 },
   // Gris claro mate de los AIM-120 de instrucción y su lanzador (fotos de Creech).
-  "gris-misil": { color: "#b3b7ba", metal: 0, rugosidad: 0.55 },
+  "gris-misil": { color: "#a3a8ac", metal: 0, rugosidad: 0.55 },
 };
 
 // Tres escalones de luz para la ilustración.

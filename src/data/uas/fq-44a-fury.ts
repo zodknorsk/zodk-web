@@ -318,8 +318,12 @@ const PIEZAS: Pieza[] = [
   // Pilones y lanzadores, en las dos alas.
   { tipo: "ala", id: "pilones", acabado: "gris-fu", vertical: true, espejo: true, x: LANZ.x, y: PILON.y, estaciones: [[0, PILON.z0, PILON.z1, 0.07], [PILON.y - PILON.abajo, PILON.z0 - 0.08, PILON.z1, 0.06]] },
   // El lanzador, gris claro mate como el misil (fotos de la carga y del 25-1001):
-  // una caja arriba y, debajo, el raíl más estrecho y oscuro del que cuelga.
-  { tipo: "caja", id: "lanzadores", acabado: "gris-misil", espejo: true, redondeo: 0.03, centro: [LANZ.x, LANZ.y + 0.02, (LANZ.z0 + LANZ.z1) / 2], tam: [LANZ.ancho, LANZ.alto - 0.04, LANZ.z0 - LANZ.z1] },
+  // una caja con la punta en ángulo arriba y, debajo, el raíl más estrecho y oscuro del que cuelga.
+  { tipo: "placa", id: "lanzadores", acabado: "gris-misil", plano: "vertical", espejo: true, x: LANZ.x, grosor: LANZ.ancho, bisel: 0.012, planta: [
+    [LANZ.z0 - 0.03, LANZ.y + 0.07], [LANZ.z1, LANZ.y + 0.07], [LANZ.z1, LANZ.y - 0.03], [LANZ.z0 - 0.16, LANZ.y - 0.03], [LANZ.z0, LANZ.y + 0.035],
+  ] },
+  // Tirador de la cola del lanzador.
+  { tipo: "caja", id: "lanzadores-tirador", acabado: "metal", espejo: true, centro: [LANZ.x, LANZ.y + 0.02, LANZ.z1 - 0.02], tam: [0.05, 0.05, 0.04] },
   { tipo: "caja", id: "lanzadores-rail", acabado: "metal", espejo: true, redondeo: 0.01, centro: [LANZ.x, LANZ.y - LANZ.alto / 2 + 0.02, (LANZ.z0 + LANZ.z1) / 2 - 0.05], tam: [LANZ.ancho - 0.05, 0.04, LANZ.z0 - LANZ.z1 - 0.2] },
   ...PIEZAS_MISIL,
   { tipo: "tubo", id: "tobera-labio", acabado: "aluminio", centro: [0, TOBERA.y], seccion: TOBERA.seccion, perfil: [[COLA_Z + 0.004, TOBERA.r + 0.002], [COLA_Z - 0.008, TOBERA.r], [COLA_Z - 0.008, TOBERA.r - TOBERA.labio], [COLA_Z + 0.004, TOBERA.r - TOBERA.labio]] },
@@ -470,7 +474,7 @@ const PARTES: Parte[] = [
   {
     nombre: "AIM-120 y lanzadores",
     en: [-1.58, -0.75, 0.9],
-    piezas: ["pilones", "lanzadores", "lanzadores-rail", ...IDS_MISIL],
+    piezas: ["pilones", "lanzadores", "lanzadores-rail", "lanzadores-tirador", ...IDS_MISIL],
     respaldo: "foto",
     fuentes: ["carga", "cautivo", "navy"],
     texto: "Un lanzador bajo cada ala, con un AIM-120 de instrucción, gris con bandas azules: el misil aire-aire de 3,65 m, guiado por radar, que el Fury disparó por primera vez en julio de 2026.",
