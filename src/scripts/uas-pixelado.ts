@@ -149,18 +149,42 @@ export function crearPixelado(renderer: WebGLRenderer) {
         if (sombraNegra > 0.5 && k < 0.5) f = min(f, 1.0);
         return clamp(c * f, 0.0, 1.0);
       }
+      // Lo fino, a lo largo de s: uno o dos píxeles de grueso, o tres si cerca
+      // (hasta tres columnas a lo largo de t, también en diagonal) mide dos.
+      // Así un ala que va en escalera y mide 2 y 3 px a trozos sale toda
+      // como raya, sin cuentas negras. La misma medida quita el contorno y
+      // oscurece.
+      bool vacio(vec2 uv) { return texture2D(tColor, uv).a < 0.5; }
+      bool dos(vec2 uv, vec2 s) {
+        return (vacio(uv + s) && (vacio(uv - s) || vacio(uv - 2.0 * s))) || (vacio(uv - s) && vacio(uv + 2.0 * s));
+      }
+      bool tres(vec2 uv, vec2 s) {
+        bool a1 = vacio(uv + s), b1 = vacio(uv - s), b2 = vacio(uv - 2.0 * s);
+        return (a1 && (b1 || b2 || vacio(uv - 3.0 * s))) || (vacio(uv + 2.0 * s) && (b1 || b2)) || (vacio(uv + 3.0 * s) && b1);
+      }
+      bool dosAqui(vec2 uv, vec2 s) { return !vacio(uv) && dos(uv, s); }
+      bool fino(vec2 uv, vec2 s, vec2 t) {
+        if (dos(uv, s)) return true;
+        if (!tres(uv, s)) return false;
+        for (int k = 1; k <= 3; k++) {
+          vec2 a = float(k) * t;
+          if (dosAqui(uv + a, s) || dosAqui(uv + a + s, s) || dosAqui(uv + a - s, s) ||
+              dosAqui(uv - a, s) || dosAqui(uv - a + s, s) || dosAqui(uv - a - s, s)) return true;
+        }
+        return false;
+      }
+      bool finoXY(vec2 uv) { return fino(uv, vec2(paso.x, 0.0), vec2(0.0, paso.y)) || fino(uv, vec2(0.0, paso.y), vec2(paso.x, 0.0)); }
       void main() {
         vec2 v[4];
         v[0] = vec2(paso.x, 0.0); v[1] = vec2(-paso.x, 0.0);
         v[2] = vec2(0.0, paso.y); v[3] = vec2(0.0, -paso.y);
         vec4 c = texture2D(tColor, vUv);
         if (c.a < 0.5) {
-          // En el pixel HD, lo que tiene uno o dos píxeles de grueso (el ala
-          // vista de frente, las colas, las patas) no lleva contorno: con él,
+          // En el pixel HD, lo fino (el ala vista de frente, las colas, las
+          // patas) no lleva contorno: con él,
           // una raya fina salía como una barra negra de cuatro píxeles.
           for (int i = 0; i < 4; i++)
-            if (texture2D(tColor, vUv + v[i]).a > 0.5 && (hd < 0.5 ||
-                (texture2D(tColor, vUv + 2.0 * v[i]).a > 0.5 && texture2D(tColor, vUv + 3.0 * v[i]).a > 0.5))) {
+            if (texture2D(tColor, vUv + v[i]).a > 0.5 && (hd < 0.5 || !finoXY(vUv + v[i]))) {
               gl_FragColor = vec4(contorno, 1.0);
               return;
             }
@@ -207,14 +231,10 @@ export function crearPixelado(renderer: WebGLRenderer) {
         // contorno de fuera sigue en negro.
         if (hd > 0.5) {
           c.rgb *= mezcla > 0.5 ? 0.55 : mezcla > 0.0 ? 0.75 : 1.0;
-          // Lo fino (uno o dos píxeles de grueso), sin contorno, más oscuro
+          // Lo fino, sin contorno, más oscuro
           // para que se lea como raya (en el HD, el ala de frente es una raya
           // gris oscura).
-          bool d0 = texture2D(tColor, vUv + v[0]).a < 0.5, d1 = texture2D(tColor, vUv + v[1]).a < 0.5;
-          bool d2 = texture2D(tColor, vUv + v[2]).a < 0.5, d3 = texture2D(tColor, vUv + v[3]).a < 0.5;
-          bool finoX = (d0 && (d1 || texture2D(tColor, vUv + 2.0 * v[1]).a < 0.5)) || (d1 && texture2D(tColor, vUv + 2.0 * v[0]).a < 0.5);
-          bool finoY = (d2 && (d3 || texture2D(tColor, vUv + 2.0 * v[3]).a < 0.5)) || (d3 && texture2D(tColor, vUv + 2.0 * v[2]).a < 0.5);
-          if (finoX || finoY) c.rgb *= 0.5;
+          if (finoXY(vUv)) c.rgb *= 0.5;
         }
         else c.rgb = mix(c.rgb, contorno, mezcla);
         gl_FragColor = vec4(c.rgb, 1.0);

@@ -142,7 +142,8 @@ export type Pieza = (
 // la del sistema que haya (DIN en el Mac, Bahnschrift en Windows).
 export type Letra = "din" | "din-estrecha";
 export type Dibujo =
-  | { tipo: "escarapela" }
+  // `color`: en vez de la tinta (la del Global Hawk, gris oscuro).
+  | { tipo: "escarapela"; color?: string }
   // Escarapela ucraniana: disco amarillo con el centro azul (el MICH-2000).
   | { tipo: "escarapela-ua" }
   // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;

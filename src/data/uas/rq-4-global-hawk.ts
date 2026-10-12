@@ -6,7 +6,7 @@
 // en metros y al final se pasa a unidades de la maqueta (1 unidad = 15 m).
 // Imágenes a tamaño completo en arte/uas-fuentes/rq-4-global-hawk/ (fuera
 // de Git; enlaces en docs/drones/rq-4-global-hawk.md).
-import type { Maqueta, Parte, Pieza, Seccion } from "./tipos";
+import type { Calca, Costura, Dibujo, Maqueta, Parte, Pieza, Seccion } from "./tipos";
 import { bandera } from "../banderas.ts";
 
 const ESCALA = 15;
@@ -404,12 +404,92 @@ const aUnidades = (p: Pieza): Pieza => {
   }
 };
 
+// ── Detalle pintado del HD (el 04-2015 en su primer vuelo) ─────────────────
+// Marcas, juntas y remaches de la foto en vuelo (`vuelo`), medidos con su
+// cámara encajada. Esa foto es del costado derecho; el izquierdo, en espejo.
+// En metros, como las piezas.
+const LADO: [number, number, number] = [1, 0, 0];
+// Gris oscuro algo cálido de las marcas (el disco de la estrella, en la foto,
+// a menos de la mitad de luz que la pintura de al lado).
+const MARCA = "#2f2b27";
+// Cara de fuera de la aleta izquierda de la V y un punto en ella, a d de la
+// raíz, un poco fuera para que el rayo la encuentre.
+const FUERA_COLA: [number, number, number] = [Math.sin(COLA.angulo), -Math.cos(COLA.angulo), 0];
+const enAleta = (d: number, z: number): [number, number, number] =>
+  [COLA.x + d * Math.cos(COLA.angulo) + 0.1 * FUERA_COLA[0], d * Math.sin(COLA.angulo) + 0.1 * FUERA_COLA[1], z];
+const enAletaDcha = (d: number, z: number): [number, number, number] => { const [x, y] = enAleta(d, z); return [-x, y, z]; };
+// Arriba del ala, en x.
+const sobreAla = (x: number, z: number): [number, number, number] => [x, ALA.y + subidaAla(x) + 0.3, z];
+// Triángulo amarillo de aviso, hueco: el de fuera y el de dentro al revés
+// en un mismo trazo, para que el de dentro quede sin pintar.
+const TRIANGULO: Dibujo = { tipo: "poligono", color: "#e2b51c", puntos: [
+  [0.5, 1], [1, 0], [0, 0], [0.5, 1], [0.5, 0.7], [0.19, 0.11], [0.81, 0.11], [0.5, 0.7],
+] };
+// Recuadro claro de la cola: un rectángulo de lado a por b alrededor de (d, z).
+const recuadro = (d: number, z: number, a: number, b: number): [number, number, number][] =>
+  [[d - a / 2, z + b / 2], [d + a / 2, z + b / 2], [d + a / 2, z - b / 2], [d - a / 2, z - b / 2], [d - a / 2, z + b / 2]]
+    .map(([dd, zz]) => enAleta(dd, zz));
+
+const CALCAS: Calca[] = [
+  // Estrella de baja visibilidad, detrás del ala y bajo la góndola.
+  { sobre: ["fuselaje"], en: [0.6, 0.54, -2.9], desde: LADO, tam: [1.0, 0.5], dibujo: { tipo: "escarapela", color: MARCA }, espejo: true },
+  // «U.S. AIR FORCE» bajo la joroba, una en cada costado (con espejo saldría
+  // al revés en el otro).
+  ...([1, -1] as const).map((l): Calca => ({
+    sobre: ["fuselaje"], en: [l * 0.64, 0.34, 0.29], desde: [l, 0, 0], tam: [2.45, 0.49],
+    dibujo: { tipo: "texto", texto: "U.S. AIR FORCE", color: MARCA, fino: true },
+  })),
+  // Número de serie abajo en la cara de fuera de cada aleta de la V.
+  { sobre: ["cola"], en: enAleta(0.3, -6.42), desde: FUERA_COLA, tam: [0.95, 0.235], dibujo: { tipo: "texto", texto: "042015", color: MARCA, fino: true } },
+  { sobre: ["cola"], en: enAletaDcha(0.3, -6.42), desde: [-FUERA_COLA[0], FUERA_COLA[1], 0], tam: [0.95, 0.235], dibujo: { tipo: "texto", texto: "042015", color: MARCA, fino: true } },
+  // Arriba, la estrella en el ala izquierda y «USAF» en la derecha, cerca de
+  // la punta, con lo alto de las letras hacia el borde de ataque.
+  { sobre: ["ala"], en: sobreAla(13.5, -0.85), desde: [0, 1, 0.01], giro: 180, tam: [1.2, 0.6], dibujo: { tipo: "escarapela", color: MARCA } },
+  { sobre: ["ala"], en: sobreAla(-16.2, -1.0), desde: [0, 1, 0.01], giro: 180, tam: [2.0, 0.72], dibujo: { tipo: "texto", texto: "USAF", color: MARCA, fino: true } },
+  // Avisos amarillos: bajo la cola, junto a la raíz del ala y en el morro.
+  { sobre: ["fuselaje"], en: [0.5, -0.5, -4.65], desde: [1, -0.4, 0], tam: [0.16, 0.14], dibujo: TRIANGULO, espejo: true },
+  { sobre: ["fuselaje"], en: [0.7, -0.11, 2.32], desde: LADO, tam: [0.16, 0.14], dibujo: TRIANGULO, espejo: true },
+  { sobre: ["fuselaje"], en: [0.82, 0.46, 4.75], desde: LADO, tam: [0.16, 0.14], dibujo: TRIANGULO, espejo: true },
+];
+
+const COSTURAS: Costura[] = [
+  // Junta de la cola con el cuerpo, de arriba abajo, con remaches.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.03, 1.56, -4.54], [0.45, 1.14, -4.62], [0.53, 0.59, -4.6], [0.5, 0.02, -4.54], [0.28, -0.51, -4.44]] },
+  // Tapa de la estrella, atornillada.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [
+    [0.53, 0.79, -4.0], [0.55, 0.83, -2.92], [0.55, 0.87, -1.84], [0.59, 0.06, -1.78], [0.57, 0.02, -2.86], [0.52, -0.02, -3.93], [0.53, 0.79, -4.0],
+  ] },
+  // Delante del ala, tres juntas a lo largo con remaches y cuatro de arriba
+  // abajo entre ellas.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.62, 0.63, 1.98], [0.69, 0.67, 2.58], [0.79, 0.72, 3.71], [0.82, 0.75, 4.43]] },
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.62, 0.08, -0.55], [0.64, 0.13, 0.89], [0.69, 0.18, 2.0], [0.74, 0.21, 2.61], [0.82, 0.27, 3.75], [0.82, 0.3, 4.47]] },
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.66, -0.28, 2.05], [0.7, -0.25, 2.66], [0.77, -0.2, 3.8], [0.77, -0.17, 4.53]] },
+  ...([[0.62, 0.63, 1.98, -0.28, 2.05], [0.69, 0.67, 2.58, -0.25, 2.66], [0.79, 0.72, 3.71, -0.2, 3.8], [0.82, 0.75, 4.43, -0.17, 4.53]] as const)
+    .map(([x, y0, z0, y1, z1]): Costura => ({ sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[x, y0, z0], [x, y1, z1]] })),
+  // Tapa atornillada en el hoyuelo de la mejilla.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.08, puntos: [[0.82, 0.62, 5.58], [0.75, 0.63, 6.37], [0.71, 0.17, 6.42], [0.74, 0.14, 5.65], [0.82, 0.62, 5.58]] },
+  // Cola: la bisagra del timón, una raya clara de la raíz a la punta, y los
+  // tres recuadros claros delante de ella.
+  { sobre: ["cola", "timones"], desde: FUERA_COLA, espejo: true, claro: true, puntos: [0.3, 1, 2, 3, 3.9].map((d) => enAleta(d, bisagraCola(d))) },
+  ...([[3.45, -6.91], [1.48, -6.77], [0.77, -6.72]] as const)
+    .map(([d, z]): Costura => ({ sobre: ["cola"], desde: FUERA_COLA, espejo: true, claro: true, puntos: recuadro(d, z, 0.26, 0.2) })),
+];
+const aCalca = (k: Calca): Calca => ({ ...k, en: u3(k.en), tam: u2(k.tam) });
+const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...(k.remaches && { remaches: u(k.remaches) }) });
+
 const maqueta: Maqueta = {
   nombre: "RQ-4 Global Hawk",
   subtitulo: "Dron de reconocimiento de gran altitud y gran autonomía",
   escala: ESCALA,  // 1 unidad = 15 m; medidas de Designation-Systems
   hd: true,
   contornoPixel: true,
+  // La pintura al sol caía en 3,7 de los siete escalones: al centro.
+  desfaseLuz: -0.2,
+  // Ala larga: de más arriba, como el TB2.
+  vistaTarjeta: [61, 20],
+  // En la planta, las marcas del ala salían como un píxel oscuro suelto.
+  plantaLisa: true,
+  detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),

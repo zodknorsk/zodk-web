@@ -2,12 +2,12 @@
 
 ## Dónde estamos
 
-- **Fase 3 (maqueta HD), quinta vuelta hecha** el 12-10-2026 (antena en T, carenado en la raíz de la V, hoyuelos de las mejillas, costado de la góndola liso, sin el pliegue; capturas en `maqueta-5.html` y `gondola-lisa.png`). Antes, la cuarta con lo que marcó el usuario, a falta de que la vea: perfil entero (lomo y panza) rehecho contra Andersen, mandíbula nueva (cara con ventanita, curva redonda, dos muescas, escalón), pliegue de la góndola en diagonal, cuerpo hasta z −7,2 (las aletas de la V ya no acaban en el aire), dos aletas bajo la cola y quilla bajo la panza; **sin tren**. Capturas en `~/Downloads/rq-4-maqueta/maqueta-4.html`.
-- Encajes de cámara (fuera de Git, junto a las fotos): `andersen.json` (perfil, exacto), `vuelo.json` (04-2015 en vuelo, error 1-14 px, vale para formas), `paris.json` (Le Bourget de tres cuartos, 20-40 px: no superponer), `usuario-morro.json` (foto de perfil del usuario, escalada con las muescas).
-- Visto y sin tocar: la tira o cajón a lo largo del costado bajo, del ala a la cola (foto en vuelo).
-- Motor: `hoyuelos` nuevo en el casco (`Hoyuelo` en `tipos.ts`, solo en cascos sin ensanche ni `suave`); los demás drones no cambian.
-- **Siguiente**: lo que diga el usuario; si la forma vale, las marcas del 04-2015, costuras y `vistaTarjeta`/`desfaseLuz`. Después, fase 4.
-- Sin commitear: la maqueta, el acabado, las miniaturas de `public/uas/rq-4-global-hawk/fuentes/`, este diario; en la bóveda, la nota y el glosario. **Provisional, no se commitea**: `src/content/uas/rq-4-global-hawk/index.md`.
+- **Fase 3 (marcas, juntas y remaches) y lo pendiente de la fase 4, hechos** el 12-10-2026, a falta de que lo vea el usuario (`~/Downloads/rq-4-maqueta/marcas-1.html`).
+- Marcas del 04-2015, medidas sobre la foto en vuelo con su cámara encajada: estrella en los costados y arriba del ala izquierda, «U.S. AIR FORCE» en cada costado, «USAF» arriba del ala derecha, 042015 y tres recuadros claros en la cara de fuera de cada aleta, raya clara en la bisagra del timón, tres triángulos amarillos por lado; juntas con remaches (cola, tapa de la estrella, panel delante del ala, mejilla). Marcas en gris oscuro (`MARCA`; la escarapela admite ya `color`). `plantaLisa`. Tarjeta y planta regeneradas.
+- Pixel: contorno y oscurecido miden lo fino con la misma función (`fino` en `uas-pixelado.ts`); el ala de frente sale como raya continua. Cambia algo en los demás drones (palas, varillas, antenas de 2-3 px, mismo arreglo): el usuario lo da por bueno para todos.
+- Quedan: en la tarjeta, las juntas de los alerones como puntos sueltos; los triángulos amarillos, en pixel, son puntitos de 2-3 px. Nave del hero: no pedida.
+- **Siguiente**: fase 5 (en la web).
+- Sin commitear en la bóveda: la nota y el glosario. **Provisional, no se commitea**: `src/content/uas/rq-4-global-hawk/index.md`.
 - En `main`.
 
 ## Decisiones del usuario
@@ -17,7 +17,9 @@
 - Carga: sin armas; la del Block 20 (sensores internos, panza sin la góndola del radar del Block 40).
 - 12-10-2026, sobre la forma: la boca de la toma mira hacia delante y arriba (labio de abajo adelantado); los costados de la góndola son los del cuerpo, no una pieza posada; el escape es un agujero negro grande con escalones.
 - 12-10-2026, tercera vuelta: la boca no es redonda (en D) y tiene un hueco debajo, entre el labio y el cuerpo; la tobera nace de la misma pieza; el «escalón» es una pieza vertical en el centro, de la tobera al final de la cola; el morro, más chupado de frente; bajo el morro, una segunda parte que le da aspecto de boca.
+- 12-10-2026: pasar a la fase 4 (pixel) antes de las marcas.
 - 12-10-2026, cuarta vuelta: **sin tren de aterrizaje** (el dron va en vuelo). Bajo la cola, dos aletas pequeñas a los lados y una en el centro; las aletas de la V nunca acaban en el aire; la mandíbula, con las muescas y la forma de su foto de perfil (`usuario-4-3.png`).
+- 12-10-2026: el arreglo de lo fino en el pixel (contorno y oscurecido con la misma medida), para todos los drones aunque cambien algo.
 
 ## Medidas clave
 
@@ -37,6 +39,8 @@
 - Ala: raíz z 0,85/−1,75 (cuerda 2,6 m), punta z −0,75/−1,55, y −0,15, sube 1,2 m en la punta (en vuelo, aproximado).
 - Cola en V a 45° (foto de frente), raíz en los costados a y 0, 2,8 m de alto, cuerdas 1,65 y 0,82 m.
 - Gris `gris-gh` #5a605f en el HD: arriba al sol, render #7d8485 y foto de Le Bourget #7a8688.
+- Pixel HD: pintura al sol en 3,6-3,8 de los siete escalones (desde arriba y a [61, 20]): `desfaseLuz` −0,2.
+- Marcas (foto en vuelo, `vuelo.json` con su cámara): estrella del costado centrada en z −2,9, y 0,54, disco de 0,5 m y 1,0 m con las barras; «U.S. AIR FORCE» de z −0,9 a 1,47 (centro 0,29), y 0,34, letras de 0,3 m; 042015 en la aleta a d 0,3, z −6,42, 0,91 por 0,15 m; recuadros (0,26 por 0,2 m) en d 3,45/1,48/0,77, z −6,91/−6,77/−6,72; estrella del ala en x 13,5, «USAF» en x −16,2 (2 m). Color de las marcas: el disco, a 0,45 de la luz de la pintura de al lado.
 - RQ-4B: 39,9 m de envergadura, 14,5 m de largo, 4,7 m de alto (Designation-Systems, Air & Space Forces).
 
 ## Fuentes
@@ -81,6 +85,7 @@ Las de la nota (`## Fuentes`). Fotos de `arte/uas-fuentes/rq-4-global-hawk/full/
 - Mandíbula con la cara de delante vertical y el fondo plano hasta delante: la de verdad se recoge en curva redonda bajo la ventanita (foto de perfil del usuario).
 - Medir a ojo el perfil de la joroba y de la panza: salía hasta 20 cm alto entre la toma y la joroba y hasta 30 cm bajo detrás del ala. Se mide columna a columna sobre la foto de Andersen.
 - Pliegue de la góndola bajando el hombro del cuerpo (en diagonal del labio al ala): en la foto es una raya fina, en la maqueta salía una ondulación ancha y el costado se veía hundido, con franjas de luz. Góndola como en la tercera vuelta; el pliegue, si acaso, como costura.
+- Pixel, ala de frente: pedir también tres píxeles en las columnas de al lado para poner contorno. Las cuentas se quedan (salen también del oscurecido de lo fino) y el cambio toca a todos los drones.
 - Encajar la foto en vuelo con la punta del ala: cuánto se dobla el ala es supuesto y tuerce el encaje (el morro salía corrido).
 
 ## Registro
@@ -92,3 +97,4 @@ Las de la nota (`## Fuentes`). Fotos de `arte/uas-fuentes/rq-4-global-hawk/full/
 - 12-10-2026, fase 3, tercera vuelta: el usuario marcó toma (hueco y forma), tobera y cajón, morro y «boca». Toma pasada a casco en D, corta y con la cara de abajo horizontal; góndola con su ancho desde el labio y sin escalón delante. Tobera enrasada; cajón y cubierta hasta z −7,0, recta. Morro con la mitad de abajo más cuadrada; barbilla cambiada por la mandíbula. Punta del morro con más secciones: el anillo de luz sigue (deshecho).
 - 12-10-2026, fase 3, cuarta vuelta: el usuario marcó morro y mandíbula (líneas que no seguían la foto), toma y cuello, aletas bajo la cola, aletas de la V al aire, tren fuera, y el perfil entero. Perfil medido columna a columna en Andersen, sobre la foto original (el recorte de ffmpeg del diario empieza en x 20, no en 150: apuntado en «Medidas clave»). Lomo bajado entre toma y joroba, panza que sube detrás del ala, mandíbula nueva con muescas, pliegue de la góndola, cuerpo hasta −7,2, aletas bajas y quilla. Encajes nuevos: foto en vuelo, Le Bourget y la foto del usuario.
 - 12-10-2026, fase 3, quinta vuelta: antena en T; carenado en la raíz de las aletas de la V; hoyuelos en las mejillas (opción nueva del casco); góndola vuelta a la de la tercera vuelta (el pliegue bajando el hombro dejaba el costado ondulado), con el perfil nuevo.
+- 12-10-2026, fase 3, marcas: las del 04-2015 y las juntas medidas con `medir:superficie` sobre la foto en vuelo; comprobadas lado a lado con la foto (costado, cola, ala) y desde el otro costado y arriba (textos al derecho). Fase 4: contorno y oscurecido con la misma medida de lo fino; un tramo de 3 px cuenta como fino si a menos de tres columnas (también en diagonal) hay uno de 2. Mirando solo la columna de al lado quedaban trozos de contorno en la escalera del ala. Comparados los 13 drones antes y después (frente, perfil, planta en pixel): ~1.300 píxeles de contorno que desaparecen y ~700 que se oscurecen en total, todos en piezas finas.

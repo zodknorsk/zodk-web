@@ -275,6 +275,7 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
     case "escarapela": {
       // La de baja visibilidad sobre gris: disco negro con la estrella en el
       // color de la pintura; barras con el contorno y una raya en negro.
+      if (d.color) c.fillStyle = c.strokeStyle = d.color;
       const D = H * 0.96, R = D / 2, cx = W / 2, cy = H / 2, lw = D * 0.055;
       const barra = (x0: number, x1: number) => {
         c.lineWidth = lw;
