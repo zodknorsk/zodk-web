@@ -44,6 +44,7 @@ const COMUNES = {
   espuma: ["#262628", "#38383b", "#4e4e52", "#6c6c71"],
   "gris-fu": ["#333739", "#4f5458", "#6e7178", "#8b8d96"],
   "gris-fu2": ["#202526", "#333a3b", "#484f53", "#646b70"],
+  "gris-misil": ["#555a5e", "#83888c", "#aeb2b5", "#d6d9db"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

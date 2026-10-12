@@ -241,14 +241,25 @@ const zMisil = (d: number) => MISIL.punta - d;
 const misil = (x: number, lado: string): Pieza[] => {
   const aletasX = (id: string, contorno: [number, number][]): Pieza[] =>
     [45, -45, 135, -135].map((inclinacion, i) => ({
-      tipo: "placa", id: `${id}-${i}${lado}`, acabado: "aluminio", plano: "vertical", x, y: MISIL.y, grosor: 0.008, bisel: 0.002, inclinacion, planta: contorno,
+      tipo: "placa", id: `${id}-${i}${lado}`, acabado: "gris-misil", plano: "vertical", x, y: MISIL.y, grosor: 0.008, bisel: 0.002, inclinacion, planta: contorno,
     }));
+  const anillo = (id: string, acabado: Pieza["acabado"], d: number, largo: number, r = MISIL.r + 0.0015): Pieza =>
+    ({ tipo: "tubo", id: `${id}${lado}`, acabado, centro: [x, MISIL.y], perfil: [[zMisil(d), 0], [zMisil(d), r], [zMisil(d + largo), r], [zMisil(d + largo), 0]] });
   return [
     { tipo: "tubo", id: `misil-radomo${lado}`, acabado: "hueso", centro: [x, MISIL.y], perfil: [
       [zMisil(0), 0], [zMisil(0.03), 0.028], [zMisil(0.12), 0.055], [zMisil(0.25), 0.075], [zMisil(0.4), 0.086], [zMisil(0.52), MISIL.r], [zMisil(0.53), 0],
     ] },
-    { tipo: "tubo", id: `misil${lado}`, acabado: "aluminio", centro: [x, MISIL.y], perfil: [[zMisil(0.52), 0], [zMisil(0.52), MISIL.r], [zMisil(3.64), MISIL.r], [zMisil(3.65), 0.07], [zMisil(3.65), 0]] },
-    ...[1.15, 2.35].map((d, i): Pieza => ({ tipo: "tubo", id: `misil-banda-${i}${lado}`, acabado: "azul", centro: [x, MISIL.y], perfil: [[zMisil(d), 0], [zMisil(d), MISIL.r + 0.002], [zMisil(d + 0.07), MISIL.r + 0.002], [zMisil(d + 0.07), 0]] })),
+    // Cuerpo gris mate que se estrecha al final, con la tobera negra.
+    { tipo: "tubo", id: `misil${lado}`, acabado: "gris-misil", centro: [x, MISIL.y], perfil: [[zMisil(0.52), 0], [zMisil(0.52), MISIL.r], [zMisil(3.52), MISIL.r], [zMisil(3.65), 0.074], [zMisil(3.65), 0]] },
+    anillo("misil-tobera", "hueco", 3.645, 0.01, 0.05),
+    // Sección de guiado sin pintar, plateada, detrás del radomo (Udvar-Hazy).
+    anillo("misil-guiado", "aluminio", 0.96, 0.46),
+    // Juntas entre secciones, finas y oscuras.
+    ...[0.52, 0.95, 1.42, 2.45, 3.2].map((d, i) => anillo(`misil-junta-${i}`, "junta", d - 0.005, 0.012, MISIL.r + 0.002)),
+    // Canal de cables a lo largo del lomo y el enchufe del lanzador.
+    { tipo: "caja", id: `misil-canal${lado}`, acabado: "gris-misil", redondeo: 0.006, centro: [x, MISIL.y + MISIL.r + 0.006, zMisil(1.95)], tam: [0.034, 0.016, 2.5] },
+    { tipo: "caja", id: `misil-enchufe${lado}`, acabado: "metal", centro: [x, MISIL.y + MISIL.r + 0.014, zMisil(1.62)], tam: [0.05, 0.022, 0.07] },
+    ...[1.5, 2.35, 2.62].map((d, i): Pieza => ({ tipo: "tubo", id: `misil-banda-${i}${lado}`, acabado: "azul", centro: [x, MISIL.y], perfil: [[zMisil(d), 0], [zMisil(d), MISIL.r + 0.002], [zMisil(d + 0.07), MISIL.r + 0.002], [zMisil(d + 0.07), 0]] })),
     ...aletasX("misil-alas", [[zMisil(1.62), MISIL.r - 0.01], [zMisil(1.95), MISIL.r - 0.01], [zMisil(1.93), 0.2], [zMisil(1.78), 0.2]]),
     ...aletasX("misil-aletas", [[zMisil(3.28), MISIL.r - 0.01], [zMisil(3.64), MISIL.r - 0.01], [zMisil(3.64), 0.27], [zMisil(3.5), 0.27]]),
     // Los patines con los que cuelga del raíl.
@@ -306,7 +317,10 @@ const PIEZAS: Pieza[] = [
   { tipo: "placa", id: "antena-grande", acabado: "negro", plano: "vertical", x: 0, grosor: 0.018, bisel: 0.005, planta: [[-2.16, 0.62], [-2.31, 0.62], [-2.37, 0.745], [-2.32, 0.745]] },
   // Pilones y lanzadores, en las dos alas.
   { tipo: "ala", id: "pilones", acabado: "gris-fu", vertical: true, espejo: true, x: LANZ.x, y: PILON.y, estaciones: [[0, PILON.z0, PILON.z1, 0.07], [PILON.y - PILON.abajo, PILON.z0 - 0.08, PILON.z1, 0.06]] },
-  { tipo: "caja", id: "lanzadores", acabado: "gris-fu", espejo: true, redondeo: 0.04, centro: [LANZ.x, LANZ.y, (LANZ.z0 + LANZ.z1) / 2], tam: [LANZ.ancho, LANZ.alto, LANZ.z0 - LANZ.z1] },
+  // El lanzador, gris claro mate como el misil (fotos de la carga y del 25-1001):
+  // una caja arriba y, debajo, el raíl más estrecho y oscuro del que cuelga.
+  { tipo: "caja", id: "lanzadores", acabado: "gris-misil", espejo: true, redondeo: 0.03, centro: [LANZ.x, LANZ.y + 0.02, (LANZ.z0 + LANZ.z1) / 2], tam: [LANZ.ancho, LANZ.alto - 0.04, LANZ.z0 - LANZ.z1] },
+  { tipo: "caja", id: "lanzadores-rail", acabado: "metal", espejo: true, redondeo: 0.01, centro: [LANZ.x, LANZ.y - LANZ.alto / 2 + 0.02, (LANZ.z0 + LANZ.z1) / 2 - 0.05], tam: [LANZ.ancho - 0.05, 0.04, LANZ.z0 - LANZ.z1 - 0.2] },
   ...PIEZAS_MISIL,
   { tipo: "tubo", id: "tobera-labio", acabado: "aluminio", centro: [0, TOBERA.y], seccion: TOBERA.seccion, perfil: [[COLA_Z + 0.004, TOBERA.r + 0.002], [COLA_Z - 0.008, TOBERA.r], [COLA_Z - 0.008, TOBERA.r - TOBERA.labio], [COLA_Z + 0.004, TOBERA.r - TOBERA.labio]] },
   { tipo: "tubo", id: "tobera-boca", acabado: "hueco", centro: [0, TOBERA.y], seccion: TOBERA.seccion, perfil: [[COLA_Z - 0.002, 0], [COLA_Z - 0.002, TOBERA.r - TOBERA.labio + 0.002], [COLA_Z - 0.004, TOBERA.r - TOBERA.labio + 0.002], [COLA_Z - 0.004, 0]] },
@@ -456,7 +470,7 @@ const PARTES: Parte[] = [
   {
     nombre: "AIM-120 y lanzadores",
     en: [-1.58, -0.75, 0.9],
-    piezas: ["pilones", "lanzadores", ...IDS_MISIL],
+    piezas: ["pilones", "lanzadores", "lanzadores-rail", ...IDS_MISIL],
     respaldo: "foto",
     fuentes: ["carga", "cautivo", "navy"],
     texto: "Un lanzador bajo cada ala, con un AIM-120 de instrucción, gris con bandas azules: el misil aire-aire de 3,65 m, guiado por radar, que el Fury disparó por primera vez en julio de 2026.",
@@ -502,6 +516,7 @@ const maqueta: Maqueta = {
   resalte: "tinta",
   hd: true,
   contornoPixel: true,
+  vistaTarjeta: [61, 20],
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
