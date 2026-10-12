@@ -3,8 +3,7 @@ title: FQ-44A Fury
 date: '2026-10-12'
 description: >-
   El FQ-44A Fury es el dron de combate de Anduril para el programa CCA de la
-  Fuerza Aérea de EE. UU.: un pequeño avión a reacción sin piloto, de unos 6 m
-  de…
+  Fuerza Aérea de EE. UU.: un pequeño avión a reacción sin piloto, de unos 10 m…
 updated: '2026-10-12'
 tags:
   - eeuu
@@ -13,7 +12,7 @@ bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
 categoria: Dron de combate CCA
 ---
-> El FQ-44A Fury es el <mark>dron de combate de Anduril para el programa CCA</mark> de la Fuerza Aérea de EE. UU.: un pequeño avión a reacción sin piloto, de unos 6 m de largo, pensado para volar junto a los cazas tripulados como un compañero de formación más, con misiles, sensores o haciendo de señuelo. No lo lleva nadie a los mandos: un operador le dice qué hacer y el dron decide cómo hacerlo. En junio de 2026 la Fuerza Aérea <mark>lo eligió para fabricarlo en serie</mark>, junto al FQ-42A de General Atomics. Aún no ha entrado en servicio.
+> El FQ-44A Fury es el <mark>dron de combate de Anduril para el programa CCA</mark> de la Fuerza Aérea de EE. UU.: un pequeño avión a reacción sin piloto, de unos 10 m de largo, pensado para volar junto a los cazas tripulados como un compañero de formación más, con misiles, sensores o haciendo de señuelo. No lo lleva nadie a los mandos: un operador le dice qué hacer y el dron decide cómo hacerlo. En junio de 2026 la Fuerza Aérea <mark>lo eligió para fabricarlo en serie</mark>, junto al FQ-42A de General Atomics. Aún no ha entrado en servicio.
 
 ⚠️ Las medidas y prestaciones de la tabla son las del diseño de Blue Force Technologies, publicadas en 2023. Ni Anduril ni la Fuerza Aérea han dado las del FQ-44A.
 
@@ -44,7 +43,7 @@ En abril de 2024 la Fuerza Aérea eligió el Fury y el de General Atomics para l
 
 ## Especificaciones y Uso
 
-Es un reactor de unos 6 m de largo, la mitad que un F-16, hecho sobre todo de fibra de carbono. Tiene alas en flecha, una sola deriva y la toma de aire del motor bajo el fuselaje, y despega y aterriza en pista con un tren de tres ruedas. El motor es el de un avión de negocios, para que sea barato de comprar y de mantener, y por eso no pasa de Mach 0,95. Según Blue Force, sube a unos 15.000 m y aguanta 9 g durante poco tiempo. El morro y el interior se cambian según la misión y pueden llevar hasta unos 180 kg de radar, sensores infrarrojos o equipos de guerra electrónica. La Fuerza Aérea calculaba unos 30 millones de dólares por avión, y dice que el precio va por debajo; según The Aviationist, el de serie costará menos de 20.
+Es un reactor de unos 10 m de largo, dos tercios de un F-16, hecho sobre todo de fibra de carbono. Tiene alas en flecha, una sola deriva y la toma de aire del motor bajo el fuselaje, y despega y aterriza en pista con un tren de tres ruedas. El motor es el de un avión de negocios, para que sea barato de comprar y de mantener, y por eso no pasa de Mach 0,95. Según Blue Force, sube a unos 15.000 m y aguanta 9 g durante poco tiempo. El morro y el interior se cambian según la misión y pueden llevar hasta unos 180 kg de radar, sensores infrarrojos o equipos de guerra electrónica. La Fuerza Aérea calculaba unos 30 millones de dólares por avión, y dice que el precio va por debajo; según The Aviationist, el de serie costará menos de 20.
 
 Es un dron de tipo loyal wingman: va en formación con un caza tripulado, y el piloto del caza o un operador le encargan tareas —atacar un blanco, adelantarse a mirar con sus sensores, servir de señuelo— que el dron cumple por su cuenta, con el programa Lattice de Anduril. La decisión de disparar la toma siempre una persona. Así fue el [primer disparo, en julio de 2026](https://www.twz.com/air/yfq-44a-fury-fighter-drone-has-fired-its-first-aim-120-amraam-missile): despegó de la base de Edwards, un operador le asignó un blanco simulado sobre el desierto de Mojave y el dron lanzó un AIM-120 AMRAAM. Fue el primer misil real disparado por un CCA. El programa con el que vuela es aparte: la Fuerza Aérea compra el avión a un fabricante y la autonomía a otro, y a ese concurso se presentan también Shield AI y Collins Aerospace.
 
