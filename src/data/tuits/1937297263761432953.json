@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-12",
+  "tuit": {
+    "id_str": "1937297263761432953",
+    "created_at": "2025-06-23T23:50:35.000Z",
+    "text": "A Northrop Grumman RQ-4B Global Hawk drone, using call sign FORTE10, has been flying over the Eastern Mediterranean for over 18 hours. https://t.co/O1WlpxRSpG",
+    "user": {
+      "name": "Flightradar24",
+      "screen_name": "flightradar24",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1321848505099554823/mTwrtWNY_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/O1WlpxRSpG",
+        "media_url_https": "https://pbs.twimg.com/media/GuKpdx3W4AAVpQi.jpg"
+      }
+    ]
+  }
+}

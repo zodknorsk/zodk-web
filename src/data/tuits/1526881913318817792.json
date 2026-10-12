@@ -1,0 +1,29 @@
+{
+  "capturado": "2026-10-12",
+  "tuit": {
+    "id_str": "1526881913318817792",
+    "created_at": "2022-05-18T11:06:30.000Z",
+    "text": "Meanwhile at 54,000 feet over the Black Sea - a Northrop Grumman RQ-4B Global Hawk\n\nhttps://t.co/OqSjqOYtaB https://t.co/EjQghxMFYF",
+    "user": {
+      "name": "Flightradar24",
+      "screen_name": "flightradar24",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1321848505099554823/mTwrtWNY_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/OqSjqOYtaB",
+          "expanded_url": "https://www.flightradar24.com/FORTE11/2be5a30f",
+          "display_url": "flightradar24.com/FORTE11/2be5a3…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/EjQghxMFYF",
+        "media_url_https": "https://pbs.twimg.com/media/FTCSdY7X0AE6gV0.jpg"
+      }
+    ]
+  }
+}

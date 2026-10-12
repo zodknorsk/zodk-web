@@ -1,0 +1,33 @@
+{
+  "capturado": "2026-10-12",
+  "tuit": {
+    "id_str": "1377866544596844545",
+    "created_at": "2021-04-02T06:12:38.000Z",
+    "text": "USAF RQ-4B Global Hawk (reg. 11-2049) getting a nice and up-close look at activities in the region. The AN/ZPY-3 sensor onboard has a range of 250km (circles) or more. It is used to produce GMTI radar images, perfect for monitoring equipment movement in the area. #ADSB #AE54B6 https://t.co/49SrZvRTnA",
+    "user": {
+      "name": "Emma Smith",
+      "screen_name": "ameliairheart",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2050705514225664001/1PGdAexm_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/49SrZvRTnA",
+        "media_url_https": "https://pbs.twimg.com/media/Ex8pHQ0WgAEQQpW.png"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/49SrZvRTnA",
+        "media_url_https": "https://pbs.twimg.com/media/Ex8pxiTW8AAu6TT.png"
+      },
+      {
+        "type": "photo",
+        "url": "https://t.co/49SrZvRTnA",
+        "media_url_https": "https://pbs.twimg.com/media/Ex8qNt6WgAIOn_Q.png"
+      }
+    ]
+  }
+}

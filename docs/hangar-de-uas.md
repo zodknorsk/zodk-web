@@ -23,7 +23,9 @@ claro de los iraníes), Geran-2 (Rusia, la versión rusa del Shahed, en
 negro, sacado del Shahed 2.0), Quantum Systems Vector (Alemania, ala fija de despegue vertical,
 con la Raptor-360 de los españoles), Sting (Ucrania, interceptor FPV de
 pie, en arena) y Hero-30 (Israel, munición merodeadora de alas en X, copiada
-del render de UVision, con el tubo lanzador de la feria checa). Al final, lo que hay que respetar, lo que se probó y el usuario
+del render de UVision, con el tubo lanzador de la feria checa) y RQ-4 Global
+Hawk (EE. UU., dron HALE de reconocimiento sin armas, el RQ-4B Block 20
+04-2015 en su gris). Al final, lo que hay que respetar, lo que se probó y el usuario
 rechazó, y las fotos de cada maqueta.
 
 ## Estado

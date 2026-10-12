@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-10-10'
+updated: '2026-10-12'
 tags:
   - dron
 glosario: true
@@ -128,6 +128,8 @@ glosario: true
 - **FLIR** *(Forward Looking Infrared)* — Cámara térmica que mira hacia delante. En lugar de captar la luz visible, como el ojo o una cámara normal, detecta la **radiación infrarroja (el calor)** que emiten los objetos y las personas. Suele mostrar la imagen en escala de grises, con lo caliente en blanco (*white hot*) o en negro (*black hot*).
 
 - **SAR** *(Synthetic Aperture Radar)* — Radar de apertura sintética. Con el movimiento del avión junta muchas lecturas y forma una imagen del terreno parecida a una foto, de día o de noche y a través de nubes y humo. El radar Lynx del MQ-9 Reaper lo usa para dar coordenadas a las bombas [GBU-38](/uas/armamento/gbu-38-jdam).
+
+- **GMTI** *(Ground Moving Target Indicator)* — Indicador de blancos móviles en tierra. Modo del radar que, en lugar de dibujar una imagen del terreno como el SAR, detecta y sigue los vehículos que se mueven por el suelo, de día o de noche y a través de nubes y humo. Distingue lo que se mueve de lo que está quieto. Lo lleva el radar del RQ-4 Global Hawk Block 40.
 
 - **AIS** *(Automatic Identification System)* — Sistema con el que los barcos emiten por radio su nombre, posición, rumbo y velocidad. Un dron con receptor AIS identifica los barcos que vigila. En el MQ-9 Reaper es un kit opcional para vigilancia marítima.
 

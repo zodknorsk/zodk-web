@@ -2,11 +2,8 @@
 
 ## Dónde estamos
 
-- **Fase 3 (marcas y juntas) hecha** el 12-10-2026. Juntas: las que el usuario marcó en rojo sobre la foto en vuelo (góndola delante y detrás, tapa de la estrella, borde del carenado del ala, joroba, mejilla, carenado de la raíz y paneles del ala, raíz y bisagra de las aletas, recuadros de la cola), al 0,7 de opacidad. Sin los seis recuadros del cuello.
-- `soldadura` (nuevo en la maqueta): el contorno de tinta se aleja 0,3 m de la cámara y no sale raya donde se juntan la toma y la góndola. La góndola nace más estrecha bajo el labio: sin la raya vertical que cruzaba la «A».
-- Pendiente de la fase 4: en la tarjeta, las juntas de los alerones como puntos sueltos; los triángulos amarillos, en pixel, son puntitos.
-- **Siguiente**: fase 5 (en la web).
-- Sin commitear en la bóveda: la nota y el glosario. **Provisional, no se commitea**: `src/content/uas/rq-4-global-hawk/index.md`.
+- **Cerrado el 12-10-2026.** Fases 3 a 7 hechas: maqueta HD con marcas del 04-2015 y juntas de la foto en vuelo, pixel HD (contorno y oscurecido con la misma medida de lo fino, para todos los drones), tarjeta y planta generadas, nota importada y ficha probada en `/uas/rq-4-global-hawk` (vistas, Maqueta y Pixel, día y noche, partes, fuentes, tarjeta en `/uas`). `npm run lint` y `npx astro check` sin errores.
+- Sin nave en el hero (no se pidió).
 - En `main`.
 
 ## Decisiones del usuario
@@ -100,3 +97,4 @@ Las de la nota (`## Fuentes`). Fotos de `arte/uas-fuentes/rq-4-global-hawk/full/
 - 12-10-2026, fase 3, quinta vuelta: antena en T; carenado en la raíz de las aletas de la V; hoyuelos en las mejillas (opción nueva del casco); góndola vuelta a la de la tercera vuelta (el pliegue bajando el hombro dejaba el costado ondulado), con el perfil nuevo.
 - 12-10-2026, fase 3, marcas: las del 04-2015 y las juntas medidas con `medir:superficie` sobre la foto en vuelo; comprobadas lado a lado con la foto (costado, cola, ala) y desde el otro costado y arriba (textos al derecho). Fase 4: contorno y oscurecido con la misma medida de lo fino; un tramo de 3 px cuenta como fino si a menos de tres columnas (también en diagonal) hay uno de 2. Mirando solo la columna de al lado quedaban trozos de contorno en la escalera del ala. Comparados los 13 drones antes y después (frente, perfil, planta en pixel): ~1.300 píxeles de contorno que desaparecen y ~700 que se oscurecen en total, todos en piezas finas.
 - 12-10-2026, fase 3, juntas: el usuario rechazó una vuelta de toma, letra y color (deshecha). Luego: `soldadura` para el contorno de tinta, góndola más estrecha al nacer (sin la raya de la «A»), juntas marcadas por el usuario medidas sobre la foto en vuelo (las del ala, por la cuerda: el ala de la foto va más doblada) y opacidad 0,7.
+- 12-10-2026, fases 5 a 7: importada la nota (con el glosario y tres tuits nuevos), servidor reiniciado, ficha y tarjeta probadas, lint y `astro check` sin errores; miniaturas regeneradas sin cambios. Commit y push.
