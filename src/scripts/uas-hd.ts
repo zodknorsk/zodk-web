@@ -230,14 +230,25 @@ export type MaterialHD = Material & { color: Color };
 
 // Contorno de silueta (estilos b y c): cada pieza se pinta otra vez, en
 // tinta, por detrás e inflada a lo largo de sus normales; lo que asoma por
-// fuera es la línea. El grosor va en unidades de la maqueta.
-export function materialContorno(grosor: number) {
+// fuera es la línea. El grosor va en unidades de la maqueta. Con `retraso`
+// (la `soldadura` de la maqueta), la copia se aleja de la cámara esa
+// distancia sin moverse en pantalla: la tapa lo que tenga justo detrás.
+export function materialContorno(grosor: number, retraso = 0) {
   const m = new MeshBasicMaterial({ color: 0x1d1f23, side: BackSide });
   m.onBeforeCompile = (sh) => {
     sh.uniforms.grosor = { value: grosor };
-    sh.vertexShader = "uniform float grosor;\n" + sh.vertexShader.replace(
+    sh.uniforms.retraso = { value: retraso };
+    sh.vertexShader = "uniform float grosor;\nuniform float retraso;\n" + sh.vertexShader.replace(
       "#include <begin_vertex>",
       "#include <begin_vertex>\ntransformed += normalize(normal) * grosor;",
+    ).replace(
+      "#include <project_vertex>",
+      // En perspectiva, a lo largo del rayo; en ortográfica, de frente.
+      `#include <project_vertex>
+      if (retraso > 0.0) {
+        mvPosition.xyz += (projectionMatrix[3][3] > 0.5 ? vec3(0.0, 0.0, -1.0) : normalize(mvPosition.xyz)) * retraso;
+        gl_Position = projectionMatrix * mvPosition;
+      }`,
     );
   };
   return m;

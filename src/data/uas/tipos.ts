@@ -372,6 +372,11 @@ export type Maqueta = {
   // Pixel HD con el contorno en tinta del HD (estilo C) además del de 1 px
   // de la pasada de pixel.
   contornoPixel?: boolean;
+  // Piezas soldadas: el contorno en tinta del HD se pinta esa distancia (en
+  // unidades) más lejos de la cámara. Donde una pieza entra en otra, o una
+  // cara se dobla junto a otra, no sale raya; contra el fondo o lo que queda
+  // lejos detrás, sí (el RQ-4: la toma con la góndola).
+  soldadura?: number;
   // Catapulta o lanzador (el Shahed): piezas en los mismos ejes que el dron,
   // que el visor enseña con el botón «Catapulta». Al ponerla, todo se inclina
   // `cabeceo` grados morro arriba (el bastidor queda con las ruedas en el

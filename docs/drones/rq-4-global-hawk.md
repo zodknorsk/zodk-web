@@ -2,10 +2,9 @@
 
 ## Dónde estamos
 
-- **Fase 3 (marcas, juntas y remaches) y lo pendiente de la fase 4, hechos** el 12-10-2026, a falta de que lo vea el usuario (`~/Downloads/rq-4-maqueta/marcas-1.html`).
-- Marcas del 04-2015, medidas sobre la foto en vuelo con su cámara encajada: estrella en los costados y arriba del ala izquierda, «U.S. AIR FORCE» en cada costado, «USAF» arriba del ala derecha, 042015 y tres recuadros claros en la cara de fuera de cada aleta, raya clara en la bisagra del timón, tres triángulos amarillos por lado; juntas con remaches (cola, tapa de la estrella, panel delante del ala, mejilla). Marcas en gris oscuro (`MARCA`; la escarapela admite ya `color`). `plantaLisa`. Tarjeta y planta regeneradas.
-- Pixel: contorno y oscurecido miden lo fino con la misma función (`fino` en `uas-pixelado.ts`); el ala de frente sale como raya continua. Cambia algo en los demás drones (palas, varillas, antenas de 2-3 px, mismo arreglo): el usuario lo da por bueno para todos.
-- Quedan: en la tarjeta, las juntas de los alerones como puntos sueltos; los triángulos amarillos, en pixel, son puntitos de 2-3 px. Nave del hero: no pedida.
+- **Fase 3 (marcas y juntas) hecha** el 12-10-2026. Juntas: las que el usuario marcó en rojo sobre la foto en vuelo (góndola delante y detrás, tapa de la estrella, borde del carenado del ala, joroba, mejilla, carenado de la raíz y paneles del ala, raíz y bisagra de las aletas, recuadros de la cola), al 0,7 de opacidad. Sin los seis recuadros del cuello.
+- `soldadura` (nuevo en la maqueta): el contorno de tinta se aleja 0,3 m de la cámara y no sale raya donde se juntan la toma y la góndola. La góndola nace más estrecha bajo el labio: sin la raya vertical que cruzaba la «A».
+- Pendiente de la fase 4: en la tarjeta, las juntas de los alerones como puntos sueltos; los triángulos amarillos, en pixel, son puntitos.
 - **Siguiente**: fase 5 (en la web).
 - Sin commitear en la bóveda: la nota y el glosario. **Provisional, no se commitea**: `src/content/uas/rq-4-global-hawk/index.md`.
 - En `main`.
@@ -19,6 +18,7 @@
 - 12-10-2026, tercera vuelta: la boca no es redonda (en D) y tiene un hueco debajo, entre el labio y el cuerpo; la tobera nace de la misma pieza; el «escalón» es una pieza vertical en el centro, de la tobera al final de la cola; el morro, más chupado de frente; bajo el morro, una segunda parte que le da aspecto de boca.
 - 12-10-2026: pasar a la fase 4 (pixel) antes de las marcas.
 - 12-10-2026, cuarta vuelta: **sin tren de aterrizaje** (el dron va en vuelo). Bajo la cola, dos aletas pequeñas a los lados y una en el centro; las aletas de la V nunca acaban en el aire; la mandíbula, con las muescas y la forma de su foto de perfil (`usuario-4-3.png`).
+- 12-10-2026: la toma y la góndola, sin raya entre ellas; juntas, las que marcó en rojo sobre la foto en vuelo, bien visibles; sin los seis recuadros del cuello. Color, el de siempre (#5a605f).
 - 12-10-2026: el arreglo de lo fino en el pixel (contorno y oscurecido con la misma medida), para todos los drones aunque cambien algo.
 
 ## Medidas clave
@@ -86,6 +86,7 @@ Las de la nota (`## Fuentes`). Fotos de `arte/uas-fuentes/rq-4-global-hawk/full/
 - Medir a ojo el perfil de la joroba y de la panza: salía hasta 20 cm alto entre la toma y la joroba y hasta 30 cm bajo detrás del ala. Se mide columna a columna sobre la foto de Andersen.
 - Pliegue de la góndola bajando el hombro del cuerpo (en diagonal del labio al ala): en la foto es una raya fina, en la maqueta salía una ondulación ancha y el costado se veía hundido, con franjas de luz. Góndola como en la tercera vuelta; el pliegue, si acaso, como costura.
 - Pixel, ala de frente: pedir también tres píxeles en las columnas de al lado para poner contorno. Las cuentas se quedan (salen también del oscurecido de lo fino) y el cambio toca a todos los drones.
+- Rehacer la toma (labio largo con hueco, góndola en rampa de una pieza, cuerpo más cuadrado), letra DIN estrecha y gris más cálido (#64665d): el usuario lo rechazó, se volvió atrás.
 - Encajar la foto en vuelo con la punta del ala: cuánto se dobla el ala es supuesto y tuerce el encaje (el morro salía corrido).
 
 ## Registro
@@ -98,3 +99,4 @@ Las de la nota (`## Fuentes`). Fotos de `arte/uas-fuentes/rq-4-global-hawk/full/
 - 12-10-2026, fase 3, cuarta vuelta: el usuario marcó morro y mandíbula (líneas que no seguían la foto), toma y cuello, aletas bajo la cola, aletas de la V al aire, tren fuera, y el perfil entero. Perfil medido columna a columna en Andersen, sobre la foto original (el recorte de ffmpeg del diario empieza en x 20, no en 150: apuntado en «Medidas clave»). Lomo bajado entre toma y joroba, panza que sube detrás del ala, mandíbula nueva con muescas, pliegue de la góndola, cuerpo hasta −7,2, aletas bajas y quilla. Encajes nuevos: foto en vuelo, Le Bourget y la foto del usuario.
 - 12-10-2026, fase 3, quinta vuelta: antena en T; carenado en la raíz de las aletas de la V; hoyuelos en las mejillas (opción nueva del casco); góndola vuelta a la de la tercera vuelta (el pliegue bajando el hombro dejaba el costado ondulado), con el perfil nuevo.
 - 12-10-2026, fase 3, marcas: las del 04-2015 y las juntas medidas con `medir:superficie` sobre la foto en vuelo; comprobadas lado a lado con la foto (costado, cola, ala) y desde el otro costado y arriba (textos al derecho). Fase 4: contorno y oscurecido con la misma medida de lo fino; un tramo de 3 px cuenta como fino si a menos de tres columnas (también en diagonal) hay uno de 2. Mirando solo la columna de al lado quedaban trozos de contorno en la escalera del ala. Comparados los 13 drones antes y después (frente, perfil, planta en pixel): ~1.300 píxeles de contorno que desaparecen y ~700 que se oscurecen en total, todos en piezas finas.
+- 12-10-2026, fase 3, juntas: el usuario rechazó una vuelta de toma, letra y color (deshecha). Luego: `soldadura` para el contorno de tinta, góndola más estrecha al nacer (sin la raya de la «A»), juntas marcadas por el usuario medidas sobre la foto en vuelo (las del ala, por la cuerda: el ala de la foto va más doblada) y opacidad 0,7.

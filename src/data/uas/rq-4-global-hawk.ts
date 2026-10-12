@@ -107,11 +107,11 @@ const CUERPO: Seccion[] = ([
   // cuerpo y salía un escalón delante de la toma. El pliegue fino que baja
   // en diagonal del labio al ala (fotos) no va en la forma: bajando el
   // hombro salía una ondulación ancha en el costado.
-  { ...conLomo(-0.02, 0.64, 0.77, 0.77, -0.985, 0.04, 0.45), pLomo: 40 },
-  conLomo(-0.12, 0.64, 0.76, 1.3, -0.97, 0.08, 0.53),
-  conLomo(-0.25, 0.64, 0.76, 1.48, -0.955, 0.12, 0.55),
-  conLomo(-0.38, 0.63, 0.75, 1.67, -0.935, 0.16, 0.555),
-  conLomo(-0.5, 0.62, 0.74, 1.77, -0.915, 0.2, 0.54),
+  { ...conLomo(-0.02, 0.64, 0.77, 0.77, -0.985, 0.04, 0.25), pLomo: 40 },
+  conLomo(-0.12, 0.64, 0.76, 1.3, -0.97, 0.08, 0.33),
+  conLomo(-0.25, 0.64, 0.76, 1.48, -0.955, 0.12, 0.4),
+  conLomo(-0.38, 0.63, 0.75, 1.67, -0.935, 0.16, 0.46),
+  conLomo(-0.5, 0.62, 0.74, 1.77, -0.915, 0.2, 0.51),
   conLomo(-0.9, 0.61, 0.73, 1.795, -0.85, 0.28, 0.55),
   conLomo(-1.5, 0.6, 0.72, 1.79, -0.775, 0.33, 0.56),
   conLomo(-2.2, 0.59, 0.7, 1.76, -0.685, 0.35, 0.56),
@@ -418,6 +418,12 @@ const FUERA_COLA: [number, number, number] = [Math.sin(COLA.angulo), -Math.cos(C
 const enAleta = (d: number, z: number): [number, number, number] =>
   [COLA.x + d * Math.cos(COLA.angulo) + 0.1 * FUERA_COLA[0], d * Math.sin(COLA.angulo) + 0.1 * FUERA_COLA[1], z];
 const enAletaDcha = (d: number, z: number): [number, number, number] => { const [x, y] = enAleta(d, z); return [-x, y, z]; };
+// Lo mismo por la cara de dentro (la de arriba de la V).
+const DENTRO_COLA: [number, number, number] = [-Math.sin(COLA.angulo), Math.cos(COLA.angulo), 0];
+const enAletaDentro = (d: number, z: number): [number, number, number] =>
+  [COLA.x + d * Math.cos(COLA.angulo) + 0.1 * DENTRO_COLA[0], d * Math.sin(COLA.angulo) + 0.1 * DENTRO_COLA[1], z];
+// Punto de la cuerda del ala en x, a la fracción f desde el borde de ataque.
+const enCuerda = (x: number, f: number) => bordeAtaque(x) - f * (bordeAtaque(x) - bordeSalida(x));
 // Arriba del ala, en x.
 const sobreAla = (x: number, z: number): [number, number, number] => [x, ALA.y + subidaAla(x) + 0.3, z];
 // Triángulo amarillo de aviso, hueco: el de fuera y el de dentro al revés
@@ -459,18 +465,36 @@ const COSTURAS: Costura[] = [
   { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [
     [0.53, 0.79, -4.0], [0.55, 0.83, -2.92], [0.55, 0.87, -1.84], [0.59, 0.06, -1.78], [0.57, 0.02, -2.86], [0.52, -0.02, -3.93], [0.53, 0.79, -4.0],
   ] },
-  // Delante del ala, tres juntas a lo largo con remaches y cuatro de arriba
-  // abajo entre ellas.
-  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.62, 0.63, 1.98], [0.69, 0.67, 2.58], [0.79, 0.72, 3.71], [0.82, 0.75, 4.43]] },
-  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.62, 0.08, -0.55], [0.64, 0.13, 0.89], [0.69, 0.18, 2.0], [0.74, 0.21, 2.61], [0.82, 0.27, 3.75], [0.82, 0.3, 4.47]] },
-  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.66, -0.28, 2.05], [0.7, -0.25, 2.66], [0.77, -0.2, 3.8], [0.77, -0.17, 4.53]] },
-  ...([[0.62, 0.63, 1.98, -0.28, 2.05], [0.69, 0.67, 2.58, -0.25, 2.66], [0.79, 0.72, 3.71, -0.2, 3.8], [0.82, 0.75, 4.43, -0.17, 4.53]] as const)
-    .map(([x, y0, z0, y1, z1]): Costura => ({ sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[x, y0, z0], [x, y1, z1]] })),
+  // Delante del ala, una junta a lo largo con remaches, hasta la joroba.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.62, 0.08, -0.55], [0.64, 0.13, 0.89], [0.69, 0.18, 2.0]] },
+  // Junta de la joroba, de arriba abajo.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.53, 0.77, 1.91], [0.62, 0.63, 1.98], [0.68, 0.32, 1.95], [0.66, -0.28, 2.05]] },
   // Tapa atornillada en el hoyuelo de la mejilla.
   { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.08, puntos: [[0.82, 0.62, 5.58], [0.75, 0.63, 6.37], [0.71, 0.17, 6.42], [0.74, 0.14, 5.65], [0.82, 0.62, 5.58]] },
-  // Cola: la bisagra del timón, una raya clara de la raíz a la punta, y los
-  // tres recuadros claros delante de ella.
+  // Junta de delante de la góndola, de lo alto hasta el lado derecho de la
+  // tapa de la estrella.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.03, 1.79, -1.94], [0.33, 1.64, -1.92], [0.46, 1.4, -1.91], [0.55, 0.87, -1.84]] },
+  // Borde de arriba del carenado del ala, bajo la estrella, hasta la raíz,
+  // con una junta de arriba abajo.
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, remaches: 0.1, puntos: [[0.29, -0.51, -4.15], [0.32, -0.52, -3.08], [0.41, -0.44, -2.63], [0.51, -0.38, -1.43]] },
+  { sobre: ["fuselaje"], desde: LADO, espejo: true, puntos: [[0.32, -0.52, -3.08], [0.27, -0.64, -3.06]] },
+  // Ala, arriba: el borde del carenado de la raíz; la tapa del flap, de la
+  // raíz al alerón, a dos tercios de la cuerda; la junta larga que va de
+  // media ala hacia el borde de salida de la punta, y los cortes del alerón.
+  { sobre: ["ala"], desde: [0, 1, 0.01], espejo: true, puntos: [[0.9, -1.6], [1.2, -1.0], [1.1, -0.4], [1.3, 0.2], [1.45, 0.66]].map(([x, z]) => sobreAla(x, z)) },
+  { sobre: ["ala"], desde: [0, 1, 0.01], espejo: true, puntos: [
+    sobreAla(2.5, bordeSalida(2.5) + 0.02), ...[2.5, 5, 8, 11.4].map((x) => sobreAla(x, enCuerda(x, 0.62))), sobreAla(11.4, bordeSalida(11.4) + 0.02),
+  ] },
+  { sobre: ["ala", "alerones"], desde: [0, 1, 0.01], espejo: true, puntos: [
+    ...[9.5, 12, 14.5, 17.5].map((x, i) => sobreAla(x, enCuerda(x, 0.48 + 0.073 * i))), sobreAla(17.5, bordeSalida(17.5) + 0.02),
+  ] },
+  ...[13.5, 16].map((x): Costura => ({ sobre: ["ala", "alerones"], desde: [0, 1, 0.01], espejo: true, puntos: [sobreAla(x, bisagra(x) + 0.03), sobreAla(x, bordeSalida(x) + 0.02)] })),
+  // Cola: la junta de la aleta con su carenado de la raíz, la bisagra del
+  // timón (una raya clara de la raíz a la punta, por fuera y por dentro) y
+  // los tres recuadros claros delante de ella.
+  { sobre: ["cola"], desde: FUERA_COLA, espejo: true, puntos: [-5.56, -6.2, -6.8, -7.16].map((z) => enAleta(0.24, z)) },
   { sobre: ["cola", "timones"], desde: FUERA_COLA, espejo: true, claro: true, puntos: [0.3, 1, 2, 3, 3.9].map((d) => enAleta(d, bisagraCola(d))) },
+  { sobre: ["cola", "timones"], desde: DENTRO_COLA, espejo: true, claro: true, puntos: [0.3, 1, 2, 3, 3.9].map((d) => enAletaDentro(d, bisagraCola(d))) },
   ...([[3.45, -6.91], [1.48, -6.77], [0.77, -6.72]] as const)
     .map(([d, z]): Costura => ({ sobre: ["cola"], desde: FUERA_COLA, espejo: true, claro: true, puntos: recuadro(d, z, 0.26, 0.2) })),
 ];
@@ -483,13 +507,17 @@ const maqueta: Maqueta = {
   escala: ESCALA,  // 1 unidad = 15 m; medidas de Designation-Systems
   hd: true,
   contornoPixel: true,
+  // Sin raya de tinta donde se juntan la toma y la góndola, ni en la cara
+  // de debajo del labio: 0,3 m.
+  soldadura: 0.3 / ESCALA,
   // La pintura al sol caía en 3,7 de los siete escalones: al centro.
   desfaseLuz: -0.2,
   // Ala larga: de más arriba, como el TB2.
   vistaTarjeta: [61, 20],
   // En la planta, las marcas del ala salían como un píxel oscuro suelto.
   plantaLisa: true,
-  detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
+  // Juntas bien marcadas: en la foto en vuelo se ven todas.
+  detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura), opacidad: { juntas: 0.7 } },
   pais: bandera("US"),
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
