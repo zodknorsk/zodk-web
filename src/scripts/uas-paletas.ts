@@ -42,8 +42,8 @@ const COMUNES = {
   "blanco-h30": ["#959ba1", "#c0c6cc", "#dfe4e8", "#f3f6f8"],
   "tubo-h30": ["#22231d", "#34352c", "#4a4b3f", "#666858"],
   espuma: ["#262628", "#38383b", "#4e4e52", "#6c6c71"],
-  "gris-fu": ["#4f5753", "#7a8580", "#a9b3ae", "#d6dedb"],
-  "gris-fu2": ["#2e3432", "#48514e", "#68736f", "#8f9a96"],
+  "gris-fu": ["#333739", "#4f5458", "#6e7178", "#8b8d96"],
+  "gris-fu2": ["#202526", "#333a3b", "#484f53", "#646b70"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

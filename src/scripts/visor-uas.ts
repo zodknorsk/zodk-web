@@ -21,7 +21,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e", "blanco-h30": "#eef1f3", "tubo-h30": "#4a4b3f", espuma: "#4e4e52", "gris-fu": "#a9b3ae", "gris-fu2": "#6a7571",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e", "blanco-h30": "#eef1f3", "tubo-h30": "#4a4b3f", espuma: "#4e4e52", "gris-fu": "#6e7178", "gris-fu2": "#4a5053",
 };
 
 export type { Vista };

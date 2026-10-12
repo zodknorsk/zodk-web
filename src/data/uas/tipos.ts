@@ -136,6 +136,9 @@ export type Pieza = (
 // centros de los lados). `espejo`
 // repite la calca o la costura al otro lado (x → −x). `claro`: la línea y los
 // tornillos, más claros que la pintura (en un dron negro, como el MICH-2000).
+// Letras de palo cuadradas, tipo DIN (las del costado y la deriva del Fury):
+// la del sistema que haya (DIN en el Mac, Bahnschrift en Windows).
+export type Letra = "din" | "din-estrecha";
 export type Dibujo =
   | { tipo: "escarapela" }
   // Escarapela ucraniana: disco amarillo con el centro azul (el MICH-2000).
@@ -143,8 +146,9 @@ export type Dibujo =
   // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;
   // `fino`: letra de palo normal en vez de la negrita ancha; `espejo`, las
   // letras al revés, como vistas por detrás (las de las alas del Hero-30).
-  // `cursiva`: en cursiva (el «YFQ-44A» del Fury).
-  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean; cursiva?: boolean }
+  // `cursiva`: en cursiva (el «YFQ-44A» del Fury). `letra`: de palo cuadrada,
+  // tipo DIN, ancha o estrecha (las marcas del Fury).
+  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean; cursiva?: boolean; letra?: Letra }
   // Bandera turca, escarapela turca (roja, blanca y roja) y logo de Baykar
   // (el TB2).
   | { tipo: "bandera-tr" }
@@ -159,7 +163,7 @@ export type Dibujo =
   | { tipo: "bandera-ir"; pegatina?: boolean }
   | { tipo: "qr" }
   // `color`: en vez de la tinta (las marcas claras sobre el gris del Fury).
-  | { tipo: "serie"; ano: string; numero: string; color?: string }
+  | { tipo: "serie"; ano: string; numero: string; color?: string; letra?: Letra }
   | { tipo: "disco"; color: string }
   | { tipo: "escudo"; color?: string }
   // Polígono relleno de un color: `puntos` [u, v] de 0 a 1 en el dibujo (v
@@ -171,6 +175,10 @@ export type Dibujo =
   // Logo de Anduril (el triángulo con la curva dentro) y, con `texto`,
   // «ANDURIL» a su derecha.
   | { tipo: "anduril"; color: string; texto?: boolean }
+  // Logo real (src/data/uas/logos.ts, de Commons) en una tinta, `color`,
+  // encajado en la calca sin deformarlo: escudo del Mando de Combate Aéreo,
+  // símbolo de la Fuerza Aérea o logo de Anduril con su nombre.
+  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril"; color: string }
   // Aviso de toma de aire: triángulo hacia abajo con otro dentro y las
   // líneas del texto (el «DANGER JET INLET» del Fury).
   | { tipo: "aviso-toma"; color: string }

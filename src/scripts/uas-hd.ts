@@ -16,7 +16,8 @@ import {
   PMREMGenerator, RedFormat, Spherical, Vector3, type Camera, type Material, type Scene, type Texture, type WebGLRenderer,
 } from "three";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-import type { Acabado, Dibujo, Maqueta } from "../data/uas/tipos";
+import type { Acabado, Dibujo, Letra, Maqueta } from "../data/uas/tipos";
+import { LOGOS } from "../data/uas/logos";
 
 export type EstiloHD = "a" | "b" | "c";
 export const ESTILOS_HD: { id: EstiloHD; nombre: string }[] = [
@@ -103,8 +104,8 @@ const PINTURAS: Record<Acabado, Pintura> = {
   espuma: { color: "#4a4a4d", metal: 0, rugosidad: 0.95 },
   // El FQ-44A Fury 25-1003: gris claro verdoso y la franja gris oscuro del
   // lomo, mates (al sol en el costado, #a8b2ac y #697470).
-  "gris-fu": { color: "#84908a", metal: 0, rugosidad: 0.6 },
-  "gris-fu2": { color: "#6a7571", metal: 0, rugosidad: 0.6 },
+  "gris-fu": { color: "#565b5f", metal: 0, rugosidad: 0.75 },
+  "gris-fu2": { color: "#4a5053", metal: 0, rugosidad: 0.75 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -244,6 +245,10 @@ export function materialContorno(grosor: number) {
 // se hacen aquí, en un lienzo 2D: sin imágenes aparte.
 
 const TINTA_CALCA = "#17181a";
+const LETRAS: Record<Letra, string> = {
+  din: `"DIN Alternate", Bahnschrift, "DejaVu Sans", Arial, sans-serif`,
+  "din-estrecha": `"DIN Condensed", "Bahnschrift SemiBold Condensed", "Arial Narrow", "DejaVu Sans Condensed", sans-serif`,
+};
 
 function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
   const K = 512 / Math.max(ancho, alto);
@@ -292,7 +297,9 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       const lineas = d.texto.split("\n");
       const alto = H / lineas.length;
       c.fillStyle = d.color ?? TINTA_CALCA;
-      c.font = (d.cursiva ? "italic " : "") + (d.fino
+      c.font = (d.cursiva ? "italic " : "") + (d.letra
+        ? `700 ${Math.round(alto * (d.letra === "din" ? 0.95 : 1.1))}px ${LETRAS[d.letra]}`
+        : d.fino
         ? `600 ${Math.round(alto * 0.86)}px "Helvetica Neue", Arial, sans-serif`
         : `900 ${Math.round(alto * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`);
       c.textAlign = "center"; c.textBaseline = "middle";
@@ -422,10 +429,11 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       // «AF» sobre el año, pequeños, y el número grande al lado.
       if (d.color) c.fillStyle = d.color;
       c.textBaseline = "middle";
-      c.font = `700 ${Math.round(H * 0.36)}px "Arial Narrow", "Helvetica Neue", Arial, sans-serif`;
+      const familia = d.letra ? LETRAS[d.letra] : `"Arial Narrow", "Helvetica Neue", Arial, sans-serif`;
+      c.font = `700 ${Math.round(H * 0.36)}px ${familia}`;
       c.textAlign = "center";
       c.fillText("AF", W * 0.11, H * 0.3); c.fillText(d.ano, W * 0.11, H * 0.72);
-      c.font = `700 ${Math.round(H * 0.95)}px "Arial Narrow", "Helvetica Neue", Arial, sans-serif`;
+      c.font = `700 ${Math.round(H * (d.letra ? 1.1 : 0.95))}px ${familia}`;
       c.textAlign = "left";
       c.fillText(d.numero, W * 0.24, H * 0.54, W * 0.76);
       break;
@@ -757,6 +765,33 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
         (c as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${Math.round(H * 0.16)}px`;
         c.fillText("ANDURIL", L * 1.3, H * 0.56, W - L * 1.35);
       }
+      break;
+    }
+    case "logo": {
+      // Se pinta en un lienzo aparte a escala del SVG, se busca lo pintado
+      // (el SVG puede traer márgenes) y se encaja centrado sin deformar.
+      const L = LOGOS[d.logo], [x0, y0, w0, h0] = L.caja, k = 1024 / Math.max(w0, h0);
+      const tmp = document.createElement("canvas");
+      tmp.width = Math.ceil(w0 * k); tmp.height = Math.ceil(h0 * k);
+      const t = tmp.getContext("2d")!;
+      t.fillStyle = t.strokeStyle = d.color; t.lineJoin = "round"; t.lineCap = "round";
+      for (const z of L.trazos) {
+        const m = z.m ?? [1, 0, 0, 1, 0, 0];
+        t.setTransform(k, 0, 0, k, -x0 * k, -y0 * k);
+        t.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
+        t.globalCompositeOperation = z.modo === "borra" ? "destination-out" : "source-over";
+        const p = new Path2D(z.d);
+        if (z.linea) { t.lineWidth = z.linea; t.stroke(p); continue; }
+        t.fill(p);
+        if (z.borde) { t.lineWidth = z.borde; t.stroke(p); }
+      }
+      const px = t.getImageData(0, 0, tmp.width, tmp.height).data;
+      let [a0, b0, a1, b1] = [tmp.width, tmp.height, 0, 0];
+      for (let y = 0; y < tmp.height; y++) for (let x = 0; x < tmp.width; x++) if (px[(y * tmp.width + x) * 4 + 3] > 8) {
+        a0 = Math.min(a0, x); b0 = Math.min(b0, y); a1 = Math.max(a1, x + 1); b1 = Math.max(b1, y + 1);
+      }
+      const e = Math.min(W / (a1 - a0), H / (b1 - b0)), dw = (a1 - a0) * e, dh = (b1 - b0) * e;
+      c.drawImage(tmp, a0, b0, a1 - a0, b1 - b0, (W - dw) / 2, (H - dh) / 2, dw, dh);
       break;
     }
     case "aviso-toma": {
