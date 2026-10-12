@@ -108,6 +108,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "gris-fu2": { color: "#4a5053", metal: 0, rugosidad: 0.75 },
   // Gris claro mate de los AIM-120 de instrucción y su lanzador (fotos de Creech).
   "gris-misil": { color: "#a3a8ac", metal: 0, rugosidad: 0.55 },
+  // El RQ-4B 04-2015: gris medio algo verdoso, mate (fotos de Le Bourget: al
+  // sol, #888e8e arriba y #6e7673 en el costado).
+  "gris-gh": { color: "#5a605f", metal: 0, rugosidad: 0.75 },
 };
 
 // Tres escalones de luz para la ilustración.

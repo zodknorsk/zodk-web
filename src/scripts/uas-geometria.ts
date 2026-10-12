@@ -7,7 +7,7 @@ import {
   Float32BufferAttribute, LatheGeometry, Quaternion, Shape, ShapeUtils, SphereGeometry,
   Vector2, Vector3,
 } from "three";
-import type { Pieza, Seccion, Toma } from "../data/uas/tipos";
+import type { Hoyuelo, Pieza, Seccion, Toma } from "../data/uas/tipos";
 
 export type Vista = "3d" | "arriba" | "abajo" | "lado" | "frente" | "detras";
 
@@ -218,7 +218,7 @@ function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], 
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false): BufferGeometry {
+function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false, hoyuelos: Hoyuelo[] = []): BufferGeometry {
   if (secciones.some((q) => q.contorno)) return geometriaCascoContorno(secciones, abierto);
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
@@ -392,6 +392,13 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   // Dos tiras: la de arriba (de +x a −x por el lomo) y la de abajo (de −x a
   // +x por la panza), cada una con MEDIO + 1 puntos por anillo.
   const tiras: number[][] = [[], []];
+  // Hoyuelos (ver `Hoyuelo`): mete el costado hacia el eje, más en el centro
+  // y poco a poco hacia el borde, en los dos lados.
+  const hoyuelo = (x: number, y: number, z: number) => {
+    let h = 0;
+    for (const o of hoyuelos) h += o.hondo * Math.exp(-((((y - o.y) / o.alto) ** 2 + ((z - o.z) / o.largo) ** 2) ** 1.5));
+    return h > 0 ? Math.sign(x) * Math.max(0, Math.abs(x) - h) : x;
+  };
   const aplazados: { z: number; c: number; fijo: number; arriba: [number, number][]; abajo: [number, number][] }[] = [];
   for (const z of anillosZ) {
     const w = Math.max(0, ancho(z)), c = cintura(z);
@@ -520,7 +527,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
         const r = (r1 ** P + r2 ** P) ** (1 / P);
         if (r1 > 1e-9) { x *= r / r1; y = c + ((y - c) * r) / r1; }
       }
-      tiras[0].push(x, y, z);
+      tiras[0].push(hoyuelo(x, y, z), y, z);
     }
     const abajoPts: [number, number][] = conPanza
       ? trapecio(w, Math.min(w, Math.max(0, panza(z))), c, bot)
@@ -528,7 +535,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
         const t = Math.PI + (k / MEDIO) * Math.PI, co = Math.cos(t), si = Math.sin(t);
         return [w * Math.sign(co) * Math.abs(co) ** (2 / nb), c - (c - bot) * Math.abs(si) ** (2 / nb)];
       });
-    for (const [x, y] of abajoPts) tiras[1].push(x, y, z);
+    for (const [x, y] of abajoPts) tiras[1].push(hoyuelo(x, y, z), y, z);
   }
   const pos: number[] = [], idx: number[] = [];
   // Con `alisado`, también a lo largo del cuerpo: cada punto, con los del
@@ -942,7 +949,7 @@ function geometriaBase(p: Pieza): BufferGeometry[] {
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
     case "casco": {
-      const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo);
+      const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo, p.hoyuelos);
       // Desplazado a un lado (los misiles del Wildfire, bajo el ala).
       if (p.x) g.translate(p.x, 0, 0);
       return [g];

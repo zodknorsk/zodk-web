@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -42,7 +42,9 @@ export type Pieza = (
   // copia se inclina hacia su lado y la luz hace un hoyuelo.
   // `x`: el casco, desplazado a un lado del eje (una pieza que no va en el
   // centro, como los misiles bajo el ala del Wildfire).
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number }
+  // `hoyuelos`: hundimientos suaves en los dos costados (las mejillas del
+  // RQ-4). Solo en cascos sin ensanche ni `suave`.
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number; hoyuelos?: Hoyuelo[] }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -274,6 +276,10 @@ export type Seccion = { z: number; ancho: number; arriba: number; abajo: number;
 // la boca, sobre la superficie (con x > 0, otra igual en espejo; con x = 0,
 // una sola en el centro); `ancho`, su medio ancho ahí, y `hondo`, cuánto se
 // mete.
+// Hoyuelo en los costados de un casco: centrado en (y, z), `alto` y `largo`
+// son sus medios tamaños y `hondo`, cuánto mete el costado en el centro.
+export type Hoyuelo = { y: number; z: number; alto: number; largo: number; hondo: number };
+
 export type Toma = { boca: number; largo: number; punta: number; x: number; y: number; ancho: number; hondo: number; ceja: number };
 
 // Qué respalda lo que cuenta cada parte.

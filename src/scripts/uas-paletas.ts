@@ -45,6 +45,7 @@ const COMUNES = {
   "gris-fu": ["#333739", "#4f5458", "#6e7178", "#8b8d96"],
   "gris-fu2": ["#202526", "#333a3b", "#484f53", "#646b70"],
   "gris-misil": ["#4d5256", "#777c80", "#9fa4a8", "#c4c8cb"],
+  "gris-gh": ["#2f3433", "#4a504f", "#69706e", "#878e8c"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {
