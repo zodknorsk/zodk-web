@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -143,7 +143,8 @@ export type Dibujo =
   // Texto en una o dos líneas (separadas por «\n»), en tinta o en `color`;
   // `fino`: letra de palo normal en vez de la negrita ancha; `espejo`, las
   // letras al revés, como vistas por detrás (las de las alas del Hero-30).
-  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean }
+  // `cursiva`: en cursiva (el «YFQ-44A» del Fury).
+  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean; cursiva?: boolean }
   // Bandera turca, escarapela turca (roja, blanca y roja) y logo de Baykar
   // (el TB2).
   | { tipo: "bandera-tr" }
@@ -157,9 +158,24 @@ export type Dibujo =
   // (la del morro del Shahed de Qom).
   | { tipo: "bandera-ir"; pegatina?: boolean }
   | { tipo: "qr" }
-  | { tipo: "serie"; ano: string; numero: string }
+  // `color`: en vez de la tinta (las marcas claras sobre el gris del Fury).
+  | { tipo: "serie"; ano: string; numero: string; color?: string }
   | { tipo: "disco"; color: string }
-  | { tipo: "escudo" }
+  | { tipo: "escudo"; color?: string }
+  // Polígono relleno de un color: `puntos` [u, v] de 0 a 1 en el dibujo (v
+  // hacia arriba). Pintura por zonas, como la franja oscura del Fury.
+  | { tipo: "poligono"; puntos: Punto2[]; color: string }
+  // Símbolo de la Fuerza Aérea de EE. UU.: las alas en «V» abiertas sobre la
+  // estrella en un rombo.
+  | { tipo: "usaf"; color: string }
+  // Logo de Anduril (el triángulo con la curva dentro) y, con `texto`,
+  // «ANDURIL» a su derecha.
+  | { tipo: "anduril"; color: string; texto?: boolean }
+  // Aviso de toma de aire: triángulo hacia abajo con otro dentro y las
+  // líneas del texto (el «DANGER JET INLET» del Fury).
+  | { tipo: "aviso-toma"; color: string }
+  // Rejilla de malla oscura, rectangular o, con `hex`, de seis lados.
+  | { tipo: "malla"; hex?: boolean }
   // El Raven: un rectángulo de color (cinta adhesiva); dos flechas que se
   // miran a través de la junta de dos piezas (la junta es la línea vertical
   // del centro del dibujo); el disco «DDL»; una etiqueta blanca con código
@@ -205,7 +221,9 @@ export type Dibujo =
   // del tubo del Hero-30): contorno en `color`, punta a la derecha o, con
   // `izquierda`, a la izquierda (la del otro costado), con el texto al derecho.
   | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean };
-export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean };
+// `capa`: las calcas que se pisan se pintan por capas, de menor a mayor (los
+// textos sobre la franja del Fury); sin ella, por distancia a la cámara.
+export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean; capa?: number };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
 // Una sección de un casco (ver arriba).
@@ -231,7 +249,14 @@ export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remach
 // filo, es media elipse de ese largo hacia dentro, del grueso que dan
 // bordeArriba y bordeAbajo: un reborde redondo (delante del ala del TB2, el
 // borde de ataque sigue así hacia el morro).
-export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; pLomo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number };
+// `contorno`: la sección medida tal cual (un cuerpo que no es una
+// superelipse: aristas, ranuras, el conducto de una toma bajo el morro del
+// Fury). Es la media sección derecha, en tramos de puntos [x, y] de lo alto
+// (x = 0) a lo bajo (x = 0), cada tramo empezando donde acaba el anterior;
+// entre tramo y tramo, arista viva. Si una sección lo lleva, todas las del
+// casco lo llevan, con el mismo número de tramos, y el resto de medidas de
+// la sección no cuenta para la forma.
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; pLomo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number; contorno?: Punto2[][] };
 
 // Toma de aire en un casco (la del lomo del TB2): un hueco oval que se mete
 // en el cuerpo, de `largo` (z) desde la `boca` hacia delante, con la pared

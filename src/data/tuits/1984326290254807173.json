@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-12",
+  "tuit": {
+    "id_str": "1984326290254807173",
+    "created_at": "2025-10-31T18:27:09.000Z",
+    "text": "Today, the @usairforce made continued progress in our CCA program with the first flight of the YFQ-44A developed by @anduriltech.  This milestone shows how competition drives innovation &amp; accelerates delivery.  (1/2) https://t.co/MlxyJ85WvF",
+    "user": {
+      "name": "Office of the Secretary of the Air Force",
+      "screen_name": "SecAFOfficial",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1940076033345994752/uU0qPoYm_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/MlxyJ85WvF",
+        "media_url_https": "https://pbs.twimg.com/media/G4m-PZ3XgAAiMTC.jpg"
+      }
+    ]
+  }
+}

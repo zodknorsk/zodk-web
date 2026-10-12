@@ -101,6 +101,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "blanco-h30": { color: "#d8e6f3", metal: 0, rugosidad: 0.45 },
   "tubo-h30": { color: "#3d3e33", metal: 0, rugosidad: 0.45 },
   espuma: { color: "#4a4a4d", metal: 0, rugosidad: 0.95 },
+  // El FQ-44A Fury 25-1003: gris claro verdoso y la franja gris oscuro del
+  // lomo, mates (al sol en el costado, #a8b2ac y #697470).
+  "gris-fu": { color: "#84908a", metal: 0, rugosidad: 0.6 },
+  "gris-fu2": { color: "#6a7571", metal: 0, rugosidad: 0.6 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -288,9 +292,9 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       const lineas = d.texto.split("\n");
       const alto = H / lineas.length;
       c.fillStyle = d.color ?? TINTA_CALCA;
-      c.font = d.fino
+      c.font = (d.cursiva ? "italic " : "") + (d.fino
         ? `600 ${Math.round(alto * 0.86)}px "Helvetica Neue", Arial, sans-serif`
-        : `900 ${Math.round(alto * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`;
+        : `900 ${Math.round(alto * 0.92)}px "Arial Black", "Helvetica Neue", Arial, sans-serif`);
       c.textAlign = "center"; c.textBaseline = "middle";
       if (d.espejo) { c.translate(W, 0); c.scale(-1, 1); }
       lineas.forEach((l, i) => c.fillText(l, W / 2, alto * (i + 0.54), W * 0.98));
@@ -416,6 +420,7 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
     }
     case "serie": {
       // «AF» sobre el año, pequeños, y el número grande al lado.
+      if (d.color) c.fillStyle = d.color;
       c.textBaseline = "middle";
       c.font = `700 ${Math.round(H * 0.36)}px "Arial Narrow", "Helvetica Neue", Arial, sans-serif`;
       c.textAlign = "center";
@@ -435,6 +440,7 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
     }
     case "escudo": {
       // Escudo de unidad, en línea fina: el contorno, una figura y la cinta.
+      if (d.color) c.fillStyle = c.strokeStyle = d.color;
       c.lineWidth = W * 0.035;
       c.beginPath();
       c.moveTo(W * 0.18, H * 0.08); c.lineTo(W * 0.82, H * 0.08); c.lineTo(W * 0.82, H * 0.5);
@@ -710,6 +716,76 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       for (let i = 0; i < 9; i++) c.fillRect(W * 0.12, H * (0.1 + i * 0.09), W * 0.76, H * 0.045);
       break;
     }
+    case "poligono": {
+      c.fillStyle = d.color;
+      c.beginPath();
+      d.puntos.forEach(([u, v], i) => (i ? c.lineTo(u * W, (1 - v) * H) : c.moveTo(u * W, (1 - v) * H)));
+      c.closePath(); c.fill();
+      break;
+    }
+    case "usaf": {
+      // Las dos alas: bandas anchas que suben en «V» desde el centro y se
+      // abren hacia arriba; debajo, el rombo con la estrella.
+      c.fillStyle = d.color;
+      const cx = W / 2;
+      for (const s of [1, -1]) {
+        c.beginPath();
+        c.moveTo(cx + s * W * 0.03, H * 0.58); c.lineTo(cx + s * W * 0.5, H * 0.0); c.lineTo(cx + s * W * 0.5, H * 0.24);
+        c.lineTo(cx + s * W * 0.12, H * 0.72); c.closePath(); c.fill();
+        c.beginPath();
+        c.moveTo(cx + s * W * 0.15, H * 0.74); c.lineTo(cx + s * W * 0.47, H * 0.34); c.lineTo(cx + s * W * 0.42, H * 0.52);
+        c.lineTo(cx + s * W * 0.2, H * 0.82); c.closePath(); c.fill();
+      }
+      c.beginPath(); c.moveTo(cx, H * 0.56); c.lineTo(cx + W * 0.13, H * 0.78); c.lineTo(cx, H); c.lineTo(cx - W * 0.13, H * 0.78); c.closePath(); c.fill();
+      c.globalCompositeOperation = "destination-out";
+      estrella(cx, H * 0.79, W * 0.08); c.fill();
+      c.globalCompositeOperation = "source-over";
+      break;
+    }
+    case "anduril": {
+      // El logo: un triángulo hueco con la base curvada hacia arriba y una
+      // curva dentro; a su derecha, «ANDURIL» en mayúsculas finas y anchas.
+      c.strokeStyle = c.fillStyle = d.color;
+      const L = d.texto ? H : Math.min(W, H), lw = L * 0.1;
+      c.lineWidth = lw; c.lineJoin = "round";
+      c.beginPath(); c.moveTo(L * 0.5, lw); c.lineTo(L - lw, L - lw); c.quadraticCurveTo(L * 0.5, L * 0.62, lw, L - lw); c.closePath(); c.stroke();
+      c.beginPath(); c.moveTo(L * 0.5, L * 0.35); c.quadraticCurveTo(L * 0.68, L * 0.6, L * 0.62, L * 0.78); c.stroke();
+      if (d.texto) {
+        // Letras anchas y separadas, como en el costado del 25-1003.
+        c.font = `500 ${Math.round(H * 0.95)}px "Helvetica Neue", Arial, sans-serif`;
+        c.textAlign = "left"; c.textBaseline = "middle";
+        (c as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${Math.round(H * 0.16)}px`;
+        c.fillText("ANDURIL", L * 1.3, H * 0.56, W - L * 1.35);
+      }
+      break;
+    }
+    case "aviso-toma": {
+      c.strokeStyle = c.fillStyle = d.color;
+      c.lineWidth = Math.min(W, H) * 0.05;
+      const tri = (m: number) => { c.beginPath(); c.moveTo(W * m, H * (m * 0.9)); c.lineTo(W * (1 - m), H * (m * 0.9)); c.lineTo(W / 2, H * (1 - m * 0.6)); c.closePath(); };
+      tri(0.04); c.stroke();
+      tri(0.3); c.stroke();
+      for (const f of [0.18, 0.27]) c.fillRect(W * 0.3, H * f, W * 0.4, H * 0.035);
+      break;
+    }
+    case "malla": {
+      // Malla negra con un marco claro fino y la trama en diagonal.
+      c.save();
+      c.beginPath();
+      if (d.hex) { c.moveTo(W * 0.22, 0); c.lineTo(W * 0.78, 0); c.lineTo(W, H / 2); c.lineTo(W * 0.78, H); c.lineTo(W * 0.22, H); c.lineTo(0, H / 2); c.closePath(); }
+      else c.rect(0, 0, W, H);
+      c.fillStyle = "#1b1e1f"; c.fill(); c.clip();
+      c.strokeStyle = "rgba(150,160,158,0.35)"; c.lineWidth = Math.max(1, Math.min(W, H) * 0.02);
+      const paso = Math.min(W, H) * 0.09;
+      for (let x = -H; x < W + H; x += paso) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x + H, H); c.stroke(); c.beginPath(); c.moveTo(x + H, 0); c.lineTo(x, H); c.stroke(); }
+      c.restore();
+      c.strokeStyle = "rgba(170,178,176,0.7)"; c.lineWidth = Math.min(W, H) * 0.05;
+      c.beginPath();
+      if (d.hex) { c.moveTo(W * 0.22, 0); c.lineTo(W * 0.78, 0); c.lineTo(W, H / 2); c.lineTo(W * 0.78, H); c.lineTo(W * 0.22, H); c.lineTo(0, H / 2); c.closePath(); }
+      else c.rect(0, 0, W, H);
+      c.stroke();
+      break;
+    }
   }
   return lienzo;
 }
@@ -803,7 +879,9 @@ export function montarDetalles(escena: Scene, raiz: Object3D, mallas: Mesh[], de
         );
       };
       m.customProgramCacheKey = () => "calca";
-      grupo.add(new Mesh(g, m));
+      const malla = new Mesh(g, m);
+      if (k.capa) malla.renderOrder = k.capa;
+      grupo.add(malla);
       aDesechar.push(g, m, textura);
     }
   }
