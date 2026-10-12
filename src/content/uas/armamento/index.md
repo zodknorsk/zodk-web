@@ -16,7 +16,9 @@ grupos:
     municiones:
       - agm-114-hellfire
       - agm-114r9x
+      - aim-120-amraam
       - jsm
+      - barracuda-500
       - agm-158c-lrasm
   - titulo: Bombas guiadas
     municiones:

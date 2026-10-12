@@ -510,6 +510,12 @@ en HD.
   se buscan fotos y medidas de la munición (maquetas 1:1 en ferias, cortes,
   fichas oficiales) y se escribe en metros reales. Del dron solo sale cómo
   va colgada. Con sus lanzadores, soportes y ganchos, pegadas.
+- **El detalle del arma, de las fotos de la carga en tierra** (armeros
+  montándola, museos): secciones, juntas, bandas, canal de cables, enchufe,
+  tobera; y el lanzador con su forma (punta, raíl, tirador), no una caja.
+- **Las armas y sus lanzadores, con un acabado mate propio** (como
+  `gris-misil`): con el `aluminio` brillan como metal y no se parecen a la
+  pintura de las fotos.
 
 ### 6. Accesorios: catapulta, rampa, cohete
 
