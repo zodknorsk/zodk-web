@@ -39,12 +39,37 @@ function escarapelaUSAF() {
   px.forEach((f, y) => [...f].forEach((k, x) => { if (k !== ".") r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${col[k]}"/>`; }));
   return `<svg viewBox="0 0 17 9" aria-hidden="true">${r}</svg>`;
 }
-const insignia = (rama: string) => (rama.includes("USAF") ? escarapelaUSAF() : "");
+// Ancla de la US Navy en pixel art (17x9): disco azul marino con un ancla
+// dorada y las barras laterales, como la escarapela de la USAF.
+function anclaUSN() {
+  const ancla = ["...G...", ".GGGGG.", "...G...", "...G...", "G..G..G", "GG.G.GG", ".GGGGG."];
+  let r = "";
+  for (let y = 0; y < 9; y++) {
+    for (let x = 0; x < 17; x++) {
+      const barra = y >= 2 && y <= 6 && (x <= 3 || x >= 13);
+      if (!barra && Math.hypot(x - 8, y - 4) > 4.4) continue;
+      const g = barra ? y === 3 || y === 5 : ancla[y - 1]?.[x - 5] === "G";
+      r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${g ? "#d6a92b" : "#1b2a4e"}"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 17 9" aria-hidden="true">${r}</svg>`;
+}
+const insignia = (rama: string) =>
+  rama.includes("USAF") ? escarapelaUSAF() : rama.includes("US Navy") ? anclaUSN() : "";
 const aDatos = (svg: string) => `data:image/svg+xml,${encodeURIComponent(svg.replace("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" shape-rendering=\"crispEdges\" "))}`;
+
+// Lo que dice la sigla del nombre: «Edwards AFB» + «Edwards Air Force Base»
+// = «Air Force Base»; «NAS Sigonella» = «Naval Air Station».
+function tipoDe(nombre: string, oficial: string) {
+  const propio = nombre.split(" ").filter((p) => !/^[A-Z]{2,}$/.test(p));
+  const resto = oficial.split(" ").filter((p) => !propio.includes(p)).join(" ");
+  return resto && resto !== oficial ? resto : "";
+}
 
 const fichas = lista.map(([nombre, b]) => {
   const pais = bandera(b.pais);
   return {
+    tipo: tipoDe(nombre, b.oficial),
     nombre, ...b,
     bandera: svgBandera(pais),
     paisNombre: pais.nombre,
@@ -72,11 +97,11 @@ const css = [
 {fichas.map((f) => (
   <template data-base-tpl={f.slug}>
     <div class="bt">
-      <p class="bt-pestana"><span class="bt-bandera" set:html={f.bandera} />{f.nombre}</p>
+      <p class="bt-pestana"><span class="bt-bandera" set:html={f.bandera} />{f.nombre}{f.tipo && <span class="bt-tipo">({f.tipo})</span>}</p>
       <div class="bt-cuerpo">
         <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
         <dl class="bt-filas">
-          <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
+          <dt>Rama</dt><dd>{f.insignia ? <span class="bt-insignia" role="img" aria-label={f.sigla} title={f.sigla} set:html={f.insignia} /> : f.sigla}</dd>
           <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
           <dt>Desde</dt><dd>{f.desde}</dd>
           <dt>Coord.</dt><dd class="bt-mgrs">{f.coord}</dd>
@@ -211,7 +236,8 @@ const css = [
   .bt p { margin: 0; }
   .bt svg { width: 100%; height: 100%; image-rendering: pixelated; shape-rendering: crispEdges; }
   .bt-bandera { display: inline-block; flex: none; width: 26px; height: 18px; line-height: 0; }
-  .bt-insignia { display: inline-block; width: 34px; height: 18px; margin-right: 0.5rem; vertical-align: -4px; line-height: 0; }
+  .bt-insignia { display: inline-block; width: 34px; height: 18px; vertical-align: -4px; line-height: 0; }
+  .bt-tipo { opacity: 0.6; font-weight: 400; }
   .bt-pestana { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font: 600 11px/1.3 "IBM Plex Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #f3ecdc; background: #1d1a14; }
   .bt-cuerpo { padding: 16px; }
   .bt-filas { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.8rem; margin: 0.8rem 0 0; font-size: 0.8rem; }
