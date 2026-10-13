@@ -117,7 +117,7 @@ const css = [
       <div class="bt-cuerpo">
         <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
         <dl class="bt-filas">
-          <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
+          <dt>Rama</dt><dd>{f.insignia ? <Fragment><span class="bt-insignia" set:html={f.insignia} />{f.sigla}</Fragment> : f.rama}</dd>
           <dt>Dónde</dt><dd>{f.lugar}</dd>
           <dt>Desde</dt><dd>{f.desde}</dd>
           <dt>Coord.</dt><dd class="bt-mgrs">{f.coord}</dd>
