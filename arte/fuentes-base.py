@@ -76,7 +76,7 @@ def relieve(dir_, metros, s, n, o, e):
             # Más al norte de 50° las piezas son más estrechas: se estiran.
             if im.size != (ppd, ppd):
                 im = im.resize((ppd, ppd), Image.NEAREST)
-            px = getattr(im, "get_flattened_data", im.getdata)()
+            px = list(getattr(im, "get_flattened_data", im.getdata)())
             fila0, col0 = (la1 - 1 - lat) * ppd, (lon - lo0) * ppd
             for r in range(ppd):
                 out[(fila0 + r) * w + col0:(fila0 + r) * w + col0 + ppd] = array.array(

@@ -71,5 +71,89 @@
         }
       ]
     }
+  },
+  "NAS Sigonella": {
+    "slug": "nas-sigonella",
+    "oficial": "Naval Air Station Sigonella",
+    "pais": "US",
+    "rama": "Armada de EE. UU. (US Navy)",
+    "lugar": "Sicilia, Italia",
+    "lat": 37.4017,
+    "lon": 14.9222,
+    "desde": 1959,
+    "texto": "La base de la Armada de EE. UU. en Sicilia, a unos 40 km al sur del Etna y compartida con un aeródromo italiano. Desde aquí vuelan aviones de patrulla y drones RQ-4 Global Hawk que vigilan el Mediterráneo y el mar Negro.",
+    "nombres": [
+      {
+        "nombre": "Etna",
+        "clase": "accidente",
+        "lat": 37.751,
+        "lon": 14.994
+      },
+      {
+        "nombre": "Llanura de Catania",
+        "clase": "region",
+        "lat": 37.36,
+        "lon": 14.85
+      },
+      {
+        "nombre": "Lago de Lentini",
+        "clase": "accidente",
+        "lat": 37.3,
+        "lon": 14.87
+      },
+      {
+        "nombre": "Mar Jónico",
+        "clase": "region",
+        "lat": 37.4,
+        "lon": 15.28
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Catania",
+          "clase": "ciudad",
+          "x": 196,
+          "y": 56
+        },
+        {
+          "nombre": "Lago de Lentini",
+          "clase": "accidente",
+          "x": 85,
+          "y": 132
+        },
+        {
+          "nombre": "Paternò",
+          "clase": "pueblo",
+          "x": 142,
+          "y": 33
+        },
+        {
+          "nombre": "Caltagirone",
+          "clase": "pueblo",
+          "x": 27,
+          "y": 155
+        },
+        {
+          "nombre": "Augusta",
+          "clase": "pueblo",
+          "x": 235,
+          "y": 155
+        },
+        {
+          "nombre": "Llanura de Catania",
+          "clase": "region",
+          "x": 56,
+          "y": 66
+        },
+        {
+          "nombre": "Mar Jónico",
+          "clase": "region",
+          "x": 218,
+          "y": 95
+        }
+      ]
+    }
   }
 }

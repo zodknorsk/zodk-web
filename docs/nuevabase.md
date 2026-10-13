@@ -98,7 +98,8 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
      "lon"}`. El punto de una región, dentro de ella y en el terreno que
      nombra. Los pueblos y ciudades salen solos de OSM.
 2. **Fuentes**: `python3 fuentes-base.py <slug>` (unos minutos; Overpass a
-   veces tarda).
+   veces tarda). Con Pillow 11.3 el relieve falló al leer las piezas (`px`
+   no admitía cortes); `fuentes-base.py` ya lo convierte en lista.
 3. **Las cuatro vistas**: `python3 generar-base.py <slug>` (1-2 min) →
    `public/bases/prueba/<slug>-<km>.png` y `.json` (los nombres colocados).
 4. **Enseñarlas**: con `npm run dev`, la página
@@ -106,7 +107,10 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
    de las cuatro para el usuario. **Parar aquí**: el usuario elige la vista y
    dice si cambiar algo (un nombre, dónde va, otra vista). Para cambiar un
    nombre o su punto, se toca `bases.json` y se repite el paso 3 (las
-   fuentes siguen ahí).
+   fuentes siguen ahí). Los pueblos los elige el script solo, por tamaño, y
+   no tiene «excluir»: si salen demasiados (en Sigonella, 14), antes de
+   `--elegir` se quitan a mano de `prueba/<slug>-<km>.json` los que sobran
+   (queda el PNG igual, solo cambian los nombres que se dibujan encima).
 5. **Elegir**: `python3 generar-base.py <slug> --elegir <km>` copia la vista
    a `public/bases/<slug>.png`, guarda sus nombres en `bases.json` (`mapa`)
    y **borra las pruebas y las fuentes**.
