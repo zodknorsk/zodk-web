@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-10-12'
+updated: '2026-10-13'
 tags:
   - dron
 glosario: true
@@ -35,10 +35,13 @@ glosario: true
 		- **M** multimisión: combina misiones de ISR y de ataque de precisión _(MQ-9 Reaper)_.
 		- **F** caza: diseñado para el combate aire-aire, es decir, para derribar otras aeronaves. 
 		- **C** carga: transporta suministros _(CQ-10 Snowgoose)_.
+		- **E** electrónica: lleva equipos electrónicos especiales, como un repetidor de comunicaciones _(EQ-4B Global Hawk)_.
 	- Una **Y** delante indica que es un prototipo.
 	- Una **X** que es experimental. 
 	- Una **Q** delante del todo no significa lo mismo: es un avión tripulado convertido en dron blanco para prácticas de tiro (_QF-16_, un F-16 sin piloto).
 	- La letra del final es la versión _(MQ-9A, MQ-9B)_.
+
+- **Block** *(lote de producción)* — Cada lote de un mismo modelo que sale con la misma configuración y un paquete de mejoras acumuladas; el siguiente lote trae el siguiente Block. No es otro modelo: un MQ-9A Block 5 sigue siendo un MQ-9. Lo usa sobre todo EE. UU., también en aviones tripulados (F-16, F-35) y en misiles (Tomahawk). En el [RQ-4](/uas/rq-4-global-hawk) separa las versiones por lo que llevan: el Block 20, cámaras y radar; el 30, además, equipos de escucha; el 40, un radar que sigue a los vehículos en movimiento.
 
 - **NATO UAS classes** *(clases de la OTAN)* — Clasificación de la OTAN por peso al despegue:
 	- **Clase I** (menos de 150 kg). Se divide en micro (menos de 2 kg), mini (de 2 a 20 kg) y small (más de 20 kg).
@@ -234,3 +237,13 @@ glosario: true
 - **Knot** *(nudo)* — Unidad de velocidad de la aviación y la navegación: una milla náutica por hora, es decir, 1,852 km/h. Por ejemplo, 200 nudos son unos 370 km/h.
 
 - **Nautical mile** *(milla náutica)* — Unidad de distancia de la aviación y la navegación: 1.852 metros. No es la milla terrestre (1.609 metros).
+
+## Bases
+
+- **AFB** *(Air Force Base)* — Base de la Fuerza Aérea de EE. UU. Se escribe con el nombre delante y las siglas detrás, como en inglés: *Grand Forks AFB*, no «AFB Grand Forks». Los [Global Hawk](/uas/rq-4-global-hawk) de la Fuerza Aérea tienen allí su base, en Dakota del Norte.
+
+- **AB** *(Air Base)* — Base aérea. Se usa para las bases aéreas que no se llaman *Air Force Base*, sobre todo las de otros países: *Misawa AB*, en Japón, o *Volkel AB*, en los Países Bajos. Igual que en AFB, el nombre va delante.
+
+- **NAS** *(Naval Air Station)* — Estación aeronaval: base de aviación de la US Navy Aquí la sigla va delante del nombre: *NAS Sigonella*, en Sicilia, desde donde vuelan los Global Hawk que vigilan el mar Negro.
+
+- **FOB** *(Forward Operating Base)* — Base de operaciones avanzada. Instalación militar cerca de la zona de combate desde la que operan y se abastecen las unidades del frente, mayor que un puesto de combate. La sigla va delante: *FOB Gardez*.

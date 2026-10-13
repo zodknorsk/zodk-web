@@ -20,10 +20,10 @@ categoria: Misil aire-superficie
 *Un MQ-1 Predator con dos Hellfire, en una misión sobre el sur de Afganistán, en noviembre de 2008 (foto: Lt Col Leslie Pratt, Fuerza Aérea de EE. UU.).*
 
 ![](./armamento-hellfire-montgomery.jpg)
-*Un Hellfire Longbow sale del lanzador del USS Montgomery, en la primera prueba de este misil contra un blanco en tierra, en mayo de 2022 (foto: Lt. j.g. Samuel Hardgrove, Marina de EE. UU.).*
+*Un Hellfire Longbow sale del lanzador del USS Montgomery, en la primera prueba de este misil contra un blanco en tierra, en mayo de 2022 (foto: Lt. j.g. Samuel Hardgrove, US Navy).*
 
 ![](./armamento-hellfire-marineros.jpg)
-*Marineros sacan de su caja un Hellfire para cargarlo en un helicóptero SH-60B, en octubre de 2012 (foto: MC2 Deven B. King, Marina de EE. UU.).*
+*Marineros sacan de su caja un Hellfire para cargarlo en un helicóptero SH-60B, en octubre de 2012 (foto: MC2 Deven B. King, US Navy).*
 
 | | |
 |---|---|

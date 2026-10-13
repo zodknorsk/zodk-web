@@ -20,7 +20,7 @@ categoria: Bomba guiada por láser y GPS
 *Dos GBU-49 sobre un remolque de carga, en febrero de 2013 (foto: Bobdenard57, CC BY-SA 3.0).*
 
 ![](./armamento-gbu-49-f35a.jpg)
-*Una GBU-49 junto a un F-35A neerlandés en la base de Volkel, en noviembre de 2020 (foto: Defensie Nederland, CC BY-SA 4.0).*
+*Una GBU-49 junto a un F-35A neerlandés en la Volkel AB, en noviembre de 2020 (foto: Defensie Nederland, CC BY-SA 4.0).*
 
 | | |
 |---|---|

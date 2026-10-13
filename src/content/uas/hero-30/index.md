@@ -52,7 +52,7 @@ El Hero-30 tiene una autonomía de 30 minutos, normalmente entre 200 y 450 m de 
 
 Lleva una cabeza de combate de <mark>0,5 kg</mark>, antipersonal o anticarro, con espoleta de impacto, de proximidad o de retardo. Está pensada para tropas al descubierto, vehículos sin blindaje y puestos de mando, no para carros de combate. UVision dice que cae a menos de un metro del punto elegido. Hasta unos segundos antes del impacto, el operador puede <mark>abortar el ataque</mark>: volver a merodear y atacar de nuevo, buscar otro blanco o desarmar la carga y traer el dron en paracaídas a una zona de recogida. La lanzadera se puede montar en múltiples plataformas terrestres o marítimas.
 
-En España, UVision presentó la familia Hero al Ejército de Tierra, con un simulador, en la base Príncipe de la Brigada Paracaidista. Para entonces ya había montado el Hero-30 en el Netón, el vehículo ligero de operaciones especiales. El plan de contratación de Defensa de 2024 recoge la [primera compra de municiones merodeadoras](https://www.defensa.com/espana/espana-inicia-compra-municiones-merodeadoras), sin especificar qué modelos.
+En España, UVision presentó la familia Hero al Ejército de Tierra, con un simulador, en la Base «Príncipe» de la Brigada Paracaidista. Para entonces ya había montado el Hero-30 en el Netón, el vehículo ligero de operaciones especiales. El plan de contratación de Defensa de 2024 recoge la [primera compra de municiones merodeadoras](https://www.defensa.com/espana/espana-inicia-compra-municiones-merodeadoras), sin especificar qué modelos.
 
 ## En acción
 

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-13",
+  "tuit": {
+    "id_str": "1129869271067123712",
+    "created_at": "2019-05-18T22:00:00.000Z",
+    "text": "Grand Forks AFB soon to be known as America's Global Hawk Base once the @319ABW is re-designated as the 319th Reconnaissance Wing, June 28. The re-designation aligns the host wing &amp; the 69th Reconnaissance Group, which flies the RQ-4 #GlobalHawk. (#USAF/SSgt Michael Reeves Jr.) https://t.co/UV3O7zAXwh",
+    "user": {
+      "name": "U.S. Air Force",
+      "screen_name": "usairforce",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/875377950861950976/WDv6YJ5d_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/UV3O7zAXwh",
+        "media_url_https": "https://pbs.twimg.com/media/D6sxbqdXoAAdaxJ.jpg"
+      }
+    ]
+  }
+}
