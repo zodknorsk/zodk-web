@@ -83,7 +83,10 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
    - `pais`: el código de `src/data/banderas.json` (si no está, se añade la
      bandera allí, en pixel 11x7, como dice su `_leeme`).
    - `rama`: en castellano con la sigla («Fuerza Aérea de EE. UU. (USAF)»).
-   - `lugar`: región y país en castellano («Renania-Palatinado, Alemania»).
+   - `lugar`: solo dos partes, que es lo que enseña la tarjeta tal cual. En
+     el extranjero, estado y país («Renania-Palatinado, Alemania»; «California,
+     EE. UU.»); en España, ciudad y comunidad autónoma («Badajoz,
+     Extremadura»).
    - `lat`, `lon`: el punto de referencia del aeródromo (o el centro de la
      base si no tiene pista), con 4 decimales. Es donde va la marca.
    - `desde`: el año en que se abrió.

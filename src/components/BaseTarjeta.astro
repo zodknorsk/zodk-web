@@ -89,7 +89,6 @@ const fichas = lista.map(([nombre, b]) => {
     tipo: tipoDe(nombre, b.oficial),
     nombre, ...b,
     bandera: svgBandera(pais),
-    paisNombre: pais.nombre,
     insignia: insignia(b.rama),
     sigla: b.rama.match(/\(([^)]+)\)/)?.[1] ?? b.rama,
     coord: mgrs(b.lat, b.lon),
@@ -119,7 +118,7 @@ const css = [
         <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
         <dl class="bt-filas">
           <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
-          <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
+          <dt>Dónde</dt><dd>{f.lugar}</dd>
           <dt>Desde</dt><dd>{f.desde}</dd>
           <dt>Coord.</dt><dd class="bt-mgrs">{f.coord}</dd>
         </dl>
