@@ -21,7 +21,8 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
   y edificios con su sombra). **La vista se elige en cada base** entre
   cuatro: 10, 18, 40 y 90 km de ancho. Para Edwards, la de 90.
 - **Nombres en el mapa** como los del Sáhara (mono blanca con contorno),
-  menos en la vista de 10 km. Las regiones («Desierto de Mojave») van
+  también en la vista de 10 km (antes iba sin nombres; cambiado con Ramstein
+  AB, octubre de 2026). Las regiones («Desierto de Mojave») van
   encima del terreno que nombran, no en la zona verde de al lado.
 - Los accidentes en castellano, como en el Sáhara («Lago seco Rogers»); los
   pueblos con su nombre de allí, **solo en letras latinas** (`name:es`,

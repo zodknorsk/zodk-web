@@ -165,7 +165,7 @@
     "lat": 35.1319,
     "lon": -78.9364,
     "desde": 1918,
-    "texto": "La mayor base del Ejército de EE. UU., junto a Fayetteville. Es la casa de la 82.ª División Aerotransportada, del Mando de Operaciones Especiales del Ejército y de los Rangers, y tiene más de 50 000 militares destinados.",
+    "texto": "La mayor base del Ejército de EE. UU. por personal destinado (más de 50.000 militares), junto a Fayetteville. Es la casa de la 82.ª División Aerotransportada y del Mando de Operaciones Especiales del Ejército (USASOC). Aquí tiene su sede el 3rd Special Forces Group y la Special Warfare Center and School, donde se hace el Special Forces Qualification Course.",
     "nombres": [
       {
         "nombre": "Río Cape Fear",
@@ -219,7 +219,7 @@
     "lat": 32.3372,
     "lon": -84.9914,
     "desde": 1918,
-    "texto": "La escuela de la infantería y de los blindados del Ejército de EE. UU., en la frontera entre Georgia y Alabama, junto a Columbus. Aquí se forman los infantes, los paracaidistas y los Rangers, y a la base la han llamado también Fort Moore (2023-2025).",
+    "texto": "La escuela de la infantería y de los blindados del Ejército de EE. UU., en la frontera entre Georgia y Alabama, junto a Columbus. Aquí están la Infantry School, Armor School, Airborne School y Ranger School, además de la sede del 75th Ranger Regiment y del 3rd Ranger Battalion. Al regimiento se accede al superar el Ranger Assessment and Selection Program (RASP).",
     "nombres": [
       {
         "nombre": "Río Chattahoochee",
@@ -296,6 +296,180 @@
           "clase": "pueblo",
           "x": 83,
           "y": 163
+        }
+      ]
+    }
+  },
+  "Ramstein AB": {
+    "slug": "ramstein-ab",
+    "oficial": "Ramstein Air Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Renania-Palatinado, Alemania",
+    "lat": 49.4369,
+    "lon": 7.6,
+    "desde": 1953,
+    "texto": "La base de la Fuerza Aérea de EE. UU. en el suroeste de Alemania, a unos 16 km de Kaiserslautern. Es el cuartel general de las Fuerzas Aéreas de EE. UU. en Europa y del mando aéreo de la OTAN, y el gran nudo por donde pasan los vuelos de transporte hacia Oriente Medio y África. Trabajan unas 16.000 personas, entre militares, civiles y contratistas.",
+    "nombres": [
+      {
+        "nombre": "Bosque del Palatinado",
+        "clase": "region",
+        "lat": 49.33,
+        "lon": 7.85
+      },
+      {
+        "nombre": "Monte Donnersberg",
+        "clase": "accidente",
+        "lat": 49.6256,
+        "lon": 7.9083
+      }
+    ],
+    "mapa": {
+      "km": 10,
+      "nombres": [
+        {
+          "nombre": "Landstuhl",
+          "clase": "pueblo",
+          "x": 87,
+          "y": 169
+        },
+        {
+          "nombre": "Ramstein-Miesenbach",
+          "clase": "pueblo",
+          "x": 48,
+          "y": 44
+        },
+        {
+          "nombre": "Kindsbach",
+          "clase": "pueblo",
+          "x": 185,
+          "y": 160
+        }
+      ]
+    }
+  },
+  "Base Príncipe": {
+    "slug": "base-principe",
+    "oficial": "Base Príncipe",
+    "pais": "ES",
+    "rama": "Ejército de Tierra (ET)",
+    "lugar": "Paracuellos de Jarama, Comunidad de Madrid",
+    "lat": 40.4931,
+    "lon": -3.4857,
+    "desde": 2007,
+    "texto": "La base de la Brigada Paracaidista del Ejército de Tierra, a unos 25 km al noreste de Madrid. La brigada llegó aquí en 2007, tras más de cincuenta años en Alcalá de Henares.",
+    "nombres": [
+      {
+        "nombre": "Río Jarama",
+        "clase": "accidente",
+        "lat": 40.4693,
+        "lon": -3.525
+      }
+    ],
+    "mapa": {
+      "km": 40,
+      "nombres": [
+        {
+          "nombre": "Madrid",
+          "clase": "ciudad",
+          "x": 9,
+          "y": 157
+        },
+        {
+          "nombre": "Torrejón de Ardoz",
+          "clase": "ciudad",
+          "x": 151,
+          "y": 122
+        },
+        {
+          "nombre": "Alcobendas",
+          "clase": "ciudad",
+          "x": 52,
+          "y": 54
+        },
+        {
+          "nombre": "Coslada",
+          "clase": "ciudad",
+          "x": 103,
+          "y": 151
+        },
+        {
+          "nombre": "Río Jarama",
+          "clase": "accidente",
+          "x": 92,
+          "y": 106
+        },
+        {
+          "nombre": "Tres Cantos",
+          "clase": "pueblo",
+          "x": 9,
+          "y": 4
+        },
+        {
+          "nombre": "Meco",
+          "clase": "pueblo",
+          "x": 247,
+          "y": 43
+        },
+        {
+          "nombre": "Ajalvir",
+          "clase": "pueblo",
+          "x": 150,
+          "y": 60
+        }
+      ]
+    }
+  },
+  "Base Aérea de Talavera la Real": {
+    "slug": "base-aerea-de-talavera-la-real",
+    "oficial": "Base Aérea de Talavera la Real",
+    "pais": "ES",
+    "rama": "Ejército del Aire y del Espacio (EdAE)",
+    "lugar": "Badajoz, Extremadura",
+    "lat": 38.8925,
+    "lon": -6.82,
+    "desde": 1953,
+    "texto": "Base aérea en las inmediaciones de Badajoz, a pocos kilómetros de Portugal y con la pista compartida con el aeropuerto de la ciudad. Es la escuela de pilotos de caza del Ejército del Aire (Ala 23, con F-5) y la casa de los cuatro MQ-9 Reaper españoles, del Escuadrón 233.",
+    "nombres": [
+      {
+        "nombre": "Río Guadiana",
+        "clase": "accidente",
+        "lat": 38.8795,
+        "lon": -6.9838
+      }
+    ],
+    "mapa": {
+      "km": 40,
+      "nombres": [
+        {
+          "nombre": "Badajoz",
+          "clase": "ciudad",
+          "x": 65,
+          "y": 79
+        },
+        {
+          "nombre": "Río Guadiana",
+          "clase": "accidente",
+          "x": 60,
+          "y": 116
+        },
+        {
+          "nombre": "Talavera la Real",
+          "clase": "pueblo",
+          "x": 178,
+          "y": 107
+        },
+        {
+          "nombre": "Guadiana",
+          "clase": "pueblo",
+          "x": 231,
+          "y": 64
+        },
+        {
+          "nombre": "Valdebótoa",
+          "clase": "pueblo",
+          "x": 79,
+          "y": 32
         }
       ]
     }

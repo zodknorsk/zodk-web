@@ -321,7 +321,7 @@ del X10D).
   la sigla detrás (Edwards **AFB**); en la Marina, la RAF y el Ejército, la
   sigla va delante (NAS, RAF, FOB). Antes de poner la sigla, comprobar qué
   tipo de instalación es. **Las bases españolas van en castellano**, con su
-  nombre oficial («Base Aérea de Talavera la Real», «Base «Príncipe»»).
+  nombre oficial («Base Aérea de Talavera la Real», «Base Príncipe»).
   Quedan fuera las notas narrativas de Operaciones (rescate del F-15E,
   Chapman) y los títulos de fuentes, que se dejan como están. Cada sigla se
   añade al glosario la primera vez que sale en una nota (hoy: AFB, AB, NAS y

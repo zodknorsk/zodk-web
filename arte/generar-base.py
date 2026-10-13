@@ -906,7 +906,6 @@ paso("dibujo")
 # de más a menos importante, sin pisarse, sin salirse y sin tapar la marca.
 # Las regiones («Desierto de Mojave») se mueven alrededor de su punto hasta
 # quedar encima del mismo terreno que el punto (desierto, verde…).
-# La vista de 10 km va sin nombres.
 LETRA = {"ciudad": (11, 0.0), "pueblo": (10, 0.0), "accidente": (10, 0.06), "region": (9, 0.22)}
 CON_PUNTO = {"ciudad", "pueblo"}
 AIRE = 4
@@ -927,57 +926,56 @@ def terreno(x, y):
 
 
 nombres = []
-if KM_VISTA > 10:
-    pueblos = []
-    for e in _osm("pueblos"):
-        t = e.get("tags", {})
-        # Solo nombres en letras latinas (en Afganistán, el de OSM va en pastún).
-        nom = next((v for v in (t.get("name:es"), t.get("name:en"), t.get("int_name"), t.get("name"))
-                    if v and all(ord(ch) < 0x250 for ch in v)), None)
-        if not nom:
+pueblos = []
+for e in _osm("pueblos"):
+    t = e.get("tags", {})
+    # Solo nombres en letras latinas (en Afganistán, el de OSM va en pastún).
+    nom = next((v for v in (t.get("name:es"), t.get("name:en"), t.get("int_name"), t.get("name"))
+                if v and all(ord(ch) < 0x250 for ch in v)), None)
+    if not nom:
+        continue
+    try:
+        pob = int(t.get("population", "0").replace(",", "").replace(".", "").split()[0] or 0)
+    except ValueError:
+        pob = 0
+    clase = "ciudad" if t.get("place") == "city" or pob >= 100000 else "pueblo"
+    # De lejos, los pueblos pequeños no.
+    if KM_VISTA >= 90 and clase == "pueblo" and t.get("place") == "village" and pob < 5000:
+        continue
+    pueblos.append({"nombre": nom, "clase": clase, "lat": e["lat"], "lon": e["lon"],
+                    "orden": (0 if clase == "ciudad" else 2, -pob)})
+extra = [dict(n, orden=(1 if n["clase"] == "accidente" else 3, 0)) for n in BASE.get("nombres", [])]
+candidatos = sorted(pueblos + extra, key=lambda n: n["orden"])
+puestos = [(CW / 2 - 9, CH / 2 - 18, CW / 2 + 9, CH / 2)]       # la marca
+for n in candidatos:
+    fs, ls = LETRA[n["clase"]]
+    w = len(n["nombre"]) * fs * (0.6 + ls) + (9 if n["clase"] in CON_PUNTO else 0)
+    h = fs + 2
+    px, py = a_css(n["lat"], n["lon"])
+    if not (0 <= px <= CW and 0 <= py <= CH):
+        continue
+    sitios = [(0, 0)]
+    if n["clase"] == "region":
+        sitios = sorted(((dx, dy) for dx in range(-90, 91, 6) for dy in range(-60, 61, 4)),
+                        key=lambda d: math.hypot(*d))
+    elif n["clase"] == "accidente":
+        sitios = sorted(((dx, dy) for dx in range(-48, 49, 4) for dy in range(-28, 29, 4)),
+                        key=lambda d: math.hypot(*d))
+    suyo = terreno(px, py)
+    for dx, dy in sitios:
+        x, y = (px - 3, py - h / 2) if n["clase"] in CON_PUNTO else (px + dx - w / 2, py + dy - h / 2)
+        if x < 2 or y < 2 or x + w > CW - 2 or y + h > CH - 2:
             continue
-        try:
-            pob = int(t.get("population", "0").replace(",", "").replace(".", "").split()[0] or 0)
-        except ValueError:
-            pob = 0
-        clase = "ciudad" if t.get("place") == "city" or pob >= 100000 else "pueblo"
-        # De lejos, los pueblos pequeños no.
-        if KM_VISTA >= 90 and clase == "pueblo" and t.get("place") == "village" and pob < 5000:
+        if any(x < p[2] + AIRE and x + w + AIRE > p[0] and y < p[3] + AIRE and y + h + AIRE > p[1]
+               for p in puestos):
             continue
-        pueblos.append({"nombre": nom, "clase": clase, "lat": e["lat"], "lon": e["lon"],
-                        "orden": (0 if clase == "ciudad" else 2, -pob)})
-    extra = [dict(n, orden=(1 if n["clase"] == "accidente" else 3, 0)) for n in BASE.get("nombres", [])]
-    candidatos = sorted(pueblos + extra, key=lambda n: n["orden"])
-    puestos = [(CW / 2 - 9, CH / 2 - 18, CW / 2 + 9, CH / 2)]       # la marca
-    for n in candidatos:
-        fs, ls = LETRA[n["clase"]]
-        w = len(n["nombre"]) * fs * (0.6 + ls) + (9 if n["clase"] in CON_PUNTO else 0)
-        h = fs + 2
-        px, py = a_css(n["lat"], n["lon"])
-        if not (0 <= px <= CW and 0 <= py <= CH):
-            continue
-        sitios = [(0, 0)]
         if n["clase"] == "region":
-            sitios = sorted(((dx, dy) for dx in range(-90, 91, 6) for dy in range(-60, 61, 4)),
-                            key=lambda d: math.hypot(*d))
-        elif n["clase"] == "accidente":
-            sitios = sorted(((dx, dy) for dx in range(-48, 49, 4) for dy in range(-28, 29, 4)),
-                            key=lambda d: math.hypot(*d))
-        suyo = terreno(px, py)
-        for dx, dy in sitios:
-            x, y = (px - 3, py - h / 2) if n["clase"] in CON_PUNTO else (px + dx - w / 2, py + dy - h / 2)
-            if x < 2 or y < 2 or x + w > CW - 2 or y + h > CH - 2:
+            bajo = [terreno(x + i * w / 8, y + h / 2) for i in range(9)]
+            if sum(b == suyo for b in bajo) < 8:
                 continue
-            if any(x < p[2] + AIRE and x + w + AIRE > p[0] and y < p[3] + AIRE and y + h + AIRE > p[1]
-                   for p in puestos):
-                continue
-            if n["clase"] == "region":
-                bajo = [terreno(x + i * w / 8, y + h / 2) for i in range(9)]
-                if sum(b == suyo for b in bajo) < 8:
-                    continue
-            puestos.append((x, y, x + w, y + h))
-            nombres.append({"nombre": n["nombre"], "clase": n["clase"], "x": round(x), "y": round(y)})
-            break
+        puestos.append((x, y, x + w, y + h))
+        nombres.append({"nombre": n["nombre"], "clase": n["clase"], "x": round(x), "y": round(y)})
+        break
 with open(os.path.join(PRUEBA, f"{SLUG}-{KM_VISTA}.json"), "w") as fh:
     json.dump({"km": KM_VISTA, "nombres": nombres}, fh, ensure_ascii=False)
 paso(f"public/bases/prueba/{SLUG}-{KM_VISTA}.png, {len(nombres)} nombres")
