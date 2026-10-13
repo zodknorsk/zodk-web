@@ -28,18 +28,32 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - **Coste**: las fuentes (~150-250 MB por base: relieve, mapas, OSM) se
   bajan para cada base y se borran al elegir; en Git queda el PNG (70-130 KB)
   y su entrada en `bases.json`.
-- **El diseño de la tarjeta y la letra del nombre en el texto**: PENDIENTE.
-  En `npm run dev` sale abajo a la izquierda una barra para cambiar en
-  directo entre los tres diseños (A ficha, B pestaña del Sáhara con filas, C
-  tumbada) y cinco letras (1 IBM Plex Mono, 2 Silkscreen, 3 VT323,
-  4 Pixelify Sans, 5 Press Start 2P; las de pixel, de Google Fonts solo en
-  dev). Al elegir, se deja solo lo elegido y la letra va con @fontsource.
-- El nombre lleva puntos de 2 px debajo y la marca roja del mapa como
-  puntero; solo la primera vez en cada artículo (y en cada tabla), como el
-  glosario. Las demás veces va en un span sin tarjeta para que el glosario
-  no marque la sigla («AFB») dentro del nombre.
+- **La tarjeta: diseño B** (la pestaña oscura de la ventana del Sáhara con
+  la bandera y el nombre, el mapa y debajo los datos en filas: rama con su
+  escarapela, dónde, desde y MGRS; luego el texto).
+- **Coordenadas, siempre en MGRS** («11S MU 19276 62930»), con
+  `src/scripts/mgrs.js`, el de la portada. En `bases.json` se guardan
+  `lat` y `lon`; el MGRS lo calcula la tarjeta.
+- **PENDIENTE**: el borde negro de la tarjeta (sí o no) y cómo se marca el
+  nombre en el texto. En `npm run dev` sale abajo a la izquierda una barra
+  para cambiarlos en directo: «Borde negro» y cinco formas del nombre (1 la
+  letra del texto con la bandera delante, 2 la letra del texto con la
+  marca del mapa detrás, 3 Plex Sans en mayúsculas, 4 Plex Sans negrita,
+  5 Plex Mono; las de rayas, con puntos rojos de 2 px). Al elegir, se deja
+  solo lo elegido.
+- El puntero es la marca roja del mapa. El nombre se marca solo la primera
+  vez en cada artículo (y en cada tabla), como el glosario. Las demás veces
+  va en un span sin tarjeta para que el glosario no marque la sigla
+  («AFB») dentro del nombre.
 
 ### Probado y rechazado
+
+- Tarjetas A (ficha con el mapa arriba) y C (tumbada, mapa a la
+  izquierda): se eligió la B.
+- Coordenadas en grados («34,906° N · 117,884° O»): siempre MGRS.
+- Letras de pixel para el nombre en el texto (Silkscreen, VT323, Pixelify
+  Sans, Press Start 2P): no gustaron. Plex Mono con puntos grises se
+  confundía con los términos del glosario.
 
 - Mapa de 150 px a 2 px CSS por píxel, y el de 300 px a 1 px CSS: le faltaba
   detalle («versiones 1 y 2»).

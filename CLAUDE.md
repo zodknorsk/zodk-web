@@ -27,6 +27,8 @@ empezar, `git push` al terminar.
 - **Bases militares con su nombre oficial en inglés** («Edwards AFB», «NAS
   Sigonella»), no «base de Edwards». Detalle y orden de las siglas en
   `docs/hangar-de-uas.md` («Receta», paso 1).
+- **Coordenadas que ve el lector, en MGRS** («11S MU 19276 62930»), como
+  la portada y las tarjetas de bases (`src/scripts/mgrs.js`).
 - **Unidades, siempre en el sistema métrico** (m, km, km/h, kg, °C…), en
   notas, documentos y chat. Si la fuente da pies, millas, nudos o libras,
   se pasa a métrico.

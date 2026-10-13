@@ -2,14 +2,15 @@
 // La tarjeta de las bases militares en los artículos (docs/nuevabase.md): al
 // pasar el ratón por el nombre de una base (lo marca src/lib/bases-enlaces.mjs),
 // sale junto a él con su mapa en pixel art, su bandera, la rama, dónde está
-// y qué es. En táctil, el toque la abre y la cierra.
+// y qué es. En táctil, el toque la abre y la cierra. Diseño B: la pestaña
+// de la ventana del Sáhara y los datos en filas; coordenadas en MGRS.
 //
-// PRUEBA: hay tres diseños (A ficha, B pestaña del Sáhara, C tumbada) y
-// varias letras para el nombre en el texto; en `npm run dev` sale abajo a
-// la izquierda una barra para cambiarlos en directo. Cuando el usuario
-// elija, se deja solo lo elegido.
+// PRUEBA: el borde negro de la tarjeta y cómo se marca el nombre en el
+// texto; en `npm run dev` sale abajo a la izquierda una barra para
+// cambiarlos en directo. Cuando el usuario elija, se deja solo lo elegido.
 import bases from "@data/bases.json";
 import { bandera, svgBandera } from "@data/banderas";
+import { mgrs } from "@scripts/mgrs.js";
 import BaseMapa from "@components/BaseMapa.astro";
 
 type Base = {
@@ -19,9 +20,6 @@ type Base = {
 };
 const lista = Object.entries(bases as unknown as Record<string, Base | string>)
   .filter((e): e is [string, Base] => typeof e[1] === "object" && !!e[1].mapa);
-
-const grados = (v: number, pos: string, neg: string) =>
-  `${Math.abs(v).toFixed(3).replace(".", ",")}° ${v >= 0 ? pos : neg}`;
 
 // Escarapela de la USAF en pixel art (17x9): círculo azul, estrella blanca y
 // barras blancas con la raya roja.
@@ -45,6 +43,7 @@ function escarapelaUSAF() {
   return `<svg viewBox="0 0 17 9" aria-hidden="true">${r}</svg>`;
 }
 const insignia = (rama: string) => (rama.includes("USAF") ? escarapelaUSAF() : "");
+const aDatos = (svg: string) => `data:image/svg+xml,${encodeURIComponent(svg.replace("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" shape-rendering=\"crispEdges\" "))}`;
 
 const fichas = lista.map(([nombre, b]) => {
   const pais = bandera(b.pais);
@@ -54,99 +53,70 @@ const fichas = lista.map(([nombre, b]) => {
     paisNombre: pais.nombre,
     insignia: insignia(b.rama),
     sigla: b.rama.match(/\(([^)]+)\)/)?.[1] ?? b.rama,
-    coord: `${grados(b.lat, "N", "S")} · ${grados(b.lon, "E", "O")}`,
+    coord: mgrs(b.lat, b.lon),
     src: `/bases/${b.slug}.png`,
   };
 });
-// El puntero: la marca del mapa (la punta, abajo en medio, señala).
+
+// La marca del mapa: el puntero y, en una de las pruebas, detrás del nombre.
 const MARCA = ["..XXXXX..", ".XOOOOOX.", "XOOWWWOOX", "XOOWWWOOX", "XOOWWWOOX", ".XOOOOOX.", "..XOOOX..", "...XOX...", "....X...."];
 const MARCA_COL: Record<string, string> = { X: "#141418", O: "#d4231c", W: "#f2f2ef" };
 let marca = "";
 MARCA.forEach((f, y) => [...f].forEach((k, x) => {
   if (k !== ".") marca += `<rect x="${x}" y="${y}" width="1" height="1" fill="${MARCA_COL[k]}"/>`;
 }));
-const puntero = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 9 9" shape-rendering="crispEdges">${marca}</svg>`)}`;
+const marcaSvg = `<svg width="18" height="18" viewBox="0 0 9 9">${marca}</svg>`;
+const css = [
+  `article .base-ref { cursor: url("${aDatos(marcaSvg)}") 9 17, pointer; --marca: url("${aDatos(marcaSvg)}"); }`,
+  ...fichas.map((f) => `article .base-ref[data-base="${f.slug}"] { --bandera: url("${aDatos(f.bandera)}"); }`),
+].join("\n");
 const DEV = import.meta.env.DEV;
-const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Start 2P"];
+const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "Plex Sans negrita", "Plex Mono con puntos rojos"];
 ---
 
 {fichas.map((f) => (
-  <>
-    <template data-base-tpl={f.slug} data-diseno="a">
-      <div class="bt bt-a">
+  <template data-base-tpl={f.slug}>
+    <div class="bt">
+      <p class="bt-pestana"><span class="bt-bandera" set:html={f.bandera} />{f.nombre}</p>
+      <div class="bt-cuerpo">
         <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
-        <div class="bt-cab bt-sep">
-          <span class="bt-bandera" set:html={f.bandera} />
-          <p class="bt-nombre">{f.nombre}</p>
-        </div>
-        <p class="bt-oficial">{f.oficial}</p>
-        <p class="bt-linea">{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.rama}</p>
-        <p class="bt-linea">{f.lugar}, {f.paisNombre}</p>
+        <dl class="bt-filas">
+          <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
+          <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
+          <dt>Desde</dt><dd>{f.desde}</dd>
+          <dt>MGRS</dt><dd class="bt-mgrs">{f.coord}</dd>
+        </dl>
         <p class="bt-texto">{f.texto}</p>
-        <p class="bt-coord">{f.coord}</p>
       </div>
-    </template>
-    <template data-base-tpl={f.slug} data-diseno="b">
-      <div class="bt bt-b">
-        <p class="bt-pestana"><span class="bt-bandera" set:html={f.bandera} />{f.nombre}</p>
-        <div class="bt-cuerpo">
-          <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
-          <dl class="bt-filas bt-sep">
-            <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
-            <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
-            <dt>Desde</dt><dd>{f.desde}</dd>
-            <dt>Coord.</dt><dd>{f.coord}</dd>
-          </dl>
-          <p class="bt-texto">{f.texto}</p>
-        </div>
-      </div>
-    </template>
-    <template data-base-tpl={f.slug} data-diseno="c">
-      <div class="bt bt-c">
-        <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
-        <div class="bt-der">
-          <div class="bt-cab">
-            <span class="bt-bandera" set:html={f.bandera} />
-            <p class="bt-nombre">{f.nombre}</p>
-          </div>
-          <p class="bt-linea bt-sep2">{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.rama}</p>
-          <p class="bt-linea">{f.lugar}, {f.paisNombre}</p>
-          <p class="bt-texto">{f.texto}</p>
-          <p class="bt-coord">{f.coord}</p>
-        </div>
-      </div>
-    </template>
-  </>
+    </div>
+  </template>
 ))}
 
-<style is:global set:html={`article .base-ref { cursor: url("${puntero}") 9 17, pointer; }`} />
+<style is:global set:html={css} />
 
 {DEV && (
-  <>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&display=swap" />
-    <div class="bt-prueba" aria-label="Prueba de las tarjetas de bases">
-      <span>Tarjeta</span>
-      {["a", "b", "c"].map((d) => <button type="button" data-poner-diseno={d}>{d.toUpperCase()}</button>)}
-      <span>Nombre</span>
-      {LETRAS.map((l, i) => <button type="button" data-poner-letra={i + 1} title={l}>{i + 1}</button>)}
-      <em class="bt-prueba-letra" />
-    </div>
-  </>
+  <div class="bt-prueba" aria-label="Prueba de las tarjetas de bases">
+    <span>Borde</span>
+    <button type="button" data-poner-borde>negro</button>
+    <span>Nombre</span>
+    {NOMBRES.map((n, i) => <button type="button" data-poner-letra={i + 1} title={n}>{i + 1}</button>)}
+    <em class="bt-prueba-letra" />
+  </div>
 )}
 
 <script>
   // Lo elegido en la barra de prueba (solo en dev), guardado en este navegador.
-  const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Start 2P"];
+  const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "Plex Sans negrita", "Plex Mono con puntos rojos"];
   const leer = (k: string, d: string) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
   const guardar = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* sin almacenamiento */ } };
   const aplicar = () => {
     const html = document.documentElement;
-    html.dataset.baseDiseno = leer("base-diseno", "a");
-    html.dataset.baseLetra = leer("base-letra", "1");
-    document.querySelectorAll<HTMLElement>("[data-poner-diseno]").forEach((b) => b.classList.toggle("activo", b.dataset.ponerDiseno === html.dataset.baseDiseno));
+    html.dataset.baseBorde = leer("base-borde", "0");
+    html.dataset.baseLetra = leer("base-letra2", "1");
+    document.querySelector("[data-poner-borde]")?.classList.toggle("activo", html.dataset.baseBorde === "1");
     document.querySelectorAll<HTMLElement>("[data-poner-letra]").forEach((b) => b.classList.toggle("activo", b.dataset.ponerLetra === html.dataset.baseLetra));
     const nombre = document.querySelector(".bt-prueba-letra");
-    if (nombre) nombre.textContent = LETRAS[Number(html.dataset.baseLetra) - 1] ?? "";
+    if (nombre) nombre.textContent = NOMBRES[Number(html.dataset.baseLetra) - 1] ?? "";
   };
 
   let tarjeta: HTMLElement | null = null;
@@ -156,8 +126,7 @@ const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Star
 
   function mostrar(el: HTMLElement) {
     clearTimeout(cerrar);
-    const diseno = document.documentElement.dataset.baseDiseno ?? "a";
-    const tpl = document.querySelector<HTMLTemplateElement>(`template[data-base-tpl="${el.dataset.base}"][data-diseno="${diseno}"]`);
+    const tpl = document.querySelector<HTMLTemplateElement>(`template[data-base-tpl="${el.dataset.base}"]`);
     if (!tpl) return;
     if (!tarjeta) {
       tarjeta = document.createElement("div");
@@ -203,10 +172,12 @@ const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Star
     tarjeta = null;
     actual = null;
     aplicar();
-    document.querySelectorAll<HTMLElement>("[data-poner-diseno]").forEach((b) =>
-      b.addEventListener("click", () => { guardar("base-diseno", b.dataset.ponerDiseno ?? "a"); aplicar(); if (actual) mostrar(actual); }));
+    document.querySelector("[data-poner-borde]")?.addEventListener("click", () => {
+      guardar("base-borde", leer("base-borde", "0") === "1" ? "0" : "1");
+      aplicar();
+    });
     document.querySelectorAll<HTMLElement>("[data-poner-letra]").forEach((b) =>
-      b.addEventListener("click", () => { guardar("base-letra", b.dataset.ponerLetra ?? "1"); aplicar(); }));
+      b.addEventListener("click", () => { guardar("base-letra2", b.dataset.ponerLetra ?? "1"); aplicar(); }));
 
     const nombres = document.querySelectorAll<HTMLElement>("article .base-ref");
     for (const el of nombres) {
@@ -241,29 +212,54 @@ const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Star
 </script>
 
 <style is:global>
-  /* El nombre de la base en el texto: del color del texto, con puntos de
-     2 px debajo (pintados con un degradado, como las rayas del glosario) y
-     la marca roja del mapa como puntero. La letra, según la prueba. */
-  article .base-ref {
-    color: inherit;
+  /* El nombre de la base en el texto. Lo común: del color del texto y, al
+     pasar el ratón, un fondo rojo muy claro (el rojo de la marca). Lo demás
+     depende de la prueba (data-base-letra); todas distintas del glosario,
+     que es Plex Mono con rayas grises. */
+  article .base-ref { color: inherit; transition: background-color 0.15s; }
+  article .base-ref:hover, article .base-ref:focus-visible { background-color: rgba(212, 35, 28, 0.12); outline: none; }
+  /* Puntos rojos de 2 px debajo, pintados con un degradado. */
+  html:is([data-base-letra="1"], [data-base-letra="3"], [data-base-letra="4"], [data-base-letra="5"]) article .base-ref {
     padding-bottom: 3px;
-    background-image: linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px);
+    background-image: linear-gradient(90deg, #d4231c 0 2px, transparent 2px 4px);
     background-position: 0 100%;
     background-size: 4px 2px;
     background-repeat: repeat-x;
-    transition: background-color 0.15s;
   }
-  article .base-ref:hover, article .base-ref:focus-visible { background-color: rgba(212, 35, 28, 0.12); outline: none; }
-  html[data-base-letra="1"] article .base-ref { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.9em; letter-spacing: 0.02em; }
-  html[data-base-letra="2"] article .base-ref { font-family: "Silkscreen", monospace; font-size: 0.8em; }
-  html[data-base-letra="3"] article .base-ref { font-family: "VT323", monospace; font-size: 1.2em; line-height: 1; }
-  html[data-base-letra="4"] article .base-ref { font-family: "Pixelify Sans", sans-serif; font-size: 0.95em; font-weight: 600; }
-  html[data-base-letra="5"] article .base-ref { font-family: "Press Start 2P", monospace; font-size: 0.6em; line-height: 1.6; }
+  /* 1: la letra del texto, con la bandera de la base delante. */
+  html[data-base-letra="1"] article .base-ref::before {
+    content: "";
+    display: inline-block;
+    width: 1.15em;
+    height: 0.8em;
+    margin-right: 0.3em;
+    vertical-align: -0.05em;
+    background: var(--bandera) center / 100% 100% no-repeat;
+    image-rendering: pixelated;
+  }
+  /* 2: la letra del texto, sin rayas, con la marca del mapa detrás. */
+  html[data-base-letra="2"] article .base-ref::after {
+    content: "";
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-left: 0.15em;
+    vertical-align: 0.15em;
+    background: var(--marca) center / 100% 100% no-repeat;
+    image-rendering: pixelated;
+  }
+  html[data-base-letra="3"] article .base-ref { font: 600 0.78em "IBM Plex Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+  html[data-base-letra="4"] article .base-ref { font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 0.95em; }
+  html[data-base-letra="5"] article .base-ref { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.9em; letter-spacing: 0.02em; }
 
-  /* La tarjeta flotante (los tres diseños, con la paleta de la del glosario). */
+  /* La tarjeta flotante: la pestaña del Sáhara arriba y los datos en filas
+     (con la paleta de la del glosario). Con data-base-borde="1", todo el
+     borde en negro. */
   .bt-flota { position: absolute; z-index: 60; }
   .bt-flota[hidden] { display: none; }
   .bt {
+    width: 334px;
+    overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.13);
     border-radius: 4px;
     background: #ebebee;
@@ -273,32 +269,19 @@ const LETRAS = ["Plex Mono", "Silkscreen", "VT323", "Pixelify Sans", "Press Star
     line-height: 1.5;
   }
   html.dark .bt { border-color: rgba(255, 255, 255, 0.13); background: #25252a; color: #d4d4d8; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45); }
+  html[data-base-borde="1"] .bt { border: 2px solid #141418; }
+  html[data-base-borde="1"].dark .bt { border-color: #05060a; }
   .bt p { margin: 0; }
   .bt svg { width: 100%; height: 100%; image-rendering: pixelated; shape-rendering: crispEdges; }
   .bt-bandera { display: inline-block; flex: none; width: 26px; height: 18px; line-height: 0; }
   .bt-insignia { display: inline-block; width: 34px; height: 18px; margin-right: 0.5rem; vertical-align: -4px; line-height: 0; }
-  .bt-cab { display: flex; align-items: center; gap: 0.6rem; }
-  .bt-nombre { font: 600 0.8rem/1.3 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: #18181b; }
-  html.dark .bt-nombre { color: #f4f4f5; }
-  .bt-oficial { font-style: italic; font-size: 0.8rem; opacity: 0.7; margin: 0.1rem 0 0.35rem !important; }
-  .bt-linea { font-size: 0.8rem; }
-  .bt-texto { margin-top: 0.5rem !important; }
-  .bt-coord { margin-top: 0.5rem !important; font: 0.7rem/1.3 "IBM Plex Mono", monospace; opacity: 0.75; }
-  .bt-sep { margin-top: 0.8rem; }
-  .bt-sep2 { margin-top: 0.35rem !important; }
-  /* A: ficha, mapa arriba */
-  .bt-a { width: 334px; padding: 16px; }
-  /* B: pestaña del Sáhara y datos en filas */
-  .bt-b { width: 334px; overflow: hidden; }
   .bt-pestana { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font: 600 11px/1.3 "IBM Plex Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #f3ecdc; background: #1d1a14; }
   .bt-cuerpo { padding: 16px; }
-  .bt-filas { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.8rem; margin-bottom: 0; font-size: 0.8rem; }
+  .bt-filas { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.8rem; margin: 0.8rem 0 0; font-size: 0.8rem; }
   .bt-filas dt { font: 600 0.65rem/1.9 "IBM Plex Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.65; }
   .bt-filas dd { margin: 0; }
-  /* C: tumbada, mapa a la izquierda */
-  .bt-c { display: flex; gap: 16px; width: min(600px, calc(100vw - 24px)); padding: 14px; }
-  .bt-c > :first-child { flex: none; }
-  @media (max-width: 640px) { .bt-c { flex-direction: column; width: 334px; } }
+  .bt-mgrs { font: 0.78rem/1.6 "IBM Plex Mono", monospace; }
+  .bt-texto { margin-top: 0.5rem !important; }
 
   /* La barra de prueba (solo en dev). */
   .bt-prueba {
