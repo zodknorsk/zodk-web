@@ -473,5 +473,47 @@
         }
       ]
     }
+  },
+  "Grand Forks AFB": {
+    "slug": "grand-forks-afb",
+    "oficial": "Grand Forks Air Force Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Dakota del Norte, EE. UU.",
+    "lat": 47.9611,
+    "lon": -97.4011,
+    "desde": 1957,
+    "texto": "Base de la Fuerza Aérea de EE. UU. en las llanuras de Dakota del Norte, a unos 25 km al oeste de la ciudad de Grand Forks. Es la casa del 319.º Ala de Reconocimiento, que opera los RQ-4 Global Hawk, y de los MQ-9 Reaper de Aduanas y Protección Fronteriza de EE. UU. (CBP).",
+    "nombres": [
+      {
+        "nombre": "Valle del río Rojo",
+        "clase": "region",
+        "lat": 47.99,
+        "lon": -97.25
+      },
+      {
+        "nombre": "Grand Forks",
+        "clase": "accidente",
+        "lat": 47.86,
+        "lon": -97.0306
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Grand Forks",
+          "clase": "accidente",
+          "x": 206,
+          "y": 131
+        },
+        {
+          "nombre": "Valle del río Rojo",
+          "clase": "region",
+          "x": 121,
+          "y": 64
+        }
+      ]
+    }
   }
 }
