@@ -155,5 +155,149 @@
         }
       ]
     }
+  },
+  "Fort Bragg": {
+    "slug": "fort-bragg",
+    "oficial": "Fort Bragg",
+    "pais": "US",
+    "rama": "Ejército de EE. UU. (US Army)",
+    "lugar": "Carolina del Norte, EE. UU.",
+    "lat": 35.1319,
+    "lon": -78.9364,
+    "desde": 1918,
+    "texto": "La mayor base del Ejército de EE. UU., junto a Fayetteville. Es la casa de la 82.ª División Aerotransportada, del Mando de Operaciones Especiales del Ejército y de los Rangers, y tiene más de 50 000 militares destinados.",
+    "nombres": [
+      {
+        "nombre": "Río Cape Fear",
+        "clase": "accidente",
+        "lat": 35.05,
+        "lon": -78.86
+      },
+      {
+        "nombre": "Sandhills",
+        "clase": "region",
+        "lat": 35.2,
+        "lon": -79.1
+      }
+    ],
+    "mapa": {
+      "km": 40,
+      "nombres": [
+        {
+          "nombre": "Fayetteville",
+          "clase": "ciudad",
+          "x": 187,
+          "y": 160
+        },
+        {
+          "nombre": "Río Cape Fear",
+          "clase": "accidente",
+          "x": 159,
+          "y": 178
+        },
+        {
+          "nombre": "Spring Lake",
+          "clase": "pueblo",
+          "x": 122,
+          "y": 64
+        },
+        {
+          "nombre": "Sandhills",
+          "clase": "region",
+          "x": 5,
+          "y": 38
+        }
+      ]
+    }
+  },
+  "Fort Benning": {
+    "slug": "fort-benning",
+    "oficial": "Fort Benning",
+    "pais": "US",
+    "rama": "Ejército de EE. UU. (US Army)",
+    "lugar": "Georgia, EE. UU.",
+    "lat": 32.3372,
+    "lon": -84.9914,
+    "desde": 1918,
+    "texto": "La escuela de la infantería y de los blindados del Ejército de EE. UU., en la frontera entre Georgia y Alabama, junto a Columbus. Aquí se forman los infantes, los paracaidistas y los Rangers, y a la base la han llamado también Fort Moore (2023-2025).",
+    "nombres": [
+      {
+        "nombre": "Río Chattahoochee",
+        "clase": "accidente",
+        "lat": 32.301,
+        "lon": -84.975
+      },
+      {
+        "nombre": "Columbus",
+        "clase": "ciudad",
+        "lat": 32.377,
+        "lon": -84.985
+      }
+    ],
+    "mapa": {
+      "km": 18,
+      "nombres": [
+        {
+          "nombre": "Río Chattahoochee",
+          "clase": "accidente",
+          "x": 120,
+          "y": 161
+        },
+        {
+          "nombre": "Columbus",
+          "clase": "ciudad",
+          "x": 157,
+          "y": 20
+        }
+      ]
+    }
+  },
+  "FOB Gardez": {
+    "slug": "fob-gardez",
+    "oficial": "Forward Operating Base Gardez",
+    "pais": "US",
+    "rama": "Ejército de EE. UU. (US Army)",
+    "lugar": "Provincia de Paktia, Afganistán",
+    "lat": 33.6217,
+    "lon": 69.2383,
+    "desde": 2002,
+    "texto": "Una base avanzada de EE. UU. en el este de Afganistán, a unos 100 km al sur de Kabul y junto a la ciudad de Gardez. Empezó como un recinto de las Fuerzas Especiales en 2002, durante la Operación Anaconda, y se cerró en 2014.",
+    "nombres": [
+      {
+        "nombre": "Valle de Shah-i-Kot",
+        "clase": "accidente",
+        "lat": 33.367,
+        "lon": 69.183
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Valle de Shah-i-Kot",
+          "clase": "accidente",
+          "x": 70,
+          "y": 184
+        },
+        {
+          "nombre": "Shavak",
+          "clase": "pueblo",
+          "x": 190,
+          "y": 164
+        },
+        {
+          "nombre": "Charkh",
+          "clase": "pueblo",
+          "x": 54,
+          "y": 29
+        },
+        {
+          "nombre": "Zurmat",
+          "clase": "pueblo",
+          "x": 83,
+          "y": 163
+        }
+      ]
+    }
   }
 }

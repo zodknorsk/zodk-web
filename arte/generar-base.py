@@ -53,7 +53,7 @@ def _arg(nombre, defecto):
 
 
 if len(sys.argv) < 2 or sys.argv[1] not in {b["slug"] for b in BASES.values()}:
-    sys.exit("uso: generar-base.py <slug> [--km 10|18|40|90 | --elegir <km>]")
+    sys.exit("uso: generar-base.py <slug> [--sin-ne] [--seco] [--km 10|18|40|90 | --elegir <km>]")
 SLUG = sys.argv[1]
 NOMBRE, BASE = next((k, b) for k, b in BASES.items() if b["slug"] == SLUG)
 FUENTES_DIR = os.path.join(AQUI, "bases-fuentes", SLUG)
@@ -84,7 +84,8 @@ if "--elegir" in sys.argv:
 
 if "--km" not in sys.argv:
     # Las cuatro vistas, cada una en su proceso (a la vez).
-    procs = [subprocess.Popen([sys.executable, os.path.abspath(__file__), SLUG, "--km", str(k)]) for k in KMS]
+    extra = [a for a in sys.argv[2:] if a in ("--sin-ne", "--seco")]
+    procs = [subprocess.Popen([sys.executable, os.path.abspath(__file__), SLUG, "--km", str(k)] + extra) for k in KMS]
     sys.exit(max(p.wait() for p in procs))
 
 if not os.path.isdir(FUENTES_DIR):
@@ -189,6 +190,11 @@ BIOME_COLS = [
     (0x3c, 0x74, 0x58),   # 4 boreal / taiga
     (0xbf, 0xc7, 0xca),   # 5 tundra
 ]
+# --seco (zonas desérticas, como Oriente Medio): la estepa, en pardo, y la
+# lluvia sin aumentar por la altura (la de WorldClim ya la lleva).
+SECO = "--seco" in sys.argv
+if SECO:
+    BIOME_COLS[3] = (0xa6, 0x8c, 0x5e)
 MEADOW     = (0x9d, 0xbf, 0x6c)
 SAV_GROUND = (0xc9, 0xb1, 0x62)
 SAV_THIN   = 0.62
@@ -454,7 +460,7 @@ for r in range(H):
         if not LAND[r][c]:
             continue
         lon = lon_de(c)
-        sube = 1 + max(0.0, elev(lat, lon) - LLUVIA_ALTURA[0]) / LLUVIA_ALTURA[1]
+        sube = 1.0 if SECO else 1 + max(0.0, elev(lat, lon) - LLUVIA_ALTURA[0]) / LLUVIA_ALTURA[1]
         x = math.log(max(1.0, lluvia(lat, lon) * sube))
         x += (_vnoise(r, c) - 0.5) * 0.4                # borde ondulado, como el de la Tierra
         BIOME[r][c] = 2 if x < _umbral[0] else 3 if x < _umbral[1] else 0
@@ -724,9 +730,11 @@ def _ancho(t, defecto):
 
 
 # Ciudades: las manchas de Natural Earth más las zonas urbanas de OSM (en
-# OSM hay ciudades a medio mapear).
+# OSM hay ciudades a medio mapear). Con --sin-ne, solo OSM: la mancha de
+# Natural Earth de Fort Bragg cubre también todo su bosque.
 URBANA = rejilla()
-rasterizar(_ne("urban_areas"), URBANA, 1)
+if "--sin-ne" not in sys.argv:
+    rasterizar(_ne("urban_areas"), URBANA, 1)
 rasterizar([q for e in _osm("urbano") for q in _poligonos(e)], URBANA, 1)
 # Agua: lagos, embalses y balsas; ríos y canales (1 px).
 LAGO, RIO = rejilla(), rejilla()
@@ -923,7 +931,9 @@ if KM_VISTA > 10:
     pueblos = []
     for e in _osm("pueblos"):
         t = e.get("tags", {})
-        nom = t.get("name:es") or t.get("name")
+        # Solo nombres en letras latinas (en Afganistán, el de OSM va en pastún).
+        nom = next((v for v in (t.get("name:es"), t.get("name:en"), t.get("int_name"), t.get("name"))
+                    if v and all(ord(ch) < 0x250 for ch in v)), None)
         if not nom:
             continue
         try:

@@ -200,11 +200,11 @@ const css = [
 </script>
 
 <style is:global>
-  /* El nombre de la base en el texto: la letra y el color del texto, con la
+  /* El nombre de la base en el texto: en negrita, con el color del texto y la
      bandera de su país en pixel delante (así se distingue del glosario y se
      ve de dónde es) y, al pasar el ratón, un fondo rojo muy claro, el rojo
      de la marca del mapa. */
-  article .base-ref { color: inherit; transition: background-color 0.15s; }
+  article .base-ref { color: inherit; font-weight: 700; transition: background-color 0.15s; }
   article .base-ref:hover, article .base-ref:focus-visible { background-color: rgba(212, 35, 28, 0.12); outline: none; }
   article .base-ref::before {
     content: "";

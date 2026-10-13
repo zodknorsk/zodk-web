@@ -24,7 +24,8 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
   menos en la vista de 10 km. Las regiones («Desierto de Mojave») van
   encima del terreno que nombran, no en la zona verde de al lado.
 - Los accidentes en castellano, como en el Sáhara («Lago seco Rogers»); los
-  pueblos con su nombre de allí.
+  pueblos con su nombre de allí, **solo en letras latinas** (`name:es`,
+  `name:en`, `int_name`; si OSM no tiene uno latino, no se dibuja).
 - **Coste**: las fuentes (~150-250 MB por base: relieve, mapas, OSM) se
   bajan para cada base y se borran al elegir; en Git queda el PNG (70-130 KB)
   y su entrada en `bases.json`.
@@ -34,10 +35,10 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - **Coordenadas, siempre en MGRS** («11S MU 19276 62930»), con
   `src/scripts/mgrs.js`, el de la portada. En `bases.json` se guardan
   `lat` y `lon`; el MGRS lo calcula la tarjeta.
-- **El nombre en el texto**: la letra y el color del texto, con la bandera
-  de su país en pixel delante (así se distingue del glosario y se ve de
-  dónde es cada base), sin raya debajo; al pasar el ratón, fondo rojo muy
-  claro.
+- **El nombre en el texto**: en negrita, con el color del texto y la
+  bandera de su país en pixel delante (así se distingue del glosario y se ve
+  de dónde es cada base), sin raya ni puntos debajo; al pasar el ratón,
+  fondo rojo muy claro.
 - **Borde de la tarjeta en negro**, de 1,5 px (el de 2 px, demasiado gordo).
   La fila de las coordenadas se llama «Coord.» y van en MGRS.
 - **La nota de la bóveda**: `Bases militares.md` (dentro de `Hangar de
@@ -57,12 +58,6 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - Tarjetas A (ficha con el mapa arriba) y C (tumbada, mapa a la
   izquierda): se eligió la B.
 - Coordenadas en grados («34,906° N · 117,884° O»): siempre MGRS.
-- Para el nombre en el texto, además: la marca del mapa detrás, Plex Sans
-  en mayúsculas o en negrita y Plex Mono, con puntos rojos debajo; y la
-  bandera con los puntos rojos (sin ellos queda mejor).
-- Letras de pixel para el nombre en el texto (Silkscreen, VT323, Pixelify
-  Sans, Press Start 2P): no gustaron. Plex Mono con puntos grises se
-  confundía con los términos del glosario.
 
 - Mapa de 150 px a 2 px CSS por píxel, y el de 300 px a 1 px CSS: le faltaba
   detalle («versiones 1 y 2»).
@@ -102,10 +97,21 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
    no admitía cortes); `fuentes-base.py` ya lo convierte en lista.
 3. **Las cuatro vistas**: `python3 generar-base.py <slug>` (1-2 min) →
    `public/bases/prueba/<slug>-<km>.png` y `.json` (los nombres colocados).
+   Dos interruptores, solo para cuando hagan falta (sin ellos todo sale como
+   siempre):
+   - `--sin-ne`: la mancha urbana sin Natural Earth, solo con OpenStreetMap.
+     Para cuando esa mancha cubre bosque o campo (Fort Bragg: 371 km² que
+     incluían todo el bosque de la base).
+   - `--seco`: zonas desérticas como las de Oriente Medio. La estepa sale en
+     pardo y la lluvia no se aumenta por la altura (la de WorldClim ya la
+     lleva); sin él, FOB Gardez salía verde.
 4. **Enseñarlas**: con `npm run dev`, la página
    `localhost:4321/bases/prueba/<slug>` (solo existe en local) y una captura
    de las cuatro para el usuario. **Parar aquí**: el usuario elige la vista y
-   dice si cambiar algo (un nombre, dónde va, otra vista). Para cambiar un
+   dice si cambiar algo (un nombre, dónde va, otra vista). Si hay dudas con
+   la mancha urbana o con el verde, enseñar **las dos opciones** (con y sin
+   el interruptor) una al lado de la otra **antes** de `--elegir`, que borra
+   las fuentes. Para cambiar un
    nombre o su punto, se toca `bases.json` y se repite el paso 3 (las
    fuentes siguen ahí). Los pueblos los elige el script solo, por tamaño, y
    no tiene «excluir»: si salen demasiados (en Sigonella, 14), antes de
