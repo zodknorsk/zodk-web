@@ -173,7 +173,9 @@ export default function glosario({ fileURL, data }) {
 
   const saltar = (nodo, ctx) => {
     for (let p = ctx.parent(nodo); p && p.type === "element"; p = ctx.parent(p)) {
-      if (SALTAR.has(p.tagName) || (p.properties?.className ?? []).includes("tweet")) return true;
+      const clases = p.properties?.className ?? [];
+      // (dentro del nombre de una base, la sigla no lleva la del glosario)
+      if (SALTAR.has(p.tagName) || clases.includes("tweet") || clases.includes("base-ref") || clases.includes("base-nombre")) return true;
     }
     return false;
   };

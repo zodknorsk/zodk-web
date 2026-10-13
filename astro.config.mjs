@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import { satteri } from "@astrojs/markdown-satteri";
+import bases from "./src/lib/bases-enlaces.mjs";
 import glosario from "./src/lib/glosario-enlaces.mjs";
 import banderasTablas from "./src/lib/banderas-tablas.mjs";
 import carruselFotos from "./src/lib/carrusel-fotos.mjs";
@@ -32,13 +33,14 @@ export default defineConfig({
 
   // Los términos del glosario de UAS enlazados en los artículos, con su
   // definición para la tarjeta del ratón (src/lib/glosario-enlaces.mjs).
+  // Antes, las bases militares con su tarjeta (src/lib/bases-enlaces.mjs).
   // Sätteri es el procesador de Markdown que Astro 7 usa de serie. En las
   // tablas del hangar, las banderas en pixel art (src/lib/banderas-tablas.mjs).
   // En el armamento, las fotos seguidas van en carrusel (src/lib/carrusel-fotos.mjs).
   // En la portada de un seguimiento, la cronología va en dos columnas
   // (src/lib/cronologia-columnas.mjs).
   markdown: {
-    processor: satteri({ hastPlugins: [glosario, banderasTablas, carruselFotos, cronologiaColumnas] }),
+    processor: satteri({ hastPlugins: [bases, glosario, banderasTablas, carruselFotos, cronologiaColumnas] }),
   },
 
   // Astro 7 quita por defecto los espacios con reglas de JSX: un salto de línea

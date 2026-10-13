@@ -10,6 +10,7 @@ import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import BackToPrev from "@components/BackToPrev.astro";
 import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
+import BaseTarjeta from "@components/BaseTarjeta.astro";
 import { readingTime } from "@lib/utils";
 
 interface Props {
@@ -55,4 +56,5 @@ const { Content } = await render(entrada);
     </article>
   </Container>
   <GlosarioTarjeta />
+  <BaseTarjeta />
 </PageLayout>

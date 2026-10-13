@@ -28,8 +28,16 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - **Coste**: las fuentes (~150-250 MB por base: relieve, mapas, OSM) se
   bajan para cada base y se borran al elegir; en Git queda el PNG (70-130 KB)
   y su entrada en `bases.json`.
-- **El diseño de la tarjeta**: PENDIENTE (probados A ficha vertical, B
-  pestaña del Sáhara con filas, C tumbada).
+- **El diseño de la tarjeta y la letra del nombre en el texto**: PENDIENTE.
+  En `npm run dev` sale abajo a la izquierda una barra para cambiar en
+  directo entre los tres diseños (A ficha, B pestaña del Sáhara con filas, C
+  tumbada) y cinco letras (1 IBM Plex Mono, 2 Silkscreen, 3 VT323,
+  4 Pixelify Sans, 5 Press Start 2P; las de pixel, de Google Fonts solo en
+  dev). Al elegir, se deja solo lo elegido y la letra va con @fontsource.
+- El nombre lleva puntos de 2 px debajo y la marca roja del mapa como
+  puntero; solo la primera vez en cada artículo (y en cada tabla), como el
+  glosario. Las demás veces va en un span sin tarjeta para que el glosario
+  no marque la sigla («AFB») dentro del nombre.
 
 ### Probado y rechazado
 
@@ -91,6 +99,9 @@ arte/fuentes-base.py           baja las fuentes a arte/bases-fuentes/<slug>/ (fu
 arte/generar-base.py           el mapa y los nombres; --elegir
 public/bases/<slug>.png        el mapa elegido
 src/components/BaseMapa.astro  el mapa con la marca y los nombres
+src/components/BaseTarjeta.astro  la tarjeta del ratón (y la barra de prueba en dev)
+src/lib/bases-enlaces.mjs      marca el nombre en los artículos (plugin de Sätteri,
+                               antes que el del glosario en astro.config.mjs)
 src/pages/bases/prueba/        la página de las cuatro vistas (solo en local)
 ```
 

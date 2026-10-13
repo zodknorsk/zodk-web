@@ -11,6 +11,7 @@ import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import BackToPrev from "@components/BackToPrev.astro";
 import GlosarioTarjeta from "@components/GlosarioTarjeta.astro";
+import BaseTarjeta from "@components/BaseTarjeta.astro";
 import VisorUAS from "@components/VisorUAS.astro";
 import GlosarioIndice from "@components/GlosarioIndice.astro";
 import ArmamentoLista from "@components/ArmamentoLista.astro";
@@ -87,6 +88,7 @@ const volver = ficha.data.municion
     {grupos && <ArmamentoLista grupos={grupos} />}
   </Container>
   <GlosarioTarjeta />
+  <BaseTarjeta />
   {ficha.data.municion && <Carrusel />}
 </PageLayout>
 
