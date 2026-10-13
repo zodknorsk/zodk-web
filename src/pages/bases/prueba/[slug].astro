@@ -1,0 +1,47 @@
+---
+// Las cuatro vistas de prueba del mapa de una base (/nuevabase), para
+// elegir una: /bases/prueba/<slug>. Solo con `npm run dev`; en la web
+// publicada no existe (getStaticPaths no da ninguna en el build).
+import fs from "node:fs";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import BaseMapa from "@components/BaseMapa.astro";
+import bases from "@data/bases.json";
+
+const KMS = [10, 18, 40, 90];
+const DIR = "public/bases/prueba";
+
+export function getStaticPaths() {
+  if (import.meta.env.PROD || !fs.existsSync("public/bases/prueba")) return [];
+  const slugs = new Set(fs.readdirSync("public/bases/prueba").map((f) => f.replace(/-\d+\.(png|json)$/, "")));
+  return [...slugs].map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const nombre = Object.entries(bases).find(([, b]) => typeof b === "object" && b.slug === slug)?.[0] ?? slug;
+const vistas = KMS.filter((km) => fs.existsSync(`${DIR}/${slug}-${km}.json`)).map((km) => ({
+  km,
+  src: `/bases/prueba/${slug}-${km}.png?v=${fs.statSync(`${DIR}/${slug}-${km}.png`).mtimeMs}`,
+  nombres: JSON.parse(fs.readFileSync(`${DIR}/${slug}-${km}.json`, "utf8")).nombres,
+}));
+---
+
+<PageLayout title={`Prueba: ${nombre}`} description="Prueba">
+  <Container>
+    <h1 class="my-8 text-2xl font-semibold text-black dark:text-white">{nombre}: las cuatro vistas</h1>
+    <div class="vistas">
+      {vistas.map((v) => (
+        <figure>
+          <figcaption>{v.km} km de ancho</figcaption>
+          <BaseMapa src={v.src} nombres={v.nombres} />
+        </figure>
+      ))}
+    </div>
+  </Container>
+</PageLayout>
+
+<style>
+  .vistas { display: grid; grid-template-columns: repeat(auto-fill, 300px); gap: 1.6rem 2rem; margin-bottom: 4rem; padding: 4px; }
+  figure { margin: 0; }
+  figcaption { font: 600 0.72rem/1.4 "IBM Plex Mono", monospace; margin-bottom: 0.6rem; opacity: 0.7; }
+</style>

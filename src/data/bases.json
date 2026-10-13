@@ -1,0 +1,75 @@
+{
+  "_leeme": "Las bases militares con tarjeta (docs/nuevabase.md). La clave es el nombre oficial con su sigla, exactamente como se escribe en las notas: así se enlaza. Una base nueva, con /nuevabase.",
+  "Edwards AFB": {
+    "slug": "edwards-afb",
+    "oficial": "Edwards Air Force Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Condado de Kern, California",
+    "lat": 34.9056,
+    "lon": -117.8836,
+    "desde": 1933,
+    "texto": "El centro de pruebas en vuelo de la Fuerza Aérea de EE. UU., en el desierto de Mojave, junto al lago seco Rogers. Aquí se rompió por primera vez la barrera del sonido (1947) y aterrizó el primer transbordador espacial que volvió de órbita (1981).",
+    "nombres": [
+      {
+        "nombre": "Desierto de Mojave",
+        "clase": "region",
+        "lat": 34.97,
+        "lon": -117.7
+      },
+      {
+        "nombre": "Lago seco Rogers",
+        "clase": "accidente",
+        "lat": 34.93,
+        "lon": -117.82
+      },
+      {
+        "nombre": "Lago seco Rosamond",
+        "clase": "accidente",
+        "lat": 34.83,
+        "lon": -118.07
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Lancaster",
+          "clase": "ciudad",
+          "x": 70,
+          "y": 170
+        },
+        {
+          "nombre": "Lago seco Rogers",
+          "clase": "accidente",
+          "x": 117,
+          "y": 65
+        },
+        {
+          "nombre": "Lago seco Rosamond",
+          "clase": "accidente",
+          "x": 34,
+          "y": 122
+        },
+        {
+          "nombre": "California City",
+          "clase": "pueblo",
+          "x": 124,
+          "y": 12
+        },
+        {
+          "nombre": "Mojave",
+          "clase": "pueblo",
+          "x": 59,
+          "y": 40
+        },
+        {
+          "nombre": "Desierto de Mojave",
+          "clase": "region",
+          "x": 139,
+          "y": 47
+        }
+      ]
+    }
+  }
+}

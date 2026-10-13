@@ -1,0 +1,58 @@
+---
+// El mapa de una base (docs/nuevabase.md): el PNG de arte/generar-base.py
+// (600 x 400, a 300 x 200 px CSS), la marca del Sáhara en el centro, que es
+// la base, y los nombres encima, ya colocados por el generador.
+type Nombre = { nombre: string; clase: string; x: number; y: number };
+type Props = { src: string; nombres?: Nombre[] };
+const { src, nombres = [] } = Astro.props;
+
+// La marca del Sáhara, en pixel art: la punta, abajo en medio, es el sitio.
+const MARCA = ["..XXXXX..", ".XOOOOOX.", "XOOWWWOOX", "XOOWWWOOX", "XOOWWWOOX", ".XOOOOOX.", "..XOOOX..", "...XOX...", "....X...."];
+const COL: Record<string, string> = { X: "#141418", O: "#d4231c", W: "#f2f2ef" };
+let rects = "";
+MARCA.forEach((f, y) => [...f].forEach((k, x) => {
+  if (k !== ".") rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${COL[k]}"/>`;
+}));
+const marca = `<svg viewBox="0 0 9 9" aria-hidden="true">${rects}</svg>`;
+---
+
+<div class="base-mapa">
+  <img src={src} width="300" height="200" alt="" />
+  <span class="base-marca" set:html={marca} />
+  {nombres.map((n) => (
+    <span class={`base-nom ${n.clase}`} style={`left:${n.x}px;top:${n.y}px`}>{n.nombre}</span>
+  ))}
+</div>
+
+<style>
+  .base-mapa { position: relative; width: 300px; height: 200px; line-height: 0; box-shadow: 0 0 0 2px #141418; }
+  .base-mapa img { display: block; width: 300px; height: 200px; max-width: none; image-rendering: pixelated; }
+  .base-marca { position: absolute; left: 141px; top: 82px; width: 18px; height: 18px; }
+  .base-marca :global(svg) { width: 100%; height: 100%; shape-rendering: crispEdges; }
+  /* Los nombres, como los del Sáhara: mono blanca con contorno negro de 1 px;
+     ciudades y pueblos con su punto, accidentes en cursiva y regiones en
+     mayúsculas espaciadas. */
+  .base-nom {
+    position: absolute;
+    white-space: nowrap;
+    font: 600 11px/1 "IBM Plex Mono", ui-monospace, monospace;
+    color: #eef1f4;
+    text-shadow: 1px 0 0 #05060a, -1px 0 0 #05060a, 0 1px 0 #05060a, 0 -1px 0 #05060a,
+      1px 1px 0 #05060a, -1px -1px 0 #05060a, 1px -1px 0 #05060a, -1px 1px 0 #05060a;
+  }
+  .base-nom:is(.ciudad, .pueblo) { padding-left: 9px; }
+  .base-nom:is(.ciudad, .pueblo)::before {
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin-top: -2px;
+    background: #eef1f4;
+    box-shadow: 0 0 0 1px #05060a;
+  }
+  .base-nom.pueblo { font-size: 10px; font-weight: 500; color: #e4e7ea; }
+  .base-nom.accidente { font-size: 10px; font-weight: 500; font-style: italic; letter-spacing: 0.06em; color: #f3ead3; }
+  .base-nom.region { font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #f3ead3; }
+</style>

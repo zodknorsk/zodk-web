@@ -44,6 +44,7 @@ que se probó y el usuario RECHAZÓ, que no se reintenta salvo que lo pida.
 | `docs/marte.md` | `/marte` |
 | `docs/nuevodron.md` | **Cómo hacer un dron nuevo**, de la nota de Obsidian al dron publicado (con `/nuevodron`), con una guía por fase en `docs/nuevodron/`. Para un dron nuevo, solo estos |
 | `docs/hangar-de-uas.md` | Todo lo del Hangar de UAS: fichas, visor, tira de la portada, glosario, armamento; decisiones, lo rechazado y las fotos de cada dron hecho |
+| `docs/nuevabase.md` | Las tarjetas de las bases militares y **cómo se hace una nueva** (con `/nuevabase`) |
 | `docs/uas-hd.md` | Historia del paso de los drones al HD y al pixel HD (cerrado el 6-oct-2026) |
 | `docs/astros.md` | Motores, gestos, vuelos, nombres y versiones de datos comunes |
 | `docs/contenido.md` | Importador de Obsidian; secciones (análisis, operaciones, seguimiento) por el `tipo`; tuits |
