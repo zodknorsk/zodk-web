@@ -101,7 +101,7 @@ const css = [
       <div class="bt-cuerpo">
         <BaseMapa src={f.src} nombres={f.mapa?.nombres} />
         <dl class="bt-filas">
-          <dt>Rama</dt><dd>{f.insignia ? <span class="bt-insignia" role="img" aria-label={f.sigla} title={f.sigla} set:html={f.insignia} /> : f.sigla}</dd>
+          <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
           <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
           <dt>Desde</dt><dd>{f.desde}</dd>
           <dt>Coord.</dt><dd class="bt-mgrs">{f.coord}</dd>
@@ -236,7 +236,7 @@ const css = [
   .bt p { margin: 0; }
   .bt svg { width: 100%; height: 100%; image-rendering: pixelated; shape-rendering: crispEdges; }
   .bt-bandera { display: inline-block; flex: none; width: 26px; height: 18px; line-height: 0; }
-  .bt-insignia { display: inline-block; width: 34px; height: 18px; vertical-align: -4px; line-height: 0; }
+  .bt-insignia { display: inline-block; width: 34px; height: 18px; margin-right: 0.5rem; vertical-align: -4px; line-height: 0; }
   .bt-tipo { opacity: 0.6; font-weight: 400; }
   .bt-pestana { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font: 600 11px/1.3 "IBM Plex Mono", monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #f3ecdc; background: #1d1a14; }
   .bt-cuerpo { padding: 16px; }
