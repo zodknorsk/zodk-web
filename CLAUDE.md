@@ -24,6 +24,9 @@ empezar, `git push` al terminar.
 - Vocabulario: "subrayar" un texto = resaltado tipo marcador (fondo detrás,
   texto oscuro), no una línea.
 - Comentarios del código: cortos, qué hace y por qué, sin fechas ni citas.
+- **Bases militares con su nombre oficial en inglés** («Edwards AFB», «NAS
+  Sigonella»), no «base de Edwards». Detalle y orden de las siglas en
+  `docs/hangar-de-uas.md` («Receta», paso 1).
 - **Unidades, siempre en el sistema métrico** (m, km, km/h, kg, °C…), en
   notas, documentos y chat. Si la fuente da pies, millas, nudos o libras,
   se pasa a métrico.

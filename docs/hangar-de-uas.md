@@ -313,6 +313,19 @@ del X10D).
   «AGM-114» o «Hellfire»; «GBU-38», no «GBU 38» ni «bomba JDAM de 500
   libras»). Si hace falta un término o una munición que no está, se añade
   a su nota en vez de explicarlo en la ficha.
+- **Bases: el nombre oficial en inglés, con su sigla** (unificación pedida
+  por el usuario, 13-oct-2026; se puede cambiar como se cambia una
+  ortografía): «Edwards AFB», «Grand Forks AFB», «NAS Sigonella», «RAF
+  Fairford», «Misawa AB». No «base de Edwards» ni «AFB Edwards». El orden es
+  el del nombre oficial: en la Fuerza Aérea de EE. UU. el nombre va delante y
+  la sigla detrás (Edwards **AFB**); en la Marina, la RAF y el Ejército, la
+  sigla va delante (NAS, RAF, FOB). Antes de poner la sigla, comprobar qué
+  tipo de instalación es. **Las bases españolas van en castellano**, con su
+  nombre oficial («Base Aérea de Talavera la Real», «Base «Príncipe»»).
+  Quedan fuera las notas narrativas de Operaciones (rescate del F-15E,
+  Chapman) y los títulos de fuentes, que se dejan como están. Cada sigla se
+  añade al glosario la primera vez que sale en una nota (hoy: AFB, AB, NAS y
+  FOB; RAF no, porque es una fuerza y no una sigla de base).
 - **Cómo se escribe**: castellano llano, como lo contaría una persona. Nada
   de «el tipo», «la plataforma», «capacidades» ni frases de resumen. Nombrar
   los hechos (qué se atacó, cuándo) en vez de resumirlos. Decir siempre lo
