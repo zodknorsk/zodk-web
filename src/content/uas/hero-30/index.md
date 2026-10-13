@@ -5,7 +5,7 @@ description: >-
   El Hero-30 es la munición merodeadora más pequeña de la familia Hero de la
   israelí UVision. Es un dron de un solo uso, de unos 3 kg, que un soldado
   lleva…
-updated: '2026-10-11'
+updated: '2026-10-13'
 tags:
   - israel
   - dron
@@ -14,7 +14,7 @@ pais: Israel
 categoria: Munición merodeadora portátil
 ---
 > El Hero-30 es la munición merodeadora <mark>más pequeña de la familia Hero</mark> de la israelí UVision. Es un dron de un solo uso, de unos 3 kg, que un soldado lleva a la espalda dentro de su tubo. Lo lanza en un par de minutos, busca el objetivo con la cámara y se estrella contra él. Está pensado para que un pelotón o una compañía ataque <mark>personas y vehículos ligeros a varios kilómetros</mark> sin necesidad de pedir apoyo.
->
+
 
 
 <div class="visor-hueco"></div>

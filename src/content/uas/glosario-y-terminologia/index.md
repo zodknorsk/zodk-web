@@ -33,7 +33,7 @@ glosario: true
 	- La **Q** indica que es un dron, sin tripulación. La letra que va justo antes de la Q indica su misión: 
 		- **R** reconocimiento _(RQ-4 Global Hawk)_.
 		- **M** multimisión: combina misiones de ISR y de ataque de precisión _(MQ-9 Reaper)_.
-		- **F** caza: diseñado para el combate aire-aire, es decir, para derribar otras aeronaves. 
+		- **F** caza: diseñado para el combate aire-aire, es decir, para derribar otras aeronaves. _(FQ-44A)_
 		- **C** carga: transporta suministros _(CQ-10 Snowgoose)_.
 		- **E** electrónica: lleva equipos electrónicos especiales, como un repetidor de comunicaciones _(EQ-4B Global Hawk)_.
 	- Una **Y** delante indica que es un prototipo.
@@ -240,10 +240,10 @@ glosario: true
 
 ## Bases
 
-- **AFB** *(Air Force Base)* — Base de la Fuerza Aérea de EE. UU. Se escribe con el nombre delante y las siglas detrás, como en inglés: *Grand Forks AFB*, no «AFB Grand Forks». Los [Global Hawk](/uas/rq-4-global-hawk) de la Fuerza Aérea tienen allí su base, en Dakota del Norte.
+- **AFB** *(Air Force Base)* — Base de la Fuerza Aérea de EE. UU. situada en territorio estadounidense.
 
-- **AB** *(Air Base)* — Base aérea. Se usa para las bases aéreas que no se llaman *Air Force Base*, sobre todo las de otros países: *Misawa AB*, en Japón, o *Volkel AB*, en los Países Bajos. Igual que en AFB, el nombre va delante.
+- **AB** *(Air Base)* — Base aérea fuera de EE. UU.: tanto las que la USAF tiene en el extranjero (*Ramstein AB*, en Alemania) como las de fuerzas aéreas de otros países (*Volkel AB*, en los Países Bajos).
 
-- **NAS** *(Naval Air Station)* — Estación aeronaval: base de aviación de la US Navy Aquí la sigla va delante del nombre: *NAS Sigonella*, en Sicilia, desde donde vuelan los Global Hawk que vigilan el mar Negro.
+- **NAS** *(Naval Air Station)* — Estación aeronaval: base aérea de la US Navy. No es una base conjunta (Joint Base), aunque en el extranjero suele compartir pista con la base del país anfitrión y recibir aviones de otras ramas del ejército.
 
-- **FOB** *(Forward Operating Base)* — Base de operaciones avanzada. Instalación militar cerca de la zona de combate desde la que operan y se abastecen las unidades del frente, mayor que un puesto de combate. La sigla va delante: *FOB Gardez*.
+- **FOB** *(Forward Operating Base)* — Base de operaciones avanzada. Instalación pequeña y defendida, situada cerca de la línea del frente o en zona hostil, que se abastece desde bases principales y sirve de punto de partida para patrullas o helicópteros.
