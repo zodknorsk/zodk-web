@@ -55,6 +55,7 @@ import {
   descargarVideos,
   construirTarjeta,
 } from "./tweets.mjs";
+import { importarNota as importarNotaBases, NOMBRE_NOTA as NOTA_BASES } from "./bases-nota.mjs";
 
 // --- Config ----------------------------------------------------------------
 
@@ -995,6 +996,9 @@ async function main() {
     tuitsSobrantes++;
   }
 
+  // --- Las bases: lo retocado en su nota pasa a src/data/bases.json ---
+  const basesCambiadas = importarNotaBases(BOVEDA);
+
   // --- Resumen ---
   const lista = (titulos) => (titulos.length ? titulos.map((t) => `\n    ${t}`).join("") : " —");
   console.log(`\nNuevas:${lista(resumen.nueva)}`);
@@ -1002,6 +1006,7 @@ async function main() {
   console.log(`Retiradas:${lista(retiradas)}`);
   const guardados = idsTweets.length - tuitsNuevos - noDisponibles.length;
   console.log(`Tuits: ${tuitsNuevos} nuevo(s) en el archivo, ${guardados} ya guardado(s).`);
+  if (basesCambiadas.length) console.log(`Bases (de «${NOTA_BASES}»): ${basesCambiadas.join(", ")}.`);
   if (noDisponibles.length) {
     console.log(`  ${noDisponibles.length} que X ya no da y no se llegaron a guardar (salen como enlace): ${noDisponibles.join(", ")}`);
   }

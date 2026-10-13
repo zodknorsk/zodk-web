@@ -2,12 +2,9 @@
 // La tarjeta de las bases militares en los artículos (docs/nuevabase.md): al
 // pasar el ratón por el nombre de una base (lo marca src/lib/bases-enlaces.mjs),
 // sale junto a él con su mapa en pixel art, su bandera, la rama, dónde está
-// y qué es. En táctil, el toque la abre y la cierra. Diseño B: la pestaña
-// de la ventana del Sáhara y los datos en filas; coordenadas en MGRS.
-//
-// PRUEBA: el borde negro de la tarjeta y cómo se marca el nombre en el
-// texto; en `npm run dev` sale abajo a la izquierda una barra para
-// cambiarlos en directo. Cuando el usuario elija, se deja solo lo elegido.
+// y qué es. En táctil, el toque la abre y la cierra. La pestaña de la
+// ventana del Sáhara y los datos en filas; coordenadas en MGRS. En el texto,
+// el nombre lleva delante la bandera de su país.
 import bases from "@data/bases.json";
 import { bandera, svgBandera } from "@data/banderas";
 import { mgrs } from "@scripts/mgrs.js";
@@ -58,7 +55,7 @@ const fichas = lista.map(([nombre, b]) => {
   };
 });
 
-// La marca del mapa: el puntero y, en una de las pruebas, detrás del nombre.
+// La marca del mapa, de puntero; la bandera de cada base, delante del nombre.
 const MARCA = ["..XXXXX..", ".XOOOOOX.", "XOOWWWOOX", "XOOWWWOOX", "XOOWWWOOX", ".XOOOOOX.", "..XOOOX..", "...XOX...", "....X...."];
 const MARCA_COL: Record<string, string> = { X: "#141418", O: "#d4231c", W: "#f2f2ef" };
 let marca = "";
@@ -67,11 +64,9 @@ MARCA.forEach((f, y) => [...f].forEach((k, x) => {
 }));
 const marcaSvg = `<svg width="18" height="18" viewBox="0 0 9 9">${marca}</svg>`;
 const css = [
-  `article .base-ref { cursor: url("${aDatos(marcaSvg)}") 9 17, pointer; --marca: url("${aDatos(marcaSvg)}"); }`,
+  `article .base-ref { cursor: url("${aDatos(marcaSvg)}") 9 17, pointer; }`,
   ...fichas.map((f) => `article .base-ref[data-base="${f.slug}"] { --bandera: url("${aDatos(f.bandera)}"); }`),
 ].join("\n");
-const DEV = import.meta.env.DEV;
-const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "Plex Sans negrita", "Plex Mono con puntos rojos"];
 ---
 
 {fichas.map((f) => (
@@ -84,7 +79,7 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
           <dt>Rama</dt><dd>{f.insignia && <span class="bt-insignia" set:html={f.insignia} />}{f.sigla}</dd>
           <dt>Dónde</dt><dd>{f.lugar}, {f.paisNombre}</dd>
           <dt>Desde</dt><dd>{f.desde}</dd>
-          <dt>MGRS</dt><dd class="bt-mgrs">{f.coord}</dd>
+          <dt>Coord.</dt><dd class="bt-mgrs">{f.coord}</dd>
         </dl>
         <p class="bt-texto">{f.texto}</p>
       </div>
@@ -94,31 +89,7 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
 
 <style is:global set:html={css} />
 
-{DEV && (
-  <div class="bt-prueba" aria-label="Prueba de las tarjetas de bases">
-    <span>Borde</span>
-    <button type="button" data-poner-borde>negro</button>
-    <span>Nombre</span>
-    {NOMBRES.map((n, i) => <button type="button" data-poner-letra={i + 1} title={n}>{i + 1}</button>)}
-    <em class="bt-prueba-letra" />
-  </div>
-)}
-
 <script>
-  // Lo elegido en la barra de prueba (solo en dev), guardado en este navegador.
-  const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "Plex Sans negrita", "Plex Mono con puntos rojos"];
-  const leer = (k: string, d: string) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
-  const guardar = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* sin almacenamiento */ } };
-  const aplicar = () => {
-    const html = document.documentElement;
-    html.dataset.baseBorde = leer("base-borde", "0");
-    html.dataset.baseLetra = leer("base-letra2", "1");
-    document.querySelector("[data-poner-borde]")?.classList.toggle("activo", html.dataset.baseBorde === "1");
-    document.querySelectorAll<HTMLElement>("[data-poner-letra]").forEach((b) => b.classList.toggle("activo", b.dataset.ponerLetra === html.dataset.baseLetra));
-    const nombre = document.querySelector(".bt-prueba-letra");
-    if (nombre) nombre.textContent = NOMBRES[Number(html.dataset.baseLetra) - 1] ?? "";
-  };
-
   let tarjeta: HTMLElement | null = null;
   let actual: HTMLElement | null = null;
   let abrir = 0;
@@ -171,14 +142,6 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
   document.addEventListener("astro:page-load", () => {
     tarjeta = null;
     actual = null;
-    aplicar();
-    document.querySelector("[data-poner-borde]")?.addEventListener("click", () => {
-      guardar("base-borde", leer("base-borde", "0") === "1" ? "0" : "1");
-      aplicar();
-    });
-    document.querySelectorAll<HTMLElement>("[data-poner-letra]").forEach((b) =>
-      b.addEventListener("click", () => { guardar("base-letra2", b.dataset.ponerLetra ?? "1"); aplicar(); }));
-
     const nombres = document.querySelectorAll<HTMLElement>("article .base-ref");
     for (const el of nombres) {
       el.addEventListener("pointerenter", (e) => {
@@ -212,22 +175,13 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
 </script>
 
 <style is:global>
-  /* El nombre de la base en el texto. Lo común: del color del texto y, al
-     pasar el ratón, un fondo rojo muy claro (el rojo de la marca). Lo demás
-     depende de la prueba (data-base-letra); todas distintas del glosario,
-     que es Plex Mono con rayas grises. */
+  /* El nombre de la base en el texto: la letra y el color del texto, con la
+     bandera de su país en pixel delante (así se distingue del glosario y se
+     ve de dónde es) y, al pasar el ratón, un fondo rojo muy claro, el rojo
+     de la marca del mapa. */
   article .base-ref { color: inherit; transition: background-color 0.15s; }
   article .base-ref:hover, article .base-ref:focus-visible { background-color: rgba(212, 35, 28, 0.12); outline: none; }
-  /* Puntos rojos de 2 px debajo, pintados con un degradado. */
-  html:is([data-base-letra="1"], [data-base-letra="3"], [data-base-letra="4"], [data-base-letra="5"]) article .base-ref {
-    padding-bottom: 3px;
-    background-image: linear-gradient(90deg, #d4231c 0 2px, transparent 2px 4px);
-    background-position: 0 100%;
-    background-size: 4px 2px;
-    background-repeat: repeat-x;
-  }
-  /* 1: la letra del texto, con la bandera de la base delante. */
-  html[data-base-letra="1"] article .base-ref::before {
+  article .base-ref::before {
     content: "";
     display: inline-block;
     width: 1.15em;
@@ -237,30 +191,15 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
     background: var(--bandera) center / 100% 100% no-repeat;
     image-rendering: pixelated;
   }
-  /* 2: la letra del texto, sin rayas, con la marca del mapa detrás. */
-  html[data-base-letra="2"] article .base-ref::after {
-    content: "";
-    display: inline-block;
-    width: 0.8em;
-    height: 0.8em;
-    margin-left: 0.15em;
-    vertical-align: 0.15em;
-    background: var(--marca) center / 100% 100% no-repeat;
-    image-rendering: pixelated;
-  }
-  html[data-base-letra="3"] article .base-ref { font: 600 0.78em "IBM Plex Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
-  html[data-base-letra="4"] article .base-ref { font-family: "IBM Plex Sans", sans-serif; font-weight: 600; font-size: 0.95em; }
-  html[data-base-letra="5"] article .base-ref { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.9em; letter-spacing: 0.02em; }
 
-  /* La tarjeta flotante: la pestaña del Sáhara arriba y los datos en filas
-     (con la paleta de la del glosario). Con data-base-borde="1", todo el
-     borde en negro. */
+  /* La tarjeta flotante: la pestaña del Sáhara arriba y los datos en filas,
+     con la paleta de la del glosario y el borde en negro. */
   .bt-flota { position: absolute; z-index: 60; }
   .bt-flota[hidden] { display: none; }
   .bt {
     width: 334px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.13);
+    border: 1.5px solid #141418;
     border-radius: 4px;
     background: #ebebee;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
@@ -268,9 +207,7 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
     font-size: 0.85rem;
     line-height: 1.5;
   }
-  html.dark .bt { border-color: rgba(255, 255, 255, 0.13); background: #25252a; color: #d4d4d8; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45); }
-  html[data-base-borde="1"] .bt { border: 2px solid #141418; }
-  html[data-base-borde="1"].dark .bt { border-color: #05060a; }
+  html.dark .bt { border-color: #05060a; background: #25252a; color: #d4d4d8; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45); }
   .bt p { margin: 0; }
   .bt svg { width: 100%; height: 100%; image-rendering: pixelated; shape-rendering: crispEdges; }
   .bt-bandera { display: inline-block; flex: none; width: 26px; height: 18px; line-height: 0; }
@@ -282,16 +219,4 @@ const NOMBRES = ["Bandera delante", "Marca detrás", "Mayúsculas Plex Sans", "P
   .bt-filas dd { margin: 0; }
   .bt-mgrs { font: 0.78rem/1.6 "IBM Plex Mono", monospace; }
   .bt-texto { margin-top: 0.5rem !important; }
-
-  /* La barra de prueba (solo en dev). */
-  .bt-prueba {
-    position: fixed; left: 12px; bottom: 12px; z-index: 70;
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap; max-width: calc(100vw - 24px);
-    padding: 8px 10px; border-radius: 6px; background: #18181b; color: #f4f4f5;
-    font: 600 11px/1 "IBM Plex Mono", monospace; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-  .bt-prueba span { opacity: 0.6; margin-left: 6px; }
-  .bt-prueba button { min-width: 26px; padding: 5px 7px; border-radius: 4px; background: #3f3f46; color: inherit; font: inherit; }
-  .bt-prueba button.activo { background: #d4231c; }
-  .bt-prueba em { font-style: normal; opacity: 0.7; margin-left: 4px; }
 </style>

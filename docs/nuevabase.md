@@ -34,13 +34,19 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - **Coordenadas, siempre en MGRS** («11S MU 19276 62930»), con
   `src/scripts/mgrs.js`, el de la portada. En `bases.json` se guardan
   `lat` y `lon`; el MGRS lo calcula la tarjeta.
-- **PENDIENTE**: el borde negro de la tarjeta (sí o no) y cómo se marca el
-  nombre en el texto. En `npm run dev` sale abajo a la izquierda una barra
-  para cambiarlos en directo: «Borde negro» y cinco formas del nombre (1 la
-  letra del texto con la bandera delante, 2 la letra del texto con la
-  marca del mapa detrás, 3 Plex Sans en mayúsculas, 4 Plex Sans negrita,
-  5 Plex Mono; las de rayas, con puntos rojos de 2 px). Al elegir, se deja
-  solo lo elegido.
+- **El nombre en el texto**: la letra y el color del texto, con la bandera
+  de su país en pixel delante (así se distingue del glosario y se ve de
+  dónde es cada base), sin raya debajo; al pasar el ratón, fondo rojo muy
+  claro.
+- **Borde de la tarjeta en negro**, de 1,5 px (el de 2 px, demasiado gordo).
+  La fila de las coordenadas se llama «Coord.» y van en MGRS.
+- **La nota de la bóveda**: `Bases militares.md` (dentro de `Hangar de
+  UAS`), con una sección por base: `## 🇺🇸 Edwards AFB`, el mapa
+  (`![[base-<slug>.png]]`), la tabla (nombre oficial, país, rama, dónde,
+  desde, coord.) y el texto. Es para retocar a mano el nombre oficial, el
+  país, la rama, dónde, el año y el texto: `npm run importar` lo pasa a
+  `bases.json`. El nombre de la sección, el mapa y las coordenadas no se
+  cambian ahí (se hacen con /nuevabase). No se publica como página.
 - El puntero es la marca roja del mapa. El nombre se marca solo la primera
   vez en cada artículo (y en cada tabla), como el glosario. Las demás veces
   va en un span sin tarjeta para que el glosario no marque la sigla
@@ -51,6 +57,9 @@ su bandera, la rama, dónde está y qué es. Se hizo en la rama `ubicaciones`
 - Tarjetas A (ficha con el mapa arriba) y C (tumbada, mapa a la
   izquierda): se eligió la B.
 - Coordenadas en grados («34,906° N · 117,884° O»): siempre MGRS.
+- Para el nombre en el texto, además: la marca del mapa detrás, Plex Sans
+  en mayúsculas o en negrita y Plex Mono, con puntos rojos debajo; y la
+  bandera con los puntos rojos (sin ellos queda mejor).
 - Letras de pixel para el nombre en el texto (Silkscreen, VT323, Pixelify
   Sans, Press Start 2P): no gustaron. Plex Mono con puntos grises se
   confundía con los términos del glosario.
@@ -101,7 +110,12 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
 5. **Elegir**: `python3 generar-base.py <slug> --elegir <km>` copia la vista
    a `public/bases/<slug>.png`, guarda sus nombres en `bases.json` (`mapa`)
    y **borra las pruebas y las fuentes**.
-6. Enseñar `git status` y `git diff` y esperar a que el usuario pida el
+6. **La nota de la bóveda**: `node scripts/bases-nota.mjs <slug>` añade la
+   sección de la base a `Bases militares.md` (sin tocar las demás; la crea
+   si no está) y copia el mapa a sus `Adjuntos/`. Solo donde está la bóveda
+   (el Mac o el PC): en una sesión en la nube, decirle al usuario que lo
+   lance él.
+7. Enseñar `git status` y `git diff` y esperar a que el usuario pida el
    commit.
 
 ## Dónde está cada cosa
@@ -113,7 +127,8 @@ arte/fuentes-base.py           baja las fuentes a arte/bases-fuentes/<slug>/ (fu
 arte/generar-base.py           el mapa y los nombres; --elegir
 public/bases/<slug>.png        el mapa elegido
 src/components/BaseMapa.astro  el mapa con la marca y los nombres
-src/components/BaseTarjeta.astro  la tarjeta del ratón (y la barra de prueba en dev)
+src/components/BaseTarjeta.astro  la tarjeta del ratón
+scripts/bases-nota.mjs         la nota de la bóveda: añade una base; el importador la lee
 src/lib/bases-enlaces.mjs      marca el nombre en los artículos (plugin de Sätteri,
                                antes que el del glosario en astro.config.mjs)
 src/pages/bases/prueba/        la página de las cuatro vistas (solo en local)
