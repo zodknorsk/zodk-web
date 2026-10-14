@@ -515,5 +515,77 @@
         }
       ]
     }
+  },
+  "Lackland AFB": {
+    "slug": "lackland-afb",
+    "oficial": "Lackland Air Force Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Texas, EE. UU.",
+    "lat": 29.388,
+    "lon": -98.6207,
+    "desde": 1941,
+    "texto": "Base de la Fuerza Aérea de EE. UU. en el oeste de San Antonio, en Texas. Conocida como «La puerta de entrada» ya que se realizan los Basic Training para los futuros militares de la USAF y de la Space Force. Forma parte de la Base Conjunta San Antonio.",
+    "nombres": [
+      {
+        "nombre": "Kelly Field",
+        "clase": "accidente",
+        "lat": 29.3842,
+        "lon": -98.5811
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "San Antonio",
+          "clase": "ciudad",
+          "x": 188,
+          "y": 80
+        },
+        {
+          "nombre": "Kelly Field",
+          "clase": "accidente",
+          "x": 126,
+          "y": 107
+        },
+        {
+          "nombre": "Live Oak",
+          "clase": "pueblo",
+          "x": 240,
+          "y": 29
+        },
+        {
+          "nombre": "Leon Valley",
+          "clase": "pueblo",
+          "x": 148,
+          "y": 54
+        },
+        {
+          "nombre": "Helotes",
+          "clase": "pueblo",
+          "x": 125,
+          "y": 29
+        },
+        {
+          "nombre": "Lakehills",
+          "clase": "pueblo",
+          "x": 41,
+          "y": 21
+        },
+        {
+          "nombre": "Devine",
+          "clase": "pueblo",
+          "x": 55,
+          "y": 186
+        },
+        {
+          "nombre": "Lytle",
+          "clase": "pueblo",
+          "x": 90,
+          "y": 151
+        }
+      ]
+    }
   }
 }
