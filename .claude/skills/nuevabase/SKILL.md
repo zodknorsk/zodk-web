@@ -11,9 +11,11 @@ description: Crear la tarjeta de una base militar nueva para hegoimarquez.com (d
    Edwards»): la clave de `bases.json` es el **nombre oficial con su sigla
    en su orden** («Edwards AFB», «NAS Sigonella»). Si no está claro qué base
    es, pregunta antes de bajar nada.
-3. **Para en el paso 4**: enséñale la captura de las cuatro vistas (10, 18,
-   40 y 90 km) y espera a que elija y diga si cambiar algo. Solo entonces
-   el paso 5 (`--elegir`, que borra las fuentes).
+3. **Para en el paso 4**: enséñale **cuatro fotos, una por tamaño** (10, 18,
+   40 y 90 km), cada una con **con NE y sin NE** (`--sin-ne`) una al lado de
+   otra y los nombres activos. Si el terreno es seco, una **tercera
+   opción** con `--seco`. Espera a que elija y diga si cambiar algo. Solo
+   entonces el paso 5 (`--elegir`, que borra las fuentes).
 4. Commit y push solo cuando los pida (y por separado).
 5. **No cambies `docs/nuevabase.md`** salvo que el usuario lo marque. Si
    aprendes algo que debería entrar, propónlo en el chat al final.

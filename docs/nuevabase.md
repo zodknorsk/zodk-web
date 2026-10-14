@@ -110,12 +110,14 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
      pardo y la lluvia no se aumenta por la altura (la de WorldClim ya la
      lleva); sin él, FOB Gardez salía verde.
 4. **Enseñarlas**: con `npm run dev`, la página
-   `localhost:4321/bases/prueba/<slug>` (solo existe en local) y una captura
-   de las cuatro para el usuario. **Parar aquí**: el usuario elige la vista y
-   dice si cambiar algo (un nombre, dónde va, otra vista). Si hay dudas con
-   la mancha urbana o con el verde, enseñar **las dos opciones** (con y sin
-   el interruptor) una al lado de la otra **antes** de `--elegir`, que borra
-   las fuentes. Para cambiar un
+   `localhost:4321/bases/prueba/<slug>` (solo existe en local). Siempre se
+   enseñan **cuatro fotos, una por tamaño** (10, 18, 40 y 90 km), y en cada
+   una **las opciones una al lado de otra**, con los nombres activos:
+   **con NE** (la normal) y **sin NE** (`--sin-ne`, se genera aparte). Si el
+   terreno es seco (Oriente Medio, desierto), una **tercera opción** en cada
+   foto: `--seco`. Todo **antes** de `--elegir`, que borra las fuentes, sin
+   que el usuario tenga que pedirlo. **Parar aquí**: el usuario elige la
+   vista y la opción y dice si cambiar algo (un nombre, dónde va). Para cambiar un
    nombre o su punto, se toca `bases.json` y se repite el paso 3 (las
    fuentes siguen ahí). Los pueblos los elige el script solo, por tamaño, y
    no tiene «excluir»: si salen demasiados (en Sigonella, 14), antes de
