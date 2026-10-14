@@ -587,5 +587,59 @@
         }
       ]
     }
+  },
+  "Karshi-Khanabad": {
+    "slug": "karshi-khanabad",
+    "oficial": "Karshi-Khanabad Air Base",
+    "pais": "UZ",
+    "rama": "Fuerza Aérea de Uzbekistán",
+    "lugar": "Provincia de Kashkadarya, Uzbekistán",
+    "lat": 38.8336,
+    "lon": 65.9214,
+    "desde": 1954,
+    "texto": "Base aérea del sureste de Uzbekistán, a unos 25 km al este de la ciudad de Karshi y a unos 150 km de la frontera con Afganistán. Fue soviética hasta 1991 y, entre octubre de 2001 y noviembre de 2005, la usó EE. UU. como centro logístico de la guerra de Afganistán, con el nombre en clave «K2».",
+    "nombres": [
+      {
+        "nombre": "Estepa de Karshi",
+        "clase": "region",
+        "lat": 38.75,
+        "lon": 65.75
+      }
+    ],
+    "mapa": {
+      "km": 40,
+      "nombres": [
+        {
+          "nombre": "Karshi",
+          "clase": "ciudad",
+          "x": 63,
+          "y": 88
+        },
+        {
+          "nombre": "Khanabad",
+          "clase": "pueblo",
+          "x": 164,
+          "y": 85
+        },
+        {
+          "nombre": "Shayhali",
+          "clase": "pueblo",
+          "x": 38,
+          "y": 18
+        },
+        {
+          "nombre": "Chavka",
+          "clase": "pueblo",
+          "x": 249,
+          "y": 143
+        },
+        {
+          "nombre": "Estepa de Karshi",
+          "clase": "region",
+          "x": 4,
+          "y": 124
+        }
+      ]
+    }
   }
 }

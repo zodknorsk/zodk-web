@@ -94,5 +94,12 @@
     "nota": "Blanca con las dos franjas azules y la estrella de David en medio. En 3 filas la estrella no cabe con sus puntas: va como un anillo de 3x3, que a ese tamaño se lee como la estrella.",
     "filas": ["WWWWWWWWWWW", "BBBBBBBBBBB", "WWWWBBBWWWW", "WWWWBWBWWWW", "WWWWBBBWWWW", "BBBBBBBBBBB", "WWWWWWWWWWW"],
     "paleta": { "W": "#f4f4f0", "B": "#0038b8" }
+  },
+  "UZ": {
+    "nombre": "Uzbekistán",
+    "bandera": "🇺🇿",
+    "nota": "Azul, blanco y verde con las dos rayas rojas finas; con 7 filas, una fila roja a cada lado de la blanca. La luna creciente y tres estrellas en el azul, en blanco.",
+    "filas": ["bWWbbWbWbWb", "bWbbbbbbbbb", "RRRRRRRRRRR", "WWWWWWWWWWW", "RRRRRRRRRRR", "GGGGGGGGGGG", "GGGGGGGGGGG"],
+    "paleta": { "b": "#0099b5", "W": "#ffffff", "R": "#ce1126", "G": "#1eb53a" }
   }
 }
