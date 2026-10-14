@@ -1,7 +1,7 @@
 ---
 title: Semana 11
 date: '2026-10-09'
-updated: '2026-10-11'
+updated: '2026-10-14'
 tags:
   - marruecos
   - osint
@@ -132,6 +132,141 @@ Me han preguntado por avances en este último mes.<br>
 
 ## 12 de octubre
 
+
+<blockquote class="tweet" data-tweet-id="2109512499930513672">
+  <a class="tweet-author" href="https://x.com/mgonzalezelpais/status/2109512499930513672" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1319632967006904320-bkpegd8n_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">miguel gonzalez</span>
+    <span class="tweet-handle">@mgonzalezelpais</span>
+  </a>
+  <div class="tweet-text">Buques de guerra marroquíes 'invadieron' aguas de Ceuta coincidiendo con la entrada masiva de inmigrantes. La Armada envió una fragata para frenar las incursiones de la Marina de Mohamed VI en el mar bajo soberanía española. Vía <a href="https://x.com/el_pais" target="_blank" rel="noopener">@el_pais</a></div>
+  <a class="tweet-date" href="https://x.com/mgonzalezelpais/status/2109512499930513672" target="_blank" rel="noopener">12 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109635157925810603">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2109635157925810603" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/URGENTE" target="_blank" rel="noopener">#URGENTE</a> | Sánchez admite que ha ocultado 74 días que buques de guerra marroquíes entraron en aguas de Ceuta durante la invasión</div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2109635157925810603" target="_blank" rel="noopener">12 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109648763316748661">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2109648763316748661" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">Pedro Sánchez admite que buques marroquíes cercaron Ceuta: «Fueron días difíciles».<br>
+<br>
+De Antonio Rodríguez (<a href="https://x.com/antonioRG9" target="_blank" rel="noopener">@antonioRG9</a>).</div>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2109648763316748661" target="_blank" rel="noopener">12 de octubre de 2026</a>
+</blockquote>
+
+
 ## 13 de octubre
+
+
+<blockquote class="tweet" data-tweet-id="2109788706190287083">
+  <a class="tweet-author" href="https://x.com/okdiario/status/2109788706190287083" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1759957506682482688-buib4meo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">okdiario.com</span>
+    <span class="tweet-handle">@okdiario</span>
+  </a>
+  <div class="tweet-text"><a href="https://x.com/hashtag/LoMásLeído" target="_blank" rel="noopener">#LoMásLeído</a> | Alerta sanitaria en Ceuta: muere el invasor de 26 años contagiado de meningitis bacteriana.</div>
+  <a class="tweet-date" href="https://x.com/okdiario/status/2109788706190287083" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109885875853148539">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2109885875853148539" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/DIRECTO" target="_blank" rel="noopener">#DIRECTO</a> | Los Reyes viajan a Ceuta para mostrar su apoyo a la ciudad autónoma</div>
+  <img class="tweet-media" src="/tweets/media-hufsaapxmaaioje.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2109885875853148539" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109881819680161896">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2109881819680161896" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/REPORTAJES" target="_blank" rel="noopener">#REPORTAJES</a> | El desafío marroquí a Felipe VI: convocan protestas frente al consulado español en Agadir y en la frontera en Castillejos <br>
+<br>
+✍️ Por María Inmaculada Balbás</div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2109881819680161896" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109879051666002328">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2109879051666002328" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴 <a href="https://x.com/hashtag/EXCLUSIVA" target="_blank" rel="noopener">#EXCLUSIVA</a> | Militares marroquís infiltrados en Ceuta &quot;coordinaron&quot; la &quot;emboscada&quot; de Benzú: 70 invasores atacaron a 4 soldados<br>
+<br>
+✍️ Por Gustavo Molina y <a href="https://x.com/BraisCedeira" target="_blank" rel="noopener">@BraisCedeira</a></div>
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2109879051666002328" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109902943134556422">
+  <a class="tweet-author" href="https://x.com/elespanolcom/status/2109902943134556422" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1582982443178541056-6y3_wivo_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">EL ESPAÑOL</span>
+    <span class="tweet-handle">@elespanolcom</span>
+  </a>
+  <div class="tweet-text">🔴🗣️ Sánchez engañó al Congreso al omitir la invasión naval en Ceuta y no desclasificar ningún informe que la mencionara<br>
+<br>
+El presidente anunció el 3 de septiembre que había ordenado &quot;publicar todos los informes&quot; del caso: &quot;Absoluta transparencia para que se sepa la verdad&quot;<br>
+<br>
+✍️ […]</div>
+  <img class="tweet-media" src="/tweets/media-hufhaw9wuaaqvcv.jpg" alt="Imagen del tweet" loading="lazy" />
+  <a class="tweet-date" href="https://x.com/elespanolcom/status/2109902943134556422" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109955770808770639">
+  <a class="tweet-author" href="https://x.com/europapress/status/2109955770808770639" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1594453979752194049-eqokdgh-_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">Europa Press</span>
+    <span class="tweet-handle">@europapress</span>
+  </a>
+  <div class="tweet-text">El Gobierno informó al Rey de la entrada de buques marroquíes en aguas de Ceuta el 30 y 31 de julio, los mismos días en que se produjo la avalancha de inmigrantes, según Zarzuela</div>
+  <a class="tweet-date" href="https://x.com/europapress/status/2109955770808770639" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
+
+<blockquote class="tweet" data-tweet-id="2109995072691310941">
+  <a class="tweet-author" href="https://x.com/TheObjective_es/status/2109995072691310941" target="_blank" rel="noopener">
+    <img class="tweet-avatar" src="/tweets/1855166772325793792-kmmn0mad_bigger.jpg" alt="" width="44" height="44" loading="lazy" />
+    <span class="tweet-name">THE OBJECTIVE</span>
+    <span class="tweet-handle">@TheObjective_es</span>
+  </a>
+  <div class="tweet-text">La mala señal telefónica desconectó las cámaras de la DGT en Ceuta tras la invasión.<br>
+<br>
+✍️ Lo cuenta <a href="https://x.com/ManuTorralbaTO" target="_blank" rel="noopener">@ManuTorralbaTO</a>.</div>
+  <a class="tweet-date" href="https://x.com/TheObjective_es/status/2109995072691310941" target="_blank" rel="noopener">13 de octubre de 2026</a>
+</blockquote>
+
+
 
 ## 14 de octubre

@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-14",
+  "tuit": {
+    "id_str": "2109995072691310941",
+    "created_at": "2026-10-13T13:10:01.000Z",
+    "text": "La mala señal telefónica desconectó las cámaras de la DGT en Ceuta tras la invasión.\n\n✍️ Lo cuenta @ManuTorralbaTO.\n\nhttps://t.co/3AEUtgBUXi",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/3AEUtgBUXi",
+          "expanded_url": "https://theobjective.com/espana/2026-10-13/mala-senal-telefonica-desconecto-camaras-dgt-ceuta-invasion/",
+          "display_url": "theobjective.com/espana/2026-10…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

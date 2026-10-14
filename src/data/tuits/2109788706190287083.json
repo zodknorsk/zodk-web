@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-14",
+  "tuit": {
+    "id_str": "2109788706190287083",
+    "created_at": "2026-10-12T23:30:00.000Z",
+    "text": "#LoMásLeído | Alerta sanitaria en Ceuta: muere el invasor de 26 años contagiado de meningitis bacteriana.\n\nhttps://t.co/EVSbGrh5xS",
+    "user": {
+      "name": "okdiario.com",
+      "screen_name": "okdiario",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1759957506682482688/BUib4mEo_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/EVSbGrh5xS",
+          "expanded_url": "https://okdiario.com/espana/alerta-sanitaria-ceuta-muere-invasor-26-anos-contagiado-meningitis-bacteriana-20533655?utm_medium=social&utm_source=Twitter#Echobox=1791821848-2",
+          "display_url": "okdiario.com/espana/alerta-…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

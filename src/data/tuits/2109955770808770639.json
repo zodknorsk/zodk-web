@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-14",
+  "tuit": {
+    "id_str": "2109955770808770639",
+    "created_at": "2026-10-13T10:33:51.000Z",
+    "text": "El Gobierno informó al Rey de la entrada de buques marroquíes en aguas de Ceuta el 30 y 31 de julio, los mismos días en que se produjo la avalancha de inmigrantes, según Zarzuela https://t.co/ocVgGcFLis",
+    "user": {
+      "name": "Europa Press",
+      "screen_name": "europapress",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1594453979752194049/EqoKdGH-_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ocVgGcFLis",
+          "expanded_url": "https://www.europapress.es/nacional/noticia-gobierno-informo-rey-entrada-buques-marroquies-aguas-ceuta-julio-zarzuela-20261013122023.html",
+          "display_url": "europapress.es/nacional/notic…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

@@ -146,3 +146,13 @@ Tras el inicio de la crisis migratoria, Pese a que el Gobierno español evitó e
 - [12 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-11#12-de-octubre)
 - [13 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-11#13-de-octubre)
 - [14 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-11#14-de-octubre)
+
+## Semana 12 (15 - 21 oct)
+
+- [15 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#15-de-octubre)
+- [16 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#16-de-octubre)
+- [17 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#17-de-octubre)
+- [18 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#18-de-octubre)
+- [19 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#19-de-octubre)
+- [20 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#20-de-octubre)
+- [21 de octubre](/seguimiento/incidentes-fronterizos-entre-espana-y-marruecos-de-2026/semana-12#21-de-octubre)
