@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-15",
+  "tuit": {
+    "id_str": "2110702256278381055",
+    "created_at": "2026-10-15T12:00:07.000Z",
+    "text": "Militares desplegados en Ceuta presumen de palizas a inmigrantes: «Sin guantes mola más».\n\nhttps://t.co/TptS1UY65K",
+    "user": {
+      "name": "THE OBJECTIVE",
+      "screen_name": "TheObjective_es",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1855166772325793792/KmMN0Mad_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/TptS1UY65K",
+          "expanded_url": "https://theobjective.com/espana/2026-10-15/militares-ceuta-palizas-inmigrantes/",
+          "display_url": "theobjective.com/espana/2026-10…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

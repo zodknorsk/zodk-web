@@ -2,7 +2,7 @@
 title: Starlink en la guerra de Ucrania
 date: '2026-09-28'
 description: Un tren de satélites Starlink cruza el cielo de noche.
-updated: '2026-09-30'
+updated: '2026-10-16'
 tags:
   - osint
   - ucrania
@@ -82,6 +82,19 @@ El problema es que Starlink no funciona dentro de Rusia: SpaceX bloquea el servi
 En abril de 2022, cuando Rusia empezó a hacer jamming contra Starlink en Ucrania, [un alto cargo del Pentágono calificó de «asombrosa» la forma en que SpaceX lo neutralizó con una simple actualización de software enviada desde Hawthorne](https://breakingdefense.com/2022/04/spacex-beating-russian-jamming-attack-was-eyewatering-dod-official/). Desde entonces Rusia ha fabricado jammers pensados solo para Starlink. El más conocido es el Volna Kupol Garant: que Rusia desplegó inicialmente cerca de Kharkiv en 2024 y posteriormente más por todo el frente sur en 2026. Cada unidad cuesta [1,5 millones de dólares y cubre apenas 20 km²](https://keeptrack.space/deep-dive/volna-kupol-garant-starlink-jamming). Contra este no basta con software: Ucrania [lo localiza y lo destruye con drones a los pocos días de cada despliegue](https://militarnyi.com/en/news/starlink-countermeasure-system-volna-kupol-garant-destroyed-in-kerch/).
 
 Y el interruptor vale para los dos bandos. Rusia lleva usando Starlink de forma no autorizada casi desde el principio de la guerra, [con terminales conseguidos por contrabando y compras a través de terceros países](https://www.twz.com/news-features/russian-forces-in-ukraine-scramble-to-overcome-musks-starlink-restrictions), algo que la inteligencia militar ucraniana confirmó ya en febrero de 2024. SpaceX ha ido respondiendo con «listas blancas» de terminales verificados, desactivando en remoto los que detecta como rusos, y con un límite de velocidad: si el terminal va a más de unos 90 km/h, se corta, que es justo a lo que vuelan los drones rusos que lo llevan. Otra vez, quien decide es SpaceX.
+
+### ¿Existen alternativas a Starlink?
+
+![](./pasted-image-20261016001904.jpg)
+_Cohete del segundo lanzamiento de satélites Rassvet, a finales de julio de 2026._
+
+Casi ninguna que funcione realmente. Construir una constelación LEO es caro, lento y exige cohetes baratos que casi nadie tiene.
+
+**Europa.** La única opción operativa es [Eutelsat OneWeb](https://www.eutelsat.com/es/red-de-satelites/constelacion-leo-de-oneweb), con unos 650 satélites a 1.200 km, menos de una décima parte que Starlink y sin enlaces láser entre ellos. Francia firmó con Eutelsat [un acuerdo de hasta 1.000 millones de euros](https://www.satellitetoday.com/government-military/2025/06/18/frances-armed-forces-ministry-signs-framework-with-eutelsat-for-leo-access/) para que sus Fuerzas Armadas tengan acceso prioritario a OneWeb, y el estado francés controla ya casi el 30 % de la empresa. Todo esto es un puente hasta IRIS², la constelación de la UE, que no estará operativa antes de 2030.
+
+**Rusia.** [Bureau 1440](https://1440.space/en/) está desplegando Rassvet, que contempla explícitamente el control de drones con terminales de hasta 15 kg. Lleva entre 30 y 40 satélites lanzados a día de hoy. Para poder operar de forma no intermitente, Rusia debería disponer de unos cientos de satélites.
+
+**China.** Guowang y Qianfan, ambas estatales, suman unos 460 satélites en órbita de los 28.000 que planean. China [ha estado observando de cerca](https://merics.org/sites/default/files/2026-02/MERICS%20CTO%20Report%20Low%20earth%20orbit%20final.pdf) el uso militar de Starlink en Ucrania y es una de las razones de que Beijing esté invirtiendo de forma masiva en estas constelaciones. 
 
 ## ¿Y en el futuro, qué?
 
