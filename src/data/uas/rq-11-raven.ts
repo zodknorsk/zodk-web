@@ -463,6 +463,8 @@ const maqueta: Maqueta = {
   // Pixel HD: la pintura al sol cae justo en el borde entre el sexto y el
   // séptimo escalón de luz (6,0 en la vista 3D): corridos medio escalón.
   desfaseLuz: -0.5,
+  // La planta de la portada: pintada al doble, para que el botalón fino no desaparezca.
+  plantaDoble: true,
   // Tarjeta de /uas: el ángulo del TB2 (con el de todas, casi de perfil, el
   // ala larga salía de canto y el dron era un tubo).
   vistaTarjeta: [61, 20],

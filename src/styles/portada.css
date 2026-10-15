@@ -935,7 +935,6 @@ html.dark .tira-hangar:is(:hover, :focus-visible) {
 }
 .sat-puesto:last-child { border-right: 2px dashed rgb(255 255 255 / 0.22); }
 .sat-puesto[hidden] { display: none; }
-.sat-puesto--sale { opacity: 0; }
 .sat-caja { outline: 1px solid rgb(255 210 63 / 0.85); outline-offset: 5px; line-height: 0; }
 .sat-rotulo {
   padding: 0.1rem 0.35rem;

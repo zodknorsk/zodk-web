@@ -54,11 +54,10 @@ const todasOps = (await getCollection("operaciones")).filter((o) => !o.data.draf
 // de la tira (arte/generar-uas-miniaturas.mjs, o generar-uas-miniaturas-hd.mjs
 // los que tienen HD).
 const fichasUas = (await getCollection("uas")).filter((f) => !f.data.draft && !f.data.glosario && !f.data.armamento && !f.data.municion).sort(porFecha);
-// De momento, siempre el X10D y, a su derecha, el MICH-2000 (al lado del
-// hangar solo caben dos puestos; más adelante se verá cómo entran los demás).
+// Todos los drones con planta van en la tira, ocultos; el script de abajo
+// elige dos al azar en cada carga. Sin JS se ven el X10D y el MICH-2000.
 const EN_HANGAR = ["skydio-x10d", "mich-2000"];
-const dronesHangar = EN_HANGAR.map((id) => fichasUas.find((f) => f.id === id))
-  .filter((f): f is (typeof fichasUas)[number] => !!f && fs.existsSync(`public/uas/${f.id}/planta.png`));
+const dronesHangar = fichasUas.filter((f) => fs.existsSync(`public/uas/${f.id}/planta.png`));
 // Tamaño de la planta de cada dron (a escala real entre ellos), del PNG.
 const tamPlanta = (id: string) => {
   const b = fs.readFileSync(`public/uas/${id}/planta.png`);
@@ -255,9 +254,9 @@ const DESC = {
       <!-- Hangar de UAS: la plataforma de un aeródromo de noche. A la
            izquierda, el hangar de lado (arte/generar-uas-hangar.mjs), con la
            puerta entreabierta y luz tenue; al pasar el ratón se abre del todo.
-           A la derecha, los drones de EN_HANGAR, vistos desde arriba y a
-           escala real entre ellos, con su rótulo. Con más de tres, rotarían
-           (script de abajo). -->
+           A la derecha, los drones vistos desde arriba y a
+           escala real entre ellos, con su rótulo. Dos al azar
+           en cada carga (script de abajo). -->
       {fichasUas.length > 0 && (
         <a class="tira-hangar tira-sat" href="/uas">
           <span class="tira-hangar-texto">
@@ -271,10 +270,10 @@ const DESC = {
             style={`--ancho:${ph.ancho * 2}px;--alto:${ph.alto * 2}px;--fotogramas:${ph.fotogramas}`}>
           </span>
           <span class="sat-plataforma">
-            {dronesHangar.map((f, i) => {
+            {dronesHangar.map((f) => {
               const { ancho, alto } = tamPlanta(f.id);
               return (
-                <span class="sat-puesto" hidden={i >= 3}>
+                <span class="sat-puesto" hidden={!EN_HANGAR.includes(f.id)} data-id={f.id}>
                   <span class="sat-rotulo">{f.data.title} <BanderaUAS modelo={f.id} emoji={f.data.bandera} /></span>
                   <span class="sat-caja"><img src={`/uas/${f.id}/planta.png`} alt={f.data.title} width={ancho * 2} height={alto * 2} loading="lazy" decoding="async" /></span>
                 </span>
@@ -459,32 +458,28 @@ const DESC = {
 
 
 <script>
-  // Hangar de UAS: caben tres drones; si hay más, cada 7 s uno se funde y
-  // entra el siguiente que no se ve. Solo mientras la tira está a la vista.
+  // Hangar de UAS: en cada carga sale un dron pequeño a la izquierda y uno
+  // grande a la derecha, al azar. Se descartan las parejas que no caben junto
+  // al hangar.
   document.addEventListener("astro:page-load", () => {
+    const tira = document.querySelector<HTMLElement>(".tira-sat");
     const puestos = [...document.querySelectorAll<HTMLElement>(".tira-sat .sat-puesto")];
-    if (puestos.length <= 3 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let siguiente = 3, hueco = 0, reloj = 0;
-    const rotar = () => {
-      const visibles = puestos.filter((p) => !p.hidden);
-      const sale = visibles[hueco % visibles.length];
-      const entra = puestos[siguiente % puestos.length];
-      if (!sale || !entra.hidden) { siguiente++; return; }
-      sale.classList.add("sat-puesto--sale");
-      setTimeout(() => {
-        sale.hidden = true;
-        sale.classList.remove("sat-puesto--sale");
-        sale.after(entra);
-        entra.hidden = false;
-      }, 400);
-      siguiente++; hueco++;
-    };
-    const vigia = new IntersectionObserver(([e]) => {
-      clearInterval(reloj);
-      if (e.isIntersecting) reloj = window.setInterval(rotar, 7000);
-    });
-    vigia.observe(puestos[0].closest(".tira-sat")!);
-    document.addEventListener("astro:before-swap", () => { clearInterval(reloj); vigia.disconnect(); }, { once: true });
+    if (!tira || puestos.length < 2) return;
+    const plataforma = puestos[0].parentElement!;
+    const hangar = tira.querySelector<HTMLElement>(".sat-hangar")!;
+    const de = (ids: string[]) => puestos.filter((p) => ids.includes(p.dataset.id!)).sort(() => Math.random() - 0.5);
+    const pequenos = de(["hero-30", "sting", "skydio-x10d", "rq-11-raven"]);
+    const grandes = de(["geran-2", "shahed-136", "mich-2000", "fq-44a-fury"]);
+    if (!pequenos.length || !grandes.length) return;
+    const parejas = pequenos.flatMap((p) => grandes.map((g) => [p, g]))
+      .sort(() => Math.random() - 0.5);
+    for (const par of parejas) {
+      puestos.forEach((p) => { p.hidden = !par.includes(p); });
+      par.forEach((p) => plataforma.append(p));
+      // Cabe si la plataforma no pisa el hangar (en móvil no hay hangar).
+      if (getComputedStyle(hangar).display === "none") break;
+      if (plataforma.getBoundingClientRect().left >= hangar.getBoundingClientRect().right - 40) break;
+    }
   });
 </script>
 

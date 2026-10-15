@@ -666,6 +666,8 @@ const maqueta: Maqueta = {
   // Su gris al sol tiene una luminosidad de 0,717, en el borde de dos
   // escalones del pixel HD (puestos para el MQ-9): corridos medio escalón.
   desfaseLuz: 0.48,
+  // La planta de la portada: pintada al doble, para que el botalón fino no desaparezca.
+  plantaDoble: true,
   contornoPixel: true,
   // Ángulo de la tarjeta de /uas, sacado de una captura del visor con
   // arte/encajar-camara.mjs (acimut 61°, elevación 20°), en vez del de todas
