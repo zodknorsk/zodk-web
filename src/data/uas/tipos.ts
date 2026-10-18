@@ -399,7 +399,7 @@ export type Maqueta = {
   // la que lleva `inicial` (o la primera).
   versiones?: { rotulo: string; modelo: string; inicial?: boolean }[];
   // Con versiones: la que sale en la tarjeta de /uas y en la planta de la
-  // portada, si no es la de la maqueta (el Magura abre en el V7 y sus
-  // miniaturas son del V5).
+  // portada, si no es la de la maqueta (la maqueta del Magura es la del V7,
+  // pero abre en el V5 y sus miniaturas son del V5).
   miniaturasModelo?: string;
 };
