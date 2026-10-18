@@ -19,11 +19,10 @@ categoria: Misil aire-aire de corto alcance
 ![](./armamento-aim9m-lanzamiento.jpg)
 *Un AIM-9M sale del ala de un F/A-18F del VFA-102, en junio de 2015 (foto: Armada de EE. UU.).*
 
-![](./armamento-aim9m-magura.jpg)
-*Un AIM-9M sobre su lanzador en la cubierta del Magura V7, detrás de un V5, en una exposición (foto: Militarnyi).*
+![](./pasted-image-20261018032455.jpg)_Un AIM-9M sobre su lanzador en la cubierta del Magura V7, en una exposición (foto: Inteligencia militar de Ucrania, GUR)._
 
 ![](./armamento-aim9m-magura-frente.jpg)
-*El Magura V7 de frente, con un AIM-9M a cada lado de la cámara; el de la derecha es azul, de instrucción (foto: Inteligencia militar de Ucrania, GUR).*
+*El Magura V7 de frente, con dos AIM-9M (foto: Inteligencia militar de Ucrania, GUR).*
 
 | | |
 |---|---|
