@@ -2,53 +2,53 @@
 title: SIRTAP
 date: '2026-10-18'
 description: >-
-  El SIRTAP es el dron táctico español de Airbus, que ahora lo llama U850
-  SIRTAP: un avión de unos 11 m de envergadura y 750 kg de MTOW, con hélice…
+  El U850 SIRTAP es el dron táctico español de Airbus: un avión de unos 11 m de
+  envergadura y 750 kg de MTOW, con hélice propulsora y tren de aterrizaje,…
 updated: '2026-10-18'
 tags:
   - espana
   - dron
 bandera: "\U0001F1EA\U0001F1F8"
 pais: España
-categoria: Dron táctico de vigilancia
+categoria: Dron de reconocimiento MALE
 ---
-> El SIRTAP es el <mark>dron táctico español de Airbus</mark>, que ahora lo llama U850 SIRTAP: un avión de unos 11 m de envergadura y 750 kg de MTOW, con hélice propulsora y tren de aterrizaje, que se maneja desde tierra y está pensado para vigilar durante más de 20 horas. Lo diseña y lo fabrica Airbus Defence and Space en Getafe, y el Ministerio de Defensa ha encargado 27 para el <mark>Ejército de Tierra y el Ejército del Aire y del Espacio</mark>, con los que el Ejército de Tierra sustituirá a sus Searcher israelíes. En octubre de 2026 el primer prototipo <mark>aún no ha volado</mark>.
-> ⚠️ Las prestaciones son las que dan Airbus y el Ministerio de Defensa para un dron que todavía está en pruebas.
+> El U850 SIRTAP es el <mark>dron táctico español de Airbus</mark>: un avión de unos 11 m de envergadura y 750 kg de MTOW, con hélice propulsora y tren de aterrizaje, que se maneja desde tierra y está pensado para vigilar durante más de 20 horas. Lo diseña y lo fabrica Airbus Defence and Space en Getafe, y el Ministerio de Defensa ha encargado 27 para el <mark>Ejército de Tierra y el Ejército del Aire y del Espacio</mark>, con los que el Ejército de Tierra sustituirá a sus Searcher israelíes. A día de hoy (octubre de 2026) el primer prototipo <mark>aún no ha volado</mark>.
+
 
 <div class="visor-hueco"></div>
 
 ## CARACTERÍSTICAS
 
-|                                   |                                                                                                                                  |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **País**                          | 🇪🇸 España                                                                                                                       |
-| **Fabricante**                    | Airbus Defence and Space (Getafe)                                                                                                |
-| **Operador**                      | Ejército de Tierra y Ejército del Aire y del Espacio, desde 2027                                                                 |
-| **Categoría**                     | Dron táctico de vigilancia, de altas prestaciones                                                                                |
-| **Situación**                     | Primer prototipo en pruebas en tierra; primer vuelo previsto a finales de 2026                                                   |
-| **Primer uso en combate**         | No                                                                                                                               |
-| **Envergadura / longitud / peso** | 11 m / 7,3 m / 750 kg de MTOW (Ministerio de Defensa)                                                                            |
-| **Alcance**                       | Más de 2.000 km con enlace BLOS por SATCOM; más de 20 horas de autonomía (fabricante)                                            |
-| **Carga**                         | Más de 150 kg (fabricante): dos sensores a la vez, como una torreta EO/IR y un radar, y cuatro soportes bajo las alas, aún sin armas |
-| **Motor**                         | No publicado; uno solo, con hélice propulsora de tres palas                                                                      |
-| **Despegue**                      | Desde pista, con tren de aterrizaje; vale una de tierra de 800 m                                                                 |
-| **Origen**                        | Atlante, el dron táctico anterior de Airbus en España                                                                            |
+|                                   |                                                                                                          |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **País**                          | 🇪🇸 España                                                                                              |
+| **Fabricante**                    | Airbus Defence and Space (Getafe)                                                                        |
+| **Operador**                      | Ejército de Tierra y Ejército del Aire y del Espacio                                                     |
+| **Categoría**                     | Dron de reconocimiento MALE                                                                              |
+| **Situación**                     | Primer prototipo en pruebas en tierra; primer vuelo previsto a finales de 2026                           |
+| **Primer uso en combate**         | No                                                                                                       |
+| **Envergadura / longitud / peso** | 11 m / 7,3 m / 750 kg de MTOW (Ministerio de Defensa)                                                    |
+| **Alcance**                       | Más de 2.000 km con enlace BLOS por SATCOM; <br>más de 20 horas de autonomía (fabricante)                |
+| **Carga**                         | Más de 150 kg (fabricante): dos sensores (EO/IR y radar), y cuatro soportes bajo las alas, aún sin armas |
+| **Motor**                         | No publicado; uno solo, con hélice propulsora de tres palas                                              |
+| **Despegue**                      | Desde pista, con tren de aterrizaje; vale una pista de tierra de 800 m                                         |
+| **Origen**                        | Atlante, el dron táctico anterior de Airbus en España                                                    |
 
 ## Historia
 
-El SIRTAP —Sistema RPAS Táctico de Altas Prestaciones— empezó en 2017 como un proyecto común de España y Colombia, que querían cambiar sus drones tácticos israelíes a mediados de esta década: el Ejército de Tierra, sus Searcher, y la Fuerza Aérea colombiana, sus Hermes 450. Airbus partió del [Atlante](https://www.uasvision.com/2019/12/09/colombia-and-spain-to-develop-male-uav/), un dron que había hecho años antes en España, y en febrero de 2019 los dos ministerios de Defensa firmaron un acuerdo para diseñarlo y fabricarlo juntos, con la corporación colombiana CIAC como socio. En Colombia se le llama Atlante II. Lo que ha comprado Colombia no está claro: Army Recognition contó en 2024 que había encargado seis sistemas, y la *Revista Española de Defensa* decía ese mismo mes que aún no había ningún acuerdo formal. La CIAC sí fabrica el tren de aterrizaje y los estabilizadores.
+El SIRTAP —Sistema RPAS Táctico de Altas Prestaciones— empezó en 2017 como un proyecto común de España y Colombia, que querían cambiar sus drones tácticos israelíes a mediados de esta década: el Ejército de Tierra, sus Searcher, y la Fuerza Aérea colombiana, sus Hermes 450. Airbus partió del [Atlante](https://www.uasvision.com/2019/12/09/colombia-and-spain-to-develop-male-uav/), un dron que había hecho años antes en España, y en febrero de 2019 los dos ministerios de Defensa firmaron un acuerdo para diseñarlo y fabricarlo juntos, con la corporación colombiana CIAC como socio. En Colombia se le llama Atlante II.
 
 España lo convirtió en un programa propio. El 29 de noviembre de 2023 Defensa firmó con Airbus el contrato de nueve sistemas, cada uno con tres aviones y una estación de control, por unos 500 millones de euros. Es el primer avión militar que se diseña y se fabrica entero en España desde el C295, con unos 70 proveedores españoles, y no lleva piezas sujetas a las normas ITAR de Estados Unidos, que habrían permitido a Washington vetar sus ventas.
 
-El primer prototipo se terminó de montar en Getafe en junio de 2025, con la idea de volar a finales de ese año. Se retrasó: en junio de 2026 hizo su [primer rodaje](https://www.elespanol.com/observatorio-defensa/20260615/dron-espanol-airbus-sirtap-completa-primer-rodaje-base-aerea-getafe/1003744286394_0.html) por la pista de la Base Aérea de Getafe, manejado desde la estación de tierra, y el primer vuelo quedó para el último trimestre de 2026 en el CEUS, el centro de ensayos de drones del INTA en Moguer (Huelva). Las entregas empiezan en 2027, según Airbus y Defensa; la web de Airbus habla ya de 2028. Su base principal será la Base Aérea de León.
+El primer prototipo se terminó de montar en Getafe en junio de 2025, con la idea de volar a finales de año. Se retrasó: en junio de 2026 hizo su [primer rodaje](https://www.elespanol.com/observatorio-defensa/20260615/dron-espanol-airbus-sirtap-completa-primer-rodaje-base-aerea-getafe/1003744286394_0.html) por la pista de la Base Aérea de Getafe, manejado desde la estación de tierra, y el primer vuelo quedó pendiente para finales de 2026. Las entregas empiezan en 2027, según Airbus y Defensa; la web de Airbus habla ya de 2028. Su base principal será la Base Aérea de León.
 
 ## Especificaciones
 
 Es un avión de ala alta y recta, con el fuselaje en forma de tubo, la cola en V y una aleta bajo ella, y el motor detrás, empujando con una hélice de tres palas, para dejar el morro libre a los sensores. El tren va fijo. Las alas y la hélice se desmontan para que quepan dos SIRTAP en la bodega de un C295. Airbus no ha dicho qué motor lleva, y a finales de 2025 Defensa encargó a ITP Aero, por algo más de tres millones de euros, el [diseño de un turbohélice](https://www.infodefensa.com/texto-diario/mostrar/5718768/defensa-encarga-compania-espanola-itp-aero-diseno-conceptual-nuevo-motor-turbo-helice-dron-sirtap) para el dron.
 
-Las medidas cambian según la fuente: el Ministerio de Defensa da 11 m de envergadura y otros medios, 12 m. Según Airbus, vuela a más de 6.400 m, pasa de los 200 km/h, aguanta más de 20 horas en el aire y lleva más de 150 kg de carga, hasta 180 según cómo vaya montado. Despega y aterriza en pistas de tierra de 800 m, con viento cruzado de hasta 37 km/h, y trabaja entre -40 °C y 50 °C, con protección contra el hielo.
+Tiene 11 metros de envergadura y según Airbus, vuela a más de 6.400 m, pasa de los 200 km/h, aguanta más de 20 horas en el aire y lleva más de 150 kg de carga, hasta 180 según cómo vaya montado. Despega y aterriza en pistas de tierra de 800 m, con viento cruzado de hasta 37 km/h, y trabaja entre -40 °C y 50 °C, con protección contra el hielo.
 
-Lleva dos sensores a la vez. Bajo el morro, una torreta EO/IR con designador láser, y además un radar SAR con modo GMTI para ver el terreno y los vehículos con nubes o de noche; los modelos no se han publicado. Puede llevar también equipos de escucha (SIGINT), de guerra electrónica y un receptor AIS para seguir barcos. La estación de control en tierra sale de las consolas del avión de patrulla C295 MSA, y comparte con él la torreta y el radar, así que los operadores casi no tienen que aprender nada nuevo.
+Lleva dos sensores a la vez. Bajo el morro, una torreta EO/IR con designador láser, y además un radar SAR con modo GMTI para ver el terreno y los vehículos con nubes o de noche; los modelos no se han publicado. Puede llevar también equipos de escucha (SIGINT), de guerra electrónica y un receptor AIS para seguir barcos.
 
 Se maneja con un enlace LOS hecho por Sener y, más allá del horizonte, por SATCOM. Rueda solo por la pista hasta despegar y está certificado para volar en espacio aéreo segregado, el que se cierra al resto del tráfico.
 
@@ -98,7 +98,6 @@ During this taxi test, the aircraft is fully controlled from the ground control 
 * **UAS Vision**, diciembre 2019 - Colombia and Spain to Develop MALE UAV ([fuente](https://www.uasvision.com/2019/12/09/colombia-and-spain-to-develop-male-uav/))
 * **Airbus**, noviembre 2023 - Airbus signs contract with the Spanish Ministry of Defence for the acquisition of SIRTAP UAS ([fuente](https://airbus.com/en/newsroom/press-releases/2023-11-airbus-signs-contract-with-the-spanish-ministry-of-defence-for-the))
 * **Revista Española de Defensa**, abril 2024 - Nuevos ojos electrónicos en vuelo ([fuente](https://www.defensa.gob.es/Galerias/gabinete/red/2024/04/p-44-46-red-415-sirtap.pdf))
-* **Army Recognition**, abril 2024 - Colombia officializes acquisition of six Atlante II drone systems ([fuente](https://www.armyrecognition.com/archives/archives-land-defense/land-defense-2024/colombia-officializes-acquisition-of-six-atlante-ii-drone-systems))
 * **Airforce Technology**, julio 2024 - SIRTAP Tactical Unmanned Aerial System (UAS), Spain ([fuente](https://www.airforce-technology.com/projects/sirtap-tactical-unmanned-aerial-system-uas-spain/))
 * **Naval News**, enero 2025 - Airbus and Navantia to integrate SIRTAP Drone into Spanish Navy's LHD ([fuente](https://www.navalnews.com/naval-news/2025/01/airbus-and-navantia-to-integrate-sirtap-drone-into-spanish-navys-lhd/))
 * **Airbus**, junio 2025 - First Airbus SIRTAP prototype ready to start ground tests ([fuente](https://www.airbus.com/en/newsroom/press-release/2025-06-first-airbus-sirtap-prototype-ready-to-start-ground-tests))
@@ -106,4 +105,3 @@ During this taxi test, the aircraft is fully controlled from the ground control 
 * **Aviacionline**, abril 2026 - SIRTAP: el UAV táctico de Airbus avanza hacia su entrada en servicio en 2027 ([fuente](https://www.aviacionline.com/espanol/defensa/sirtap-el-uav-tactico-de-airbus-avanza-hacia-su-entrada-en-servicio-en-2027_a69dbfe90f677f0d145469a2a))
 * **Infodefensa**, abril 2026 - El Ejército de Tierra español apuesta por una versión del dron Sirtap con armamento y mayor alcance ([fuente](https://www.infodefensa.com/texto-diario/mostrar/5843422/ejercito-tierra-espanol-apuesta-version-dron-sirtap-armamento-mayor-alcance))
 * **El Español**, junio 2026 - El dron español Airbus SIRTAP completa su primer rodaje en la Base Aérea de Getafe ([fuente](https://www.elespanol.com/observatorio-defensa/20260615/dron-espanol-airbus-sirtap-completa-primer-rodaje-base-aerea-getafe/1003744286394_0.html))
-* **Infodefensa**, julio 2026 - La Armada de Chile conoce en España las capacidades del dron Sirtap de Airbus ([fuente](https://www.infodefensa.com/texto-diario/mostrar/5951615/armada-chile-conoce-espana-capacidades-dron-sirtap-airbus))
