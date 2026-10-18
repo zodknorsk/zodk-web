@@ -856,5 +856,59 @@
         }
       ]
     }
+  },
+  "RAF Lakenheath": {
+    "slug": "raf-lakenheath",
+    "oficial": "Royal Air Force Lakenheath",
+    "pais": "GB",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Suffolk, Reino Unido",
+    "lat": 52.4093,
+    "lon": 0.561,
+    "desde": 1941,
+    "texto": "Base de la Real Fuerza Aérea británica en el este de Inglaterra que usa la USAF desde los años cincuenta. Es la casa del 48.º Ala de Caza, con F-15E Strike Eagle y F-35A, la mayor base de caza estadounidense en Europa.",
+    "nombres": [
+      {
+        "nombre": "Bosque de Thetford",
+        "clase": "region",
+        "lat": 52.45,
+        "lon": 0.68
+      },
+      {
+        "nombre": "Río Little Ouse",
+        "clase": "accidente",
+        "lat": 52.4467,
+        "lon": 0.623
+      }
+    ],
+    "mapa": {
+      "km": 18,
+      "nombres": [
+        {
+          "nombre": "Río Little Ouse",
+          "clase": "accidente",
+          "x": 171,
+          "y": 25
+        },
+        {
+          "nombre": "Holywell Row",
+          "clase": "pueblo",
+          "x": 90,
+          "y": 173
+        },
+        {
+          "nombre": "Bosque de Thetford",
+          "clase": "region",
+          "x": 164,
+          "y": 7
+        },
+        {
+          "nombre": "Lakenheath",
+          "clase": "pueblo",
+          "x": 100,
+          "y": 81
+        }
+      ]
+    }
   }
 }
