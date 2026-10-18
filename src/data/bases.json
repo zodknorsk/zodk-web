@@ -976,5 +976,137 @@
         }
       ]
     }
+  },
+  "Yokota AB": {
+    "slug": "yokota-ab",
+    "oficial": "Yokota Air Base",
+    "pais": "JP",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Tokio, Japón",
+    "lat": 35.7485,
+    "lon": 139.3487,
+    "desde": 1940,
+    "texto": "Base de la USAF a unos 40 km al oeste del centro de Tokio. Es la sede de las Fuerzas de EE. UU. en Japón y su pista de 3,4 km recibe a los aviones de transporte y a los drones RQ-4 Global Hawk que vigilan el Pacífico occidental.",
+    "nombres": [
+      {
+        "nombre": "Río Tama",
+        "clase": "accidente",
+        "lat": 35.7385,
+        "lon": 139.3105
+      },
+      {
+        "nombre": "Llanura de Musashino",
+        "clase": "region",
+        "lat": 35.775,
+        "lon": 139.4
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Saitama",
+          "clase": "ciudad",
+          "x": 236,
+          "y": 52
+        },
+        {
+          "nombre": "Nerima",
+          "clase": "ciudad",
+          "x": 238,
+          "y": 98
+        },
+        {
+          "nombre": "Sagamihara",
+          "clase": "ciudad",
+          "x": 154,
+          "y": 159
+        },
+        {
+          "nombre": "Hachiōji",
+          "clase": "ciudad",
+          "x": 137,
+          "y": 124
+        },
+        {
+          "nombre": "Kawagoe",
+          "clase": "ciudad",
+          "x": 188,
+          "y": 28
+        },
+        {
+          "nombre": "Tokorozawa",
+          "clase": "ciudad",
+          "x": 183,
+          "y": 75
+        },
+        {
+          "nombre": "Chōfu",
+          "clase": "ciudad",
+          "x": 205,
+          "y": 130
+        },
+        {
+          "nombre": "Ageo",
+          "clase": "ciudad",
+          "x": 221,
+          "y": 9
+        },
+        {
+          "nombre": "Tachikawa",
+          "clase": "ciudad",
+          "x": 165,
+          "y": 106
+        },
+        {
+          "nombre": "Sayama",
+          "clase": "ciudad",
+          "x": 166,
+          "y": 52
+        },
+        {
+          "nombre": "Chichibu",
+          "clase": "ciudad",
+          "x": 68,
+          "y": 3
+        },
+        {
+          "nombre": "Tsuru",
+          "clase": "ciudad",
+          "x": 14,
+          "y": 166
+        },
+        {
+          "nombre": "Ōtsuki",
+          "clase": "ciudad",
+          "x": 25,
+          "y": 144
+        },
+        {
+          "nombre": "Río Tama",
+          "clase": "accidente",
+          "x": 104,
+          "y": 106
+        },
+        {
+          "nombre": "Hatoyama",
+          "clase": "pueblo",
+          "x": 143,
+          "y": 8
+        },
+        {
+          "nombre": "Okutama",
+          "clase": "pueblo",
+          "x": 71,
+          "y": 71
+        },
+        {
+          "nombre": "Llanura de Musashino",
+          "clase": "region",
+          "x": 32,
+          "y": 37
+        }
+      ]
+    }
   }
 }
