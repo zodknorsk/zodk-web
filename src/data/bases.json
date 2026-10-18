@@ -1162,5 +1162,83 @@
         }
       ]
     }
+  },
+  "Misawa AB": {
+    "slug": "misawa-ab",
+    "oficial": "Misawa Air Base",
+    "pais": "JP",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Aomori, Japón",
+    "lat": 40.7033,
+    "lon": 141.3686,
+    "desde": 1938,
+    "texto": "Base compartida por la USAF y las Fuerzas Aéreas de Autodefensa de Japón, en el extremo norte de la isla de Honshu. Su pista de 3,05 km da servicio a los cazas F-16 de la USAF y a los RQ-4 Global Hawk japoneses, que vigilan el mar de Japón y el Pacífico norte.",
+    "nombres": [
+      {
+        "nombre": "Lago Ogawara",
+        "clase": "accidente",
+        "lat": 40.78,
+        "lon": 141.33
+      },
+      {
+        "nombre": "Bahía de Mutsu",
+        "clase": "accidente",
+        "lat": 41.0,
+        "lon": 141.1
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Hachinohe",
+          "clase": "ciudad",
+          "x": 181,
+          "y": 164
+        },
+        {
+          "nombre": "Towada",
+          "clase": "ciudad",
+          "x": 101,
+          "y": 127
+        },
+        {
+          "nombre": "Lago Ogawara",
+          "clase": "accidente",
+          "x": 100,
+          "y": 66
+        },
+        {
+          "nombre": "Oirase",
+          "clase": "pueblo",
+          "x": 155,
+          "y": 133
+        },
+        {
+          "nombre": "Nanbu",
+          "clase": "pueblo",
+          "x": 151,
+          "y": 182
+        },
+        {
+          "nombre": "Gonohe",
+          "clase": "pueblo",
+          "x": 130,
+          "y": 158
+        },
+        {
+          "nombre": "Noheji",
+          "clase": "pueblo",
+          "x": 79,
+          "y": 34
+        },
+        {
+          "nombre": "Hiranai",
+          "clase": "pueblo",
+          "x": 31,
+          "y": 11
+        }
+      ]
+    }
   }
 }
