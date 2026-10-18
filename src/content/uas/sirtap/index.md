@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1EA\U0001F1F8"
 pais: España
-categoria: Dron de vigilancia MALE
+categoria: Dron táctico de vigilancia
 ---
 > El SIRTAP es el <mark>dron táctico español de Airbus</mark>, que ahora lo llama U850 SIRTAP: un avión de unos 11 m de envergadura y 750 kg de MTOW, con hélice propulsora y tren de aterrizaje, que se maneja desde tierra y está pensado para vigilar durante más de 20 horas. Lo diseña y lo fabrica Airbus Defence and Space en Getafe, y el Ministerio de Defensa ha encargado 27 para el <mark>Ejército de Tierra y el Ejército del Aire y del Espacio</mark>, con los que el Ejército de Tierra sustituirá a sus Searcher israelíes. En octubre de 2026 el primer prototipo <mark>aún no ha volado</mark>.
 > ⚠️ Las prestaciones son las que dan Airbus y el Ministerio de Defensa para un dron que todavía está en pruebas.
@@ -24,7 +24,7 @@ categoria: Dron de vigilancia MALE
 | **País**                          | 🇪🇸 España                                                                                                                       |
 | **Fabricante**                    | Airbus Defence and Space (Getafe)                                                                                                |
 | **Operador**                      | Ejército de Tierra y Ejército del Aire y del Espacio, desde 2027                                                                 |
-| **Categoría**                     | Dron de vigilancia MALE, de altas prestaciones                                                                                |
+| **Categoría**                     | Dron táctico de vigilancia, de altas prestaciones                                                                                |
 | **Situación**                     | Primer prototipo en pruebas en tierra; primer vuelo previsto a finales de 2026                                                   |
 | **Primer uso en combate**         | No                                                                                                                               |
 | **Envergadura / longitud / peso** | 11 m / 7,3 m / 750 kg de MTOW (Ministerio de Defensa)                                                                            |
@@ -40,7 +40,7 @@ El SIRTAP —Sistema RPAS Táctico de Altas Prestaciones— empezó en 2017 como
 
 España lo convirtió en un programa propio. El 29 de noviembre de 2023 Defensa firmó con Airbus el contrato de nueve sistemas, cada uno con tres aviones y una estación de control, por unos 500 millones de euros. Es el primer avión militar que se diseña y se fabrica entero en España desde el C295, con unos 70 proveedores españoles, y no lleva piezas sujetas a las normas ITAR de Estados Unidos, que habrían permitido a Washington vetar sus ventas.
 
-El primer prototipo se terminó de montar en Getafe en junio de 2025, con la idea de volar a finales de ese año. Se retrasó: en junio de 2026 hizo su [primer rodaje](https://www.elespanol.com/observatorio-defensa/20260615/dron-espanol-airbus-sirtap-completa-primer-rodaje-base-aerea-getafe/1003744286394_0.html) por la pista de Getafe AB, manejado desde la estación de tierra, y el primer vuelo quedó para el último trimestre de 2026 en el CEUS, el centro de ensayos de drones del INTA en Moguer (Huelva). Las entregas empiezan en 2027, según Airbus y Defensa; la web de Airbus habla ya de 2028. Su base principal será León AB.
+El primer prototipo se terminó de montar en Getafe en junio de 2025, con la idea de volar a finales de ese año. Se retrasó: en junio de 2026 hizo su [primer rodaje](https://www.elespanol.com/observatorio-defensa/20260615/dron-espanol-airbus-sirtap-completa-primer-rodaje-base-aerea-getafe/1003744286394_0.html) por la pista de la Base Aérea de Getafe, manejado desde la estación de tierra, y el primer vuelo quedó para el último trimestre de 2026 en el CEUS, el centro de ensayos de drones del INTA en Moguer (Huelva). Las entregas empiezan en 2027, según Airbus y Defensa; la web de Airbus habla ya de 2028. Su base principal será León AB.
 
 ## Especificaciones
 

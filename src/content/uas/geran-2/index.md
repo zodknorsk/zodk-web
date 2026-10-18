@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1F7\U0001F1FA"
 pais: Rusia
-categoria: Dron de ataque de un solo uso (OWA)
+categoria: Dron de ataque de un solo uso
 ---
 > El Geran-2 es la <mark>versión rusa del [Shahed-136](/uas/shahed-136) iraní</mark>: el mismo dron de ataque de un solo uso, que Rusia fabrica en masa. Empezó comprándoselo a Irán en 2022; hoy casi todo se hace en Alabuga, en Tatarstán, y en Izhevsk, y lo ha ido cambiando sobre la marcha: pintura negra, antenas contra el jamming, módems, cámaras y cabezas de combate más grandes.
 

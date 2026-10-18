@@ -641,5 +641,65 @@
         }
       ]
     }
+  },
+  "Base Aérea de Getafe": {
+    "slug": "base-aerea-de-getafe",
+    "oficial": "Base Aérea de Getafe",
+    "pais": "ES",
+    "rama": "Ejército del Aire y del Espacio",
+    "lugar": "Madrid, Comunidad de Madrid",
+    "lat": 40.2944,
+    "lon": -3.7236,
+    "desde": 1911,
+    "texto": "Base aérea al sur de Madrid, a unos 12 km del centro, y uno de los aeródromos más antiguos de España. Comparte pista con la fábrica de Airbus Defence and Space, donde en junio de 2026 hizo su primer rodaje el dron SIRTAP.",
+    "nombres": [
+      {
+        "nombre": "Río Manzanares",
+        "clase": "accidente",
+        "lat": 40.317,
+        "lon": -3.67
+      }
+    ],
+    "mapa": {
+      "km": 40,
+      "nombres": [
+        {
+          "nombre": "Madrid",
+          "clase": "ciudad",
+          "x": 160,
+          "y": 8
+        },
+        {
+          "nombre": "Móstoles",
+          "clase": "ciudad",
+          "x": 57,
+          "y": 69
+        },
+        {
+          "nombre": "Alcorcón",
+          "clase": "ciudad",
+          "x": 80,
+          "y": 48
+        },
+        {
+          "nombre": "Parla",
+          "clase": "ciudad",
+          "x": 116,
+          "y": 141
+        },
+        {
+          "nombre": "Valdemoro",
+          "clase": "ciudad",
+          "x": 181,
+          "y": 182
+        },
+        {
+          "nombre": "Río Manzanares",
+          "clase": "accidente",
+          "x": 150,
+          "y": 63
+        }
+      ]
+    }
   }
 }
