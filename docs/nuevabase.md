@@ -117,7 +117,11 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
    una **las opciones una al lado de otra**, con los nombres activos:
    **con NE** (la normal) y **sin NE** (`--sin-ne`, se genera aparte). Si el
    terreno es seco (Oriente Medio, desierto), una **tercera opción** en cada
-   foto: `--seco`. Todo **antes** de `--elegir`, que borra las fuentes, sin
+   foto: `--seco`. **Formato fijo**: una sola imagen con las cuatro filas
+   (10, 18, 40, 90 km), con NE a la izquierda y sin NE a la derecha, con la
+   marca y los nombres como en la web, que sale de
+   `python3 comparar-base.py <slug> [--seco]` (genera las variantes y la deja
+   en `~/Downloads/bases/<slug>.png`; se abre y se le dice la ruta). Todo **antes** de `--elegir`, que borra las fuentes, sin
    que el usuario tenga que pedirlo. **Parar aquí**: el usuario elige la
    vista y la opción y dice si cambiar algo (un nombre, dónde va). Para cambiar un
    nombre o su punto, se toca `bases.json` y se repite el paso 3 (las
@@ -146,6 +150,7 @@ src/data/bases.json            datos de cada base (y su mapa elegido)
 arte/vistas_base.py            las cuatro vistas (km, px por grado, márgenes)
 arte/fuentes-base.py           baja las fuentes a arte/bases-fuentes/<slug>/ (fuera de Git)
 arte/generar-base.py           el mapa y los nombres; --elegir
+arte/comparar-base.py          la imagen única con las vistas para elegir (paso 4)
 public/bases/<slug>.png        el mapa elegido
 src/components/BaseMapa.astro  el mapa con la marca y los nombres
 src/components/BaseTarjeta.astro  la tarjeta del ratón

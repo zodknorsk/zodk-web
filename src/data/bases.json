@@ -1108,5 +1108,59 @@
         }
       ]
     }
+  },
+  "Engels-2 AB": {
+    "slug": "engels-2-ab",
+    "oficial": "Engels-2 Air Base",
+    "pais": "RU",
+    "rama": "Fuerzas Aeroespaciales de Rusia (VKS)",
+    "lugar": "Óblast de Sarátov, Rusia",
+    "lat": 51.4811,
+    "lon": 46.2106,
+    "desde": 1952,
+    "texto": "Base de bombarderos estratégicos a unos 14 km al este de Sarátov, junto al Volga. Es la sede de los Tu-95MS y la única base de los Tu-160 rusos; su pista de 3,5 km es el origen de muchos lanzamientos de misiles de crucero contra Ucrania y el blanco de ataques con drones desde 2022.",
+    "nombres": [
+      {
+        "nombre": "Río Volga",
+        "clase": "accidente",
+        "lat": 51.3462,
+        "lon": 45.8857
+      },
+      {
+        "nombre": "Embalse de Sarátov",
+        "clase": "accidente",
+        "lat": 51.6565,
+        "lon": 46.0806
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Río Volga",
+          "clase": "accidente",
+          "x": 51,
+          "y": 170
+        },
+        {
+          "nombre": "Embalse de Sarátov",
+          "clase": "accidente",
+          "x": 150,
+          "y": 12
+        },
+        {
+          "nombre": "Sarátov",
+          "clase": "ciudad",
+          "x": 70,
+          "y": 88
+        },
+        {
+          "nombre": "Engels",
+          "clase": "ciudad",
+          "x": 104,
+          "y": 108
+        }
+      ]
+    }
   }
 }
