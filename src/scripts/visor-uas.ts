@@ -89,7 +89,8 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta, inicio: Inicio 
   let renderer: WebGLRenderer;
   try {
     renderer = new WebGLRenderer({ canvas: lienzo, antialias: true, alpha: true });
-  } catch {
+  } catch (e) {
+    console.warn("visor: no se pudo crear el contexto WebGL", e);
     caja.classList.add("visor-sin-webgl");
     return () => {};
   }

@@ -233,6 +233,11 @@ const VISTAS = [
       caja.hidden = false;
       actual = caja;
       const este = ++pedidos;
+      // Un lienzo cuyo contexto ya se soltó no vuelve a dar WebGL: se
+      // cambia por uno nuevo.
+      const lienzo = caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!;
+      if (lienzo.dataset.usado) lienzo.replaceWith(lienzo.cloneNode(false));
+      caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!.dataset.usado = "1";
       const s = await montar(caja, inicio);
       if (este === pedidos) soltar = s;
       else s?.();
