@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -32,7 +32,8 @@ export type Pieza = (
   // hace que la mitad de arriba llegue a la cintura ya inclinada hacia
   // arriba, y la arista marca más ángulo.
   // `abierto`: sin tapa delante (la sección de mayor z): un capó con la boca
-  // de la toma de aire (el TB2).
+  // de la toma de aire (el TB2). Con "atras", sin la de detrás: la boca del
+  // motor del SIRTAP.
   // `tomas`: tomas de aire sumergidas (ver `Toma`).
   // `suave`: con ensanche, cada mitad de la sección se suaviza como una sola
   // curva lisa (campana de ese ancho a lo largo de la curva; el borde y su
@@ -50,7 +51,7 @@ export type Pieza = (
   // `contorno`): arista viva también en el eje (la quilla, el lomo) y, a lo
   // largo, solo en las secciones con `quiebre` (el casco de caras planas del
   // Magura: liso de proa a popa y con aristas solo donde las tiene).
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number; hoyuelos?: Hoyuelo[]; tapaPlana?: boolean; facetas?: boolean }
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean | "atras"; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number; hoyuelos?: Hoyuelo[]; tapaPlana?: boolean; facetas?: boolean }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -156,8 +157,13 @@ export type Dibujo =
   // `fino`: letra de palo normal en vez de la negrita ancha; `espejo`, las
   // letras al revés, como vistas por detrás (las de las alas del Hero-30).
   // `cursiva`: en cursiva (el «YFQ-44A» del Fury). `letra`: de palo cuadrada,
-  // tipo DIN, ancha o estrecha (las marcas del Fury).
-  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean; cursiva?: boolean; letra?: Letra }
+  // tipo DIN, ancha o estrecha (las marcas del Fury). `espaciado`: aire
+  // entre letras, en fracción del cuerpo; `llenar`: estira el texto a lo
+  // ancho hasta llenar la calca (el «SIRTAP001», medido en las fotos), y
+  // con él, `grueso`: engorda la letra con un trazo, en fracción del cuerpo.
+  | { tipo: "texto"; texto: string; color?: string; fino?: boolean; espejo?: boolean; cursiva?: boolean; letra?: Letra; espaciado?: number; llenar?: boolean; grueso?: number }
+  // El logotipo de Airbus, calcado del vídeo del SIRTAP, estirado a la calca.
+  | { tipo: "airbus"; color: string }
   // Bandera turca, escarapela turca (roja, blanca y roja) y logo de Baykar
   // (el TB2).
   | { tipo: "bandera-tr" }
@@ -241,7 +247,9 @@ export type Dibujo =
   | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean };
 // `capa`: las calcas que se pisan se pintan por capas, de menor a mayor (los
 // textos sobre la franja del Fury); sin ella, por distancia a la cámara.
-export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean; capa?: number };
+// `mate`: la calca, mate como el negro-ua aunque la pieza brille (una zona
+// pintada de negro sobre una pieza gris, como la del morro del SIRTAP).
+export type Calca = { sobre: string[]; en: Punto3; desde: Punto3; tam: Punto2; giro?: number; dibujo: Dibujo; espejo?: boolean; capa?: number; mate?: boolean };
 export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remaches?: number; enVertices?: boolean; espejo?: boolean; claro?: boolean };
 
 // Una sección de un casco (ver arriba).
@@ -285,12 +293,13 @@ export type Seccion = { z: number; ancho: number; arriba: number; abajo: number;
 // (z); los bordes salen un poco (`ceja`). `x` e `y`, el centro del hueco en
 // la boca, sobre la superficie (con x > 0, otra igual en espejo; con x = 0,
 // una sola en el centro); `ancho`, su medio ancho ahí, y `hondo`, cuánto se
-// mete.
+// mete. `cuadrada`: el hueco, en planta un rectángulo con el fondo casi
+// plano y las paredes casi verticales (la del SIRTAP).
 // Hoyuelo en los costados de un casco: centrado en (y, z), `alto` y `largo`
 // son sus medios tamaños y `hondo`, cuánto mete el costado en el centro.
 export type Hoyuelo = { y: number; z: number; alto: number; largo: number; hondo: number };
 
-export type Toma = { boca: number; largo: number; punta: number; x: number; y: number; ancho: number; hondo: number; ceja: number };
+export type Toma = { boca: number; largo: number; punta: number; x: number; y: number; ancho: number; hondo: number; ceja: number; cuadrada?: boolean };
 
 // Qué respalda lo que cuenta cada parte.
 export type Respaldo = "foto" | "reconstruccion" | "fabricante";

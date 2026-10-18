@@ -218,7 +218,7 @@ function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], 
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false, hoyuelos: Hoyuelo[] = [], tapaPlana = false, facetas = false): BufferGeometry {
+function geometriaCasco(secciones: Seccion[], abierto: boolean | "atras" = false, tomas: Toma[] = [], alisado = 0, polo = false, hoyuelos: Hoyuelo[] = [], tapaPlana = false, facetas = false): BufferGeometry {
   if (secciones.some((q) => q.contorno)) return geometriaCascoContorno(secciones, abierto, tapaPlana, facetas);
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
@@ -228,7 +228,9 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   // igual a lo largo y con pocos puntos salía poligonal) y los anillos por
   // distancia, uno cada 1/260 del largo (con 12 entre cada dos secciones se
   // amontonaban donde hay muchas, en la raíz del ala).
-  const PASOS = 12, MEDIO = alisado > 0 ? 96 : conLomo ? 44 : 28;  // anillos entre secciones; puntos por mitad
+  // Con tomas y sin ensanche, más puntos: el hueco de una toma pequeña cae
+  // entre pocos (el lomo del SIRTAP).
+  const PASOS = 12, MEDIO = alisado > 0 ? 96 : conLomo ? 44 : tomas.length ? 80 : 28;  // anillos entre secciones; puntos por mitad
   const zs = ss.map((q) => q.z);
   const f = (v: (q: Seccion) => number) => monotona(zs, ss.map(v));
   const ancho = f((q) => q.ancho), arriba = f((q) => q.arriba), abajo = f((q) => q.abajo);
@@ -347,10 +349,12 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
       const kCeja = z >= t.boca ? 1 : 1 - suave(0, t.finCeja, t.boca - z);
       // El hueco: en planta, un cuarto de elipse (ancho entero en la boca, a
       // cero en el frente), con las paredes casi rectas y el frente en cuesta.
+      // Con `cuadrada`, en planta un rectángulo con las esquinas de delante
+      // redondas, el fondo casi plano y las paredes casi verticales.
       const q = Math.min(1, Math.max(0, (z - t.boca) / t.largo));
-      const fw = Math.sqrt(1 - q * q);
+      const fw = t.cuadrada ? (q < 0.8 ? 1 : Math.sqrt(Math.max(0, 1 - ((q - 0.8) / 0.2) ** 2))) : Math.sqrt(1 - q * q);
       const dHueco = fw > 0 ? Math.abs(ang - t.ang) / (t.dAng * fw) : 9;
-      const hueco = (1 - q ** 1.5) * (1 - suave(0.5, 1, dHueco));
+      const hueco = (t.cuadrada ? 1 - q ** 3 : 1 - q ** 1.5) * (1 - suave(t.cuadrada ? 0.85 : 0.5, 1, dHueco));
       // La rampa de delante, poco honda, que se abre hacia la boca.
       const s = Math.min(1, (t.punta - z) / (t.punta - t.boca));
       const ancho = t.dAng * (0.12 + 0.88 * s ** 0.6);
@@ -527,6 +531,8 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
         const r = (r1 ** P + r2 ** P) ** (1 / P);
         if (r1 > 1e-9) { x *= r / r1; y = c + ((y - c) * r) / r1; }
       }
+      // Las tomas hunden la sección también sin ensanche.
+      if (huecos.length) [[x, y]] = hundir([[x, y]], z, c);
       tiras[0].push(hoyuelo(x, y, z), y, z);
     }
     const abajoPts: [number, number][] = conPanza
@@ -584,7 +590,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
   });
   // Tapas donde el cuerpo no acaba en punta.
   for (const [i, atras] of [[0, true], [anillosZ.length - 1, false]] as const) {
-    if (abierto && !atras) continue;
+    if (abierto === "atras" ? atras : abierto && !atras) continue;
     const anillos = [0, 1].map((t) => Array.from({ length: Ns[t] }, (_, k) => bases[t] + i * Ns[t] + k));
     const anillo = anillos.flat();
     const xs = anillo.map((v) => pos[v * 3]);
@@ -639,7 +645,7 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
 // viva también en el eje y, a lo ancho, en las secciones con `quiebre`: el
 // casco se parte en tandas entre quiebres, cada una con su curva y sus
 // vértices (un casco de caras planas, liso a lo largo).
-function geometriaCascoContorno(secciones: Seccion[], abierto: boolean, tapaPlana = false, facetas = false): BufferGeometry {
+function geometriaCascoContorno(secciones: Seccion[], abierto: boolean | "atras", tapaPlana = false, facetas = false): BufferGeometry {
   type P2 = [number, number];
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   const zs = ss.map((q) => q.z);
@@ -714,7 +720,7 @@ function geometriaCascoContorno(secciones: Seccion[], abierto: boolean, tapaPlan
   // Tapas donde el cuerpo no acaba en punta (como en el casco de siempre).
   const primera = porTanda[0], ultima = porTanda[porTanda.length - 1];
   for (const [{ anillosZ, porAnillo, bases }, i, atras] of [[primera, 0, true], [ultima, ultima.anillosZ.length - 1, false]] as const) {
-    if (abierto && !atras) continue;
+    if (abierto === "atras" ? atras : abierto && !atras) continue;
     const tiras = porAnillo[i];
     const xs = tiras.flat().map(([x]) => x);
     if (Math.max(...xs) - Math.min(...xs) < 1e-6) continue;

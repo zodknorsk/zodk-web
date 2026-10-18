@@ -83,6 +83,15 @@ no las piezas.
   `arte/uas-fuentes/skydio-x10d/hd/tools/` (numpy, scipy, OpenCV). Están
   **fuera de Git, solo en el Mac**, y solo se usan si
   `encajar-camara.mjs` no basta.
+- **Cuando una foto sola no fija una medida** (la envergadura del SIRTAP:
+  las puntas solo salían en una), encajar a la vez varias fotos y los puntos
+  que se ven en más de una: `arte/uas-fuentes/sirtap/hd/conjunto.mjs`
+  (Node, sin numpy; fuera de Git, solo en el Mac). Deja las cámaras en
+  `<foto>.cam.json`, listas para `comparar-foto.mjs`.
+- **El visor no ve más allá de unos 225 m**: con una cámara de teleobjetivo
+  muy lejana, `comparar-foto.mjs` pinta el render vacío. Se acerca la
+  cámara sin cambiar el encuadre con `acercar.py <cam.json> 150` (en la
+  misma carpeta).
 
 **La forma**:
 

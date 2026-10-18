@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-10-18",
+  "tuit": {
+    "id_str": "1963583414931489020",
+    "created_at": "2025-09-04T12:42:22.000Z",
+    "text": "Final brushstroke! ✅\n\nAfter a busy summer of ground testing, the first #SIRTAP prototype is now fully painted and getting ready to shine up in the skies.\n\nNext milestones:\n\n🇪🇸 Aircraft and Ground Control Station prototypes shipping to @intaespana ’s Unmanned Systems Test Centre https://t.co/aLPAIIA1NL",
+    "note_tweet": true,
+    "user": {
+      "name": "Airbus Defence",
+      "screen_name": "AirbusDefence",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1007496819058839553/khv6XnLm_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/aLPAIIA1NL",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1963583293653196800/pu/img/-2seNjmyYWRPiyKr.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1963583293653196800/pu/pl/NOewyVd6Be20nRx_.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/ext_tw_video/1963583293653196800/pu/vid/avc1/320x568/gnfx2OnPzgiiKFI5.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/ext_tw_video/1963583293653196800/pu/vid/avc1/480x852/5ka4CNaz7_BcZKCp.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1963583293653196800/pu/vid/avc1/720x1280/gR2fjzJZXXrYsldP.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
