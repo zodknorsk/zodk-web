@@ -48,7 +48,7 @@ const piezasDe = (...nombres: string[]) => shahed.partes.filter((p) => nombres.i
 
 const maqueta: Maqueta = {
   nombre: "Geran-2",
-  subtitulo: "Dron de ataque de un solo uso",
+  subtitulo: "Dron de ataque de un solo uso (OWA)",
   escala: 1,
   pais: bandera("RU"),
   hd: true,

@@ -438,7 +438,7 @@ const aUnidades = (p: Pieza): Pieza => ({ ...aUnidadesSola(p), ...(p.girar && { 
 const maqueta: Maqueta = {
   nombre: "Magura V7",
   vista3d: [78, 25],
-  subtitulo: "Dron naval",
+  subtitulo: "Dron naval de ataque USV",
   escala: ESCALA,
   resalte: "tinta",
   hd: true,

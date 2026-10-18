@@ -515,7 +515,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "FQ-44A Fury",
-  subtitulo: "Dron de combate CCA",
+  subtitulo: "Loyal wingman CCA",
   escala: ESCALA,
   resalte: "tinta",
   hd: true,

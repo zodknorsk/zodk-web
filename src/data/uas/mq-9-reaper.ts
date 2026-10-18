@@ -585,7 +585,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "MQ-9 Reaper",
-  subtitulo: "Dron armado de media altitud y gran autonomía",
+  subtitulo: "Dron armado MALE",
   escala: ESCALA,  // 1 unidad = 7,8 m; medidas de la ficha de la Fuerza Aérea
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

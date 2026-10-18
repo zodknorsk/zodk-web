@@ -12,7 +12,7 @@ tags:
   - naval
 bandera: "\U0001F1FA\U0001F1E6"
 pais: Ucrania
-categoria: Dron naval de ataque
+categoria: Dron naval de ataque USV
 ---
 > El Magura es un <mark>dron naval de ataque</mark> que maneja la Inteligencia militar ucraniana (GUR): una lancha sin tripulación, baja y oscura, que navega cientos de kilómetros por el mar Negro hasta lanzarse contra barcos rusos. Ucrania <mark>hundió en 2024 la corbeta Ivanovets, el buque de desembarco Tsezar Kunikov y el patrullero Sergey Kotov</mark>, y la Flota del Mar Negro tuvo que retirarse de Crimea. La primera versión, el <mark>V5</mark>, mide 5,5 m y el <mark>V7</mark>, una versión más grande y con más carga explosiva, puede llevar misiles aire-aire.
 

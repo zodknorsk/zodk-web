@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1FA\U0001F1F8"
 pais: Estados Unidos
-categoria: Loyal Wingman UCAV
+categoria: Loyal wingman CCA
 ---
 > El FQ-44A Fury es el <mark>dron de combate de Anduril para el programa CCA</mark> de la Fuerza Aérea de EE. UU.: un pequeño avión a reacción sin piloto, de unos 10 m de largo, pensado para volar junto a los aviones de combate tripulados como un compañero de formación más, con misiles, sensores o haciendo de señuelo. No lo lleva nadie a los mandos: un operador le dice qué hacer y el dron decide cómo hacerlo. En junio de 2026 la Fuerza Aérea <mark>lo eligió para fabricarlo en serie</mark>, junto al [FQ-42A](https://es.wikipedia.org/wiki/General_Atomics_FQ-42_Vengeance) de General Atomics. Aún no ha entrado en servicio.
 
@@ -24,7 +24,7 @@ categoria: Loyal Wingman UCAV
 | **País**                          | 🇺🇸 Estados Unidos                                                                                                           |
 | **Fabricante**                    | Anduril Industries (Costa Mesa, California); se fabrica en su planta Arsenal-1, en Ohio                                       |
 | **Operador**                      | Fuerza Aérea de EE. UU.                                                                                                       |
-| **Categoría**                     | Loyal Wingman UCAV                                                                                                            |
+| **Categoría**                     | Loyal wingman CCA                                                                                                            |
 | **Situación**                     | Prototipos YFQ-44A en pruebas desde 2025; en producción desde 2026                                                            |
 | **Primer uso en combate**         | No                                                                                                                            |
 | **Envergadura / longitud / peso** | 5,2 m / 10 m / 2.270 kg de MTOW                                                                                               |

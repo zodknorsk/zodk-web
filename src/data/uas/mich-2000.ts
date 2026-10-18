@@ -287,7 +287,7 @@ const COSTURAS: Costura[] = [
 
 const maqueta: Maqueta = {
   nombre: "MICH-2000",
-  subtitulo: "Dron de ataque de largo alcance",
+  subtitulo: "Dron de ataque de un solo uso (OWA)",
   // ~2,5 m de envergadura, como el Shahed-136 (no hay medidas publicadas).
   escala: 1,
   pais: bandera("UA"),

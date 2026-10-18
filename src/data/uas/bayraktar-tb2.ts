@@ -658,7 +658,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "Bayraktar TB2",
-  subtitulo: "Dron armado de media altitud",
+  subtitulo: "Dron armado MALE",
   escala: ESCALA,  // 1 unidad = 4,5 m; medidas de Baykar
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

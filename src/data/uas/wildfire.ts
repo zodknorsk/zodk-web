@@ -525,7 +525,7 @@ const aUnidades = (p: Pieza): Pieza => {
 
 const maqueta: Maqueta = {
   nombre: "Wildfire",
-  subtitulo: "Dron armado de media altitud y gran autonomía",
+  subtitulo: "Dron armado MALE",
   escala: ESCALA,  // 1 unidad = 7,8 m; medidas sacadas de los renders, a escala con los JSM
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

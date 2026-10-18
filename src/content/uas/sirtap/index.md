@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1EA\U0001F1F8"
 pais: España
-categoria: Dron táctico de vigilancia
+categoria: Dron de vigilancia MALE
 ---
 > El SIRTAP es el <mark>dron táctico español de Airbus</mark>, que ahora lo llama U850 SIRTAP: un avión de unos 11 m de envergadura y 750 kg de MTOW, con hélice propulsora y tren de aterrizaje, que se maneja desde tierra y está pensado para vigilar durante más de 20 horas. Lo diseña y lo fabrica Airbus Defence and Space en Getafe, y el Ministerio de Defensa ha encargado 27 para el <mark>Ejército de Tierra y el Ejército del Aire y del Espacio</mark>, con los que el Ejército de Tierra sustituirá a sus Searcher israelíes. En octubre de 2026 el primer prototipo <mark>aún no ha volado</mark>.
 > ⚠️ Las prestaciones son las que dan Airbus y el Ministerio de Defensa para un dron que todavía está en pruebas.
@@ -24,7 +24,7 @@ categoria: Dron táctico de vigilancia
 | **País**                          | 🇪🇸 España                                                                                                                       |
 | **Fabricante**                    | Airbus Defence and Space (Getafe)                                                                                                |
 | **Operador**                      | Ejército de Tierra y Ejército del Aire y del Espacio, desde 2027                                                                 |
-| **Categoría**                     | Dron táctico de vigilancia, de altas prestaciones                                                                                |
+| **Categoría**                     | Dron de vigilancia MALE, de altas prestaciones                                                                                |
 | **Situación**                     | Primer prototipo en pruebas en tierra; primer vuelo previsto a finales de 2026                                                   |
 | **Primer uso en combate**         | No                                                                                                                               |
 | **Envergadura / longitud / peso** | 11 m / 7,3 m / 750 kg de MTOW (Ministerio de Defensa)                                                                            |

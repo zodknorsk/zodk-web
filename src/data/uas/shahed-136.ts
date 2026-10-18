@@ -462,7 +462,7 @@ const PARTES: Parte[] = [
 
 const maqueta: Maqueta = {
   nombre: "Shahed-136",
-  subtitulo: "Dron de ataque de un solo uso",
+  subtitulo: "Dron de ataque de un solo uso (OWA)",
   escala: 1,
   pais: bandera("IR"),
   resalte: "tinta",

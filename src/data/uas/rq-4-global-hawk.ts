@@ -503,7 +503,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "RQ-4 Global Hawk",
-  subtitulo: "Dron de reconocimiento de gran altitud y gran autonomía",
+  subtitulo: "Dron de reconocimiento HALE",
   escala: ESCALA,  // 1 unidad = 15 m; medidas de Designation-Systems
   hd: true,
   contornoPixel: true,

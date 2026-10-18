@@ -454,7 +454,7 @@ const costuraAUnidades = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(
 
 const maqueta: Maqueta = {
   nombre: "RQ-11 Raven",
-  subtitulo: "Dron de reconocimiento lanzado a mano",
+  subtitulo: "Dron de reconocimiento de Grupo 1",
   escala: ESCALA,  // 1 unidad = 0,5 m; medidas de la ficha del Ejército de Tierra
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",
