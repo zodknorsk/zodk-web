@@ -14,7 +14,7 @@ pais: Estados Unidos
 categoria: Bomba guiada por GPS
 ---
 ![](./armamento-gbu-38.jpg)
-*Un Reaper de la Fuerza Aérea en Kandahar, armado con cuatro GBU-38, en febrero de 2018 (foto: TSgt Paul Labbe, Fuerza Aérea de EE. UU.).*
+*Un Reaper de la Fuerza Aérea en Kandahar Airfield, armado con cuatro GBU-38, en febrero de 2018 (foto: TSgt Paul Labbe, Fuerza Aérea de EE. UU.).*
 
 ![](./armamento-gbu-38-reaper.jpg)
 *Un MQ-9 Reaper de la Guardia Nacional Aérea de Dakota del Norte con GBU-38 de prácticas, en el ejercicio Southern Strike de 2021 (foto: CMSgt David H. Lipp, Fuerza Aérea de EE. UU.).*

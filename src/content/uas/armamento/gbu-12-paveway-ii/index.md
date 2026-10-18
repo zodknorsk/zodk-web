@@ -14,7 +14,7 @@ pais: Estados Unidos
 categoria: Bomba guiada por láser
 ---
 ![](./armamento-gbu-12.jpg)
-*Reaper británico en Kandahar, con dos GBU-12 en los soportes de dentro y cuatro Hellfire en los de fuera (foto: Cpl Steve Bain/MOD, OGL v1.0, diciembre de 2009).*
+*Reaper británico en Kandahar Airfield, con dos GBU-12 en los soportes de dentro y cuatro Hellfire en los de fuera (foto: Cpl Steve Bain/MOD, OGL v1.0, diciembre de 2009).*
 
 ![](./armamento-gbu-12-f35a.jpg)
 *Un F-35A suelta una GBU-12 sobre el campo de tiro de Utah, en febrero de 2016 (foto: Jim Haseltine, Fuerza Aérea de EE. UU.).*

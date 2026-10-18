@@ -651,7 +651,7 @@
     "lat": 40.2944,
     "lon": -3.7236,
     "desde": 1911,
-    "texto": "Base aérea al sur de Madrid, a unos 12 km del centro, y uno de los aeródromos más antiguos de España. Comparte pista con la fábrica de Airbus Defence and Space, donde en junio de 2026 hizo su primer rodaje el dron SIRTAP.",
+    "texto": "Base aérea al sur de Madrid, a unos 12 km del centro, y uno de los aeródromos más antiguos de España. Comparte pista con la fábrica de Airbus Defence and Space.",
     "nombres": [
       {
         "nombre": "Río Manzanares",
@@ -706,7 +706,7 @@
     "slug": "volkel-ab",
     "oficial": "Volkel Air Base",
     "pais": "NL",
-    "rama": "Real Fuerza Aérea de los Países Bajos (KLu)",
+    "rama": "Real Fuerza Aérea de los Países Bajos",
     "lugar": "Brabante Septentrional, Países Bajos",
     "lat": 51.6572,
     "lon": 5.6908,
@@ -747,7 +747,7 @@
     "lat": 42.589,
     "lon": -5.6556,
     "desde": 1929,
-    "texto": "Base aérea en La Virgen del Camino, a unos 6 km al oeste de la ciudad de León. Es la sede de la Academia Básica del Aire y la base prevista para los SIRTAP, con un nuevo grupo para operar estos drones.",
+    "texto": "Base aérea a unos 6 km al oeste de la ciudad de León. Es la sede de la Academia Básica del Aire y la base prevista para los SIRTAP, con un nuevo grupo para operar estos drones.",
     "nombres": [],
     "mapa": {
       "km": 90,
@@ -1118,7 +1118,7 @@
     "lat": 51.4811,
     "lon": 46.2106,
     "desde": 1952,
-    "texto": "Base de bombarderos estratégicos a unos 14 km al este de Sarátov, junto al Volga. Es la sede de los Tu-95MS y la única base de los Tu-160 rusos; su pista de 3,5 km es el origen de muchos lanzamientos de misiles de crucero contra Ucrania y el blanco de ataques con drones desde 2022.",
+    "texto": "Base de bombarderos estratégicos junto al Volga. Es la sede de los Tu-95MS y la única base de los Tu-160 rusos; es el origen de muchos lanzamientos de misiles de crucero contra Ucrania y el blanco de ataques con drones desde 2022.",
     "nombres": [
       {
         "nombre": "Río Volga",
@@ -1172,7 +1172,7 @@
     "lat": 40.7033,
     "lon": 141.3686,
     "desde": 1938,
-    "texto": "Base compartida por la USAF y las Fuerzas Aéreas de Autodefensa de Japón, en el extremo norte de la isla de Honshu. Su pista de 3,05 km da servicio a los cazas F-16 de la USAF y a los RQ-4 Global Hawk japoneses, que vigilan el mar de Japón y el Pacífico norte.",
+    "texto": "Base compartida por la USAF y las Fuerzas Aéreas de Autodefensa de Japón, en el extremo norte de la isla de Honshu. Su pista da servicio a los cazas F-16 de la USAF y a los RQ-4 Global Hawk japoneses, que vigilan el mar de Japón y el Pacífico norte.",
     "nombres": [
       {
         "nombre": "Lago Ogawara",
@@ -1183,7 +1183,7 @@
       {
         "nombre": "Bahía de Mutsu",
         "clase": "accidente",
-        "lat": 41.0,
+        "lat": 41,
         "lon": 141.1
       }
     ],
@@ -1245,7 +1245,7 @@
     "slug": "tsuiki-ab",
     "oficial": "Tsuiki Air Base",
     "pais": "JP",
-    "rama": "Fuerza Aérea de Autodefensa de Japón (JASDF)",
+    "rama": "Fuerza Aérea de Autodefensa de Japón",
     "lugar": "Fukuoka, Japón",
     "lat": 33.685,
     "lon": 131.0403,
@@ -1262,7 +1262,7 @@
         "nombre": "Kyūshū",
         "clase": "region",
         "lat": 33.5,
-        "lon": 131.0
+        "lon": 131
       }
     ],
     "mapa": {
@@ -1370,13 +1370,13 @@
     "lat": 31.5058,
     "lon": 65.8478,
     "desde": 1962,
-    "texto": "Aeropuerto del sur de Afganistán que EE. UU. construyó en 1962. Tras la invasión de 2001 se convirtió en la mayor base de la coalición en el sur del país, con una pista de 3,2 km, y desde 2007 la mantuvo la OTAN. Pasó a manos de los talibanes en agosto de 2021.",
+    "texto": "Aeropuerto del sur de Afganistán que EE. UU. construyó en 1962. Tras la invasión de 2001 se convirtió en la mayor base de la coalición en el sur del país, y desde 2007 la mantuvo la OTAN. Pasó a manos de los talibanes en agosto de 2021.",
     "nombres": [
       {
         "nombre": "Desierto de Registán",
         "clase": "region",
         "lat": 30.9,
-        "lon": 65.0
+        "lon": 65
       },
       {
         "nombre": "Río Arghandab",
@@ -1418,7 +1418,7 @@
     "lat": 34.9461,
     "lon": 69.265,
     "desde": 1950,
-    "texto": "La mayor base de EE. UU. en Afganistán, a unos 40 km al norte de Kabul. La construyeron los soviéticos en los años cincuenta y la ocuparon EE. UU. de finales de 2001 a julio de 2021. Su pista principal mide más de 3,6 km.",
+    "texto": "La mayor base de EE. UU. en Afganistán, a unos 40 km al norte de Kabul. La construyeron los soviéticos en los años cincuenta y la ocuparon EE. UU. de finales de 2001 a julio de 2021.",
     "nombres": [
       {
         "nombre": "Llanura de Shomali",
