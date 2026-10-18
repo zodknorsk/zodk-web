@@ -91,6 +91,7 @@ const VISTAS = [
             <button type="button" data-estilo="maqueta" aria-pressed="true">Maqueta</button>
             <button type="button" data-estilo="pixel" aria-pressed="false" title="Pixel art">Pixel</button>
           </div>
+          {m.agua && <button type="button" data-accion="agua" aria-pressed="true" title="El agua hasta la línea de flotación">Agua</button>}
           <button type="button" data-accion="girar" aria-pressed="false" title="Girar solo">Girar</button>
           <button type="button" data-accion="alejar" aria-label="Alejar" title="Alejar">−</button>
           <button type="button" data-accion="acercar" aria-label="Acercar" title="Acercar">+</button>

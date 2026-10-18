@@ -8,7 +8,8 @@
 //        [--zoom (con --recorte: pinta solo el recorte, a todo el ancho, para
 //        ver de cerca una pieza)] [--sin=helice,cono (piezas que no se pintan:
 //        la hélice tapa a veces lo que se quiere ver)] [--catapulta (con el
-//        dron sobre su catapulta, si la tiene)]
+//        dron sobre su catapulta, si la tiene)] [--sin-agua (los drones
+//        navales, sin el agua: para ver el casco entero)]
 // El lienzo no puede pasar de lo que cabe en la pantalla (en el Mac, unos
 // 1900 px de ancho): más grande, el encuadre se descoloca.
 import { spawn } from "node:child_process";
@@ -73,7 +74,7 @@ if (op.noche) {
   await espera(800);
   await evaluar("sessionStorage.setItem('theme','dark')");
 }
-const consulta = [op.pixel && "estilo=pixel", op.catapulta && "catapulta=1"].filter(Boolean).join("&");
+const consulta = [op.pixel && "estilo=pixel", op.catapulta && "catapulta=1", op["sin-agua"] && "agua=0"].filter(Boolean).join("&");
 await orden("Page.navigate", { url: `http://localhost:4321/uas/${A.modelo ?? "bayraktar-tb2"}${consulta ? `?${consulta}` : ""}` });
 await espera(4000);
 const caja = await evaluar(`(async () => {

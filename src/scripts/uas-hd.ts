@@ -111,6 +111,7 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El RQ-4B 04-2015: gris medio algo verdoso, mate (fotos de Le Bourget: al
   // sol, #888e8e arriba y #6e7673 en el costado).
   "gris-gh": { color: "#5a605f", metal: 0, rugosidad: 0.75 },
+  "gris-mg": { color: "#7b8383", metal: 0, rugosidad: 0.8 },
 };
 
 // Tres escalones de luz para la ilustración.

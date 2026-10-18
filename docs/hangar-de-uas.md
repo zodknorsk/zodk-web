@@ -295,7 +295,8 @@ del X10D).
     tarjetas, hasta la primera coma), Situación, Primer uso en combate,
     Envergadura / longitud / peso, Alcance, Carga, Motor, Origen (`[[…]]`).
     Lo que no se sepa, «No publicado»; lo del fabricante, «(fabricante)».
-  - `## Historia`: dos párrafos y uno corto de su uso reciente, con enlaces.
+  - `## Historia` (toda la historia del dron) y `## Especificaciones` (todo lo
+    técnico); el reparto, en `docs/nuevodron/1-nota.md`.
   - `## En acción`: tuits embebidos (`![](https://x.com/…/status/…)`).
   - `## Fuentes` (formato que eligió el usuario con el TB2, 29-sep-2026):
     una línea por fuente, `* **Medio**, mes año - Título real ([fuente](url))`,

@@ -8,7 +8,8 @@ import {
   Color, DoubleSide, EdgesGeometry, Group, HemisphereLight, LineBasicMaterial,
   LineSegments, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene,
   Spherical, Vector3, WebGLRenderer, DirectionalLight, Box3, MeshBasicMaterial,
-  OrthographicCamera, Quaternion, type ShaderMaterial,
+  OrthographicCamera, Quaternion, ShaderMaterial, CircleGeometry, CustomBlending, AddEquation,
+  SrcAlphaFactor, OneMinusSrcAlphaFactor, OneFactor, Points, type Material, type Object3D,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { Acabado, Maqueta } from "../data/uas/tipos";
@@ -21,7 +22,7 @@ type Pin = { x: number; y: number; tapado: boolean };
 
 // En la maqueta, las insignias llevan su color; lo demás, el relleno del tema.
 const COLOR_MAQUETA: Partial<Record<Acabado, string>> = {
-  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e", "blanco-h30": "#eef1f3", "tubo-h30": "#4a4b3f", espuma: "#4e4e52", "gris-fu": "#6e7178", "gris-fu2": "#4a5053", "gris-misil": "#a3a8ac", "gris-gh": "#69706e",
+  amarillo: "#e0b400", azul: "#1a4fb5", gris: "#b9bdc3", "gris-et": "#b4bebd", "gris-tr": "#b2bcc4", "gris-ga": "#b9b9c0", "gris-x10": "#c3cbd1", "gris-qs": "#cdd2d5", "arena-st": "#b49462", "arena-st2": "#bd9e6d", "azul-x10": "#2470cc", lente: "#141b26", oliva: "#5e6743", rojo: "#b5262c", "rojo-vivo": "#d81e2a", hueco: "#08090a", blanco: "#f1f1ec", "crema-ir": "#d8d0c2", laton: "#b8953f", aluminio: "#c3c6ca", ocre: "#c9a64a", hueso: "#e0dccd", cromato: "#b9b06e", "blanco-h30": "#eef1f3", "tubo-h30": "#4a4b3f", espuma: "#4e4e52", "gris-fu": "#6e7178", "gris-fu2": "#4a5053", "gris-misil": "#a3a8ac", "gris-gh": "#69706e", "gris-mg": "#7b8383",
 };
 
 export type { Vista };
@@ -76,6 +77,105 @@ function pintarSiluetas(raiz: Group, radio: number, vistas: Vista[]): Map<Vista,
   r.forceContextLoss();
   return salida;
 }
+
+// El agua de los drones navales (ver «Agua» en montarVisor). Lo que queda
+// bajo la flotación se tiñe del color del agua según cuánta agua atraviesa
+// la mirada hasta ello (casi nada junto a la flotación; mucho de lado, a ras
+// del agua), sin pasar de `max`: algo del casco se intuye siempre. `k`, por
+// metro. Con la cámara bajo el agua (la vista «Abajo»), sin teñir: se ve el
+// fondo del casco. Alrededor, una lámina que se desvanece en un círculo; se
+// pinta antes que el dron y él encima, así no lo tiñe dos veces.
+const AGUA = { k: 3.5, max: 0.93, arriba: 0.6, lado: 0.9 };
+function crearAgua(radio: number, y: number, centro: Vector3, escala: number) {
+  const v = AGUA;
+  const R = radio * 1.5;
+  const color = new Color("#557789");
+  // Uniformes del teñido, los mismos en todos los materiales (la altura, en
+  // el mundo: la raíz va desplazada para centrar el dron).
+  const tinte = {
+    aguaY: { value: y - centro.y }, aguaK: { value: v.k * escala }, aguaMax: { value: v.max },
+    aguaColor: { value: color }, aguaSi: { value: 1 },
+  };
+  const material = new ShaderMaterial({
+    depthWrite: false,
+    side: DoubleSide,
+    // Mezclada sin entrar en la lista de transparentes: así se pinta con lo
+    // opaco, la primera (renderOrder), y el dron encima.
+    blending: CustomBlending, blendEquation: AddEquation, blendSrc: SrcAlphaFactor, blendDst: OneMinusSrcAlphaFactor,
+    blendSrcAlpha: OneFactor, blendDstAlpha: OneMinusSrcAlphaFactor,
+    uniforms: {
+      color: { value: color }, cielo: { value: new Color("#c4d2da") },
+      arriba: { value: v.arriba }, lado: { value: v.lado }, R: { value: R },
+    },
+    vertexShader: /* glsl */ `
+      varying vec2 vPlano;
+      varying vec3 vMundo;
+      void main() {
+        vPlano = position.xy;
+        vec4 m = modelMatrix * vec4(position, 1.0);
+        vMundo = m.xyz;
+        gl_Position = projectionMatrix * viewMatrix * m;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform vec3 color;
+      uniform vec3 cielo;
+      uniform float arriba;
+      uniform float lado;
+      uniform float R;
+      varying vec2 vPlano;
+      varying vec3 vMundo;
+      void main() {
+        float fuera = 1.0 - smoothstep(0.45, 1.0, length(vPlano) / R);
+        // Rasante: 0 mirando desde arriba, 1 de lado; de lado, más tapada y
+        // más clara (refleja el cielo).
+        float rasante = 1.0 - abs(normalize(cameraPosition - vMundo).y);
+        gl_FragColor = vec4(mix(color, cielo, pow(rasante, 3.0) * 0.45), mix(arriba, lado, rasante * rasante) * fuera);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`,
+  });
+  const malla = new Mesh(new CircleGeometry(R, 128), material);
+  malla.rotation.x = -Math.PI / 2;
+  malla.position.set(centro.x, y, centro.z);
+  malla.renderOrder = -1;
+  malla.raycast = () => {};
+  // Teñido: se añade a un material (una vez) antes del tono de pantalla.
+  const mojar = (m: Material) => {
+    if (m.userData.mojado || m === material) return;
+    m.userData.mojado = true;
+    const antes = m.onBeforeCompile.bind(m), clave = m.customProgramCacheKey.bind(m);
+    m.onBeforeCompile = (sh, r) => {
+      antes(sh, r);
+      Object.assign(sh.uniforms, tinte);
+      sh.vertexShader = "varying vec3 vAgua;\n" + sh.vertexShader.replace(
+        "#include <project_vertex>",
+        "#include <project_vertex>\nvAgua = (modelMatrix * vec4(transformed, 1.0)).xyz;",
+      );
+      sh.fragmentShader = "varying vec3 vAgua;\nuniform float aguaY;\nuniform float aguaK;\nuniform float aguaMax;\nuniform vec3 aguaColor;\nuniform float aguaSi;\n" + sh.fragmentShader.replace(
+        "#include <tonemapping_fragment>",
+        `if (aguaSi > 0.5 && vAgua.y < aguaY && cameraPosition.y > aguaY) {
+          // Agua atravesada: el trozo del rayo que va bajo la superficie.
+          float bajo = distance(cameraPosition, vAgua) * (aguaY - vAgua.y) / max(cameraPosition.y - vAgua.y, 1e-5);
+          gl_FragColor.rgb = mix(gl_FragColor.rgb, aguaColor, aguaMax * (1.0 - exp(-bajo * aguaK)));
+        }
+        #include <tonemapping_fragment>`,
+      );
+    };
+    m.customProgramCacheKey = () => clave() + "|agua";
+    m.needsUpdate = true;
+  };
+  return {
+    malla, tinte,
+    mojarTodo(raiz: Object3D) {
+      raiz.traverse((o) => {
+        if (o === malla || !(o instanceof Mesh || o instanceof LineSegments || o instanceof Points)) return;
+        for (const m of Array.isArray(o.material) ? o.material : [o.material]) mojar(m);
+      });
+    },
+    dispose: () => { malla.geometry.dispose(); material.dispose(); },
+  };
+}
+
 
 export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   const lienzo = caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!;
@@ -258,6 +358,15 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     raiz.position.copy(antes);
     raiz.updateMatrixWorld(true);
   }
+
+  // Agua (drones navales): una lámina a la altura de la flotación, en un
+  // círculo alrededor del dron que se desvanece hacia fuera. Translúcida y
+  // más opaca cuanto más rasante se mira: de lado tapa la obra viva; desde
+  // arriba se ve el casco debajo, teñido. Va después de las siluetas y del
+  // centrado: no cuenta para ellos ni para las chinchetas.
+  const agua = maqueta.agua ? crearAgua(radio, maqueta.agua.y, centroLocal, maqueta.escala) : null;
+  if (agua) raiz.add(agua.malla);
+  let conAgua = !!agua;
 
   // Distancia a la que la maqueta entera cabe en el lienzo, mire desde donde
   // mire; el zoom va de 1/16 (de cerca, hacia el cursor) a 1,2 veces.
@@ -589,6 +698,20 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     caja.querySelectorAll<HTMLElement>("[data-hd]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.hd === (estiloHD ?? "no"))));
     pintarPiezas();
     lienzo.classList.toggle("visor-lienzo--pixel", estilo === "pixel");
+    // El agua: el teñido, en los materiales nuevos; la lámina, de momento
+    // solo en Maqueta.
+    if (agua) {
+      agua.mojarTodo(raiz);
+      agua.malla.visible = conAgua && estilo === "maqueta";
+    }
+    pedir();
+  };
+  const ponerAgua = (si: boolean) => {
+    if (!agua) return;
+    conAgua = si;
+    caja.querySelector("[data-accion=agua]")?.setAttribute("aria-pressed", String(si));
+    agua.malla.visible = si && modo === "maqueta";
+    agua.tinte.aguaSi.value = si ? 1 : 0;
     pedir();
   };
 
@@ -648,6 +771,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     else if (b.dataset.accion === "acercar") acercar(0.8);
     else if (b.dataset.accion === "alejar") acercar(1.25);
     else if (b.dataset.accion === "catapulta") ponerCatapulta(!conCatapulta);
+    else if (b.dataset.accion === "agua") ponerAgua(!conAgua);
     else if (b.dataset.accion === "girar") {
       controles.autoRotate = !controles.autoRotate;
       b.setAttribute("aria-pressed", String(controles.autoRotate));
@@ -714,6 +838,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
   if (params.get("pestana") === "fuentes") cambiarPestana("fuentes");
   cambiarEstilo(params.get("estilo") === "pixel" ? "pixel" : "maqueta");
   if (params.get("catapulta") === "1") ponerCatapulta(true);
+  if (params.get("agua") === "0") ponerAgua(false);
   caja.classList.add("visor-listo");
   // Solo en local: las capturas de comparación con fotos (arte/capturas.mjs
   // --js) ponen la cámara donde se encajó la de la foto.
@@ -760,6 +885,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta) {
     tintaContorno?.dispose();
     detallesHD?.dispose();
     detallesCatapulta?.dispose();
+    agua?.dispose();
     renderer.dispose();
     // Soltar el contexto WebGL: si no, al ir y volver entre páginas se
     // acumulan y el navegador acaba tirando alguno (el visor sale mal).

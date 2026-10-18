@@ -61,15 +61,21 @@ de cada `##`:
   - Lo que no se sepa: «No publicado». Lo que solo dice el fabricante:
     «(fabricante)». En una tabla, el alias de un enlace va con la barra
     escapada: `[[🇹🇷 MAM-L\|MAM-L]]`.
-- `## Historia`: **solo el origen**: quién lo hizo, de dónde sale, por qué
-  nace y cómo llega a su primer uso. Uno o dos párrafos, sin balance de
-  derribos ni de uso reciente. Se cuenta como un relato que se lee de
-  corrido, con frases de largo normal. **Ni informe técnico ni redacción de
-  colegio.**
-- `## Especificaciones y Uso`: todo lo demás, **en párrafos sueltos, sin
-  subtítulos**: diseño y prestaciones, carga y cámaras, versiones y
-  variantes, cómo se maneja y se emplea, hitos y contra qué se usa. Amplía
-  la tabla, no la repite; las cifras del texto, solo las que hacen falta.
+- `## Historia`: **todo lo que es historia del dron**: quién lo hizo, de dónde
+  sale, por qué nace, cómo evolucionan sus versiones, cuándo se presenta y
+  entra en servicio. Uno a tres párrafos, contados como un relato que se lee
+  de corrido, con frases de largo normal. **Ni informe técnico ni redacción
+  de colegio.** Aquí no va nada de cifras ni prestaciones.
+- `## Especificaciones`: **todo lo técnico**, **en párrafos sueltos, sin
+  subtítulos**: diseño y prestaciones (alcance, autonomía, velocidad), motores,
+  carga y armamento que usa, cámaras y sensores, cómo se maneja y se emplea
+  (despegue, mando, tácticas en general). Amplía la tabla, no la repite; las
+  cifras del texto, solo las que hacen falta.
+- **Datos de uso concreto** («en 2023 se usaron tantos para hacer tal cosa»,
+  hundimientos uno a uno, derribos, balances, ofensivas): **con mucha
+  mesura**, en Historia y no en Especificaciones. Solo el hito que define al
+  dron (un primero, un cambio de papel), y como mucho una o dos frases en
+  toda la nota. Nunca una lista de ataques. Ante la duda, no va.
 - **Enlaces en el texto: pocos**, solo donde el lector querrá comprobar algo
   (una cifra discutible, un hito, el vídeo del primer derribo). Lo demás se
   apoya en `## Fuentes`. Los balances del tipo «en 2024 llevaba tantos
@@ -115,7 +121,7 @@ Wikipedia sirven para orientarse, no como base.
   lleva, cifras sueltas de balance. Ante la duda, no va.
 - **La tabla es una guía rápida**: nombres y cifras clave. El detalle (alcance
   de un sensor, variantes de cámara, matices, minutos de autonomía) va en
-  `Especificaciones y Uso`, no en la tabla.
+  `Especificaciones`, no en la tabla.
 - **Carga útil no es cabeza de combate.** Si la ficha solo da la carga útil
   máxima, se dice eso y que no se publica cuánto es explosivo.
 - Cuando dos fuentes dan cifras distintas (autonomía, velocidad), se ponen

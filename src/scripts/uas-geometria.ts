@@ -218,8 +218,8 @@ function suavizarCerrada(arriba: [number, number][], abajo: [number, number][], 
 // MQ-9). Las dos mitades van con vértices propios, así la arista del costado
 // (la cintura) queda viva en la luz. Las puntas con ancho 0 quedan cerradas;
 // si no, se tapan.
-function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false, hoyuelos: Hoyuelo[] = []): BufferGeometry {
-  if (secciones.some((q) => q.contorno)) return geometriaCascoContorno(secciones, abierto);
+function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [], alisado = 0, polo = false, hoyuelos: Hoyuelo[] = [], tapaPlana = false, facetas = false): BufferGeometry {
+  if (secciones.some((q) => q.contorno)) return geometriaCascoContorno(secciones, abierto, tapaPlana, facetas);
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   // Con lomo, más puntos arriba: el hombro entre el cuerpo y el lomo es una
   // curva cerrada. Con tomas, más todavía (y apretados en las tomas).
@@ -633,8 +633,13 @@ function geometriaCasco(secciones: Seccion[], abierto = false, tomas: Toma[] = [
 // por su largo con los mismos puntos en todas las secciones, y cada punto se
 // interpola a lo largo de z como las medidas de siempre. Cada tramo lleva sus
 // vértices (arista viva entre tramos), salvo en lo alto y lo bajo del eje,
-// donde el tramo de la derecha y su reflejo van en una sola tira lisa.
-function geometriaCascoContorno(secciones: Seccion[], abierto: boolean): BufferGeometry {
+// donde el tramo de la derecha y su reflejo van en una sola tira lisa. Con
+// `tapaPlana`, las tapas llevan vértices propios: cara plana y arista viva
+// con el costado (el espejo de popa de una lancha). Con `facetas`, arista
+// viva también en el eje y, a lo ancho, en las secciones con `quiebre`: el
+// casco se parte en tandas entre quiebres, cada una con su curva y sus
+// vértices (un casco de caras planas, liso a lo largo).
+function geometriaCascoContorno(secciones: Seccion[], abierto: boolean, tapaPlana = false, facetas = false): BufferGeometry {
   type P2 = [number, number];
   const ss = secciones.slice().sort((a, b) => a.z - b.z);
   const zs = ss.map((q) => q.z);
@@ -659,41 +664,56 @@ function geometriaCascoContorno(secciones: Seccion[], abierto: boolean): BufferG
     });
   };
   const muestras = ss.map((q) => q.contorno!.map((tr, t) => repartir(tr as P2[], nT[t])));
-  const inter = nT.map((n, t) => Array.from({ length: n + 1 }, (_, k) => [0, 1].map((c) => monotona(zs, muestras.map((m) => m[t][k][c])))));
-  const anillosZ: number[] = [];
-  for (let i = 0; i < zs.length - 1; i++) for (let j = 0; j < 12; j++) anillosZ.push(zs[i] + ((zs[i + 1] - zs[i]) * j) / 12);
-  anillosZ.push(zs[zs.length - 1]);
+  // Tandas de secciones: sin facetas, una sola; con facetas, una entre cada
+  // dos quiebres (los extremos cuentan como quiebre). Cada tanda, con su
+  // curva por punto y 12 anillos por tramo entre secciones.
+  const cortes = ss.map((q, i) => i).filter((i) => i === 0 || i === ss.length - 1 || (facetas && ss[i].quiebre));
+  const tandas = cortes.slice(1).map((b, j) => {
+    const a = cortes[j], zz = zs.slice(a, b + 1), mm = muestras.slice(a, b + 1);
+    const inter = nT.map((n, t) => Array.from({ length: n + 1 }, (_, k) => [0, 1].map((c) => monotona(zz, mm.map((m) => m[t][k][c])))));
+    const anillosZ: number[] = [];
+    for (let i = 0; i < zz.length - 1; i++) for (let k = 0; k < 12; k++) anillosZ.push(zz[i] + ((zz[i + 1] - zz[i]) * k) / 12);
+    anillosZ.push(zz[zz.length - 1]);
+    return { inter, anillosZ };
+  });
   // Media sección de un anillo, tramo a tramo (de lo alto a lo bajo); x nunca
   // negativa (el interpolado podía pasarse del eje un pelo).
-  const media = (z: number): P2[][] => inter.map((tr) => tr.map(([fx, fy]) => [Math.max(0, fx(z)), fy(z)] as P2));
+  const media = (inter: ((z: number) => number)[][][], z: number): P2[][] => inter.map((tr) => tr.map(([fx, fy]) => [Math.max(0, fx(z)), fy(z)] as P2));
   const espejo = (pts: P2[]): P2[] => pts.map(([x, y]) => [-x, y]);
   // Tiras en el sentido del casco de siempre (vista desde delante, contra
   // las agujas del reloj): arriba, de la arista derecha por el lomo a la
   // izquierda; abajo, de la izquierda por la panza a la derecha; las de en
   // medio, subiendo por la derecha y bajando por la izquierda.
+  // Con facetas, lo alto y lo bajo del eje también llevan arista (cada lado,
+  // su tira).
   const tirasDe = (m: P2[][]): P2[][] => {
     const r0 = m[0], rN = m[T - 1];
-    const tiras: P2[][] = [[...r0.slice().reverse(), ...espejo(r0).slice(1)]];
+    const tiras: P2[][] = facetas ? [r0.slice().reverse(), espejo(r0)] : [[...r0.slice().reverse(), ...espejo(r0).slice(1)]];
     for (let t = 1; t < T - 1; t++) tiras.push(m[t].slice().reverse(), espejo(m[t]));
-    tiras.push([...espejo(rN), ...rN.slice().reverse().slice(1)]);
+    if (facetas) tiras.push(espejo(rN), rN.slice().reverse());
+    else tiras.push([...espejo(rN), ...rN.slice().reverse().slice(1)]);
     return tiras;
   };
-  const porAnillo = anillosZ.map((z) => tirasDe(media(z)));
   const pos: number[] = [], idx: number[] = [];
-  const bases: number[][] = porAnillo[0].map(() => []);
-  porAnillo.forEach((tiras, i) => tiras.forEach((tira, t) => {
-    bases[t][i] = pos.length / 3;
-    for (const [x, y] of tira) pos.push(x, y, anillosZ[i]);
-  }));
-  porAnillo[0].forEach((tira, t) => {
-    for (let i = 0; i < anillosZ.length - 1; i++)
-      for (let k = 0; k < tira.length - 1; k++) {
-        const a = bases[t][i] + k, b = a + 1, c = bases[t][i + 1] + k, d = c + 1;
-        idx.push(a, b, c, b, d, c);
-      }
+  const porTanda = tandas.map(({ inter, anillosZ }) => {
+    const porAnillo = anillosZ.map((z) => tirasDe(media(inter, z)));
+    const bases: number[][] = porAnillo[0].map(() => []);
+    porAnillo.forEach((tiras, i) => tiras.forEach((tira, t) => {
+      bases[t][i] = pos.length / 3;
+      for (const [x, y] of tira) pos.push(x, y, anillosZ[i]);
+    }));
+    porAnillo[0].forEach((tira, t) => {
+      for (let i = 0; i < anillosZ.length - 1; i++)
+        for (let k = 0; k < tira.length - 1; k++) {
+          const a = bases[t][i] + k, b = a + 1, c = bases[t][i + 1] + k, d = c + 1;
+          idx.push(a, b, c, b, d, c);
+        }
+    });
+    return { anillosZ, porAnillo, bases };
   });
   // Tapas donde el cuerpo no acaba en punta (como en el casco de siempre).
-  for (const [i, atras] of [[0, true], [anillosZ.length - 1, false]] as const) {
+  const primera = porTanda[0], ultima = porTanda[porTanda.length - 1];
+  for (const [{ anillosZ, porAnillo, bases }, i, atras] of [[primera, 0, true], [ultima, ultima.anillosZ.length - 1, false]] as const) {
     if (abierto && !atras) continue;
     const tiras = porAnillo[i];
     const xs = tiras.flat().map(([x]) => x);
@@ -701,8 +721,13 @@ function geometriaCascoContorno(secciones: Seccion[], abierto: boolean): BufferG
     const centro = pos.length / 3;
     pos.push(0, tiras.flat().reduce((s, [, y]) => s + y, 0) / xs.length, anillosZ[i]);
     tiras.forEach((tira, t) => {
+      let base = bases[t][i];
+      if (tapaPlana) {
+        base = pos.length / 3;
+        for (const [x, y] of tira) pos.push(x, y, anillosZ[i]);
+      }
       for (let k = 0; k < tira.length - 1; k++) {
-        const a = bases[t][i] + k;
+        const a = base + k;
         if (atras) idx.push(centro, a + 1, a); else idx.push(centro, a, a + 1);
       }
     });
@@ -949,7 +974,7 @@ function geometriaBase(p: Pieza): BufferGeometry[] {
       return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
     }
     case "casco": {
-      const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo, p.hoyuelos);
+      const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo, p.hoyuelos, p.tapaPlana, p.facetas);
       // Desplazado a un lado (los misiles del Wildfire, bajo el ala).
       if (p.x) g.translate(p.x, 0, 0);
       return [g];

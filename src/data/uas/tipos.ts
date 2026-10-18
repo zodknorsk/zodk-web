@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -44,7 +44,13 @@ export type Pieza = (
   // centro, como los misiles bajo el ala del Wildfire).
   // `hoyuelos`: hundimientos suaves en los dos costados (las mejillas del
   // RQ-4). Solo en cascos sin ensanche ni `suave`.
-  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number; hoyuelos?: Hoyuelo[] }
+  // `tapaPlana` (cascos con `contorno`): las tapas, caras planas con arista
+  // viva (el espejo de popa del Magura); si no, la luz se suaviza con el
+  // costado y la tapa sale sombreada en aspa. `facetas` (también con
+  // `contorno`): arista viva también en el eje (la quilla, el lomo) y, a lo
+  // largo, solo en las secciones con `quiebre` (el casco de caras planas del
+  // Magura: liso de proa a popa y con aristas solo donde las tiene).
+  | { tipo: "casco"; id: string; secciones: Seccion[]; abierto?: boolean; tomas?: Toma[]; suave?: number; polo?: boolean; x?: number; hoyuelos?: Hoyuelo[]; tapaPlana?: boolean; facetas?: boolean }
   // Placa plana con grosor. Horizontal: la planta va en [x, z] a la altura y.
   // Vertical: el contorno va en [z, y] en el costado x.
   // espejo: se repite al otro lado (x → −x).
@@ -180,8 +186,9 @@ export type Dibujo =
   | { tipo: "anduril"; color: string; texto?: boolean }
   // Logo real (src/data/uas/logos.ts, de Commons) en una tinta, `color`,
   // encajado en la calca sin deformarlo: escudo del Mando de Combate Aéreo,
-  // símbolo de la Fuerza Aérea o logo de Anduril con su nombre.
-  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril"; color: string }
+  // símbolo de la Fuerza Aérea, logo de Anduril con su nombre, el rótulo
+  // «UFORCE MAGURA» o el emblema del GUR.
+  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril" | "magura" | "gur"; color: string }
   // Aviso de toma de aire: triángulo hacia abajo con otro dentro y las
   // líneas del texto (el «DANGER JET INLET» del Fury).
   | { tipo: "aviso-toma"; color: string }
@@ -266,8 +273,10 @@ export type Costura = { sobre: string[]; puntos: Punto3[]; desde: Punto3; remach
 // (x = 0) a lo bajo (x = 0), cada tramo empezando donde acaba el anterior;
 // entre tramo y tramo, arista viva. Si una sección lo lleva, todas las del
 // casco lo llevan, con el mismo número de tramos, y el resto de medidas de
-// la sección no cuenta para la forma.
-export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; pLomo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number; contorno?: Punto2[][] };
+// la sección no cuenta para la forma. `quiebre` (cascos con `facetas`): en
+// esta sección el casco dobla con arista viva a lo ancho (el frente de una
+// caseta); entre quiebres, cada punto sigue una curva suave.
+export type Seccion = { z: number; ancho: number; arriba: number; abajo: number; cintura?: number; n?: number; nAbajo?: number; pLomo?: number; panza?: number; arista?: number; lomo?: number; hombro?: number; nLomo?: number; costado?: number; costadoArriba?: number; sobreArista?: number; bajoArista?: number; bordeArriba?: number; bordeAbajo?: number; redondeo?: number; nariz?: number; contorno?: Punto2[][]; quiebre?: boolean };
 
 // Toma de aire en un casco (la del lomo del TB2): un hueco oval que se mete
 // en el cuerpo, de `largo` (z) desde la `boca` hacia delante, con la pared
@@ -385,4 +394,8 @@ export type Maqueta = {
   // `detalles`: calcas y costuras sobre sus piezas (los textos del tubo del
   // Hero-30), que salen y se van con ella.
   catapulta?: { piezas: Pieza[]; cabeceo: number; nombre?: string; detalles?: NonNullable<Maqueta["detalles"]> };
+  // Drones navales: el visor pone agua a la altura `y` (la línea de
+  // flotación, en unidades) y el botón «Agua» para quitarla. No sale en las
+  // siluetas ni cuenta para el encuadre.
+  agua?: { y: number };
 };
