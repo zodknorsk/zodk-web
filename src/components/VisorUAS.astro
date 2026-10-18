@@ -237,7 +237,8 @@ const VISTAS = [
       // cambia por uno nuevo.
       const lienzo = caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!;
       if (lienzo.dataset.usado) lienzo.replaceWith(lienzo.cloneNode(false));
-      caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!.dataset.usado = "1";
+      const nuevo = caja.querySelector<HTMLCanvasElement>(".visor-lienzo")!;
+      nuevo.dataset.usado = "1";
       const s = await montar(caja, inicio);
       if (este === pedidos) soltar = s;
       else s?.();

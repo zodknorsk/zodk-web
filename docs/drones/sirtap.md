@@ -5,8 +5,8 @@
 - Fases 1-5 hechas y nota importada; ficha, visor (maqueta, pixel, noche, partes, fuentes) y tarjeta de `/uas` comprobados en local, sin errores en consola. `astro check` sin errores.
 - Fase 6 (revisión) saltada a petición del usuario: se cierra con las dos revisiones de la fase 3 y la revisión del pixel de la fase 4.
 - Commit y push de la bóveda y de la web pedidos por el usuario el 18-10-2026.
-- Queda: nave del hero, solo si la pide. Archivo `undefined` de la raíz (PNG suelto): no se commitea; borrarlo si el usuario quiere.
-- `npm run lint` da un error que ya estaba en `HEAD`: `VisorUAS.astro:240` (`querySelector<…>(…)!.dataset` no lo entiende el extractor). Sin tocar; pendiente de que el usuario diga.
+- Queda: nave del hero, solo si la pide.
+- Lint arreglado (`VisorUAS.astro:240`, genérico partido en una variable); archivo `undefined` borrado.
 - Capturas: `~/Downloads/sirtap-fase5/`.
 
 ## Lo visto en el prototipo (fase 3)
