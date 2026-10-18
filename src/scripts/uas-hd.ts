@@ -112,6 +112,13 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // sol, #888e8e arriba y #6e7673 en el costado).
   "gris-gh": { color: "#5a605f", metal: 0, rugosidad: 0.75 },
   "gris-mg": { color: "#7b8383", metal: 0, rugosidad: 0.8 },
+  // El Magura V7: más verdoso que el V5 (en la misma foto, cubierta #748887
+  // frente a #7d8286).
+  "gris-m7": { color: "#728889", metal: 0, rugosidad: 0.8 },
+  // Los AIM-9M del V7: la cinta naranja fosforito («CAUTION BREAKABLE
+  // WINDOW») y la banda marrón del motor cohete.
+  naranja: { color: "#f05a1c", metal: 0, rugosidad: 0.5 },
+  marron: { color: "#7a5236", metal: 0, rugosidad: 0.6 },
 };
 
 // Tres escalones de luz para la ilustración.

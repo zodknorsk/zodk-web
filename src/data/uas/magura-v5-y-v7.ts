@@ -1,5 +1,5 @@
-// El visor del Magura de Uforce: de momento, el V5 (src/data/uas/magura-v5.ts).
-// Después llevará también el V5 con R-73 y el V7, con un botón para cada uno.
-import v5 from "./magura-v5.ts";
+// El visor del Magura de Uforce. PROVISIONAL: mientras se mide el V7, el V7
+// (src/data/uas/magura-v7.ts); después, los dos con un botón para cada uno.
+import v7 from "./magura-v7.ts";
 
-export default v5;
+export default v7;
