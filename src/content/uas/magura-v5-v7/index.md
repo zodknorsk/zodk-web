@@ -2,10 +2,9 @@
 title: Magura V5-V7
 date: '2026-10-16'
 description: >-
-  El Magura es un dron naval de ataque que maneja la Inteligencia militar
-  ucraniana (GUR): una lancha sin tripulación, baja y oscura, que navega cientos
-  de…
-updated: '2026-10-16'
+  El Magura es el dron naval de ataque que usa la Inteligencia militar ucraniana
+  (GUR): una lancha sin tripulación, baja y oscura, que navega cientos de…
+updated: '2026-10-19'
 tags:
   - ucrania
   - dron
@@ -14,7 +13,7 @@ bandera: "\U0001F1FA\U0001F1E6"
 pais: Ucrania
 categoria: Dron naval de ataque
 ---
-> El Magura es un <mark>dron naval de ataque</mark> que maneja la Inteligencia militar ucraniana (GUR): una lancha sin tripulación, baja y oscura, que navega cientos de kilómetros por el mar Negro hasta lanzarse contra barcos rusos. Ucrania <mark>hundió en 2024 la corbeta Ivanovets, el buque de desembarco Tsezar Kunikov y el patrullero Sergey Kotov</mark>, y la Flota del Mar Negro tuvo que retirarse de Crimea. La primera versión, el <mark>V5</mark>, mide 5,5 m y el <mark>V7</mark>, una versión más grande y con más carga explosiva, puede llevar misiles aire-aire.
+> El Magura es el <mark>dron naval de ataque</mark> que usa la Inteligencia militar ucraniana (GUR): una lancha sin tripulación, baja y oscura, que navega cientos de kilómetros por el mar Negro hasta lanzarse contra barcos rusos. Ucrania <mark>hundió en 2024 la corbeta Ivanovets, el buque de desembarco Tsezar Kunikov y el patrullero Sergey Kotov</mark>, y la Flota del Mar Negro tuvo que retirarse de Crimea. La primera versión, el <mark>V5</mark>, mide 5,5 m y el <mark>V7</mark>, una versión más grande y con más carga explosiva, puede llevar misiles aire-aire.
 
 
 <div class="visor-hueco"></div>
@@ -25,7 +24,7 @@ categoria: Dron naval de ataque
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | **País**                    | 🇺🇦 Ucrania                                                                                                                         |
 | **Fabricante**              | Uforce                                                                                                                               |
-| **Operador**                | Ucrania (Grupo 13 del GUR); EE. UU.                                                                                                  |
+| **Operador**                | Ucrania (Grupo 13 del GUR)                                                                                                           |
 | **Categoría**               | Dron naval de ataque (USV)                                                                                                           |
 | **Situación**               | En servicio                                                                                                                          |
 | **Primer uso en combate**   | 2023, Chornomorske (Crimea)                                                                                                          |
@@ -38,27 +37,28 @@ categoria: Dron naval de ataque
 
 ## Historia
 
-El Magura nace en 2022 en una empresa privada ucraniana que hoy se llama Uforce. Primero ofreció su lancha al Servicio de Seguridad (SBU), pero [discutieron por la calidad, el dinero y el diseño](https://www.kyivpost.com/post/29068), y el SBU acabó haciendo su propio dron naval, el Sea Baby. La empresa se fue entonces con la Inteligencia militar (GUR), que buscaba un barco sin tripulación para cazar buques rusos en el mar abierto y no encontraba ninguno que le sirviera. En septiembre de 2022 ya tenía los primeros prototipos, todavía toscos, y en noviembre el Gobierno anunció el proyecto.
+El Magura lo creó en 2022 la empresa privada ucraniana Uforce. Primero ofreció su lancha al Servicio de Seguridad (SBU), pero [discutieron por la calidad, el dinero y el diseño](https://www.kyivpost.com/post/29068), y el SBU acabó haciendo su propio dron naval, el Sea Baby. La empresa se fue entonces con la Inteligencia militar (GUR), que buscaba un barco sin tripulación para cazar buques rusos en mar abierto y no encontraba ninguno que le sirviera. En septiembre de 2022 ya tenía los primeros prototipos, todavía toscos, y en noviembre el Gobierno anunció el proyecto.
 
 El Magura V5 se enseñó por primera vez en julio de 2023 en la feria IDEF de Estambul, y en septiembre en la DSEI de Londres. Para entonces ya navegaba en el mar Negro: el Grupo 13 del GUR pasó el invierno de 2022 a 2023 ensayando ataques coordinados.
 
-Después le pusieron misiles. Sobre el V5 montaron dos raíles con [R-73](https://theaviationist.com/2024/12/31/ukrainian-magura-usv-r-73-vs-mi-8-helicopter/), un misil aire-aire soviético que el GUR llama «Sea Dragon», y el 31 de diciembre de 2024, frente al cabo Tarkhankut, un V5 derribó con ellos un helicóptero Mi-8: era la primera vez que un dron naval derribaba una aeronave. En mayo de 2025 llegó el V7, la versión grande: el 2 de mayo [dos Su-30 cayeron](https://militarnyi.com/en/news/defence-intelligence-of-ukraine-reveals-capabilities-of-magura-v7-marine-drones/) con misiles Sidewinder lanzados desde V7, el primer caza derribado por un dron naval. El 14 de mayo el GUR presentó la familia en Kyiv: el V5, el V7, el V7 con ametralladora y el V6P, una versión sin armas para reconocimiento y transporte.
+Según el GUR, el V5 hundió varios barcos de la Flota del Mar Negro. En la noche del 1 de febrero de 2024, seis V5 atacaron la corbeta [Ivanovets](https://rubryka.com/en/2024/02/04/rosijskyj-kater-ivanovyets); el 14 de febrero hundieron el buque de desembarco [Tsezar Kunikov](https://frontierindia.com/ukraine-claims-its-gur-group-13-special-forces-with-magura-v5-drones-sink-russian-large-landing-ship-tsezar-kunikov/), cerca de Alupka (Crimea), y en la noche del 4 al 5 de marzo, cinco V5 atacaron el patrullero [Sergey Kotov](https://babel.ua/en/news/104590-gur-showed-a-video-of-the-attack-of-magura-v5-drones-on-sergei-kotov), cerca del estrecho de Kerch.
 
-Fuera de Ucrania, el ejército de EE. UU. probó el V5 en unas maniobras en Filipinas en 2026 y en julio de 2026 Uforce firmó con la empresa estadounidense ReconCraft un acuerdo para fabricarlos en Oregón y Carolina del Sur.
+Después le pusieron misiles. Sobre el V5 montaron dos raíles con [R-73](https://theaviationist.com/2024/12/31/ukrainian-magura-usv-r-73-vs-mi-8-helicopter/), un misil aire-aire soviético que el GUR llama «Sea Dragon», y el 31 de diciembre de 2024, frente al cabo Tarkhankut, un V5 derribó con ellos un helicóptero Mi-8: era la primera vez que un dron naval derribaba una aeronave. En mayo de 2025 llegó el V7, la versión grande, y [dos Su-30 cayeron](https://militarnyi.com/en/news/defence-intelligence-of-ukraine-reveals-capabilities-of-magura-v7-marine-drones/) con misiles Sidewinder, el primer caza derribado por un dron naval. El 14 de mayo el GUR presentó la familia en Kiev: el V5, el V7, el V7 con ametralladora y el V6P, una versión sin armas para reconocimiento y transporte.
 
+Fuera de Ucrania, el ejército de EE. UU. probó el V5 en unas maniobras en Filipinas en 2026 y en julio de ese año Uforce firmó con la empresa estadounidense ReconCraft un acuerdo para fabricarlos en Oregón y Carolina del Sur. Esta versión medirá, según Uforce, 7,6 m de largo, con más de 770 kg de carga útil, más de 560 km de alcance y un precio de menos de 500.000 dólares, según la configuración.
+
+En agosto de 2026, Uforce presentó en Kiev el MV11, el nuevo y mayor miembro de la familia Magura. La lancha salió con 18 interceptores Sting en cubierta, y Uforce asegura que su configuración preferida es una plataforma de defensa aérea lejos de la costa. No se ha usado en combate ni se ha atribuido al Grupo 13 del GUR.
 ## Especificaciones
 
-El V5 es una lancha de casco en V, de fibra de carbono y resina, que asoma solo medio metro sobre el agua: desde un barco es difícil verlo y calienta poco, porque un sistema entre el motor y la tapa limpia los gases y [le baja la huella térmica](https://www.kyivpost.com/post/29068). Según el fabricante, va a 41 km/h de crucero y llega a 78 km/h. Se maneja desde tierra por satélite: los V5 capturados llevaban dos antenas Starlink y una antena estadounidense Kymeta, y cerca de la costa también usan la red de móvil. Para el último tramo lleva cámaras de día y térmicas.
+El V5 es una lancha de casco en V, de fibra de carbono y resina, que asoma solo medio metro sobre el agua: desde un barco es difícil verlo y emite poca firma térmica: entre el motor y la tapa lleva un sistema que [saca los vapores del combustible del compartimento](https://www.kyivpost.com/post/29068) y ayuda a que no se caliente. Según el fabricante, va a 41 km/h de crucero y 78 km/h de velocidad máxima. Se maneja desde tierra por satélite: los V5 observados llevaban dos antenas Starlink y una antena estadounidense Kymeta, y cerca de la costa también usan la red de móvil. Para el último tramo lleva cámaras de día y térmicas.
 
 El GUR no lo usa para patrullar, sino para cazar barcos. Manda grupos de cinco o seis drones a la vez para saturar las defensas: el primero intenta dar en la popa, donde están los motores, para dejar el barco parado, y los siguientes golpean en el centro y en las brechas que se abren.
 
 El V5 puede llevar dos raíles con misiles R-73, de guiado infrarrojo. Los raíles están fijos: solo suben y bajan, y para apuntar a los lados gira la lancha entera.
 
-El V7 es la versión grande: 7,2 m de largo, 3.400 kg cargado y un motor diésel de 270 CV, con depósitos de hasta 1.200 litros. Es algo más lento que el V5 —43 km/h de crucero y al menos 72 km/h de máxima—, pero llega más lejos, aguanta 48 horas en el mar o hasta siete días con un generador, y navega con olas de hasta 3 m, cuando el V5 se quedaba en 2 m. Lleva más carga y no tiene por qué perderse en cada misión: en vez de la carga explosiva puede montar dos lanzadores con misiles AIM-9 Sidewinder estadounidenses o una torreta con ametralladora y cámara estabilizada.
+El V7 es la versión grande: 7,2 m de largo, 3.400 kg cargado y un motor diésel de 270 CV, con depósitos de hasta 1.200 litros. Es algo más lento que el V5 —43 km/h de crucero y 72 km/h de máxima—, pero llega más lejos, aguanta 48 horas en el mar o hasta siete días con un generador, y navega con olas de hasta 3 m, cuando el V5 se quedaba en 2 m. Lleva más carga y no tiene por qué perderse en cada misión: en vez de la carga explosiva puede montar dos lanzadores con misiles AIM-9 Sidewinder estadounidenses o una torreta con ametralladora y cámara estabilizada.
 
-Desde 2026 los Magura también llevan drones FPV hasta la costa de Crimea y los sueltan allí.
-
-La versión que se fabricará en EE. UU. mide, según Uforce, 7,6 m de largo, con más de 770 kg de carga útil, más de 560 km de alcance y un precio de menos de 500.000 dólares, según la configuración.
+El MV11 mide 12 m de largo, y según Uforce carga hasta 2.200 kg en 10 m³ libres. Aguanta siete días en el mar sin mantenimiento y puede recorrer más de 3.700 km llevando más de dos toneladas. No se ha publicado su velocidad, su motor ni su precio. Además de la versión con 18 interceptores Sting, Uforce habla de una versión antiaérea con varias decenas de interceptores, una torreta estabilizada de 12,7 mm y radar de búsqueda y seguimiento.
 
 ## En acción
 
