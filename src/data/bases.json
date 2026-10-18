@@ -910,5 +910,71 @@
         }
       ]
     }
+  },
+  "RAF Fairford": {
+    "slug": "raf-fairford",
+    "oficial": "Royal Air Force Fairford",
+    "pais": "GB",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Gloucestershire, Reino Unido",
+    "lat": 51.6989,
+    "lon": -1.7903,
+    "desde": 1944,
+    "texto": "Base de la Real Fuerza Aérea británica en los Cotswolds que usa la USAF. Tiene una de las pistas más largas de Europa (3,0 km) y es el destino habitual de los bombarderos B-52 y B-1 que llegan desde EE. UU., además de drones RQ-4 Global Hawk.",
+    "nombres": [
+      {
+        "nombre": "Los Cotswolds",
+        "clase": "region",
+        "lat": 51.72,
+        "lon": -1.86
+      },
+      {
+        "nombre": "Río Támesis",
+        "clase": "accidente",
+        "lat": 51.6935,
+        "lon": -1.689
+      }
+    ],
+    "mapa": {
+      "km": 10,
+      "nombres": [
+        {
+          "nombre": "Fairford",
+          "clase": "pueblo",
+          "x": 174,
+          "y": 64
+        },
+        {
+          "nombre": "Marston Meysey",
+          "clase": "pueblo",
+          "x": 92,
+          "y": 183
+        },
+        {
+          "nombre": "Down Ampney",
+          "clase": "pueblo",
+          "x": 10,
+          "y": 179
+        },
+        {
+          "nombre": "Poulton",
+          "clase": "pueblo",
+          "x": 16,
+          "y": 66
+        },
+        {
+          "nombre": "Whelford",
+          "clase": "pueblo",
+          "x": 220,
+          "y": 128
+        },
+        {
+          "nombre": "Los Cotswolds",
+          "clase": "region",
+          "x": 6,
+          "y": 24
+        }
+      ]
+    }
   }
 }
