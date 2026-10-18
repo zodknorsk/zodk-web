@@ -25,7 +25,8 @@ con la Raptor-360 de los españoles), Sting (Ucrania, interceptor FPV de
 pie, en arena) y Hero-30 (Israel, munición merodeadora de alas en X, copiada
 del render de UVision, con el tubo lanzador de la feria checa) y RQ-4 Global
 Hawk (EE. UU., dron HALE de reconocimiento sin armas, el RQ-4B Block 20
-04-2015 en su gris). Al final, lo que hay que respetar, lo que se probó y el usuario
+04-2015 en su gris) y Magura V5-V7 (Ucrania, dron naval de ataque, dos
+maquetas en un visor con botón de versión; el V7 con dos AIM-9M). Al final, lo que hay que respetar, lo que se probó y el usuario
 rechazó, y las fotos de cada maqueta.
 
 ## Estado

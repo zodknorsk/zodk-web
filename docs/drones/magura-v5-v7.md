@@ -1,14 +1,10 @@
 # Magura V5-V7 (Uforce) — diario
 
-## Dónde estamos: fase 5 hecha (en la web), esperando la revisión del usuario
+## Dónde estamos: cerrado (18-10-2026)
 
-- **Título cambiado a «Magura V5-V7»** (18-10-2026): slug `magura-v5-v7`, archivos y carpetas renombrados (maqueta, diario, `public/uas/`, `arte/uas-fuentes/`), nota de la bóveda renombrada.
-- **Importado** y probado: ficha `/uas/magura-v5-v7`, tarjeta con sello azulado «Dron naval» en `/uas` (`index.astro`). Lint y `astro check` limpios.
-- **Sin commitear**: todo (zodk-web y bóveda: la nota sigue en borrador).
-- Capturas: `~/Downloads/magura/ficha.png`, `lista.png`, `pixel.png`.
-- **Portada**: el Magura entra en `grandes` de la tira (`index.astro`), con `planta.png` (captura `~/Downloads/magura/portada.png`).
-- **Pendiente de él**: revisar la ficha (fase 6, si hay fallos) y quitar el «borrador» de la nota para publicar.
-- **Siguiente**: fase 6 si hay fallos; si no, fase 7 (cierre: «Drones hechos» en `docs/hangar-de-uas.md`, commit y push cuando lo pida).
+- Título «Magura V5-V7», slug `magura-v5-v7`. Maquetas V5 y V7 en un visor, pixel, tarjeta y planta del V5, sello «Dron naval», en la tira de la portada. Nota en la bóveda como «completa».
+- Fase 6 sin fallos nuevos del usuario al cerrar. Commit y push hechos.
+- **Pendiente a futuro**: el W6P (lancha de los R-73, con su casco, de las fotos del museo de Kiev) y la ficha propia del AIM-9M.
 
 ## Decisiones del usuario
 
