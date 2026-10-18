@@ -737,5 +737,34 @@
         }
       ]
     }
+  },
+  "Base Aérea de León": {
+    "slug": "base-aerea-de-leon",
+    "oficial": "Base Aérea de León",
+    "pais": "ES",
+    "rama": "Ejército del Aire y del Espacio",
+    "lugar": "León, Castilla y León",
+    "lat": 42.589,
+    "lon": -5.6556,
+    "desde": 1929,
+    "texto": "Base aérea en La Virgen del Camino, a unos 6 km al oeste de la ciudad de León. Es la sede de la Academia Básica del Aire y la base prevista para los SIRTAP, con un nuevo grupo para operar estos drones.",
+    "nombres": [],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "León",
+          "clase": "ciudad",
+          "x": 171,
+          "y": 90
+        },
+        {
+          "nombre": "Astorga",
+          "clase": "pueblo",
+          "x": 39,
+          "y": 144
+        }
+      ]
+    }
   }
 }
