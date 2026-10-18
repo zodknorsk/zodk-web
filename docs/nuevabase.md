@@ -97,7 +97,9 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
      "lon"}`. El punto de una región, dentro de ella y en el terreno que
      nombra. Los pueblos y ciudades salen solos de OSM.
 2. **Fuentes**: `python3 fuentes-base.py <slug>` (unos minutos; Overpass a
-   veces tarda). Con Pillow 11.3 el relieve falló al leer las piezas (`px`
+   veces tarda; con Getafe `overpass-api.de` rechazó la conexión y los
+   espejos de reserva no sirven, así que el script falló en los pueblos: se
+   relanza igual y retoma, saltando lo ya bajado). Con Pillow 11.3 el relieve falló al leer las piezas (`px`
    no admitía cortes); `fuentes-base.py` ya lo convierte en lista.
 3. **Las cuatro vistas**: `python3 generar-base.py <slug>` (1-2 min) →
    `public/bases/prueba/<slug>-<km>.png` y `.json` (los nombres colocados).

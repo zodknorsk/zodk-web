@@ -17,6 +17,9 @@ Las piezas del relieve son de 1°; las que no existen (solo mar) se saltan y
 quedan a 0 m (mar). Uso (desde arte/; necesita Pillow):
 
   python3 fuentes-base.py <slug>       # el slug de src/data/bases.json
+
+Si falla (Overpass a veces no contesta), se relanza igual: salta lo que ya está
+bajado y retoma. Si cambian las coordenadas de la base, borrar antes su carpeta.
 """
 import array
 import io
@@ -61,6 +64,8 @@ def bajar(url, ruta=None):
 
 def relieve(dir_, metros, s, n, o, e):
     """Junta las piezas de 1° de Copernicus que tocan la caja en un .i16."""
+    if os.path.exists(os.path.join(dir_, f"dem{metros}.json")):
+        return                                             # ya hecho (el .json se escribe el último)
     base, arco, ppd = COPERNICUS[metros]
     la0, la1, lo0, lo1 = math.floor(s), math.ceil(n), math.floor(o), math.ceil(e)
     w, h = (lo1 - lo0) * ppd, (la1 - la0) * ppd
@@ -91,14 +96,17 @@ def relieve(dir_, metros, s, n, o, e):
 
 
 def overpass(consulta, ruta):
+    if os.path.exists(ruta):
+        return                                             # ya bajado: se retoma tras un fallo
     datos = urllib.parse.urlencode({"data": f"[out:json][timeout:300];{consulta}"})
     for k in range(6):
         for url in OVERPASS:
             r = subprocess.run(["curl", "-sS", "--connect-timeout", "20", "-m", "400", "--data", datos, url],
                                capture_output=True)
             if r.returncode == 0 and r.stdout[:1] == b"{":
-                with open(ruta, "wb") as fh:
+                with open(ruta + ".parte", "wb") as fh:
                     fh.write(r.stdout)
+                os.replace(ruta + ".parte", ruta)          # así un corte no deja un archivo a medias
                 print(f"  {os.path.basename(ruta)}: {len(json.loads(r.stdout)['elements'])} elementos",
                       file=sys.stderr)
                 return
@@ -120,10 +128,12 @@ def main():
     relieve(dir_, 30, *caja(b, vista(40), margen=True))
 
     for nom in ("admin_0_countries", "urban_areas", "playas"):
-        bajar(NE.format(nom), os.path.join(dir_, f"ne_{nom}.geojson"))
-    with zipfile.ZipFile(io.BytesIO(bajar(LLUVIA))) as z:
-        with open(os.path.join(dir_, "lluvia.tif"), "wb") as fh:
-            fh.write(z.read("wc2.1_10m_bio_12.tif"))
+        if not os.path.exists(os.path.join(dir_, f"ne_{nom}.geojson")):
+            bajar(NE.format(nom), os.path.join(dir_, f"ne_{nom}.geojson"))
+    if not os.path.exists(os.path.join(dir_, "lluvia.tif")):
+        with zipfile.ZipFile(io.BytesIO(bajar(LLUVIA))) as z:
+            with open(os.path.join(dir_, "lluvia.tif"), "wb") as fh:
+                fh.write(z.read("wc2.1_10m_bio_12.tif"))
     print("  Natural Earth y WorldClim", file=sys.stderr)
 
     s, n, o, e = caja(b, vista(90), margen=True)

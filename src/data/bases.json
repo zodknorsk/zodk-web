@@ -701,5 +701,41 @@
         }
       ]
     }
+  },
+  "Volkel AB": {
+    "slug": "volkel-ab",
+    "oficial": "Volkel Air Base",
+    "pais": "NL",
+    "rama": "Real Fuerza Aérea de los Países Bajos (KLu)",
+    "lugar": "Brabante Septentrional, Países Bajos",
+    "lat": 51.6572,
+    "lon": 5.6908,
+    "desde": 1940,
+    "texto": "Base aérea neerlandesa en el sureste del país, junto al pueblo de Volkel. Es la casa de los F-35A de los escuadrones 312 y 313 y, según se cree, guarda bombas nucleares B61 de EE. UU.",
+    "nombres": [
+      {
+        "nombre": "Río Mosa",
+        "clase": "accidente",
+        "lat": 51.66,
+        "lon": 5.96
+      }
+    ],
+    "mapa": {
+      "km": 10,
+      "nombres": [
+        {
+          "nombre": "Volkel",
+          "clase": "pueblo",
+          "x": 74,
+          "y": 138
+        },
+        {
+          "nombre": "Odiliapeel",
+          "clase": "pueblo",
+          "x": 173,
+          "y": 138
+        }
+      ]
+    }
   }
 }

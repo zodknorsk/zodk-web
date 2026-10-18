@@ -101,5 +101,11 @@
     "nota": "Azul, blanco y verde con las dos rayas rojas finas; con 7 filas, una fila roja a cada lado de la blanca. La luna creciente y tres estrellas en el azul, en blanco.",
     "filas": ["bWWbbWbWbWb", "bWbbbbbbbbb", "RRRRRRRRRRR", "WWWWWWWWWWW", "RRRRRRRRRRR", "GGGGGGGGGGG", "GGGGGGGGGGG"],
     "paleta": { "b": "#0099b5", "W": "#ffffff", "R": "#ce1126", "G": "#1eb53a" }
+  },
+  "NL": {
+    "nombre": "Países Bajos", "bandera": "🇳🇱",
+    "nota": "Rojo, blanco y azul, 2/3/2 de las 7 filas, como Alemania.",
+    "filas": ["RRRRRRRRRRR", "RRRRRRRRRRR", "WWWWWWWWWWW", "WWWWWWWWWWW", "WWWWWWWWWWW", "BBBBBBBBBBB", "BBBBBBBBBBB"],
+    "paleta": { "R": "#ae1c28", "W": "#ffffff", "B": "#21468b" }
   }
 }
