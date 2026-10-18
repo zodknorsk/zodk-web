@@ -16,6 +16,7 @@ grupos:
     municiones:
       - agm-114-hellfire
       - agm-114r9x
+      - aim-9m-sidewinder
       - aim-120-amraam
       - jsm
       - barracuda-500
