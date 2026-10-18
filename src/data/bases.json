@@ -1240,5 +1240,257 @@
         }
       ]
     }
+  },
+  "Tsuiki AB": {
+    "slug": "tsuiki-ab",
+    "oficial": "Tsuiki Air Base",
+    "pais": "JP",
+    "rama": "Fuerza Aérea de Autodefensa de Japón (JASDF)",
+    "lugar": "Fukuoka, Japón",
+    "lat": 33.685,
+    "lon": 131.0403,
+    "desde": 1942,
+    "texto": "Base de cazas de la Fuerza Aérea de Autodefensa de Japón, en la costa norte de la isla de Kyūshū. La construyó el Ejército Imperial en 1942, la usó EE. UU. en la guerra de Corea y volvió a manos japonesas en 1957. Su pista de 2,4 km da servicio a los F-2.",
+    "nombres": [
+      {
+        "nombre": "Mar de Suō",
+        "clase": "accidente",
+        "lat": 33.78,
+        "lon": 131.33
+      },
+      {
+        "nombre": "Kyūshū",
+        "clase": "region",
+        "lat": 33.5,
+        "lon": 131.0
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Kitakyūshū",
+          "clase": "ciudad",
+          "x": 96,
+          "y": 20
+        },
+        {
+          "nombre": "Iizuka",
+          "clase": "ciudad",
+          "x": 39,
+          "y": 108
+        },
+        {
+          "nombre": "Nakatsu",
+          "clase": "ciudad",
+          "x": 193,
+          "y": 126
+        },
+        {
+          "nombre": "Nōgata",
+          "clase": "ciudad",
+          "x": 51,
+          "y": 72
+        },
+        {
+          "nombre": "Usa",
+          "clase": "ciudad",
+          "x": 242,
+          "y": 150
+        },
+        {
+          "nombre": "Nakama",
+          "clase": "ciudad",
+          "x": 45,
+          "y": 45
+        },
+        {
+          "nombre": "Kama",
+          "clase": "ciudad",
+          "x": 46,
+          "y": 139
+        },
+        {
+          "nombre": "Mar de Suō",
+          "clase": "accidente",
+          "x": 206,
+          "y": 59
+        },
+        {
+          "nombre": "Kanda",
+          "clase": "pueblo",
+          "x": 129,
+          "y": 60
+        },
+        {
+          "nombre": "Chikuzen",
+          "clase": "pueblo",
+          "x": 10,
+          "y": 178
+        },
+        {
+          "nombre": "Chikujo",
+          "clase": "pueblo",
+          "x": 152,
+          "y": 105
+        },
+        {
+          "nombre": "Ashiya",
+          "clase": "pueblo",
+          "x": 31,
+          "y": 17
+        },
+        {
+          "nombre": "Kawara",
+          "clase": "pueblo",
+          "x": 87,
+          "y": 89
+        },
+        {
+          "nombre": "Soeda",
+          "clase": "pueblo",
+          "x": 90,
+          "y": 136
+        },
+        {
+          "nombre": "Kyūshū",
+          "clase": "region",
+          "x": 115,
+          "y": 163
+        }
+      ]
+    }
+  },
+  "Kandahar Airfield": {
+    "slug": "kandahar-airfield",
+    "oficial": "Kandahar Airfield",
+    "pais": "AF",
+    "rama": "Coalición de la OTAN (ISAF)",
+    "lugar": "Provincia de Kandahar, Afganistán",
+    "lat": 31.5058,
+    "lon": 65.8478,
+    "desde": 1962,
+    "texto": "Aeropuerto del sur de Afganistán que EE. UU. construyó en 1962. Tras la invasión de 2001 se convirtió en la mayor base de la coalición en el sur del país, con una pista de 3,2 km, y desde 2007 la mantuvo la OTAN. Pasó a manos de los talibanes en agosto de 2021.",
+    "nombres": [
+      {
+        "nombre": "Desierto de Registán",
+        "clase": "region",
+        "lat": 30.9,
+        "lon": 65.0
+      },
+      {
+        "nombre": "Río Arghandab",
+        "clase": "accidente",
+        "lat": 31.62,
+        "lon": 65.55
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Kandahar",
+          "clase": "ciudad",
+          "x": 105,
+          "y": 51
+        },
+        {
+          "nombre": "Río Arghandab",
+          "clase": "accidente",
+          "x": 13,
+          "y": 52
+        },
+        {
+          "nombre": "Bazar-e Panjva'i",
+          "clase": "pueblo",
+          "x": 24,
+          "y": 79
+        }
+      ]
+    }
+  },
+  "Bagram AB": {
+    "slug": "bagram-ab",
+    "oficial": "Bagram Air Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Provincia de Parwan, Afganistán",
+    "lat": 34.9461,
+    "lon": 69.265,
+    "desde": 1950,
+    "texto": "La mayor base de EE. UU. en Afganistán, a unos 40 km al norte de Kabul. La construyeron los soviéticos en los años cincuenta y la ocuparon EE. UU. de finales de 2001 a julio de 2021. Su pista principal mide más de 3,6 km.",
+    "nombres": [
+      {
+        "nombre": "Llanura de Shomali",
+        "clase": "region",
+        "lat": 34.98,
+        "lon": 69.15
+      },
+      {
+        "nombre": "Valle del Panjshir",
+        "clase": "accidente",
+        "lat": 35.2,
+        "lon": 69.5
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Valle del Panjshir",
+          "clase": "accidente",
+          "x": 162,
+          "y": 4
+        },
+        {
+          "nombre": "Jabal us Saraj",
+          "clase": "pueblo",
+          "x": 137,
+          "y": 29
+        },
+        {
+          "nombre": "Nijrab",
+          "clase": "pueblo",
+          "x": 240,
+          "y": 82
+        },
+        {
+          "nombre": "Siyahgird",
+          "clase": "pueblo",
+          "x": 23,
+          "y": 76
+        },
+        {
+          "nombre": "Qarabagh",
+          "clase": "pueblo",
+          "x": 113,
+          "y": 132
+        },
+        {
+          "nombre": "Deh Now-ye Farzah",
+          "clase": "pueblo",
+          "x": 79,
+          "y": 152
+        },
+        {
+          "nombre": "Parwan Refugee Town",
+          "clase": "pueblo",
+          "x": 163,
+          "y": 112
+        },
+        {
+          "nombre": "Ferozi Teachers Town",
+          "clase": "pueblo",
+          "x": 151,
+          "y": 169
+        },
+        {
+          "nombre": "Llanura de Shomali",
+          "clase": "region",
+          "x": 37,
+          "y": 58
+        }
+      ]
+    }
   }
 }
