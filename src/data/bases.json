@@ -766,5 +766,95 @@
         }
       ]
     }
+  },
+  "Beale AFB": {
+    "slug": "beale-afb",
+    "oficial": "Beale Air Force Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "California, EE. UU.",
+    "lat": 39.1361,
+    "lon": -121.4366,
+    "desde": 1942,
+    "texto": "Base aérea en el norte del Valle Central de California, al pie de la sierra Nevada. Fue la casa de los RQ-4 Global Hawk de la USAF hasta 2022 y hoy opera los aviones espía U-2.",
+    "nombres": [
+      {
+        "nombre": "Sutter Buttes",
+        "clase": "accidente",
+        "lat": 39.2,
+        "lon": -121.82
+      },
+      {
+        "nombre": "Río Yuba",
+        "clase": "accidente",
+        "lat": 39.24,
+        "lon": -121.32
+      },
+      {
+        "nombre": "Sierra Nevada",
+        "clase": "region",
+        "lat": 39.2,
+        "lon": -121.05
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Sutter Buttes",
+          "clase": "accidente",
+          "x": 5,
+          "y": 70
+        },
+        {
+          "nombre": "Río Yuba",
+          "clase": "accidente",
+          "x": 157,
+          "y": 55
+        },
+        {
+          "nombre": "Lincoln",
+          "clase": "pueblo",
+          "x": 188,
+          "y": 185
+        },
+        {
+          "nombre": "Auburn",
+          "clase": "pueblo",
+          "x": 251,
+          "y": 184
+        },
+        {
+          "nombre": "Live Oak",
+          "clase": "pueblo",
+          "x": 83,
+          "y": 42
+        },
+        {
+          "nombre": "Gridley",
+          "clase": "pueblo",
+          "x": 73,
+          "y": 10
+        },
+        {
+          "nombre": "Plumas Lake",
+          "clase": "pueblo",
+          "x": 114,
+          "y": 137
+        },
+        {
+          "nombre": "Sierra Nevada",
+          "clase": "region",
+          "x": 201,
+          "y": 75
+        },
+        {
+          "nombre": "Yuba City",
+          "clase": "pueblo",
+          "x": 95,
+          "y": 108
+        }
+      ]
+    }
   }
 }

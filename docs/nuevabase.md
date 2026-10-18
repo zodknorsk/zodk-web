@@ -125,6 +125,9 @@ fusionada). Necesita Python 3 con Pillow, curl y conexión.
    no tiene «excluir»: si salen demasiados (en Sigonella, 14), antes de
    `--elegir` se quitan a mano de `prueba/<slug>-<km>.json` los que sobran
    (queda el PNG igual, solo cambian los nombres que se dibujan encima).
+   Al revés, si falta una ciudad que el usuario quiere (Beale AFB: Yuba City,
+   que la marca roja de la base le tapaba el hueco y el script la descarta sin
+   probar otro sitio), se añade a mano a ese JSON como `pueblo` con su `x`, `y`.
 5. **Elegir**: `python3 generar-base.py <slug> --elegir <km>` copia la vista
    a `public/bases/<slug>.png`, guarda sus nombres en `bases.json` (`mapa`)
    y **borra las pruebas y las fuentes**.
