@@ -53,7 +53,7 @@ def _arg(nombre, defecto):
 
 
 if len(sys.argv) < 2 or sys.argv[1] not in {b["slug"] for b in BASES.values()}:
-    sys.exit("uso: generar-base.py <slug> [--sin-ne] [--seco] [--km 10|18|40|90 | --elegir <km>]")
+    sys.exit("uso: generar-base.py <slug> [--sin-ne] [--seco] [--sin-arena] [--km 10|18|40|90 | --elegir <km>]")
 SLUG = sys.argv[1]
 NOMBRE, BASE = next((k, b) for k, b in BASES.items() if b["slug"] == SLUG)
 FUENTES_DIR = os.path.join(AQUI, "bases-fuentes", SLUG)
@@ -84,7 +84,7 @@ if "--elegir" in sys.argv:
 
 if "--km" not in sys.argv:
     # Las cuatro vistas, cada una en su proceso (a la vez).
-    extra = [a for a in sys.argv[2:] if a in ("--sin-ne", "--seco")]
+    extra = [a for a in sys.argv[2:] if a in ("--sin-ne", "--seco", "--sin-arena")]
     procs = [subprocess.Popen([sys.executable, os.path.abspath(__file__), SLUG, "--km", str(k)] + extra) for k in KMS]
     sys.exit(max(p.wait() for p in procs))
 
@@ -747,6 +747,8 @@ for e in _osm("agua"):
         rasterizar(_poligonos(e), LAGO, 1)
     elif t.get("waterway"):
         trazar(_geom(e), RIO, 1)
+    elif t.get("natural") == "sand" and "--sin-arena" in sys.argv:
+        continue  # el desierto de arena de OSM (Registán) no es un lago seco: se queda el terreno
     else:
         rasterizar(_poligonos(e), PLAYA, 1)
 MINA = rejilla()
