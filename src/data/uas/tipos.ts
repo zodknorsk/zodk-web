@@ -394,8 +394,8 @@ export type Maqueta = {
   // `detalles`: calcas y costuras sobre sus piezas (los textos del tubo del
   // Hero-30), que salen y se van con ella.
   catapulta?: { piezas: Pieza[]; cabeceo: number; nombre?: string; detalles?: NonNullable<Maqueta["detalles"]> };
-  // Drones navales: el visor pone agua a la altura `y` (la línea de
-  // flotación, en unidades) y el botón «Agua» para quitarla. No sale en las
-  // siluetas ni cuenta para el encuadre.
-  agua?: { y: number };
+  // Varias maquetas en un visor (el Magura V5 y V7): un botón por cada una
+  // junto a «Maqueta | Pixel». `modelo`, su archivo en src/data/uas/; abre en
+  // la que lleva `inicial` (o la primera).
+  versiones?: { rotulo: string; modelo: string; inicial?: boolean }[];
 };

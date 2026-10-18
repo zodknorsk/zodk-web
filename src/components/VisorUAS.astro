@@ -9,12 +9,21 @@ import type { Maqueta } from "../data/uas/tipos";
 import BanderaUAS from "./BanderaUAS.astro";
 import { STACK } from "@consts";
 
-type Props = { modelo: string };
-const { modelo } = Astro.props;
+// Con `versiones` (el Magura V5 y V7) sale un visor por versión, todos menos
+// uno ocultos, y el script cambia de uno a otro. `grupo` lo pasa este mismo
+// componente a cada uno: las versiones, cuál es y la carpeta de las fotos.
+type Props = {
+  modelo: string;
+  grupo?: { versiones: NonNullable<Maqueta["versiones"]>; activa: boolean; fotos: string };
+};
+const { modelo, grupo } = Astro.props;
 
 const todas = import.meta.glob<{ default: Maqueta }>(["../data/uas/*.ts", "!../data/uas/tipos.ts"], { eager: true });
 const m = todas[`../data/uas/${modelo}.ts`]?.default;
 if (!m) throw new Error(`VisorUAS: no hay maqueta "${modelo}" en src/data/uas/`);
+const versiones = grupo ? undefined : m.versiones;
+const inicial = versiones && (versiones.find((v) => v.inicial) ?? versiones[0]);
+const fotos = grupo?.fotos ?? modelo;
 
 // Iconos del crédito: Clawd, el mismo de la tira «Hecho con» de la portada, y
 // el oficial de Three.js (simple-icons), en el color del texto.
@@ -34,15 +43,36 @@ const VISTAS = [
 ];
 ---
 
-<section class="visor" data-modelo={modelo} aria-label={`${m.nombre}: ficha y maqueta interactiva`}>
+{versiones ? (
+<div class="visor-versiones">
+  {versiones.map((v) => <Astro.self modelo={v.modelo} grupo={{ versiones, activa: v === inicial, fotos: modelo }} />)}
+</div>
+) : (
+<section class="visor" data-modelo={modelo} hidden={grupo && !grupo.activa} aria-label={`${m.nombre}: ficha y maqueta interactiva`}>
   <div class="visor-cab">
     <div>
       <p class="visor-expediente">
         <span class="visor-bandera"><BanderaUAS modelo={modelo} /></span>
         <span>{m.pais.nombre}</span>
       </p>
-      <h2 class="visor-titulo">{m.nombre}</h2>
-      <p class="visor-subtitulo">{m.subtitulo}</p>
+      {grupo ? (
+        <div class="visor-versiones-botones" role="group" aria-label="Versión">
+          {grupo.versiones.map((v) => {
+            const mv = todas[`../data/uas/${v.modelo}.ts`]!.default;
+            return (
+              <button type="button" class="visor-version" data-version={v.modelo} data-rotulo={v.rotulo} aria-pressed={v.modelo === modelo ? "true" : "false"}>
+                <span class="visor-titulo">{mv.nombre}</span>
+                <span class="visor-subtitulo">{mv.subtitulo}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <>
+          <h2 class="visor-titulo">{m.nombre}</h2>
+          <p class="visor-subtitulo">{m.subtitulo}</p>
+        </>
+      )}
     </div>
     <p class="visor-credito">
       Maqueta creada a partir de fotos públicas. Hecho con<br />
@@ -91,7 +121,6 @@ const VISTAS = [
             <button type="button" data-estilo="maqueta" aria-pressed="true">Maqueta</button>
             <button type="button" data-estilo="pixel" aria-pressed="false" title="Pixel art">Pixel</button>
           </div>
-          {m.agua && <button type="button" data-accion="agua" aria-pressed="true" title="El agua hasta la línea de flotación">Agua</button>}
           <button type="button" data-accion="girar" aria-pressed="false" title="Girar solo">Girar</button>
           <button type="button" data-accion="alejar" aria-label="Alejar" title="Alejar">−</button>
           <button type="button" data-accion="acercar" aria-label="Acercar" title="Acercar">+</button>
@@ -137,7 +166,7 @@ const VISTAS = [
             <li data-fuente={f.id} class={f.imagen ? "" : "visor-fuente--articulo"}>
               <a href={f.url} target="_blank" rel="noopener">
                 {f.imagen
-                  ? <img src={`/uas/${modelo}/fuentes/${f.imagen}`} alt={f.titulo} loading="lazy" width="560" height="373" />
+                  ? <img src={`/uas/${fotos}/fuentes/${f.imagen}`} alt={f.titulo} loading="lazy" width="560" height="373" />
                   : <span class="visor-fuente-icono" aria-hidden="true">¶</span>}
                 <span class="visor-fuente-texto">
                   <span class="visor-fuente-medio">{f.medio}{!f.imagen && " · artículo"}</span>
@@ -153,12 +182,14 @@ const VISTAS = [
   </div>
 
 </section>
+)}
 
 <script>
   // La web cambia de página sin recargar (ClientRouter): el visor se monta en
   // cada llegada y se desmonta al salir. Cada maqueta va en su propio trozo de
   // JavaScript y solo se baja la que se usa.
   import type { Maqueta } from "../data/uas/tipos";
+  import type { Inicio } from "../scripts/visor-uas";
   const maquetas = import.meta.glob<{ default: Maqueta }>(["../data/uas/*.ts", "!../data/uas/tipos.ts"]);
   let quitar: (() => void)[] = [];
   // Cada llegada a una página tiene su número: un montaje que termina de
@@ -171,15 +202,64 @@ const VISTAS = [
     quitar = [];
   };
 
+  // Monta el visor de una caja; devuelve con qué desmontarlo (o nada si ya se
+  // ha cambiado de página).
+  const montar = async (caja: HTMLElement, inicio?: Inicio) => {
+    const cargar = maquetas[`../data/uas/${caja.dataset.modelo}.ts`];
+    if (!cargar) return;
+    const esta = visita;
+    const [{ montarVisor }, { default: maqueta }] = await Promise.all([import("../scripts/visor-uas"), cargar()]);
+    if (esta !== visita || !caja.isConnected) return;
+    return montarVisor(caja, maqueta, inicio);
+  };
+
+  // Versiones (el Magura V5 y V7): un visor por versión y solo uno a la vista
+  // y montado. Al cambiar, se desmonta el que se ve y la otra sale con su
+  // misma vista, estilo y pestaña. ?version=v5 abre en esa.
+  const montarVersiones = (grupo: HTMLElement) => {
+    const cajas = [...grupo.querySelectorAll<HTMLElement>(":scope > .visor")];
+    let actual = cajas.find((c) => !c.hidden)!;
+    let soltar: (() => void) | undefined;
+    let pedidos = 0;
+    const ver = async (caja: HTMLElement) => {
+      const inicio: Inicio | undefined = soltar && {
+        vista: actual.querySelector<HTMLElement>("[data-vista][aria-pressed=true]")?.dataset.vista as Inicio["vista"],
+        estilo: actual.querySelector<HTMLElement>("[data-estilo][aria-pressed=true]")?.dataset.estilo as Inicio["estilo"],
+        pestana: actual.querySelector<HTMLElement>("[role=tab][aria-selected=true]")?.dataset.pestana,
+      };
+      soltar?.();
+      soltar = undefined;
+      actual.hidden = true;
+      caja.hidden = false;
+      actual = caja;
+      const este = ++pedidos;
+      const s = await montar(caja, inicio);
+      if (este === pedidos) soltar = s;
+      else s?.();
+    };
+    const alPulsar = (e: Event) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>("[data-version]");
+      const caja = b && cajas.find((c) => c.dataset.modelo === b.dataset.version);
+      if (caja && caja !== actual) ver(caja);
+    };
+    grupo.addEventListener("click", alPulsar);
+    const pedida = new URLSearchParams(location.search).get("version")?.toUpperCase();
+    const boton = [...grupo.querySelectorAll<HTMLElement>("[data-version]")].find((b) => b.dataset.rotulo?.toUpperCase() === pedida);
+    ver(cajas.find((c) => c.dataset.modelo === boton?.dataset.version) ?? actual);
+    quitar.push(() => {
+      grupo.removeEventListener("click", alPulsar);
+      pedidos++;
+      soltar?.();
+    });
+  };
+
   document.addEventListener("astro:page-load", async () => {
     desmontar();
-    const esta = visita;
+    for (const grupo of document.querySelectorAll<HTMLElement>(".visor-versiones")) montarVersiones(grupo);
     for (const caja of document.querySelectorAll<HTMLElement>(".visor")) {
-      const cargar = maquetas[`../data/uas/${caja.dataset.modelo}.ts`];
-      if (!cargar) continue;
-      const [{ montarVisor }, { default: maqueta }] = await Promise.all([import("../scripts/visor-uas"), cargar()]);
-      if (esta !== visita || !caja.isConnected) return;
-      quitar.push(montarVisor(caja, maqueta));
+      if (caja.parentElement?.classList.contains("visor-versiones")) continue;
+      const s = await montar(caja);
+      if (s) quitar.push(s);
     }
   });
   document.addEventListener("astro:before-swap", desmontar);
@@ -250,6 +330,28 @@ const VISTAS = [
   .visor-bandera svg { display: block; width: 22px; height: auto; image-rendering: pixelated; shape-rendering: crispEdges; }
   .visor-titulo { font-size: 1.7rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
   .visor-subtitulo { font-size: 0.9rem; color: var(--visor-suave); }
+  /* Versiones (el Magura V5 y V7): el nombre de cada una es un botón grande;
+     la que se ve, recuadrada en tinta, y las otras, apagadas. */
+  .visor-versiones-botones { display: flex; gap: 0.6rem; margin-top: 0.3rem; }
+  .visor-version {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.35rem 0.9rem 0.45rem;
+    border: 1px dashed var(--visor-borde);
+    border-radius: 4px;
+    text-align: left;
+    color: var(--visor-suave);
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+  }
+  .visor-version .visor-titulo { display: block; color: inherit; }
+  .visor-version:hover { color: var(--visor-texto); border-color: var(--visor-suave); }
+  .visor-version[aria-pressed="true"] {
+    border: 1px solid var(--visor-acento);
+    background: color-mix(in srgb, var(--visor-acento) 6%, transparent);
+    color: var(--visor-texto);
+    cursor: default;
+  }
   /* A la derecha, a media altura de la cabecera. */
   .visor-credito {
     position: absolute;
@@ -471,6 +573,8 @@ const VISTAS = [
   }
   @container (max-width: 480px) {
     .visor-cab { flex-direction: column; align-items: flex-start; }
+    .visor-version { padding: 0.3rem 0.6rem 0.4rem; }
+    .visor-version .visor-titulo { font-size: 1.3rem; }
     .visor-lienzo-caja { height: 18rem; }
     .visor-lista { columns: 1; }
     .visor-ayuda { display: none; }

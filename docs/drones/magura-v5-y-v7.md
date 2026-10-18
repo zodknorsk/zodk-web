@@ -1,13 +1,14 @@
 # Magura V5 y V7 (Uforce) — diario
 
-## Dónde estamos: V7 terminado (commiteado, sin push)
+## Dónde estamos: visor con V5 y V7 hecho (commiteado, sin push)
 
-- **V5**: hecho y commiteado (18-10-2026, sin push). Nota en borrador sin commitear en la bóveda.
-- **V7 con AIM-9**, `src/data/uas/magura-v7.ts`: revisiones 1, 2 y 3 del usuario aplicadas y dado por bueno (18-10-2026). Acabados nuevos `gris-m7`, `naranja` y `marron`. Capturas para el usuario: `~/Downloads/magura/v7-revision-2.html`.
-- **PROVISIONAL**: `magura-v5-y-v7.ts` exporta el V7 (así sale en `/uas/magura-v5-y-v7`); el V5 está en `magura-v5.ts`. Se arregla con el visor de botones.
+- **V5 y V7**, maquetas hechas y commiteadas (18-10-2026, sin push). Nota del V5 en borrador sin commitear en la bóveda.
+- **Visor con las dos versiones** (18-10-2026, commiteado): `magura-v5-y-v7.ts` lleva `versiones` (V5 y V7, abre en el V7; `?version=v5` abre en el V5). En la cabecera, dos botones grandes «Magura V5» y «Magura V7»; el elegido, recuadrado en tinta. Al cambiar, la otra sale con la misma vista, estilo y pestaña. Un visor por versión en la página, solo uno montado. Código en `VisorUAS.astro`, `visor-uas.ts` (`Inicio`) y `tipos.ts` (`versiones`).
+- **Agua quitada del todo** (el teñido, la lámina, el botón, `agua` de `tipos.ts` y de las maquetas, `--sin-agua` de `comparar-foto.mjs`).
+- Capturas para el usuario: `~/Downloads/magura/v5-v7-botones.html`.
 - **Sin mirar**: el modo Pixel del V7; tarjeta y planta (fase 4) siguen siendo del V5.
-- **El de los R-73 es el W6P**: maqueta aparte, más adelante. El AIM-9M tendrá ficha propia (sale de este misil).
-- **Siguiente**: el visor con los botones (V5 · V7, y W6P cuando esté); después, el pixel del V7 (fase 4).
+- **El de los R-73 es el W6P**: maqueta aparte, más adelante (sería un tercer botón). El AIM-9M tendrá ficha propia.
+- **Siguiente**: el pixel del V7 (fase 4).
 
 ## Decisiones del usuario
 
@@ -21,6 +22,8 @@
 - 18-10-2026: con el V7, «no hace falta rallarse por las medidas exactas»: pocas fotos y malas para medir; se calca lo comprobable (forma, tapas, Starlink, escalón, misiles).
 - 18-10-2026: el AIM-9M del V7 «con todo el detalle»: tendrá ficha propia.
 - 18-10-2026: los R-73 no van en el V5: la lancha de los R-73 es el **W6P** (museo de Kiev), que se hará después **con su casco**, de las fotos del museo. Ahora, el **V7 con los AIM-9**.
+- 18-10-2026: las versiones, **dos botones grandes en la cabecera** del visor («Magura V5» y «Magura V7», el elegido resaltado), no un botón pequeño abajo.
+- 18-10-2026: **sin agua** en el visor: se quita todo lo del agua.
 
 ## Medidas clave
 
@@ -132,6 +135,7 @@ Lo que hace falta para la maqueta y la web, apuntado en la fase 1:
 - V7, torreta de 52 cm sobre la caseta baja (0,72), en dos piezas (columna y cabeza): rechazada, «más fina, no tan alta». Soportes de Starlink con hileras de agujeros: «placeholder»; van cajas sencillas.
 - V7, la placa de delante de la torreta de canto (como una antena): es una Starlink horizontal sobre un soporte con agujeros.
 - V7 con un lomo a todo lo largo como el V5: en el perfil, la cubierta de proa es baja; la caseta empieza en la torreta.
+- Botón «V5 | V7» pequeño en la barra de abajo, junto a «Maqueta | Pixel»: «algo más vistoso»; van en la cabecera. El agua en el visor (las tres variantes): quitada.
 
 ## Registro
 

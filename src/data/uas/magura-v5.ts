@@ -8,7 +8,7 @@
 // encajadas a la vez con sus cámaras (arte/uas-fuentes/magura-v5-y-v7/hd/rec/,
 // fuera de Git; tabla en docs/drones/magura-v5-y-v7.md). La disposición de las
 // caras, también de la maqueta del V5 de DSEI 2023.
-// Todo en metros (y = 0 cerca de la línea de flotación, `FLOTACION`); al
+// Todo en metros (y = 0 cerca de la línea de flotación); al
 // final, a unidades de la maqueta (1 unidad = 2,5 m).
 import type { Calca, Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";
 import { bandera } from "../banderas.ts";
@@ -16,10 +16,6 @@ import { bandera } from "../banderas.ts";
 const ESCALA = 2.5;
 
 const EUROMAIDAN = "https://euromaidanpress.com/2025/05/15/ukraine-unveils-new-magura-v7-naval-drone-used-to-shoot-down-two-russian-su-30-jets/";
-
-// Línea de flotación, algo por debajo de y = 0: en las fotos en el agua, el
-// costado sale mucho más por encima que por debajo.
-const FLOTACION = -0.07;
 
 // La defensa: su medio ancho (x), medido a lo largo en la foto de tres
 // cuartos (abajo, DEFENSA_X), y la altura de su eje (y), en la de perfil: va unos 11 cm por
@@ -370,7 +366,6 @@ const maqueta: Maqueta = {
   resalte: "tinta",
   hd: true,
   contornoPixel: true,
-  agua: { y: u(FLOTACION) },
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("UA"),
   piezas: PIEZAS.map(aUnidades),

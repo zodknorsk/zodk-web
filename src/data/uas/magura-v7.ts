@@ -442,7 +442,6 @@ const maqueta: Maqueta = {
   resalte: "tinta",
   hd: true,
   contornoPixel: true,
-  agua: { y: 0 },
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
   pais: bandera("UA"),
   piezas: PIEZAS.map(aUnidades),
