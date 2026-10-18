@@ -77,7 +77,7 @@ function pintarSiluetas(raiz: Group, radio: number, vistas: Vista[]): Map<Vista,
   return salida;
 }
 
-// `inicio`: al cambiar de versión (el Magura V5 y V7), la nueva sale como
+// `inicio`: al cambiar de versión (el Magura V5-V7), la nueva sale como
 // estaba la otra; sin él, como diga la URL.
 export type Inicio = { vista?: Vista; estilo?: "maqueta" | "pixel"; pestana?: string };
 

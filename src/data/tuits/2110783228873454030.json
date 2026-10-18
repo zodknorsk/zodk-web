@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-18",
+  "tuit": {
+    "id_str": "2110783228873454030",
+    "created_at": "2026-10-15T17:21:52.000Z",
+    "text": "Las Patrulleras de Marruecos 🇲🇦 que han entrado en aguas españolas de Ceuta.\nQue lo vea España entera.🤨🇪🇸 https://t.co/YGIkIUTcg2",
+    "user": {
+      "name": "Víctor Sanchez Fortun",
+      "screen_name": "Motard8559",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1483227821262651398/qZDEPOA2_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/YGIkIUTcg2",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/2110783203325706241/img/pGdKCgh30J4Lag3o.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/2110783203325706241/pl/DtLZM5L_KcgeIkIy.m3u8?v=0a9"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/2110783203325706241/vid/avc1/320x504/Ustkkk3lIClQ5lQ-.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/2110783203325706241/vid/avc1/480x756/iuO97-WdS9jAcnjR.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/2110783203325706241/vid/avc1/720x1134/mlWLXzktfw1AYHSb.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

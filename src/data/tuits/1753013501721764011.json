@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-18",
+  "tuit": {
+    "id_str": "1753013501721764011",
+    "created_at": "2024-02-01T11:12:42.000Z",
+    "text": "Last night near Donuzlav, Russian-occupied #Crimea, south #Ukraine, an attack USV strike hit and sunk large missile boat Ivanovets of #Russia’s Black Sea. \n\n1/2\n\n https://t.co/6xyxabnvlz",
+    "user": {
+      "name": "Alexander Kokcharov",
+      "screen_name": "alex_kokcharov",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1822052135569104898/fS9l2qyY_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/6xyxabnvlz",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1753009423520251904/pu/img/iNkXZl7-O6ABq-3s.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1753009423520251904/pu/pl/V6oxmWKqOKjtLOAf.m3u8?tag=12&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/1753009423520251904/pu/vid/avc1/480x270/091-S7xdg-Q0z2v2.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/1753009423520251904/pu/vid/avc1/640x360/7c8hJtsAaZ_Eqtsf.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1753009423520251904/pu/vid/avc1/1280x720/LtUU6D0H-_GUkQe7.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

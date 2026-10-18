@@ -394,8 +394,12 @@ export type Maqueta = {
   // `detalles`: calcas y costuras sobre sus piezas (los textos del tubo del
   // Hero-30), que salen y se van con ella.
   catapulta?: { piezas: Pieza[]; cabeceo: number; nombre?: string; detalles?: NonNullable<Maqueta["detalles"]> };
-  // Varias maquetas en un visor (el Magura V5 y V7): un botón por cada una
+  // Varias maquetas en un visor (el Magura V5-V7): un botón por cada una
   // junto a «Maqueta | Pixel». `modelo`, su archivo en src/data/uas/; abre en
   // la que lleva `inicial` (o la primera).
   versiones?: { rotulo: string; modelo: string; inicial?: boolean }[];
+  // Con versiones: la que sale en la tarjeta de /uas y en la planta de la
+  // portada, si no es la de la maqueta (el Magura abre en el V7 y sus
+  // miniaturas son del V5).
+  miniaturasModelo?: string;
 };

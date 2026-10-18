@@ -71,7 +71,9 @@ try {
         const { default: maqueta } = await import("/src/data/uas/${modelo}.ts");
         if (!maqueta.hd) throw new Error("${modelo} no tiene HD");
         const vista = ${op.vista ? "null" : "maqueta.vistaTarjeta"} ?? ${JSON.stringify(VISTA_3D)};
-        const conPostura = ${op.vuelo ? `{ ...maqueta, tarjetaEnVuelo: ${op.vuelo === "si"} }` : "maqueta"};
+        // Con versiones, la de las miniaturas (\`miniaturasModelo\`).
+        const dron = maqueta.miniaturasModelo ? (await import(\`/src/data/uas/\${maqueta.miniaturasModelo}.ts\`)).default : maqueta;
+        const conPostura = ${op.vuelo ? `{ ...dron, tarjetaEnVuelo: ${op.vuelo === "si"} }` : "dron"};
         return JSON.stringify(tarjetaHD(conPostura, vista, ${W}, ${H}));
       })()`,
       awaitPromise: true, returnByValue: true,
@@ -89,7 +91,8 @@ try {
     const rp = await orden("Runtime.evaluate", {
       expression: `(async () => {
         const { plantaHD } = await import("/src/scripts/uas-miniatura-hd.ts");
-        const { default: maqueta } = await import("/src/data/uas/${modelo}.ts");
+        const { default: pagina } = await import("/src/data/uas/${modelo}.ts");
+        const maqueta = pagina.miniaturasModelo ? (await import(\`/src/data/uas/\${pagina.miniaturasModelo}.ts\`)).default : pagina;
         const k = maqueta.plantaDoble ? 2 : 1;
         return JSON.stringify({ k, ...plantaHD(maqueta, ${JSON.stringify(ARRIBA)}, ${PX_POR_METRO} * k, ${PLANTA_MAX[0] - SOMBRA[0]} * k, ${PLANTA_MAX[1] - SOMBRA[1]} * k) });
       })()`,

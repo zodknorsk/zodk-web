@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-10-18",
+  "tuit": {
+    "id_str": "2111004171776184822",
+    "created_at": "2026-10-16T07:59:49.000Z",
+    "text": "🔴  Las imágenes del 30 de julio que abren nuevos interrogantes sobre la crisis de Ceuta.\n\nLas cámaras de FaroTV captaron un tenso enfrentamiento entre mandos de la Policía Nacional y la Guardia Civil durante la entrada masiva de migrantes por el Tarajal.\n\n¿Qué ocurrió aquella https://t.co/2p1IQ211fV",
+    "note_tweet": true,
+    "user": {
+      "name": "El Faro de Ceuta",
+      "screen_name": "ElFarodeCeuta",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1090567697262354435/eMwLzazk_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/2p1IQ211fV",
+        "media_url_https": "https://pbs.twimg.com/media/HUvLFDVWYAE1aK7.jpg"
+      }
+    ]
+  }
+}

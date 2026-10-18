@@ -5,8 +5,8 @@
 // vertical y el fondo en V.
 // Medidas del fabricante (5,5 m de largo, 1,5 m de manga); la forma, de las
 // dos fotos de la presentación de mayo de 2025 (Militarnyi, a 2560 px)
-// encajadas a la vez con sus cámaras (arte/uas-fuentes/magura-v5-y-v7/hd/rec/,
-// fuera de Git; tabla en docs/drones/magura-v5-y-v7.md). La disposición de las
+// encajadas a la vez con sus cámaras (arte/uas-fuentes/magura-v5-v7/hd/rec/,
+// fuera de Git; tabla en docs/drones/magura-v5-v7.md). La disposición de las
 // caras, también de la maqueta del V5 de DSEI 2023.
 // Todo en metros (y = 0 cerca de la línea de flotación); al
 // final, a unidades de la maqueta (1 unidad = 2,5 m).

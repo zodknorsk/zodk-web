@@ -9,7 +9,7 @@ import type { Maqueta } from "../data/uas/tipos";
 import BanderaUAS from "./BanderaUAS.astro";
 import { STACK } from "@consts";
 
-// Con `versiones` (el Magura V5 y V7) sale un visor por versión, todos menos
+// Con `versiones` (el Magura V5-V7) sale un visor por versión, todos menos
 // uno ocultos, y el script cambia de uno a otro. `grupo` lo pasa este mismo
 // componente a cada uno: las versiones, cuál es y la carpeta de las fotos.
 type Props = {
@@ -213,7 +213,7 @@ const VISTAS = [
     return montarVisor(caja, maqueta, inicio);
   };
 
-  // Versiones (el Magura V5 y V7): un visor por versión y solo uno a la vista
+  // Versiones (el Magura V5-V7): un visor por versión y solo uno a la vista
   // y montado. Al cambiar, se desmonta el que se ve y la otra sale con su
   // misma vista, estilo y pestaña. ?version=v5 abre en esa.
   const montarVersiones = (grupo: HTMLElement) => {
@@ -330,7 +330,7 @@ const VISTAS = [
   .visor-bandera svg { display: block; width: 22px; height: auto; image-rendering: pixelated; shape-rendering: crispEdges; }
   .visor-titulo { font-size: 1.7rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
   .visor-subtitulo { font-size: 0.9rem; color: var(--visor-suave); }
-  /* Versiones (el Magura V5 y V7): el nombre de cada una es un botón grande;
+  /* Versiones (el Magura V5-V7): el nombre de cada una es un botón grande;
      la que se ve, recuadrada en tinta, y las otras, apagadas. */
   .visor-versiones-botones { display: flex; gap: 0.6rem; margin-top: 0.3rem; }
   .visor-version {

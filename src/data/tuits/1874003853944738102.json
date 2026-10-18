@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-10-18",
+  "tuit": {
+    "id_str": "1874003853944738102",
+    "created_at": "2024-12-31T08:05:10.000Z",
+    "text": "A historic strike: @DI_Ukraine warriors destroyed an aerial target using a Magura V5 naval drone.\n\nA russian Mi-8 helicopter was destroyed using R-73 “SeeDragon” missiles near Cape Tarkhankut in temporarily occupied Crimea.\n\nAnother enemy helicopter was damaged and returned to https://t.co/AMOiuVEzWe",
+    "note_tweet": true,
+    "user": {
+      "name": "Defense of Ukraine",
+      "screen_name": "DefenceU",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1788851187871023104/X6lt83NG_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/AMOiuVEzWe",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1874003761108021248/img/N-jzYmaknM1X7bbt.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1874003761108021248/pl/Avsuz1CEe__7o8cu.m3u8?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/1874003761108021248/vid/avc1/480x270/XxRDBEWvoe-yihk_.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1874003761108021248/vid/avc1/640x360/S5ITWyTNa41Yg4Qp.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1874003761108021248/vid/avc1/1280x720/vBtrvEV4pu35domZ.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

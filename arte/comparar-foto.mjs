@@ -73,11 +73,12 @@ if (op.noche) {
   await espera(800);
   await evaluar("sessionStorage.setItem('theme','dark')");
 }
-const consulta = [op.pixel && "estilo=pixel", op.catapulta && "catapulta=1"].filter(Boolean).join("&");
+const consulta = [op.pixel && "estilo=pixel", op.catapulta && "catapulta=1", op.version && `version=${op.version}`].filter(Boolean).join("&");
 await orden("Page.navigate", { url: `http://localhost:4321/uas/${A.modelo ?? "bayraktar-tb2"}${consulta ? `?${consulta}` : ""}` });
 await espera(4000);
 const caja = await evaluar(`(async () => {
-  const c = document.querySelector('.visor-lienzo-caja');
+  // El visor que se ve (con versiones, como el Magura, hay uno oculto por versión).
+  const c = document.querySelector('.visor:not([hidden]) .visor-lienzo-caja');
   Object.assign(c.style, { position: 'fixed', left: '0px', top: '0px', width: '${ancho}px', height: '${alto}px', maxWidth: 'none', maxHeight: 'none', zIndex: 99999, background: '#ebebee' });
   // El lienzo, del mismo tamaño exacto (si no, la caja crece pero el lienzo
   // se queda con su alto y el dron sale encogido en vertical).
@@ -96,8 +97,8 @@ const caja = await evaluar(`(async () => {
   await new Promise((r) => setTimeout(r, 900));
   window.__visor.mirar(${JSON.stringify(C)}, ${JSON.stringify(T)}, ${fovVisor}, ${cam.roll ?? 0});
   await new Promise((r) => setTimeout(r, 600));
-  const b = document.querySelector('.visor-lienzo').getBoundingClientRect();
-  return JSON.stringify({ x: b.x + scrollX, y: b.y + scrollY, sx: scrollX, sy: scrollY, by: b.y, cw: document.querySelector('.visor-lienzo').width, ch: document.querySelector('.visor-lienzo').height, aspect: window.__visor?.camara.aspect, view: window.__visor?.camara.view, fov: window.__visor?.camara.fov, vw: innerWidth, vh: innerHeight, w: b.width, h: b.height, hay: typeof window.__visor, pos: window.__visor?.camara.position, min: window.__visor?.controles.minDistance, max: window.__visor?.controles.maxDistance, near: window.__visor?.camara.near, far: window.__visor?.camara.far });
+  const b = c.querySelector('.visor-lienzo').getBoundingClientRect();
+  return JSON.stringify({ x: b.x + scrollX, y: b.y + scrollY, sx: scrollX, sy: scrollY, by: b.y, cw: c.querySelector('.visor-lienzo').width, ch: c.querySelector('.visor-lienzo').height, aspect: window.__visor?.camara.aspect, view: window.__visor?.camara.view, fov: window.__visor?.camara.fov, vw: innerWidth, vh: innerHeight, w: b.width, h: b.height, hay: typeof window.__visor, pos: window.__visor?.camara.position, min: window.__visor?.controles.minDistance, max: window.__visor?.controles.maxDistance, near: window.__visor?.camara.near, far: window.__visor?.camara.far });
 })()`);
 const r = JSON.parse(caja); if (op.depurar) console.log(caja);
 const { data } = await orden("Page.captureScreenshot", { format: "png", clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } });

@@ -9,7 +9,7 @@
 // en la defensa, medido con el AIM-9 (2,87 m) en las fotos de la
 // presentación de mayo de 2025 (el resto, hasta 7,2, sería la tobera). Las
 // posiciones, de esas fotos (Militarnyi y GUR) encajadas con el V5 como
-// regla (arte/uas-fuentes/magura-v5-y-v7/hd/v7/, fuera de Git).
+// regla (arte/uas-fuentes/magura-v5-v7/hd/v7/, fuera de Git).
 // Todo en metros (y = 0 en la línea de flotación); al final, a unidades de la
 // maqueta (1 unidad = 2,5 m, como el V5: salen a escala entre sí).
 import type { Calca, Costura, Maqueta, Parte, Pieza, Seccion } from "./tipos";

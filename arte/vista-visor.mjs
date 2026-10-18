@@ -1,6 +1,7 @@
 // Pinta el visor desde una cámara cualquiera (en metros de la maqueta), sin
 // foto. Uso: node arte/vista-visor.mjs salida.png az el d [fov=20] [tx,ty,tz=0,0,0]
 //   [--ancho=1600] [--alto=900] [--pixel] [--noche] [--modelo=bayraktar-tb2]
+//   [--version=v5] (en un visor con versiones, cuál)
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -20,4 +21,5 @@ const args = [path.join(path.dirname(new URL(import.meta.url).pathname), "compar
 if (op.pixel) args.push("--pixel");
 if (op.noche) args.push("--noche");
 if (op.catapulta) args.push("--catapulta");
+if (op.version) args.push(`--version=${op.version}`);
 execFileSync("node", args, { stdio: "inherit" });

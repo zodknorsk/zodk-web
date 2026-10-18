@@ -1,14 +1,14 @@
-# Magura V5 y V7 (Uforce) — diario
+# Magura V5-V7 (Uforce) — diario
 
-## Dónde estamos: visor con V5 y V7 hecho (commiteado, sin push)
+## Dónde estamos: fase 5 hecha (en la web), esperando la revisión del usuario
 
-- **V5 y V7**, maquetas hechas y commiteadas (18-10-2026, sin push). Nota del V5 en borrador sin commitear en la bóveda.
-- **Visor con las dos versiones** (18-10-2026, commiteado): `magura-v5-y-v7.ts` lleva `versiones` (V5 y V7, abre en el V7; `?version=v5` abre en el V5). En la cabecera, dos botones grandes «Magura V5» y «Magura V7»; el elegido, recuadrado en tinta. Al cambiar, la otra sale con la misma vista, estilo y pestaña. Un visor por versión en la página, solo uno montado. Código en `VisorUAS.astro`, `visor-uas.ts` (`Inicio`) y `tipos.ts` (`versiones`).
-- **Agua quitada del todo** (el teñido, la lámina, el botón, `agua` de `tipos.ts` y de las maquetas, `--sin-agua` de `comparar-foto.mjs`).
-- Capturas para el usuario: `~/Downloads/magura/v5-v7-botones.html`.
-- **Sin mirar**: el modo Pixel del V7; tarjeta y planta (fase 4) siguen siendo del V5.
-- **El de los R-73 es el W6P**: maqueta aparte, más adelante (sería un tercer botón). El AIM-9M tendrá ficha propia.
-- **Siguiente**: el pixel del V7 (fase 4).
+- **Título cambiado a «Magura V5-V7»** (18-10-2026): slug `magura-v5-v7`, archivos y carpetas renombrados (maqueta, diario, `public/uas/`, `arte/uas-fuentes/`), nota de la bóveda renombrada.
+- **Importado** y probado: ficha `/uas/magura-v5-v7`, tarjeta con sello azulado «Dron naval» en `/uas` (`index.astro`). Lint y `astro check` limpios.
+- **Sin commitear**: todo (zodk-web y bóveda: la nota sigue en borrador).
+- Capturas: `~/Downloads/magura/ficha.png`, `lista.png`, `pixel.png`.
+- **Portada**: el Magura entra en `grandes` de la tira (`index.astro`), con `planta.png` (captura `~/Downloads/magura/portada.png`).
+- **Pendiente de él**: revisar la ficha (fase 6, si hay fallos) y quitar el «borrador» de la nota para publicar.
+- **Siguiente**: fase 6 si hay fallos; si no, fase 7 (cierre: «Drones hechos» en `docs/hangar-de-uas.md`, commit y push cuando lo pida).
 
 ## Decisiones del usuario
 
@@ -24,6 +24,8 @@
 - 18-10-2026: los R-73 no van en el V5: la lancha de los R-73 es el **W6P** (museo de Kiev), que se hará después **con su casco**, de las fotos del museo. Ahora, el **V7 con los AIM-9**.
 - 18-10-2026: las versiones, **dos botones grandes en la cabecera** del visor («Magura V5» y «Magura V7», el elegido resaltado), no un botón pequeño abajo.
 - 18-10-2026: **sin agua** en el visor: se quita todo lo del agua.
+- 18-10-2026: el título es **«Magura V5-V7»**, no «V5 y V7».
+- 18-10-2026: la tarjeta de `/uas`, **del V5** y desde el ángulo de siempre (79°, 11°); la planta de la portada, también del V5.
 
 ## Medidas clave
 
@@ -39,6 +41,7 @@ Del fabricante y el GUR, sin planos:
 - **V7** (maqueta: z de −3,45 popa a 3,5 proa en la defensa; y = 0 en la flotación supuesta; x positiva = babor). Del GUR (Ukrinform): 7,2 x 2,1 x 1,5 m, 1.300 kg vacío, 3.400 kg cargado. Medido con el AIM-9 (2,87 m) en la foto de perfil (mil-15-1, 2,84 px/cm a la altura del costado): 6,95 m en la defensa (el resto hasta 7,2, la tobera, tapada). Comprobación: el ajuste de J y P con el V5 de regla da el AIM-9 en 3,00 m (4 % de más). Defensa a y 0,45, medio ancho 1,02; borde de la cubierta 0,55, eje 0,6; caseta (techo 0,72, medio ancho 0,62) de z −0,62 a popa. Bajo la defensa: arista a 0,12 (proa) → 0,3 (z 1,3) → 0,34 (popa); pantoque a 0,38-0,52; quilla a 1 m. Rejillas z 1,07-1,57; argolla amarilla z 0,85; caja de proa z 2,93; torreta z −1,0, arriba a 1,24; misiles en x ±0,92, punta z −0,21, eje y 1,01; LAU-7 de −0,25 a −3,2; base de −1,25 a −3,2. Disco del espejo, 0,17 a babor.
 - Color del V7: `#728889` (en la misma foto, cubierta del V7 #748887 y del V5 #7d8286).
 - Cámaras del V7: perfil (P7.cam.json) fov 6,3°.
+- Pixel del V7: la cubierta al sol cae en 4,8 escalones (estrecho, sin franjas); el costado al sol, en 1,2-1,3. Con `desfaseLuz` −0,3 la cubierta quedaría centrada pero el costado se partiría en dos escalones: se deja sin desfase.
 - V7, revisión 1 (perfil mil-15-1, popa mil-16aa): tapa 1 de z 2,13 a 1,19; tapa 2 de 0,86 a −0,2, con la Starlink 1 encima (placa horizontal de 0,6 x 0,6, de z 0,61 a 0,02, sobre soporte con agujeros). Escalón de la caseta en rampa, de z −0,15 (pie) a −0,37 (arriba). Starlink 2 justo a popa de la torreta, ~0,58 de ancho, inclinada. En el espejo: la caseta, 0,19 sobre la defensa (delante, 0,27: el techo baja hacia popa) y 1,76 de ancho; panel del espejo en relieve, 1,3 de ancho hasta 0,26 bajo la defensa y luego en trapecio hasta 0,39 (0,97 de ancho abajo); disco en él.
 - V7, revisión 2 (torreta calcada en v7-twz-camara y mil-12): torreta de 18,5 cm de ancho (base r 0,095, cabeza r 0,084) y 28 cm de alto, sobre el techo de la caseta. Techo: 27 cm sobre la defensa (0,72), rampa de z −0,15 a −0,37, plano hasta −1,35 y baja a 0,64 en el espejo. Bajo la defensa, el costado se endereza hacia popa (vertical de z −0,5 atrás). Bases de los lanzadores: arriba a 0,81 (en el perfil, 0,80); se dejan.
 - AIM-9M (foto de perfil, en metros desde la punta, escalado a 2,87): cúpula 0-0,06; cuello de acero 0,06-0,12; guía y mando, gris muy oscuro, 0,12-0,64 (de r 0,054 a 0,0635 en 0,36); aro 0,64; cinta naranja 0,66-0,82; banda amarilla 1,04-1,11; marrón 1,41-1,47; juntas 1,90 y 1,93; aletas de mando de 0,30 a 0,53 en la raíz y punta en 0,60 (0,224 fuera del cuerpo); alas de 2,25 a 2,84, 0,256 fuera, con rolerones (r 0,042). LAU-7: proa en z −0,5 (bajo las aletas de mando). Base del lanzador de z −1,38 a −3,27.
@@ -47,7 +50,7 @@ Del fabricante y el GUR, sin planos:
 
 Las de la nota (`## Fuentes`). Las cifras salen de Naval News (DSEI 2023), Kyiv Post (marzo 2024), Militarnyi y el GUR (mayo 2025). Fotos: ver tabla siguiente.
 
-Fotos en `arte/uas-fuentes/magura-v5-y-v7/full/` (todas de prensa, sin licencia libre):
+Fotos en `arte/uas-fuentes/magura-v5-v7/full/` (todas de prensa, sin licencia libre):
 
 | Archivo | Qué enseña | Autor | URL |
 |---|---|---|---|
@@ -151,3 +154,5 @@ Lo que hace falta para la maqueta y la web, apuntado en la fase 1:
 - 18-10-2026, fase 6 (retoques): proa en cuña uniforme desde arriba y defensa de una pieza; tapa de la escotilla en relieve con tornillos. Commit.
 - 18-10-2026, R-73: las fotos de la lancha de los R-73 son del vídeo del GUR de 2024; en el museo de Kiev (galería de Ukrinform) se ve que es el W6P. El usuario decide: el W6P, aparte y más adelante; ahora el V7.
 - 18-10-2026, fase 3 del V7: cifras del GUR; medidas en el perfil con el AIM-9; ajuste de J y P con el V5 de regla; primera maqueta, dos vueltas (cubierta baja a proa y caseta desde la torreta; franja en vuelo bajo la defensa). Página para el usuario.
+- 18-10-2026, fase 4 del V7: herramientas arregladas para el visor con versiones; pixel revisado vista a vista; luz medida (sin desfase); tarjeta (68/16, entre tres ángulos) y planta. Página para el usuario.
+- 18-10-2026, fase 4: el usuario elige la tarjeta del V5 a 79°/11°; `miniaturasModelo` para pintar tarjeta y planta con otra versión; la planta, también del V5.

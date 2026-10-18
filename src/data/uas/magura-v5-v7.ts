@@ -9,6 +9,7 @@ const magura: Maqueta = {
     { rotulo: "V5", modelo: "magura-v5" },
     { rotulo: "V7", modelo: "magura-v7", inicial: true },
   ],
+  miniaturasModelo: "magura-v5",
 };
 
 export default magura;

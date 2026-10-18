@@ -469,7 +469,7 @@ const DESC = {
     const hangar = tira.querySelector<HTMLElement>(".sat-hangar")!;
     const de = (ids: string[]) => puestos.filter((p) => ids.includes(p.dataset.id!)).sort(() => Math.random() - 0.5);
     const pequenos = de(["hero-30", "sting", "skydio-x10d", "rq-11-raven"]);
-    const grandes = de(["geran-2", "shahed-136", "mich-2000", "fq-44a-fury"]);
+    const grandes = de(["geran-2", "shahed-136", "mich-2000", "fq-44a-fury", "magura-v5-v7"]);
     if (!pequenos.length || !grandes.length) return;
     const parejas = pequenos.flatMap((p) => grandes.map((g) => [p, g]))
       .sort(() => Math.random() - 0.5);
