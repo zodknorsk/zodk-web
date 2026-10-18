@@ -3,7 +3,7 @@
 ## Dónde estamos: V7 terminado (commiteado, sin push)
 
 - **V5**: hecho y commiteado (18-10-2026, sin push). Nota en borrador sin commitear en la bóveda.
-- **V7 con AIM-9**, `src/data/uas/magura-v7.ts`: revisiones 1 y 2 del usuario aplicadas y dado por bueno (18-10-2026). Acabados nuevos `gris-m7`, `naranja` y `marron`. Capturas para el usuario: `~/Downloads/magura/v7-revision-2.html`.
+- **V7 con AIM-9**, `src/data/uas/magura-v7.ts`: revisiones 1, 2 y 3 del usuario aplicadas y dado por bueno (18-10-2026). Acabados nuevos `gris-m7`, `naranja` y `marron`. Capturas para el usuario: `~/Downloads/magura/v7-revision-2.html`.
 - **PROVISIONAL**: `magura-v5-y-v7.ts` exporta el V7 (así sale en `/uas/magura-v5-y-v7`); el V5 está en `magura-v5.ts`. Se arregla con el visor de botones.
 - **Sin mirar**: el modo Pixel del V7; tarjeta y planta (fase 4) siguen siendo del V5.
 - **El de los R-73 es el W6P**: maqueta aparte, más adelante. El AIM-9M tendrá ficha propia (sale de este misil).
@@ -37,7 +37,7 @@ Del fabricante y el GUR, sin planos:
 - Color del V7: `#728889` (en la misma foto, cubierta del V7 #748887 y del V5 #7d8286).
 - Cámaras del V7: perfil (P7.cam.json) fov 6,3°.
 - V7, revisión 1 (perfil mil-15-1, popa mil-16aa): tapa 1 de z 2,13 a 1,19; tapa 2 de 0,86 a −0,2, con la Starlink 1 encima (placa horizontal de 0,6 x 0,6, de z 0,61 a 0,02, sobre soporte con agujeros). Escalón de la caseta en rampa, de z −0,15 (pie) a −0,37 (arriba). Starlink 2 justo a popa de la torreta, ~0,58 de ancho, inclinada. En el espejo: la caseta, 0,19 sobre la defensa (delante, 0,27: el techo baja hacia popa) y 1,76 de ancho; panel del espejo en relieve, 1,3 de ancho hasta 0,26 bajo la defensa y luego en trapecio hasta 0,39 (0,97 de ancho abajo); disco en él.
-- V7, revisión 2 (torreta calcada en v7-twz-camara y mil-12; altura en mil-15-1): torreta de 18,5 cm de ancho (base r 0,095, cabeza r 0,084) y 28 cm de alto; arriba a 1,25 sobre el agua, así que el techo de la caseta, delante, va a 0,9 (45 cm sobre la defensa; la rampa iluminada del perfil sube de 0,75 a 0,89), de z −0,5 a −1,35, y baja a 0,64 en el espejo. Bajo la defensa, el costado se endereza hacia popa (vertical de z −0,5 atrás). Bases de los lanzadores: arriba a 0,81 (en el perfil, 0,80); se dejan.
+- V7, revisión 2 (torreta calcada en v7-twz-camara y mil-12): torreta de 18,5 cm de ancho (base r 0,095, cabeza r 0,084) y 28 cm de alto, sobre el techo de la caseta. Techo: 27 cm sobre la defensa (0,72), rampa de z −0,15 a −0,37, plano hasta −1,35 y baja a 0,64 en el espejo. Bajo la defensa, el costado se endereza hacia popa (vertical de z −0,5 atrás). Bases de los lanzadores: arriba a 0,81 (en el perfil, 0,80); se dejan.
 - AIM-9M (foto de perfil, en metros desde la punta, escalado a 2,87): cúpula 0-0,06; cuello de acero 0,06-0,12; guía y mando, gris muy oscuro, 0,12-0,64 (de r 0,054 a 0,0635 en 0,36); aro 0,64; cinta naranja 0,66-0,82; banda amarilla 1,04-1,11; marrón 1,41-1,47; juntas 1,90 y 1,93; aletas de mando de 0,30 a 0,53 en la raíz y punta en 0,60 (0,224 fuera del cuerpo); alas de 2,25 a 2,84, 0,256 fuera, con rolerones (r 0,042). LAU-7: proa en z −0,5 (bajo las aletas de mando). Base del lanzador de z −1,38 a −3,27.
 
 ## Fuentes
@@ -76,6 +76,7 @@ Fotos en `arte/uas-fuentes/magura-v5-y-v7/full/` (todas de prensa, sin licencia 
 | usuario-v5-varado-3.png, usuario-v5-flota-gur-3.webp | V5 varado; fila de V5 del GUR con las tapas de la cubierta (las Starlink van sobre tapas) | vía el usuario (GUR la segunda) | — |
 | usuario-v5-popa-rbk.png, usuario-v5-dos-rbk.webp, usuario-v5-rbk.webp | V5 en el agua (prueba en un río): popa en castillo con dos ventiladores, Starlinks sobre cajas con rejilla | RBK-Україна, vía el usuario | — |
 | usuario-v7-popa-proa-1.webp, usuario-v7-perfil-1.webp | Las capturas del usuario con los fallos de la revisión 1 del V7 (18-10-2026) | — | — |
+| usuario-v7-caseta-alta-2.png, usuario-v7-perfil-2.webp | Capturas del usuario: la caseta demasiado alta (revisión 3 del V7, 18-10-2026) | — | — |
 
 | v5-twz-r73.jpg (1235x695) | (R-73) La lancha de los R-73 navegando, del vídeo del GUR de mayo de 2024: es el W6P | MoD ruso / GUR vía TWZ | https://www.twz.com/wp-content/uploads/2025/05/USV-ARMED-WITH-R-73-1-copy.jpg |
 | bajadas/av-*.jpg, up-*.jpg, kp-1.png, de-*.jpg | (R-73) Fotogramas del mismo vídeo, el R-73 bajo un Su-27 y un V5 navegando | The Aviationist, Ukrainska Pravda, Kyiv Post, Defense Express | theaviationist.com/2024/12/31/ukrainian-magura-usv-r-73-vs-mi-8-helicopter/ y pravda.com.ua/eng/news/2024/05/06/7454521/ |
@@ -127,6 +128,7 @@ Lo que hace falta para la maqueta y la web, apuntado en la fase 1:
 - V7, medir con la foto de tres cuartos (mil-13): el V7 sale en el borde de un gran angular (distorsión): no encaja ni con su focal (la del V5) ni libre (errores de 20-45 px y anchos de 2,5 m). Se mide con el perfil y las cifras del GUR.
 - V7, ajuste conjunto solo con fotos del V7 (J, P y popa): todas ven la banda de babor y los anchos no quedan fijados (manga de 1,1 a 3,3 m según los puntos).
 - V7 con la proa roma y redonda en planta (superelipse en el último metro): rechazada en la revisión 1, «una balsa ancha»; va en cuña como el V5.
+- V7, techo de la caseta subido a 0,9 para que la torreta llegara a 1,25 como en el perfil (revisión 3): «excesivamente levantada, no es real»; vuelve a 0,72. La torreta, así, queda más baja que en esa foto (arriba, a 1,0).
 - V7, torreta de 52 cm sobre la caseta baja (0,72), en dos piezas (columna y cabeza): rechazada, «más fina, no tan alta». Soportes de Starlink con hileras de agujeros: «placeholder»; van cajas sencillas.
 - V7, la placa de delante de la torreta de canto (como una antena): es una Starlink horizontal sobre un soporte con agujeros.
 - V7 con un lomo a todo lo largo como el V5: en el perfil, la cubierta de proa es baja; la caseta empieza en la torreta.

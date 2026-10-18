@@ -49,13 +49,12 @@ const QUILLA: [number, number][] = [[PROA, 0.55], [3.45, 0.72], [3.35, 0.82], [3
 // Cubierta de proa: el borde, 10 cm sobre la defensa, y en el eje, 15 cm
 // (algo abombada). La caseta: una rampa la sube desde la cubierta (de
 // ESCALON_PIE a ESCALON_ARRIBA; arriba, más estrecha, así que sus aristas
-// con los chaflanes suben en diagonal hacia dentro), techo plano 45 cm sobre
-// la defensa hasta TECHO_BAJA (en la foto de perfil, la rampa sube de 0,75 a
-// 0,89 sobre el agua, y la torreta, de 28 cm, llega a 1,25) y, de ahí al
-// espejo, bajando a 19 cm (la tapa de popa va inclinada). En el espejo, el techo es casi tan ancho como
+// con los chaflanes suben en diagonal hacia dentro), techo plano 27 cm sobre
+// la defensa hasta TECHO_BAJA (detrás de la torreta) y, de ahí al espejo,
+// bajando a 19 cm (la tapa de popa va inclinada). En el espejo, el techo es casi tan ancho como
 // el barco (1,76 m) y el chaflán, casi vertical.
-const Y_BORDE = YS + 0.1, Y_CUB = YS + 0.15, Y_CASETA = YS + 0.45, Y_CASETA_POPA = YS + 0.19;
-const ESCALON_PIE = -0.15, ESCALON_ARRIBA = -0.5, TECHO_BAJA = -1.35;
+const Y_BORDE = YS + 0.1, Y_CUB = YS + 0.15, Y_CASETA = YS + 0.27, Y_CASETA_POPA = YS + 0.19;
+const ESCALON_PIE = -0.15, ESCALON_ARRIBA = -0.37, TECHO_BAJA = -1.35;
 const camber = (x: number, hb: number) => Y_CUB - (Y_CUB - Y_BORDE) * (hb > 0 ? Math.min(1, x / hb) ** 2 : 0);
 const techo = (z: number) => entre(Y_CASETA, Y_CASETA_POPA, (TECHO_BAJA - z) / (TECHO_BAJA - POPA));
 const techoAncho = (z: number) => (z > -0.7 ? entre(0.45, 0.62, (ESCALON_ARRIBA - z) / (ESCALON_ARRIBA + 0.7)) : entre(0.62, 0.84, (TECHO_BAJA - z) / (TECHO_BAJA - POPA)));
