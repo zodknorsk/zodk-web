@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "gris-wl" | "gris-ba7" | "verde-ls6";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -194,7 +194,7 @@ export type Dibujo =
   // encajado en la calca sin deformarlo: escudo del Mando de Combate Aéreo,
   // símbolo de la Fuerza Aérea, logo de Anduril con su nombre, el rótulo
   // «UFORCE MAGURA» o el emblema del GUR.
-  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril" | "magura" | "gur"; color: string }
+  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril" | "magura" | "gur" | "halcon-wl" | "halcon-wl-espejo" | "letras-wl"; color: string }
   // Aviso de toma de aire: triángulo hacia abajo con otro dentro y las
   // líneas del texto (el «DANGER JET INLET» del Fury).
   | { tipo: "aviso-toma"; color: string }

@@ -125,6 +125,14 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // La torreta del prototipo, entre naranja y ámbar según la luz.
   "naranja-si": { color: "#ee8a1c", metal: 0, rugosidad: 0.45 },
   marron: { color: "#7a5236", metal: 0, rugosidad: 0.6 },
+  // El gris claro y casi neutro del Wing Loong II: al sol en Singapur, el lomo
+  // #cfcfd2; el tono azulado del costado es reflejo del cielo.
+  "gris-wl": { color: "#acaeb2", metal: 0, rugosidad: 0.5 },
+  // Las armas del Wing Loong II, mate: el BA-7, gris más claro que el dron
+  // (#a09fa5 a la sombra en Singapur, #cacfd5 al sol en Aerofossile); el
+  // LS-6, verde oliva oscuro (#3e4c3b-#495646).
+  "gris-ba7": { color: "#b3b5ba", metal: 0, rugosidad: 0.6 },
+  "verde-ls6": { color: "#46503c", metal: 0, rugosidad: 0.65 },
 };
 
 // Tres escalones de luz para la ilustración.
