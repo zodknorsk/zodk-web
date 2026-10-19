@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "gris-wl" | "gris-ba7" | "verde-ls6";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -19,18 +19,6 @@ export type Pieza = (
   // y alto es el medio alto en esa z (el radio queda como medio ancho), para
   // un cuerpo que cambia de sección a lo largo. Las z no se repiten.
   | { tipo: "tubo"; id: string; perfil: (Punto2 | [number, number, number] | [number, number, number, number])[]; centro?: Punto2; seccion?: Punto2 }
-  // Conducto: una góndola hueca de revolución alrededor de z, para tomas de
-  // aire en góndola (boca delante) y escapes o toberas (boca detrás).
-  // `perfil`: [z, radio de fuera], de delante atrás; el extremo de la boca es
-  // el primero (o el último, con `boca: "atras"`), y el otro puede cerrar en
-  // radio 0 o quedar abierto dentro del cuerpo. `labio`: grueso del borde,
-  // redondeado en media caña. `hondo`: lo que se ve del conducto por dentro;
-  // el fondo, oscuro, va aparte (un `disco` con acabado `hueco` a esa
-  // profundidad). `seccion`: [ancho, alto] para que no sea redonda.
-  // `carenado`: una aleta que la une a la superficie de debajo, de z `desde`
-  // a `hasta` (afinándose en los extremos), con medio ancho `ancho` abajo,
-  // apoyada en `y` (o [[z, y], …] si la superficie baja o sube).
-  | { tipo: "conducto"; id: string; perfil: Punto2[]; centro?: Punto2; seccion?: Punto2; boca?: "delante" | "atras"; labio: number; hondo: number; carenado?: { desde: number; hasta: number; ancho: number; y: number | Punto2[] } }
   // Casco: un cuerpo hecho de secciones a lo largo de z, de delante atrás,
   // unidas con curvas suaves (bastan pocas secciones bien medidas). Cada
   // sección da, en esa z: el medio ancho, la y del lomo y la de la panza, la
@@ -206,7 +194,7 @@ export type Dibujo =
   // encajado en la calca sin deformarlo: escudo del Mando de Combate Aéreo,
   // símbolo de la Fuerza Aérea, logo de Anduril con su nombre, el rótulo
   // «UFORCE MAGURA» o el emblema del GUR.
-  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril" | "magura" | "gur" | "halcon-wl" | "halcon-wl-espejo" | "letras-wl"; color: string }
+  | { tipo: "logo"; logo: "acc" | "usaf" | "anduril" | "magura" | "gur"; color: string }
   // Aviso de toma de aire: triángulo hacia abajo con otro dentro y las
   // líneas del texto (el «DANGER JET INLET» del Fury).
   | { tipo: "aviso-toma"; color: string }
