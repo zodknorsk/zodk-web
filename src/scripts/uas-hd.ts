@@ -125,6 +125,14 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // La torreta del prototipo, entre naranja y ámbar según la luz.
   "naranja-si": { color: "#ee8a1c", metal: 0, rugosidad: 0.45 },
   marron: { color: "#7a5236", metal: 0, rugosidad: 0.6 },
+  // El blanco del TARSIS, neutro y satinado, y su torreta: el cuerpo gris
+  // oscuro algo cálido y lo que gira por fuera (tapas y montaje), gris claro,
+  // para que se distingan (foto del morro).
+  "blanco-ta": { color: "#dcdedb", metal: 0, rugosidad: 0.5 },
+  "gris-ta": { color: "#4f4943", metal: 0, rugosidad: 0.6 },
+  "gris-ta2": { color: "#aaa69f", metal: 0, rugosidad: 0.55 },
+  // La ventana grande de la torreta, de cristal azul marino.
+  "lente-ta": { color: "#14304a", metal: 0.1, rugosidad: 0.12 },
 };
 
 // Tres escalones de luz para la ilustración.
