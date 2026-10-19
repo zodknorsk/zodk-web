@@ -21,6 +21,12 @@ const { title, description, hero = false, cabecera = true } = Astro.props;
 <html lang="es" class={hero ? "home" : undefined}>
   <head>
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
+    <!-- Visitas (GoatCounter, sin cookies): panel en hegoimarquez.goatcounter.com -->
+    <script
+      is:inline
+      data-goatcounter="https://hegoimarquez.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"></script>
   </head>
   <body>
     {cabecera && <Header title={title} />}
