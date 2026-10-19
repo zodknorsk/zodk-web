@@ -19,6 +19,18 @@ export type Pieza = (
   // y alto es el medio alto en esa z (el radio queda como medio ancho), para
   // un cuerpo que cambia de sección a lo largo. Las z no se repiten.
   | { tipo: "tubo"; id: string; perfil: (Punto2 | [number, number, number] | [number, number, number, number])[]; centro?: Punto2; seccion?: Punto2 }
+  // Conducto: una góndola hueca de revolución alrededor de z, para tomas de
+  // aire en góndola (boca delante) y escapes o toberas (boca detrás).
+  // `perfil`: [z, radio de fuera], de delante atrás; el extremo de la boca es
+  // el primero (o el último, con `boca: "atras"`), y el otro puede cerrar en
+  // radio 0 o quedar abierto dentro del cuerpo. `labio`: grueso del borde,
+  // redondeado en media caña. `hondo`: lo que se ve del conducto por dentro;
+  // el fondo, oscuro, va aparte (un `disco` con acabado `hueco` a esa
+  // profundidad). `seccion`: [ancho, alto] para que no sea redonda.
+  // `carenado`: una aleta que la une a la superficie de debajo, de z `desde`
+  // a `hasta` (afinándose en los extremos), con medio ancho `ancho` abajo,
+  // apoyada en `y` (o [[z, y], …] si la superficie baja o sube).
+  | { tipo: "conducto"; id: string; perfil: Punto2[]; centro?: Punto2; seccion?: Punto2; boca?: "delante" | "atras"; labio: number; hondo: number; carenado?: { desde: number; hasta: number; ancho: number; y: number | Punto2[] } }
   // Casco: un cuerpo hecho de secciones a lo largo de z, de delante atrás,
   // unidas con curvas suaves (bastan pocas secciones bien medidas). Cada
   // sección da, en esa z: el medio ancho, la y del lomo y la de la panza, la

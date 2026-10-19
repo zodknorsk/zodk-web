@@ -214,7 +214,7 @@ const sec = ([z, ancho, arriba, abajo, cintura]: number[], n = 2.3, nAbajo = 2.3
 const conToma = (q: Seccion, lomo: number, hombro: number): Seccion => ({ ...q, lomo, hombro, nLomo: 2.2 });
 // La toma (Zhuhai): un tubo posado en el lomo, de unos 30 cm, con el labio
 // redondo y la boca negra metida; detrás se funde con la espina del lomo.
-const BOCA_TOMA = { z: -2.98, y: 0.39, r: 0.165, boca: 0.125 };
+const BOCA_TOMA = { z: -2.98, y: 0.422, r: 0.108, boca: 0.092 };
 const CUERPO: Seccion[] = [
   sec([5.27, 0, 0, 0, 0]),
   sec([5.22, 0.07, 0.012, -0.03, -0.01], 2.4, 2.6),
@@ -295,12 +295,16 @@ const PIEZAS: Pieza[] = [
   { tipo: "disco", id: "torreta-plato", acabado: "gris-wl", en: [0, TORRETA.y - TORRETA.r + 0.005, TORRETA.z], normal: [0, -1, 0], radio: 0.13, grosor: 0.03 },
   { tipo: "caja", id: "torreta-ventana-0", acabado: "lente", centro: [-0.068, TORRETA.y + 0.03, CARA_TORRETA + 0.005], tam: [0.12, 0.16, 0.012], redondeo: 0.03 },
   ...([[0.068, 0.1, 0.045], [0.07, -0.04, 0.075]] as const).map(([x, y, r], i): Pieza => ({ tipo: "disco", id: `torreta-ventana-${i + 1}`, acabado: "lente", en: [x, TORRETA.y + y, CARA_TORRETA + 0.004], normal: [0, 0, 1], radio: r, grosor: 0.01 })),
-  // La boca de la toma: el conducto, negro, un poco metido.
+  // La toma: góndola hueca de 22 cm de diámetro con el labio redondo y
+  // fino (la boca, un 85 % del diámetro), medida en Aerofossile y Zhuhai a
+  // la misma escala que el render; la boca, negra casi desde el labio. Por
+  // debajo, un carenado la une al lomo hasta que la espina la envuelve.
   {
-    tipo: "tubo", id: "toma", acabado: "gris-wl", centro: [0, BOCA_TOMA.y],
-    perfil: [[-3.05, 0], [-3.05, BOCA_TOMA.boca], [BOCA_TOMA.z, BOCA_TOMA.boca + 0.005], [BOCA_TOMA.z - 0.01, 0.152], [BOCA_TOMA.z - 0.04, BOCA_TOMA.r], [-4.3, BOCA_TOMA.r], [-4.6, 0.12], [-4.8, 0]],
+    tipo: "conducto", id: "toma", acabado: "gris-wl", centro: [0, BOCA_TOMA.y], labio: BOCA_TOMA.r - BOCA_TOMA.boca, hondo: 0.05,
+    perfil: [[BOCA_TOMA.z, BOCA_TOMA.r], [BOCA_TOMA.z - 0.1, BOCA_TOMA.r + 0.003], [-4.25, BOCA_TOMA.r], [-4.55, 0.085], [-4.75, 0]],
+    carenado: { desde: BOCA_TOMA.z - 0.05, hasta: -4.4, ancho: 0.1, y: [[-2.9, 0.3], [-3.6, 0.33], [-4.2, 0.36], [-4.5, 0.36]] },
   },
-  { tipo: "disco", id: "toma-boca", acabado: "hueco", en: [0, BOCA_TOMA.y, -3.045], normal: [0, 0, 1], radio: BOCA_TOMA.boca, grosor: 0.005 },
+  { tipo: "disco", id: "toma-boca", acabado: "hueco", en: [0, BOCA_TOMA.y, BOCA_TOMA.z - 0.055], normal: [0, 0, 1], radio: BOCA_TOMA.boca + 0.003, grosor: 0.005 },
   ...PIEZAS_ARMAS,
 ];
 
@@ -436,6 +440,12 @@ const aUnidades = (q: Pieza): Pieza => {
         : { ...p, planta: p.planta.map(([a, b]): [number, number] => [u(a), u(b)]), x: u(p.x), ...(p.y !== undefined && { y: u(p.y) }), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) };
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: [u(p.centro[0]), u(p.centro[1])] as [number, number] }) };
+    case "conducto":
+      return {
+        ...p, perfil: p.perfil.map(([a, b]): [number, number] => [u(a), u(b)]), labio: u(p.labio), hondo: u(p.hondo),
+        ...(p.centro && { centro: [u(p.centro[0]), u(p.centro[1])] as [number, number] }),
+        ...(p.carenado && { carenado: { desde: u(p.carenado.desde), hasta: u(p.carenado.hasta), ancho: u(p.carenado.ancho), y: typeof p.carenado.y === "number" ? u(p.carenado.y) : p.carenado.y.map(([a, b]): [number, number] => [u(a), u(b)]) } }),
+      };
     case "helice":
       return { ...p, en: [u(p.en[0]), u(p.en[1]), u(p.en[2])], radio: u(p.radio), ...(p.ancho && { ancho: u(p.ancho) }), ...(p.buje && { buje: u(p.buje) }) };
     case "pila":
