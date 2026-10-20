@@ -409,7 +409,7 @@ const PARTES: Parte[] = [
     piezas: ["ala", "flaps", "alerones"],
     respaldo: "foto",
     fuentes: ["trasera", "frente", "folleto"],
-    texto: "6,2 m de punta a punta, un metro más que la del TARSIS 75, y la misma cuerda de la raíz a la punta, con flaps por dentro y alerones por fuera.",
+    texto: "Unos 6 m de punta a punta, casi un metro más que la del TARSIS 75, y la misma cuerda de la raíz a la punta, con flaps por dentro y alerones por fuera.",
   },
   {
     nombre: "Lanzadores y Fox",
@@ -491,7 +491,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "TARSIS-W",
-  subtitulo: "Dron táctico armado",
+  subtitulo: "Dron armado de Clase I small",
   escala: ESCALA,  // 1 unidad = 2,4 m
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

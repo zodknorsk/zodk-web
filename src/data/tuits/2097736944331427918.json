@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-20",
+  "tuit": {
+    "id_str": "2097736944331427918",
+    "created_at": "2026-09-09T17:20:36.000Z",
+    "text": "🚨🇪🇸✈️​Indra iniciará en 2028 la entrega de los primeros drones tácticos del megacontrato de 364 millones de euros adjudicado por Defensa, un programa que prevé la fabricación de 147 aeronaves y la creación de 500 empleos directos. \n🧵👇\n\n#Defensa #Indra\n https://t.co/wF6Nn2EyNg",
+    "user": {
+      "name": "J.Victor Fauli",
+      "screen_name": "Victor35571262",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2085781204842823680/QLgtsCjL_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/wF6Nn2EyNg",
+          "expanded_url": "https://www.indragroup.com/es/noticias/indra-refuerza-la-autonomia-de-las-fuerzas-armadas-con-el-desarrollo-de-los-primeros-drones-tacticos-de-diseno-y-fabricacion-espanola",
+          "display_url": "indragroup.com/es/noticias/in…"
+        }
+      ]
+    },
+    "mediaDetails": []
+  }
+}

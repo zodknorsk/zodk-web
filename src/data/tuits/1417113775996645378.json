@@ -1,0 +1,23 @@
+{
+  "capturado": "2026-10-20",
+  "tuit": {
+    "id_str": "1417113775996645378",
+    "created_at": "2021-07-19T13:27:07.000Z",
+    "text": "🇪🇸El UAS TARSIS 75 de AERTEC, consigue  integrar por primera vez en Europa un designador láser que cumple con la normativa STANAG 3733 en un sistema no tripulado de clase I. https://t.co/s6wyU5IIvY",
+    "user": {
+      "name": "Drones de guerra 💥war drones💥",
+      "screen_name": "dronesdeguerra",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1298837561536847872/XF708l8X_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/s6wyU5IIvY",
+        "media_url_https": "https://pbs.twimg.com/media/E6qZeBBXMAEbLvk.jpg"
+      }
+    ]
+  }
+}

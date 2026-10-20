@@ -7,6 +7,7 @@ description: >-
 updated: '2026-10-01'
 tags:
   - dron
+  - espana
   - eeuu
   - noruega
   - turquia

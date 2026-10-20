@@ -82,3 +82,5 @@ Folletos del W y del Fox leídos y borrados (aertecsolutions.com/wp-content/uplo
 ## Registro
 
 - 19-10-2026, fase 1: nota con el folleto de AERTEC, Infodefensa (2023 y 2025), TEDAE (Fox), EDR Magazine, Indra, Diario de León, Escudo Digital y Euronews. Santam: en dic. 2025 Infodefensa hablaba de ISTAR y W; desde sep. 2026 Indra dice W (11 sistemas) y VTOL (38).
+- 20-10-2026: categoría «Dron armado de Clase I small» (clases de la OTAN, no «táctico»). Creada la nota del Fox en la bóveda (`Armamento/🇪🇸 Fox.md`, `publicar: false`, con tres fotos de las fuentes del W en `Adjuntos/armamento-fox*.jpg`: EDR Magazine y AERTEC, con su crédito en el pie) y añadida al índice del armamento.
+- 20-10-2026: unificado con el TARSIS 75 en una sola ficha, «TARSIS» (ver el diario del 75). En el visor, botón «W».

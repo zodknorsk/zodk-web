@@ -8,6 +8,7 @@
 
 ## Decisiones del usuario
 
+- 20-10-2026, repaso de notas: autonomía del 75 = 8 h (14 con la extendida); las 12 h son del ISTAR. **Categoría por clases de la OTAN** (Clase I small/mini…, II, III), no por grupos de EE. UU.; «táctico» no vale como categoría (todos lo son): «Dron de reconocimiento de Clase I small». Salvo que sea MALE, HALE, interceptor, etc. ISTAR frente a 75 (folletos de AERTEC, `AERTEC_TARSIS_ISTAR_ES-uas.pdf`): 95 frente a 74,5 kg, 12 h frente a 8, techo 4.570 m frente a 5.500, antenas direccionales con autotracking frente a omnidireccionales, vídeo 70/150 km frente a 70/200; carga útil igual (12 kg) y sin otra cámara declarada.
 - 19-10-2026: dron = **TARSIS 75** (no el 25). Nombre y slug «TARSIS 75» / `tarsis-75`.
 - 19-10-2026: el Wing Loong II no se publica: rama `wing-loong-ii`, revert en `main`.
 - 19-10-2026: se hacen **dos drones**, el TARSIS 75 y el TARSIS-W (`tarsis-w`), cada uno con su nota. El TARSIS VTOL va en la Historia de la nota del W, como su hermano; la del 75 cuenta sus versiones.
@@ -96,3 +97,4 @@ Criba del usuario (19-10-2026): borradas la 8, 11, 12, 17, 19, 20, 33, 34, 35, 3
 - 19-10-2026, fase 3, quinta revisión: el carenado empieza justo donde acaba el cuerpo, con su misma sección, y la maqueta lleva `soldadura` (5 cm) para que no salga raya en la unión; tapas blancas atrás en los dos laterales del carenado (`capo-tapa`), para que desde atrás no se vea hueco. Capturas en `~/Downloads/tarsis-75/r5/`.
 - 19-10-2026, fase 3: la raya de la unión cuerpo-carenado venía de la tapa de delante del carenado, que compartía vértices con el borde y caía justo en la unión. Arreglo: `tapaPlana` y la primera sección del carenado 1 cm metida en el cuerpo (encogida al 99,5 %). Captura en `~/Downloads/tarsis-75/r6/`.
 - 20-10-2026, fase 4: medida la luz del blanco, `desfaseLuz` 0,15; tarjeta [61, 20]; planta lisa (los rótulos del ala salían como rectángulos). Capturas en `~/Downloads/tarsis-75/pixel-hd.html`.
+- 20-10-2026: **una sola ficha, «TARSIS»** (`/uas/tarsis`), para el 75, el ISTAR, el W y el VTOL: nota `🇪🇸 TARSIS.md` en la bóveda (Historia de principio a fin, un párrafo por versión en Especificaciones, tabla con los datos de cada modelo). Visor como el Magura: `src/data/uas/tarsis.ts` con dos versiones, ISTAR (`tarsis-75.ts`, abre en ella y da las miniaturas) y W (`tarsis-w.ts`); el VTOL, sin maqueta. Las maquetas no se tocan (solo el nombre del botón, «TARSIS-ISTAR»). Miniaturas y fotos de las fuentes copiadas a `public/uas/tarsis/`; las notas y carpetas viejas siguen ahí.

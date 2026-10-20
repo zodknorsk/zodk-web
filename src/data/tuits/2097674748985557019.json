@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-10-20",
+  "tuit": {
+    "id_str": "2097674748985557019",
+    "created_at": "2026-09-09T13:13:27.000Z",
+    "text": "🔴 Novedades Programa SANTAM de RPAS Clase I para el Ministerio de Defensa:\n\n- Se contemplan dos versiones: Tarsis W y Tarsis VTOL.\n- 47 sistemas, cada uno compuesto de 3 drones: 38 VTOL y 11 W.\n- Tierra operará ambos, Aire solo W y Armada solo VTOL.\n- Entregas a principios de https://t.co/85Vo8DNjpl",
+    "note_tweet": true,
+    "user": {
+      "name": "Izan González",
+      "screen_name": "izangc",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/2094059505826877440/EHO1Hx7c_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/85Vo8DNjpl",
+        "media_url_https": "https://pbs.twimg.com/media/HRxv3a_WQAAd20Q.jpg"
+      }
+    ]
+  }
+}

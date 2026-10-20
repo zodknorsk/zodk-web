@@ -576,8 +576,8 @@ const aCalca = (k: Calca): Calca => ({ ...k, en: u3(k.en), tam: u2(k.tam) });
 const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...(k.remaches && { remaches: u(k.remaches) }) });
 
 const maqueta: Maqueta = {
-  nombre: "TARSIS 75",
-  subtitulo: "Dron táctico de vigilancia",
+  nombre: "TARSIS-ISTAR",
+  subtitulo: "Dron de reconocimiento de Clase I small",
   escala: ESCALA,  // 1 unidad = 2 m
   // Es blanco: la parte elegida, en tinta.
   resalte: "tinta",
