@@ -1,13 +1,13 @@
 # TARSIS-W (AERTEC, hoy Indra) — diario
 
-## Dónde estamos: fase 2 hecha (19-10-2026)
+## Dónde estamos: fases 4 y 5 hechas, a la espera de la revisión del usuario (20-10-2026)
 
-- Nota de la fase 1 en la bóveda, en borrador (`02 - Temas/Hangar de UAS/🇪🇸 TARSIS-W.md`), sin commitear. Slug `tarsis-w`.
-- Fotos en `arte/uas-fuentes/tarsis-w/full/` (fuera de Git), cribadas; tabla en «Fuentes». Las 25-32 las pasó el usuario (Indra).
-- Decidido: marcas del blanco rotulado «TARSIS-W»; carga, cuatro Fox y torreta pequeña. Forma leída abajo («La forma»).
-- Siguiente: **fase 3 (maqueta HD)**, en una sesión nueva **solo cuando el usuario la autorice**. Medir antes con la 29 (perfil), la 32 y la 30 (tres cuartos), la 25 (desde abajo) y la 1 (de frente, con lanzadores).
-- Nada commiteado: el diario y el de `tarsis-75.md` son nuevos, sin seguir en Git.
-- **Wing Loong II fuera de `main`**: rama `wing-loong-ii`; en `main` el commit `2c2df51` lo deshace (sin push). Si `npm run importar` trae `src/content/uas/wing-loong-ii/`, descartar esa carpeta.
+- Maqueta HD cerrada (segunda vuelta). Pixel HD: `vistaTarjeta [61, 20]`, `plantaLisa`, sin `desfaseLuz` (el gris claro cae bien en el centro de un escalón; sin franjas en perfil ni planta).
+- Hechos: `tarjeta.png`, `tarjeta-noche.png`, `planta.png` y las 7 miniaturas de `public/uas/tarsis-w/fuentes/`; nota ya en la bóveda y ficha importada; lint y `astro check` sin errores; probados visor (Maqueta, Pixel, día, noche, partes, fuentes) y tarjeta de `/uas`.
+- Entrada en la lista «Drones hechos» de `docs/hangar-de-uas.md`.
+- Falta: la revisión del usuario (fase 6) y, cuando lo dé por bueno, commit y push a petición. Sin nave del hero (no la ha pedido).
+- **Sin commitear**: todo (maqueta, `tipos.ts`/`uas-hd.ts`/`uas-paletas.ts`/`visor-uas.ts`/`logos.ts`, ficha importada, miniaturas, diario, `hangar-de-uas.md`). La bóveda lleva además cambios de SIRTAP que no son de este dron.
+- Pendiente de mirar (no pedido): toma con dientes en el borde de atrás muy de cerca; parte delantera de los botalones de frente más gorda que en la foto 1.
 
 ## Decisiones del usuario
 
@@ -18,6 +18,9 @@
 - 19-10-2026: carga: los cuatro Fox en sus dos lanzadores y la torreta pequeña (gimbal) bajo el morro.
 
 ## Medidas clave
+
+- **Maqueta** (metros; z = 0 a mitad de cuerda): punta del morro z 2,12 (y 0,05), buje −0,88 (y 0,04); fuselaje 0,40 × 0,43; ala y 0,04, cuerda 0,5 (medida en la 32); botalones x ±0,65 (de frente), derivas hasta z −2,18; ejes de ruedas principales x ±0,53, y −0,51 (de frente), z −0,13; rueda del morro z 1,33; varilla de punta de ala en z 0,19, de y +0,2 a −0,17 (32).
+- Color del costado al sol: #c7cabe (32); a contraluz, #888b85 (24). Fox: #587089 (14).
 
 - Envergadura 6,2 m, longitud 4,3 m, 120 kg de MTOW, 30 kg de carga (folleto de AERTEC, Infodefensa 2023, EDR 2025). Hélice propulsora, tren fijo.
 - Folleto del W (2025): 10 h, techo 5.500 m, 150 km de enlace de vídeo, 100 km/h de crucero; despegue y aterrizaje automáticos (ATOL), paracaídas opcional.
@@ -70,6 +73,11 @@ Del blanco rotulado «TARSIS-W» (29 perfil, 30 y 32 tres cuartos, 28 y 31 en na
 Folletos del W y del Fox leídos y borrados (aertecsolutions.com/wp-content/uploads/2025/05/). Medidas: folleto del W (2025), Infodefensa (2023), EDR (2025), Indra (2026).
 
 ## Probado y descartado
+
+- 20-10-2026: torreta bajo el morro, cúpula y caja del lomo, varillas de las puntas del ala: fuera (el usuario).
+- 20-10-2026: la toma como joroba grande y redonda con el rebaje pintado de oscuro: el usuario la quiere más pequeña, en cuña y fundida con el costado.
+- 20-10-2026: el lanzador como pilón redondo con traviesa: es una plataforma plana casi pegada al ala.
+- 20-10-2026: «-W» como texto aparte: sale más pequeña y descompensada; va dentro del logo.
 
 ## Registro
 

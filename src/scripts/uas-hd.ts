@@ -133,6 +133,10 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "gris-ta2": { color: "#aaa69f", metal: 0, rugosidad: 0.55 },
   // La ventana grande de la torreta, de cristal azul marino.
   "lente-ta": { color: "#14304a", metal: 0.1, rugosidad: 0.12 },
+  // El gris claro del TARSIS-W, neutro y satinado (costado al sol #c7cabe en
+  // la foto de pista por detrás), y el azul grisáceo mate del Fox.
+  "gris-tw": { color: "#c2c5be", metal: 0, rugosidad: 0.5 },
+  "azul-fox": { color: "#5a7189", metal: 0, rugosidad: 0.6 },
 };
 
 // Tres escalones de luz para la ilustración.
