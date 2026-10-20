@@ -1,13 +1,10 @@
 # TARSIS 75 (AERTEC, hoy Indra) — diario
 
-## Dónde estamos: fase 3, primera revisión del usuario corregida (19-10-2026)
+## Dónde estamos: cerrado (20-10-2026)
 
-- **Maqueta HD**: `src/data/uas/tarsis-75.ts` (sin commitear), con los acabados `blanco-ta`, `gris-ta`, `gris-ta2` y `lente-ta` en `tipos.ts`, `uas-hd.ts`, `uas-paletas.ts` y `visor-uas.ts`, y los logos nuevos «aertec» y «tarsis» en `src/data/uas/logos.ts` (también sin commitear). Partes A-G y fuentes con miniaturas en `public/uas/tarsis-75/fuentes/`.
-- Hechas las correcciones de la primera revisión (capturas marcadas en `arte/uas-fuentes/tarsis-75/usuario-r1…r4-*.webp`): mejillas, motor, boquete de la torreta, panza plana con aristas, logos, cola, tren y flaps. Comparativas en `arte/uas-fuentes/tarsis-75/comparativas-revision.html` (fuera de Git; copia en `~/Downloads/tarsis-75/`).
-- **Ficha provisional solo para ver el visor en local**: `src/content/uas/tarsis-75/index.md`. **No se commitea**: la sustituye el importador en la fase 5.
-- Siguiente: que el usuario mire la maqueta (`localhost:4321/uas/tarsis-75`, `npm run dev` en marcha) y diga si queda algo; después, fase 4 (pixel HD), en otra sesión cuando él diga.
-- Sin commitear: todo lo de arriba, este diario y el del W. Nota de la bóveda en borrador, sin commitear.
-- **Wing Loong II fuera de `main`**: rama `wing-loong-ii` (subida); en `main` el commit `2c2df51` lo deshace (sin push). Si `npm run importar` trae `src/content/uas/wing-loong-ii/`, descartar esa carpeta antes de commitear.
+- El usuario dio por bueno el dron en la web. Fases 1 a 7 hechas; el dron está en la lista «Drones hechos» de `docs/hangar-de-uas.md`.
+- **Sin commitear ni publicar**: miniaturas, `tarsis-75.ts`, ficha importada, este diario, `docs/hangar-de-uas.md` y la nota de la bóveda (`🇪🇸 TARSIS 75.md`; la bóveda lleva también cambios de SIRTAP que no son de este dron). Commit y push, cuando el usuario lo pida.
+- Wing Loong II fuera de `main` (rama `wing-loong-ii`); `src/content/uas/tarsis-w/` descartada (es otro dron).
 
 ## Decisiones del usuario
 
@@ -35,6 +32,8 @@
 - **Torreta** (22): centro z = 1,48, de y = −0,085 (aro fijo) a −0,236; cuerpo 0,11 de ancho y 0,125 de largo, tapas a ±0,06, ventana de 0,072 m.
 - **Logos** (30, 28): «TΛRSIS» del costado, 0,49 m de largo y 10 cm de alto; en el ala, 14 cm de alto y el «75» detrás; la «A» de AERTEC, 0,134 × 0,12 m. Dibujos en `logos.ts`: la «A», el SVG de aertecsolutions.com; «TΛRSIS», Avenir Next Demi Bold con la «A» a 0,8 de ancho (no hay archivo oficial), casado con la 30.
 - **Color y marcas del blanco**: blanco (al aire libre, 23 y 28; en la feria, 21, parece beige por la luz). «TARSIS» y la «A» en gris oscuro a los lados del fuselaje (23, 25, 29, 30), «TΛRSIS75» en el extradós de las alas, cerca de las puntas, con el «75» gris claro (27, 28), la «A» encima del fuselaje (27). En las derivas no hay «A»: una tapita con una raya oscura (29, 30). Luces de navegación junto a la raíz del ala, roja a la izquierda y verde a la derecha (29, 30). Hélice negra (23, 30; la amarilla de la 31 es de la cadena de montaje).
+
+- **Pixel**: el blanco al sol cae en 6,2-6,3 escalones (planta y 3D) y el costado en sombra en 3,6; con `desfaseLuz: 0.15`, en 6,35-6,45 y 3,75.
 
 ## Fuentes
 
@@ -96,3 +95,4 @@ Criba del usuario (19-10-2026): borradas la 8, 11, 12, 17, 19, 20, 33, 34, 35, 3
 - 19-10-2026, fase 3, cuarta revisión: carenado unido al cuerpo (sin la junta pintada; por debajo de la mejilla sigue el mismo costado y la misma cara inclinada del cuerpo, abierto en el centro); el costado del cuerpo, de una tira hasta la cara inclinada y sin la arista de arriba de esa cara (c = 0) para que no parezca de dos colores. Capturas en `~/Downloads/tarsis-75/r4/`.
 - 19-10-2026, fase 3, quinta revisión: el carenado empieza justo donde acaba el cuerpo, con su misma sección, y la maqueta lleva `soldadura` (5 cm) para que no salga raya en la unión; tapas blancas atrás en los dos laterales del carenado (`capo-tapa`), para que desde atrás no se vea hueco. Capturas en `~/Downloads/tarsis-75/r5/`.
 - 19-10-2026, fase 3: la raya de la unión cuerpo-carenado venía de la tapa de delante del carenado, que compartía vértices con el borde y caía justo en la unión. Arreglo: `tapaPlana` y la primera sección del carenado 1 cm metida en el cuerpo (encogida al 99,5 %). Captura en `~/Downloads/tarsis-75/r6/`.
+- 20-10-2026, fase 4: medida la luz del blanco, `desfaseLuz` 0,15; tarjeta [61, 20]; planta lisa (los rótulos del ala salían como rectángulos). Capturas en `~/Downloads/tarsis-75/pixel-hd.html`.

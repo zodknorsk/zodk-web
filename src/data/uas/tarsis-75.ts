@@ -583,6 +583,13 @@ const maqueta: Maqueta = {
   resalte: "tinta",
   hd: true,
   contornoPixel: true,
+  // Pixel: el blanco al sol cae en 6,2-6,3 escalones (borde de abajo del 6) y
+  // el costado en sombra en 3,6; corridos 0,15, los dos más al centro.
+  desfaseLuz: 0.15,
+  // Tarjeta de /uas desde arriba, como los de ala larga.
+  vistaTarjeta: [61, 20],
+  // En la planta de la portada, los rótulos del ala salían como rectángulos.
+  plantaLisa: true,
   // El carenado del motor sigue al cuerpo sin raya en la unión.
   soldadura: 0.05 / ESCALA,
   detalles: { calcas: CALCAS.map(subirCalca).map(aCalca), costuras: COSTURAS.map(aCostura) },
