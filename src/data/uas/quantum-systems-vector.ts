@@ -441,7 +441,7 @@ const costuraAUnidades = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(
 
 const maqueta: Maqueta = {
   nombre: "Quantum Systems Vector",
-  subtitulo: "Dron de reconocimiento de ala fija con despegue vertical",
+  subtitulo: "Dron de reconocimiento Clase I",
   escala: ESCALA,  // 1 unidad = 1 m; envergadura del fabricante, largo medido
   resalte: "tinta",
   pais: bandera("DE"),

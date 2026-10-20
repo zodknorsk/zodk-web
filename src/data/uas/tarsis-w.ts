@@ -491,7 +491,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "TARSIS-W",
-  subtitulo: "Dron armado de Clase I small",
+  subtitulo: "Dron armado Clase I",
   escala: ESCALA,  // 1 unidad = 2,4 m
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

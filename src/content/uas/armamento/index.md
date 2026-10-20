@@ -22,6 +22,7 @@ grupos:
       - jsm
       - barracuda-500
       - agm-158c-lrasm
+      - fox
   - titulo: Bombas guiadas
     municiones:
       - gbu-12-paveway-ii

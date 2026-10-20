@@ -519,7 +519,7 @@ const aCostura = (k: Costura): Costura => ({ ...k, puntos: k.puntos.map(u3), ...
 
 const maqueta: Maqueta = {
   nombre: "SIRTAP",
-  subtitulo: "Dron de vigilancia MALE",
+  subtitulo: "Dron de reconocimiento MALE",
   escala: ESCALA,  // 1 unidad = 4,5 m, como el TB2
   // Es gris claro: la parte elegida, en tinta.
   resalte: "tinta",

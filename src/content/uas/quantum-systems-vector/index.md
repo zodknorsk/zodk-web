@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1E9\U0001F1EA"
 pais: Alemania
-categoria: Dron de reconocimiento de ala fija
+categoria: Dron de reconocimiento Clase I
 ---
 > El Quantum Systems Vector es un <mark>dron alemán de reconocimiento de ala fija que despega y aterriza en vertical</mark>, sin pista ni catapulta: pesa menos de 10 kg, va en una mochila y lo monta un solo soldado. Es el dron alemán que más ha volado en Ucrania, y lo usan también España, Rumanía, Australia y el Ejército de EE. UU.
 
@@ -24,7 +24,7 @@ categoria: Dron de reconocimiento de ala fija
 | **País**                          | 🇩🇪 Alemania                                                                                                                   |
 | **Fabricante**                    | Quantum Systems                                                                                                                 |
 | **Operador**                      | Ucrania; Alemania; España (Ejército de Tierra e Infantería de Marina); Rumanía; Países Bajos; Australia; Nueva Zelanda; EE. UU. |
-| **Categoría**                     | Dron de reconocimiento de ala fija                                                                                              |
+| **Categoría**                     | Dron de reconocimiento Clase I, de ala fija                                                                                              |
 | **Situación**                     | En servicio                                                                                                                     |
 | **Primer uso en combate**         | Mayo de 2022, en Ucrania, en la batalla del río Donets                                                                          |
 | **Envergadura / longitud / peso** | 2,8 m / 1,5 m / 9,5 kg de MTOW (fabricante)                                                                                     |

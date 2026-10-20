@@ -10,7 +10,7 @@ tags:
   - dron
 bandera: "\U0001F1EA\U0001F1F8"
 pais: España
-categoria: Dron de reconocimiento de Clase I small; el W
+categoria: Dron de reconocimiento Clase I
 ---
 > TARSIS es una <mark>familia de drones españoles de ala fija de Clase I</mark>, diseñada por AERTEC en Málaga y Sevilla y hoy comprada por Indra. El primero, el TARSIS 75, lo usa el <mark>Ejército de Tierra para localizar blancos y corregir el tiro de artillería</mark>. De él salieron el TARSIS-ISTAR, el TARSIS-W, que lleva <mark>micromisiles Fox guiados por láser</mark>, y el TARSIS VTOL, de despegue vertical, pensado sobre todo para la Armada.
 
@@ -24,7 +24,7 @@ categoria: Dron de reconocimiento de Clase I small; el W
 | **País**                          | 🇪🇸 España                                                                                                                 |
 | **Fabricante**                    | AERTEC; desde 2025, Indra                                                                                                   |
 | **Operador**                      | España                                                                                                                      |
-| **Categoría**                     | Dron de reconocimiento de Clase I small; el W, armado                                                                       |
+| **Categoría**                     | Dron de reconocimiento Clase I                                                                                              |
 | **Situación**                     | TARSIS 75 y TARSIS-ISTAR - en servicio<br>TARSIS-W y VTOL - en desarrollo                                                   |
 | **Primer uso en combate**         | Ninguno conocido                                                                                                            |
 | **Envergadura / longitud / peso** | TARSIS 75 - 5,2 m / 3,8 m / 75 kg de MTOW<br>TARSIS-ISTAR - 5,2 m / 3,8 m / 95 kg<br>TARSIS-W y VTOL - 6 m / 4,3 m / 150 kg |
@@ -40,7 +40,7 @@ AERTEC es una empresa de ingeniería aeronáutica malagueña creada en 1997. Con
 
 TARSIS 75 entró en el programa [RAPAZ](https://www.infodefensa.com/texto-diario/mostrar/3166541/dgam-lanza-proyecto-rapaz-evaluacion-rpas-menos-150-kg), con el que el Ministerio de Defensa probaba drones de menos de 150 kg antes de comprarlos. Pasó [cuatro evaluaciones](https://www.infodefensa.com/texto-diario/mostrar/3125034/rpas-tarsis-aertec-supera-75-kilometros-distancia-pruebas-ejercito) en León, donde el Ejército de Tierra lo probó para identificar blancos y corregir el tiro de artillería. En 2021 AERTEC le montó un designador láser y desde entonces lo usa el Grupo de Artillería de Información y Localización II/63, del Mando de Artillería de Campaña (MACA).
 
-La siguiente versión fue el TARSIS-ISTAR (*Intelligence, Surveillance, Target Acquisition and Reconnaissance*), el mismo avión con más autonomía, y en 2024 Defensa [encargó tres](https://aertecsolutions.com/noticias/aertec-desarrollara-tres-sistemas-rpas-tarsis-para-el-ministerio-de-defensa/) para probar cargas nuevas, como un radar SAR. Antes, AERTEC había querido que su dron, además de encontrar y marcar blancos, pudiese atacarlos: le alargó las alas y el fuselaje, le dio más peso al despegue y lo preparó para colgar bajo las alas el Fox, un micromisil que desarrolla con Instalaza. El resultado: el TARSIS-W. En 2024 AERTEC agrupó sus drones en una división nueva, AERTEC Defence & Aerial Systems, que <mark>Indra compró en julio de 2025</mark>.
+La siguiente versión fue el TARSIS-ISTAR (*Intelligence, Surveillance, Target Acquisition and Reconnaissance*), el mismo avión con más autonomía, y en 2024 Defensa [encargó tres](https://aertecsolutions.com/noticias/aertec-desarrollara-tres-sistemas-rpas-tarsis-para-el-ministerio-de-defensa/) para probar cargas nuevas, como un radar SAR. Antes, AERTEC había querido que su dron, además de encontrar y marcar blancos, pudiese atacarlos: le alargó las alas y el fuselaje, le dio más peso al despegue y lo preparó para colgar bajo las alas el [Fox](/uas/armamento/fox), un micromisil que desarrolla con Instalaza. El resultado: el TARSIS-W. En 2024 AERTEC agrupó sus drones en una división nueva, AERTEC Defence & Aerial Systems, que <mark>Indra compró en julio de 2025</mark>.
 
 Defensa adjudicó a Indra [el programa SANTAM](https://www.infodefensa.com/texto-diario/mostrar/5718653/indra-adjudica-traves-aertec-construccion-49-drones-medio-alcance-basados-tarsis): 49 sistemas basados en el TARSIS por 364 millones de euros, cada uno con tres aviones y dos estaciones de tierra, 147 drones en total, que se fabricarán sobre todo en la planta de Indra en León, con entregas de 2028 a 2030. Indra explicó [cómo se repartirán](https://es.euronews.com/2026/09/23/asi-seran-los-147-nuevos-drones-tarsis-del-ejercito-espanol-drones-espia-que-podrian-dispa): 11 sistemas son TARSIS-W, para el Ejército del Aire y del Espacio y el de Tierra, y 38 son TARSIS VTOL, para el Ejército de Tierra y la Armada, donde [relevará al ScanEagle](https://www.escudodigital.com/defensa/desarrollo-defensa/indra-relevara-scaneagle-estadounidense-armada-nuevo-dron-tarsis-vtol.html) americano.
 
@@ -50,7 +50,7 @@ Defensa adjudicó a Indra [el programa SANTAM](https://www.infodefensa.com/texto
 
 **TARSIS-ISTAR.** Mismas medidas que el 75, pero llega a 95 kg al despegue, con 12 kg de carga y hasta 12 horas en el aire, a cambio de un techo más bajo, de 4.570 m. Lleva antenas direccionales con seguimiento automático en vez de antenas omnidireccionales y su enlace de vídeo llega a 150 km.
 
-**TARSIS-W.** Más grande: unos 6 m de envergadura, 4,3 m de largo y hasta 150 kg al despegue. Vuela a unos 100 km/h, sube hasta 4.570 m, tiene una autonomía de 10 horas, su enlace llega a más de 120 km y carga hasta 30 kg: la cámara EO/IR con designador láser bajo el morro, un radar SAR y, como opciones, equipos de SIGINT y SATCOM de respaldo. Va armado con cuatro micromisiles Fox, dos bajo cada semiala.
+**TARSIS-W.** Más grande: unos 6 m de envergadura, 4,3 m de largo y hasta 150 kg al despegue. Vuela a unos 100 km/h, sube hasta 4.570 m, tiene una autonomía de 10 horas, su enlace llega a más de 120 km y carga hasta 30 kg: la cámara EO/IR con designador láser bajo el morro, un radar SAR y, como opciones, equipos de SIGINT y SATCOM de respaldo. Va armado con cuatro [micromisiles Fox](/uas/armamento/fox), dos bajo cada semiala.
 
 **TARSIS VTOL.** Pensado sobre todo para la Armada, <mark>despega y aterriza en vertical</mark>, sin pista, y sustituirá al ScanEagle, que necesita una catapulta para despegar y una red para recogerlo en cubierta. Indra no ha publicado muchos más datos, aunque sí hay imágenes del prototipo.
 

@@ -336,28 +336,30 @@ const VISTAS = [
   .visor-bandera svg { display: block; width: 22px; height: auto; image-rendering: pixelated; shape-rendering: crispEdges; }
   .visor-titulo { font-size: 1.7rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
   .visor-subtitulo { font-size: 0.9rem; color: var(--visor-suave); }
-  /* Versiones (el Magura V5-V7): el nombre de cada una es un botón grande;
-     la que se ve, recuadrada en tinta, y las otras, apagadas. */
-  .visor-versiones-botones { display: flex; gap: 0.6rem; margin-top: 0.3rem; }
+  /* Versiones (el Magura V5-V7, el TARSIS): una tarjeta por versión con su
+     nombre y subtítulo; la que se ve, rellena en tinta, y las otras, apagadas. */
+  .visor-versiones-botones { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
   .visor-version {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0.35rem 0.9rem 0.45rem;
-    border: 1px dashed var(--visor-borde);
-    border-radius: 4px;
+    padding: 0.45rem 0.85rem 0.5rem;
+    border: 1px solid var(--visor-borde);
+    border-radius: 3px;
     text-align: left;
     color: var(--visor-suave);
     transition: color 0.15s, border-color 0.15s, background-color 0.15s;
   }
-  .visor-version .visor-titulo { display: block; color: inherit; }
+  .visor-version .visor-titulo { display: block; font-size: 1.2rem; color: inherit; }
+  .visor-version .visor-subtitulo { font-size: 0.78rem; line-height: 1.35; }
   .visor-version:hover { color: var(--visor-texto); border-color: var(--visor-suave); }
   .visor-version[aria-pressed="true"] {
-    border: 1px solid var(--visor-acento);
-    background: color-mix(in srgb, var(--visor-acento) 6%, transparent);
-    color: var(--visor-texto);
+    border-color: var(--visor-acento);
+    background: var(--visor-acento);
+    color: var(--visor-sobre-acento);
     cursor: default;
   }
+  .visor-version[aria-pressed="true"] .visor-subtitulo { color: color-mix(in srgb, var(--visor-sobre-acento) 70%, transparent); }
   /* A la derecha, a media altura de la cabecera. */
   .visor-credito {
     position: absolute;
@@ -580,7 +582,7 @@ const VISTAS = [
   @container (max-width: 480px) {
     .visor-cab { flex-direction: column; align-items: flex-start; }
     .visor-version { padding: 0.3rem 0.6rem 0.4rem; }
-    .visor-version .visor-titulo { font-size: 1.3rem; }
+    .visor-version .visor-titulo { font-size: 1.05rem; }
     .visor-lienzo-caja { height: 18rem; }
     .visor-lista { columns: 1; }
     .visor-ayuda { display: none; }
