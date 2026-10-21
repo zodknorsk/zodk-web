@@ -873,56 +873,6 @@ html.dark .tira-hangar:is(:hover, :focus-visible) {
 .tira-hangar-texto { position: relative; z-index: 1; }
 .tira-hangar img { image-rendering: pixelated; }   /* al doble, sin suavizar */
 
-/* Sáhara: una tira como la del Hangar con el mapa de /sahara de fondo, fijo
-   y con sus nombres (foto retina de arte/generar-sahara-portada.mjs, a la
-   mitad). Pegada a la izquierda, donde está el mar y va el texto: si la
-   tira es más estrecha, se recorta por el este. A la izquierda, una sombra
-   suave para leer el texto. Mientras /sahara está en construcción (rama
-   sahara-project), la tira no lleva enlace ni número, sino el rótulo. */
-.tira-sahara {
-  position: relative;
-  overflow: hidden;
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: stretch;
-  min-height: 22.5rem;
-  padding: 1.1rem 1.3rem;
-  border: 1px solid #000;
-  border-radius: 10px;
-  background: #1d4e8a;
-  color: #e6e8ec;
-}
-.tira-sahara::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(90deg, rgb(5 6 10 / 0.6), transparent 18rem);
-  pointer-events: none;
-}
-.tira-sahara-mapa { position: absolute; inset: 0; }
-.tira-sahara-mapa img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left center;
-}
-.tira-sahara .tira-hangar-texto { text-shadow: 0 1px 3px rgb(0 0 0 / 0.6); }
-.tira-sahara-obras {
-  margin-top: auto;
-  align-self: flex-start;
-  padding: 0.35rem 0.6rem;
-  border: 1px solid #e8c98a;
-  border-radius: 4px;
-  background: rgb(5 6 10 / 0.55);
-  font: 600 0.75rem/1 "IBM Plex Mono", ui-monospace, monospace;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #e8c98a;
-  text-shadow: none;
-}
-
 /* Hangar de UAS: la plataforma de noche (baldosa de asfalto de
    arte/generar-uas-hangar.mjs, al doble), una línea amarilla de rodadura
    abajo, el hangar de lado a la izquierda y los puestos de los drones,
