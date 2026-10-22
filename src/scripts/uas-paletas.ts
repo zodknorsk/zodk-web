@@ -58,6 +58,16 @@ const COMUNES = {
   "lente-ta": ["#081520", "#0f2433", "#1a3a50", "#2d5672"],
   "gris-tw": ["#7b7e79", "#a2a59f", "#c4c7c0", "#e0e2dd"],
   "azul-fox": ["#2c3846", "#435669", "#5a7189", "#7f95ab"],
+  "carbono-wh": ["#0f1012", "#1b1c1e", "#2a2c2f", "#43464a"],
+  "carbono-gris": ["#1c1d1f", "#2c2e31", "#3c3e41", "#5a5d61"],
+  "cobre-wh": ["#3d1810", "#62281a", "#8c3b26", "#b85c40"],
+  "muelle-wh": ["#6b6450", "#958c70", "#cbbf98", "#e6dcbc"],
+  "amarillo-wh": ["#6e5520", "#a07e30", "#d4ad4a", "#ecca72"],
+  "campana-wh": ["#202225", "#363a3e", "#4f5358", "#767b81"],
+  "helice-wh": ["#121315", "#1f2124", "#2c2e31", "#46494d"],
+  "verde-gr": ["#1c2818", "#2c3d26", "#3f5636", "#5c774f"],
+  "pardo-gr": ["#3d3420", "#5f5233", "#86754a", "#a8976a"],
+  "obturador": ["#1a2c20", "#2a4634", "#3b6248", "#5a8468"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

@@ -137,6 +137,26 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // la foto de pista por detrás), y el azul grisáceo mate del Fox.
   "gris-tw": { color: "#c2c5be", metal: 0, rugosidad: 0.5 },
   "azul-fox": { color: "#5a7189", metal: 0, rugosidad: 0.6 },
+  // El Strike: carbono de las placas y brazos, mate (si brilla, desde arriba
+  // refleja el cielo y sale gris), y el gris más claro de las riostras;
+  // bobinado rojo cobrizo; muelles de impacto de acero claro, dorado pálido
+  // (fotos de Wild Hornets). La cinta amarilla de la carga, más pálida que el
+  // XT60 (foto de DroneXL).
+  "carbono-wh": { color: "#1f2123", metal: 0, rugosidad: 0.72 },
+  "carbono-gris": { color: "#36383b", metal: 0, rugosidad: 0.72 },
+  "cobre-wh": { color: "#8c3b26", metal: 0.45, rugosidad: 0.45 },
+  "muelle-wh": { color: "#cbbf98", metal: 0.6, rugosidad: 0.35 },
+  "amarillo-wh": { color: "#d4ad4a", metal: 0, rugosidad: 0.55 },
+  // Las campanas de los motores, gris metalizado oscuro, y las hélices, gris
+  // muy oscuro de plástico, algo más claras que el carbono.
+  "campana-wh": { color: "#4f5358", metal: 0.65, rugosidad: 0.38 },
+  "helice-wh": { color: "#2c2e31", metal: 0, rugosidad: 0.6 },
+  // La granada de mortero (foto de una M821): verde oliva mate, la nariz de
+  // plástico pardo de la espoleta y la banda de obturación, de plástico
+  // verde con brillo.
+  "verde-gr": { color: "#3f5636", metal: 0, rugosidad: 0.7 },
+  "pardo-gr": { color: "#86754a", metal: 0, rugosidad: 0.55 },
+  "obturador": { color: "#3b6248", metal: 0, rugosidad: 0.25 },
 };
 
 // Tres escalones de luz para la ilustración.
