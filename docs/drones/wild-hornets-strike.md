@@ -1,12 +1,11 @@
 # Wild Hornets Strike — diario
 
-## Dónde estamos: fase 3 terminada, sigue la 4 (pixel)
+## Dónde estamos: cerrado (22-10-2026), sin push
 
-- **Maqueta HD** en `src/data/uas/wild-hornets-strike.ts` (247 piezas; las partes del visor se sacan por prefijo con `ids()`), dada por buena el 22-10-2026. Granada de mortero de 81 mm con la espoleta delante, cuello con cinta y tapa negra detrás, cables del detonador a la placa.
-- Ocho acabados nuevos (`carbono-wh`, `carbono-gris`, `cobre-wh`, `muelle-wh`, `oliva-wh`, `amarillo-wh`, `campana-wh`, `helice-wh`).
-- Fotos de referencia extra (Digital y Queen Hornet, mismo marco) en `arte/uas-fuentes/wild-hornets-strike/extra/` (fuera de Git).
-- Commiteado en `main`, sin push. **Sin commitear a propósito**: la ficha provisional `src/content/uas/wild-hornets-strike/index.md` (la escribe el importador en la fase 5) y la nota de la bóveda.
-- Siguiente: `/nuevodron Wild Hornets Strike. Fase 4` (pixel).
+- Fases 1 a 5 y cierre hechas: nota en la bóveda, maqueta HD, pixel HD (tarjeta, tarjeta de noche, planta), importada y probada en `/uas/wild-hornets-strike` (ficha, visor en Maqueta y Pixel, partes, fuentes, tarjeta en `/uas`); `npm run lint` y `astro check` sin errores.
+- Sin fase 6: el usuario no ha señalado fallos (pidió todas las fases seguidas); si los hay, `/nuevodron Wild Hornets Strike. Fase 6`.
+- Sin nave del hero (no la ha pedido).
+- Commit hecho en zodk-web y en la bóveda; **push pendiente** (el de `main` publica).
 
 ## Decisiones del usuario
 
@@ -22,6 +21,8 @@
 - 22-10-2026: la **granada** se da por buena; la espoleta se queda delante, como en la foto del soldado (en abierto no hay una regla: unas llevan la original y otras no).
 
 ## Medidas clave
+
+Pixel HD: con el HD a (30°, 27°), verde de la granada al sol luma 0,14 (0,98 escalones), tapa de la batería 0,81 (5,66), carbono 0,10. Con `desfaseLuz` 0,6, pixel: verde 0,13 y batería 0,84, cada uno en un solo escalón.
 
 Del fabricante (https://wildhornets.com/en/fpv-drone-with-10-inch-propellers-analog): hélices 1050 (10 in = 25,4 cm), motores 3115 900KV, ESC 55 A, batería 6s3p o 6s4p, VTX 2,5 W, cámara analógica de día o térmica Caddx IRC-640CA / IRC-384CA. Crucero 80 km/h, máxima 120 km/h, vuelo 50–300 m (máx. 2.000 m), ida 30 km, con vuelta 20 km, hasta 25 min. Carga óptima 2,5 kg, máxima 3 kg. **No publica longitud, envergadura ni peso**.
 
@@ -55,3 +56,4 @@ Las de la nota (`## Fuentes`). Fotos (en `arte/uas-fuentes/wild-hornets-strike/f
 - 22-10-2026: fase 3, segunda vuelta: muelles a 8°, motores rehechos (campana metalizada, cinco ventanas, logo, eje, arandela, tuerca), palas con forma y detalles en todo el dron.
 - 22-10-2026: fase 3, tercera vuelta: granada al revés (la cabeza delante), y mejoras de batería, cuerpo, cámara, patas, riostras y cola con las fotos del Digital.
 - 22-10-2026, cuarta vuelta: el usuario da por buena la granada y la maqueta. Pregunta por la espoleta original: contestado en el chat con lo publicado en abierto; la maqueta no cambia. Commit.
+- 22-10-2026: fase 4. `desfaseLuz` 0,5 y 0,35 probados; 0,6 deja también la batería lejos del borde. Tarjeta y planta pintadas.

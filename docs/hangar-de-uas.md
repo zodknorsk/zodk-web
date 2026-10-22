@@ -27,7 +27,7 @@ del render de UVision, con el tubo lanzador de la feria checa) y RQ-4 Global
 Hawk (EE. UU., dron HALE de reconocimiento sin armas, el RQ-4B Block 20
 04-2015 en su gris) y Magura V5-V7 (Ucrania, dron naval de ataque, dos
 maquetas en un visor con botón de versión; el V7 con dos AIM-9M) y SIRTAP (España, dron táctico de ala alta y cola en V
-del prototipo de Airbus, con torreta EO/IR y sin armas) y TARSIS 75 (España, dron táctico de ala recta y cola en H de AERTEC, versión blanca ISTAR con la torreta EO/IR bajo el morro) y TARSIS-W (España, versión armada del TARSIS de AERTEC, con cuatro micromisiles Fox). Al final, lo que hay que respetar, lo que se probó y el usuario
+del prototipo de Airbus, con torreta EO/IR y sin armas) y TARSIS 75 (España, dron táctico de ala recta y cola en H de AERTEC, versión blanca ISTAR con la torreta EO/IR bajo el morro) y TARSIS-W (España, versión armada del TARSIS de AERTEC, con cuatro micromisiles Fox) y Wild Hornets Strike (Ucrania, FPV de ataque de 10 pulgadas con una granada de mortero de 2,5 kg). Al final, lo que hay que respetar, lo que se probó y el usuario
 rechazó, y las fotos de cada maqueta.
 
 ## Estado

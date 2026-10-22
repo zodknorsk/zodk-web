@@ -483,6 +483,10 @@ const maqueta: Maqueta = {
   escala: ESCALA,  // 1 unidad = 25 cm (marco de 44 cm en diagonal, hélices de 10 pulgadas)
   pais: bandera("UA"),
   hd: true,
+  // El verde de la granada al sol cae en 0,98 escalones de luz del pixel HD
+  // (en el borde: salía a franjas y más claro) y la batería en 5,66:
+  // corridos 0,6 hacia arriba, los dos quedan dentro de un escalón.
+  desfaseLuz: 0.6,
   contornoPixel: true,
   vistaTarjeta: [30, 27],
   plantaLisa: true,
