@@ -6,6 +6,7 @@
 - Sin fase 6: el usuario no ha señalado fallos (pidió todas las fases seguidas); si los hay, `/nuevodron Wild Hornets Strike. Fase 6`.
 - Sin nave del hero (no la ha pedido).
 - Commit hecho en zodk-web y en la bóveda; **push pendiente** (el de `main` publica).
+- 22-10-2026, revisión de la nota: hechos Categoría «Dron FPV kamikaze», cámaras (una Caddx IRC en dos versiones), solo vídeo analógico, frase rota, tuit del Queen fuera y TBS en el glosario. **Cambios sin commitear en la bóveda** (nota y glosario); la nota ya cambiada hay que reimportar (`npm run importar`).
 
 ## Decisiones del usuario
 
@@ -19,6 +20,8 @@
 - 22-10-2026: el usuario pide **todo el detalle posible** en cada pieza (cuerpo, cámara, motores, hélices, ojiva, batería).
 - Título de la nota y slug: `Wild Hornets Strike` → `/uas/wild-hornets-strike` (la maqueta, `src/data/uas/wild-hornets-strike.ts`).
 - 22-10-2026: la **granada** se da por buena; la espoleta se queda delante, como en la foto del soldado (en abierto no hay una regla: unas llevan la original y otras no).
+
+- 22-10-2026: el **Strike es solo FPV de ataque (kamikaze)**; el bombardero de la casa es el Queen Hornet de 17" (6 kg óptima, 9 kg máx., con sistema de suelta). El Digital es un interceptor antidrón de 0,3 kg, no una versión del Strike.
 
 ## Medidas clave
 
@@ -44,7 +47,7 @@ Las de la nota (`## Fuentes`). Fotos (en `arte/uas-fuentes/wild-hornets-strike/f
 ## Probado y descartado
 
 - Fotos de DroneXL (bosque, caja negra encima) y Kyiv Post (mesa con drones pequeños): descartadas por el usuario, 22-10-2026. Commons y prensa: sin fotos libres del Strike.
-- Tuits del Strike para «En acción»: búsqueda sin resultados (22-10-2026).
+- Tuits del Strike para «En acción»: búsqueda sin resultados (22-10-2026); los 4 que puso el usuario son de @wilendhornets, ninguno nombra el Strike (uno es del Queen Hornet, otro de un FPV «conmemorativo» de 2023).
 - El film transparente de la ojiva como calcas `rect` con color rgba: salía a manchas, como camuflaje. Quitado; la ojiva va sin film.
 - Tapas de cartón claras en los extremos de la batería: salían como placas blancas que no se ven en la foto. Quitadas.
 - `espejo` en una pieza con `girar` sobre y: el reflejo gira sobre el centro del otro lado y sale suelto. Se hace con `aLosDosLados` (dos piezas, el ángulo cambiado de signo).

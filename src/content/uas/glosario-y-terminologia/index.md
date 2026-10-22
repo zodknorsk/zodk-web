@@ -4,7 +4,7 @@ date: '2026-09-27'
 description: >-
   Listado de terminología militar y aeronáutica de UAS. Se irá ampliando según
   aparezcan nuevos conceptos en el Hangar. Comunicar cualquier errata.
-updated: '2026-10-13'
+updated: '2026-10-22'
 tags:
   - dron
 glosario: true
@@ -117,6 +117,8 @@ glosario: true
 - **AES-256** *(Advanced Encryption Standard, clave de 256 bits)* — Cifrado estándar con el que se protegen las comunicaciones del dron, sobre todo el data-link y los datos guardados a bordo. Quien intercepta la señal sin la clave solo ve datos ilegibles, así que no puede ver el vídeo ni dar órdenes al dron. No impide el jamming: la señal sigue pudiendo taparse con ruido, aunque no leerse.
 
 - **ExpressLRS** *(ELRS)* — Sistema de radio de código abierto para mandar órdenes al dron, muy extendido en los FPV. Va del mando al dron con muy poco retraso y llega más lejos que las radios de aficionado clásicas. Usa sobre todo la banda de 2,4 GHz y las de 868 y 915 MHz. Es solo el enlace de control; el vídeo va por otro canal (ver **Data-link**).
+
+- **TBS** *(Team BlackSheep, sistema Crossfire)* — Sistema de radio comercial para mandar órdenes al dron, muy usado en los FPV como alternativa a **ExpressLRS**. Trabaja en la banda de 868 o 915 MHz, que atraviesa mejor obstáculos y llega más lejos que el 2,4 GHz. Es solo el enlace de control; el vídeo va por otro canal (ver **Data-link**).
 
 - **GCS** *(Ground Control Station)* — Estación de control en tierra. El puesto (pantallas, mandos, antenas y software de mapas) desde el que el piloto o el equipo vigila el dron, lo pilota o le programa la ruta.
 

@@ -1,0 +1,46 @@
+{
+  "capturado": "2026-10-22",
+  "tuit": {
+    "id_str": "1754588832979161306",
+    "created_at": "2024-02-05T19:32:31.000Z",
+    "text": "The Comanche strike group from the 40th Airborne Brigade continues to clear its section of the front from enemy artillery 💥\n\nDrones #wildhornets 🐝 are in operation\n\nPlease support us:\n💲 PayPal: donate@svoboda-ukrainy.com\n\n#UkrainianArmy #UkraineFrontline #UkraineWarNews https://t.co/h9XdBBAZF6",
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/h9XdBBAZF6",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1754583327133057024/img/PGr5Ccv4t_41gSjl.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1754583327133057024/pl/OqRFiCs5AEud5NWE.m3u8?tag=14&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/1754583327133057024/vid/avc1/360x270/FpkKpeBl3rS8Dba8.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1754583327133057024/vid/avc1/480x360/ELMyfxi-p8aOI5Pc.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1754583327133057024/vid/avc1/960x720/Mpz7ThKSyYV1qiu5.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

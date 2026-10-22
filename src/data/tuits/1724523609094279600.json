@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-10-22",
+  "tuit": {
+    "id_str": "1724523609094279600",
+    "created_at": "2023-11-14T20:24:03.000Z",
+    "text": "The strike unit BULAVA's FPV division, in collaboration with the aerial reconnaissance of the separate Presidential Brigade named after Bohdan Khmelnytskyi, destroyed a 120mm calculation that was shelling Ukrainian troops. \nThe fighters operated using the commemorative FPV drone https://t.co/9QL9dsB4El",
+    "note_tweet": true,
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/9QL9dsB4El",
+        "media_url_https": "https://pbs.twimg.com/media/F-686UtW0AAZvyh.jpg"
+      },
+      {
+        "type": "video",
+        "url": "https://t.co/9QL9dsB4El",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1724523417628536832/img/5WbjJsLWn9n-ZcVh.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1724523417628536832/pl/Ezr-6y7BVIyRrSQ9.m3u8?tag=14&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/1724523417628536832/vid/avc1/360x270/jUKb2IKTFMUmXhIB.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1724523417628536832/vid/avc1/480x360/Le8tj7s3BUMQa4rl.mp4?tag=14"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1724523417628536832/vid/avc1/960x720/ud0hHUU9hh6gIZL3.mp4?tag=14"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
