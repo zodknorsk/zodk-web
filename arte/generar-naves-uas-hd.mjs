@@ -85,6 +85,7 @@ try {
         const { naveHD } = await import("/src/scripts/uas-miniatura-hd.ts");
         const { default: maqueta } = await import("/src/data/uas/${n.modelo}.ts");
         if (!maqueta.hd) throw new Error("${n.modelo} no tiene HD");
+        await (await import("/src/scripts/uas-hd.ts")).precargarImagenes(maqueta);
         return JSON.stringify(naveHD(maqueta, ${JSON.stringify(n.vista)}, ${n.morro}, ${n.lado}, ${JSON.stringify(n.quitar)}));
       })()`,
       awaitPromise: true, returnByValue: true,

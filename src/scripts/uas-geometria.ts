@@ -976,8 +976,16 @@ function geometriaBase(p: Pieza): BufferGeometry[] {
       // Con la raíz dentro del cuerpo, sin tapa en la raíz: la tapa compartía
       // vértices con el último anillo, le torcía la luz y se veía una costura
       // donde el ala sale del cuerpo (el TB2).
-      if (mitad[0][0] > 0) return [geometriaAla(p.y, reflejo, p.raizDentro ? [reflejo.length - 1] : []), geometriaAla(p.y, mitad, p.raizDentro ? [0] : [])];
-      return [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
+      const gs = mitad[0][0] > 0
+        ? [geometriaAla(p.y, reflejo, p.raizDentro ? [reflejo.length - 1] : []), geometriaAla(p.y, mitad, p.raizDentro ? [0] : [])]
+        : [geometriaAla(p.y, [...reflejo, ...mitad.filter(([x]) => x > 0)])];
+      // Con `cabeceo`, el ala entera se inclina: baja hacia atrás.
+      if (p.cabeceo) for (const g of gs) {
+        const pos = g.getAttribute("position");
+        for (let i = 0; i < pos.count; i++) pos.setY(i, pos.getY(i) + p.cabeceo * pos.getZ(i));
+        g.computeVertexNormals();
+      }
+      return gs;
     }
     case "casco": {
       const g = geometriaCasco(p.secciones, p.abierto, p.tomas, p.suave, p.polo, p.hoyuelos, p.tapaPlana, p.facetas);

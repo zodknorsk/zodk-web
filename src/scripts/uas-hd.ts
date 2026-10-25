@@ -28,7 +28,12 @@ export const ESTILOS_HD: { id: EstiloHD; nombre: string }[] = [
 
 // Cómo es cada acabado: color (sRGB), cuánto metal y lo mate que es. El gris,
 // sacado de la foto del «CH» 152 (entre #97a4b4 y #b6b8c3 al sol).
-type Pintura = { color: string; metal: number; rugosidad: number };
+// `desgaste`: la pintura no es de un color liso, como en las fotos de cerca:
+// manchas suaves de tono (retoques, suciedad, sol) alargadas hacia atrás, como
+// las deja el aire, y el brillo que cambia de un sitio a otro. Cuánto aclara u
+// oscurece cada capa (manchas grandes y moteado) y cuánto cambia la rugosidad.
+type Desgaste = { manchas: number; moteado: number; brillo: number };
+type Pintura = { color: string; metal: number; rugosidad: number; desgaste?: Desgaste };
 const PINTURAS: Record<Acabado, Pintura> = {
   gris: { color: "#a6b0bb", metal: 0, rugosidad: 0.5 },
   // El gris muy claro, algo azulado, de los Raven del Ejército de Tierra:
@@ -151,6 +156,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // muy oscuro de plástico, algo más claras que el carbono.
   "campana-wh": { color: "#4f5358", metal: 0.65, rugosidad: 0.38 },
   "helice-wh": { color: "#2c2e31", metal: 0, rugosidad: 0.6 },
+  // El XQ-58 de los Marines: gris medio azulado y mate; puntas rojas.
+  "gris-xq": { color: "#5c6368", metal: 0, rugosidad: 0.72, desgaste: { manchas: 0.2, moteado: 0.08, brillo: 0.25 } },
+  "rojo-xq": { color: "#d6402a", metal: 0, rugosidad: 0.6 },
   // La granada de mortero (foto de una M821): verde oliva mate, la nariz de
   // plástico pardo de la espoleta y la banda de obturación, de plástico
   // verde con brillo.
@@ -171,14 +179,47 @@ const rampaToon = () => {
   return rampa;
 };
 
+// Ruido de valor en 3D y su suma en cuatro octavas, para el desgaste.
+const RUIDO_GLSL = `
+float pinturaAzar(vec3 p) { p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+float pinturaRuido(vec3 x) {
+  vec3 i = floor(x), f = fract(x); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(pinturaAzar(i), pinturaAzar(i + vec3(1, 0, 0)), f.x), mix(pinturaAzar(i + vec3(0, 1, 0)), pinturaAzar(i + vec3(1, 1, 0)), f.x), f.y),
+             mix(mix(pinturaAzar(i + vec3(0, 0, 1)), pinturaAzar(i + vec3(1, 0, 1)), f.x), mix(pinturaAzar(i + vec3(0, 1, 1)), pinturaAzar(i + vec3(1, 1, 1)), f.x), f.y), f.z);
+}
+float pinturaFbm(vec3 p) { float s = 0.0, a = 0.5; for (int k = 0; k < 4; k++) { s += a * pinturaRuido(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= 0.5; } return s / 0.9375 - 0.5; }
+`;
+
 // marca: para el pixel HD, el número de la pieza va en el canal alfa (como
 // en materialPixel), para que la pasada final marque las juntas.
-export function materialHD(acabado: Acabado, estilo: EstiloHD, marca?: number): MeshStandardMaterial | MeshToonMaterial {
+// escala: metros por unidad de la maqueta (el desgaste se mide en metros).
+export function materialHD(acabado: Acabado, estilo: EstiloHD, marca?: number, escala = 1): MeshStandardMaterial | MeshToonMaterial {
   const p = PINTURAS[acabado];
   // Por las dos caras, como la maqueta 1.0: algunas piezas (las alas) tienen
   // los triángulos al revés y, pintadas solo por delante, salían del revés.
   if (estilo === "b") return new MeshToonMaterial({ color: new Color(p.color), gradientMap: rampaToon(), side: DoubleSide });
   const m = new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.45, side: DoubleSide });
+  // El desgaste, solo en la maqueta: en el pixel serían píxeles sueltos.
+  const d = p.desgaste;
+  if (d && marca === undefined) {
+    m.onBeforeCompile = (sh) => {
+      sh.uniforms.pinturaEscala = { value: escala };
+      sh.vertexShader = "varying vec3 vPintura;\n" + sh.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\nvPintura = position;");
+      // Manchas de unos 35 cm, tres veces más largas que anchas a lo largo
+      // del dron (z); moteado de unos 8 cm; el brillo, con otro ruido.
+      sh.fragmentShader = "varying vec3 vPintura;\nuniform float pinturaEscala;\n" + RUIDO_GLSL + sh.fragmentShader.replace(
+        "#include <color_fragment>",
+        `#include <color_fragment>
+        vec3 pinturaM = vPintura * pinturaEscala;
+        diffuseColor.rgb *= 1.0 + ${d.manchas.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * vec3(2.8, 2.8, 0.9)) + ${d.moteado.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * 12.0 + 40.0);`,
+      ).replace(
+        "#include <roughnessmap_fragment>",
+        `#include <roughnessmap_fragment>
+        roughnessFactor = clamp(roughnessFactor + ${d.brillo.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * vec3(2.5, 2.5, 0.9) + 17.0), 0.05, 1.0);`,
+      );
+    };
+    m.customProgramCacheKey = () => `desgaste-${acabado}`;
+  }
   if (marca !== undefined) {
     m.onBeforeCompile = (sh) => {
       sh.uniforms.marca = { value: marca };
@@ -314,6 +355,19 @@ const LETRAS: Record<Letra, string> = {
 
 // El logotipo de Airbus, alto 1000 (el «AIRBUS» del SIRTAP).
 const LOGO_AIRBUS = "M4902 2C4867 4 4852 6 4838 9C4827 12 4815 15 4811 15C4761 23 4687 61 4645 99C4554 182 4538 340 4609 444C4642 492 4724 541 4803 561C4809 563 4823 567 4833 569C4857 577 4901 587 4929 592C4962 599 5046 624 5070 635C5113 654 5127 671 5127 705L5127 724L5123 733C5112 755 5092 768 5057 777L5036 782L4997 783C4952 784 4882 781 4866 777C4859 776 4846 774 4837 773C4826 772 4814 770 4806 768C4799 765 4790 763 4784 762C4766 759 4717 745 4686 732C4646 717 4629 709 4620 704C4599 691 4593 696 4577 743C4573 756 4566 777 4562 788C4558 800 4551 821 4545 836C4541 850 4535 866 4533 870C4528 882 4528 892 4534 898C4543 910 4638 947 4687 958C4692 959 4699 961 4703 963C4707 964 4717 967 4725 968C4732 969 4744 972 4751 974C4772 979 4821 986 4839 987C4849 988 4862 990 4869 991C4905 998 5036 1000 5065 993C5072 992 5087 989 5098 987C5206 972 5300 911 5341 829C5350 812 5365 767 5365 758C5365 755 5366 745 5368 737C5399 572 5284 450 5042 393C5028 390 5009 385 4998 383C4988 380 4978 378 4976 378C4974 378 4968 376 4962 374C4956 372 4945 369 4938 368C4785 335 4745 254 4863 216L4879 211L4925 210C4951 209 4979 209 4987 210C4995 210 5011 211 5021 211C5032 211 5047 213 5054 214C5061 216 5074 218 5084 219C5093 220 5104 222 5109 224C5114 225 5124 227 5131 228C5138 230 5152 233 5161 236C5170 239 5178 242 5179 242C5184 242 5234 261 5249 269C5275 282 5279 280 5291 248C5295 238 5301 221 5305 211C5315 187 5328 152 5336 131C5339 121 5343 110 5345 106C5349 98 5348 88 5343 84C5336 78 5271 51 5248 45C5241 43 5230 39 5224 37C5198 29 5144 17 5121 14C5112 13 5100 11 5094 10C5080 6 5049 3 4996 2C4973 1 4951 1 4950 0C4948 0 4927 1 4902 2ZM485 24C476 29 473 35 447 85C425 130 397 183 349 279C336 305 315 346 302 370C290 394 270 434 257 459C244 484 221 530 205 561C166 637 129 710 111 744C104 759 77 811 53 859C29 907 7 949 5 952C0 960 0 969 5 974L8 977L129 977L249 977L255 972C261 966 275 940 305 878C328 831 331 825 339 821L344 818L526 818L708 818L714 815L721 812L721 807C721 804 713 785 702 764C677 713 653 663 653 661C653 656 631 620 626 618C622 616 604 615 535 614L449 613L446 609C442 604 442 600 447 591C451 582 461 563 492 498C505 472 528 426 544 394L572 337L577 336C581 334 583 335 585 336C588 338 618 399 821 806C904 973 902 970 911 974L917 977L1039 977L1161 977L1165 973C1169 968 1169 962 1164 954C1160 946 1145 916 1105 838C1088 804 1073 775 1071 772C1070 770 1050 731 1027 686C979 592 960 554 913 462C895 426 869 376 857 351C844 326 828 295 821 282C814 268 793 226 773 187C687 18 693 28 682 24L675 20L583 20L491 20L485 24ZM1233 22C1231 23 1228 26 1226 29L1223 35L1223 501L1223 966L1229 972L1235 977L1340 977C1452 977 1450 977 1455 967L1458 961L1458 498L1457 34L1455 29C1453 27 1450 23 1447 22C1442 20 1240 20 1233 22ZM1617 26L1612 31L1612 498L1612 966L1617 971L1623 977L1728 977L1833 977L1839 974C1847 970 1847 984 1847 605L1847 245L1849 239C1854 228 1851 228 2006 229L2147 230L2166 237C2243 266 2266 369 2209 429C2179 462 2158 465 2012 465C1876 466 1879 465 1901 499C1907 508 1921 531 1933 549C1944 567 1961 594 1971 609C1980 624 1998 653 2010 673C2023 692 2037 716 2043 724C2048 732 2055 743 2058 749C2061 754 2066 762 2069 767C2072 771 2079 782 2084 789C2088 797 2099 813 2106 825C2114 837 2125 856 2131 866C2137 876 2144 887 2147 891C2149 894 2160 911 2171 928C2182 946 2194 964 2198 969L2206 977L2323 977C2476 978 2471 979 2451 949C2447 943 2429 916 2412 889C2395 862 2375 829 2366 816C2341 777 2334 767 2315 735C2283 684 2273 667 2266 658C2254 639 2258 632 2285 624C2434 578 2508 413 2458 236C2433 151 2355 71 2273 47C2268 46 2259 43 2255 41C2250 39 2239 36 2231 34C2222 33 2212 31 2208 30C2205 28 2183 26 2160 24L2118 20L1871 20L1623 20L1617 26ZM2590 22C2588 23 2585 26 2583 28L2581 32L2580 494C2580 979 2579 965 2586 972L2591 977L2889 977C3053 977 3192 976 3199 975C3381 952 3477 854 3473 696L3473 658L3465 632C3445 570 3407 522 3353 494C3331 483 3330 477 3348 464C3387 437 3413 398 3427 346L3433 324L3433 281L3433 237L3427 213C3408 137 3343 66 3275 46C3269 44 3261 41 3255 39C3240 33 3213 27 3193 26C3182 25 3165 23 3155 22C3131 20 2596 20 2590 22ZM3144 227C3168 232 3186 246 3199 271L3206 284L3206 307L3206 330L3200 343C3192 360 3174 378 3158 384L3147 388L3071 390C3030 390 2958 390 2912 390L2828 390L2823 385L2818 380L2817 310L2816 240L2819 233C2823 224 2821 224 2982 224L3129 225L3144 227ZM3158 585C3183 591 3208 612 3221 637L3228 651L3229 671C3231 715 3216 742 3175 765L3160 773L2993 773L2826 773L2822 769L2818 764L2817 686C2816 600 2817 594 2823 587L2828 583L2988 583C3092 583 3152 584 3158 585ZM3581 23C3579 24 3576 28 3575 31C3572 38 3573 600 3576 615C3577 621 3579 636 3581 649C3583 662 3585 676 3587 681C3588 685 3590 694 3592 701C3619 841 3752 967 3894 987C3902 988 3918 990 3929 992C3966 1000 4054 1000 4086 993C4094 991 4107 989 4116 988C4160 983 4231 956 4269 931C4365 867 4411 791 4440 648C4445 625 4446 549 4446 295L4446 31L4441 26L4435 20L4328 20L4221 20L4216 24C4207 32 4207 31 4207 318L4208 591L4204 610C4202 621 4199 633 4199 638C4198 642 4195 651 4193 657C4190 663 4187 672 4185 677C4169 725 4111 768 4052 775C3910 793 3827 730 3816 596L3813 563L3813 298C3813 17 3814 28 3804 23L3798 20L3692 20L3585 20L3581 23Z";
+
+// Las imágenes de las calcas `imagen`, ya cargadas: el lienzo de una calca se
+// pinta de una vez, así que se cargan antes de montar el dron.
+const IMAGENES = new Map<string, HTMLImageElement>();
+export async function precargarImagenes(m: Maqueta) {
+  const srcs = [...(m.detalles?.calcas ?? []), ...(m.catapulta?.detalles?.calcas ?? [])].flatMap((k) => (k.dibujo.tipo === "imagen" ? [k.dibujo.src] : []));
+  await Promise.all([...new Set(srcs)].filter((s) => !IMAGENES.has(s)).map(async (s) => {
+    const im = new Image();
+    im.src = s;
+    await im.decode();
+    IMAGENES.set(s, im);
+  }));
+}
 
 function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
   const K = 512 / Math.max(ancho, alto);
@@ -877,6 +931,13 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       }
       const e = Math.min(W / (a1 - a0), H / (b1 - b0)), dw = (a1 - a0) * e, dh = (b1 - b0) * e;
       c.drawImage(tmp, a0, b0, a1 - a0, b1 - b0, (W - dw) / 2, (H - dh) / 2, dw, dh);
+      break;
+    }
+    case "imagen": {
+      const im = IMAGENES.get(d.src);
+      if (!im) break;
+      const e = Math.min(W / im.naturalWidth, H / im.naturalHeight), dw = im.naturalWidth * e, dh = im.naturalHeight * e;
+      c.drawImage(im, (W - dw) / 2, (H - dh) / 2, dw, dh);
       break;
     }
     case "aviso-toma": {

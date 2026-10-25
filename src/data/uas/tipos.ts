@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "blanco-ta" | "gris-ta" | "gris-ta2" | "lente-ta" | "gris-tw" | "azul-fox" | "carbono-wh" | "carbono-gris" | "cobre-wh" | "muelle-wh" | "verde-gr" | "pardo-gr" | "obturador" | "amarillo-wh" | "campana-wh" | "helice-wh";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "blanco-ta" | "gris-ta" | "gris-ta2" | "lente-ta" | "gris-tw" | "azul-fox" | "carbono-wh" | "carbono-gris" | "cobre-wh" | "muelle-wh" | "verde-gr" | "pardo-gr" | "obturador" | "amarillo-wh" | "campana-wh" | "helice-wh" | "gris-xq" | "rojo-xq";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -73,8 +73,9 @@ export type Pieza = (
   // `sola`: solo esa mitad; `vertical`: colgando hacia abajo desde y (una
   // aleta o un soporte con perfil), en el costado `x` (con `espejo`, en los dos).
   // `raizDentro`: la primera estación está dentro de un cuerpo que la tapa
-  // (el ensanche del TB2), y va sin tapa.
-  | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[]; sola?: boolean; vertical?: boolean; x?: number; espejo?: boolean; raizDentro?: boolean }
+  // (el ensanche del TB2), y va sin tapa. `cabeceo`: cuánto sube y por
+  // cada unidad de z (el ala del XQ-58, que sigue la arista del costado).
+  | { tipo: "ala"; id: string; y: number; estaciones: ([number, number, number, number] | [number, number, number, number, number])[]; sola?: boolean; vertical?: boolean; x?: number; espejo?: boolean; raizDentro?: boolean; cabeceo?: number }
   // Varilla recta (mástiles, antenas, brazos, patas).
   | { tipo: "varilla"; id: string; desde: Punto3; hasta: Punto3; radio: number; espejo?: boolean; lados?: number }
   // Codo: un tubo liso que sigue una curva por sus puntos (el cuello del
@@ -245,7 +246,11 @@ export type Dibujo =
   // Flecha hueca con un texto dentro, a lo largo (la «DIRECTION OF LAUNCH»
   // del tubo del Hero-30): contorno en `color`, punta a la derecha o, con
   // `izquierda`, a la izquierda (la del otro costado), con el texto al derecho.
-  | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean };
+  | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean }
+  // Emblema en color tal cual, de una imagen con el fondo transparente en
+  // public/ (los escudos de las derivas del XQ-58), encajado sin deformarlo.
+  // Se carga antes de montar el dron (precargarImagenes, src/scripts/uas-hd.ts).
+  | { tipo: "imagen"; src: string };
 // `capa`: las calcas que se pisan se pintan por capas, de menor a mayor (los
 // textos sobre la franja del Fury); sin ella, por distancia a la cámara.
 // `mate`: la calca, mate como el negro-ua aunque la pieza brille (una zona

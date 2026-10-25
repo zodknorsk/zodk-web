@@ -74,6 +74,7 @@ try {
         // Con versiones, la de las miniaturas (\`miniaturasModelo\`).
         const dron = maqueta.miniaturasModelo ? (await import(\`/src/data/uas/\${maqueta.miniaturasModelo}.ts\`)).default : maqueta;
         const conPostura = ${op.vuelo ? `{ ...dron, tarjetaEnVuelo: ${op.vuelo === "si"} }` : "dron"};
+        await (await import("/src/scripts/uas-hd.ts")).precargarImagenes(dron);
         return JSON.stringify(tarjetaHD(conPostura, vista, ${W}, ${H}));
       })()`,
       awaitPromise: true, returnByValue: true,
@@ -94,6 +95,7 @@ try {
         const { default: pagina } = await import("/src/data/uas/${modelo}.ts");
         const maqueta = pagina.miniaturasModelo ? (await import(\`/src/data/uas/\${pagina.miniaturasModelo}.ts\`)).default : pagina;
         const k = maqueta.plantaDoble ? 2 : 1;
+        await (await import("/src/scripts/uas-hd.ts")).precargarImagenes(maqueta);
         return JSON.stringify({ k, ...plantaHD(maqueta, ${JSON.stringify(ARRIBA)}, ${PX_POR_METRO} * k, ${PLANTA_MAX[0] - SOMBRA[0]} * k, ${PLANTA_MAX[1] - SOMBRA[1]} * k) });
       })()`,
       awaitPromise: true, returnByValue: true,

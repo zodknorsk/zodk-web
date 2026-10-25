@@ -208,7 +208,8 @@ const VISTAS = [
     const cargar = maquetas[`../data/uas/${caja.dataset.modelo}.ts`];
     if (!cargar) return;
     const esta = visita;
-    const [{ montarVisor }, { default: maqueta }] = await Promise.all([import("../scripts/visor-uas"), cargar()]);
+    const [{ montarVisor }, { precargarImagenes }, { default: maqueta }] = await Promise.all([import("../scripts/visor-uas"), import("../scripts/uas-hd"), cargar()]);
+    await precargarImagenes(maqueta);
     if (esta !== visita || !caja.isConnected) return;
     return montarVisor(caja, maqueta, inicio);
   };
