@@ -5,7 +5,7 @@
 - Fase 2: fotos y `FUENTES.md` en `arte/uas-fuentes/queen-hornet/` (fuera de Git; tabla abajo). Ajustes de cámara encajados en `hd/arriba.json` y `hd/lado.json`.
 - Fase 3: maqueta en `src/data/uas/queen-hornet.ts`, encajada con la foto de arriba y la de lado. Dos acabados nuevos (`anodizado-qh`, `gris-cola`) y `solo` en el dibujo `sting` (el avispón sin rótulo).
 - Fase 4: `desfaseLuz` 0,35; tarjeta, tarjeta de noche y planta (`plantaDoble`) en `public/uas/queen-hornet/`; miniaturas de las fuentes en `fuentes/`.
-- **Falta la fase 1, la nota en la bóveda**: sin ella no hay ficha. Para probar se usó un borrador `src/content/uas/queen-hornet/index.md` que **no se commitea** (borrarlo o lo pisa el importador).
+- **Falta la fase 1, la nota en la bóveda**: sin ella no hay ficha. Para probar se usó un borrador temporal en `src/content/uas/queen-hornet/index.md`, ya borrado.
 - El logo amarillo de la placa queda bajo la batería de delante (va pintado, pero no se ve).
 - Siguiente: `/nuevodron Queen Hornet. Fase 1` (la nota) y luego la 5.
 
