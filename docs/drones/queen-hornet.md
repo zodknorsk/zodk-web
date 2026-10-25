@@ -3,7 +3,7 @@
 ## Dónde estamos: fases 2, 3 y 4 hechas (25-10-2026), sin nota
 
 - Fase 2: fotos y `FUENTES.md` en `arte/uas-fuentes/queen-hornet/` (fuera de Git; tabla abajo). Ajustes de cámara encajados en `hd/arriba.json` y `hd/lado.json`.
-- Fase 3: maqueta en `src/data/uas/queen-hornet.ts`, con el detalle del Strike, encajada con la foto de arriba y la de lado. Dos acabados nuevos (`anodizado-qh`, `gris-cola`) y `solo` en el dibujo `sting` (el avispón sin rótulo).
+- Fase 3: maqueta en `src/data/uas/queen-hornet.ts`, con el detalle copiado de las fotos oficiales ampliadas ×4 (`recortes/` fuera de Git) y piezas al modo del Strike, encajada con la foto de arriba y la de lado. Tres acabados nuevos (`anodizado-qh`, `gris-cola`, `bateria-qh`) y `solo` en el dibujo `sting` (el avispón sin rótulo).
 - Fase 4: `desfaseLuz` 0,35; tarjeta, tarjeta de noche y planta (`plantaDoble`) en `public/uas/queen-hornet/`; miniaturas de las fuentes en `fuentes/`.
 - **Falta la fase 1, la nota en la bóveda**: sin ella no hay ficha. Para probar se usó un borrador temporal en `src/content/uas/queen-hornet/index.md`, ya borrado.
 - El logo amarillo de la placa queda bajo la batería de delante (va pintado, pero no se ve).
@@ -16,6 +16,7 @@
 - 25-10-2026: versión **17" de marco de aluminio** (la actual, la de la ficha), no la de 2024 de carbono de 15".
 - 25-10-2026: ejemplar **negro, el de la web** (logo amarillo, «Q0002226» en un brazo).
 - 25-10-2026: carga **una granada de mortero de 81 mm**, **tumbada bajo la panza**, morro adelante, colgada del soltador. Se usa la M821 americana (plano oficial y espoleta M734A1).
+- 25-10-2026: **copiar 1:1 los detalles de las fotos oficiales** (cuerpo, patas, motores, cámara…) y **baterías negras**.
 - 25-10-2026: **basarse en el Strike** (misma casa): del Strike se toman las piezas y el detalle (motores, baterías con correas y hebillas, cables, cámara, tornillería); el marco, que es otro (aluminio plegable con patas), sigue medido de sus fotos.
 - Slug: `queen-hornet` → `/uas/queen-hornet` (la maqueta, `src/data/uas/queen-hornet.ts`).
 
@@ -31,7 +32,9 @@ Encajado (fotos oficiales): caja de suelta hasta y −10 cm; mástil de 12 cm a 
 
 Luz del pixel (HD a 30°, 27°): tapa de las baterías 2,92 escalones, lo alto del marco 1,35-1,40, verde de la granada 0,9-1,06; con `desfaseLuz` 0,35 caen dentro de un escalón.
 
-Colores: batería azul de las fotos de 2024 (#115bb9 con flash); cola de la granada gris (#70707a).
+Placa (foto de arriba, `deArriba` en la maqueta pasa de píxel a cm): 22 x 11,4 cm de z +10,9 a −11,1, saliente de la cámara ±3,2 hasta +16,6 y del mástil ±2,9 hasta −16,6; raíles en z +1,15 y −1,0; conectores en los costados de z +2,8 a −3,5 (pines en +0,6 y −0,9); ranuras de correa en x ±4,6, z +8,35 y −8,85; avispón de 5 cm en z +5,9; ventana gris de 2,8 x 4,6 en z −6,3. Cámara: barril de eje x, Ø 3,9 cm, de x −3,1 a 3,1, en z 18,6. Pata: pala de morro a cola (no a lo largo del brazo), 4,6 cm arriba y 2,6 abajo, canto de detrás curvo, hasta y −10,8. Caja de suelta: 5 x 7 x 6,6 cm bajo un pie facetado.
+
+Colores: baterías negras (decisión del usuario); cola de la granada gris (#70707a).
 
 ## Fuentes
 
@@ -57,6 +60,9 @@ Fotos en `arte/uas-fuentes/queen-hornet/full/` (fuera de Git, bajadas el 25-10-2
 - Commons: la API corta con 429 desde la nube; no se pudo buscar.
 - `armyinform-desde-abajo.jpg`: el marco de debajo (gris, con agujeros) no casa con el de las fotos oficiales; puede ser otra versión. No se usa para medir.
 - Anodizado con brillo (metal 0,35, rugosidad 0,5): desde arriba reflejaba el cielo y la placa salía gris. Mate (0,15 / 0,72).
+- Patas a lo largo del brazo: en la foto de lado las cuatro se ven de frente; van de morro a cola.
+- Avispón girado −90°: salía con las filas cruzadas respecto a la foto; va sin girar.
+- Caja de suelta de 8 cm de ancho: tapaba el cubo de lado; en la foto tiene unos 5.
 - Planta sin `plantaDoble`: los brazos no salían, solo las hélices.
 
 ## Registro
@@ -64,5 +70,6 @@ Fotos en `arte/uas-fuentes/queen-hornet/full/` (fuera de Git, bajadas el 25-10-2
 - 25-10-2026, fase 2: fotos oficiales, de prensa y de la M821; forma leída.
 - 25-10-2026, fase 3: maqueta; planta y lado encajados; mástil más corto y derecho, caja de suelta más alta, patas más cortas y cámara más baja tras encajar. Perfil de la M821 medido de nuevo en la foto de CAT-UXO (cuerpo más corto que el del Strike: la cola empieza a 343 mm de la punta).
 - 25-10-2026, fase 3 (2.ª vuelta): detalle del Strike: motores con seis ventanas y ocho radios sobre el bobinado, tuerca con nailon y tornillos bajo el brazo; baterías con alfombrilla, dos correas con hebilla de escalera, balanceo y cables rojo y negro; cámara con frontal, rosca y aro; tornillos de placa, bisagras y abrazaderas; bridas del mástil, LED del receptor y etiqueta del transmisor.
+- 25-10-2026, fase 3 (3.ª vuelta): detalle 1:1 de las fotos oficiales ampliadas: placa con su planta real, raíles, asas, conectores de dos pines, tornillos, ranuras, ventana gris y LED; cubo facetado; caja de la electrónica en tres tramos con el USB; cámara en barril con surco, puntos naranjas y objetivo; bisagras con nudillos; variadores con pinzas; abrazaderas con nervios y brida; patas de morro a cola; motores de ocho ventanas y diez radios; caja de suelta con pie, tornillos, agujero y letra amarilla; baterías negras de través.
 - 25-10-2026, fase 4: desfase de luz medido, anodizado pasado a mate, miniaturas.
 - En la nube hizo falta Node 24 (las expresiones `(?i:…)` del glosario no van en Node 22) y Chrome con `--no-sandbox`.

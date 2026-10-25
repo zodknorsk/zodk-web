@@ -70,6 +70,7 @@ const COMUNES = {
   "obturador": ["#1a2c20", "#2a4634", "#3b6248", "#5a8468"],
   "anodizado-qh": ["#0e0f11", "#1a1b1e", "#2a2c30", "#45484d"],
   "gris-cola": ["#34353a", "#55565b", "#75767b", "#9d9ea3"],
+  "bateria-qh": ["#0c0d0e", "#18191b", "#28292c", "#424448"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {

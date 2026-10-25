@@ -162,6 +162,8 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // cola gris de su granada M821 (foto de CAT-UXO).
   "anodizado-qh": { color: "#222427", metal: 0.15, rugosidad: 0.72 },
   "gris-cola": { color: "#75767b", metal: 0.3, rugosidad: 0.55 },
+  // Sus baterías, de funda termorretráctil negra, algo satinada.
+  "bateria-qh": { color: "#1b1c1e", metal: 0, rugosidad: 0.5 },
 };
 
 // Tres escalones de luz para la ilustración.
