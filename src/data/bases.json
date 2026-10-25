@@ -1492,5 +1492,77 @@
         }
       ]
     }
+  },
+  "Eglin AFB": {
+    "slug": "eglin-afb",
+    "oficial": "Eglin Air Force Base",
+    "pais": "US",
+    "rama": "Fuerza Aérea de EE. UU. (USAF)",
+    "lugar": "Florida, EE. UU.",
+    "lat": 30.4894,
+    "lon": -86.5422,
+    "desde": 1935,
+    "texto": "Unos 1.870 km² de bosque y costa en el oeste de Florida, con el campo de pruebas sobre el golfo de México. Aquí prueba sus armas la Fuerza Aérea de EE. UU., se forman los pilotos de F-35 y entrenaron en 1942 los del bombardeo de Doolittle sobre Tokio.",
+    "nombres": [
+      {
+        "nombre": "Bahía de Choctawhatchee",
+        "clase": "accidente",
+        "lat": 30.44,
+        "lon": -86.3
+      },
+      {
+        "nombre": "Golfo de México",
+        "clase": "accidente",
+        "lat": 30.27,
+        "lon": -86.55
+      },
+      {
+        "nombre": "Isla de Santa Rosa",
+        "clase": "accidente",
+        "lat": 30.39,
+        "lon": -86.8
+      }
+    ],
+    "mapa": {
+      "km": 90,
+      "nombres": [
+        {
+          "nombre": "Fort Walton Beach",
+          "clase": "ciudad",
+          "x": 123,
+          "y": 125
+        },
+        {
+          "nombre": "Bahía de Choctawhatchee",
+          "clase": "accidente",
+          "x": 143,
+          "y": 108
+        },
+        {
+          "nombre": "Golfo de México",
+          "clase": "accidente",
+          "x": 98,
+          "y": 175
+        },
+        {
+          "nombre": "Isla de Santa Rosa",
+          "clase": "accidente",
+          "x": 8,
+          "y": 143
+        },
+        {
+          "nombre": "Navarre",
+          "clase": "pueblo",
+          "x": 42,
+          "y": 126
+        },
+        {
+          "nombre": "Niceville",
+          "clase": "pueblo",
+          "x": 166,
+          "y": 84
+        }
+      ]
+    }
   }
 }
