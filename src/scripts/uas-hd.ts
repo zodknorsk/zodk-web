@@ -157,6 +157,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "verde-gr": { color: "#3f5636", metal: 0, rugosidad: 0.7 },
   "pardo-gr": { color: "#86754a", metal: 0, rugosidad: 0.55 },
   "obturador": { color: "#3b6248", metal: 0, rugosidad: 0.25 },
+  // El Queen Hornet: aluminio anodizado negro, mate (fotos de Wild
+  // Hornets; con brillo, desde arriba refleja el cielo y sale gris), y la
+  // cola gris de su granada M821 (foto de CAT-UXO).
+  "anodizado-qh": { color: "#222427", metal: 0.15, rugosidad: 0.72 },
+  "gris-cola": { color: "#75767b", metal: 0.3, rugosidad: 0.55 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -621,6 +626,15 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       const altoTodo = 143.4 + 10 + 44.5, anchoTodo = Math.max(anchoTexto, 155.7);
       const k = Math.min(W / anchoTodo, H / altoTodo);
       c.fillStyle = d.color ?? TINTA_CALCA;
+      if (d.solo) {
+        const ks = Math.min(W / 155.7, H / 143.4);
+        c.save();
+        c.translate(W / 2 - (155.7 * ks) / 2, (H - 143.4 * ks) / 2);
+        c.scale(ks, ks); c.translate(-81.95, -66.92);
+        c.fill(new Path2D(AVISPON));
+        c.restore();
+        break;
+      }
       c.save();
       c.translate(W / 2 - (155.7 * k) / 2, (H - altoTodo * k) / 2);
       c.scale(k, k); c.translate(-81.95, -66.92);
