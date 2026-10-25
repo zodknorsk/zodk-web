@@ -2,15 +2,11 @@
 
 ## Dónde estamos
 
-- **Fase 3 (maqueta HD), últimos pasos, 25-10-2026**: juntas, tornillos y muescas calcados, y textura de la pintura; a falta de que el usuario lo vea (comparativas en `~/Downloads/xq-58-detalle/comparativas.html`). Dirá qué quitar o poner.
-- **Juntas**: `JUNTAS` en `xq-58-valkyrie.ts`, cada una con su nombre («r-» = de la foto de la rampa del 170741; sin prefijo = del Pentágono). Salen de trazar cada línea en la foto encajada y llevarla a la piel (fuera de Git, en `arte/uas-fuentes/xq-58-valkyrie/hd/calcar/`: `rejilla.mjs` saca la foto con rejilla en píxeles, los trazos van en `tz-r.json` y `tz-p.json`, `calcar.mjs` los lleva a la piel y `emitir.py` escribe las líneas de `JUNTAS`; las rutas del scratchpad hay que cambiarlas). Más: tornillos en las juntas de las puntas rojas, canto de arriba de los timones y dos tapas sobre el lomo (aproximadas, casi de canto en la foto).
-- **Textura de la pintura**: `desgaste` en el acabado `gris-xq` (`uas-hd.ts`): manchas y brillo con ruido en el shader, solo en la maqueta (no en el pixel). Nivel **fuerte** (elegido por el usuario).
-- Sin calcar: la panza (no hay fotos de cerca) y el costado derecho (se da por simétrico; Miramar, a contraluz, no deja encajar).
-- **Sin commitear** (en `main`): todo lo de la fase 3, este diario y la nota de la bóveda.
-- Juntas con la opacidad de siempre («como antes», elegido por el usuario tras probar más marcadas).
-- Quitadas por el usuario tras verlas (25-10-2026): las del Pentágono «chevron», «arista-sec», «cola-panel», «trapecio» y el «capota-pie» del rebaje (repetía la «r-lomo-morro»); de la rampa, «r-hex» y las del ala («r-ala-A», «r-ala-B», «r-ala-ranura»). También fuera de `calcar/tz-*.json`.
-- Sin decidir: el parche oscuro de la rampa delante de la toma.
-- Siguiente: que el usuario siga diciendo qué quitar o poner; luego fase 4 (pixel HD).
+- **Cerrado** el 25-10-2026: fases 4 (pixel HD), 5 (en la web) y 7 (cierre) hechas; el usuario lo dio por terminado sin revisión aparte (fase 6).
+- En la web: ficha importada, visor en Maqueta y Pixel (todas las vistas, día y noche), partes, fuentes y tarjeta en `/uas` con su filtro, probados; lint y `astro check` sin errores. Sin nave en el hero.
+- Añadido a «Drones hechos» de `docs/hangar-de-uas.md`.
+- Commiteado en zodk-web y en la bóveda (la nota). **Sin push**: el de `main` publica.
+- Quedó sin decidir (de la fase 3): el parche oscuro de la rampa delante de la toma.
 
 ## Decisiones del usuario
 
@@ -28,6 +24,7 @@
 - Medido en la revisión 1 (cámaras del encaje conjunto, retroproyectando píxeles con un eje fijo o sobre el plano de la deriva; perfil y foto desde arriba casan a 1-8 cm): deriva en el plano y = −0,611 + 0,844·x (40°, revisión 2: pasa por la arista y por la punta medida); borde de ataque de (0,55, −2,66) a (2,05, −3,63); borde de salida de (0,55, −3,57) a un quiebro en (1,6, −4,29) y a la punta (2,05, −4,06). Ala: borde de salida z = −2,2 + 0,45·(4,1 − x) hasta la esquina de la muesca (x 1,0, z −0,81) y curva hasta la arista en (0,66, −1,45). «MARINES» del costado (revisión 2), de z −2,62 a −0,82, 0,24 m de alto, entero encima de la arista. Ala: `cabeceo` 0,053 (sigue la arista, de y 0,045 en z 0,84 a −0,077 en z −1,45) y diedro 0,17 para que la punta siga en (4,1, 0,09, −1,53). Labio de la toma: de la punta (z 1,93) al pie de las paredes en z 1,74. Capota de 5 cm de grueso; la esquina del techo empieza al 70 % del medio ancho (0,55 m). Tobera: r 0,20 m, centro y −0,01, boca en z −3,81; capó de 2 cm, borde arriba en z −3,85 y pie en −3,97; canal de medio ancho 0,24 (z −3,72), 0,3 (−3,9), 0,2 (−4,3), suelo plano.
 - Encaje conjunto de 4 fotos en vuelo (`arte/uas-fuentes/xq-58-valkyrie/hd/conjunto-datos.json`, `conjunto.mjs` copiado del SIRTAP; deja las `.cam.json` para `comparar-foto.mjs`), errores de 3-9 px: labio de la toma (0, 0,62, 1,93); punta del ala, borde de ataque (4,1, 0,09, −1,53) y de salida z −2,2; raíz del borde de ataque en la arista, z ≈ 0,8 (flecha 34°); borde de salida en la raíz ≈ −0,95; punta de las derivas (2,0, 1,1, −3,58) a −4,16. La raíz de las derivas no la fija el encaje: se puso a ojo, superponiendo (baja casi hasta la arista).
 - Color al sol en el lomo: foto #76838c, render #788088 (perfil de los Marines).
+- Pixel (barriendo el desfase): la pintura al sol entra al pixel en 3,6-3,95 escalones (el HD medido sale más claro por el desgaste, que el pixel no lleva); con −0,2 queda en 3,4-3,75 y la planta sale sin franjas; con −0,25 el lomo se parte más. Costado a la sombra: HD #0a0e14; sin `sombraNegra` el pixel lo daba #121b26 (azul marino), con ella #0a0e14.
 - Cámaras encajadas para el detalle: rampa (DVIDS 8261981 a 3000 px; morro, labio, puntas del ala y de las derivas, errores de 3-18 px; para pintarla en el visor, `rampa-cerca` acercada a 40 m) y Pentágono (Nikon Z 8 a 70 mm, campo fijo 19,45°; labio y derivas, 4-35 px). Juntas del 170741 medidas: la del morro corta la arista en z 3,88; la vertical «C», en 2,92; la bisagra del timón, de (0,69, −0,04, −3,36) a (1,59, 0,74, −4,05).
 
 ## Fuentes
@@ -78,3 +75,5 @@ Las de la nota (`## Fuentes`). Cifras: largo, envergadura y MTOW de Kratos y Air
 - 24-10-2026, revisión 2: ala y derivas desde la arista, «MARINES» más grande, labio de la toma recto arriba, capota sin raya, capó de la tobera en el fuselaje.
 - 24-10-2026, revisión 3: toma (techo plano, labio recto arriba y cayendo por las paredes, suelo oscuro bajo la capota) y tobera (más grande, bajo un capó fino; canal más ancha), comparadas con el museo, la ILA, Eglin y el cuarto vuelo.
 - 25-10-2026, revisión 4: fuera las dos antenas, lomo liso detrás de la capota, canal de la tobera lisa con suelo plano, capó de la tobera sin arrugas.
+- 25-10-2026, fase 4: luz del pixel medida en el visor (3D, planta, perfil) con desfases de −0,5 a 0,5; −0,2. `sombraNegra` por el costado azul marino. Tarjeta desde [61, 20]; planta lisa (las letras salían como manchas). Miniaturas generadas y página de revisión.
+- 25-10-2026, fases 5 y 7: ficha, visor y tarjeta probados en local con capturas; lint y check limpios; a la lista de drones hechos; commit.

@@ -486,6 +486,15 @@ const maqueta: Maqueta = {
   escala: ESCALA,
   hd: true,
   contornoPixel: true,
+  // La pintura al sol caía en 3,6-4,0 escalones (en la planta, en el borde):
+  // con −0,2 queda en el centro del cuarto (con más, el lomo se parte).
+  desfaseLuz: -0.2,
+  // El costado a la sombra, casi negro en el HD, salía azul marino.
+  sombraNegra: true,
+  // Ala en flecha: la tarjeta, de más arriba, como la del FQ-44A.
+  vistaTarjeta: [61, 20],
+  // En la planta de la portada, las letras salían como manchas blancas.
+  plantaLisa: true,
   // Sin raya donde la capota y el capó de la tobera siguen al lomo, ni en
   // las raíces del ala y la cola.
   soldadura: 0.08 / ESCALA,
