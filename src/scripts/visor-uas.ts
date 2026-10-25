@@ -15,7 +15,7 @@ import type { Acabado, Maqueta } from "../data/uas/tipos";
 import { geometriaDe, VISTAS, type Vista } from "./uas-geometria";
 import { crearPixelado, marcaPieza, materialPixel, ponerPaleta } from "./uas-pixelado";
 import { PALETAS } from "./uas-paletas";
-import { colorHD, crearLuzHD, ESTILOS_HD, materialContorno, materialHD, montarDetalles, type EstiloHD, type MaterialHD } from "./uas-hd";
+import { colorHD, crearLuzHD, ESTILOS_HD, marcarBordes, materialContorno, materialHD, montarDetalles, type EstiloHD, type Gastado, type MaterialHD } from "./uas-hd";
 
 type Pin = { x: number; y: number; tapado: boolean };
 
@@ -122,12 +122,15 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta, inicio: Inicio 
   const materiales = new Map<string, { acabado: Acabado; marca: number; relleno: MeshLambertMaterial; linea: LineBasicMaterial; pixel: ShaderMaterial; hd?: MaterialHD }>();
   const mallas: Mesh[] = [];
   const aristas: LineSegments[] = [];
+  // En HD, con las aristas vivas marcadas para los bordes gastados.
+  const geometrias = (piezas: Maqueta["piezas"]) => (maqueta.hd ? marcarBordes(piezas.map(geometriaDe), 0.015 / maqueta.escala) : piezas.map(geometriaDe));
+  const geosPiezas = geometrias(maqueta.piezas);
   for (const [i, p] of maqueta.piezas.entries()) {
     const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const linea = new LineBasicMaterial();
     const marca = marcaPieza(i, p.acabado === "junta");
     materiales.set(p.id, { acabado: p.acabado ?? "negro", marca, relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marca) });
-    for (const g of geometriaDe(p)) {
+    for (const g of geosPiezas[i]) {
       const malla = new Mesh(g, relleno);
       malla.castShadow = malla.receiveShadow = true;
       mallas.push(malla);
@@ -168,6 +171,13 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta, inicio: Inicio 
   // otro y sale el selector de pruebas sobre el lienzo (en la web normal no
   // se ve).
   const luzHD = maqueta.hd ? crearLuzHD(renderer, escena, radio) : null;
+  // Desgaste de la pintura (Maqueta.desgaste): si no dice otra cosa, el 1.
+  const gastado: Gastado = {
+    pintura: maqueta.desgaste?.pintura ?? 1,
+    bordes: maqueta.desgaste?.bordes ?? 1,
+    suciedad: maqueta.desgaste?.suciedad ?? 1,
+    largo: Math.max(...caja3.getSize(new Vector3()).toArray()) * maqueta.escala,
+  };
   let estiloHD: EstiloHD | null = null;
   if (luzHD) {
     const pedido = new URLSearchParams(location.search).get("hd");
@@ -217,12 +227,13 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta, inicio: Inicio 
   grupoCatapulta.visible = false;
   raiz.add(grupoCatapulta);
   const mallasCatapulta: Mesh[] = [];
+  const geosCatapulta = maqueta.catapulta ? geometrias(maqueta.catapulta.piezas) : [];
   if (maqueta.catapulta) for (const [j, p] of maqueta.catapulta.piezas.entries()) {
     const relleno = new MeshLambertMaterial({ side: DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const linea = new LineBasicMaterial();
     const marca = marcaPieza(maqueta.piezas.length + j, p.acabado === "junta");
     materiales.set(p.id, { acabado: p.acabado ?? "negro", marca, relleno, linea, pixel: materialPixel(PALETAS.dia.negro, marca) });
-    for (const g of geometriaDe(p)) {
+    for (const g of geosCatapulta[j]) {
       const malla = new Mesh(g, relleno);
       malla.castShadow = malla.receiveShadow = true;
       malla.userData.pieza = p.id;
@@ -565,7 +576,7 @@ export function montarVisor(caja: HTMLElement, maqueta: Maqueta, inicio: Inicio 
     const hdMat = hd ?? (pixelHD ? "c" : null);
     for (const m of materiales.values()) {
       m.hd?.dispose();
-      m.hd = hdMat ? materialHD(m.acabado, hdMat, pixelHD ? m.marca : undefined, maqueta.escala) : undefined;
+      m.hd = hdMat ? materialHD(m.acabado, hdMat, pixelHD ? m.marca : undefined, maqueta.escala, gastado) : undefined;
     }
     for (const malla of mallas) {
       const m = materiales.get(malla.userData.pieza)!;

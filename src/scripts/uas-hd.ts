@@ -28,12 +28,7 @@ export const ESTILOS_HD: { id: EstiloHD; nombre: string }[] = [
 
 // Cómo es cada acabado: color (sRGB), cuánto metal y lo mate que es. El gris,
 // sacado de la foto del «CH» 152 (entre #97a4b4 y #b6b8c3 al sol).
-// `desgaste`: la pintura no es de un color liso, como en las fotos de cerca:
-// manchas suaves de tono (retoques, suciedad, sol) alargadas hacia atrás, como
-// las deja el aire, y el brillo que cambia de un sitio a otro. Cuánto aclara u
-// oscurece cada capa (manchas grandes y moteado) y cuánto cambia la rugosidad.
-type Desgaste = { manchas: number; moteado: number; brillo: number };
-type Pintura = { color: string; metal: number; rugosidad: number; desgaste?: Desgaste };
+type Pintura = { color: string; metal: number; rugosidad: number };
 const PINTURAS: Record<Acabado, Pintura> = {
   gris: { color: "#a6b0bb", metal: 0, rugosidad: 0.5 },
   // El gris muy claro, algo azulado, de los Raven del Ejército de Tierra:
@@ -157,7 +152,7 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "campana-wh": { color: "#4f5358", metal: 0.65, rugosidad: 0.38 },
   "helice-wh": { color: "#2c2e31", metal: 0, rugosidad: 0.6 },
   // El XQ-58 de los Marines: gris medio azulado y mate; puntas rojas.
-  "gris-xq": { color: "#5c6368", metal: 0, rugosidad: 0.72, desgaste: { manchas: 0.2, moteado: 0.08, brillo: 0.25 } },
+  "gris-xq": { color: "#5c6368", metal: 0, rugosidad: 0.72 },
   "rojo-xq": { color: "#d6402a", metal: 0, rugosidad: 0.6 },
   // La granada de mortero (foto de una M821): verde oliva mate, la nariz de
   // plástico pardo de la espoleta y la banda de obturación, de plástico
@@ -190,35 +185,186 @@ float pinturaRuido(vec3 x) {
 float pinturaFbm(vec3 p) { float s = 0.0, a = 0.5; for (int k = 0; k < 4; k++) { s += a * pinturaRuido(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= 0.5; } return s / 0.9375 - 0.5; }
 `;
 
+// Desgaste: la pintura no es de un color liso, como en las fotos de cerca:
+// manchas suaves de tono (retoques, suciedad, sol) y el brillo que cambia de
+// un sitio a otro. Cuánto aclara u oscurece cada capa (manchas grandes y
+// moteado) y cuánto cambia la rugosidad, en el nivel 1 (el «fuerte» que se
+// eligió en el XQ-58).
+type Desgaste = { manchas: number; moteado: number; brillo: number };
+const DESGASTE_BASE: Desgaste = { manchas: 0.2, moteado: 0.08, brillo: 0.25 };
+// Acabados sin desgaste: cristal, metal desnudo, huecos y luces.
+const SIN_DESGASTE = new Set<Acabado>(["hueco", "lente", "lente-ta", "metal", "aluminio", "laton", "cromato", "muelle-wh", "campana-wh", "blanco", "rojo"]);
+
+// Cómo de gastada está la maqueta (`Maqueta.desgaste`): `pintura`, las
+// manchas y el brillo; `bordes`, la pintura rozada en las
+// aristas vivas; `suciedad`, la panza más sucia.
+// `largo`: el del dron en metros (el ancho de los bordes va con él).
+export type Gastado = { pintura: number; bordes: number; suciedad: number; largo: number };
+
+// Aristas vivas para los bordes gastados: la geometría sin índices y, en cada
+// vértice, su coordenada baricéntrica y la altura del triángulo sobre cada
+// lado (−1 si ese lado no es arista viva), para medir en el fragmento la
+// distancia al borde. Todas las piezas a la vez: una arista con una punta
+// pegada a otra pieza (a menos de `junta`, en unidades) es la junta de dos
+// piezas que van a tope, no un borde.
+export function marcarBordes(piezas: BufferGeometry[][], junta: number): BufferGeometry[][] {
+  const todas = piezas.map((gs) => gs.map((g) => (g.index ? g.toNonIndexed() : g)));
+  // Rejilla de vértices de cada geometría, de celdas de `junta`.
+  const rejilla = new Map<number, Set<BufferGeometry>>();
+  for (const g of todas.flat()) {
+    const pos = g.getAttribute("position").array;
+    for (let i = 0; i < pos.length; i += 3) {
+      const c = clave(Math.floor(pos[i] / junta), Math.floor(pos[i + 1] / junta), Math.floor(pos[i + 2] / junta));
+      const gs = rejilla.get(c);
+      if (gs) gs.add(g);
+      else rejilla.set(c, new Set([g]));
+    }
+  }
+  const pegado = (g: BufferGeometry, p: Vector3) => {
+    const [x, y, z] = [Math.floor(p.x / junta), Math.floor(p.y / junta), Math.floor(p.z / junta)];
+    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (let k = -1; k <= 1; k++) {
+      const gs = rejilla.get(clave(x + i, y + j, z + k));
+      if (gs) for (const otra of gs) if (otra !== g) return true;
+    }
+    return false;
+  };
+  // Las posiciones, a medio milímetro, para juntar los vértices repetidos.
+  for (const g of todas.flat()) marcarUna(g, junta / 30, pegado);
+  return todas;
+}
+
+// Tres enteros (de ±65.536) en un número, para las claves de los mapas.
+const clave = (x: number, y: number, z: number) => ((x + 65536) * 131072 + (y + 65536)) * 131072 + (z + 65536);
+
+function marcarUna(g: BufferGeometry, grano: number, pegado: (g: BufferGeometry, p: Vector3) => boolean) {
+  const pos = g.getAttribute("position").array;
+  const n = pos.length / 3, tris = n / 3;
+  // Cada posición, un número (los vértices repetidos de las caras vecinas
+  // dan el mismo).
+  const ids = new Map<number, number>();
+  const id = new Uint32Array(n);
+  for (let i = 0; i < n; i++) {
+    const c = clave(Math.round(pos[3 * i] / grano), Math.round(pos[3 * i + 1] / grano), Math.round(pos[3 * i + 2] / grano));
+    let x = ids.get(c);
+    if (x === undefined) ids.set(c, (x = ids.size));
+    id[i] = x;
+  }
+  const normales = new Float32Array(tris * 3);
+  const a = new Vector3(), b = new Vector3(), c = new Vector3();
+  const punto = (i: number, v: Vector3) => v.set(pos[3 * i], pos[3 * i + 1], pos[3 * i + 2]);
+  for (let t = 0; t < tris; t++) {
+    punto(3 * t, a);
+    b.subVectors(punto(3 * t + 1, b), a);
+    c.subVectors(punto(3 * t + 2, c), a);
+    b.cross(c).normalize();
+    normales.set([b.x, b.y, b.z], 3 * t);
+  }
+  // El lado k es el opuesto al vértice k.
+  const lados = new Map<number, number[]>();
+  const m = ids.size;
+  for (let i = 0; i < n; i++) {
+    const t = i - (i % 3), k = i % 3;
+    const p = id[t + ((k + 1) % 3)], q = id[t + ((k + 2) % 3)];
+    const l = Math.min(p, q) * m + Math.max(p, q);
+    const ts = lados.get(l);
+    if (ts) ts.push(i);
+    else lados.set(l, [i]);
+  }
+  const vivo = new Uint8Array(n);
+  // Viva: más de 35° entre las dos caras (sin mirar el sentido: hay piezas
+  // con los triángulos al revés). Un borde suelto no: es donde una pieza
+  // abierta se junta con otra.
+  for (const ts of lados.values()) {
+    for (const x of ts) for (const y of ts) {
+      if (x === y) continue;
+      const nx = x - (x % 3), ny = y - (y % 3);
+      const d = normales[nx] * normales[ny] + normales[nx + 1] * normales[ny + 1] + normales[nx + 2] * normales[ny + 2];
+      if (Math.abs(d) < 0.82) vivo[x] = 1;
+    }
+  }
+  for (let i = 0; i < n; i++) if (vivo[i]) {
+    const t = i - (i % 3), k = i % 3;
+    if (pegado(g, punto(t + ((k + 1) % 3), a)) || pegado(g, punto(t + ((k + 2) % 3), a))) vivo[i] = 0;
+  }
+  const bari = new Float32Array(n * 3), alto = new Float32Array(n * 3);
+  const p = [new Vector3(), new Vector3(), new Vector3()];
+  for (let t = 0; t < tris; t++) {
+    for (let k = 0; k < 3; k++) punto(3 * t + k, p[k]);
+    const area2 = b.subVectors(p[1], p[0]).cross(c.subVectors(p[2], p[0])).length();
+    const h = [0, 1, 2].map((k) => {
+      const largo = p[(k + 1) % 3].distanceTo(p[(k + 2) % 3]);
+      return vivo[3 * t + k] && largo > 0 ? area2 / largo : -1;
+    });
+    for (let k = 0; k < 3; k++) {
+      bari[(3 * t + k) * 3 + k] = 1;
+      alto.set(h, (3 * t + k) * 3);
+    }
+  }
+  g.setAttribute("bordeBari", new Float32BufferAttribute(bari, 3));
+  g.setAttribute("bordeAlto", new Float32BufferAttribute(alto, 3));
+}
+
 // marca: para el pixel HD, el número de la pieza va en el canal alfa (como
 // en materialPixel), para que la pasada final marque las juntas.
 // escala: metros por unidad de la maqueta (el desgaste se mide en metros).
-export function materialHD(acabado: Acabado, estilo: EstiloHD, marca?: number, escala = 1): MeshStandardMaterial | MeshToonMaterial {
+export function materialHD(acabado: Acabado, estilo: EstiloHD, marca?: number, escala = 1, gastado?: Gastado): MeshStandardMaterial | MeshToonMaterial {
   const p = PINTURAS[acabado];
   // Por las dos caras, como la maqueta 1.0: algunas piezas (las alas) tienen
   // los triángulos al revés y, pintadas solo por delante, salían del revés.
   if (estilo === "b") return new MeshToonMaterial({ color: new Color(p.color), gradientMap: rampaToon(), side: DoubleSide });
   const m = new MeshStandardMaterial({ color: new Color(p.color), metalness: p.metal, roughness: p.rugosidad, envMapIntensity: 0.45, side: DoubleSide });
   // El desgaste, solo en la maqueta: en el pixel serían píxeles sueltos.
-  const d = p.desgaste;
-  if (d && marca === undefined) {
+  const conDesgaste = !SIN_DESGASTE.has(acabado);
+  const nivel = conDesgaste ? gastado?.pintura ?? 0 : 0;
+  const d: Desgaste | undefined = (nivel > 0 ? { manchas: DESGASTE_BASE.manchas * nivel, moteado: DESGASTE_BASE.moteado * nivel, brillo: DESGASTE_BASE.brillo * nivel } : undefined);
+  const bordes = conDesgaste ? gastado?.bordes ?? 0 : 0;
+  const suciedad = conDesgaste ? gastado?.suciedad ?? 0 : 0;
+  // Ancho de los bordes gastados: 2,5 cm en un dron de 9 m.
+  const anchoBorde = 0.0028 * (gastado?.largo ?? 9);
+  // Los drones de menos de 6 m, con las manchas más pequeñas a la par: en
+  // metros, en uno de 25 cm una mancha era más grande que el dron.
+  const encoge = Math.max(1, 6 / (gastado?.largo ?? 9));
+  if ((d || bordes || suciedad) && marca === undefined) {
+    const f = (x: number) => x.toFixed(4);
     m.onBeforeCompile = (sh) => {
-      sh.uniforms.pinturaEscala = { value: escala };
-      sh.vertexShader = "varying vec3 vPintura;\n" + sh.vertexShader.replace("#include <begin_vertex>", "#include <begin_vertex>\nvPintura = position;");
-      // Manchas de unos 35 cm, tres veces más largas que anchas a lo largo
-      // del dron (z); moteado de unos 8 cm; el brillo, con otro ruido.
-      sh.fragmentShader = "varying vec3 vPintura;\nuniform float pinturaEscala;\n" + RUIDO_GLSL + sh.fragmentShader.replace(
+      sh.uniforms.pinturaEscala = { value: escala * encoge };
+      sh.vertexShader = "varying vec3 vPintura;\nvarying vec3 vPinturaN;\nattribute vec3 bordeBari;\nattribute vec3 bordeAlto;\nvarying vec3 vBorde;\n" + sh.vertexShader.replace(
+        "#include <begin_vertex>",
+        "#include <begin_vertex>\nvPintura = position;\nvPinturaN = normal;\n// Sin marcarBordes, sin bordes.\nvBorde = any(notEqual(bordeAlto, vec3(0.0))) ? bordeBari * max(bordeAlto, 0.0) + (1.0 - step(0.0, bordeAlto)) * 1e4 : vec3(1e4);",
+      );
+      // Manchas redondas de unos 50 cm (alargadas hacia atrás salían rayas);
+      // moteado de unos 8 cm; el brillo, con otro ruido.
+      // Bordes: a menos de `anchoBorde` de una arista viva, la pintura
+      // cambia a trozos (el ruido la rompe en desconchones), y también en lo
+      // que mira hacia delante. Suciedad: la mitad de abajo, más oscura a
+      // manchas.
+      sh.fragmentShader = "varying vec3 vPintura;\nvarying vec3 vPinturaN;\nvarying vec3 vBorde;\nuniform float pinturaEscala;\n" + RUIDO_GLSL + sh.fragmentShader.replace(
         "#include <color_fragment>",
         `#include <color_fragment>
         vec3 pinturaM = vPintura * pinturaEscala;
-        diffuseColor.rgb *= 1.0 + ${d.manchas.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * vec3(2.8, 2.8, 0.9)) + ${d.moteado.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * 12.0 + 40.0);`,
+        ${d ? `diffuseColor.rgb *= 1.0 + ${f(d.manchas)} * 2.0 * pinturaFbm(pinturaM * 2.0) + ${f(d.moteado)} * 2.0 * pinturaFbm(pinturaM * 12.0 + 40.0);` : ""}
+        ${suciedad ? `{
+          float abajo = smoothstep(0.3, -0.6, normalize(vPinturaN).y);
+          diffuseColor.rgb *= 1.0 - ${f(suciedad)} * 0.22 * abajo * (0.6 + 0.8 * pinturaFbm(pinturaM * 1.5 + 9.0));
+        }` : ""}
+        ${bordes ? `{
+          float dist = min(vBorde.x, min(vBorde.y, vBorde.z)) * pinturaEscala / ${f(encoge)};
+          float roto = pinturaFbm(pinturaM * 30.0 + 5.0) + 0.5;
+          float borde = smoothstep(${f(anchoBorde)} * (0.4 + roto), 0.0, dist);
+          // Lo que da al aire (bordes de ataque, morro, labios): erosión.
+          borde = max(borde, smoothstep(0.8, 0.98, normalize(vPinturaN).z) * smoothstep(0.35, 0.75, roto));
+          // En pintura oscura, el roce aclara; en clara, oscurece (suciedad).
+          float claro = smoothstep(0.25, 0.45, dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)));
+          vec3 rozado = mix(diffuseColor.rgb * 1.45 + 0.06, diffuseColor.rgb * 0.72, claro);
+          diffuseColor.rgb = mix(diffuseColor.rgb, rozado, ${f(Math.min(bordes, 1.5))} * borde);
+        }` : ""}`,
       ).replace(
         "#include <roughnessmap_fragment>",
         `#include <roughnessmap_fragment>
-        roughnessFactor = clamp(roughnessFactor + ${d.brillo.toFixed(3)} * 2.0 * pinturaFbm(pinturaM * vec3(2.5, 2.5, 0.9) + 17.0), 0.05, 1.0);`,
+        ${d ? `roughnessFactor = clamp(roughnessFactor + ${f(d.brillo)} * 2.0 * pinturaFbm(pinturaM * 1.8 + 17.0), 0.05, 1.0);` : ""}`,
       );
     };
-    m.customProgramCacheKey = () => `desgaste-${acabado}`;
+    m.customProgramCacheKey = () => `desgaste-${acabado}-${nivel}-${bordes}-${suciedad}-${anchoBorde}-${encoge}`;
   }
   if (marca !== undefined) {
     m.onBeforeCompile = (sh) => {

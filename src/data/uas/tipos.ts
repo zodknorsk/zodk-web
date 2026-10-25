@@ -376,6 +376,10 @@ export type Maqueta = {
   // (el Sting, tumbado como vuela) en vez de como está escrito.
   tarjetaEnVuelo?: boolean;
   plantaEnVuelo?: boolean;
+  // Desgaste de la maqueta HD (no del pixel): `pintura`, manchas, moteado y
+  // brillo que cambia; `bordes`, pintura rozada en las aristas vivas y en lo
+  // que da al aire; `suciedad`, la panza más sucia. Sin decir, todo a 1.
+  desgaste?: { pintura?: number; bordes?: number; suciedad?: number };
   // Pixel HD: cuánto se corren los escalones de luz (en escalones) para que
   // la pintura al sol caiga en el centro de uno (docs/uas-hd.md).
   desfaseLuz?: number;
