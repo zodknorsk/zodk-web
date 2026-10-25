@@ -2,11 +2,11 @@
 
 ## Dónde estamos
 
-- **Cerrado** el 25-10-2026: fases 4 (pixel HD), 5 (en la web) y 7 (cierre) hechas; el usuario lo dio por terminado sin revisión aparte (fase 6).
-- En la web: ficha importada, visor en Maqueta y Pixel (todas las vistas, día y noche), partes, fuentes y tarjeta en `/uas` con su filtro, probados; lint y `astro check` sin errores. Sin nave en el hero.
-- Añadido a «Drones hechos» de `docs/hangar-de-uas.md`.
-- Commiteado en zodk-web y en la bóveda (la nota). **Sin push**: el de `main` publica.
-- Quedó sin decidir (de la fase 3): el parche oscuro de la rampa delante de la toma.
+- **Aparcado en la rama `xq-58-valkyrie`** (25-10-2026), subida a GitHub y sin fusionar: el usuario no está en el Mac unas 3 semanas. `main` no lleva nada del XQ-58.
+- La rama lleva el XQ-58 entero (fases 3 a 7: maqueta, pixel HD, tarjeta, planta, ficha importada) y el desgaste de la pintura en todos los drones.
+- La nota de la bóveda está subida a `main` de la bóveda. **No hacer `npm run importar` en `main` de zodk-web hasta fusionar**: traería la ficha del XQ-58 sin su maqueta.
+- Falta: que el usuario revise la nota de Obsidian y matice el XQ-58. Sin decidir, de la fase 3: el parche oscuro de la rampa delante de la toma.
+- Para publicar: `git switch xq-58-valkyrie`, retocar, `npm run importar` (se niega fuera de `main`: importar después de fusionar), `git switch main`, `git merge xq-58-valkyrie`, revisar y push.
 
 ## Decisiones del usuario
 
