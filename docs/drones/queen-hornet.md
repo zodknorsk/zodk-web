@@ -1,6 +1,6 @@
 # Queen Hornet — diario
 
-## Dónde estamos: fases 2, 3 y 4 hechas y dadas por buenas (27-10-2026), sin nota
+## Dónde estamos: aparcado (27-10-2026) tras las fases 2, 3 y 4, sin nota
 
 - Fase 2: fotos y `FUENTES.md` en `arte/uas-fuentes/queen-hornet/` (fuera de Git; tabla abajo). Ajustes de cámara encajados en `hd/arriba.json` y `hd/lado.json`.
 - Fase 3: maqueta en `src/data/uas/queen-hornet.ts`, con el detalle copiado de las fotos oficiales ampliadas ×4 (`recortes/` fuera de Git) y piezas al modo del Strike, encajada con la foto de arriba y la de lado. Tres acabados nuevos (`anodizado-qh`, `gris-cola`, `bateria-qh`) y `solo` en el dibujo `sting` (el avispón sin rótulo).
@@ -17,7 +17,7 @@
 - 25-10-2026: versión **17" de marco de aluminio** (la actual, la de la ficha), no la de 2024 de carbono de 15".
 - 25-10-2026: ejemplar **negro, el de la web** (logo amarillo, «Q0002226» en un brazo).
 - 25-10-2026: carga **una granada de mortero de 81 mm**, **tumbada bajo la panza**, morro adelante, colgada del soltador. Se usa la M821 americana (plano oficial y espoleta M734A1).
-- 27-10-2026: la maqueta **se deja así** (dada por buena).
+- 27-10-2026: la maqueta **se deja así** (dada por buena) y el dron queda **aparcado** tras las fases 2, 3 y 4.
 - 25-10-2026: **copiar 1:1 los detalles de las fotos oficiales** (cuerpo, patas, motores, cámara…) y **baterías negras**.
 - 25-10-2026: **basarse en el Strike** (misma casa): del Strike se toman las piezas y el detalle (motores, baterías con correas y hebillas, cables, cámara, tornillería); el marco, que es otro (aluminio plegable con patas), sigue medido de sus fotos.
 - Slug: `queen-hornet` → `/uas/queen-hornet` (la maqueta, `src/data/uas/queen-hornet.ts`).
