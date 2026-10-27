@@ -3,10 +3,11 @@
 ## Dónde estamos
 
 - **Fase 1 (la nota)**: sin hacer. No hay nota del FP-1 en la bóveda.
-- **Fases 2, 3 y 4 hechas** el 27-10-2026 en una sola sesión (lo pidió el usuario), en la rama `claude/nuevodron-fases-2-3-4-ub8zqn` del repo, a falta de que el usuario las vea: fotos en `arte/uas-fuentes/fp-1/` (fuera de Git), maqueta HD en `src/data/uas/fp-1.ts` con rampa y cohete, acabados nuevos `gris-fp` y `madera-fp`, miniaturas de fuentes, tarjeta y planta en `public/uas/fp-1/`.
-- **Ficha provisional, sin commitear**: `src/content/uas/fp-1/index.md` (solo para ver el visor en local; fuera de Git, se borra cuando se importe la nota de verdad).
-- **Falta**: la nota (fase 1), luego importarla en `main` y probar (fase 5), y la revisión del usuario (fase 6).
-- **Siguiente paso**: que el usuario mire el visor y las comparaciones; después, la nota.
+- **Fases 2, 3 y 4**: hechas el 27-10-2026, en el commit `751ff15` de la rama `claude/nuevodron-fases-2-3-4-ub8zqn`.
+- **Fase 6 (revisión), primera vuelta, hecha** el 27-10-2026: los 16 puntos de la comparación con las fotos (sección del cuerpo con chaflán, tapa del lomo, cola del cuerpo, panza, cintas del ala, paneles de cola planos, unión viga–cola, varillas de mando, motor, escape, hélice, etiquetas, cohete). A falta de que el usuario la vea.
+- **Solo en local, fuera de Git** (excluidos en `.git/info/exclude`): la ficha provisional `src/content/uas/fp-1/` y la variante `fp-1-kiev` (ala cortada a 2 m y cohete sin rampa, para comparar con las fotos de Kiev).
+- **Falta**: la nota (fase 1), importarla en `main` y probar (fase 5).
+- **Siguiente paso**: que el usuario mire las comparaciones y diga qué sigue sin estar igual.
 
 ## Decisiones del usuario
 
@@ -14,6 +15,7 @@
 - 27-10-2026: color y marcas del **ejemplar gris de Kiev** (mayo de 2025).
 - 27-10-2026: **sin carga a la vista** (la ojiva va dentro).
 - 27-10-2026: **con la rampa** y el cohete de despegue (botón «Rampa»).
+- 27-10-2026: revisión: «todo exactamente igual que en las fotos»; hacer los 16 puntos de la comparación.
 
 ## Medidas clave
 
@@ -22,12 +24,13 @@ En metros de la maqueta; y = 0 en la panza del ala, z = 0 cerca del centro del a
 - Envergadura 6 m (Fire Point). Lo demás, encajando la cámara en el render de Fire Point de la ficha de Fakty (9 puntos, error de 1 a 6 px; `hd/render.json`) y en la foto de Kiev (6 puntos, 1-16 px; `hd/kiev.json`). La foto de Kiev está hecha **desde la derecha** del dron (ala cercana = x negativa).
 - Ala: cuerda constante de 0,6 m (borde de ataque 0,25, de salida −0,35), grueso 9 cm, sin diedro, punta recta. Alerones de 1,55 a 2,82 m.
 - **El ala del ejemplar de Kiev está expuesta sin sus tramos de fuera**: acaba a 2 m del centro (el encaje lo da con ese valor) en una cara plana con los agujeros de dos largueros.
-- Cuerpo: 1,9 m (morro en z = 1,3, cola en −0,6), 0,48 de ancho, 0,38 de alto; punta del morro a media altura; junta de la tapa del morro en z = 0,75. Lomo de 0,33 de ancho que sube 10 cm delante del ala.
-- Vigas a ±0,68, de z = 0,2 a −2,02. Cola en V invertida: vértice 0,32 sobre el ala, pies a ±1 m y 0,2 por debajo; cuerda de 0,36 (−1,7 a −2,06).
-- Motor en z = −0,71, hélice de 1,1 m en z = −0,85, a y = −0,17. Silenciadores sobre el centro del ala, de z = 0,1 a −0,5.
-- Rampa: inclinación 18° (aproximada), raíles a y = −0,8 (la hélice pasa 8 cm por encima). Cohete inclinado unos 35°.
+- Cuerpo: 1,92 m (morro en z = 1,3, cara de atrás en −0,62), 0,48 de ancho, 0,38 de alto; punta del morro a media altura; junta de la tapa del morro en z = 0,75. Sección: costado vertical, arista viva a 0,08 m de la panza y chaflán hasta una panza de 0,36 de ancho (fotos de detrás y de MSPO). Detrás, la panza sube 22 cm desde z = −0,45.
+- Tapa del lomo: de z = 0,75 a 0,24, 0,494 de ancho (reborde de 7 mm por costado, a y = −0,055); lomo de 0,24 arriba y 0,4 abajo que sube hasta 10 cm junto al ala.
+- Vigas a ±0,68, de z = 0,2 a −2,02. Cola en V invertida de placas de 18 mm: vértice 0,363 sobre el ala, pies a ±1 m y 0,157 por debajo (4 cm más alta que en el encaje del render, para que las vigas queden bajo el panel); cuerda de 0,36 (−1,7 a −2,06); timón, el 30 % de atrás.
+- Motor en z = −0,71, hélice de 1,1 m (palas de 13 cm) en z = −0,85, a y = −0,17; corona de 22 cm. Silenciadores a x = ±0,1, y = 0,14, de z = 0 a −0,64.
+- Rampa: inclinación 18° (aproximada), raíles a y = −0,8 (la hélice pasa 8 cm por encima). Cohete: jaula de 1,2 m, de (y −0,46, z −0,28) a (−1,22, −1,12), unos 40°.
 - Color: albedo `gris-fp` #8a8f93. Pixel: gris al sol con luminosidad 0,73-0,76 en el HD → `desfaseLuz` 0,3.
-- Marcas (costado derecho, colocadas con la cámara de Kiev): etiqueta «ЗАКРІПИТИ» (y −0,02, z 0,34), aviso amarillo (−0,14, 0,32), «ЖИВЛЕННЯ» (−0,18, 0,32); etiqueta vertical del arranque en z −0,33 (de la foto de detrás, posición aproximada).
+- Marcas, todas en el costado **derecho** (las dos fotos de Kiev son de ese lado): «ЗАКРІПИТИ» (y −0,017, z 0,34), aviso «НЕ ВМИКАТИ ЖИВЛЕННЯ / БЕЗ ЗНЯТТЯ ФІКСАЦІЇ ПОВЕРХОНЬ» (−0,136, 0,32), conector (−0,168, 0,32), «ЖИВЛЕННЯ» (−0,186, 0,32); conectores del arranque a y −0,055 y etiquetas verticales («СТАРТЕР», «ЗАПАЛЮВАННЯ 2», «ЗАПАЛЮВАННЯ 1», de atrás adelante) en z −0,48, −0,45, −0,42. Placa en T de la panza en z −0,2. Etiquetas plateadas (#c9cac5).
 
 ## Fuentes
 
@@ -55,6 +58,12 @@ Fotos en `arte/uas-fuentes/fp-1/full/` (fuera de Git), bajadas el 27-10-2026. Me
 - La «punta» del ala de Kiev tomada como punta de verdad (x = 3 m): la cola salía 80-90 px desplazada. Es el ala sin sus tramos de fuera.
 - `comparar-foto.mjs` con `--zoom` o `--recorte` en la foto de Kiev: el encuadre del visor sale descolocado a tan poca distancia (4,7 m); mejor el contorno de `encajar-camara.mjs` o la comparación a foto entera.
 
+- Encajar la foto de Kiev de delante con más puntos (bordes del ala): está hecha pegada a la punta del ala con gran angular (unos 70°) y la cámara cae en soluciones falsas. Para comparar, cámara a mano.
+- Ala 10 cm más atrás (lo que pedía la foto de Kiev): el render de Fire Point pasa de 6 a 19 px de error en el morro. Se queda donde está.
+- La jaula del cohete enganchada a media panza (z −0,08): en la foto de detrás va bajo el borde de salida del ala.
+- `comparar-foto.mjs` con lienzo de más de 1400 px: el encuadre sale mal (el propio script avisa).
+
 ## Registro
 
 - 27-10-2026: fases 2, 3 y 4 en una sesión. En este contenedor (Linux) hizo falta Node 24 (el glosario usa expresiones regulares `(?i:…)`, que Node 22 no entiende y deja vacías todas las fichas) y un Chrome con WebGL por software; copias de `comparar-foto.mjs` y `vista-visor.mjs` con esa ruta en `arte/uas-fuentes/fp-1/hd/`.
+- 27-10-2026, revisión: comparación con todas las fotos y los 16 puntos hechos; marcas leídas de cerca (eran del costado derecho); centro de `girar` sin pasar a unidades (las piezas giradas salían flotando), corregido en `aUnidades`.

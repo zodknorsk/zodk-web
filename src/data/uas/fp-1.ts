@@ -40,37 +40,55 @@ const bisagra = ALA.bs + ALERON.cuerda * (ALA.ba - ALA.bs);
 const estAleron = (x: number): Est => [x, bisagra - ALERON.hueco, ALA.bs, T_ALA * 0.4, SUBE_ALA - 0.02 * T_ALA];
 
 // ── Cuerpo ─────────────────────────────────────────────────────────────────
-// Una caja de aristas muy redondeadas, de costados rectos, con lo alto plano
-// (el ala va encima) y la tapa del morro redonda. Delante del ala, un lomo
-// estrecho sube del techo hasta el borde de ataque.
-const CUERPO = { tapa: 0.75, ancho: 0.24, abajo: -0.38 };
-// [z, medio ancho, arriba (techo), abajo, lomo (medio ancho), alto del lomo]
-const FILAS: [number, number, number, number, number, number][] = [
-  // El morro, media elipse de 0,3 m de largo (romo de frente y de planta).
-  ...[0, 12, 25, 40, 55, 70, 82].map((g): [number, number, number, number, number, number] => {
-    const t = (g * Math.PI) / 180, k = Math.sin(t);
-    return [1.3 - 0.3 * (1 - Math.cos(t)), 0.24 * k, -0.19 + 0.19 * k, -0.19 - 0.19 * k, 0, -0.19 + 0.19 * k];
-  }),
-  [0.95, 0.24, 0, -0.38, 0, 0],
-  [0.62, 0.24, 0, -0.38, 0.1, 0],
-  [0.56, 0.24, 0, -0.38, 0.145, 0.035],
-  [0.49, 0.24, 0, -0.38, 0.16, 0.08],
-  [0.42, 0.24, 0, -0.38, 0.165, 0.1],
-  [0.27, 0.24, 0, -0.38, 0.165, 0.105],
-  [0.1, 0.24, 0, -0.38, 0.15, 0.07],
-  [0.0, 0.24, 0, -0.38, 0.12, 0],
-  [-0.3, 0.24, 0, -0.375, 0.1, 0],
-  // Detrás, se estrecha hacia la bancada del motor (foto de detrás).
-  [-0.45, 0.225, 0, -0.36, 0.1, 0],
-  [-0.6, 0.16, -0.03, -0.3, 0.08, -0.03],
-];
+// Una caja de lo alto plano (el ala va encima) y costados verticales; abajo,
+// una arista viva a lo largo y un chaflán hasta la panza plana y ancha
+// (fotos de detrás y de MSPO desde abajo). La tapa del morro, en forma de
+// bala: por arriba baja desde la junta y por abajo sube en el último tercio
+// (foto de Kiev de lado); de planta, redonda. Detrás, la panza sube hasta
+// una cara inclinada con la bancada del motor.
+const CUERPO = { tapa: 0.75, ancho: 0.24, abajo: -0.38, cola: -0.62 };
 const suave = (a: number, b: number, v: number) => { const t = Math.min(1, Math.max(0, (v - a) / (b - a))); return t * t * (3 - 2 * t); };
-const SECCIONES: Seccion[] = FILAS.map(([z, ancho, techo, abajo, lomo, alto]) => ({
-  z, ancho, abajo, cintura: (techo + abajo) / 2,
-  // Hacia la punta del morro, menos cuadrado: si no, la luz hace un aspa.
-  n: z > 1.0 ? 2.4 + 3.6 * suave(1.3, 1.0, z) : 6, nAbajo: z > 1.0 ? 2.4 + 2.6 * suave(1.3, 1.0, z) : 5,
-  ...(lomo > 0 ? { lomo, hombro: techo, arriba: Math.max(techo, alto), nLomo: 4, pLomo: 10 } : { arriba: techo }),
-}));
+const elipse = (z: number, z0: number, largo: number) => Math.sqrt(Math.max(0, 1 - ((z - z0) / largo) ** 2));
+type P2 = [number, number];
+const medidasCuerpo = (z: number) => {
+  const techo = z > CUERPO.tapa ? -0.19 + 0.19 * elipse(z, CUERPO.tapa, 1.3 - CUERPO.tapa) : 0;
+  const panza = z > 1.0 ? -0.19 - 0.19 * elipse(z, 1.0, 0.3) : CUERPO.abajo + 0.22 * suave(-0.45, CUERPO.cola, z);
+  const ancho = (z > 1.0 ? CUERPO.ancho * elipse(z, 1.0, 0.3) : CUERPO.ancho) - 0.012 * suave(-0.4, CUERPO.cola, z);
+  return { techo, panza, ancho };
+};
+// Media sección derecha, en tres tramos con arista viva entre ellos: lo alto
+// y el costado (con la esquina de arriba redonda), el chaflán y la panza.
+const contornoCuerpo = (z: number): P2[][] => {
+  const { techo, panza, ancho: w } = medidasCuerpo(z);
+  const alto = techo - panza, arista = panza + 0.21 * alto, wb = w * 0.75;
+  const r = Math.min(0.035, w * 0.3, alto * 0.2);
+  const esquina = [0.25, 0.5, 0.75].map((f): P2 => [w - r + r * Math.sin((f * Math.PI) / 2), techo - r + r * Math.cos((f * Math.PI) / 2)]);
+  return [
+    [[0, techo], [w - r, techo], ...esquina, [w, techo - r], [w, arista]],
+    [[w, arista], [wb, panza]],
+    [[wb, panza], [0, panza]],
+  ];
+};
+const ZS_CUERPO = [1.3, 1.295, 1.285, 1.27, 1.25, 1.22, 1.18, 1.13, 1.07, 1.0, 0.92, 0.84, 0.75, 0.5, 0.0, -0.3, -0.45, -0.52, -0.58, CUERPO.cola];
+const SECCIONES: Seccion[] = ZS_CUERPO.map((z) => {
+  const { techo, panza, ancho } = medidasCuerpo(z);
+  return { z, ancho, arriba: techo, abajo: panza, contorno: contornoCuerpo(z) };
+});
+// La tapa de lo alto, delante del ala: una pieza aparte que cubre el cuerpo
+// desde la junta del morro, con un reborde que sobresale 7 mm por el costado
+// (lo sujeta el cierre de «ЗАКРІПИТИ») y, encima, el lomo de lados
+// inclinados que sube despacio hasta el borde de ataque (fotos de Kiev y de
+// fábrica).
+const TAPA = { delante: CUERPO.tapa, detras: 0.24, ancho: 0.247, borde: -0.055, alto: 0.006 };
+const altoLomo = (z: number) => TAPA.alto + 0.03 * suave(0.75, 0.68, z) + 0.065 * suave(0.68, 0.3, z);
+const contornoTapa = (z: number): P2[][] => {
+  const h = altoLomo(z), r = 0.012;
+  return [
+    [[0, h], [0.12, h], [0.2, TAPA.alto], [TAPA.ancho - r, TAPA.alto], [TAPA.ancho - r * 0.3, TAPA.alto - r * 0.3], [TAPA.ancho, TAPA.alto - r], [TAPA.ancho, TAPA.borde]],
+    [[TAPA.ancho, TAPA.borde], [0, TAPA.borde]],
+  ];
+};
+const SECCIONES_TAPA: Seccion[] = [TAPA.delante, 0.735, 0.7, 0.65, 0.55, 0.45, 0.35, TAPA.detras].map((z) => ({ z, ancho: TAPA.ancho, arriba: altoLomo(z), abajo: TAPA.borde, contorno: contornoTapa(z) }));
 
 // ── Vigas y cola ───────────────────────────────────────────────────────────
 // Dos tubos de carbono colgados bajo el ala con abrazaderas, hasta la cola en
@@ -79,17 +97,17 @@ const SECCIONES: Seccion[] = FILAS.map(([z, ancho, techo, abajo, lomo, alto]) =>
 const VIGA = { x: 0.68, r: 0.035, delante: 0.2, detras: -2.02 };
 const Y_VIGA = -VIGA.r;
 // Encajada en el render de Fire Point (ficha de Fakty) y en la foto de Kiev:
-// cada mitad baja del vértice, 0,32 m sobre el ala, hasta 1 m del centro y
-// 0,2 m por debajo; las vigas la cruzan a 0,68 m, cerca del borde de salida.
-const COLA = { xPie: 1.0, yPie: -0.2, yVertice: 0.32, ba: -1.7, bs: -2.06, t: 0.05 };
-const enCola = (f: number) => ({
-  // f: 0 en el vértice, 1 en el pie.
-  x: COLA.xPie * f, y: COLA.yVertice + (COLA.yPie - COLA.yVertice) * f, ba: COLA.ba, bs: COLA.bs,
-});
-const TIMON = { bisagra: 0.62, hueco: 0.006, desde: 0.12, hasta: 0.9 };
-const bisagraCola = (f: number) => { const c = enCola(f); return c.ba - TIMON.bisagra * (c.ba - c.bs); };
-const estCola = (f: number, timon = false): Est => { const c = enCola(f); return [c.x, c.ba, timon ? bisagraCola(f) : c.bs, COLA.t, c.y]; };
-const estTimon = (f: number): Est => { const c = enCola(f); return [c.x, bisagraCola(f) - TIMON.hueco, c.bs, COLA.t * 0.6, c.y]; };
+// cada mitad baja del vértice, 0,36 m sobre el ala, hasta 1 m del centro y
+// 0,16 m por debajo; las vigas, a 0,68 m, quedan justo debajo del panel.
+const COLA = { xPie: 1.0, yPie: -0.157, yVertice: 0.363, ba: -1.7, bs: -2.06, grosor: 0.018 };
+// Cada mitad es una placa plana y fina (foto de Kiev), con las puntas
+// cortadas en recto: se dibuja colgando del vértice y se tumba hacia fuera.
+const LARGO_COLA = Math.hypot(COLA.xPie, COLA.yVertice - COLA.yPie);
+const TUMBA_COLA = (Math.atan2(COLA.xPie, COLA.yVertice - COLA.yPie) * 180) / Math.PI;
+// El timón, el 30 % de atrás de la cuerda, casi de punta a punta.
+const TIMON = { bisagra: COLA.ba - 0.7 * (COLA.ba - COLA.bs), hueco: 0.006, margen: 0.03 };
+// Altura del plano de la cola a una distancia x del centro.
+const yCola = (x: number) => COLA.yVertice + ((COLA.yPie - COLA.yVertice) * x) / COLA.xPie;
 
 // ── Motor ──────────────────────────────────────────────────────────────────
 // Bóxer de dos cilindros detrás del cuerpo, con los cilindros a los lados, y
@@ -98,7 +116,8 @@ const MOTOR = { y: -0.17, z: -0.71 };
 const HELICE = { y: MOTOR.y, z: -0.85, r: 0.55 };
 
 const PIEZAS: Pieza[] = [
-  { tipo: "casco", id: "fuselaje", acabado: "gris-fp", secciones: SECCIONES, suave: 0.05, polo: true },
+  { tipo: "casco", id: "fuselaje", acabado: "gris-fp", secciones: SECCIONES, tapaPlana: true },
+  { tipo: "casco", id: "tapa-lomo", acabado: "gris-fp", secciones: SECCIONES_TAPA, tapaPlana: true },
   {
     tipo: "ala", id: "ala", acabado: "gris-fp", y: 0,
     estaciones: [
@@ -106,6 +125,10 @@ const PIEZAS: Pieza[] = [
       estAla(2.9), estAla(2.96), estAla(ALA.punta),
     ],
   },
+  // Las cintas de las uniones del ala, en relieve: la del centro, sobre el
+  // cuerpo, y la de cada tramo de fuera, junto a la viga (foto de fábrica).
+  { tipo: "ala", id: "cinta-centro", acabado: "gris-fp", y: 0, estaciones: [[0, ALA.ba + 0.004, ALA.bs - 0.002, T_ALA * 1.08, SUBE_ALA], [0.05, ALA.ba + 0.004, ALA.bs - 0.002, T_ALA * 1.08, SUBE_ALA]] },
+  { tipo: "ala", id: "cintas", acabado: "gris-fp", y: 0, estaciones: [[0.74, ALA.ba + 0.004, ALA.bs - 0.002, T_ALA * 1.08, SUBE_ALA], [0.8, ALA.ba + 0.004, ALA.bs - 0.002, T_ALA * 1.08, SUBE_ALA]] },
   { tipo: "ala", id: "aleron", acabado: "gris-fp", y: 0, estaciones: [estAleron(ALERON.desde + ALERON.hueco), estAleron(ALERON.hasta - ALERON.hueco)] },
   // Vigas, con su punta de atrás tapada, y dos abrazaderas bajo el ala.
   ...LADOS.map((s): Pieza => ({
@@ -114,23 +137,39 @@ const PIEZAS: Pieza[] = [
   })),
   ...[0.12, -0.28].map((z, i): Pieza => ({ tipo: "caja", id: `abrazadera-${i}`, acabado: "negro", espejo: true, centro: [VIGA.x, -0.035, z], tam: [0.1, 0.075, 0.05], redondeo: 0.012 })),
   // Cola en V invertida y sus timones.
-  { tipo: "ala", id: "cola", acabado: "gris-fp", y: 0, estaciones: [estCola(0), estCola(TIMON.desde), estCola(TIMON.desde, true), estCola(TIMON.hasta, true), estCola(TIMON.hasta), estCola(1)] },
-  { tipo: "ala", id: "timon", acabado: "gris-fp", y: 0, estaciones: [estTimon(TIMON.desde + 0.01), estTimon(TIMON.hasta - 0.01)] },
-  // Motor: cárter en el centro, un cilindro con aletas a cada lado, el filtro
-  // de aire negro debajo y el buje de la hélice (foto de detrás).
-  { tipo: "caja", id: "carter", acabado: "aluminio", centro: [0, MOTOR.y, MOTOR.z], tam: [0.17, 0.2, 0.2], redondeo: 0.03 },
-  // Cilindros: a lo largo de x, de aluminio con aletas (discos finos) y la
-  // culata.
-  { tipo: "varilla", id: "cilindros", acabado: "aluminio", desde: [-0.25, MOTOR.y + 0.01, MOTOR.z], hasta: [0.25, MOTOR.y + 0.01, MOTOR.z], radio: 0.05, lados: 24 },
-  ...[0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22].map((x, i): Pieza => ({ tipo: "disco", id: `aleta-${i}`, acabado: "aluminio", espejo: true, en: [x, MOTOR.y + 0.01, MOTOR.z], normal: [1, 0, 0], radio: 0.07, grosor: 0.007 })),
-  { tipo: "caja", id: "culatas", acabado: "aluminio", espejo: true, centro: [0.255, MOTOR.y + 0.01, MOTOR.z], tam: [0.04, 0.13, 0.13], redondeo: 0.015 },
-  // Corona dentada del arranque, entre el motor y la hélice, y el carburador
-  // bajo el cárter, con el filtro.
-  { tipo: "disco", id: "corona", acabado: "metal", en: [0, HELICE.y, MOTOR.z - 0.11], normal: [0, 0, 1], radio: 0.1, grosor: 0.02 },
-  { tipo: "caja", id: "carburador", acabado: "aluminio", centro: [0, MOTOR.y - 0.13, MOTOR.z + 0.02], tam: [0.06, 0.06, 0.07], redondeo: 0.01 },
-  { tipo: "disco", id: "filtro", acabado: "negro", en: [0, MOTOR.y - 0.21, MOTOR.z + 0.02], normal: [0, 1, 0], radio: 0.045, grosor: 0.08 },
-  { tipo: "disco", id: "buje", acabado: "aluminio", en: [0, HELICE.y, HELICE.z + 0.04], normal: [0, 0, 1], radio: 0.06, grosor: 0.06 },
-  { tipo: "helice", id: "helice", acabado: "madera-fp", en: [0, HELICE.y, HELICE.z], radio: HELICE.r, palas: 2, giro: 70, ancho: 0.11, buje: 0 },
+  { tipo: "placa", id: "cola", acabado: "gris-fp", plano: "vertical", x: 0, y: COLA.yVertice, espejo: true, inclinacion: TUMBA_COLA, grosor: COLA.grosor, bisel: 0.004, planta: [[COLA.ba, 0], [TIMON.bisagra, 0], [TIMON.bisagra, -LARGO_COLA], [COLA.ba, -LARGO_COLA]] },
+  { tipo: "placa", id: "timon", acabado: "gris-fp", plano: "vertical", x: 0, y: COLA.yVertice, espejo: true, inclinacion: TUMBA_COLA, grosor: COLA.grosor * 0.8, bisel: 0.003, planta: [[TIMON.bisagra - TIMON.hueco, -TIMON.margen], [COLA.bs, -TIMON.margen], [COLA.bs, -LARGO_COLA + TIMON.margen], [TIMON.bisagra - TIMON.hueco, -LARGO_COLA + TIMON.margen]] },
+  // El tubo de unión de las dos mitades, a lo largo del vértice.
+  { tipo: "varilla", id: "tubo-vertice", acabado: "gris-fp", desde: [0, COLA.yVertice + 0.004, COLA.ba + 0.01], hasta: [0, COLA.yVertice + 0.004, COLA.bs - 0.005], radio: 0.013, lados: 16 },
+  // Donde la viga llega a la cola (foto de Kiev): la viga pasa bajo el panel
+  // y un manguito gris la sujeta abrazando el panel por encima, con una brida
+  // metálica en la viga; encima, el brazo negro del timón con su varilla.
+  { tipo: "caja", id: "soporte-cola", acabado: "gris-fp", espejo: true, centro: [VIGA.x, Y_VIGA + 0.012, -1.79], tam: [0.08, 0.04, 0.14], redondeo: 0.012 },
+  ...LADOS.map((s): Pieza => ({ tipo: "caja", id: `manguito-cola-${s}`, acabado: "gris-fp", centro: [s * VIGA.x, yCola(VIGA.x) + 0.012, -1.79], tam: [0.1, 0.012, 0.13], redondeo: 0.005, girar: { centro: [s * VIGA.x, yCola(VIGA.x), -1.79], eje: "z", grados: s * -(90 - TUMBA_COLA) } })),
+  ...LADOS.map((s): Pieza => ({ tipo: "tubo", id: `brida-cola-${s}`, acabado: "aluminio", centro: [s * VIGA.x, Y_VIGA], perfil: [[-1.69, VIGA.r + 0.004], [-1.71, VIGA.r + 0.004]] })),
+  ...LADOS.map((s): Pieza => ({ tipo: "placa", id: `brazo-timon-${s}`, acabado: "negro", plano: "vertical", x: s * (VIGA.x + 0.07), grosor: 0.004, planta: [[-1.93, yCola(VIGA.x + 0.07) + 0.005], [-1.985, yCola(VIGA.x + 0.07) + 0.005], [-1.96, yCola(VIGA.x + 0.07) + 0.05]] })),
+  ...LADOS.map((s): Pieza => ({ tipo: "varilla", id: `varilla-brazo-${s}`, acabado: "metal", desde: [s * (VIGA.x + 0.07), yCola(VIGA.x + 0.07) + 0.045, -1.96], hasta: [s * (VIGA.x + 0.05), yCola(VIGA.x + 0.05) + 0.02, -1.82], radio: 0.003 })),
+  // La varilla de mando fina bajo cada viga, de la raíz del ala a la cola.
+  { tipo: "varilla", id: "varilla-timon", acabado: "negro", espejo: true, desde: [VIGA.x - 0.01, -0.085, -0.2], hasta: [VIGA.x, -0.075, -1.72], radio: 0.005 },
+  // Motor (foto de detrás y de MSPO desde abajo): bóxer de dos cilindros con
+  // muchas aletas, la culata con su bujía, la corona dentada del arranque
+  // entre el motor y la hélice, el carburador debajo con el filtro negro
+  // grande, y la bancada atornillada a la cara de atrás del cuerpo.
+  { tipo: "caja", id: "bancada", acabado: "aluminio", centro: [0, MOTOR.y + 0.01, CUERPO.cola - 0.012], tam: [0.2, 0.17, 0.024], redondeo: 0.01 },
+  { tipo: "caja", id: "carter", acabado: "aluminio", centro: [0, MOTOR.y, MOTOR.z], tam: [0.15, 0.2, 0.16], redondeo: 0.03 },
+  { tipo: "varilla", id: "cilindros", acabado: "aluminio", desde: [-0.22, MOTOR.y + 0.01, MOTOR.z], hasta: [0.22, MOTOR.y + 0.01, MOTOR.z], radio: 0.055, lados: 24 },
+  ...Array.from({ length: 9 }, (_, i) => 0.085 + i * 0.016).map((x, i): Pieza => ({ tipo: "disco", id: `aleta-${i}`, acabado: "aluminio", espejo: true, en: [x, MOTOR.y + 0.01, MOTOR.z], normal: [1, 0, 0], radio: 0.085, grosor: 0.005 })),
+  { tipo: "caja", id: "culatas", acabado: "aluminio", espejo: true, centro: [0.25, MOTOR.y + 0.015, MOTOR.z], tam: [0.06, 0.15, 0.14], redondeo: 0.015 },
+  ...[-0.045, -0.015, 0.015, 0.045].map((dz, i): Pieza => ({ tipo: "caja", id: `aleta-culata-${i}`, acabado: "aluminio", espejo: true, centro: [0.285, MOTOR.y + 0.015, MOTOR.z + dz], tam: [0.025, 0.14, 0.004] })),
+  { tipo: "varilla", id: "bujias", acabado: "negro", espejo: true, desde: [0.26, MOTOR.y + 0.08, MOTOR.z - 0.03], hasta: [0.3, MOTOR.y + 0.13, MOTOR.z - 0.05], radio: 0.011 },
+  { tipo: "disco", id: "corona", acabado: "metal", en: [0, HELICE.y, MOTOR.z - 0.105], normal: [0, 0, 1], radio: 0.11, grosor: 0.016 },
+  { tipo: "disco", id: "volante", acabado: "aluminio", en: [0, HELICE.y, MOTOR.z - 0.09], normal: [0, 0, 1], radio: 0.075, grosor: 0.03 },
+  { tipo: "caja", id: "carburador", acabado: "aluminio", centro: [0, MOTOR.y - 0.14, MOTOR.z + 0.01], tam: [0.06, 0.07, 0.07], redondeo: 0.01 },
+  { tipo: "disco", id: "filtro", acabado: "negro", en: [0, MOTOR.y - 0.24, MOTOR.z + 0.01], normal: [0, 1, 0], radio: 0.055, grosor: 0.1 },
+  // Buje de la hélice con sus seis tornillos.
+  { tipo: "disco", id: "buje", acabado: "aluminio", en: [0, HELICE.y, HELICE.z + 0.03], normal: [0, 0, 1], radio: 0.055, grosor: 0.05 },
+  ...Array.from({ length: 6 }, (_, i) => (i * Math.PI) / 3).map((g, i): Pieza => ({ tipo: "disco", id: `tornillo-buje-${i}`, acabado: "metal", en: [0.035 * Math.cos(g), HELICE.y + 0.035 * Math.sin(g), HELICE.z - 0.008], normal: [0, 0, -1], radio: 0.008, grosor: 0.01 })),
+  { tipo: "helice", id: "helice", acabado: "madera-fp", en: [0, HELICE.y, HELICE.z], radio: HELICE.r, palas: 2, giro: 70, ancho: 0.13, buje: 0 },
 ];
 // Cierres del costado (fotos de Kiev y de fábrica): dos bandas negras con un
 // tornillo en cada punta que cruzan la junta de la tapa del morro, otra
@@ -145,28 +184,39 @@ PIEZAS.push(
   { tipo: "disco", id: "tornillo-ala", acabado: "aluminio", espejo: true, en: [CUERPO.ancho + 0.006, -0.09, 0.322], normal: [1, 0, 0], radio: 0.011, grosor: 0.005 },
   { tipo: "caja", id: "caja-raiz", acabado: "negro", espejo: true, centro: [CUERPO.ancho + 0.012, -0.045, 0.19], tam: [0.03, 0.04, 0.07], redondeo: 0.008 },
   { tipo: "caja", id: "interruptor", acabado: "negro", centro: [-CUERPO.ancho - 0.004, -0.193, 0.584], tam: [0.01, 0.025, 0.025] },
+  // Conectores naranjas, en el costado derecho: el de la carga bajo el aviso
+  // y los tres del arranque y del encendido, detrás.
+  { tipo: "disco", id: "conector", acabado: "laton", en: [-CUERPO.ancho - 0.002, -0.168, 0.32], normal: [-1, 0, 0], radio: 0.007, grosor: 0.006 },
+  ...[0.3, 0.34].map((z, i): Pieza => ({ tipo: "disco", id: `tornillo-conector-${i}`, acabado: "aluminio", en: [-CUERPO.ancho - 0.002, -0.168, z], normal: [-1, 0, 0], radio: 0.003, grosor: 0.003 })),
+  ...[-0.48, -0.45, -0.42].map((z, i): Pieza => ({ tipo: "disco", id: `conector-arranque-${i}`, acabado: "laton", en: [-CUERPO.ancho - 0.002, -0.055, z], normal: [-1, 0, 0], radio: 0.008, grosor: 0.006 })),
 );
-// Escapes: de cada culata suben y van hacia delante por encima del cuerpo,
-// con su silenciador, hasta encima del ala.
+// Escapes (fotos de detrás y de Kiev): de cada culata, un tubo grueso sube,
+// se dobla en U hacia delante y entra en un silenciador largo que va por
+// encima del cuerpo, detrás del ala, y sigue sobre ella; dos abrazaderas,
+// la boca redonda delante con un tubito de salida, y dos patas.
+const SILENCIADOR = { x: 0.1, y: 0.14, r: 0.045, delante: 0.0, detras: -0.64 };
 PIEZAS.push(
   ...LADOS.map((s): Pieza => ({
     tipo: "codo", id: `escape-${s}`, acabado: "aluminio",
-    puntos: [[s * 0.26, MOTOR.y + 0.06, MOTOR.z, 0.018], [s * 0.2, MOTOR.y + 0.24, MOTOR.z + 0.02, 0.018], [s * 0.09, 0.13, MOTOR.z + 0.14, 0.018], [s * 0.07, 0.15, -0.5, 0.018]],
+    puntos: [[s * 0.25, MOTOR.y + 0.09, MOTOR.z - 0.02, 0.022], [s * 0.25, 0.03, MOTOR.z - 0.07, 0.022], [s * 0.2, SILENCIADOR.y, MOTOR.z - 0.04, 0.022], [s * SILENCIADOR.x, SILENCIADOR.y, SILENCIADOR.detras - 0.01, 0.022]],
   })),
   ...LADOS.map((s): Pieza => ({
-    tipo: "tubo", id: `silenciador-${s}`, acabado: "aluminio", centro: [s * 0.07, 0.15],
-    perfil: [[0.1, 0], [0.09, 0.025], [0.05, 0.04], [-0.42, 0.04], [-0.46, 0.025], [-0.5, 0.018], [-0.501, 0]],
+    tipo: "tubo", id: `silenciador-${s}`, acabado: "aluminio", centro: [s * SILENCIADOR.x, SILENCIADOR.y],
+    perfil: [[SILENCIADOR.delante + 0.06, 0], [SILENCIADOR.delante + 0.055, 0.012], [SILENCIADOR.delante + 0.02, 0.012], [SILENCIADOR.delante + 0.015, 0.03], [SILENCIADOR.delante, SILENCIADOR.r], [SILENCIADOR.detras + 0.03, SILENCIADOR.r], [SILENCIADOR.detras, 0.028], [SILENCIADOR.detras - 0.001, 0]],
   })),
-  // Cada silenciador, sobre dos patas cortas atornilladas al ala.
-  ...[0.0, -0.36].map((z, i): Pieza => ({ tipo: "caja", id: `pata-silenciador-${i}`, acabado: "aluminio", espejo: true, centro: [0.07, 0.1, z], tam: [0.025, 0.04, 0.03] })),
+  ...LADOS.flatMap((s) => [-0.12, -0.45].map((z, i): Pieza => ({ tipo: "tubo", id: `abrazadera-silenciador-${s}-${i}`, acabado: "metal", centro: [s * SILENCIADOR.x, SILENCIADOR.y], perfil: [[z + 0.012, SILENCIADOR.r + 0.004], [z - 0.012, SILENCIADOR.r + 0.004]] }))),
+  ...[-0.12, -0.45].map((z, i): Pieza => ({ tipo: "caja", id: `pata-silenciador-${i}`, acabado: "aluminio", espejo: true, centro: [SILENCIADOR.x, (SILENCIADOR.y - SILENCIADOR.r + 0.02) / 2, z], tam: [0.02, SILENCIADOR.y - SILENCIADOR.r - 0.0, 0.025] })),
+  // Dos tubitos de respiradero sobre el centro del ala (fotos de Kiev y de fábrica).
+  ...[-0.03, 0.03].map((x, i): Pieza => ({ tipo: "varilla", id: `respiradero-${i}`, acabado: "aluminio", desde: [x, 0.08, -0.3], hasta: [x, 0.13, -0.3], radio: 0.007 })),
 );
 
 // ── Rampa y cohete (botón «Rampa») ─────────────────────────────────────────
 // El FP-1 despega de una rampa inclinada con un cohete de combustible sólido
 // colgado bajo la cola; el motor ya va en marcha.
 const CABECEO = 18;
-// Muy inclinado (unos 35°, foto de detrás), para que empuje por el centro de gravedad.
-const COHETE = { r: 0.075, delante: [0, -0.46, -0.1] as P3, detras: [0, -0.95, -0.8] as P3 };
+// Muy inclinado (unos 40°) y enganchado bajo el borde de salida del ala (foto
+// de detrás), para que empuje por el centro de gravedad.
+const COHETE = { r: 0.08, delante: [0, -0.46, -0.28] as P3, detras: [0, -1.22, -1.12] as P3 };
 // Dos vigas, con el cohete colgando entre ellas.
 const RAIL = { y: -0.8, x: 0.17, delante: 1.6, detras: -3.4 };
 // Suelo: en los ejes del mundo (con el cabeceo puesto), 0,35 m por debajo del
@@ -185,15 +235,17 @@ const cohete = (): Pieza[] => {
   const eje = (z: number) => y0 + ((z - z0) * (y1 - y0)) / (z1 - z0);
   const r = COHETE.r;
   const sobre = (pts: [number, number][]) => pts.map(([z, q]): [number, number, number] => [z, q, eje(z)]);
+  // Las tres varillas, paralelas a la jaula y 10 cm por encima (del lado de
+  // la panza), desde su punta de atrás hasta la panza.
+  const L = Math.hypot(y1 - y0, z1 - z0), d = [(y1 - y0) / L, (z1 - z0) / L], n = [-d[1], d[0]];
+  const pie: [number, number] = [y1 + 0.1 * n[0], z1 + 0.1 * n[1]];
+  const k = (CUERPO.abajo + 0.005 - pie[0]) / -d[0];
   return [
-    // La jaula de aluminio ranurada y, dentro, el cohete gris.
-    { tipo: "tubo", id: "cohete-jaula", acabado: "aluminio", centro: [0, 0], perfil: sobre([[z0, 0], [z0 - 0.01, r], [z1 + 0.1, r], [z1 + 0.099, 0]]) },
-    { tipo: "tubo", id: "cohete", acabado: "campana-wh", centro: [0, 0], perfil: sobre([[z1 + 0.1, r * 0.8], [z1 + 0.04, r * 0.8], [z1 + 0.039, 0]]) },
-    // Tobera de color pardo, abierta hacia atrás.
-    { tipo: "tubo", id: "cohete-tobera", acabado: "pardo-gr", centro: [0, 0], perfil: sobre([[z1 + 0.04, 0.035], [z1, 0.05], [z1 - 0.001, 0]]) },
-    // Dos varillas de carbono del frente del cohete a la panza.
-    ...LADOS.map((s, i): Pieza => ({ tipo: "varilla", id: `cohete-varilla-${i}`, acabado: "carbono-wh", desde: [s * 0.05, eje(z0 - 0.15) + 0.05, z0 - 0.15], hasta: [s * 0.08, CUERPO.abajo + 0.01, 0.55], radio: 0.012 })),
-    { tipo: "caja", id: "cohete-pie", acabado: "metal", centro: [0, (CUERPO.abajo + eje(z0 - 0.05) + r) / 2, z0 - 0.05], tam: [0.08, CUERPO.abajo - eje(z0 - 0.05) - r + 0.02, 0.1] },
+    // La jaula de aluminio, calada (ver las calcas), y la tobera parda.
+    { tipo: "tubo", id: "cohete-jaula", acabado: "aluminio", centro: [0, 0], perfil: sobre([[z0, 0], [z0 - 0.01, r], [z1 + 0.06, r], [z1 + 0.059, 0]]) },
+    { tipo: "tubo", id: "cohete-tobera", acabado: "pardo-gr", centro: [0, 0], perfil: sobre([[z1 + 0.06, r - 0.004], [z1, r - 0.01], [z1 - 0.001, 0]]) },
+    ...[-0.045, 0, 0.045].map((x, i): Pieza => ({ tipo: "varilla", id: `cohete-varilla-${i}`, acabado: "carbono-wh", desde: [x, pie[0], pie[1]], hasta: [x, pie[0] - k * d[0], pie[1] - k * d[1]], radio: 0.01 })),
+    { tipo: "caja", id: "cohete-pie", acabado: "metal", centro: [0, (CUERPO.abajo + eje(z0 - 0.04) + r) / 2, z0 - 0.04], tam: [0.12, CUERPO.abajo - eje(z0 - 0.04) - r + 0.02, 0.08] },
   ];
 };
 const piezasCatapulta: Pieza[] = [
@@ -212,46 +264,77 @@ const piezasCatapulta: Pieza[] = [
 ];
 
 // ── Detalle pintado del HD ─────────────────────────────────────────────────
-// Marcas del costado derecho del ejemplar de Kiev (el único lado fotografiado
-// de cerca), colocadas con la cámara encajada: bajo el borde de ataque, el
-// aviso amarillo de «no dar corriente» entre dos etiquetas blancas, y detrás,
-// la etiqueta vertical del arranque (foto de detrás).
-const DERECHA: P3 = [-1, 0, 0];
-const XD = -CUERPO.ancho;
-const CALCAS: Calca[] = [
-  { sobre: ["fuselaje"], en: [XD, -0.002 - 0.015, 0.34], desde: DERECHA, tam: [0.11, 0.022], dibujo: { tipo: "rect", color: "#e9e9e4" }, capa: 1 },
-  { sobre: ["fuselaje"], en: [XD, -0.002 - 0.015, 0.34], desde: DERECHA, tam: [0.1, 0.016], dibujo: { tipo: "texto", texto: "ЗАКРІПИТИ", fino: true }, capa: 2 },
-  { sobre: ["fuselaje"], en: [XD, -0.136, 0.32], desde: DERECHA, tam: [0.14, 0.042], dibujo: { tipo: "aviso" } },
-  { sobre: ["fuselaje"], en: [XD, -0.184, 0.324], desde: DERECHA, tam: [0.09, 0.02], dibujo: { tipo: "rect", color: "#e9e9e4" }, capa: 1 },
-  { sobre: ["fuselaje"], en: [XD, -0.184, 0.324], desde: DERECHA, tam: [0.08, 0.014], dibujo: { tipo: "texto", texto: "ЖИВЛЕННЯ", fino: true }, capa: 2 },
-  { sobre: ["fuselaje"], en: [XD, -0.17, -0.33], desde: DERECHA, tam: [0.045, 0.15], dibujo: { tipo: "rect", color: "#e9e9e4" }, capa: 1 },
-  { sobre: ["fuselaje"], en: [XD, -0.17, -0.33], desde: DERECHA, tam: [0.13, 0.035], giro: 90, dibujo: { tipo: "texto", texto: "СТАРТЕР\nЗАПАЛЮВАННЯ", fino: true }, capa: 2 },
-];
+// Marcas del ejemplar de Kiev, leídas en sus fotos y colocadas con la cámara
+// encajada. Bajo el borde de ataque: la etiqueta plateada
+// «ЗАКРІПИТИ» sobre el cierre de la tapa, el aviso de no dar corriente (placa
+// plateada con el marco negro de rayas amarillas), un conector naranja y la
+// etiqueta «ЖИВЛЕННЯ». Detrás, los tres conectores del arranque y del
+// encendido con sus etiquetas verticales. Todo en el costado derecho, el de
+// las dos fotos de Kiev: del izquierdo no hay fotos de cerca.
+const PLATA = "#c9cac5";
 const ARRIBA: P3 = [0, 1, 0];
+const etiqueta = (x: number, y: number, z: number, tam: [number, number], texto: string, giro = 0): Calca[] => {
+  const desde: P3 = [Math.sign(x), 0, 0];
+  return [
+    { sobre: ["fuselaje", "tapa-lomo"], en: [x, y, z], desde, tam, giro, dibujo: { tipo: "rect", color: PLATA }, capa: 1 },
+    { sobre: ["fuselaje", "tapa-lomo"], en: [x, y, z], desde, tam: [tam[0] * 0.88, tam[1] * 0.62], giro, dibujo: { tipo: "texto", texto, fino: true }, capa: 2 },
+  ];
+};
+const avisos = (x: number): Calca[] => {
+  const desde: P3 = [Math.sign(x), 0, 0];
+  return [
+    ...etiqueta(x, -0.017, 0.34, [0.1, 0.02], "ЗАКРІПИТИ"),
+    // El marco: negro, con rayitas amarillas rectas a lo largo.
+    { sobre: ["fuselaje"], en: [x, -0.136, 0.32], desde, tam: [0.15, 0.048], dibujo: { tipo: "rect", color: "#151515" }, capa: 1 },
+    ...[-1, 1].flatMap((lado) => Array.from({ length: 7 }, (_, i): Calca => ({ sobre: ["fuselaje"], en: [x, -0.136 + lado * 0.0205, 0.32 + Math.sign(x) * (i - 3) * 0.021], desde, tam: [0.011, 0.004], dibujo: { tipo: "rect", color: "#e3c33c" }, capa: 2 }))),
+    ...[-1, 1].map((lado): Calca => ({ sobre: ["fuselaje"], en: [x, -0.136, 0.32 + lado * 0.0715], desde, tam: [0.004, 0.012], dibujo: { tipo: "rect", color: "#e3c33c" }, capa: 2 })),
+    { sobre: ["fuselaje"], en: [x, -0.136, 0.32], desde, tam: [0.134, 0.03], dibujo: { tipo: "rect", color: PLATA }, capa: 3 },
+    { sobre: ["fuselaje"], en: [x, -0.136, 0.32], desde, tam: [0.124, 0.022], dibujo: { tipo: "texto", texto: "НЕ ВМИКАТИ ЖИВЛЕННЯ\nБЕЗ ЗНЯТТЯ ФІКСАЦІЇ ПОВЕРХОНЬ", fino: true }, capa: 4 },
+    ...etiqueta(x, -0.186, 0.32, [0.08, 0.018], "ЖИВЛЕННЯ"),
+  ];
+};
+const XD = -CUERPO.ancho;
+const ARRANQUE = [[-0.48, "СТАРТЕР"], [-0.45, "ЗАПАЛЮВАННЯ 2"], [-0.42, "ЗАПАЛЮВАННЯ 1"]] as const;
+const CALCAS: Calca[] = [
+  ...avisos(XD),
+  ...ARRANQUE.flatMap(([z, texto]) => etiqueta(XD, -0.125, z, [0.13, 0.017], texto, -90)),
+  // En la panza, la placa metálica en «T» del enganche de la rampa (foto de
+  // MSPO desde abajo); en el costado derecho, abajo, el óvalo claro de un asa.
+  { sobre: ["fuselaje"], en: [0, CUERPO.abajo - 0.1, -0.2], desde: [0, -1, 0], tam: [0.26, 0.26], dibujo: { tipo: "poligono", color: "#b4b8bb", puntos: [[0.05, 0.05], [0.95, 0.05], [0.95, 0.28], [0.62, 0.28], [0.62, 0.95], [0.38, 0.95], [0.38, 0.28], [0.05, 0.28]] }, mate: true },
+  { sobre: ["fuselaje"], en: [XD, -0.29, 0.45], desde: [-1, 0, 0], tam: [0.07, 0.028], dibujo: { tipo: "disco", color: "#d6d6d1" }, capa: 1 },
+  { sobre: ["fuselaje"], en: [XD, -0.29, 0.45], desde: [-1, 0, 0], tam: [0.05, 0.014], dibujo: { tipo: "disco", color: "#2a2b2c" }, capa: 2 },
+  // La etiqueta blanca de la viga derecha, junto a la hélice (foto de Kiev).
+  { sobre: ["viga--1"], en: [-VIGA.x - 0.04, Y_VIGA + 0.01, -0.75], desde: [-1, 0.3, 0], tam: [0.13, 0.03], dibujo: { tipo: "rect", color: "#ecebe6" }, capa: 1 },
+  { sobre: ["viga--1"], en: [-VIGA.x - 0.04, Y_VIGA + 0.01, -0.75], desde: [-1, 0.3, 0], tam: [0.11, 0.018], dibujo: { tipo: "texto", texto: "ЛІВА ЧАСТИНА", fino: true, cursiva: true }, capa: 2 },
+];
+// La jaula del cohete, calada con huecos (foto de detrás), a los dos lados.
+const ANGULO_COHETE = (Math.atan2(COHETE.delante[1] - COHETE.detras[1], COHETE.delante[2] - COHETE.detras[2]) * 180) / Math.PI;
+const CALCAS_RAMPA: Calca[] = [
+  { sobre: ["cohete-jaula"], en: [COHETE.r, (COHETE.delante[1] + COHETE.detras[1]) / 2, (COHETE.delante[2] + COHETE.detras[2]) / 2], desde: [1, 0, 0], tam: [0.95, 0.12], giro: ANGULO_COHETE, dibujo: { tipo: "malla", hex: true }, espejo: true },
+];
 const COSTURAS: Costura[] = [
-  // Junta de la tapa del morro: arriba y por los costados.
+  // Junta de la tapa del morro, arriba, por los costados y por la panza.
   { sobre: ["fuselaje"], desde: ARRIBA, puntos: [[-0.24, 0.2, CUERPO.tapa], [0, 0.2, CUERPO.tapa], [0.24, 0.2, CUERPO.tapa]] },
-  { sobre: ["fuselaje"], desde: [1, 0, 0], espejo: true, puntos: [[0.4, -0.01, CUERPO.tapa], [0.4, -0.19, CUERPO.tapa], [0.4, -0.37, CUERPO.tapa]] },
-  // Las dos mitades del ala se juntan en el centro, y cada tramo de fuera
-  // se une al de dentro con una cinta, junto a las vigas (foto de fábrica).
-  { sobre: ["ala"], desde: ARRIBA, puntos: [[0, 0.3, ALA.ba], [0, 0.3, ALA.bs]] },
-  ...[0.74, 0.8].map((x): Costura => ({ sobre: ["ala"], desde: ARRIBA, espejo: true, puntos: [[x, 0.3, ALA.ba], [x, 0.3, ALA.bs]] })),
+  { sobre: ["fuselaje"], desde: [1, 0, 0], espejo: true, puntos: [[0.4, -0.06, CUERPO.tapa], [0.4, -0.2, CUERPO.tapa], [0.4, -0.3, CUERPO.tapa]] },
+  { sobre: ["fuselaje"], desde: [0, -1, 0], puntos: [[-0.17, -0.6, CUERPO.tapa], [0, -0.6, CUERPO.tapa], [0.17, -0.6, CUERPO.tapa]] },
+  // Costura a lo largo del centro de la panza (foto de MSPO desde abajo).
+  { sobre: ["fuselaje"], desde: [0, -1, 0], puntos: [[0, -0.6, CUERPO.tapa - 0.02], [0, -0.6, 0.3], [0, -0.6, -0.4]] },
 ];
 
 const PARTES: Parte[] = [
   {
     nombre: "Cuerpo",
     en: [CUERPO.ancho + 0.05, -0.2, 1.0],
-    piezas: ["fuselaje", ...[0, 1].flatMap((i) => [`cierre-${i}`, `tornillo-${i}-0`, `tornillo-${i}-1`]), "cierre-ala", "tornillo-ala", "caja-raiz", "interruptor"],
+    piezas: ["fuselaje", "tapa-lomo", "conector", "tornillo-conector-0", "tornillo-conector-1", ...[0, 1, 2].map((i) => `conector-arranque-${i}`), ...[0, 1].flatMap((i) => [`cierre-${i}`, `tornillo-${i}-0`, `tornillo-${i}-1`]), "cierre-ala", "tornillo-ala", "caja-raiz", "interruptor"],
     respaldo: "foto",
     fuentes: ["kiev", "fabrica", "taller"],
-    texto: "Una caja larga de aristas redondeadas, con la tapa del morro aparte. Dentro van la ojiva, de 60 kg, el combustible y la navegación; delante del ala, un lomo estrecho.",
+    texto: "Una caja larga de lo alto plano y costados rectos, con un chaflán a lo largo de la panza y la tapa del morro aparte. Delante del ala, una tapa con el lomo cubre lo alto. Dentro van la ojiva, de 60 kg, el combustible y la navegación.",
     nota: "La forma, de las fotos; qué lleva dentro, de Fire Point y la prensa.",
   },
   {
     nombre: "Ala recta",
     en: [2.2, 0.15, 0],
-    piezas: ["ala", "aleron"],
+    piezas: ["ala", "aleron", "cinta-centro", "cintas"],
     respaldo: "foto",
     fuentes: ["kiev", "fabrica", "fakty"],
     texto: "6 m de punta a punta, recta y sin diedro, en dos mitades unidas encima del cuerpo con una cinta. Los alerones de fuera hacen también de flaps.",
@@ -259,8 +342,8 @@ const PARTES: Parte[] = [
   },
   {
     nombre: "Vigas y cola en V invertida",
-    en: [0, COLA.yVertice + 0.2, -2.35],
-    piezas: ["viga-1", "viga--1", "abrazadera-0", "abrazadera-1", "cola", "timon"],
+    en: [0, COLA.yVertice + 0.2, -1.9],
+    piezas: ["viga-1", "viga--1", "abrazadera-0", "abrazadera-1", "cola", "timon", "tubo-vertice", "soporte-cola", ...LADOS.flatMap((s) => [`manguito-cola-${s}`, `brida-cola-${s}`, `brazo-timon-${s}`, `varilla-brazo-${s}`]), "varilla-timon"],
     respaldo: "foto",
     fuentes: ["kiev", "rampa", "mspo"],
     texto: "Dos tubos de carbono atornillados bajo el ala llevan la cola: dos superficies que suben desde ellos y se juntan arriba, en el centro.",
@@ -268,7 +351,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Motor y hélice",
     en: [0.35, MOTOR.y, MOTOR.z],
-    piezas: ["carter", "cilindros", ...[0, 1, 2, 3, 4, 5, 6].map((i) => `aleta-${i}`), "culatas", "corona", "carburador", "filtro", "buje", "helice"],
+    piezas: ["carter", "cilindros", "bancada", ...Array.from({ length: 9 }, (_, i) => `aleta-${i}`), "culatas", ...[0, 1, 2, 3].map((i) => `aleta-culata-${i}`), "bujias", "corona", "volante", "carburador", "filtro", ...Array.from({ length: 6 }, (_, i) => `tornillo-buje-${i}`), "buje", "helice"],
     respaldo: "foto",
     fuentes: ["motor", "mspo"],
     texto: "Un motor de pistón de dos cilindros opuestos detrás del cuerpo, con una hélice de madera de dos palas que empuja desde detrás.",
@@ -276,7 +359,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Escapes",
     en: [0, 0.3, -0.6],
-    piezas: ["escape-1", "escape--1", "silenciador-1", "silenciador--1", "pata-silenciador-0", "pata-silenciador-1"],
+    piezas: ["escape-1", "escape--1", "silenciador-1", "silenciador--1", "pata-silenciador-0", "pata-silenciador-1", ...LADOS.flatMap((s) => [0, 1].map((i) => `abrazadera-silenciador-${s}-${i}`)), "respiradero-0", "respiradero-1"],
     respaldo: "foto",
     fuentes: ["motor", "kiev", "rampa"],
     texto: "Los dos escapes suben de los cilindros y van hacia delante por encima del cuerpo, cada uno con su silenciador, hasta encima del ala.",
@@ -307,12 +390,17 @@ const PARTES: Parte[] = [
 const u = (v: number) => v / ESCALA;
 const u2 = ([a, b]: [number, number]): [number, number] => [u(a), u(b)];
 const u3 = ([a, b, c]: P3): P3 => [u(a), u(b), u(c)];
+// El centro de `girar` va también en metros.
 const aUnidades = (p: Pieza): Pieza => {
+  const q = aUnidadesForma(p);
+  return p.girar ? { ...q, girar: { ...p.girar, centro: u3(p.girar.centro) } } : q;
+};
+const aUnidadesForma = (p: Pieza): Pieza => {
   switch (p.tipo) {
     case "tubo":
       return { ...p, perfil: p.perfil.map((q) => q.map(u) as typeof q), ...(p.centro && { centro: u2(p.centro) }) };
     case "casco":
-      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }) })), ...(p.suave && { suave: u(p.suave) }) };
+      return { ...p, secciones: p.secciones.map((q) => ({ ...q, z: u(q.z), ancho: u(q.ancho), arriba: u(q.arriba), abajo: u(q.abajo), ...(q.cintura !== undefined && { cintura: u(q.cintura) }), ...(q.lomo !== undefined && { lomo: u(q.lomo) }), ...(q.hombro !== undefined && { hombro: u(q.hombro) }), ...(q.contorno && { contorno: q.contorno.map((t) => t.map(([x, y]): [number, number] => [u(x), u(y)])) }) })), ...(p.suave && { suave: u(p.suave) }) };
     case "placa":
       return p.plano === "horizontal"
         ? { ...p, planta: p.planta.map(u2), y: u(p.y), grosor: u(p.grosor), ...(p.bisel && { bisel: u(p.bisel) }) }
@@ -352,7 +440,7 @@ const maqueta: Maqueta = {
   // Tarjeta de /uas: desde más arriba, como los drones de ala larga.
   vistaTarjeta: [61, 20],
   detalles: { calcas: CALCAS.map(aCalca), costuras: COSTURAS.map(aCostura) },
-  catapulta: { piezas: piezasCatapulta.map(aUnidades), cabeceo: CABECEO, nombre: "Rampa" },
+  catapulta: { piezas: piezasCatapulta.map(aUnidades), cabeceo: CABECEO, nombre: "Rampa", detalles: { calcas: CALCAS_RAMPA.map(aCalca), costuras: [] } },
   piezas: PIEZAS.map(aUnidades),
   partes: PARTES.map((p) => ({ ...p, en: u3(p.en) })),
   fuentes: [
