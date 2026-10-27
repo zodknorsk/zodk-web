@@ -157,6 +157,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "verde-gr": { color: "#3f5636", metal: 0, rugosidad: 0.7 },
   "pardo-gr": { color: "#86754a", metal: 0, rugosidad: 0.55 },
   "obturador": { color: "#3b6248", metal: 0, rugosidad: 0.25 },
+  // El FP-1 de Kiev (mayo de 2025): gris medio neutro, satinado (en la foto
+  // de taller con luz blanca, el lomo da #73766f a media luz), y la hélice de
+  // madera clara barnizada.
+  "gris-fp": { color: "#8a8f93", metal: 0, rugosidad: 0.55 },
+  "madera-fp": { color: "#b98a4e", metal: 0, rugosidad: 0.4 },
 };
 
 // Tres escalones de luz para la ilustración.
