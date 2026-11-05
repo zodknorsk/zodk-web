@@ -157,6 +157,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "verde-gr": { color: "#3f5636", metal: 0, rugosidad: 0.7 },
   "pardo-gr": { color: "#86754a", metal: 0, rugosidad: 0.55 },
   "obturador": { color: "#3b6248", metal: 0, rugosidad: 0.25 },
+  // El forro del Zephyr: película plateada que brilla como metal satinado
+  // (fotos de fábrica con luz blanca y al amanecer en Arizona).
+  "plata-ze": { color: "#c2c7cb", metal: 0.45, rugosidad: 0.38 },
 };
 
 // Tres escalones de luz para la ilustración.
