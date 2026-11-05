@@ -160,6 +160,9 @@ const PINTURAS: Record<Acabado, Pintura> = {
   // El forro del Zephyr: película plateada que brilla como metal satinado
   // (fotos de fábrica con luz blanca y al amanecer en Arizona).
   "plata-ze": { color: "#c2c7cb", metal: 0.45, rugosidad: 0.38 },
+  // Puntas, deriva y timón de profundidad: película translúcida sobre un
+  // marco, más clara y mate que el ala (fotos de frente en Arizona y de Kenia).
+  "film-ze": { color: "#d3d7d8", metal: 0.05, rugosidad: 0.55 },
 };
 
 // Tres escalones de luz para la ilustración.
@@ -803,6 +806,14 @@ function dibujar(d: Dibujo, ancho: number, alto: number): HTMLCanvasElement {
       const g = Math.min(W, H) * 0.035;
       c.strokeStyle = "rgba(30,32,36,0.8)"; c.lineWidth = g;
       c.strokeRect(g / 2, g / 2, W - g, H - g);
+      break;
+    }
+    case "celdas": {
+      // Rendijas claras y finas entre casillas casi negras.
+      c.fillStyle = "#c9ced3"; c.fillRect(0, 0, W, H);
+      const cw = W / d.columnas, ch = H / d.filas, g = Math.max(1, Math.min(cw, ch) * 0.07);
+      c.fillStyle = "#141922";
+      for (let i = 0; i < d.columnas; i++) for (let j = 0; j < d.filas; j++) c.fillRect(i * cw + g / 2, j * ch + g / 2, cw - g, ch - g);
       break;
     }
     case "rejilla": {

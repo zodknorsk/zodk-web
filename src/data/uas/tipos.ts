@@ -9,7 +9,7 @@ type Punto3 = [number, number, number];
 type Punto2 = [number, number];
 
 // Acabado de una pieza: de qué color va (negro por defecto).
-export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "blanco-ta" | "gris-ta" | "gris-ta2" | "lente-ta" | "gris-tw" | "azul-fox" | "carbono-wh" | "carbono-gris" | "cobre-wh" | "muelle-wh" | "verde-gr" | "pardo-gr" | "obturador" | "amarillo-wh" | "campana-wh" | "helice-wh" | "plata-ze";
+export type Acabado = "negro" | "negro-ua" | "gris" | "gris-et" | "gris-tr" | "gris-ga" | "metal" | "junta" | "mando" | "lente" | "amarillo" | "azul" | "oliva" | "rojo" | "rojo-vivo" | "blanco" | "hueco" | "crema-ir" | "laton" | "aluminio" | "ocre" | "hueso" | "cromato" | "gris-x10" | "azul-x10" | "gris-qs" | "arena-st" | "arena-st2" | "blanco-h30" | "tubo-h30" | "espuma" | "gris-fu" | "gris-fu2" | "gris-misil" | "gris-gh" | "gris-mg" | "gris-m7" | "naranja" | "marron" | "gris-si" | "naranja-si" | "blanco-ta" | "gris-ta" | "gris-ta2" | "lente-ta" | "gris-tw" | "azul-fox" | "carbono-wh" | "carbono-gris" | "cobre-wh" | "muelle-wh" | "verde-gr" | "pardo-gr" | "obturador" | "amarillo-wh" | "campana-wh" | "helice-wh" | "plata-ze" | "film-ze";
 
 export type Pieza = (
   // Cuerpo de revolución a lo largo de z: perfil de [z, radio], de delante atrás.
@@ -245,7 +245,11 @@ export type Dibujo =
   // Flecha hueca con un texto dentro, a lo largo (la «DIRECTION OF LAUNCH»
   // del tubo del Hero-30): contorno en `color`, punta a la derecha o, con
   // `izquierda`, a la izquierda (la del otro costado), con el texto al derecho.
-  | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean };
+  | { tipo: "flecha-texto"; texto: string; color: string; izquierda?: boolean }
+  // Módulo de células solares: casillas oscuras y brillantes separadas por
+  // rendijas claras, `columnas` a lo ancho del dibujo y `filas` a lo alto
+  // (las alas del Zephyr).
+  | { tipo: "celdas"; columnas: number; filas: number };
 // `capa`: las calcas que se pisan se pintan por capas, de menor a mayor (los
 // textos sobre la franja del Fury); sin ella, por distancia a la cámara.
 // `mate`: la calca, mate como el negro-ua aunque la pieza brille (una zona

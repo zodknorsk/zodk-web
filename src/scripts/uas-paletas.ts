@@ -69,6 +69,7 @@ const COMUNES = {
   "pardo-gr": ["#3d3420", "#5f5233", "#86754a", "#a8976a"],
   "obturador": ["#1a2c20", "#2a4634", "#3b6248", "#5a8468"],
   "plata-ze": ["#5a5f64", "#8a9095", "#b7bcc0", "#dfe3e6"],
+  "film-ze": ["#686d70", "#9aa0a3", "#c6cbcd", "#e8ebec"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {
