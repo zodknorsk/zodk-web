@@ -3,7 +3,7 @@
 ## Dónde estamos
 
 - **Fase 1 (la nota)**: sin hacer. No hay nota del Zephyr en la bóveda.
-- **Fases 2, 3 y 4**: hechas el 05-11-2026 y, el mismo día, **la maqueta rehecha con las fotos originales** a petición del usuario («fiabilidad absoluta en los detalles»): cámaras encajadas en la foto de frente (`hd/frente.json`, error ≤ 9 px sobre 6333) y en la de desde arriba (`hd/planta.json`, ≤ 13 px sobre 2250). Tarjeta, planta y miniaturas, regeneradas. **Sin commitear** (la primera versión está en el commit `d53f2e0` de la rama `claude/nuevodron-fases-2-3-4-at8jwi`).
+- **Fases 2, 3 y 4**: hechas el 05-11-2026 y, el mismo día, **la maqueta rehecha con las fotos originales** a petición del usuario («fiabilidad absoluta en los detalles»): cámaras encajadas en la foto de frente (`hd/frente.json`, error ≤ 9 px sobre 6333) y en la de desde arriba (`hd/planta.json`, ≤ 13 px sobre 2250). Tarjeta, planta y miniaturas, regeneradas. En la rama `claude/nuevodron-fases-2-3-4-at8jwi` (commits `d53f2e0`, primera versión, y `9e8f847`, la rehecha); no está en `main`.
 - **Solo en local, fuera de Git**: la ficha provisional `src/content/uas/airbus-zephyr/` (en `.git/info/exclude`); en `arte/uas-fuentes/airbus-zephyr/hd/`, los ajustes de cámara y copias de `comparar-foto`, `vista-visor` y `generar-uas-miniaturas-hd` con el Chrome de Linux (en el Mac, los de `arte/`).
 - **Sin medir**: `desfaseLuz`. Sin nave del hero (no pedida).
 - **Falta**: la nota (fase 1), importarla en `main` y probar (fase 5), y que el usuario revise la maqueta (fase 6).
