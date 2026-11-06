@@ -6,14 +6,18 @@
 // para el diedro, las puntas, la cola y las hélices; la de desde arriba en
 // Kenia para la planta (escala con las hélices a lo ancho y con el alto de la
 // deriva: 0,0103 m/px a lo largo); y la de Kenia de lado, con personas al
-// lado, para las góndolas, el morro y la deriva. Todo se escribe en metros y
-// al final se pasa a unidades de la maqueta (1 unidad = 10 m).
+// lado, para las góndolas, el morro y la deriva. Todo se escribe en metros a
+// la escala de la foto de frente (de punta a punta, 26,3 m) y al pasar a
+// unidades se multiplica por K para que el ala mida los 25 m oficiales: las
+// fotos dan las proporciones, no el tamaño (1 unidad = 10 m).
 // Imágenes en arte/uas-fuentes/airbus-zephyr/ (fuera de Git; enlaces en
 // docs/drones/airbus-zephyr.md).
 import type { Calca, Costura, Maqueta, Parte, Pieza } from "./tipos";
 import { bandera } from "../banderas.ts";
 
 const ESCALA = 10;
+// De la escala de las fotos a la de verdad (25 m de punta a punta).
+const K = 25 / 26.5;
 
 const AALTO = "https://www.aaltohaps.com/wp-content/uploads/2025/03/";
 
@@ -21,28 +25,34 @@ type P3 = [number, number, number];
 type Est = [number, number, number, number, number];
 
 // Ala en tres tramos (foto de frente): el del centro, recto y sin diedro, de
-// 14,6 m; los de fuera, de 5 m, suben 14°. La planta, de la foto desde arriba
-// de Kenia enderezada con su cámara encajada: 1,5 m de cuerda en los 2 m de
-// cada lado del centro; de ahí al quiebro, el borde de salida avanza en
-// línea recta y la cuerda baja a 1,0 m (el de ataque solo retrocede 8 cm); en
-// los tramos de fuera, 1,0 m. Grueso de 0,18 m en el centro (de frente,
-// 45-55 px), un 12 % de la cuerda.
-// Las puntas, una pala que se echa atrás hasta acabar en pico: de frente,
-// primero sale casi en horizontal (cae 0,3 m en 0,75 m) y desde un codo cae
-// casi en vertical; su extremo, a 13,15 m del centro, a 0,64 m de alto y
-// 0,5 m por detrás del borde de salida (las dos fotos encajadas, las dos
-// puntas). Con ellas, el ala mide unos 26 m de punta a punta; la cifra
-// oficial es de 25 m.
-const ALA = { y: 0, centro: 7.3, fuera: 5.0, diedro: 14, ba: 0.5, bs: -1.0, t: 0.18 };
+// 14,6 m; los de fuera, de 5,1 m, suben 13,5° (su final, triangulado con las
+// dos fotos: a 12,27 m del eje y 1,22 m de alto). La planta, de la foto desde arriba
+// de Kenia: cada punto de los dos bordes, a lo largo de las dos alas, llevado
+// a metros cortando su rayo con la cara de arriba del ala (cámara encajada) y
+// promediando los dos lados. No es un rectángulo: el borde de ataque se echa
+// atrás poco a poco del centro (0,52) al quiebro (0,17) y el de salida se
+// adelanta (de −1,04 a −0,62): la cuerda baja de 1,56 m a 0,82 m. Los
+// tramos de fuera, rectos, con 0,84 m de cuerda. Grueso de 0,26 m en el
+// centro (foto de frente), un 17 % de la cuerda.
+// Las puntas: el borde de ataque sigue 0,55 m hacia fuera bajando poco hasta
+// un codo (de frente, las dos puntas casan con el codo en el borde de
+// ataque); de ahí, el borde de fuera baja y se echa atrás hasta acabar en
+// pico, a 13,13 m del centro, a 0,46 m de alto y 1,5 m por detrás del borde
+// de ataque (triangulado con las dos fotos encajadas). En las dos fotos la
+// punta derecha acaba unos 0,13 m antes que la izquierda: se deja simétrica,
+// a medio camino.
+const ALA = { y: 0, centro: 7.3, fuera: 5.1, diedro: 13.5, ba: 0.52, bs: -1.04, t: 0.26 };
 const rad = (g: number) => (g * Math.PI) / 180;
 const X_FUERA = ALA.centro + ALA.fuera * Math.cos(rad(ALA.diedro));
 const SUBE_FUERA = ALA.fuera * Math.sin(rad(ALA.diedro));
 // Planta del ala: [x, borde de ataque, borde de salida, grueso].
 const PLANTA_ALA: [number, number, number, number][] = [
   [0, ALA.ba, ALA.bs, ALA.t],
-  [2.0, 0.49, -0.97, 0.18],
-  [ALA.centro, 0.42, -0.58, 0.12],
-  [X_FUERA, 0.4, -0.6, 0.12],
+  [2.0, 0.5, -1.0, 0.26],
+  [4.0, 0.44, -0.85, 0.22],
+  [6.0, 0.34, -0.67, 0.17],
+  [ALA.centro, 0.17, -0.62, 0.14],
+  [X_FUERA, 0.15, -0.66, 0.12],
 ];
 const enPlanta = (x: number, k: 1 | 2 | 3): number => {
   const ax = Math.abs(x);
@@ -53,47 +63,60 @@ const enPlanta = (x: number, k: 1 | 2 | 3): number => {
   return PLANTA_ALA[0][k];
 };
 const baAla = (x: number) => enPlanta(x, 1), bsAla = (x: number) => enPlanta(x, 2);
+// Altura de la cara de arriba en x (en el tramo de fuera, con el diedro; en
+// la punta, la de su raíz).
+const sobreAla = (x: number): number => {
+  const ax = Math.abs(x);
+  if (ax <= ALA.centro) return 0.09;
+  return 0.06 + (Math.min(ax, X_FUERA) - ALA.centro) * Math.tan(rad(ALA.diedro));
+};
+// La cara de arriba, a 0,09 m en el tramo del centro y a 0,06 m (más lo
+// que sube el diedro) en los de fuera (foto de frente): lo que engorda el
+// perfil va hacia abajo.
+const ARRIBA_ALA = (x: number) => (Math.abs(x) <= ALA.centro ? 0.09 : 0.06);
 // Raíz, codo y extremo de la punta: [x, y, borde de ataque, de salida, grueso].
 const PUNTA: [number, number, number, number, number][] = [
-  [X_FUERA, SUBE_FUERA, 0.4, -0.6, 0.11],
-  [12.9, 1.0, -0.4, -1.35, 0.08],
-  [13.15, 0.62, -1.3, -1.55, 0.04],
+  [X_FUERA, SUBE_FUERA, 0.15, -0.66, 0.11],
+  [12.8, 1.0, 0.15, -1.07, 0.07],
+  [13.13, 0.46, -1.37, -1.55, 0.04],
 ];
 // Hueco entre tramos (las juntas de las fotos de fábrica).
 const HUECO = 0.006;
-const EST_CENTRO: Est[] = PLANTA_ALA.slice(0, 3).map(([x, ba, bs, t]) => [x, ba, bs, t, 0]);
-const EST_FUERA: Est[] = [[ALA.centro + HUECO, baAla(ALA.centro), bsAla(ALA.centro), 0.12, 0], [X_FUERA, baAla(X_FUERA), bsAla(X_FUERA), 0.12, SUBE_FUERA]];
+const EST_CENTRO: Est[] = PLANTA_ALA.filter(([x]) => x <= ALA.centro).map(([x, ba, bs, t]) => [x, ba, bs, t, ARRIBA_ALA(x) - t / 2]);
+const EST_FUERA: Est[] = [[ALA.centro + HUECO, baAla(ALA.centro), bsAla(ALA.centro), 0.14, 0.06 - 0.07], [X_FUERA, baAla(X_FUERA), bsAla(X_FUERA), 0.12, SUBE_FUERA]];
 const EST_PUNTA: Est[] = PUNTA.map(([x, y, ba, bs, t], i) => [i ? x : x + HUECO, ba, bs, t, i ? y : y - HUECO]);
 
 // Botalón de carbono: de un carenado negro bajo el centro del ala, que sigue
 // 1,1 m por detrás del borde de salida (desde arriba, de frente y en el
 // despegue), a la deriva, 3,46 m por detrás del borde de salida. Por delante,
-// un tramo corto a la altura del ala, con una caja blanca en la punta, 1,1 m
-// por delante del borde de ataque, y una bola blanca de 0,27 m sobre él,
-// 0,3 m por delante del borde de ataque, con la cima a 0,35 m: las dos fotos
-// encajadas (de frente y desde arriba) la ponen en el mismo sitio. En la foto
-// de Kenia de lado, la bola es el bulto blanco junto al borde de ataque y la
-// caja, el bloque con conectores.
+// una varilla a media altura del ala lleva una caja blanca de 0,62 × 0,2 ×
+// 0,22 m que acaba 1,1 m por delante del borde de ataque (desde arriba; el
+// largo y la sección, de la foto de Kenia de lado, con los husos de los
+// motores como escala). Junto a la varilla, una bola blanca de 0,15 m, a
+// 0,18 m del eje, 0,11 m de alto y 0,26 m por delante del borde de ataque
+// (triangulada con las dos fotos encajadas).
 const BOTALON = { y: -0.14, r: 0.038, cola: -5.3 };
-const DELANTE = { y: 0.07, r: 0.03, punta: ALA.ba + 1.1 };
-const CAJA = { largo: 0.45, ancho: 0.12, alto: 0.14 };
-const BOLA = { z: ALA.ba + 0.31, y: 0.215, r: 0.135 };
+const DELANTE = { y: -0.04, r: 0.022, punta: ALA.ba + 1.1 };
+const CAJA = { largo: 0.62, ancho: 0.2, alto: 0.22 };
+const BOLA = { x: 0.18, z: 0.78, y: 0.11, r: 0.075 };
 
 // Cola en T (fotos de frente, desde arriba y de Kenia de lado): deriva de
 // 0,8 m de cuerda que sube del botalón a 1,25 m, con un larguero oscuro en
 // cada borde y nervios; encima, el timón de profundidad de 4,7 m de punta a
-// punta (de frente, 985 px), con la misma cuerda que la deriva (desde
-// arriba), un larguero oscuro junto al borde de ataque y nervios cada 0,2 m.
-const COLA = { ba: ALA.bs - 3.46, bs: ALA.bs - 4.26, alto: 1.25 };
-const ESTAB = { y: COLA.alto + 0.03, semi: 2.35 };
+// punta (de frente, 985 px; triangulado con las dos fotos, ±2,32 m), con
+// 0,83 m de cuerda en la raíz y 0,7 m en la punta, que se echa 0,14 m atrás
+// (desde arriba, cada esquina llevada a metros a la altura del timón), un
+// larguero oscuro junto al borde de ataque y nervios cada 0,2 m.
+const COLA = { ba: -4.46, bs: -5.26, alto: 1.25 };
+const ESTAB = { y: COLA.alto + 0.03, semi: 2.33, raiz: [-4.46, -5.29] as [number, number], punta: [-4.6, -5.3] as [number, number] };
 
 // Motores: un huso blanco de 0,42 m en la punta de una varilla negra que sale
 // del borde de ataque, a 3,94 m del centro (de frente, encajada), casi a la
 // altura del ala, con la hélice negra de dos palas delante (1,45 m; de
-// frente, 364 px), con el buje casi a la altura del ala. La punta del huso, 0,7 m por delante del borde de ataque
-// (desde arriba, 59 px); la varilla asoma casi tanto como el huso (fábrica y
-// Kenia de lado).
-const MOTOR = { x: 3.94, y: -0.04, z0: ALA.ba + 0.28, z1: ALA.ba + 0.7, r: 0.07 };
+// frente, 364 px), con el buje casi a la altura del ala. El buje, 1,22 m
+// por delante (triangulado con las dos fotos encajadas); la varilla asoma
+// casi tanto como el huso (fábrica y Kenia de lado).
+const MOTOR = { x: 3.94, y: -0.04, z0: 0.85, z1: 1.27, r: 0.07 };
 
 const PIEZAS: Pieza[] = [
   { tipo: "ala", id: "ala", acabado: "plata-ze", y: ALA.y, estaciones: EST_CENTRO },
@@ -103,7 +126,9 @@ const PIEZAS: Pieza[] = [
   { tipo: "tubo", id: "botalon", acabado: "carbono-wh", centro: [0, BOTALON.y], perfil: [[ALA.ba - 0.4, BOTALON.r], [BOTALON.cola + 0.02, BOTALON.r], [BOTALON.cola, BOTALON.r * 0.6]] },
   { tipo: "tubo", id: "botalon", acabado: "carbono-wh", centro: [0, DELANTE.y], perfil: [[DELANTE.punta - CAJA.largo + 0.02, DELANTE.r], [ALA.ba - 0.15, DELANTE.r]] },
   { tipo: "caja", id: "morro", acabado: "blanco", centro: [0, DELANTE.y, DELANTE.punta - CAJA.largo / 2], tam: [CAJA.ancho, CAJA.alto, CAJA.largo], redondeo: 0.03 },
-  { tipo: "tubo", id: "bola", acabado: "blanco", centro: [0, BOLA.y], perfil: Array.from({ length: 13 }, (_, i): [number, number] => { const a = (i / 12) * Math.PI; return [BOLA.z + BOLA.r * Math.cos(a), BOLA.r * Math.sin(a)]; }) },
+  // Soporte de la bola al borde de ataque: no se distingue en las fotos.
+  { tipo: "varilla", id: "soporte-bola", acabado: "carbono-wh", desde: [BOLA.x, 0.07, baAla(BOLA.x) - 0.04], hasta: [BOLA.x, BOLA.y - 0.03, BOLA.z - 0.04], radio: 0.012, lados: 10 },
+  { tipo: "tubo", id: "bola", acabado: "blanco", centro: [BOLA.x, BOLA.y], perfil: Array.from({ length: 13 }, (_, i): [number, number] => { const a = (i / 12) * Math.PI; return [BOLA.z + BOLA.r * Math.cos(a), BOLA.r * Math.sin(a)]; }) },
   {
     tipo: "casco", id: "carenado", acabado: "carbono-wh", polo: true,
     secciones: [
@@ -119,21 +144,34 @@ const PIEZAS: Pieza[] = [
   { tipo: "placa", id: "deriva", acabado: "film-ze", plano: "vertical", x: 0, grosor: 0.025, bisel: 0.008, planta: [[COLA.ba, BOTALON.y], [COLA.ba, COLA.alto], [COLA.bs, COLA.alto], [COLA.bs, BOTALON.y]] },
   { tipo: "varilla", id: "largueros-cola", acabado: "carbono-wh", desde: [0, BOTALON.y, COLA.ba - 0.01], hasta: [0, COLA.alto + 0.02, COLA.ba - 0.01], radio: 0.024, lados: 16 },
   { tipo: "varilla", id: "largueros-cola", acabado: "carbono-wh", desde: [0, BOTALON.y, COLA.bs + 0.01], hasta: [0, COLA.alto, COLA.bs + 0.01], radio: 0.016, lados: 12 },
-  { tipo: "ala", id: "estabilizador", acabado: "film-ze", y: ESTAB.y, estaciones: [[0, COLA.ba + 0.01, COLA.bs - 0.01, 0.06], [ESTAB.semi, COLA.ba - 0.01, COLA.bs + 0.01, 0.045]] },
-  // Luz de navegación: un bulto blanco sobre el final de cada tramo de fuera,
-  // justo en el quiebro (de frente, en las dos puntas; desde arriba).
-  { tipo: "caja", id: "luces", acabado: "blanco", centro: [X_FUERA - 0.07, SUBE_FUERA - 0.07 * Math.tan(rad(ALA.diedro)) + 0.07, -0.37], tam: [0.1, 0.07, 0.18], redondeo: 0.035, espejo: true },
-  // Antenita oscura sobre el tramo de fuera, poco antes del quiebro (de
-  // frente, en los dos lados).
-  { tipo: "varilla", id: "luces", acabado: "carbono-wh", desde: [X_FUERA - 0.3, SUBE_FUERA - 0.3 * Math.tan(rad(ALA.diedro)) + 0.04, -0.3], hasta: [X_FUERA - 0.3, SUBE_FUERA - 0.3 * Math.tan(rad(ALA.diedro)) + 0.2, -0.3], radio: 0.008, lados: 8, espejo: true },
+  { tipo: "ala", id: "estabilizador", acabado: "film-ze", y: ESTAB.y, estaciones: [[0, ...ESTAB.raiz, 0.06], [ESTAB.semi, ...ESTAB.punta, 0.045]] },
+  // Luz de navegación (un bulto blanco) y una antenita oscura, sobre el ala.
+  // No van igual en los dos lados: en la izquierda, la antena en el quiebro
+  // y la luz algo más fuera, encima de la raíz de la punta (trianguladas con
+  // las dos fotos encajadas); en la derecha, las dos juntas 0,3 m antes del
+  // quiebro (de frente, medidas en el ala).
+  ...([
+    { luz: [12.58, 1.19, -0.38], antena: [12.24, -0.08] },
+    { luz: [-11.95, sobreAla(11.95) + 0.035, -0.35], antena: [-11.9, -0.3] },
+  ] as const).flatMap(({ luz, antena }): Pieza[] => [
+    // Un huso blanco tumbado a lo largo (la caja salía negra: con aristas
+    // redondeadas tan pequeñas, sus caras se veían del revés).
+    { tipo: "tubo", id: "luces", acabado: "blanco", centro: [luz[0], luz[1]], seccion: [1, 0.75], perfil: [[luz[2] + 0.09, 0], [luz[2] + 0.06, 0.035], [luz[2] + 0.02, 0.048], [luz[2] - 0.04, 0.048], [luz[2] - 0.08, 0.03], [luz[2] - 0.09, 0]] },
+    { tipo: "varilla", id: "antenas", acabado: "carbono-wh", desde: [antena[0], sobreAla(antena[0]), antena[1]], hasta: [antena[0], sobreAla(antena[0]) + 0.14, antena[1]], radio: 0.008, lados: 8 },
+  ]),
   { tipo: "caja", id: "remate-cola", acabado: "carbono-wh", centro: [0, ESTAB.y + 0.025, (COLA.ba + COLA.bs) / 2], tam: [0.07, 0.05, 0.8], redondeo: 0.02 },
   // Motores: varilla, huso y hélice.
-  { tipo: "varilla", id: "varillas-motor", acabado: "carbono-wh", desde: [MOTOR.x, MOTOR.y, ALA.ba - 0.15], hasta: [MOTOR.x, MOTOR.y, MOTOR.z0 + 0.05], radio: 0.017, lados: 12, espejo: true },
+  { tipo: "varilla", id: "varillas-motor", acabado: "carbono-wh", desde: [MOTOR.x, MOTOR.y, baAla(MOTOR.x) - 0.1], hasta: [MOTOR.x, MOTOR.y, MOTOR.z0 + 0.05], radio: 0.017, lados: 12, espejo: true },
   ...([1, -1] as const).map((s): Pieza => ({
     tipo: "tubo", id: "gondolas", acabado: "blanco", centro: [s * MOTOR.x, MOTOR.y],
     perfil: [[MOTOR.z1, 0], [MOTOR.z1 - 0.02, 0.035], [MOTOR.z1 - 0.06, 0.058], [MOTOR.z1 - 0.13, MOTOR.r], [MOTOR.z1 - 0.24, 0.064], [MOTOR.z0 + 0.08, 0.035], [MOTOR.z0, 0.018]],
   })),
-  { tipo: "helice", id: "helices", acabado: "negro", en: [MOTOR.x, MOTOR.y, MOTOR.z1 - 0.05], radio: 0.725, palas: 2, ancho: 0.12, buje: 0, espejo: true, giro: 55 },
+  // Palas anchas, con el máximo hacia fuera y la punta redonda; cada hélice,
+  // girada como en la foto de frente.
+  ...([[1, 123], [-1, 17]] as const).map(([s, giro]): Pieza => ({
+    tipo: "helice", id: "helices", acabado: "negro", en: [s * MOTOR.x, MOTOR.y, MOTOR.z1 - 0.05], radio: 0.725, palas: 2, ancho: 0.13, buje: 0, giro,
+    forma: [[0, 0.18, 0.18], [0.15, 0.28, 0.28], [0.4, 0.42, 0.42], [0.65, 0.5, 0.5], [0.85, 0.46, 0.46], [0.96, 0.3, 0.3], [1, 0.08, 0.08]],
+  })),
 ];
 
 const PARTES: Parte[] = [
@@ -149,7 +187,7 @@ const PARTES: Parte[] = [
   {
     nombre: "Puntas caídas",
     en: [12.3, 1.0, -0.2],
-    piezas: ["puntas", "luces"],
+    piezas: ["puntas", "luces", "antenas"],
     respaldo: "foto",
     fuentes: ["frente", "lado", "despegue"],
     texto: "Al final de cada ala, una pala que cae hacia fuera, al revés que los tramos de fuera, que suben, y se echa hacia atrás hasta acabar en pico. Es un marco forrado de película translúcida, con riostras en aspa y sin células. Justo antes, arriba, un bulto blanco con la luz de navegación y una antenita.",
@@ -167,11 +205,11 @@ const PARTES: Parte[] = [
   {
     nombre: "Botalón y morro",
     en: [0, 0.1, 1.4],
-    piezas: ["botalon", "morro", "bola", "carenado"],
+    piezas: ["botalon", "morro", "bola", "soporte-bola", "carenado"],
     respaldo: "foto",
     fuentes: ["planta", "frente", "lado", "despegue"],
-    texto: "No tiene fuselaje: un tubo fino de fibra de carbono lleva la cola, colgado bajo el centro del ala de un carenado negro. Por delante del ala asoma un tramo corto con una caja blanca en la punta y, encima, una bola blanca.",
-    nota: "Los largos, de la foto desde arriba de Kenia con la cámara encajada; la altura de la bola, de esa y de la de frente, que coinciden. Qué llevan la caja y la bola no se ha publicado.",
+    texto: "No tiene fuselaje: un tubo fino de fibra de carbono lleva la cola, colgado bajo el centro del ala de un carenado negro. Por delante del ala asoma una varilla con una caja blanca en la punta y, junto al ala, una bola blanca.",
+    nota: "Los largos, de la foto desde arriba de Kenia con la cámara encajada; la caja, también de la de Kenia de lado; la bola, triangulada con la de frente y la de desde arriba. El soporte de la bola no se distingue en ninguna foto: es una reconstrucción. Qué llevan la caja y la bola no se ha publicado.",
   },
   {
     nombre: "Cola en T",
@@ -185,7 +223,7 @@ const PARTES: Parte[] = [
 ];
 
 // Todo lo de arriba, de metros a unidades de la maqueta.
-const u = (v: number) => v / ESCALA;
+const u = (v: number) => (v * K) / ESCALA;
 const u2 = ([a, b]: [number, number]): [number, number] => [u(a), u(b)];
 const u3 = ([a, b, c]: P3): P3 => [u(a), u(b), u(c)];
 const MEDIDAS = ["z", "ancho", "arriba", "abajo", "cintura"] as const;
@@ -214,15 +252,18 @@ const aUnidades = (p: Pieza): Pieza => {
 
 // ── Detalle pintado del HD ─────────────────────────────────────────────────
 // La cara de arriba, medida en la foto desde arriba de Kenia con la cámara
-// encajada (perfil de brillo a lo largo del ala): módulos de células, negros
-// con la cuadrícula, de 0,55 m a lo ancho, uno cada 1,55 m, casi de borde a
-// borde; entre ellos, película plateada; en el centro, 3,4 m sin células. En
-// los tramos de fuera, más juntos (cada 1,2 m) y algo más estrechos. Por
-// delante, el cajón del borde de ataque, gris oscuro, en el primer 28 % de la
-// cuerda; tiras blancas finas en los dos bordes. Todo sigue la planta.
-const MODULO = { ancho: 0.55, paso: 1.55, primero: 1.95, delante: 0.04, detras: 0.96 };
-const FUERA_MOD = { ancho: 0.45, paso: 1.2, primero: 0.72 };
-const CAJON = { cuerda: 0.28, color: "#4f555c" };
+// encajada (perfil de brillo a lo largo del ala, detrás del cajón, sobre la
+// planta medida): módulos de células, negros con la cuadrícula, de 0,65 m a
+// lo ancho, uno cada 1,53 m (centrados a 2,0, 3,5, 5,1 y 6,6 m del eje),
+// casi de borde a borde; entre ellos, película plateada; en el centro, 3,4 m
+// sin células. En cada tramo de fuera, tres, de 0,6 m, uno cada 1,76 m a lo
+// largo del tramo (a 8,4, 10,2 y 11,9 m del eje; el lado derecho de la foto,
+// porque en el izquierdo un foco tapa el tramo). Por delante, el cajón del
+// borde de ataque, gris oscuro, en el primer 33 % de la cuerda; una tira
+// blanca fina en el borde de ataque y otra de 7 cm en el de salida. Todo sigue la planta.
+const MODULO = { ancho: 0.65, paso: 1.53, primero: 2.0, delante: 0.04, detras: 0.96 };
+const FUERA_MOD = { ancho: 0.6, paso: 1.76, primero: 1.18 };
+const CAJON = { cuerda: 0.33, color: "#4f555c" };
 const ARRIBA: P3 = [0, 1, 0];
 const ARRIBA_FUERA: P3 = [-Math.sin(rad(ALA.diedro)), Math.cos(rad(ALA.diedro)), 0];
 // Un punto de la cuerda en x: del borde de ataque (0) al de salida (1).
@@ -255,7 +296,7 @@ const franjaCentro = (xa: number, xb: number, zDe: (x: number) => [number, numbe
 };
 const cajon = (x: number): [number, number] => [baAla(x) - 0.01, enCuerda(x, CAJON.cuerda)];
 const tiraBa = (x: number): [number, number] => [baAla(x) + 0.005, baAla(x) - 0.045];
-const tiraBs = (x: number): [number, number] => [bsAla(x) + 0.045, bsAla(x) - 0.005];
+const tiraBs = (x: number): [number, number] => [bsAla(x) + 0.07, bsAla(x) - 0.005];
 const TRAMOS: [number, number][] = [[0, 2.0], [2.0, ALA.centro], [-2.0, 0], [-ALA.centro, -2.0]];
 // En los de fuera la cuerda no cambia: franjas rectas.
 const franjaFuera = (z0: number, z1: number, color: string, capa: number): Calca =>
@@ -263,15 +304,23 @@ const franjaFuera = (z0: number, z1: number, color: string, capa: number): Calca
 const XF = X_FUERA;
 const CALCAS: Calca[] = [
   ...Array.from({ length: 4 }, (_, i) => moduloCentro(MODULO.primero + i * MODULO.paso)),
-  ...Array.from({ length: 4 }, (_, i) => moduloFuera(FUERA_MOD.primero + i * FUERA_MOD.paso)),
+  ...Array.from({ length: 3 }, (_, i) => moduloFuera(FUERA_MOD.primero + i * FUERA_MOD.paso)),
   ...TRAMOS.map(([a, b]) => franjaCentro(a, b, cajon, CAJON.color, 1)),
   ...TRAMOS.map(([a, b]) => franjaCentro(a, b, tiraBa, "#e6e9ea", 3)),
   ...TRAMOS.map(([a, b]) => franjaCentro(a, b, tiraBs, "#f2f3f1", 3)),
   franjaFuera(baAla(XF) - 0.01, enCuerda(XF, CAJON.cuerda), CAJON.color, 1),
   franjaFuera(baAla(XF) + 0.005, baAla(XF) - 0.045, "#e6e9ea", 3),
-  franjaFuera(bsAla(XF) + 0.045, bsAla(XF) - 0.005, "#f2f3f1", 3),
+  franjaFuera(bsAla(XF) + 0.07, bsAla(XF) - 0.005, "#f2f3f1", 3),
   // Larguero oscuro del timón de profundidad, en su primer 20 %.
-  { sobre: ["estabilizador"], en: [ESTAB.semi / 2, ESTAB.y + 0.2, COLA.ba - 0.09], desde: ARRIBA, tam: [ESTAB.semi, 0.16], dibujo: { tipo: "rect", color: "#2a2c2f" }, espejo: true },
+  ...[1, -1].map((l): Calca => {
+    // Larguero oscuro del timón de profundidad, en su primer 20 %, siguiendo
+    // el borde de ataque en flecha (un polígono por lado: con `espejo` sale
+    // volteado).
+    const zr = ESTAB.raiz[0], zp = ESTAB.punta[0], zMax = zr + 0.01, zMin = zp - 0.17, v = (z: number) => (zMax - z) / (zMax - zMin);
+    const [i0, i1] = l > 0 ? [0, 1] : [1, 0];
+    const pts: [number, number][] = [[i0, v(zr)], [i1, v(zp)], [i1, v(zp - 0.16)], [i0, v(zr - 0.16)]];
+    return { sobre: ["estabilizador"], en: [(l * ESTAB.semi) / 2, ESTAB.y + 0.2, (zMax + zMin) / 2], desde: ARRIBA, tam: [ESTAB.semi, zMax - zMin], dibujo: { tipo: "poligono", color: "#2a2c2f", puntos: pts } };
+  }),
 ];
 
 // El marco de las puntas y los nervios de la deriva: líneas oscuras (fotos de
@@ -290,15 +339,15 @@ const LARGUERO_COLA = COLA.ba - 0.43 * (COLA.ba - COLA.bs);
 const FUERA_PUNTA: P3 = [0.7, 0.7, 0];
 // Nervios del timón de profundidad, cada 0,2 m, de borde a borde (desde
 // arriba); con el larguero oscuro pintado delante.
-const NERVIOS_ESTAB = Array.from({ length: 11 }, (_, i) => 0.2 + i * 0.2);
+const NERVIOS_ESTAB = Array.from({ length: 11 }, (_, i) => 0.2 + i * 0.2).filter((x) => x < ESTAB.semi - 0.05);
 const COSTURAS: Costura[] = [
-  ...NERVIOS_ESTAB.map((x): Costura => ({ sobre: ["estabilizador"], desde: ARRIBA, espejo: true, puntos: [[x, ESTAB.y + 0.2, COLA.ba - 0.15], [x, ESTAB.y + 0.2, COLA.bs + 0.02]] })),
+  ...NERVIOS_ESTAB.map((x): Costura => ({ sobre: ["estabilizador"], desde: ARRIBA, espejo: true, puntos: [[x, ESTAB.y + 0.2, ESTAB.raiz[0] + ((ESTAB.punta[0] - ESTAB.raiz[0]) * x) / ESTAB.semi - 0.17], [x, ESTAB.y + 0.2, ESTAB.raiz[1] + ((ESTAB.punta[1] - ESTAB.raiz[1]) * x) / ESTAB.semi + 0.02]] })),
   // Nervio del codo, de borde a borde, y larguero a un cuarto de la cuerda.
   { sobre: ["puntas"], desde: FUERA_PUNTA, espejo: true, puntos: [0.05, 0.5, 0.95].map((c) => puntoPunta(0.5, c)) },
   { sobre: ["puntas"], desde: FUERA_PUNTA, espejo: true, puntos: [0.03, 0.25, 0.5, 0.75, 0.95].map((f) => puntoPunta(f, 0.25)) },
-  // Deriva: tres nervios a lo largo y un larguero al 43 % de la cuerda
-  // (Kenia de lado).
-  ...[0.28, 0.53, 0.8].map((k): Costura => {
+  // Deriva: cuatro nervios a lo largo (en el despegue, desde abajo: cinco
+  // recuadros iguales) y un larguero al 43 % de la cuerda (Kenia de lado).
+  ...[0.21, 0.42, 0.61, 0.81].map((k): Costura => {
     const y = BOTALON.y + k * (COLA.alto - BOTALON.y);
     return { sobre: ["deriva"], desde: [1, 0, 0], espejo: true, puntos: [[0.02, y, COLA.ba], [0.02, y, (COLA.ba + COLA.bs) / 2], [0.02, y, COLA.bs]] };
   }),
