@@ -7,7 +7,7 @@
 - **Solo en local, fuera de Git**: la ficha provisional `src/content/uas/airbus-zephyr/` (en `.git/info/exclude`); en `arte/uas-fuentes/airbus-zephyr/hd/`, los ajustes de cámara y copias de `comparar-foto`, `vista-visor` y `generar-uas-miniaturas-hd` con el Chrome de Linux (en el Mac, los de `arte/`).
 - **Sin medir**: `desfaseLuz`. Sin nave del hero (no pedida).
 - **Falta**: la nota (fase 1), importarla en `main` y probar (fase 5), y que el usuario revise la maqueta (fase 6).
-- **Siguiente paso**: que el usuario mire la comparación y diga qué no está igual.
+- **Siguiente paso**: que el usuario mire la comparación de la planta corregida y diga qué no está igual.
 
 ## Decisiones del usuario
 
@@ -21,8 +21,8 @@
 En metros; y = 0 en la cuerda del ala, z = 0 a un tercio de la cuerda (borde de ataque 0,5, de salida −1,0). Escala 1 unidad = 10 m.
 
 - **Cámaras**: frente (Arizona): az −8,3°, 245 px/m a la altura del ala. Desde arriba (Kenia): az −90,8°, el 21,3°, d 42 m, campo 16,4° (98 px/m a lo largo del avión). Rehacer con `node arte/encajar-camara.mjs arte/uas-fuentes/airbus-zephyr/hd/<frente|planta>.json`.
-- **Ala**: tramo central recto de ±7,3 m; tramos de fuera de 5 m a 14°; cuerda 1,5 m en todo el ala; grueso 0,18 (0,15 en el quiebro). Puntas en tres estaciones (raíz, codo, extremo): codo en x 12,9, y 1,0, ba −0,4, bs −1,35; extremo en pico en x 13,15, y 0,62, ba −1,3, bs −1,55. **Así el ala mide ~26,3 m de punta a punta; la cifra oficial es 25 m** (toda la escala sale de suponer ~25 m de ancho en la foto de frente; si hubiera que cuadrar los 25 m, se encoge todo un 5 %).
-- **Cara de arriba**: módulos de células de 0,55 m a lo ancho, uno cada 1,55 m (el primero centrado a 1,95 m del eje; 3,4 m centrales sin células), del 4 al 96 % de la cuerda; en los tramos de fuera, de 0,45 m cada 1,2 m. Cajón del borde de ataque gris oscuro en el primer 28 %. Tira blanca fina en los dos bordes. Medido con un perfil de brillo a lo largo del ala proyectado con la cámara de desde arriba.
+- **Ala**: tramo central recto de ±7,3 m; tramos de fuera de 5 m a 14°. **Planta (no es un rectángulo)**, de la foto desde arriba enderezada con su cámara: [x, ba, bs] = [0, 0,5, −1,0], [2,0, 0,49, −0,97], [7,3, 0,42, −0,58], [12,15, 0,4, −0,6]; cuerda 1,5 m en ±2 m, baja en línea recta a 1,0 m en el quiebro y sigue en 1,0 m. Grueso 0,18 en el centro, 0,12 fuera. Puntas en tres estaciones (raíz, codo, extremo): codo en x 12,9, y 1,0, ba −0,4, bs −1,35; extremo en pico en x 13,15, y 0,62, ba −1,3, bs −1,55. **Así el ala mide ~26,3 m de punta a punta; la cifra oficial es 25 m** (toda la escala sale de suponer ~25 m de ancho en la foto de frente; si hubiera que cuadrar los 25 m, se encoge todo un 5 %).
+- **Cara de arriba** (sigue la planta): módulos de células de 0,55 m a lo ancho, uno cada 1,55 m (el primero centrado a 1,95 m del eje; 3,4 m centrales sin células), del 4 al 96 % de la cuerda; en los tramos de fuera, de 0,45 m cada 1,2 m. Cajón del borde de ataque gris oscuro en el primer 28 %. Tira blanca fina en los dos bordes. Medido con un perfil de brillo a lo largo del ala proyectado con la cámara de desde arriba.
 - **Motores**: x ±3,94, y −0,04; huso blanco de 0,42 m (punta a 0,7 m del borde de ataque) sobre varilla negra; hélice de 1,45 m, dos palas.
 - **Botalón**: de un carenado negro bajo el ala (del borde de ataque a 1,1 m tras el de salida) a la deriva, a y −0,14. Por delante, tramo corto a y 0,07 hasta z 1,6 (1,1 m delante del borde de ataque) con caja blanca de 0,45 m; bola blanca de 0,27 m en z 0,81 con la cima a y 0,35 (las dos cámaras la ponen en el mismo sitio).
 - **Cola**: deriva de 0,8 m de cuerda (ba −4,46, bs −5,26), de y −0,14 a 1,25, largueros en los bordes, nervios a ¼, ½ y ¾ y larguero al 43 %. Timón de profundidad a y 1,28, 4,7 m de punta a punta, misma cuerda que la deriva, larguero oscuro en el primer 20 % y nervios cada 0,2 m.
@@ -56,6 +56,7 @@ Fotos en `arte/uas-fuentes/airbus-zephyr/full/` (también en su `FUENTES.md`). C
 - Pilón colgando bajo el ala para los motores: de frente, el buje está casi a la altura del ala.
 - Las pestañas oscuras bajo el ala de la foto del despegue: no se distingue qué son; sin poner.
 - La matrícula del botalón (foto de Kenia): ilegible; sin poner.
+- Ala rectangular (cuerda constante): en la foto desde arriba enderezada, el borde de salida se adelanta del centro a los quiebros. Lo vio el usuario en la superposición y se había pasado por alto.
 - Cuerda de 1,9 m y botalón 2,8 m por delante (primera versión): la escala de la foto desde arriba se leyó mal, y la «punta del morro» era la pierna de una persona. Con la cámara encajada: 1,5 m y 1,1 m.
 - Cúpula sobre el centro del ala: es la bola del botalón delantero, delante del borde de ataque.
 - Encajar la cámara en la foto de Kenia de lado (`AALTO-Zephyr.png`): gran angular y puntos dudosos (errores de 20-60 px); solo sirve para ver cómo son las piezas.
@@ -65,3 +66,4 @@ Fotos en `arte/uas-fuentes/airbus-zephyr/full/` (también en su `FUENTES.md`). C
 
 - 05-11-2026: fuentes (AALTO, DVIDS, TWZ); maqueta medida en las fotos de frente y desde arriba y encajada en la de frente; tarjeta, planta y miniaturas. El servidor de desarrollo necesita Node 24 (el glosario usa `(?i:…)` en expresiones regulares; con Node 22 las fichas salen vacías).
 - 05-11-2026 (2.ª vuelta): maqueta rehecha con las fotos a tamaño completo. Cámaras encajadas de frente y desde arriba (el ajuste desde arriba solo converge empezando en az −90, el 21); con ellas, cuerda, góndolas, botalón delantero con caja y bola, cola, puntas en pico con codo, luz y antena, y el reparto de células medido con un perfil de brillo proyectado. Dibujo nuevo `celdas` y acabado `film-ze`.
+- 06-11-2026: planta del ala corregida (el usuario vio en la superposición que no era un rectángulo). Medida enderezando la foto desde arriba con su cámara encajada (`enderezar.py` en el scratchpad de la sesión: remuestrea la foto a coordenadas del avión). Franjas del cajón y de los bordes con polígonos, sin `espejo` (con él salían volteadas).

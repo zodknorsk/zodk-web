@@ -21,8 +21,12 @@ type P3 = [number, number, number];
 type Est = [number, number, number, number, number];
 
 // Ala en tres tramos (foto de frente): el del centro, recto y sin diedro, de
-// 14,6 m; los de fuera, de 5 m, suben 14°. Cuerda de 1,5 m, la misma hasta
-// las puntas (desde arriba: 144 px); grueso de 0,18 m (de frente, 45-55 px).
+// 14,6 m; los de fuera, de 5 m, suben 14°. La planta, de la foto desde arriba
+// de Kenia enderezada con su cámara encajada: 1,5 m de cuerda en los 2 m de
+// cada lado del centro; de ahí al quiebro, el borde de salida avanza en
+// línea recta y la cuerda baja a 1,0 m (el de ataque solo retrocede 8 cm); en
+// los tramos de fuera, 1,0 m. Grueso de 0,18 m en el centro (de frente,
+// 45-55 px), un 12 % de la cuerda.
 // Las puntas, una pala que se echa atrás hasta acabar en pico: de frente,
 // primero sale casi en horizontal (cae 0,3 m en 0,75 m) y desde un codo cae
 // casi en vertical; su extremo, a 13,15 m del centro, a 0,64 m de alto y
@@ -33,16 +37,32 @@ const ALA = { y: 0, centro: 7.3, fuera: 5.0, diedro: 14, ba: 0.5, bs: -1.0, t: 0
 const rad = (g: number) => (g * Math.PI) / 180;
 const X_FUERA = ALA.centro + ALA.fuera * Math.cos(rad(ALA.diedro));
 const SUBE_FUERA = ALA.fuera * Math.sin(rad(ALA.diedro));
+// Planta del ala: [x, borde de ataque, borde de salida, grueso].
+const PLANTA_ALA: [number, number, number, number][] = [
+  [0, ALA.ba, ALA.bs, ALA.t],
+  [2.0, 0.49, -0.97, 0.18],
+  [ALA.centro, 0.42, -0.58, 0.12],
+  [X_FUERA, 0.4, -0.6, 0.12],
+];
+const enPlanta = (x: number, k: 1 | 2 | 3): number => {
+  const ax = Math.abs(x);
+  for (let i = 1; i < PLANTA_ALA.length; i++) {
+    const a = PLANTA_ALA[i - 1], b = PLANTA_ALA[i];
+    if (ax <= b[0] || i === PLANTA_ALA.length - 1) return a[k] + ((b[k] - a[k]) * (ax - a[0])) / (b[0] - a[0]);
+  }
+  return PLANTA_ALA[0][k];
+};
+const baAla = (x: number) => enPlanta(x, 1), bsAla = (x: number) => enPlanta(x, 2);
 // Raíz, codo y extremo de la punta: [x, y, borde de ataque, de salida, grueso].
 const PUNTA: [number, number, number, number, number][] = [
-  [X_FUERA, SUBE_FUERA, ALA.ba, ALA.bs, 0.13],
+  [X_FUERA, SUBE_FUERA, 0.4, -0.6, 0.11],
   [12.9, 1.0, -0.4, -1.35, 0.08],
   [13.15, 0.62, -1.3, -1.55, 0.04],
 ];
 // Hueco entre tramos (las juntas de las fotos de fábrica).
 const HUECO = 0.006;
-const EST_CENTRO: Est[] = [[0, ALA.ba, ALA.bs, ALA.t, 0], [ALA.centro, ALA.ba, ALA.bs, ALA.t, 0]];
-const EST_FUERA: Est[] = [[ALA.centro + HUECO, ALA.ba, ALA.bs, ALA.t, 0], [X_FUERA, ALA.ba, ALA.bs, 0.15, SUBE_FUERA]];
+const EST_CENTRO: Est[] = PLANTA_ALA.slice(0, 3).map(([x, ba, bs, t]) => [x, ba, bs, t, 0]);
+const EST_FUERA: Est[] = [[ALA.centro + HUECO, baAla(ALA.centro), bsAla(ALA.centro), 0.12, 0], [X_FUERA, baAla(X_FUERA), bsAla(X_FUERA), 0.12, SUBE_FUERA]];
 const EST_PUNTA: Est[] = PUNTA.map(([x, y, ba, bs, t], i) => [i ? x : x + HUECO, ba, bs, t, i ? y : y - HUECO]);
 
 // Botalón de carbono: de un carenado negro bajo el centro del ala, que sigue
@@ -124,7 +144,7 @@ const PARTES: Parte[] = [
     respaldo: "foto",
     fuentes: ["frente", "planta", "lado", "celulas"],
     texto: "25 m de punta a punta, más que un Boeing 737, y el avión entero pesa unos 75 kg. Arriba lleva módulos de células solares, negras y brillantes, entre tramos de película plateada: de día mueven los motores y cargan las baterías para pasar la noche. Así aguanta semanas a unos 20.000 m, por encima del tiempo y de los aviones de línea.",
-    nota: "La envergadura es la oficial; la cuerda, el diedro y los tramos, medidos en las fotos de Kenia y de Arizona. El paso de los módulos de células, de la foto de Kenia de lado; aproximado.",
+    nota: "La envergadura es la oficial; el diedro y los tramos, de la foto de frente; la planta (1,5 m de cuerda en el centro y 1,0 m desde los quiebros), de la de desde arriba de Kenia enderezada con su cámara. El reparto de los módulos de células, medido en esa misma foto.",
   },
   {
     nombre: "Puntas caídas",
@@ -199,35 +219,57 @@ const aUnidades = (p: Pieza): Pieza => {
 // borde; entre ellos, película plateada; en el centro, 3,4 m sin células. En
 // los tramos de fuera, más juntos (cada 1,2 m) y algo más estrechos. Por
 // delante, el cajón del borde de ataque, gris oscuro, en el primer 28 % de la
-// cuerda; detrás, una tira blanca fina en el borde de salida.
+// cuerda; tiras blancas finas en los dos bordes. Todo sigue la planta.
 const MODULO = { ancho: 0.55, paso: 1.55, primero: 1.95, delante: 0.04, detras: 0.96 };
 const FUERA_MOD = { ancho: 0.45, paso: 1.2, primero: 0.72 };
+const CAJON = { cuerda: 0.28, color: "#4f555c" };
 const ARRIBA: P3 = [0, 1, 0];
 const ARRIBA_FUERA: P3 = [-Math.sin(rad(ALA.diedro)), Math.cos(rad(ALA.diedro)), 0];
-const enCuerda = (f: number) => ALA.ba - f * (ALA.ba - ALA.bs);
-const Z_MOD = (enCuerda(MODULO.delante) + enCuerda(MODULO.detras)) / 2;
-const LARGO_MOD = enCuerda(MODULO.delante) - enCuerda(MODULO.detras);
-const CAJON = { cuerda: 0.28, color: "#4f555c" };
-const Z_CAJON = enCuerda(CAJON.cuerda / 2), LARGO_CAJON = CAJON.cuerda * (ALA.ba - ALA.bs);
+// Un punto de la cuerda en x: del borde de ataque (0) al de salida (1).
+const enCuerda = (x: number, f: number) => baAla(x) - f * (baAla(x) - bsAla(x));
 // Dos filas de casillas a lo ancho del módulo y 22 a lo largo de la cuerda.
-const moduloCentro = (x: number): Calca =>
-  ({ sobre: ["ala"], en: [x, 0.3, Z_MOD], desde: ARRIBA, tam: [MODULO.ancho, LARGO_MOD], dibujo: { tipo: "celdas", columnas: 2, filas: 22 }, espejo: true, capa: 2 });
+const moduloCentro = (x: number): Calca => {
+  const z0 = enCuerda(x, MODULO.delante), z1 = enCuerda(x, MODULO.detras);
+  return { sobre: ["ala"], en: [x, 0.3, (z0 + z1) / 2], desde: ARRIBA, tam: [MODULO.ancho, z0 - z1], dibujo: { tipo: "celdas", columnas: 2, filas: 22 }, espejo: true, capa: 2 };
+};
 // En los tramos de fuera, el ancho de la calca va a lo largo de la cuerda.
 const enFuera = (d: number, dy = 0.3): P3 => [ALA.centro + d * Math.cos(rad(ALA.diedro)) - 0.08, d * Math.sin(rad(ALA.diedro)) + dy, 0];
 const moduloFuera = (d: number): Calca => {
   const [x, y] = enFuera(d);
-  return { sobre: ["ala-fuera"], en: [x, y, Z_MOD], desde: ARRIBA_FUERA, tam: [LARGO_MOD, FUERA_MOD.ancho], dibujo: { tipo: "celdas", columnas: 22, filas: 2 }, espejo: true, capa: 2 };
+  const z0 = enCuerda(x, MODULO.delante), z1 = enCuerda(x, MODULO.detras);
+  return { sobre: ["ala-fuera"], en: [x, y, (z0 + z1) / 2], desde: ARRIBA_FUERA, tam: [z0 - z1, FUERA_MOD.ancho], dibujo: { tipo: "celdas", columnas: 22, filas: 2 }, espejo: true, capa: 2 };
 };
-const franja = (z: number, ancho: number, color: string, capa: number): Calca[] => [
-  { sobre: ["ala"], en: [ALA.centro / 2, 0.3, z], desde: ARRIBA, tam: [ALA.centro, ancho], dibujo: { tipo: "rect", color }, espejo: true, capa },
-  { sobre: ["ala-fuera"], en: [...enFuera(ALA.fuera / 2).slice(0, 2), z] as P3, desde: ARRIBA_FUERA, tam: [ancho, ALA.fuera], dibujo: { tipo: "rect", color }, espejo: true, capa },
-];
+// Una franja a lo largo de un tramo del centro, de xa a xb (xa < xb, en
+// cualquier lado), entre dos z que da zDe en cada x: un polígono en una calca
+// que cubre el tramo. Sin `espejo`: con él, el dibujo del otro lado salía
+// volteado y la franja, torcida al revés.
+const franjaCentro = (xa: number, xb: number, zDe: (x: number) => [number, number], color: string, capa: number): Calca => {
+  const [a0, a1] = zDe(xa), [b0, b1] = zDe(xb);
+  const zMax = Math.max(a0, a1, b0, b1) + 0.02, zMin = Math.min(a0, a1, b0, b1) - 0.02;
+  // En la calca vista desde arriba, la v del dibujo crece hacia atrás (−z).
+  const v = (z: number) => (zMax - z) / (zMax - zMin);
+  return {
+    sobre: ["ala"], en: [(xa + xb) / 2, 0.3, (zMax + zMin) / 2], desde: ARRIBA, tam: [xb - xa, zMax - zMin], capa,
+    dibujo: { tipo: "poligono", color, puntos: [[0, v(a0)], [1, v(b0)], [1, v(b1)], [0, v(a1)]] },
+  };
+};
+const cajon = (x: number): [number, number] => [baAla(x) - 0.01, enCuerda(x, CAJON.cuerda)];
+const tiraBa = (x: number): [number, number] => [baAla(x) + 0.005, baAla(x) - 0.045];
+const tiraBs = (x: number): [number, number] => [bsAla(x) + 0.045, bsAla(x) - 0.005];
+const TRAMOS: [number, number][] = [[0, 2.0], [2.0, ALA.centro], [-2.0, 0], [-ALA.centro, -2.0]];
+// En los de fuera la cuerda no cambia: franjas rectas.
+const franjaFuera = (z0: number, z1: number, color: string, capa: number): Calca =>
+  ({ sobre: ["ala-fuera"], en: [...enFuera(ALA.fuera / 2).slice(0, 2), (z0 + z1) / 2] as P3, desde: ARRIBA_FUERA, tam: [z0 - z1, ALA.fuera], dibujo: { tipo: "rect", color }, espejo: true, capa });
+const XF = X_FUERA;
 const CALCAS: Calca[] = [
   ...Array.from({ length: 4 }, (_, i) => moduloCentro(MODULO.primero + i * MODULO.paso)),
   ...Array.from({ length: 4 }, (_, i) => moduloFuera(FUERA_MOD.primero + i * FUERA_MOD.paso)),
-  ...franja(Z_CAJON, LARGO_CAJON, CAJON.color, 1),
-  ...franja(ALA.ba - 0.02, 0.05, "#e6e9ea", 3),
-  ...franja(ALA.bs + 0.025, 0.04, "#f2f3f1", 3),
+  ...TRAMOS.map(([a, b]) => franjaCentro(a, b, cajon, CAJON.color, 1)),
+  ...TRAMOS.map(([a, b]) => franjaCentro(a, b, tiraBa, "#e6e9ea", 3)),
+  ...TRAMOS.map(([a, b]) => franjaCentro(a, b, tiraBs, "#f2f3f1", 3)),
+  franjaFuera(baAla(XF) - 0.01, enCuerda(XF, CAJON.cuerda), CAJON.color, 1),
+  franjaFuera(baAla(XF) + 0.005, baAla(XF) - 0.045, "#e6e9ea", 3),
+  franjaFuera(bsAla(XF) + 0.045, bsAla(XF) - 0.005, "#f2f3f1", 3),
   // Larguero oscuro del timón de profundidad, en su primer 20 %.
   { sobre: ["estabilizador"], en: [ESTAB.semi / 2, ESTAB.y + 0.2, COLA.ba - 0.09], desde: ARRIBA, tam: [ESTAB.semi, 0.16], dibujo: { tipo: "rect", color: "#2a2c2f" }, espejo: true },
 ];
