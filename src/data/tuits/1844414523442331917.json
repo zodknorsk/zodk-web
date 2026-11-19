@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-11-19",
+  "tuit": {
+    "id_str": "1844414523442331917",
+    "created_at": "2024-10-10T16:27:44.000Z",
+    "text": "Introducing the Bolt family of man-packable Autonomous Air Vehicles ft. both ISR and munition variants.\n\nBolt-M equips ground forces with simple, lethal, and reliable precision firepower. It uses advanced autonomy software to enable operators to focus on four simple decisions: https://t.co/wngFr6ffxX",
+    "note_tweet": true,
+    "user": {
+      "name": "Anduril Industries",
+      "screen_name": "anduriltech",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1892311837968125955/YmCsRx5t_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/wngFr6ffxX",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1844413372902801411/pu/img/LTZD5W7tGQlRxsBx.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1844413372902801411/pu/pl/1n2zIjKytBl19V7I.m3u8?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/1844413372902801411/pu/vid/avc1/480x270/hVfs3bBbQeu4LxRb.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/1844413372902801411/pu/vid/avc1/640x360/tPph-LnO89Kr_5Ys.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1844413372902801411/pu/vid/avc1/1280x720/SxIBWjxhh1iA7Tfu.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

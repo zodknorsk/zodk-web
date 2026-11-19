@@ -157,6 +157,11 @@ const PINTURAS: Record<Acabado, Pintura> = {
   "verde-gr": { color: "#3f5636", metal: 0, rugosidad: 0.7 },
   "pardo-gr": { color: "#86754a", metal: 0, rugosidad: 0.55 },
   "obturador": { color: "#3b6248", metal: 0, rugosidad: 0.25 },
+  // El Bolt-M (fotos de los Marines): carcasa de plástico blanco algo cálido,
+  // batería y cúpulas negras muy mates y la banda azul de la cabeza de guerra.
+  "blanco-bo": { color: "#dcdbd6", metal: 0, rugosidad: 0.55 },
+  "negro-bo": { color: "#1d1e20", metal: 0, rugosidad: 0.8 },
+  "azul-bo": { color: "#2f78b5", metal: 0, rugosidad: 0.5 },
 };
 
 // Tres escalones de luz para la ilustración.
