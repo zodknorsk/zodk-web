@@ -1,15 +1,12 @@
 # Queen Hornet — diario
 
-## Dónde estamos: aparcado (27-10-2026) tras las fases 2, 3 y 4, sin nota
+## Dónde estamos: fases 1 y 5 hechas (19-11-2026), sin commitear
 
-- Fase 2: fotos y `FUENTES.md` en `arte/uas-fuentes/queen-hornet/` (fuera de Git; tabla abajo). Ajustes de cámara encajados en `hd/arriba.json` y `hd/lado.json`.
-- Fase 3: maqueta en `src/data/uas/queen-hornet.ts`, con el detalle copiado de las fotos oficiales ampliadas ×4 (`recortes/` fuera de Git) y piezas al modo del Strike, encajada con la foto de arriba y la de lado. Tres acabados nuevos (`anodizado-qh`, `gris-cola`, `bateria-qh`) y `solo` en el dibujo `sting` (el avispón sin rótulo).
-- Fase 4: `desfaseLuz` 0,35; tarjeta, tarjeta de noche y planta (`plantaDoble`) en `public/uas/queen-hornet/`; miniaturas de las fuentes en `fuentes/`.
-- **Falta la fase 1, la nota en la bóveda**: sin ella no hay ficha. Para probar se usó un borrador temporal en `src/content/uas/queen-hornet/index.md`, ya borrado.
-- El logo amarillo de la placa queda bajo la batería de delante (va pintado, pero no se ve).
-- La caja de debajo del cubo (con letra amarilla, parece una batería) se queda como caja de suelta: el usuario lo deja así.
-- El trabajo está en la rama `claude/nuevodron-fases-2-3-4-iid64t`; para importar hay que llevarlo a `main` (el importador se niega fuera de ella).
-- Siguiente: `/nuevodron Queen Hornet. Fase 1` (la nota) y luego la 5.
+- Fases 1 a 5 hechas. Nota `🇺🇦 Queen Hornet.md` en la bóveda (en borrador), importada con `--en-esta-rama` y probada en `localhost:4321/uas/queen-hornet`: ficha, tabla, glosario enlazado, visor en Maqueta y Pixel, de día y de noche, partes, fuentes, tres tuits y tarjeta en `/uas`. Lint y `astro check` sin errores.
+- **Sin commitear**: en zodk-web, la ficha (`src/content/uas/queen-hornet/`), sus tres tuits (`src/data/tuits/` y `public/tweets/`) y este diario; en la bóveda, la nota. Commit y push, cuando el usuario los pida.
+- Importar desde la nube reescribe unas 25 imágenes de otras notas (otro compresor) y mete notas que el usuario aún no ha importado (XQ-58 Valkyrie, cambio de la operación del F-15E): se devolvieron como estaban y solo se dejó lo del Queen Hornet.
+- Falta: fase 6 (revisión del usuario) y fase 7 (cierre: llevar la rama a `main` y publicar, cuando lo pida). Otras dos ramas de drones aparcados (Airbus Zephyr, FP-1) tocan los mismos archivos del motor (`tipos.ts`, `uas-hd.ts`, `uas-paletas.ts`, `visor-uas.ts`): al juntarlas en `main` habrá que unir sus líneas a mano.
+- Propuesto al usuario, sin hacer: la M821 en `Armamento/`, y enlazar el Queen Hornet desde la nota del Strike.
 
 ## Decisiones del usuario
 
@@ -74,4 +71,5 @@ Fotos en `arte/uas-fuentes/queen-hornet/full/` (fuera de Git, bajadas el 25-10-2
 - 25-10-2026, fase 3 (2.ª vuelta): detalle del Strike: motores con seis ventanas y ocho radios sobre el bobinado, tuerca con nailon y tornillos bajo el brazo; baterías con alfombrilla, dos correas con hebilla de escalera, balanceo y cables rojo y negro; cámara con frontal, rosca y aro; tornillos de placa, bisagras y abrazaderas; bridas del mástil, LED del receptor y etiqueta del transmisor.
 - 25-10-2026, fase 3 (3.ª vuelta): detalle 1:1 de las fotos oficiales ampliadas: placa con su planta real, raíles, asas, conectores de dos pines, tornillos, ranuras, ventana gris y LED; cubo facetado; caja de la electrónica en tres tramos con el USB; cámara en barril con surco, puntos naranjas y objetivo; bisagras con nudillos; variadores con pinzas; abrazaderas con nervios y brida; patas de morro a cola; motores de ocho ventanas y diez radios; caja de suelta con pie, tornillos, agujero y letra amarilla; baterías negras de través.
 - 25-10-2026, fase 4: desfase de luz medido, anodizado pasado a mate, miniaturas.
+- 19-11-2026, fases 1 y 5: nota escrita (9 fuentes, 3 tuits de @wilendhornets: presentación de marzo de 2024, AK-74 de septiembre de 2024 y aniversario de julio de 2025); importada en la rama y probada en localhost.
 - En la nube hizo falta Node 24 (las expresiones `(?i:…)` del glosario no van en Node 22) y Chrome con `--no-sandbox`.

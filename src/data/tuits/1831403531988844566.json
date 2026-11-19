@@ -1,0 +1,47 @@
+{
+  "capturado": "2026-11-19",
+  "tuit": {
+    "id_str": "1831403531988844566",
+    "created_at": "2024-09-04T18:46:42.000Z",
+    "text": "Our military continues to develop the Hornet Queen equipped with automatic weapons 🐝👌\n\nThis time, the first combat deployment was carried out—targeting a position with russian forces.\n\nThis test indicated the direction in which this project should move forward 🚀\n\nIf you also https://t.co/lYgM4zqhMD",
+    "note_tweet": true,
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/lYgM4zqhMD",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1831403461188984832/img/jLrQG-catrR-P8n7.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1831403461188984832/pl/hQDLZb8TeShlsH-u.m3u8?tag=16&v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 288000,
+              "url": "https://video.twimg.com/amplify_video/1831403461188984832/vid/avc1/336x270/J5Xo01_2aqvrYJ3W.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/amplify_video/1831403461188984832/vid/avc1/450x360/w4KiG-gjrW8Ol0Aw.mp4?tag=16"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1831403461188984832/vid/avc1/900x720/6uPioI6pURTrdUEz.mp4?tag=16"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

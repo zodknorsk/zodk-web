@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-11-19",
+  "tuit": {
+    "id_str": "1946582899329061238",
+    "created_at": "2025-07-19T14:48:23.000Z",
+    "text": "🎉 Queen Hornet’s Birthday! 🐝\nA drone we’re especially proud of.\n\nOne year ago, we introduced our new drone — the Queen Hornet.\n\nSince then, we’ve delivered thousands of Queen Hornets to the frontlines. These drones have done an incredible amount of vital work to defend Ukraine. https://t.co/uFHRD7bWqr",
+    "note_tweet": true,
+    "user": {
+      "name": "Wild Hornets",
+      "screen_name": "wilendhornets",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1955549837341937665/gNnwyQ8o_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/uFHRD7bWqr",
+        "media_url_https": "https://pbs.twimg.com/amplify_video_thumb/1946581295821180929/img/pxzFC4cGAnMKCgdo.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/amplify_video/1946581295821180929/pl/rZ3KKdPNC1ovWwnU.m3u8?v=cfc"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 632000,
+              "url": "https://video.twimg.com/amplify_video/1946581295821180929/vid/avc1/320x568/5npYO4p1MJ6AQn3U.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 950000,
+              "url": "https://video.twimg.com/amplify_video/1946581295821180929/vid/avc1/480x852/U6k1XZY_uPn6p_MY.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/amplify_video/1946581295821180929/vid/avc1/720x1278/7IIDbxW2FmWnRNFn.mp4"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 10368000,
+              "url": "https://video.twimg.com/amplify_video/1946581295821180929/vid/avc1/1072x1904/fmYc_6ANTdPJWbt_.mp4"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
