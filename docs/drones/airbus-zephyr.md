@@ -1,13 +1,13 @@
 # Airbus Zephyr — diario
 
-## Dónde estamos
+## Dónde estamos: fases 1 a 5 hechas (19-11-2026), sin commitear
 
-- **Fase 1 (la nota)**: sin hacer. No hay nota del Zephyr en la bóveda.
-- **Fases 2, 3 y 4**: hechas, y la maqueta revisada a fondo el 06-11-2026 («si superpones algo y es ligeramente diferente, lo cambias»): planta del ala medida punto a punto, envergadura a los 25 m oficiales, puntas, luces y antenas (distintas a cada lado), caja del morro, bola, motores, cola y bandas de células, todo contra las dos fotos encajadas. En la rama `claude/nuevodron-fases-2-3-4-at8jwi`; no está en `main`.
-- **Solo en local, fuera de Git**: la ficha provisional `src/content/uas/airbus-zephyr/` (en `.git/info/exclude`); en `arte/uas-fuentes/airbus-zephyr/hd/`, los ajustes de cámara (`frente`, `planta`, `lado`, `amanecer`, `aterrizado`) y copias de `comparar-foto`, `vista-visor` y `generar-uas-miniaturas-hd` con el Chrome de Linux.
-- **Sin medir**: `desfaseLuz`. Sin nave del hero (no pedida).
-- **Falta**: la nota (fase 1), importarla en `main` y probar (fase 5), y que el usuario dé la maqueta por buena (fase 6).
-- **Siguiente paso**: que el usuario mire la página de revisión y diga qué no está igual.
+- Fases 2-4 y revisión, en la rama `…-at8jwi`, **juntada en `claude/nuevodron-fases-2-3-4-iid64t`** (con el Queen Hornet y el FP-1) el 19-11-2026.
+- Fase 1: nota `🇬🇧 Airbus Zephyr.md` en la bóveda (borrador; 7 fuentes, 3 tuits de @AALTOHAPS). Fase 5: importada con `--en-esta-rama` y probada en localhost (ficha, visor en Maqueta y Pixel, de día y de noche, tabla, tuits, tarjeta en `/uas`).
+- `desfaseLuz`: medido, no hace falta (el ala al sol cae en 5,3-5,7 escalones, en medio de uno).
+- **Sin commitear**: la ficha, sus tuits, este diario y la nota de la bóveda.
+- Dudas abiertas de la revisión: la punta derecha acaba ~13 cm antes en las fotos (va simétrica) y el soporte de la bola (reconstruido).
+- Falta: fase 6 (revisión del usuario) y 7 (cierre). Propuesto, sin hacer: «HAPS» en el glosario.
 
 ## Decisiones del usuario
 

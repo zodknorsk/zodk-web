@@ -1,0 +1,24 @@
+{
+  "capturado": "2026-11-19",
+  "tuit": {
+    "id_str": "1881688197547352458",
+    "created_at": "2025-01-21T13:00:01.000Z",
+    "text": "Zephyr returns to the stratosphere! ✈\n\nThis weekend, from its first launch and landing facility in Kenya, AALTO completed the first successful launch of Zephyr in 2025.\n\nAfter climbing to 60,000ft, our solar-powered Zephyr has now been flying continuously over Kenya for over https://t.co/FMvhLXWhxq",
+    "note_tweet": true,
+    "user": {
+      "name": "AALTO",
+      "screen_name": "AALTOHAPS",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1617165695929778177/j9LO3szV_normal.jpg"
+    },
+    "entities": {
+      "urls": []
+    },
+    "mediaDetails": [
+      {
+        "type": "photo",
+        "url": "https://t.co/FMvhLXWhxq",
+        "media_url_https": "https://pbs.twimg.com/media/GhzhKpWXMAAeZHj.jpg"
+      }
+    ]
+  }
+}

@@ -1,13 +1,11 @@
 # FP-1 — diario
 
-## Dónde estamos
+## Dónde estamos: fases 1 a 5 hechas (19-11-2026), sin commitear
 
-- **Fase 1 (la nota)**: sin hacer. No hay nota del FP-1 en la bóveda.
-- **Fases 2, 3 y 4**: hechas el 27-10-2026, en el commit `751ff15` de la rama `claude/nuevodron-fases-2-3-4-ub8zqn`.
-- **Fase 6 (revisión), primera vuelta, hecha** el 27-10-2026: los 16 puntos de la comparación con las fotos (sección del cuerpo con chaflán, tapa del lomo, cola del cuerpo, panza, cintas del ala, paneles de cola planos, unión viga–cola, varillas de mando, motor, escape, hélice, etiquetas, cohete). A falta de que el usuario la vea.
-- **Solo en local, fuera de Git** (excluidos en `.git/info/exclude`): la ficha provisional `src/content/uas/fp-1/` y la variante `fp-1-kiev` (ala cortada a 2 m y cohete sin rampa, para comparar con las fotos de Kiev).
-- **Falta**: la nota (fase 1), importarla en `main` y probar (fase 5).
-- **Siguiente paso**: que el usuario mire las comparaciones y diga qué sigue sin estar igual.
+- Fases 2-4 y primera revisión, en la rama `…-ub8zqn`, **juntada en `claude/nuevodron-fases-2-3-4-iid64t`** (con el Queen Hornet y el Zephyr) el 19-11-2026.
+- Fase 1: nota `🇺🇦 FP-1.md` en la bóveda (borrador; 8 fuentes, 1 tuit con el vídeo de fábrica de diciembre de 2025: no se encontró otro). Fase 5: importada con `--en-esta-rama` y probada en localhost (ficha, visor en Maqueta y Pixel, de día y de noche, tabla, tuit, tarjeta en `/uas`).
+- **Sin commitear**: la ficha, su tuit, este diario y la nota de la bóveda.
+- Falta: fase 6 (que el usuario mire la revisión y la ficha) y 7 (cierre).
 
 ## Decisiones del usuario
 

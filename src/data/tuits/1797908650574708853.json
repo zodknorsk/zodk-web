@@ -1,0 +1,52 @@
+{
+  "capturado": "2026-11-19",
+  "tuit": {
+    "id_str": "1797908650574708853",
+    "created_at": "2024-06-04T08:30:00.000Z",
+    "text": "↔️ With the wingspan of 25 meters, but weighing less than 75 kilograms, Zephyr is the world’s most advanced fixed-wing High Altitude Platform Station (HAPS) aircraft.\n\nRead the full press release on the 🇯🇵 Japanese investment into AALTO ➡️ https://t.co/ghqIDPE4XA https://t.co/LtaGQF30Hl",
+    "user": {
+      "name": "AALTO",
+      "screen_name": "AALTOHAPS",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1617165695929778177/j9LO3szV_normal.jpg"
+    },
+    "entities": {
+      "urls": [
+        {
+          "url": "https://t.co/ghqIDPE4XA",
+          "expanded_url": "https://www.aaltohaps.com/news/ntt-docomo-and-space-compass-partners-with-airbus-on-haps-committing-to-a-usd-100-million-investment-in-aalto",
+          "display_url": "aaltohaps.com/news/ntt-docom…"
+        }
+      ]
+    },
+    "mediaDetails": [
+      {
+        "type": "video",
+        "url": "https://t.co/LtaGQF30Hl",
+        "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/1797899620527349760/pu/img/jHJW45nqR2jYf5S1.jpg",
+        "video_info": {
+          "variants": [
+            {
+              "content_type": "application/x-mpegURL",
+              "url": "https://video.twimg.com/ext_tw_video/1797899620527349760/pu/pl/51HvEgBaz2UvW_NW.m3u8?tag=12&v=fae"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 256000,
+              "url": "https://video.twimg.com/ext_tw_video/1797899620527349760/pu/vid/avc1/480x270/fW_oICZLmQsnBjoF.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 832000,
+              "url": "https://video.twimg.com/ext_tw_video/1797899620527349760/pu/vid/avc1/640x360/xYXT3vS9Pl1OvAU_.mp4?tag=12"
+            },
+            {
+              "content_type": "video/mp4",
+              "bitrate": 2176000,
+              "url": "https://video.twimg.com/ext_tw_video/1797899620527349760/pu/vid/avc1/1280x720/R2D7BU46VLrHoDeb.mp4?tag=12"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

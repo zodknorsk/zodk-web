@@ -1,11 +1,12 @@
 # Queen Hornet — diario
 
-## Dónde estamos: fases 1 y 5 hechas (19-11-2026), sin commitear
+## Dónde estamos: fases 1 a 5 hechas (19-11-2026), en la rama
 
 - Fases 1 a 5 hechas. Nota `🇺🇦 Queen Hornet.md` en la bóveda (en borrador), importada con `--en-esta-rama` y probada en `localhost:4321/uas/queen-hornet`: ficha, tabla, glosario enlazado, visor en Maqueta y Pixel, de día y de noche, partes, fuentes, tres tuits y tarjeta en `/uas`. Lint y `astro check` sin errores.
-- **Sin commitear**: en zodk-web, la ficha (`src/content/uas/queen-hornet/`), sus tres tuits (`src/data/tuits/` y `public/tweets/`) y este diario; en la bóveda, la nota. Commit y push, cuando el usuario los pida.
+- 19-11-2026: la rama lleva ya también el Airbus Zephyr y el FP-1 (sus ramas, juntadas con `git merge`; los choques de `tipos.ts`, `uas-hd.ts`, `uas-paletas.ts` y `visor-uas.ts`, unidos con las líneas de los dos lados).
+- Ficha, tuits y nota del Queen Hornet, ya subidos a la rama (`0fbd7f1` y `d84c58c` en la bóveda); `main` sin tocar.
 - Importar desde la nube reescribe unas 25 imágenes de otras notas (otro compresor) y mete notas que el usuario aún no ha importado (XQ-58 Valkyrie, cambio de la operación del F-15E): se devolvieron como estaban y solo se dejó lo del Queen Hornet.
-- Falta: fase 6 (revisión del usuario) y fase 7 (cierre: llevar la rama a `main` y publicar, cuando lo pida). Otras dos ramas de drones aparcados (Airbus Zephyr, FP-1) tocan los mismos archivos del motor (`tipos.ts`, `uas-hd.ts`, `uas-paletas.ts`, `visor-uas.ts`): al juntarlas en `main` habrá que unir sus líneas a mano.
+- Falta: fase 6 (revisión del usuario) y fase 7 (cierre: llevar la rama a `main` y publicar, cuando lo pida).
 - Propuesto al usuario, sin hacer: la M821 en `Armamento/`, y enlazar el Queen Hornet desde la nota del Strike.
 
 ## Decisiones del usuario
