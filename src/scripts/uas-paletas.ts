@@ -71,6 +71,8 @@ const COMUNES = {
   "anodizado-qh": ["#0e0f11", "#1a1b1e", "#2a2c30", "#45484d"],
   "gris-cola": ["#34353a", "#55565b", "#75767b", "#9d9ea3"],
   "bateria-qh": ["#0c0d0e", "#18191b", "#28292c", "#424448"],
+  "plata-ze": ["#5a5f64", "#8a9095", "#b7bcc0", "#dfe3e6"],
+  "film-ze": ["#686d70", "#9aa0a3", "#c6cbcd", "#e8ebec"],
 } satisfies Record<string, Paleta>;
 export const PALETAS: Record<"dia" | "noche", Paletas> = {
   dia: {
